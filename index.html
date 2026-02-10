@@ -1,62 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="style.css">
   <meta charset="UTF-8">
   <title>Jake Troubleshoots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
-   /* Fancy title CSS */
-    .fancy-title {
-      font-family: 'Verdana', Geneva, sans-serif;
-      font-size: 3em;
-      color: #ffffff;
-      background-color: #0073e6;
-      padding: 20px 40px;
-      border: 3px solid #005bb5;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+    /* Base styling */
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      background-color: #f3f4f6;
     }
-    nav { margin-bottom: 20px; }
-    nav a { margin-right: 15px; text-decoration: none; color: #0073e6; }
-    h1, h2 { color: #333; }
-    ul { list-style-type: disc; margin-left: 20px; }
-    footer { margin-top: 40px; font-size: 0.9em; color: #555; }
+
+    main {
+      padding: 120px 20px 40px; /* leave space for sticky header */
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3 {
+      color: #111827;
+      margin-bottom: 16px;
+    }
+
+    /* Sticky header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #1e40af;
+      margin: 0;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #1e40af;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    header nav a:hover {
+      color: #3b82f6;
+    }
+
+    /* Fancy hero title */
+    .fancy-title {
+      font-size: 3rem;
+      color: #ffffff;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      padding: 24px 48px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      margin-bottom: 32px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .fancy-title:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    }
+
+    /* Hero section */
+    .hero-section {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: #f3f4f6;
+      padding: 80px 20px;
+      text-align: center;
+      border-radius: 16px;
+      margin-bottom: 40px;
+    }
+
+    .hero-section a {
+      background: #ffffff;
+      color: #1e40af;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 12px;
+      display: inline-flex;
+      gap: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      margin-top: 16px;
+    }
+
+    .hero-section a:hover {
+      background: #e0e7ff;
+    }
+
+    /* Category cards */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    .badge {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Guide cards */
+    .guides {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .guide-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .guide-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    .guide-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .guide-card p {
+      font-size: 0.9rem;
+      color: #4b5563;
+      margin: 0 0 8px 0;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 60px;
+      background-color: #e5e7eb;
+      color: #374151;
+      text-align: center;
+      padding: 24px 12px;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
 
-  <h1 class="fancy-title">Jake Troubleshoots</h1>
-  <p>Hey, I’m Jake! This site is a work in progress where I’ll be updating and adding guides, tips, and tricks for other clinical engineers like myself, providing insight into the repair and troubleshooting of equipment we work on every day.</p>
+  <header>
+    <h1>Jake Troubleshoots</h1>
+    <nav>
+      <a href="#monitors">Monitors</a>
+      <a href="#pumps">Pumps</a>
+      <a href="#ventilators">Ventilators</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-  <nav>
-    <a href="#monitors">Monitors</a> |
-    <a href="#pumps">Pumps</a> |
-    <a href="#ventilators">Ventilators</a> |
-    <a href="#contact">Contact Jake</a>
-  </nav>
+  <main>
+    <div class="fancy-title">Jake Troubleshoots</div>
 
-  <h2 id="monitors">Monitors</h2>
-  <ul>
-    <li><a href="GE-Monitor-Wont-Power-On.pdf" target="_blank">GE Monitor — Won’t Power On</a></li>
-  </ul>
+    <section class="hero-section">
+      <h2>Clinical Engineering Resources</h2>
+      <p>A growing collection of troubleshooting guides, tips, and tricks for clinical engineers. Real-world solutions for equipment repair and maintenance.</p>
+      <a href="#guides">Browse All Guides &rarr;</a>
+    </section>
 
-  <h2 id="pumps">Pumps</h2>
-  <ul>
-    <!-- Add pump guides here -->
-  </ul>
+    <section id="categories">
+      <h2>Browse by Category</h2>
+      <div class="categories">
+        <div class="card">
+          <div>🖥️ <span class="badge" style="background:#bfdbfe; color:#1e40af;">3 guides</span></div>
+          <h3>Monitors</h3>
+        </div>
+        <div class="card">
+          <div>💉 <span class="badge" style="background:#ddd6fe; color:#5b21b6;">2 guides</span></div>
+          <h3>Pumps</h3>
+        </div>
+        <div class="card">
+          <div>🌬️ <span class="badge" style="background:#bbf7d0; color:#065f46;">1 guide</span></div>
+          <h3>Ventilators</h3>
+        </div>
+        <div class="card">
+          <div>📄 <span class="badge" style="background:#e5e7eb; color:#374151;">0 guides</span></div>
+          <h3>Other</h3>
+        </div>
+      </div>
+    </section>
 
-  <h2 id="ventilators">Ventilators</h2>
-  <ul>
-    <!-- Add ventilator guides here -->
-  </ul>
+    <section id="guides">
+      <h2>Recent Guides</h2>
+      <div class="guides">
+        <div class="guide-card">
+          <h3>Monitor Not Powering On</h3>
+          <p>Check wall outlet, power cord, and switch before opening the unit. Indicator light should be on.</p>
+          <span class="badge" style="background:#bfdbfe; color:#1e40af;">Monitors</span>
+        </div>
+        <div class="guide-card">
+          <h3>Infusion Pump Error 502</h3>
+          <p>Reset the pump and verify tubing placement. Software issues may require further troubleshooting.</p>
+          <span class="badge" style="background:#ddd6fe; color:#5b21b6;">Pumps</span>
+        </div>
+        <div class="guide-card">
+          <h3>Ventilator Flow Alarm</h3>
+          <p>Check patient circuit for obstructions and ensure proper settings are selected.</p>
+          <span class="badge" style="background:#bbf7d0; color:#065f46;">Ventilators</span>
+        </div>
+      </div>
+    </section>
 
-  <h2 id="contact">Contact Jake</h2>
-  <p>Email me at: <a href="mailto:contact@jaketroubleshoots.com">contact@jaketroubleshoots.com</a></p>
+    <section id="contact">
+      <h2>Contact Jake</h2>
+      <p>Email me at: <a href="mailto:contact@jaketroubleshoots.com">contact@jaketroubleshoots.com</a></p>
+    </section>
+
+  </main>
 
   <footer>
-    <p>Guides are intended for trained personnel. Use caution when troubleshooting equipment.</p>
+    Guides are intended for trained personnel. Use caution when troubleshooting equipment.<br>
+    &copy; 2026 Jake Troubleshoots
   </footer>
 
 </body>
