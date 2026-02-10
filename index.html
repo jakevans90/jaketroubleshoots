@@ -31,27 +31,45 @@
   </div>
 </section>
 
-<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
-
-  <a href="ge-carescape-canvas-power.html" style="text-decoration:none; color:inherit;">
-    <div class="placeholder">
-      <h3>GE CARESCAPE Canvas – Will Not Power On</h3>
-      <p>Basic power troubleshooting for a GE CARESCAPE Canvas patient monitor.</p>
-      <p><strong>Asset Type:</strong> Patient Monitor</p>
-      <p><strong>Manufacturer:</strong> GE Healthcare</p>
-      <p><strong>Model:</strong> CARESCAPE Canvas</p>
-    </div>
-  </a>
-
+<section style="padding:40px;">
+  <h3>Most Recent Guides</h3>
+  <div id="guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+    <!-- Cards will be injected here by JS -->
+  </div>
 </section>
 
-
 <footer>
-  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com">contact@jaketroubleshoots.com</a></p>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
   <p>Guides intended for trained personnel only.</p>
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
+<script>
+fetch('guides.json')
+  .then(res => res.json())
+  .then(data => {
+    const recentGuides = data
+      .sort((a,b) => new Date(b.dateAdded) - new Date(a.dateAdded)) // newest first
+      .slice(0, 3); // show only 3 most recent
+    const container = document.getElementById('guides-grid');
+    recentGuides.forEach(guide => {
+      const card = document.createElement('a');
+      card.href = guide.url;
+      card.style.textDecoration = 'none';
+      card.style.color = 'inherit';
+      card.innerHTML = `
+        <div class="placeholder">
+          <h3>${guide.title}</h3>
+          <p>${guide.description}</p>
+          <p><strong>Asset Type:</strong> ${guide.assetType}</p>
+          <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
+          <p><strong>Model:</strong> ${guide.model}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+</script>
+
 </body>
 </html>
-
