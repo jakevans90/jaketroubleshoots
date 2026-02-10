@@ -23,25 +23,13 @@
 
 <section class="browse-section">
   <h3>Models</h3>
-  <div class="browse-buttons">
-    <!-- Replace placeholders with actual models as you add guides -->
-    <a href="guides.html#placeholder">CARESCAPE Canvas</a>
+  <div id="model-buttons" class="browse-buttons">
+    <!-- Buttons injected dynamically -->
   </div>
 </section>
 
 <section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
-
-  <a href="ge-carescape-canvas-power.html" style="text-decoration:none; color:inherit;">
-    <div class="placeholder">
-      <h3>GE CARESCAPE Canvas – Will Not Power On</h3>
-      <p>Basic power troubleshooting for a GE CARESCAPE Canvas patient monitor.</p>
-      <p><strong>Asset Type:</strong> Patient Monitor</p>
-      <p><strong>Manufacturer:</strong> GE Healthcare</p>
-      <p><strong>Model:</strong> CARESCAPE Canvas</p>
-    </div>
-  </a>
-
-  <!-- Add more guides for GE Healthcare as needed -->
+  <!-- Guide cards injected dynamically -->
 </section>
 
 <footer>
@@ -49,6 +37,57 @@
   <p>Guides intended for trained personnel only.</p>
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
+
+<script>
+fetch('guides.json')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('guides-grid');
+    const buttonsContainer = document.getElementById('model-buttons');
+
+    // Unique sorted list of models
+    const models = [...new Set(data.map(g => g.model))].sort();
+
+    // Create buttons for each model
+    models.forEach(model => {
+      const btn = document.createElement('a');
+      btn.href = '#';
+      btn.textContent = model;
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showGuidesByModel(model);
+      });
+      buttonsContainer.appendChild(btn);
+    });
+
+    // Function to display guides filtered by model
+    function showGuidesByModel(model) {
+      container.innerHTML = '';
+      data
+        .filter(g => g.model === model)
+        .sort((a,b) => a.title.localeCompare(b.title))
+        .forEach(guide => {
+          const card = document.createElement('a');
+          card.href = guide.url;
+          card.style.textDecoration = 'none';
+          card.style.color = 'inherit';
+          card.innerHTML = `
+            <div class="placeholder">
+              <h3>${guide.title}</h3>
+              <p>${guide.description}</p>
+              <p><strong>Asset Type:</strong> ${guide.assetType}</p>
+              <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
+              <p><strong>Model:</strong> ${guide.model}</p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+    }
+
+    // Optionally show the first model guides by default
+    if(models.length > 0) showGuidesByModel(models[0]);
+  });
+</script>
 
 </body>
 </html>
