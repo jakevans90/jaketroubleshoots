@@ -31,12 +31,13 @@
   </div>
 </section>
 
-<section style="padding:40px;">
+<section style="padding:40px; text-align:center;">
   <h3>Most Recent Guides</h3>
-  <div id="guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+  <div id="guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;">
     <!-- Cards will be injected here by JS -->
   </div>
 </section>
+
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
@@ -48,10 +49,17 @@
 fetch('guides.json')
   .then(res => res.json())
   .then(data => {
-    const recentGuides = data
-      .sort((a,b) => new Date(b.dateAdded) - new Date(a.dateAdded)) // newest first
-      .slice(0, 3); // show only 3 most recent
     const container = document.getElementById('guides-grid');
+
+    // sort by dateAdded descending (most recent first), fallback to keep guides without date
+    const recentGuides = data
+      .sort((a, b) => {
+        const dateA = a.dateAdded ? new Date(a.dateAdded) : new Date(0);
+        const dateB = b.dateAdded ? new Date(b.dateAdded) : new Date(0);
+        return dateB - dateA;
+      })
+      .slice(0, 3); // show top 3 most recent
+
     recentGuides.forEach(guide => {
       const card = document.createElement('a');
       card.href = guide.url;
@@ -64,6 +72,7 @@ fetch('guides.json')
           <p><strong>Asset Type:</strong> ${guide.assetType}</p>
           <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
           <p><strong>Model:</strong> ${guide.model}</p>
+          <p style="font-size:0.9rem; color:#ccc;">Added: ${guide.dateAdded || 'Unknown'}</p>
         </div>
       `;
       container.appendChild(card);
