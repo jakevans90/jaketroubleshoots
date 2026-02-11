@@ -47,24 +47,24 @@
 
 <script>
 fetch('guides.json')
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error('Could not load guides.json');
+    return res.json();
+  })
   .then(data => {
-    const container = document.getElementById('guides-grid');
-
-    // sort by dateAdded descending (most recent first), fallback to keep guides without date
+    // Sort by dateAdded (newest first)
     const recentGuides = data
-      .sort((a, b) => {
-        const dateA = a.dateAdded ? new Date(a.dateAdded) : new Date(0);
-        const dateB = b.dateAdded ? new Date(b.dateAdded) : new Date(0);
-        return dateB - dateA;
-      })
-      .slice(0, 3); // show top 3 most recent
+      .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
+      .slice(0, 3); // show only 3 most recent
+
+    const container = document.getElementById('guides-grid');
 
     recentGuides.forEach(guide => {
       const card = document.createElement('a');
       card.href = guide.url;
       card.style.textDecoration = 'none';
       card.style.color = 'inherit';
+
       card.innerHTML = `
         <div class="placeholder">
           <h3>${guide.title}</h3>
@@ -72,13 +72,15 @@ fetch('guides.json')
           <p><strong>Asset Type:</strong> ${guide.assetType}</p>
           <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
           <p><strong>Model:</strong> ${guide.model}</p>
-          <p style="font-size:0.9rem; color:#ccc;">Added: ${guide.dateAdded || 'Unknown'}</p>
+          <p><em>Date Added: ${guide.dateAdded}</em></p>
         </div>
       `;
       container.appendChild(card);
     });
-  });
+  })
+  .catch(err => console.error(err));
 </script>
+
 
 </body>
 </html>
