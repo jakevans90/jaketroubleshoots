@@ -1,160 +1,77 @@
-/* style.css */
-
-/* Body */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-}
-
-/* Header */
-header {
-  position: sticky;
-  top: 0;
-  background: #111;
-  color: white;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 20px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 15px;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-/* Hero Banner */
-.hero {
-  background: linear-gradient(to right, #8fff00, #FF66CC);
-  color: Black;
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.hero h2 {
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 18px;
-  margin-bottom: 25px;
-}
-
-.hero a {
-  padding: 14px 24px;
-  background: black;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.hero a:hover {
-  background: #222;
-}
-
-/* Browse Section */
-.browse-section {
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.browse-buttons {
-  display: flex;
-  justify-content: center;
+/* Guides Grid */
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  flex-wrap: wrap;
+  justify-items: center;
+  padding: 20px 0;
 }
 
-.browse-buttons a {
-  padding: 14px 22px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: white;
-  text-decoration: none;
+/* Guide Card */
+.guides-grid a .placeholder {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 320px;
+  height: 380px;            /* fixed height to align cards */
+  overflow: hidden;          /* hides excess text */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
+}
+
+/* Card Hover */
+.guides-grid a .placeholder:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+/* Card Titles */
+.guides-grid a .placeholder h3 {
+  font-size: 1.15rem;
+  margin: 0 0 8px 0;
+  color: #111;
+}
+
+/* Card Description with truncation */
+.guides-grid a .placeholder p {
+  font-size: 0.95rem;
+  margin: 4px 0;
   color: #333;
-  transition: 0.2s;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;  /* limits to 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.browse-buttons a:hover {
-  background: #111;
-  color: #8fff00;
-  border-color: #8fff00;
-}
-
-/* Placeholder */
-.placeholder {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 40px;
-  background: white;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-/* Footer */
-footer {
-  background: #111;
-  color: #ccc;
-  padding: 30px 20px;
-  margin-top: 50px;
-  text-align: center;
-}
-
-footer a {
-  color: #8fff00; /* lime green */
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-/* Contact banner uses same hero gradient as homepage */
-.contact-banner {
-  background: linear-gradient(to right, #8fff00, #FF66CC);
-  color: black;
-  padding: 80px 20px;
-  text-align: center;
-  border-radius: 0; /* full-width banner */
-}
-
-/* Email section */
-.email-section {
-  margin-top: 40px;
-  background: #111;
-  color: white;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.email-section h3 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-}
-
-.email-section .email-link {
-  color: #8fff00;
-  text-decoration: none;
-  font-size: 1.2rem;
+/* Badges for Asset / Manufacturer / Model */
+.guides-grid a .placeholder .badge {
+  display: inline-block;
+  padding: 3px 8px;
+  margin-right: 5px;
+  margin-top: 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
   font-weight: bold;
+  color: #fff;
 }
 
-.email-section .email-link:hover {
-  color: #FF66CC;
+.guides-grid a .placeholder .asset {
+  background-color: #8fff00; /* lime green */
+}
+
+.guides-grid a .placeholder .manufacturer {
+  background-color: #FF66CC; /* pink */
+}
+
+.guides-grid a .placeholder .model {
+  background-color: #111;    /* dark gray */
 }
 
