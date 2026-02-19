@@ -39,21 +39,45 @@
 </footer>
 
 <script>
-fetch('guides.json')
-  .then(res => res.json())
-  .then(data => {
+fetch('data/guides.json') // updated path
+  .then(res => {
+    if (!res.ok) throw new Error('Could not load guides.json');
+    return res.json();
+  })
+  .then(jsonData => {
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+
+    if (isFileList) {
+      // guides.json contains a list of filenames → fetch all
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      // guides.json already contains guide objects
+      return jsonData;
+    }
+  })
+  .then(allGuides => {
     const container = document.getElementById('guides-grid');
     const buttonsContainer = document.getElementById('model-buttons');
 
-    // Unique sorted list of models
-    const models = [...new Set(data.map(g => g.model))].sort();
+    if (!container || !buttonsContainer) throw new Error('Required containers not found');
+
+    // Create unique sorted list of models
+    const models = [...new Set(allGuides.map(g => g.model))].sort();
 
     // Create buttons for each model
     models.forEach(model => {
       const btn = document.createElement('a');
       btn.href = '#';
       btn.textContent = model;
-      btn.addEventListener('click', (e) => {
+      btn.classList.add('browse-button'); // optional: for CSS styling
+      btn.addEventListener('click', e => {
         e.preventDefault();
         showGuidesByModel(model);
       });
@@ -63,30 +87,35 @@ fetch('guides.json')
     // Function to display guides filtered by model
     function showGuidesByModel(model) {
       container.innerHTML = '';
-      data
+      const filtered = allGuides
         .filter(g => g.model === model)
-        .sort((a,b) => a.title.localeCompare(b.title))
-        .forEach(guide => {
-          const card = document.createElement('a');
-          card.href = guide.url;
-          card.style.textDecoration = 'none';
-          card.style.color = 'inherit';
-          card.innerHTML = `
-            <div class="placeholder">
-              <h3>${guide.title}</h3>
-              <p>${guide.description}</p>
-              <p><strong>Asset Type:</strong> ${guide.assetType}</p>
-              <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
-              <p><strong>Model:</strong> ${guide.model}</p>
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+      filtered.forEach(guide => {
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.classList.add('guide-card');
+
+        card.innerHTML = `
+          <div class="card-content">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
             </div>
-          `;
-          container.appendChild(card);
-        });
+            <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    // Optionally show the first model guides by default
-    if(models.length > 0) showGuidesByModel(models[0]);
-  });
+    // Show the first model guides by default
+    if (models.length > 0) showGuidesByModel(models[0]);
+  })
+  .catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>
