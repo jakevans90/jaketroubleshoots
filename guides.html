@@ -41,30 +41,59 @@
 </footer>
 
 <script>
-fetch('guides.json')
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById('guides-grid');
+fetch('data/guides.json') // updated path
+  .then(res => {
+    if (!res.ok) throw new Error('Could not load guides.json');
+    return res.json();
+  })
+  .then(jsonData => {
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+
+    if (isFileList) {
+      // guides.json contains a list of filenames → fetch all
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      // guides.json already contains guide objects
+      return jsonData;
+    }
+  })
+  .then(allGuides => {
     // Sort alphabetically by title
-    const sortedGuides = data.sort((a,b) => a.title.localeCompare(b.title));
-    sortedGuides.forEach(guide => {
+    allGuides.sort((a, b) => a.title.localeCompare(b.title));
+
+    const container = document.getElementById('guides-grid');
+    if (!container) throw new Error('#guides-grid not found');
+
+    allGuides.forEach(guide => {
       const card = document.createElement('a');
       card.href = guide.url;
-      card.style.textDecoration = 'none';
-      card.style.color = 'inherit';
+      card.classList.add('guide-card');
+
       card.innerHTML = `
-        <div class="placeholder">
+        <div class="card-content">
           <h3>${guide.title}</h3>
           <p>${guide.description}</p>
-          <p><strong>Asset Type:</strong> ${guide.assetType}</p>
-          <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
-          <p><strong>Model:</strong> ${guide.model}</p>
+          <div class="badges">
+            <span class="badge asset">${guide.assetType}</span>
+            <span class="badge manufacturer">${guide.manufacturer}</span>
+            <span class="badge model">${guide.model}</span>
+          </div>
+          <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
         </div>
       `;
       container.appendChild(card);
     });
-  });
+  })
+  .catch(err => console.error('Guide load error:', err));
 </script>
+
 
 </body>
 </html>
