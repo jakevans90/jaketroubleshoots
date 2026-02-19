@@ -51,23 +51,31 @@ fetch('guides.json')
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
   })
-  .then(files => {
-    return Promise.all(
-      files.map(file =>
-        fetch(file).then(res => {
-          if (!res.ok) throw new Error('Could not load ' + file);
-          return res.json();
-        })
-      )
-    );
-  })
-  .then(allData => {
-    const data = allData.flat();
+  .then(jsonData => {
+    // If guides.json contains guide objects directly, wrap it in an array of one element
+    // If it contains filenames, leave it as is
+    const files = jsonData.length && typeof jsonData[0] === 'string' ? jsonData : null;
 
+    if (files) {
+      // guides.json is a list of filenames → load all of them
+      return Promise.all(
+        files.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      // guides.json already contains the guides → use it directly
+      return jsonData;
+    }
+  })
+  .then(data => {
     // Sort by dateAdded (newest first)
     const recentGuides = data
       .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-      .slice(0, 6);
+      .slice(0, 6); // show 6 most recent
 
     const container = document.getElementById('guides-grid');
 
@@ -93,7 +101,6 @@ fetch('guides.json')
   })
   .catch(err => console.error('Guide load error:', err));
 </script>
-
 
 
 </body>
