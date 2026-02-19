@@ -51,11 +51,23 @@ fetch('guides.json')
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
   })
-  .then(data => {
+  .then(files => {
+    return Promise.all(
+      files.map(file =>
+        fetch(file).then(res => {
+          if (!res.ok) throw new Error('Could not load ' + file);
+          return res.json();
+        })
+      )
+    );
+  })
+  .then(allData => {
+    const data = allData.flat();
+
     // Sort by dateAdded (newest first)
     const recentGuides = data
       .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-      .slice(0, 3); // show only 3 most recent
+      .slice(0, 6);
 
     const container = document.getElementById('guides-grid');
 
@@ -75,11 +87,13 @@ fetch('guides.json')
           <p><em>Date Added: ${guide.dateAdded}</em></p>
         </div>
       `;
+
       container.appendChild(card);
     });
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error('Guide load error:', err));
 </script>
+
 
 
 </body>
