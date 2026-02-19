@@ -46,62 +46,63 @@
 </footer>
 
 <script>
-fetch('guides.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    // If guides.json contains guide objects directly, wrap it in an array of one element
-    // If it contains filenames, leave it as is
-    const files = jsonData.length && typeof jsonData[0] === 'string' ? jsonData : null;
+  // Load and display the 6 most recent guides from your JSON files
+  fetch('data/guides.json')
+    .then(res => {
+      if (!res.ok) throw new Error('Could not load guides.json');
+      return res.json();
+    })
+    .then(jsonData => {
+      // Determine if guides.json contains filenames (strings) or guide objects
+      const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
 
-    if (files) {
-      // guides.json is a list of filenames → load all of them
-      return Promise.all(
-        files.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    } else {
-      // guides.json already contains the guides → use it directly
-      return jsonData;
-    }
-  })
-  .then(data => {
-    // Sort by dateAdded (newest first)
-    const recentGuides = data
-      .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-      .slice(0, 6); // show 6 most recent
+      if (isFileList) {
+        // If it's a list of filenames, fetch each file and flatten the results
+        return Promise.all(
+          jsonData.map(file =>
+            fetch(file).then(res => {
+              if (!res.ok) throw new Error('Could not load ' + file);
+              return res.json();
+            })
+          )
+        ).then(allData => allData.flat());
+      } else {
+        // Already contains guide objects, use directly
+        return jsonData;
+      }
+    })
+    .then(allGuides => {
+      // Sort guides by dateAdded (newest first) and select top 6
+      const recentGuides = allGuides
+        .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
+        .slice(0, 6);
 
-    const container = document.getElementById('guides-grid');
+      const container = document.getElementById('guides-grid');
+      if (!container) throw new Error('Element with id "guides-grid" not found');
 
-    recentGuides.forEach(guide => {
-      const card = document.createElement('a');
-      card.href = guide.url;
-      card.style.textDecoration = 'none';
-      card.style.color = 'inherit';
+      // Create guide cards
+      recentGuides.forEach(guide => {
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.style.textDecoration = 'none';
+        card.style.color = 'inherit';
 
-      card.innerHTML = `
-        <div class="placeholder">
-          <h3>${guide.title}</h3>
-          <p>${guide.description}</p>
-          <p><strong>Asset Type:</strong> ${guide.assetType}</p>
-          <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
-          <p><strong>Model:</strong> ${guide.model}</p>
-          <p><em>Date Added: ${guide.dateAdded}</em></p>
-        </div>
-      `;
+        card.innerHTML = `
+          <div class="placeholder">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <p><strong>Asset Type:</strong> ${guide.assetType}</p>
+            <p><strong>Manufacturer:</strong> ${guide.manufacturer}</p>
+            <p><strong>Model:</strong> ${guide.model}</p>
+            <p><em>Date Added: ${guide.dateAdded}</em></p>
+          </div>
+        `;
 
-      container.appendChild(card);
-    });
-  })
-  .catch(err => console.error('Guide load error:', err));
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error('Guide load error:', err));
 </script>
-
 
 </body>
 </html>
