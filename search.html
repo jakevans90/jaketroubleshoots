@@ -63,6 +63,22 @@ fetch('data/guides.json')
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
   })
+  .then(jsonData => {
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+
+    if (isFileList) {
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      return jsonData;
+    }
+  })
   .then(data => {
     const searchBar = document.getElementById('search-bar');
     const resultsContainer = document.getElementById('search-results');
@@ -70,7 +86,6 @@ fetch('data/guides.json')
 
     function renderGuides(guides) {
       resultsContainer.innerHTML = '';
-
       if (guides.length === 0) {
         noResults.style.display = 'block';
         return;
@@ -107,7 +122,6 @@ fetch('data/guides.json')
 
     searchBar.addEventListener('input', e => {
       const query = e.target.value.toLowerCase();
-
       const filtered = data.filter(guide =>
         guide.title.toLowerCase().includes(query) ||
         guide.description.toLowerCase().includes(query) ||
@@ -115,12 +129,11 @@ fetch('data/guides.json')
         guide.manufacturer.toLowerCase().includes(query) ||
         guide.model.toLowerCase().includes(query)
       );
-
       renderGuides(filtered);
     });
   })
-  .catch(err => console.error('Search load error:', err));
-</script>
+  .catch(err => console.error('Search load e
+
 
 </body>
 </html>
