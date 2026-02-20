@@ -147,6 +147,17 @@ fetch('data/guides.json')
   .catch(err => console.error('Search load error:', err));
 </script>
 
+<script>
+const form = document.getElementById('home-search-form');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const query = document.getElementById('home-search-input').value.trim();
+  if(query) {
+    // encode query to handle spaces & special characters
+    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+  }
+});
+</script>
 
 </body>
 </html>
