@@ -59,7 +59,10 @@
 
 <script>
 fetch('data/guides.json')
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error('Could not load guides.json');
+    return res.json();
+  })
   .then(data => {
     const searchBar = document.getElementById('search-bar');
     const resultsContainer = document.getElementById('search-results');
@@ -67,7 +70,8 @@ fetch('data/guides.json')
 
     function renderGuides(guides) {
       resultsContainer.innerHTML = '';
-      if(guides.length === 0) {
+
+      if (guides.length === 0) {
         noResults.style.display = 'block';
         return;
       } else {
@@ -93,16 +97,17 @@ fetch('data/guides.json')
             <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
           </div>
         `;
+
         resultsContainer.appendChild(card);
       });
     }
 
-    // Initially show all guides
+    // show all guides at first
     renderGuides(data);
 
-    // Filter as the user types
     searchBar.addEventListener('input', e => {
       const query = e.target.value.toLowerCase();
+
       const filtered = data.filter(guide =>
         guide.title.toLowerCase().includes(query) ||
         guide.description.toLowerCase().includes(query) ||
@@ -110,6 +115,7 @@ fetch('data/guides.json')
         guide.manufacturer.toLowerCase().includes(query) ||
         guide.model.toLowerCase().includes(query)
       );
+
       renderGuides(filtered);
     });
   })
