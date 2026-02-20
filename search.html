@@ -40,7 +40,7 @@
 
 <section class="hero">
   <h2>Search Troubleshooting Guides</h2>
-  <p>Find guides quickly by title, description, asset type, manufacturer, or model.</p>
+  <p>Find guides quickly by title, description, asset type, manufacturer, model, or steps.</p>
 </section>
 
 <section class="search-section">
@@ -65,7 +65,6 @@ fetch('data/guides.json')
   })
   .then(jsonData => {
     const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
-
     if (isFileList) {
       return Promise.all(
         jsonData.map(file =>
@@ -83,6 +82,11 @@ fetch('data/guides.json')
     const searchBar = document.getElementById('search-bar');
     const resultsContainer = document.getElementById('search-results');
     const noResults = document.getElementById('no-results');
+
+    // Read query from URL (e.g., ?q=infusion)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q')?.toLowerCase() || '';
+    searchBar.value = initialQuery;
 
     function renderGuides(guides) {
       resultsContainer.innerHTML = '';
@@ -117,14 +121,10 @@ fetch('data/guides.json')
       });
     }
 
-    // Show all guides initially
-    renderGuides(data);
-
-    // Filter as user types
-    searchBar.addEventListener('input', e => {
-      const query = e.target.value.toLowerCase();
-
-      const filtered = data.filter(guide => {
+    // Filter function
+    function filterData(query) {
+      query = query.toLowerCase();
+      return data.filter(guide => {
         const title = guide.title?.toLowerCase() || '';
         const description = guide.description?.toLowerCase() || '';
         const assetType = guide.assetType?.toLowerCase() || '';
@@ -139,24 +139,19 @@ fetch('data/guides.json')
                model.includes(query) ||
                stepsText.includes(query);
       });
+    }
 
-      renderGuides(filtered);
+    // Show filtered on page load if query exists, else show all
+    renderGuides(initialQuery ? filterData(initialQuery) : data);
+
+    // Live search as user types
+    searchBar.addEventListener('input', e => {
+      const query = e.target.value.toLowerCase();
+      renderGuides(filterData(query));
     });
 
   })
   .catch(err => console.error('Search load error:', err));
-</script>
-
-<script>
-const form = document.getElementById('home-search-form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const query = document.getElementById('home-search-input').value.trim();
-  if(query) {
-    // encode query to handle spaces & special characters
-    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-  }
-});
 </script>
 
 </body>
