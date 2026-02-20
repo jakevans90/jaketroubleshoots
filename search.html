@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Guides - Jake Troubleshoots</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Search bar styling */
+    #search-bar {
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin: 20px auto;
+      display: block;
+      box-sizing: border-box;
+    }
+
+    /* "No results" message */
+    #no-results {
+      text-align: center;
+      font-style: italic;
+      margin-top: 40px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Jake Troubleshoots</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Search Troubleshooting Guides</h2>
+  <p>Find guides quickly by title, description, asset type, manufacturer, or model.</p>
+</section>
+
+<section class="search-section">
+  <input type="text" id="search-bar" placeholder="Type to search...">
+  <div id="no-results" style="display:none;">No results found.</div>
+  <div id="search-results" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+    <!-- Filtered guide cards will appear here -->
+  </div>
+</section>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+<script>
+fetch('data/guides.json')
+  .then(res => res.json())
+  .then(data => {
+    const searchBar = document.getElementById('search-bar');
+    const resultsContainer = document.getElementById('search-results');
+    const noResults = document.getElementById('no-results');
+
+    function renderGuides(guides) {
+      resultsContainer.innerHTML = '';
+      if(guides.length === 0) {
+        noResults.style.display = 'block';
+        return;
+      } else {
+        noResults.style.display = 'none';
+      }
+
+      guides.forEach(guide => {
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.classList.add('guide-card');
+        card.style.textDecoration = 'none';
+        card.style.color = 'inherit';
+
+        card.innerHTML = `
+          <div class="card-content">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+            <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+        resultsContainer.appendChild(card);
+      });
+    }
+
+    // Initially show all guides
+    renderGuides(data);
+
+    // Filter as the user types
+    searchBar.addEventListener('input', e => {
+      const query = e.target.value.toLowerCase();
+      const filtered = data.filter(guide =>
+        guide.title.toLowerCase().includes(query) ||
+        guide.description.toLowerCase().includes(query) ||
+        guide.assetType.toLowerCase().includes(query) ||
+        guide.manufacturer.toLowerCase().includes(query) ||
+        guide.model.toLowerCase().includes(query)
+      );
+      renderGuides(filtered);
+    });
+  })
+  .catch(err => console.error('Search load error:', err));
+</script>
+
+</body>
+</html>
