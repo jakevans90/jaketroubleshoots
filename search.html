@@ -117,22 +117,35 @@ fetch('data/guides.json')
       });
     }
 
-    // show all guides at first
+    // Show all guides initially
     renderGuides(data);
 
+    // Filter as user types
     searchBar.addEventListener('input', e => {
       const query = e.target.value.toLowerCase();
-      const filtered = data.filter(guide =>
-        guide.title.toLowerCase().includes(query) ||
-        guide.description.toLowerCase().includes(query) ||
-        guide.assetType.toLowerCase().includes(query) ||
-        guide.manufacturer.toLowerCase().includes(query) ||
-        guide.model.toLowerCase().includes(query)
-      );
+
+      const filtered = data.filter(guide => {
+        const title = guide.title?.toLowerCase() || '';
+        const description = guide.description?.toLowerCase() || '';
+        const assetType = guide.assetType?.toLowerCase() || '';
+        const manufacturer = guide.manufacturer?.toLowerCase() || '';
+        const model = guide.model?.toLowerCase() || '';
+        const stepsText = guide.steps?.map(s => s.instructions).join(' ').toLowerCase() || '';
+
+        return title.includes(query) ||
+               description.includes(query) ||
+               assetType.includes(query) ||
+               manufacturer.includes(query) ||
+               model.includes(query) ||
+               stepsText.includes(query);
+      });
+
       renderGuides(filtered);
     });
+
   })
-  .catch(err => console.error('Search load e
+  .catch(err => console.error('Search load error:', err));
+</script>
 
 
 </body>
