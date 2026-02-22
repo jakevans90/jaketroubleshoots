@@ -19,22 +19,17 @@ function displayVendors(list) {
     const card = document.createElement('div');
     card.className = 'vendor-card';
 
-    let contactsHTML = '';
-    vendor.contacts.forEach(c => {
-      contactsHTML += `
-        <div class="contact-block">
-          <strong>${c.name}</strong> (${c.role})<br>
-          📞 ${c.phone}<br>
-          ✉️ ${c.email}<br>
-          📝 ${c.notes}
-        </div>
-      `;
-    });
-
     card.innerHTML = `
       <div class="vendor-title">${vendor.vendor}</div>
       <div class="vendor-category">${vendor.category}</div>
-      ${contactsHTML}
+
+      <div class="vendor-field"><strong>Phone:</strong> ${vendor.phone || 'N/A'}</div>
+      <div class="vendor-field"><strong>Email:</strong> ${vendor.email || 'N/A'}</div>
+      <div class="vendor-field"><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></div>
+      <div class="vendor-field"><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></div>
+      <div class="vendor-field"><strong>Notes:</strong> ${vendor.notes}</div>
+
+      <div class="related-vendors"><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</div>
     `;
 
     container.appendChild(card);
@@ -47,7 +42,8 @@ document.getElementById('vendor-search').addEventListener('input', e => {
   const filtered = vendors.filter(v =>
     v.vendor.toLowerCase().includes(term) ||
     v.category.toLowerCase().includes(term) ||
-    JSON.stringify(v.contacts).toLowerCase().includes(term)
+    v.notes.toLowerCase().includes(term) ||
+    v.relatedVendors.toLowerCase().includes(term)
   );
 
   displayVendors(filtered);
