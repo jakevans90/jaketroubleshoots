@@ -34,7 +34,9 @@ function renderVendors(list) {
                   <h3>${vendor.vendor}</h3>`;
 
     if (vendor.category) html += `<p><strong>Category:</strong> ${vendor.category}</p>`;
-    if (vendor.phone) html += `<p><strong>Phone:</strong> ${vendor.phone}</p>`;
+    if (vendor.phone) {
+      html += `<p><strong>Phone:</strong> <a href="tel:${vendor.phone.replace(/\s+/g, '')}">${vendor.phone}</a></p>`;
+      }
     if (vendor.email) html += `<p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>`;
     if (vendor.website) html += `<p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>`;
     if (vendor.portal) html += `<p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>`;
