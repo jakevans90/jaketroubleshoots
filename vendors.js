@@ -32,22 +32,17 @@ function renderVendors(list) {
     card.innerHTML = `
       <div class="card-content">
         <h3>${vendor.vendor}</h3>
-        <p><strong>Category:</strong> ${vendor.category}</p>
 
-        <p><strong>Phone:</strong> <a href="tel:${vendor.phone}">${vendor.phone || 'N/A'}</a></p>
-        <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
-
-        <div class="vendor-links">
-          <p><strong>Website:</strong> 
-            <a href="${vendor.website}" target="_blank">${vendor.website}</a>
-          </p>
-          <p><strong>Repair Portal:</strong> 
-            <a href="${vendor.portal}" target="_blank">${vendor.portal}</a>
-          </p>
+        <div class="badges" style="margin:8px 0; display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="badge asset" style="background:#4a90e2;">${vendor.category}</span>
+          <span class="badge" style="background:#888;"><a href="tel:${vendor.phone}" style="color:white; text-decoration:none;">${vendor.phone}</a></span>
+          <span class="badge" style="background:#888;"><a href="mailto:${vendor.email}" style="color:white; text-decoration:none;">${vendor.email}</a></span>
+          <span class="badge" style="background:#888;"><a href="${vendor.website}" target="_blank" style="color:white; text-decoration:none;">Website</a></span>
+          <span class="badge" style="background:#888;"><a href="${vendor.portal}" target="_blank" style="color:white; text-decoration:none;">Portal</a></span>
         </div>
 
-        <p><strong>Notes:</strong> ${vendor.notes}</p>
-        <p><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
+        <p style="font-size:14px; color:#444; margin-top:8px;"><strong>Notes:</strong> ${vendor.notes}</p>
+        <p style="font-size:14px; color:#666;"><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
       </div>
     `;
 
