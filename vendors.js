@@ -35,7 +35,7 @@ function renderVendors(list) {
         <p><strong>Category:</strong> ${vendor.category}</p>
 
         <p><strong>Phone:</strong> ${vendor.phone || 'N/A'}</p>
-        <p><strong>Email:</strong> ${vendor.email || 'N/A'}</p>
+        <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
 
         <div class="vendor-links">
           <p><strong>Website:</strong> 
