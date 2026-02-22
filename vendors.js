@@ -31,6 +31,7 @@ function renderVendors(list) {
 
     card.innerHTML = `
       <div class="card-content">
+        <!-- Vendor Name as Badge -->
         <h3 style="
           display:inline-block; 
           background-color:#111; 
@@ -40,14 +41,16 @@ function renderVendors(list) {
           margin-bottom:12px;
         ">${vendor.vendor}</h3>
 
-        <p><strong>Category:</strong> ${vendor.category}</p>
-        <p><strong>Phone:</strong> <a href="tel:${vendor.phone}">${vendor.phone || 'N/A'}</a></p>
-        <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
-        <p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>
-        <p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>
-
-        <p style="font-size:14px; color:#444;"><strong>Notes:</strong> ${vendor.notes}</p>
-        <p style="font-size:14px; color:#666;"><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
+        <!-- Smaller font for all details -->
+        <div style="font-size:14px; line-height:1.4;">
+          <p><strong>Category:</strong> ${vendor.category}</p>
+          <p><strong>Phone:</strong> <a href="tel:${vendor.phone}">${vendor.phone || 'N/A'}</a></p>
+          <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
+          <p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>
+          <p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>
+          <p><strong>Notes:</strong> ${vendor.notes}</p>
+          <p><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
+        </div>
       </div>
     `;
 
