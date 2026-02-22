@@ -31,12 +31,16 @@ function renderVendors(list) {
 
     card.innerHTML = `
       <div class="card-content">
-        <h3>${vendor.vendor}</h3>
+        <h3 style="
+          display:inline-block; 
+          background-color:#111; 
+          color:white; 
+          padding:6px 12px; 
+          border-radius:6px;
+          margin-bottom:12px;
+        ">${vendor.vendor}</h3>
 
-        <div class="badges" style="margin:8px 0;">
-          <span class="badge asset">${vendor.category}</span>
-        </div>
-
+        <p><strong>Category:</strong> ${vendor.category}</p>
         <p><strong>Phone:</strong> <a href="tel:${vendor.phone}">${vendor.phone || 'N/A'}</a></p>
         <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
         <p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>
