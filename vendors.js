@@ -29,31 +29,21 @@ function renderVendors(list) {
     const card = document.createElement('div');
     card.classList.add('guide-card', 'vendor-card');
 
-    card.innerHTML = `
-      <div class="card-content">
-        <!-- Vendor Name as Badge -->
-        <h3 style="
-          display:inline-block; 
-          background-color:#111; 
-          color:white; 
-          padding:6px 12px; 
-          border-radius:6px;
-          margin-bottom:12px;
-        ">${vendor.vendor}</h3>
+    // Build the inner HTML dynamically, only include fields that exist
+    let html = `<div class="card-content">
+                  <h3>${vendor.vendor}</h3>`;
 
-        <!-- Smaller font for all details -->
-        <div style="font-size:14px; line-height:1.4;">
-          <p><strong>Category:</strong> ${vendor.category}</p>
-          <p><strong>Phone:</strong> <a href="tel:${vendor.phone}">${vendor.phone || 'N/A'}</a></p>
-          <p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>
-          <p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>
-          <p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>
-          <p><strong>Notes:</strong> ${vendor.notes}</p>
-          <p><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
-        </div>
-      </div>
-    `;
+    if (vendor.category) html += `<p><strong>Category:</strong> ${vendor.category}</p>`;
+    if (vendor.phone) html += `<p><strong>Phone:</strong> ${vendor.phone}</p>`;
+    if (vendor.email) html += `<p><strong>Email:</strong> <a href="mailto:${vendor.email}">${vendor.email}</a></p>`;
+    if (vendor.website) html += `<p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>`;
+    if (vendor.portal) html += `<p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>`;
+    if (vendor.notes) html += `<p><strong>Notes:</strong> ${vendor.notes}</p>`;
+    if (vendor.relatedVendors) html += `<p><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>`;
 
+    html += `</div>`; // close card-content
+
+    card.innerHTML = html;
     container.appendChild(card);
   });
 }
