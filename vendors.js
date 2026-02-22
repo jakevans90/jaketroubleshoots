@@ -7,17 +7,27 @@ fetch('data/vendors.json')
   })
   .then(data => {
     vendors = data;
-    displayVendors(vendors);
+    renderVendors(vendors);
   })
   .catch(err => console.error('Vendor load error:', err));
 
-function displayVendors(list) {
+const searchInput = document.getElementById('vendor-search-input');
+const noResults = document.getElementById('no-vendor-results');
+
+function renderVendors(list) {
   const container = document.getElementById('vendors-grid');
   container.innerHTML = '';
 
+  if (list.length === 0) {
+    noResults.style.display = 'block';
+    return;
+  } else {
+    noResults.style.display = 'none';
+  }
+
   list.forEach(vendor => {
     const card = document.createElement('div');
-    card.classList.add('guide-card');
+    card.classList.add('guide-card', 'vendor-card');
 
     card.innerHTML = `
       <div class="card-content">
@@ -26,8 +36,15 @@ function displayVendors(list) {
 
         <p><strong>Phone:</strong> ${vendor.phone || 'N/A'}</p>
         <p><strong>Email:</strong> ${vendor.email || 'N/A'}</p>
-        <p><strong>Website:</strong> <a href="${vendor.website}" target="_blank">${vendor.website}</a></p>
-        <p><strong>Repair Portal:</strong> <a href="${vendor.portal}" target="_blank">${vendor.portal}</a></p>
+
+        <div class="vendor-links">
+          <p><strong>Website:</strong> 
+            <a href="${vendor.website}" target="_blank">${vendor.website}</a>
+          </p>
+          <p><strong>Repair Portal:</strong> 
+            <a href="${vendor.portal}" target="_blank">${vendor.portal}</a>
+          </p>
+        </div>
 
         <p><strong>Notes:</strong> ${vendor.notes}</p>
         <p><strong>Related / Former Vendors:</strong> ${vendor.relatedVendors}</p>
@@ -38,17 +55,16 @@ function displayVendors(list) {
   });
 }
 
-const form = document.getElementById('vendor-search-form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const term = document.getElementById('vendor-search-input').value.toLowerCase();
+/* Live search */
+searchInput.addEventListener('input', e => {
+  const term = e.target.value.toLowerCase();
 
   const filtered = vendors.filter(v =>
-    v.vendor.toLowerCase().includes(term) ||
-    v.category.toLowerCase().includes(term) ||
-    v.notes.toLowerCase().includes(term) ||
-    v.relatedVendors.toLowerCase().includes(term)
+    v.vendor?.toLowerCase().includes(term) ||
+    v.category?.toLowerCase().includes(term) ||
+    v.notes?.toLowerCase().includes(term) ||
+    v.relatedVendors?.toLowerCase().includes(term)
   );
 
-  displayVendors(filtered);
+  renderVendors(filtered);
 });
