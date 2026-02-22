@@ -65,7 +65,9 @@
 <section class="hero">
   <h2>Built for Biomed & Clinical Engineers. Focused on Troubleshooting Equipment.</h2>
   <p>Explore a growing library of troubleshooting guides and a curated vendor tech rolodex — everything you need to fix equipment faster.</p>
-
+  <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
+  Created to organize real-world fixes and vendor support information into one searchable place.
+    
   <!-- Search bar -->
   <form id="home-search-form">
     <input type="text" id="home-search-input" placeholder="Search guides...">
@@ -126,7 +128,7 @@ fetch('data/guides.json')
   .then(allGuides => {
     const recentGuides = allGuides
       .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-      .slice(0, 6);
+      .slice(0, 12);
 
     const container = document.getElementById('guides-grid');
     if (!container) throw new Error('#guides-grid not found');
