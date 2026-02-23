@@ -7,7 +7,8 @@ fetch('data/vendors.json')
   })
   .then(data => {
     vendors = data;
-    renderVendors(vendors);
+    vendors.sort((a, b) => a.vendor.localeCompare(b.vendor));
+renderVendors(vendors);
   })
   .catch(err => console.error('Vendor load error:', err));
 
