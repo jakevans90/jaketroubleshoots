@@ -99,6 +99,33 @@ fetch('data/guides.json') // updated path
       buttonsContainer.appendChild(btn);
     });
 
+    const letters = document.querySelectorAll('.filter-letter');
+
+letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
+
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
+
+    // Filter manufacturer buttons
+    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      if (selected === 'all' || name.startsWith(selected)) {
+        btn.style.display = '';
+      } else {
+        btn.style.display = 'none';
+      }
+    });
+
+    // Optional: click first visible manufacturer automatically
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
+  });
+});
+
     // Function to display guides filtered by manufacturer
     function showGuidesByManufacturer(man) {
       container.innerHTML = '';
