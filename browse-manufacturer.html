@@ -134,6 +134,9 @@ letters.forEach(letter => {
     letters.forEach(l => l.classList.remove('active'));
     letter.classList.add('active');
 
+    // Clear the grid immediately
+    container.innerHTML = '';
+
     // Filter manufacturer buttons
     const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
     buttons.forEach(btn => {
@@ -141,12 +144,40 @@ letters.forEach(letter => {
       btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
     });
 
-    // Only click first visible manufacturer if one exists
+    // Click first visible manufacturer button if exists
     const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
+    if (firstVisible) firstVisible.click(); 
+    // If none match, grid stays empty
   });
 });
+Asset Types Page
+const letters = document.querySelectorAll('.filter-letter');
+const container = document.getElementById('guides-grid');
 
+letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
+
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
+
+    // Clear the grid immediately
+    container.innerHTML = '';
+
+    // Filter asset type buttons
+    const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+    });
+
+    // Click first visible asset type button if exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); 
+    // If none match, grid stays empty
+  });
+});
     
 
     // Function to display guides filtered by manufacturer
