@@ -85,11 +85,19 @@ fetch('data/guides.json')
     return res.json();
   })
   .then(jsonData => {
-    const allGuides = Array.isArray(jsonData) && typeof jsonData[0] === 'string'
-      ? Promise.all(jsonData.map(file => fetch(file).then(res => res.json()))).then(allData => allData.flat())
-      : jsonData;
-
-    return allGuides;
+    // If guides.json is a list of filenames, fetch them all
+    if (Array.isArray(jsonData) && typeof jsonData[0] === 'string') {
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      return jsonData;
+    }
   })
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
@@ -100,7 +108,7 @@ fetch('data/guides.json')
     // Unique asset types
     const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
 
-    // Create buttons
+    // Create buttons for each asset type
     assetTypes.forEach(type => {
       const btn = document.createElement('a');
       btn.href = '#';
@@ -113,34 +121,35 @@ fetch('data/guides.json')
       buttonsContainer.appendChild(btn);
     });
 
-  const letters = document.querySelectorAll('.filter-letter');
-const container = document.getElementById('guides-grid');
+    // Letter filter
+    const letters = document.querySelectorAll('.filter-letter');
 
-letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toLowerCase();
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toLowerCase();
 
-    // Highlight the active letter
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
 
-    // Clear the grid immediately
-    container.innerHTML = '';
+        // Clear the grid immediately
+        container.innerHTML = '';
 
-    // Filter asset type buttons
-    const buttons = document.querySelectorAll('#asset-buttons .browse-button');
-    buttons.forEach(btn => {
-      const name = btn.textContent.toLowerCase();
-      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        // Filter asset type buttons
+        const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+        buttons.forEach(btn => {
+          const name = btn.textContent.toLowerCase();
+          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        });
+
+        // Click first visible button if exists
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click(); 
+        // If none match, grid stays empty
+      });
     });
 
-    // Click first visible asset type button if exists
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); 
-    // If none match, grid stays empty
-  });
-});
-
+    // Function to show guides for a selected asset type
     function showGuidesByAssetType(type) {
       container.innerHTML = '';
       const filtered = allGuides
@@ -168,7 +177,7 @@ letters.forEach(letter => {
       });
     }
 
-    // Optionally, do NOT auto-click first asset type on load
+    // Optionally, do NOT auto-click any asset type on load
   })
   .catch(err => console.error('Guide load error:', err));
 </script>
