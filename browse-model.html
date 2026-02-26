@@ -79,83 +79,69 @@
 </footer>
 
 <script>
-fetch('data/guides.json')
-  .then(res => {
+(async function() {
+  try {
+    const res = await fetch('data/guides.json');
     if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    const allGuides = await (async () => {
-  if (Array.isArray(jsonData) && typeof jsonData[0] === 'string') {
-    // guides.json contains a list of filenames → fetch all
-    const allData = await Promise.all(
-      jsonData.map(file =>
-        fetch(file).then(res => {
-          if (!res.ok) throw new Error('Could not load ' + file);
-          return res.json();
-        })
-      )
-    );
-    return allData.flat();
-  } else {
-    // guides.json already contains guide objects
-    return jsonData;
-  }
-})();
-  })
-  .then(allGuides => {
+    const jsonData = await res.json();
+
+    // Resolve guides if jsonData is a list of files
+    const allGuides = Array.isArray(jsonData) && typeof jsonData[0] === 'string'
+      ? (await Promise.all(jsonData.map(file => fetch(file).then(r => r.json())))).flat()
+      : jsonData;
+
     const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('model-buttons');
+    const buttonsContainer = document.getElementById('model-buttons'); // change to #manufacturer-buttons or #asset-buttons on other pages
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
-    // Unique models
-    const models = [...new Set(allGuides.map(g => g.model))].sort();
+    // Unique items (models/manufacturers/asset types)
+    const items = [...new Set(allGuides.map(g => g.model))].sort(); // change g.model → g.manufacturer / g.assetType on other pages
 
     // Create buttons
-    models.forEach(model => {
+    items.forEach(item => {
       const btn = document.createElement('a');
       btn.href = '#';
-      btn.textContent = model;
+      btn.textContent = item;
       btn.classList.add('browse-button');
       btn.addEventListener('click', e => {
         e.preventDefault();
-        showGuidesByModel(model);
+        showGuidesByItem(item);
       });
       buttonsContainer.appendChild(btn);
     });
 
+    // Letter filter
     const letters = document.querySelectorAll('.filter-letter');
-
     letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toLowerCase();
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toLowerCase();
 
-    // Highlight the active letter
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
 
-    // Clear the grid immediately
-    container.innerHTML = '';
+        // Clear grid
+        container.innerHTML = '';
 
-    // Filter model/manufacturer buttons
-    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
-    buttons.forEach(btn => {
-      const name = btn.textContent.toLowerCase();
-      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        // Filter buttons
+        const buttons = document.querySelectorAll(buttonsContainer.querySelectorAll('.browse-button'));
+        buttons.forEach(btn => {
+          const name = btn.textContent.toLowerCase();
+          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        });
+
+        // Click first visible button if exists
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click();
+      });
     });
 
-    // Only click first visible button if one exists
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); 
-    // If none match, container remains empty — old cards are gone
-  });
-});
-
-    function showGuidesByModel(model) {
+    // Show guides by selected item
+    function showGuidesByItem(item) {
       container.innerHTML = '';
       const filtered = allGuides
-        .filter(g => g.model === model)
+        .filter(g => g.model === item) // change g.model → g.manufacturer / g.assetType on other pages
         .sort((a, b) => a.title.localeCompare(b.title));
 
       filtered.forEach(guide => {
@@ -179,9 +165,11 @@ fetch('data/guides.json')
       });
     }
 
-    // Optional: don't auto-click first model on load
-  })
-  .catch(err => console.error('Guide load error:', err));
+    // Optional: don’t auto-click first item
+  } catch (err) {
+    console.error('Guide load error:', err);
+  }
+})();
 </script>
 
 </body>
