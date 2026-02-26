@@ -33,12 +33,41 @@
 </section>
 
 <section class="browse-section">
-  <h3>Asset Types</h3>
-  <div id="asset-buttons" class="browse-buttons">
-    <!-- Buttons injected here -->
+  <h3>Manufacturers</h3>
+  <div class="letter-filter">
+  <span class="filter-letter active" data-letter="all">All</span>
+  <span class="filter-letter" data-letter="A">A</span>
+  <span class="filter-letter" data-letter="B">B</span>
+  <span class="filter-letter" data-letter="C">C</span>
+  <span class="filter-letter" data-letter="D">D</span>
+  <span class="filter-letter" data-letter="E">E</span>
+  <span class="filter-letter" data-letter="F">F</span>
+  <span class="filter-letter" data-letter="G">G</span>
+  <span class="filter-letter" data-letter="H">H</span>
+  <span class="filter-letter" data-letter="I">I</span>
+  <span class="filter-letter" data-letter="J">J</span>
+  <span class="filter-letter" data-letter="K">K</span>
+  <span class="filter-letter" data-letter="L">L</span>
+  <span class="filter-letter" data-letter="M">M</span>
+  <span class="filter-letter" data-letter="N">N</span>
+  <span class="filter-letter" data-letter="O">O</span>
+  <span class="filter-letter" data-letter="P">P</span>
+  <span class="filter-letter" data-letter="Q">Q</span>
+  <span class="filter-letter" data-letter="R">R</span>
+  <span class="filter-letter" data-letter="S">S</span>
+  <span class="filter-letter" data-letter="T">T</span>
+  <span class="filter-letter" data-letter="U">U</span>
+  <span class="filter-letter" data-letter="V">V</span>
+  <span class="filter-letter" data-letter="W">W</span>
+  <span class="filter-letter" data-letter="X">X</span>
+  <span class="filter-letter" data-letter="Y">Y</span>
+  <span class="filter-letter" data-letter="Z">Z</span>
+</div>
+  <div id="manufacturer-buttons" class="browse-buttons">
+    <!-- Buttons injected here dynamically -->
   </div>
 </section>
-
+  
 <section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
   <!-- Cards injected here -->
 </section>
@@ -75,31 +104,56 @@ fetch('data/guides.json') // updated path
   })
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('asset-buttons');
+    const buttonsContainer = document.getElementById('manufacturer-buttons');
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
-    // Create unique sorted list of asset types
-    const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
+    // Create unique sorted list of manufacturers
+    const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
 
-    // Create buttons for each asset type
-    assetTypes.forEach(type => {
+    // Create buttons for each manufacturer
+    manufacturers.forEach(man => {
       const btn = document.createElement('a');
       btn.href = '#';
-      btn.textContent = type;
+      btn.textContent = man;
       btn.classList.add('browse-button'); // optional: for CSS styling
       btn.addEventListener('click', e => {
         e.preventDefault();
-        showGuidesByAsset(type);
+        showGuidesByManufacturer(man);
       });
       buttonsContainer.appendChild(btn);
     });
 
-    // Function to display guides filtered by asset type
-    function showGuidesByAsset(type) {
+    const letters = document.querySelectorAll('.filter-letter');
+
+letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
+
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
+
+    // Filter manufacturer buttons
+    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+    });
+
+    // Only click first visible manufacturer if one exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
+  });
+});
+
+    
+
+    // Function to display guides filtered by manufacturer
+    function showGuidesByManufacturer(man) {
       container.innerHTML = '';
       const filtered = allGuides
-        .filter(g => g.assetType === type)
+        .filter(g => g.manufacturer === man)
         .sort((a, b) => a.title.localeCompare(b.title));
 
       filtered.forEach(guide => {
@@ -123,8 +177,8 @@ fetch('data/guides.json') // updated path
       });
     }
 
-    // Show the first asset type guides by default
-    if (assetTypes.length > 0) showGuidesByAsset(assetTypes[0]);
+    // Show the first manufacturer guides by default
+    if (manufacturers.length > 0) showGuidesByManufacturer(manufacturers[0]);
   })
   .catch(err => console.error('Guide load error:', err));
 </script>
