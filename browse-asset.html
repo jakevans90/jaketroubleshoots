@@ -33,7 +33,7 @@
 </section>
 
 <section class="browse-section">
-  <h3>Manufacturers</h3>
+  <h3>Asset Types</h3>
   <div class="letter-filter">
   <span class="filter-letter active" data-letter="all">All</span>
   <span class="filter-letter" data-letter="A">A</span>
@@ -63,7 +63,7 @@
   <span class="filter-letter" data-letter="Y">Y</span>
   <span class="filter-letter" data-letter="Z">Z</span>
 </div>
-  <div id="manufacturer-buttons" class="browse-buttons">
+  <div id="asset-buttons" class="browse-buttons">
     <!-- Buttons injected here dynamically -->
   </div>
 </section>
@@ -79,16 +79,14 @@
 </footer>
 
 <script>
-fetch('data/guides.json') // updated path
+fetch('data/guides.json')
   .then(res => {
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
   })
   .then(jsonData => {
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
-
-    if (isFileList) {
-      // guides.json contains a list of filenames → fetch all
+    // If guides.json is a list of filenames, fetch them all
+    if (Array.isArray(jsonData) && typeof jsonData[0] === 'string') {
       return Promise.all(
         jsonData.map(file =>
           fetch(file).then(res => {
@@ -98,62 +96,64 @@ fetch('data/guides.json') // updated path
         )
       ).then(allData => allData.flat());
     } else {
-      // guides.json already contains guide objects
       return jsonData;
     }
   })
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('manufacturer-buttons');
+    const buttonsContainer = document.getElementById('asset-buttons');
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
-    // Create unique sorted list of manufacturers
-    const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
+    // Unique asset types
+    const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
 
-    // Create buttons for each manufacturer
-    manufacturers.forEach(man => {
+    // Create buttons for each asset type
+    assetTypes.forEach(type => {
       const btn = document.createElement('a');
       btn.href = '#';
-      btn.textContent = man;
-      btn.classList.add('browse-button'); // optional: for CSS styling
+      btn.textContent = type;
+      btn.classList.add('browse-button');
       btn.addEventListener('click', e => {
         e.preventDefault();
-        showGuidesByManufacturer(man);
+        showGuidesByAssetType(type);
       });
       buttonsContainer.appendChild(btn);
     });
 
+    // Letter filter
     const letters = document.querySelectorAll('.filter-letter');
 
-letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toLowerCase();
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toLowerCase();
 
-    // Highlight the active letter
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
 
-    // Filter manufacturer buttons
-    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
-    buttons.forEach(btn => {
-      const name = btn.textContent.toLowerCase();
-      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        // Clear the grid immediately
+        container.innerHTML = '';
+
+        // Filter asset type buttons
+        const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+        buttons.forEach(btn => {
+          const name = btn.textContent.toLowerCase();
+          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        });
+
+        // Click first visible button if exists
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click(); 
+        // If none match, grid stays empty
+      });
     });
 
-    // Only click first visible manufacturer if one exists
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
-  });
-});
-
-    
-
-    // Function to display guides filtered by manufacturer
-    function showGuidesByManufacturer(man) {
+    // Function to show guides for a selected asset type
+    function showGuidesByAssetType(type) {
       container.innerHTML = '';
       const filtered = allGuides
-        .filter(g => g.manufacturer === man)
+        .filter(g => g.assetType === type)
         .sort((a, b) => a.title.localeCompare(b.title));
 
       filtered.forEach(guide => {
@@ -177,8 +177,7 @@ letters.forEach(letter => {
       });
     }
 
-    // Show the first manufacturer guides by default
-    if (manufacturers.length > 0) showGuidesByManufacturer(manufacturers[0]);
+    // Optionally, do NOT auto-click any asset type on load
   })
   .catch(err => console.error('Guide load error:', err));
 </script>

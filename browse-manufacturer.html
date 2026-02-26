@@ -79,7 +79,7 @@
 </footer>
 
 <script>
-fetch('data/guides.json') // updated path
+fetch('data/guides.json')
   .then(res => {
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
@@ -88,7 +88,6 @@ fetch('data/guides.json') // updated path
     const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
 
     if (isFileList) {
-      // guides.json contains a list of filenames → fetch all
       return Promise.all(
         jsonData.map(file =>
           fetch(file).then(res => {
@@ -98,7 +97,6 @@ fetch('data/guides.json') // updated path
         )
       ).then(allData => allData.flat());
     } else {
-      // guides.json already contains guide objects
       return jsonData;
     }
   })
@@ -116,7 +114,7 @@ fetch('data/guides.json') // updated path
       const btn = document.createElement('a');
       btn.href = '#';
       btn.textContent = man;
-      btn.classList.add('browse-button'); // optional: for CSS styling
+      btn.classList.add('browse-button');
       btn.addEventListener('click', e => {
         e.preventDefault();
         showGuidesByManufacturer(man);
@@ -124,32 +122,40 @@ fetch('data/guides.json') // updated path
       buttonsContainer.appendChild(btn);
     });
 
+    // Letter filter logic
     const letters = document.querySelectorAll('.filter-letter');
 
-letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toLowerCase();
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toLowerCase();
 
-    // Highlight the active letter
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
 
-    // Filter manufacturer buttons
-    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
-    buttons.forEach(btn => {
-      const name = btn.textContent.toLowerCase();
-      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        // Clear the grid immediately
+        container.innerHTML = '';
+
+        // Filter manufacturer buttons
+        const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+        buttons.forEach(btn => {
+          const name = btn.textContent.toLowerCase();
+          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        });
+
+        // Click first visible manufacturer button if exists
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click();
+        // Grid stays empty if none match
+      });
     });
 
-    // Only click first visible manufacturer if one exists
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
-  });
-});
+    // Show first manufacturer by default
+    const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
+                              .find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
 
-    
-
-    // Function to display guides filtered by manufacturer
+    // Function to display guides for a manufacturer
     function showGuidesByManufacturer(man) {
       container.innerHTML = '';
       const filtered = allGuides
@@ -177,8 +183,6 @@ letters.forEach(letter => {
       });
     }
 
-    // Show the first manufacturer guides by default
-    if (manufacturers.length > 0) showGuidesByManufacturer(manufacturers[0]);
   })
   .catch(err => console.error('Guide load error:', err));
 </script>
