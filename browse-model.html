@@ -116,22 +116,29 @@ fetch('data/guides.json')
     const letters = document.querySelectorAll('.filter-letter');
 
     letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
 
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
 
-        const buttons = document.querySelectorAll('#model-buttons .browse-button');
-        buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
-        });
+    // Clear the grid immediately
+    container.innerHTML = '';
 
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) firstVisible.click();
-      });
+    // Filter model/manufacturer buttons
+    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
     });
+
+    // Only click first visible button if one exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); 
+    // If none match, container remains empty — old cards are gone
+  });
+});
 
     function showGuidesByModel(model) {
       container.innerHTML = '';
