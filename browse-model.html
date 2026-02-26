@@ -79,40 +79,52 @@
 </footer>
 
 <script>
-(async function() {
-  try {
-    const res = await fetch('data/guides.json');
+fetch('data/guides.json')
+  .then(res => {
     if (!res.ok) throw new Error('Could not load guides.json');
-    const jsonData = await res.json();
+    return res.json();
+  })
+  .then(jsonData => {
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
 
-    // Resolve guides if jsonData is a list of files
-    const allGuides = Array.isArray(jsonData) && typeof jsonData[0] === 'string'
-      ? (await Promise.all(jsonData.map(file => fetch(file).then(r => r.json())))).flat()
-      : jsonData;
-
+    if (isFileList) {
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      return jsonData;
+    }
+  })
+  .then(allGuides => {
     const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('model-buttons'); // change to #manufacturer-buttons or #asset-buttons on other pages
+    const buttonsContainer = document.getElementById('model-buttons');
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
-    // Unique items (models/manufacturers/asset types)
-    const items = [...new Set(allGuides.map(g => g.model))].sort(); // change g.model → g.manufacturer / g.assetType on other pages
+    // Create unique sorted list of models
+    const models = [...new Set(allGuides.map(g => g.model))].sort();
 
-    // Create buttons
-    items.forEach(item => {
+    // Create buttons for each model
+    models.forEach(mod => {
       const btn = document.createElement('a');
       btn.href = '#';
-      btn.textContent = item;
+      btn.textContent = mod;
       btn.classList.add('browse-button');
       btn.addEventListener('click', e => {
         e.preventDefault();
-        showGuidesByItem(item);
+        showGuidesByModel(mod);
       });
       buttonsContainer.appendChild(btn);
     });
 
-    // Letter filter
+    // Letter filter logic
     const letters = document.querySelectorAll('.filter-letter');
+
     letters.forEach(letter => {
       letter.addEventListener('click', () => {
         const selected = letter.dataset.letter.toLowerCase();
@@ -121,27 +133,32 @@
         letters.forEach(l => l.classList.remove('active'));
         letter.classList.add('active');
 
-        // Clear grid
+        // Clear the grid immediately
         container.innerHTML = '';
 
-        // Filter buttons
-        const buttons = document.querySelectorAll(buttonsContainer.querySelectorAll('.browse-button'));
+        // Filter model buttons
+        const buttons = document.querySelectorAll('#model-buttons .browse-button');
         buttons.forEach(btn => {
           const name = btn.textContent.toLowerCase();
           btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
         });
 
-        // Click first visible button if exists
+        // Click first visible model button if exists
         const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
         if (firstVisible) firstVisible.click();
       });
     });
 
-    // Show guides by selected item
-    function showGuidesByItem(item) {
+    // Show first model by default
+    const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
+                              .find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
+
+    // Function to display guides for a model
+    function showGuidesByModel(mod) {
       container.innerHTML = '';
       const filtered = allGuides
-        .filter(g => g.model === item) // change g.model → g.manufacturer / g.assetType on other pages
+        .filter(g => g.model === mod)
         .sort((a, b) => a.title.localeCompare(b.title));
 
       filtered.forEach(guide => {
@@ -165,11 +182,8 @@
       });
     }
 
-    // Optional: don’t auto-click first item
-  } catch (err) {
-    console.error('Guide load error:', err);
-  }
-})();
+  })
+  .catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>
