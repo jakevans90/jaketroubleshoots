@@ -79,81 +79,65 @@
 </footer>
 
 <script>
-fetch('data/guides.json') // updated path
+fetch('data/guides.json')
   .then(res => {
     if (!res.ok) throw new Error('Could not load guides.json');
     return res.json();
   })
   .then(jsonData => {
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+    const allGuides = Array.isArray(jsonData) && typeof jsonData[0] === 'string'
+      ? Promise.all(jsonData.map(file => fetch(file).then(res => res.json()))).then(allData => allData.flat())
+      : jsonData;
 
-    if (isFileList) {
-      // guides.json contains a list of filenames → fetch all
-      return Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    } else {
-      // guides.json already contains guide objects
-      return jsonData;
-    }
+    return allGuides;
   })
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('manufacturer-buttons');
+    const buttonsContainer = document.getElementById('asset-buttons');
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
-    // Create unique sorted list of manufacturers
-    const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
+    // Unique asset types
+    const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
 
-    // Create buttons for each manufacturer
-    manufacturers.forEach(man => {
+    // Create buttons
+    assetTypes.forEach(type => {
       const btn = document.createElement('a');
       btn.href = '#';
-      btn.textContent = man;
-      btn.classList.add('browse-button'); // optional: for CSS styling
+      btn.textContent = type;
+      btn.classList.add('browse-button');
       btn.addEventListener('click', e => {
         e.preventDefault();
-        showGuidesByManufacturer(man);
+        showGuidesByAssetType(type);
       });
       buttonsContainer.appendChild(btn);
     });
 
     const letters = document.querySelectorAll('.filter-letter');
 
-letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toLowerCase();
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toLowerCase();
 
-    // Highlight the active letter
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
 
-    // Filter manufacturer buttons
-    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
-    buttons.forEach(btn => {
-      const name = btn.textContent.toLowerCase();
-      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+        buttons.forEach(btn => {
+          const name = btn.textContent.toLowerCase();
+          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        });
+
+        // Only click first visible asset type if exists
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click();
+      });
     });
 
-    // Only click first visible manufacturer if one exists
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
-  });
-});
-
-    
-
-    // Function to display guides filtered by manufacturer
-    function showGuidesByManufacturer(man) {
+    function showGuidesByAssetType(type) {
       container.innerHTML = '';
       const filtered = allGuides
-        .filter(g => g.manufacturer === man)
+        .filter(g => g.assetType === type)
         .sort((a, b) => a.title.localeCompare(b.title));
 
       filtered.forEach(guide => {
@@ -177,8 +161,7 @@ letters.forEach(letter => {
       });
     }
 
-    // Show the first manufacturer guides by default
-    if (manufacturers.length > 0) showGuidesByManufacturer(manufacturers[0]);
+    // Optionally, do NOT auto-click first asset type on load
   })
   .catch(err => console.error('Guide load error:', err));
 </script>
