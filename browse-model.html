@@ -85,11 +85,23 @@ fetch('data/guides.json')
     return res.json();
   })
   .then(jsonData => {
-    const allGuides = Array.isArray(jsonData) && typeof jsonData[0] === 'string'
-      ? Promise.all(jsonData.map(file => fetch(file).then(res => res.json()))).then(allData => allData.flat())
-      : jsonData;
-
-    return allGuides;
+    const allGuides = await (async () => {
+  if (Array.isArray(jsonData) && typeof jsonData[0] === 'string') {
+    // guides.json contains a list of filenames → fetch all
+    const allData = await Promise.all(
+      jsonData.map(file =>
+        fetch(file).then(res => {
+          if (!res.ok) throw new Error('Could not load ' + file);
+          return res.json();
+        })
+      )
+    );
+    return allData.flat();
+  } else {
+    // guides.json already contains guide objects
+    return jsonData;
+  }
+})();
   })
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
