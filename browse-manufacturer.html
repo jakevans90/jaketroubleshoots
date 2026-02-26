@@ -34,6 +34,35 @@
 
 <section class="browse-section">
   <h3>Manufacturers</h3>
+  <div class="letter-filter">
+  <span class="filter-letter active" data-letter="all">All</span>
+  <span class="filter-letter" data-letter="A">A</span>
+  <span class="filter-letter" data-letter="B">B</span>
+  <span class="filter-letter" data-letter="C">C</span>
+  <span class="filter-letter" data-letter="D">D</span>
+  <span class="filter-letter" data-letter="E">E</span>
+  <span class="filter-letter" data-letter="F">F</span>
+  <span class="filter-letter" data-letter="G">G</span>
+  <span class="filter-letter" data-letter="H">H</span>
+  <span class="filter-letter" data-letter="I">I</span>
+  <span class="filter-letter" data-letter="J">J</span>
+  <span class="filter-letter" data-letter="K">K</span>
+  <span class="filter-letter" data-letter="L">L</span>
+  <span class="filter-letter" data-letter="M">M</span>
+  <span class="filter-letter" data-letter="N">N</span>
+  <span class="filter-letter" data-letter="O">O</span>
+  <span class="filter-letter" data-letter="P">P</span>
+  <span class="filter-letter" data-letter="Q">Q</span>
+  <span class="filter-letter" data-letter="R">R</span>
+  <span class="filter-letter" data-letter="S">S</span>
+  <span class="filter-letter" data-letter="T">T</span>
+  <span class="filter-letter" data-letter="U">U</span>
+  <span class="filter-letter" data-letter="V">V</span>
+  <span class="filter-letter" data-letter="W">W</span>
+  <span class="filter-letter" data-letter="X">X</span>
+  <span class="filter-letter" data-letter="Y">Y</span>
+  <span class="filter-letter" data-letter="Z">Z</span>
+</div>
   <div id="manufacturer-buttons" class="browse-buttons">
     <!-- Buttons injected here dynamically -->
   </div>
@@ -94,6 +123,31 @@ fetch('data/guides.json') // updated path
       });
       buttonsContainer.appendChild(btn);
     });
+
+    const letters = document.querySelectorAll('.filter-letter');
+
+letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
+
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
+
+    // Filter manufacturer buttons
+    const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+    });
+
+    // Only click first visible manufacturer if one exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
+  });
+});
+
+    
 
     // Function to display guides filtered by manufacturer
     function showGuidesByManufacturer(man) {
