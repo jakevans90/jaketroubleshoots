@@ -113,26 +113,33 @@ fetch('data/guides.json')
       buttonsContainer.appendChild(btn);
     });
 
-    const letters = document.querySelectorAll('.filter-letter');
+  const letters = document.querySelectorAll('.filter-letter');
+const container = document.getElementById('guides-grid');
 
-    letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
+letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toLowerCase();
 
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
+    // Highlight the active letter
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
 
-        const buttons = document.querySelectorAll('#asset-buttons .browse-button');
-        buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
-        });
+    // Clear the grid immediately
+    container.innerHTML = '';
 
-        // Only click first visible asset type if exists
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) firstVisible.click();
-      });
+    // Filter asset type buttons
+    const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+    buttons.forEach(btn => {
+      const name = btn.textContent.toLowerCase();
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
     });
+
+    // Click first visible asset type button if exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); 
+    // If none match, grid stays empty
+  });
+});
 
     function showGuidesByAssetType(type) {
       container.innerHTML = '';
