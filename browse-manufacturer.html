@@ -138,12 +138,14 @@ letters.forEach(letter => {
     const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
     buttons.forEach(btn => {
       const name = btn.textContent.toLowerCase();
-      if (selected === 'all' || name.startsWith(selected)) {
-        btn.style.display = '';
-      } else {
-        btn.style.display = 'none';
-      }
+      btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
     });
+
+    // Only click first visible manufacturer if one exists
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click(); // do nothing if no buttons match
+  });
+});
 
     // Optional: click first visible manufacturer automatically
     const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
