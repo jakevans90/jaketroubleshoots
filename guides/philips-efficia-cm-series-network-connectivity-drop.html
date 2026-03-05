@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Philips Efficia CM Series Patient Monitor - Network Connectivity Drop</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <a href="../index.html" class="site-logo">
+      <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+      <span class="logo-text">Jake Troubleshoots</span>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../guides.html">Guides</a>
+      <a href="../search.html">Search</a>
+      <a href="../vendors.html">Vendors</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Philips Efficia CM Series Patient Monitor</h2>
+    <p>Network Connectivity Drop</p>
+  </section>
+
+  <main style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h3>Asset Type</h3>
+    <p>Patient Monitor</p>
+
+    <h3>Manufacturer</h3>
+    <p>Philips</p>
+
+    <h3>Model</h3>
+    <p>Efficia CM Series</p>
+
+    <h2>What This Guide Helps With</h2>
+    <p>This guide addresses situations where the Efficia CM Series monitor intermittently or completely loses network connectivity. Symptoms may include:</p>
+    <ul>
+      <li>Central station not displaying the patient</li>
+      <li>Monitor dropping off telemetry view</li>
+      <li>“Network Disconnected” or similar message</li>
+      <li>Intermittent data gaps in EMR</li>
+      <li>Wired LAN icon missing or flashing</li>
+    </ul>
+    <p>The focus is on ruling out external and easily verifiable causes before assuming internal network board failure.</p>
+
+    <h2>Step-by-Step Troubleshooting</h2>
+
+    <h4>1. Verify the Clinical Situation First</h4>
+    <ul>
+      <li>Confirm the patient is stable.</li>
+      <li>If actively monitored via central station, move the patient to another monitor if necessary before troubleshooting.</li>
+      <li>This prevents patient safety risks during connectivity loss.</li>
+    </ul>
+
+    <h4>2. Confirm Power Stability</h4>
+    <ul>
+      <li>Verify the monitor is powered on and not cycling.</li>
+      <li>Check for loose AC power cord.</li>
+      <li>Confirm outlet is functional (test with outlet tester or alternate device).</li>
+      <li>Observe for recent power interruptions.</li>
+      <li>Network drops are often secondary to brief power loss or brownouts.</li>
+    </ul>
+
+    <h4>3. Inspect the Ethernet Cable</h4>
+    <ul>
+      <li>Confirm Ethernet cable is fully seated in:
+        <ul>
+          <li>Monitor LAN port</li>
+          <li>Wall jack or network switch</li>
+        </ul>
+      </li>
+      <li>Remove and firmly reseat the cable.</li>
+      <li>Inspect for:
+        <ul>
+          <li>Bent locking tab</li>
+          <li>Damaged insulation</li>
+          <li>Crushed or kinked cable</li>
+        </ul>
+      </li>
+      <li>Loose or damaged cables are one of the most common causes of intermittent network drops.</li>
+    </ul>
+
+    <h4>4. Check Link/Activity Indicators</h4>
+    <ul>
+      <li>Observe link lights at the monitor LAN port.</li>
+      <li>Observe link lights at the wall jack or switch (if accessible).</li>
+      <li>Note if lights are:
+        <ul>
+          <li>Solid (normal)</li>
+          <li>Flashing (activity)</li>
+          <li>Off (no connection)</li>
+        </ul>
+      </li>
+      <li>No link light typically indicates physical layer issue (cable, port, switch).</li>
+    </ul>
+
+    <h4>5. Swap the Ethernet Cable</h4>
+    <ul>
+      <li>Replace with a known-good network cable.</li>
+      <li>Avoid reusing the same cable even if it “looks fine.”</li>
+      <li>This rules out intermittent internal conductor breaks.</li>
+    </ul>
+
+    <h4>6. Test Alternate Network Port (If Available)</h4>
+    <ul>
+      <li>Move the monitor to a nearby known-working network jack.</li>
+      <li>Confirm whether connectivity stabilizes.</li>
+      <li>If the issue resolves, suspect:
+        <ul>
+          <li>Faulty wall drop</li>
+          <li>Patch panel issue</li>
+          <li>Switch port failure</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>7. Verify Network Configuration</h4>
+    <ul>
+      <li>Confirm correct network settings:
+        <ul>
+          <li>IP configuration (DHCP vs static)</li>
+          <li>Correct VLAN (per facility standard)</li>
+        </ul>
+      </li>
+      <li>Check for incorrect manual IP assignment.</li>
+      <li>Power-cycle the monitor after verifying configuration.</li>
+      <li>Incorrect configuration can cause intermittent authentication or registration issues.</li>
+    </ul>
+
+    <h4>8. Check for Hospital Network Issues</h4>
+    <ul>
+      <li>Ask unit staff:
+        <ul>
+          <li>Are other monitors affected?</li>
+          <li>Is the central station online?</li>
+        </ul>
+      </li>
+      <li>Contact IT/network team to verify:
+        <ul>
+          <li>Switch status</li>
+          <li>Port errors</li>
+          <li>VLAN disruptions</li>
+        </ul>
+      </li>
+      <li>Multiple devices dropping at once suggests infrastructure issue, not device failure.</li>
+    </ul>
+
+    <h4>9. Perform Controlled Power Cycle</h4>
+    <ul>
+      <li>Remove monitor from patient.</li>
+      <li>Power down fully.</li>
+      <li>Disconnect AC power for 60 seconds.</li>
+      <li>Restart and observe boot process.</li>
+      <li>Confirm network reconnects automatically.</li>
+      <li>This resets the network stack and clears transient communication faults.</li>
+    </ul>
+
+    <h4>10. Observe for Recurrence</h4>
+    <ul>
+      <li>Leave monitor connected for a monitoring period.</li>
+      <li>Confirm:
+        <ul>
+          <li>No repeated disconnect alerts</li>
+          <li>Continuous central station visibility</li>
+          <li>Stable EMR data transmission</li>
+        </ul>
+      </li>
+      <li>Intermittent faults may require extended observation.</li>
+    </ul>
+
+    <h2>If the Problem Persists</h2>
+    <p>If:</p>
+    <ul>
+      <li>Multiple cables and ports have been ruled out</li>
+      <li>Network infrastructure is confirmed functional</li>
+      <li>Configuration is correct</li>
+    </ul>
+    <p>The monitor continues to drop connectivity. The issue is likely internal, such as:</p>
+    <ul>
+      <li>Failing internal network interface</li>
+      <li>Main board communication fault</li>
+      <li>Internal power regulation instability</li>
+    </ul>
+    <p>At this point:</p>
+    <ul>
+      <li>Remove the device from service</li>
+      <li>Label it Out of Service</li>
+      <li>Send for bench evaluation or manufacturer repair</li>
+    </ul>
+    <p>Knowing when to escalate prevents unnecessary downtime and protects patient safety.</p>
+
+    <h2>Clinical Use Tip</h2>
+    <p>Do not troubleshoot network connectivity on an actively monitored critical patient. Always transition the patient to a confirmed working monitor before performing power cycles or cable swaps.</p>
+
+    <h2>Work Order Documentation (CCR Method)</h2>
+    <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+    <h4>Complaint</h4>
+    <p>What was reported by the clinical staff.</p>
+    <p><em>Example:</em><br>
+    Nursing reported monitor intermittently dropping off central station and displaying “Network Disconnected.”</p>
+
+    <h4>Cause</h4>
+    <p>What was observed during troubleshooting.</p>
+    <p><em>Example:</em><br>
+    Intermittent Ethernet cable failure identified. Link light lost when cable manipulated.</p>
+
+    <h4>Resolution</h4>
+    <p>What action was taken.</p>
+    <p><em>Examples:</em><br>
+    Replaced Ethernet cable with known-good cable. Verified stable connection for 30 minutes. Monitor remained online at central station.</p>
+
+    <h2>Helpful Details to Include in Documentation</h2>
+    <ul>
+      <li>Outlet tested</li>
+      <li>Ethernet cable swapped</li>
+      <li>Alternate port tested</li>
+      <li>Link light behavior</li>
+      <li>IT contacted (if applicable)</li>
+      <li>Final network status</li>
+      <li>Device returned to service or removed</li>
+    </ul>
+
+    <h2>Final Thought</h2>
+    <p>Effective troubleshooting starts with the physical layer: power and cabling. Most network connectivity issues are external and easily corrected. When those are ruled out, escalating appropriately protects patient monitoring integrity and ensures efficient repair workflow.</p>
+    <p><strong>That is successful troubleshooting.</strong></p>
+  </main>
+
+  <footer>
+    <p>Guides intended for trained personnel only.</p>
+    <p>© 2026 Jake Troubleshoots</p>
+  </footer>
+</body>
+</html>
