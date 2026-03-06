@@ -435,18 +435,22 @@ main {
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
+  gap: 15px;
   box-sizing: border-box;
+  min-height: 400px; /* ensures box never shrinks */
+  color: #111;
 }
 
 /* ===========================================
    Question Styling
    =========================================== */
 #question {
-  font-weight: bold; 
+  font-weight: bold;
   font-size: 1rem;
-  margin: 0 0 15px 0;
+  margin: 0;
   text-align: center;
-  color: #111;
+  word-wrap: break-word;
+  min-height: 60px; /* reserve space so box doesn’t resize */
 }
 
 /* ===========================================
@@ -455,32 +459,28 @@ main {
 #options {
   display: flex;
   flex-direction: column;
-  margin: 0;
-  padding: 0;
+  gap: 12px;
 }
 
 #options button {
   display: block;
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border-radius: 8px;
   border: 2px solid #111;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
   transition: 0.2s;
-  background: rgba(255, 255, 255, 0.9); /* semi-transparent over gradient */
+  background: rgba(255, 255, 255, 0.9);
   color: #111;
   font-size: 1rem;
-  margin-bottom: 8px;       /* consistent spacing between buttons */
+  min-height: 50px;
+  overflow-wrap: break-word;
   box-sizing: border-box;
-  min-height: 45px;         /* consistent height */
 }
 
-#options button:last-child {
-  margin-bottom: 0;         /* remove extra space after last button */
-}
-
+/* Hover effect */
 #options button:hover {
   background: rgba(255, 255, 255, 1);
   border-color: #111;
@@ -494,8 +494,9 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 24px; /* prevents text shifting */
-  margin-top: 12px;
+  min-height: 50px; /* reserve space */
+  display: block;   /* prevent flex stretching issues */
+  overflow-wrap: break-word;
 }
 
 /* Correct / Wrong Colors */
