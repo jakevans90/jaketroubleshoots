@@ -24,7 +24,6 @@ function showQuestion() {
   const btn = document.createElement("button");
   btn.innerText = opt;
 
-  // Default styles
   btn.style.display = "block";
   btn.style.width = "100%";
   btn.style.margin = "6px 0";
@@ -32,21 +31,25 @@ function showQuestion() {
   btn.style.borderRadius = "10px";
   btn.style.border = "2px solid #ff66cc"; // hotpink border
   btn.style.background = "#111";           // dark background
-  btn.style.color = "#fff";                // WHITE text by default
+  btn.style.color = "#fff";                // white text default
   btn.style.fontWeight = "bold";
   btn.style.cursor = "pointer";
-  btn.style.boxShadow = "none";
+
+  // REMOVE any browser blue focus/active colors
   btn.style.outline = "none";
+  btn.style.boxShadow = "none";
+  btn.onmousedown = () => btn.style.outline = "none";
+  btn.onfocus = () => btn.style.outline = "none";
 
   // Hover effect
   btn.addEventListener("mouseover", () => {
-    btn.style.background = "#8fff00"; // limegreen
-    btn.style.color = "#111";          // BLACK text on hover
+    btn.style.background = "#8fff00"; // limegreen hover
+    btn.style.color = "#111";          // black text on hover
     btn.style.border = "2px solid #ff66cc"; // hotpink border
   });
   btn.addEventListener("mouseout", () => {
     btn.style.background = "#111";   // back to dark
-    btn.style.color = "#fff";        // WHITE text default
+    btn.style.color = "#fff";        // white text default
     btn.style.border = "2px solid #ff66cc"; // hotpink border
   });
 
