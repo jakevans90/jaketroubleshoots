@@ -50,7 +50,8 @@ fetch('data/guides.json')
     });
 
     // Update total
-    const totalEl = document.getElementById('guides-total');
-    if (totalEl) totalEl.textContent = `Total Guides: ${allGuides.length}`;
-  })
+    const totalContainer = document.getElementById('total-guides');
+if (totalContainer) {
+  totalContainer.textContent = `Total Guides: ${allGuides.length}`;
+}
   .catch(err => console.error('Guide load error:', err));
