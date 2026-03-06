@@ -435,9 +435,10 @@ main {
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* keeps top and bottom stable */
   gap: 15px;
-  box-sizing: border-box; /* ensures padding is included */
-  min-height: 350px;       /* reserve enough space for question + answers + feedback */
+  box-sizing: border-box;
+  min-height: 400px; /* stable container height */
 }
 
 /* ===========================================
@@ -449,6 +450,7 @@ main {
   margin: 0;
   text-align: center;
   color: #111;
+  word-wrap: break-word; /* long questions wrap nicely */
 }
 
 /* ===========================================
@@ -473,14 +475,14 @@ main {
   background: rgba(255, 255, 255, 0.9); /* semi-transparent over gradient */
   color: #111;
   font-size: 1rem;
-  min-height: 50px;        /* consistent button height */
-  box-sizing: border-box;   /* includes padding in size */
+  min-height: 55px;  /* consistent height for buttons */
+  box-sizing: border-box;
 }
 
 #options button:hover {
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 1); /* full white on hover */
   border-color: #111;
-  color: #000;
+  color: #000; /* text darker for contrast */
 }
 
 /* ===========================================
@@ -490,12 +492,8 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 50px;       /* large enough for longest feedback */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s, opacity 0.2s;
-  box-sizing: border-box;
+  min-height: 50px; /* reserves space so container doesn't jump */
+  color: #111;
 }
 
 /* Correct / Wrong Colors */
@@ -513,5 +511,4 @@ main {
 #bmet-quiz * {
   outline: none !important;
   text-shadow: none !important;
-  box-sizing: border-box;  /* ensure sizing is consistent */
 }
