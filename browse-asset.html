@@ -79,7 +79,6 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
-<!-- Shared guides JS -->
 <script src="guides.js"></script>
 <script>
 fetchGuides().then(allGuides => {
@@ -113,18 +112,13 @@ fetchGuides().then(allGuides => {
   // Show/hide letters based on actual asset types
   letters.forEach(letterEl => {
     const letter = letterEl.dataset.letter.toUpperCase();
-    if (letter !== 'ALL' && !lettersWithAssets.has(letter)) {
-      letterEl.style.display = 'none';
-    } else {
-      letterEl.style.display = '';
-    }
+    letterEl.style.display = (letter === 'ALL' || lettersWithAssets.has(letter)) ? '' : 'none';
   });
 
   // Letter filter click logic
   letters.forEach(letter => {
     letter.addEventListener('click', () => {
       const selected = letter.dataset.letter.toLowerCase();
-
       letters.forEach(l => l.classList.remove('active'));
       letter.classList.add('active');
 
@@ -135,18 +129,17 @@ fetchGuides().then(allGuides => {
         btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
       });
 
-// Auto-click first visible asset type button
-const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
-                          .find(b => b.style.display !== 'none');
-if (firstVisible) firstVisible.click();
-      
-     // After creating all asset buttons
-const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
-                          .find(b => b.style.display !== 'none');
-if (firstVisible) firstVisible.click();
+      // Click first visible button if exists
+      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+      if (firstVisible) firstVisible.click();
       else container.innerHTML = '';
     });
   });
+
+  // ✅ Auto-click first asset type on page load
+  const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
+                            .find(b => b.style.display !== 'none');
+  if (firstVisible) firstVisible.click();
 
   // Function to render guides by asset type
   function showGuidesByAssetType(type) {
@@ -154,9 +147,9 @@ if (firstVisible) firstVisible.click();
                               .sort((a,b) => a.title.localeCompare(b.title));
     renderGuides('guides-grid', filtered);
   }
+
 }).catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>
 </html>
-
