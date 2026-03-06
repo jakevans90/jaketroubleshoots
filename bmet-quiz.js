@@ -47,18 +47,39 @@ function showQuestion() {
   feedback.style.color = "#111"; // neutral color until answered
 }
 
+function showQuestion() {
+  if (!questions.length) return;
+  const q = questions[currentIndex];
+  const questionDiv = document.getElementById("question");
+  questionDiv.innerText = q.q;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => checkAnswer(idx);
+    optionsDiv.appendChild(btn);
+  });
+
+  const feedback = document.getElementById("feedback");
+  feedback.innerText = "";
+  feedback.className = "";
+}
+
 function checkAnswer(selected) {
   const q = questions[currentIndex];
   const feedback = document.getElementById("feedback");
+
   if (selected === q.answer) {
     feedback.innerText = "Correct!";
-    feedback.style.color = "#008000"; // readable green
+    feedback.className = "correct";
   } else {
     feedback.innerText = `Wrong! Correct: ${q.options[q.answer]}`;
-    feedback.style.color = "#c00000"; // readable red
+    feedback.className = "wrong";
   }
 
-  // Next question after 3s
   setTimeout(() => {
     currentIndex = (currentIndex + 1) % questions.length;
     showQuestion();
