@@ -422,24 +422,17 @@ main {
   color: #111;
 }
 
-/* Flashcard Quiz Styling - No Blue Anywhere */
+/* Flashcard Quiz Styling - No Blue At All */
 #bmet-quiz {
   max-width: 400px;
   margin: 20px auto;
   padding: 20px;
-  border: 3px solid #ff66cc; /* hotpink outer border */
+  border: 3px solid #ff66cc;   /* hotpink border only */
   border-radius: 12px;
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #ff66cc 0%, #8fff00 100%); /* hotpink → limegreen */
   color: #111; /* black text */
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
-  outline: none; /* remove browser focus outline (was probably blue) */
-}
-
-#bmet-quiz:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
 }
 
 #bmet-quiz h3 {
@@ -447,8 +440,8 @@ main {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #111; /* black title text */
-  text-shadow: none; /* remove any leftover blue glow */
+  color: #111; /* black title */
+  text-shadow: none; /* remove any blue glow */
 }
 
 #question {
@@ -457,6 +450,7 @@ main {
   margin-bottom: 12px;
   text-align: center;
   color: #111; /* black question text */
+  text-shadow: none;
 }
 
 #options button {
@@ -470,18 +464,13 @@ main {
   color: #111;                /* black text */
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s;
-  outline: none; /* remove blue focus outline */
+  box-shadow: none;           /* remove any residual shadows */
 }
 
 #options button:hover {
   background: #8fff00;   /* limegreen highlight */
   border-color: #ff66cc; /* keep hotpink border */
-  color: #111;           /* black text stays readable */
-}
-
-#options button:focus {
-  outline: none;          /* removes any default focus ring */
+  color: #111;           /* black text */
 }
 
 #feedback {
@@ -489,18 +478,19 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 24px; /* prevents layout shift */
+  min-height: 24px;
   color: #111; /* black feedback text */
 }
 
-/* Remove browser blue outlines everywhere in the quiz */
-#bmet-quiz,
-#bmet-quiz button {
-  outline: none;          /* remove default focus outline */
-  box-shadow: none;       /* remove any browser-applied shadows */
+/* Force all links inside the quiz to be black */
+#bmet-quiz a {
+  color: #111 !important;
+  text-decoration: none;
 }
 
-#bmet-quiz button:focus {
-  outline: none;          /* ensures no focus outline on keyboard navigation */
-  box-shadow: 0 0 0 3px rgba(255, 102, 204, 0.5); /* optional: hotpink glow instead of blue */
+/* Remove any unexpected outlines or thin borders */
+#bmet-quiz * {
+  outline: none !important;
+  border-color: inherit !important;
+  text-shadow: none !important;
 }
