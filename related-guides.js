@@ -1,76 +1,81 @@
 // related-guides.js
 
 const container = document.getElementById("related-guides-grid");
-if (!container) return;
 
-// current page filename
-const currentPage = window.location.pathname.split("/").pop();
+if (!container) {
+  console.log("No related guides container on this page.");
+} else {
 
-fetch("../data/guides.json")
-  .then(res => res.json())
-  .then(fileList => {
+  // current page filename
+  const currentPage = window.location.pathname.split("/").pop();
 
-    // If guides.json contains a list of json files
-    if (Array.isArray(fileList) && typeof fileList[0] === "string") {
+  fetch("../data/guides.json")
+    .then(res => res.json())
+    .then(fileList => {
 
-      return Promise.all(
-        fileList.map(file =>
-          fetch("../" + file).then(r => r.json())
-        )
-      ).then(data => data.flat());
+      // If guides.json contains a list of json files
+      if (Array.isArray(fileList) && typeof fileList[0] === "string") {
 
-    }
+        return Promise.all(
+          fileList.map(file =>
+            fetch("../" + file).then(r => r.json())
+          )
+        ).then(data => data.flat());
 
-    return fileList;
+      }
 
-  })
-  .then(allGuides => {
+      return fileList;
 
-    // find current guide
-    const currentGuide = allGuides.find(g =>
-      g.url.split("/").pop() === currentPage
-    );
+    })
+    .then(allGuides => {
 
-    if (!currentGuide) {
-      console.warn("Guide not found in JSON:", currentPage);
-      return;
-    }
+      // find current guide
+      const currentGuide = allGuides.find(g =>
+        g.url.split("/").pop() === currentPage
+      );
 
-    // find related guides by model
-    const related = allGuides.filter(g =>
-      g.model === currentGuide.model &&
-      g.url.split("/").pop() !== currentPage
-    );
+      if (!currentGuide) {
+        console.warn("Guide not found in JSON:", currentPage);
+        return;
+      }
 
-    if (related.length === 0) {
-      container.innerHTML = "<p>No related guides yet.</p>";
-      return;
-    }
+      // find related guides by model
+      const related = allGuides.filter(g =>
+        g.model === currentGuide.model &&
+        g.url.split("/").pop() !== currentPage
+      );
 
-    related.forEach(guide => {
+      if (related.length === 0) {
+        container.innerHTML = "<p>No related guides yet.</p>";
+        return;
+      }
 
-      const card = document.createElement("a");
-      card.href = guide.url;
-      card.className = "guide-card";
+      related.forEach(guide => {
 
-      card.innerHTML = `
-        <div class="card-content">
-          <h3>${guide.title}</h3>
-          <p>${guide.description}</p>
+        const card = document.createElement("a");
+        card.href = guide.url;
+        card.className = "guide-card";
 
-          <div class="badges">
-            <span class="badge asset">${guide.assetType}</span>
-            <span class="badge manufacturer">${guide.manufacturer}</span>
-            <span class="badge model">${guide.model}</span>
+        card.innerHTML = `
+          <div class="card-content">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
           </div>
+        `;
 
-          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-        </div>
-      `;
+        container.appendChild(card);
 
-      container.appendChild(card);
+      });
 
-    });
+    })
+    .catch(err => console.error("Related guides error:", err));
 
-  })
-  .catch(err => console.error("Related guides error:", err));
+}
