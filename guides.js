@@ -1,58 +1,64 @@
-// Fetch guides and populate any page with #guides-grid
-fetch('data/guides.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    // If guides.json is a list of filenames, fetch all
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
-    if (isFileList) {
-      return Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    }
-    return jsonData;
-  })
-  .then(allGuides => {
-    // Sort alphabetically by title
-    allGuides.sort((a, b) => a.title.localeCompare(b.title));
+// guides.js
 
-    // Display guides in any page with #guides-grid
-    const container = document.getElementById('guides-grid');
-    if (!container) return; // skip if page doesn't have grid
+// Fetch all guides (handles single JSON or list of JSON files)
+async function fetchGuides() {
+  const res = await fetch('data/guides.json');
+  if (!res.ok) throw new Error('Could not load guides.json');
 
-    container.innerHTML = ''; // clear existing content
+  const jsonData = await res.json();
+  const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
 
-    allGuides.forEach(guide => {
-      const card = document.createElement('a');
-      card.href = guide.url;
-      card.classList.add('guide-card');
+  if (isFileList) {
+    const allData = await Promise.all(
+      jsonData.map(file =>
+        fetch(file).then(res => {
+          if (!res.ok) throw new Error('Could not load ' + file);
+          return res.json();
+        })
+      )
+    );
+    return allData.flat();
+  }
+  return jsonData;
+}
 
-      card.innerHTML = `
-        <div class="card-content">
-          <h3>${guide.title}</h3>
-          <p>${guide.description}</p>
-          <div class="badges">
-            <span class="badge asset">${guide.assetType}</span>
-            <span class="badge manufacturer">${guide.manufacturer}</span>
-            <span class="badge model">${guide.model}</span>
-          </div>
-          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+// Render guide cards into a given container
+function renderGuides(containerId, guides) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '';
+  guides.forEach(guide => {
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        <h3>${guide.title}</h3>
+        <p>${guide.description}</p>
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
         </div>
-      `;
-      container.appendChild(card);
-    });
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
 
-    // Update total
-    const totalContainer = document.getElementById('total-guides');
-    if (totalContainer) {
-      totalContainer.textContent = `Total Guides: ${allGuides.length}`;
-    }
-  })
-  .catch(err => console.error('Guide load error:', err));
+    container.appendChild(card);
+  });
+
+  // Update total if the element exists
+  const totalContainer = document.getElementById('total-guides');
+  if (totalContainer) {
+    totalContainer.textContent = `Total Guides: ${guides.length}`;
+  }
+}
+
+// Optional helper: get most recent guides
+function getRecentGuides(allGuides, count = 12) {
+  return allGuides
+    .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
+    .slice(0, count);
+}
