@@ -103,67 +103,25 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
+<script src="guides.js"></script>
 <script>
-// Load and display recent guides
-fetch('data/guides.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
-    if (isFileList) {
-      return Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    } else {
-      return jsonData;
+  // Homepage logic
+  fetchGuides()
+    .then(allGuides => {
+      const recent = getRecentGuides(allGuides, 12);
+      renderGuides('guides-grid', recent);
+    })
+    .catch(err => console.error('Guide load error:', err));
+
+  // Homepage search redirect
+  const form = document.getElementById('home-search-form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const query = document.getElementById('home-search-input').value.trim();
+    if(query) {
+      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     }
-  })
-  .then(allGuides => {
-    const recentGuides = allGuides
-      .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-      .slice(0, 12);
-
-    const container = document.getElementById('guides-grid');
-    if (!container) throw new Error('#guides-grid not found');
-
-    recentGuides.forEach(guide => {
-      const card = document.createElement('a');
-      card.href = guide.url;
-      card.classList.add('guide-card');
-
-      card.innerHTML = `
-        <div class="card-content">
-          <h3>${guide.title}</h3>
-          <p>${guide.description}</p>
-          <div class="badges">
-            <span class="badge asset">${guide.assetType}</span>
-            <span class="badge manufacturer">${guide.manufacturer}</span>
-            <span class="badge model">${guide.model}</span>
-          </div>
-          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  })
-  .catch(err => console.error('Guide load error:', err));
-
-// Homepage search bar redirect
-const form = document.getElementById('home-search-form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const query = document.getElementById('home-search-input').value.trim();
-  if(query) {
-    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-  }
-});
+  });
 </script>
   
 </body>
