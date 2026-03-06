@@ -13,24 +13,50 @@ fetch('data/bmet-questions.json')
 function showQuestion() {
   if (!questions.length) return;
   const q = questions[currentIndex];
-  document.getElementById("question").innerText = q.q;
+  const questionDiv = document.getElementById("question");
+  questionDiv.innerText = q.q;
+  questionDiv.style.color = "#111"; // black question text
+
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
+
   q.options.forEach((opt, idx) => {
     const btn = document.createElement("button");
     btn.innerText = opt;
+
+    // Apply JakeTroubleshoots styles
     btn.style.display = "block";
     btn.style.width = "100%";
-    btn.style.margin = "5px 0";
-    btn.style.padding = "8px";
-    btn.style.borderRadius = "8px";
-    btn.style.border = "1px solid #007bff";
-    btn.style.background = "#f8f9fa";
+    btn.style.margin = "6px 0";
+    btn.style.padding = "10px";
+    btn.style.borderRadius = "10px";
+    btn.style.border = "2px solid #ff66cc"; // hotpink border
+    btn.style.background = "#111";           // dark background
+    btn.style.color = "#111";                // black text
+    btn.style.fontWeight = "bold";
     btn.style.cursor = "pointer";
+    btn.style.boxShadow = "none";
+    btn.style.outline = "none";
+
+    // Hover effect
+    btn.addEventListener("mouseover", () => {
+      btn.style.background = "#8fff00"; // limegreen hover
+      btn.style.color = "#111";          // black text
+      btn.style.border = "2px solid #ff66cc"; // hotpink border
+    });
+    btn.addEventListener("mouseout", () => {
+      btn.style.background = "#111";
+      btn.style.color = "#111";
+      btn.style.border = "2px solid #ff66cc";
+    });
+
     btn.onclick = () => checkAnswer(idx);
     optionsDiv.appendChild(btn);
   });
-  document.getElementById("feedback").innerText = "";
+
+  const feedback = document.getElementById("feedback");
+  feedback.innerText = "";
+  feedback.style.color = "#111"; // black feedback text by default
 }
 
 function checkAnswer(selected) {
@@ -38,11 +64,12 @@ function checkAnswer(selected) {
   const feedback = document.getElementById("feedback");
   if (selected === q.answer) {
     feedback.innerText = "✅ Correct!";
-    feedback.style.color = "green";
+    feedback.style.color = "#8fff00"; // limegreen feedback
   } else {
     feedback.innerText = `❌ Wrong! Correct: ${q.options[q.answer]}`;
-    feedback.style.color = "red";
+    feedback.style.color = "#ff66cc"; // hotpink feedback
   }
+
   // Move to next question after 1.5s
   setTimeout(() => {
     currentIndex = (currentIndex + 1) % questions.length;
