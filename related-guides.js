@@ -52,28 +52,31 @@ if (!container) {
 
       related.forEach(guide => {
 
-        const card = document.createElement("a");
-        card.href = guide.url;
-        card.className = "guide-card";
+  const card = document.createElement("a");
 
-        card.innerHTML = `
-          <div class="card-content">
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
+  // Fix relative path
+  card.href = "../" + guide.url;
 
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
+  card.className = "guide-card";
 
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
-        `;
+  card.innerHTML = `
+    <div class="card-content">
+      <h3>${guide.title}</h3>
+      <p>${guide.description}</p>
 
-        container.appendChild(card);
+      <div class="badges">
+        <span class="badge asset">${guide.assetType}</span>
+        <span class="badge manufacturer">${guide.manufacturer}</span>
+        <span class="badge model">${guide.model}</span>
+      </div>
 
-      });
+      <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+    </div>
+  `;
+
+  container.appendChild(card);
+
+});
 
     })
     .catch(err => console.error("Related guides error:", err));
