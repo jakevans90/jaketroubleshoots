@@ -62,13 +62,13 @@ function checkAnswer(selected) {
   const feedback = document.getElementById("feedback");
   if (selected === q.answer) {
     feedback.innerText = "Correct!";
-    feedback.style.color = "#8fff00"; // limegreen for correct
+    feedback.style.color = "#008000"; // readable green
   } else {
     feedback.innerText = `Wrong! Correct: ${q.options[q.answer]}`;
-    feedback.style.color = "#ff66cc"; // hotpink for wrong
+    feedback.style.color = "#c00000"; // readable red
   }
 
-  // Move to next question after 3s
+  // Next question after 3s
   setTimeout(() => {
     currentIndex = (currentIndex + 1) % questions.length;
     showQuestion();
