@@ -107,7 +107,20 @@ fetchGuides().then(allGuides => {
     buttonsContainer.appendChild(btn);
   });
 
-  // Letter filter
+  // Determine which letters actually have asset types
+  const lettersWithAssets = new Set(assetTypes.map(type => type[0].toUpperCase()));
+
+  // Show/hide letters based on actual asset types
+  letters.forEach(letterEl => {
+    const letter = letterEl.dataset.letter.toUpperCase();
+    if (letter !== 'ALL' && !lettersWithAssets.has(letter)) {
+      letterEl.style.display = 'none';
+    } else {
+      letterEl.style.display = '';
+    }
+  });
+
+  // Letter filter click logic
   letters.forEach(letter => {
     letter.addEventListener('click', () => {
       const selected = letter.dataset.letter.toLowerCase();
