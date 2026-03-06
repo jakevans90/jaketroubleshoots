@@ -137,29 +137,32 @@ fetch('data/guides.json')
       }
     });
 
-    // Letter filter click logic
     letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toUpperCase();
 
-        // Highlight active letter
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
 
-        // Show/hide buttons based on letter
-        const buttons = document.querySelectorAll('#model-buttons .browse-button');
-        buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
-        });
+    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
 
-        // Click first visible model button if exists
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) firstVisible.click();
-        else container.innerHTML = '';
-      });
+    buttons.forEach(btn => {
+      const firstChar = btn.textContent[0].toUpperCase();
+      if (selected === 'ALL') {
+        btn.style.display = '';
+      } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+        btn.style.display = '';
+      } else {
+        btn.style.display = firstChar === selected ? '' : 'none';
+      }
     });
 
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
+    else container.innerHTML = '';
+  });
+});
+    
     // Show first model by default
     const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
                               .find(b => b.style.display !== 'none');
