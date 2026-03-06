@@ -1,33 +1,41 @@
 // guides.js
 
-// Fetch all guides (handles single JSON or list of JSON files)
+// Fetch all guides (handles JSON array or list of JSON filenames)
 async function fetchGuides() {
-  const res = await fetch('data/guides.json');
-  if (!res.ok) throw new Error('Could not load guides.json');
+  try {
+    const res = await fetch('data/guides.json');
+    if (!res.ok) throw new Error('Could not load guides.json');
 
-  const jsonData = await res.json();
-  const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+    const jsonData = await res.json();
 
-  if (isFileList) {
-    const allData = await Promise.all(
-      jsonData.map(file =>
-        fetch(file).then(res => {
-          if (!res.ok) throw new Error('Could not load ' + file);
-          return res.json();
-        })
-      )
-    );
-    return allData.flat();
+    // If jsonData is a list of JSON files, fetch all of them
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+    if (isFileList) {
+      const allData = await Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      );
+      return allData.flat();
+    }
+
+    return jsonData;
+  } catch (err) {
+    console.error('Guide load error:', err);
+    return [];
   }
-  return jsonData;
 }
 
-// Render guide cards into a given container
+// Render guides in a container
 function renderGuides(containerId, guides) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = '';
+  container.innerHTML = ''; // Clear old content
+
   guides.forEach(guide => {
     const card = document.createElement('a');
     card.href = guide.url;
@@ -49,16 +57,22 @@ function renderGuides(containerId, guides) {
     container.appendChild(card);
   });
 
-  // Update total if the element exists
+  // Update total if #total-guides exists
   const totalContainer = document.getElementById('total-guides');
   if (totalContainer) {
     totalContainer.textContent = `Total Guides: ${guides.length}`;
   }
 }
 
-// Optional helper: get most recent guides
-function getRecentGuides(allGuides, count = 12) {
-  return allGuides
+// Utility: sort guides alphabetically
+function sortGuidesAlphabetically(guides) {
+  return guides.slice().sort((a, b) => a.title.localeCompare(b.title));
+}
+
+// Utility: get most recent guides
+function getRecentGuides(guides, count = 12) {
+  return guides
+    .slice()
     .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
     .slice(0, count);
 }
