@@ -70,7 +70,7 @@ function sortGuidesAlphabetically(guides) {
 }
 
 // Utility: get most recent guides
-function getRecentGuides(guides, count = 12) {
+function getRecentGuides(guides, count = 24) { // changed from 12 → 24
   return guides
     .slice()
     .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
