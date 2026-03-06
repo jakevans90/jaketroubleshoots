@@ -51,7 +51,8 @@ fetch('data/guides.json')
 
     // Update total
     const totalContainer = document.getElementById('total-guides');
-if (totalContainer) {
-  totalContainer.textContent = `Total Guides: ${allGuides.length}`;
-}
+    if (totalContainer) {
+      totalContainer.textContent = `Total Guides: ${allGuides.length}`;
+    }
+  })
   .catch(err => console.error('Guide load error:', err));
