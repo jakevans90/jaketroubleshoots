@@ -124,44 +124,47 @@ fetch('data/guides.json')
       buttonsContainer.appendChild(btn);
     });
 
-    // Determine which letters actually have manufacturers
-    const lettersWithManufacturers = new Set(manufacturers.map(m => m[0].toUpperCase()));
-
-    // Show/hide letters based on actual manufacturers
+    // Show/hide letters based on actual manufacturers, including 0-9
     letters.forEach(letterEl => {
       const letter = letterEl.dataset.letter.toUpperCase();
-      if (letter !== 'ALL' && !lettersWithManufacturers.has(letter)) {
-        letterEl.style.display = 'none';
-      } else {
+      if (letter === 'ALL') {
         letterEl.style.display = '';
-      }
-    });
-
-   letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toUpperCase();
-
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
-
-    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
-
-    buttons.forEach(btn => {
-      const firstChar = btn.textContent[0].toUpperCase();
-      if (selected === 'ALL') {
-        btn.style.display = '';
-      } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
-        btn.style.display = '';
+      } else if (letter === '0-9') {
+        const hasNumber = manufacturers.some(m => /^[0-9]/.test(m));
+        letterEl.style.display = hasNumber ? '' : 'none';
       } else {
-        btn.style.display = firstChar === selected ? '' : 'none';
+        const hasLetter = manufacturers.some(m => m[0].toUpperCase() === letter);
+        letterEl.style.display = hasLetter ? '' : 'none';
       }
     });
 
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click();
-    else container.innerHTML = '';
-  });
-});
+    // Letter click logic
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toUpperCase();
+
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
+
+        const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+
+        buttons.forEach(btn => {
+          const firstChar = btn.textContent[0].toUpperCase();
+          if (selected === 'ALL') {
+            btn.style.display = '';
+          } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+            btn.style.display = '';
+          } else {
+            btn.style.display = firstChar === selected ? '' : 'none';
+          }
+        });
+
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click();
+        else container.innerHTML = '';
+      });
+    });
 
     // Show first manufacturer by default
     const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
