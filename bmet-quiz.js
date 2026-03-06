@@ -20,42 +20,38 @@ function showQuestion() {
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement("button");
-    btn.innerText = opt;
+ q.options.forEach((opt, idx) => {
+  const btn = document.createElement("button");
+  btn.innerText = opt;
 
-    // Button default styles
-    btn.style.display = "block";
-    btn.style.width = "100%";
-    btn.style.margin = "6px 0";
-    btn.style.padding = "10px";
-    btn.style.borderRadius = "10px";
-    btn.style.border = "2px solid #ff66cc"; // hotpink border
-    btn.style.background = "#111";           // dark background
-    btn.style.color = "#fff";                // white text default
-    btn.style.fontWeight = "bold";
-    btn.style.cursor = "pointer";
-    btn.style.outline = "none";              // remove browser blue
-    btn.style.boxShadow = "none";            // remove browser shadow
-    btn.onmousedown = () => btn.style.outline = "none";
-    btn.onfocus = () => btn.style.outline = "none";
+  // Button styles to match content-box / guide cards
+  btn.style.display = "block";
+  btn.style.width = "100%";
+  btn.style.margin = "6px 0";
+  btn.style.padding = "12px";
+  btn.style.borderRadius = "8px";
+  btn.style.border = "2px solid #111"; // black border
+  btn.style.background = "#fff";        // white background like cards
+  btn.style.color = "#111";             // black text default
+  btn.style.fontWeight = "bold";
+  btn.style.cursor = "pointer";
+  btn.style.textAlign = "center";
+  btn.style.transition = "0.2s";
 
-    // Hover effect
-    btn.addEventListener("mouseover", () => {
-      btn.style.background = "#8fff00"; // limegreen
-      btn.style.color = "#111";          // black text
-      btn.style.border = "2px solid #ff66cc"; // hotpink
-    });
-    btn.addEventListener("mouseout", () => {
-      btn.style.background = "#111";   // dark background
-      btn.style.color = "#fff";        // white text
-      btn.style.border = "2px solid #ff66cc"; // hotpink
-    });
-
-    btn.onclick = () => checkAnswer(idx);
-    optionsDiv.appendChild(btn);
+  // Hover effect
+  btn.addEventListener("mouseover", () => {
+    btn.style.background = "#f4f4f4"; // subtle light gray on hover
+    btn.style.borderColor = "#111";   // keep border black
+  });
+  btn.addEventListener("mouseout", () => {
+    btn.style.background = "#fff";
+    btn.style.borderColor = "#111";   // keep border black
   });
 
+  btn.onclick = () => checkAnswer(idx);
+  optionsDiv.appendChild(btn);
+});
+  
   const feedback = document.getElementById("feedback");
   feedback.innerText = "";
   feedback.style.color = "#111"; // neutral color until answered
