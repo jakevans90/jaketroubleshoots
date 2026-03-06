@@ -1,80 +1,152 @@
-let questions = [];
-let currentIndex = 0;
-
-// Fetch questions from JSON
-fetch('data/bmet-questions.json')
-  .then(response => response.json())
-  .then(data => {
-    questions = data;
-    showQuestion();
-  })
-  .catch(err => console.error("Failed to load questions:", err));
-
-function showQuestion() {
-  if (!questions.length) return;
-  const q = questions[currentIndex];
-  const questionDiv = document.getElementById("question");
-  questionDiv.innerText = q.q;
-  questionDiv.style.color = "#111"; // black question text
-
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement("button");
-    btn.innerText = opt;
-
-    // Button default styles
-    btn.style.display = "block";
-    btn.style.width = "100%";
-    btn.style.margin = "6px 0";
-    btn.style.padding = "10px";
-    btn.style.borderRadius = "10px";
-    btn.style.border = "2px solid #ff66cc"; // hotpink border
-    btn.style.background = "#111";           // dark background
-    btn.style.color = "#fff";                // white text default
-    btn.style.fontWeight = "bold";
-    btn.style.cursor = "pointer";
-    btn.style.outline = "none";              // remove browser blue
-    btn.style.boxShadow = "none";            // remove browser shadow
-    btn.onmousedown = () => btn.style.outline = "none";
-    btn.onfocus = () => btn.style.outline = "none";
-
-    // Hover effect
-    btn.addEventListener("mouseover", () => {
-      btn.style.background = "#8fff00"; // limegreen
-      btn.style.color = "#111";          // black text
-      btn.style.border = "2px solid #ff66cc"; // hotpink
-    });
-    btn.addEventListener("mouseout", () => {
-      btn.style.background = "#111";   // dark background
-      btn.style.color = "#fff";        // white text
-      btn.style.border = "2px solid #ff66cc"; // hotpink
-    });
-
-    btn.onclick = () => checkAnswer(idx);
-    optionsDiv.appendChild(btn);
-  });
-
-  const feedback = document.getElementById("feedback");
-  feedback.innerText = "";
-  feedback.style.color = "#111"; // neutral color until answered
-}
-
-function checkAnswer(selected) {
-  const q = questions[currentIndex];
-  const feedback = document.getElementById("feedback");
-  if (selected === q.answer) {
-    feedback.innerText = "Correct!";
-    feedback.style.color = "#8fff00"; // limegreen for correct
-  } else {
-    feedback.innerText = `Wrong! Correct: ${q.options[q.answer]}`;
-    feedback.style.color = "#ff66cc"; // hotpink for wrong
+[
+  {
+    "q": "What does CBET stand for?",
+    "options": [
+      "Certified Bioengineer Technician",
+      "Certified Biomedical Equipment Technician",
+      "Clinical Biomed Expert",
+      "Certified Biomedical Engineer"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which tool is essential for testing electrical safety on medical devices?",
+    "options": [
+      "Multimeter",
+      "Electrical Safety Analyzer",
+      "Oscilloscope",
+      "Insulation Tester"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What is the primary purpose of preventive maintenance on medical equipment?",
+    "options": [
+      "Fix broken parts immediately",
+      "Ensure reliability and patient safety",
+      "Train staff on usage",
+      "Reduce battery consumption"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which organization sets standards for biomedical equipment safety in the U.S.?",
+    "options": [
+      "FDA",
+      "AAMI",
+      "ISO",
+      "IEEE"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which type of grounding is used to prevent electrical shock to patients?",
+    "options": [
+      "Floating ground",
+      "Protective earth ground",
+      "Signal ground",
+      "Chassis ground"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What unit measures electrical current?",
+    "options": [
+      "Volts",
+      "Amperes",
+      "Ohms",
+      "Watts"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which medical device commonly uses ECG electrodes?",
+    "options": [
+      "Pulse oximeter",
+      "Electrocardiograph",
+      "Infusion pump",
+      "Ventilator"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which of these is a common cause of lead failure in EKG machines?",
+    "options": [
+      "Dirty paper rolls",
+      "Damaged cables or connectors",
+      "Incorrect software version",
+      "Low battery"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What does the 'AAMI' acronym stand for?",
+    "options": [
+      "Association of American Medical Innovators",
+      "Association for the Advancement of Medical Instrumentation",
+      "American Association of Medical Inspectors",
+      "Association for Applied Medical Intelligence"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which color coding is commonly used for patient-isolated ground?",
+    "options": [
+      "Red",
+      "Green with yellow stripe",
+      "Blue",
+      "Black"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What is the main advantage of using a ground fault circuit interrupter (GFCI) in a medical environment?",
+    "options": [
+      "Saves energy",
+      "Protects against electric shock",
+      "Improves signal quality",
+      "Prevents overheating"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which tool is used to calibrate infusion pumps?",
+    "options": [
+      "Multimeter",
+      "Calibration syringe or flow analyzer",
+      "Oscilloscope",
+      "Stopwatch only"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What is the recommended PPE for a BMET working on high-voltage equipment?",
+    "options": [
+      "Gloves and goggles only",
+      "Insulated gloves and face shield",
+      "Lab coat only",
+      "Steel-toed boots"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "Which type of battery is most commonly used in modern portable medical devices?",
+    "options": [
+      "Lead-acid",
+      "Lithium-ion",
+      "Nickel-cadmium",
+      "Alkaline"
+    ],
+    "answer": 1
+  },
+  {
+    "q": "What does a leakage current test measure?",
+    "options": [
+      "Device output accuracy",
+      "Unintended current through patient or ground",
+      "Battery life",
+      "Pump flow rate"
+    ],
+    "answer": 1
   }
-
-  // Move to next question after 3s
-  setTimeout(() => {
-    currentIndex = (currentIndex + 1) % questions.length;
-    showQuestion();
-  }, 3000);
-}
+]
