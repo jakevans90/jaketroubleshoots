@@ -437,20 +437,25 @@ main {
   flex-direction: column;
   gap: 15px;
   box-sizing: border-box;
-  min-height: 400px; /* ensures box never shrinks */
+  height: 420px; /* FIXED height */
   color: #111;
+  overflow: hidden; /* prevent scroll/overflow issues */
 }
 
 /* ===========================================
    Question Styling
    =========================================== */
 #question {
-  font-weight: bold;
+  font-weight: 900; /* extra bold */
   font-size: 1.1rem;
   margin: 0;
   text-align: center;
   word-wrap: break-word;
   min-height: 60px; /* reserve space so box doesn’t resize */
+  max-height: 80px; /* prevents huge questions from expanding box */
+  overflow-wrap: break-word;
+  overflow-y: auto; /* scroll if too long */
+  padding-right: 4px; /* avoids scrollbar overlap */
 }
 
 /* ===========================================
@@ -460,12 +465,14 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-grow: 1; /* takes remaining space */
+  justify-content: flex-start; /* stack at top */
 }
 
 #options button {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
   border: 2px solid #111;
   font-weight: bold;
@@ -475,7 +482,7 @@ main {
   background: rgba(255, 255, 255, 0.9);
   color: #111;
   font-size: 1rem;
-  min-height: 50px;
+  height: 50px; /* FIXED height */
   overflow-wrap: break-word;
   box-sizing: border-box;
 }
@@ -494,8 +501,10 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 50px; /* reserve space */
-  display: block;   /* prevent flex stretching issues */
+  height: 50px; /* FIXED height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow-wrap: break-word;
 }
 
