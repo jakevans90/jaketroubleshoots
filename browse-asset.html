@@ -107,27 +107,40 @@ fetchGuides().then(allGuides => {
     buttonsContainer.appendChild(btn);
   });
 
-  // Determine which letters actually have asset types
-  const lettersWithAssets = new Set(assetTypes.map(type => type[0].toUpperCase()));
-
-  // Show/hide letters based on actual asset types
+  // Show/hide letters based on actual asset types, including 0-9
   letters.forEach(letterEl => {
     const letter = letterEl.dataset.letter.toUpperCase();
-    letterEl.style.display = (letter === 'ALL' || lettersWithAssets.has(letter)) ? '' : 'none';
+    if (letter === 'ALL') {
+      letterEl.style.display = '';
+    } else if (letter === '0-9') {
+      const hasNumber = assetTypes.some(type => /^[0-9]/.test(type));
+      letterEl.style.display = hasNumber ? '' : 'none';
+    } else {
+      const hasLetter = assetTypes.some(type => type[0].toUpperCase() === letter);
+      letterEl.style.display = hasLetter ? '' : 'none';
+    }
   });
 
   // Letter filter click logic
   letters.forEach(letter => {
     letter.addEventListener('click', () => {
-      const selected = letter.dataset.letter.toLowerCase();
+      const selected = letter.dataset.letter.toUpperCase();
+
+      // Highlight active letter
       letters.forEach(l => l.classList.remove('active'));
       letter.classList.add('active');
 
       // Show/hide buttons based on letter
       const buttons = document.querySelectorAll('#asset-buttons .browse-button');
       buttons.forEach(btn => {
-        const name = btn.textContent.toLowerCase();
-        btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+        const firstChar = btn.textContent[0].toUpperCase();
+        if (selected === 'ALL') {
+          btn.style.display = '';
+        } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+          btn.style.display = '';
+        } else {
+          btn.style.display = firstChar === selected ? '' : 'none';
+        }
       });
 
       // Click first visible button if exists
@@ -137,15 +150,16 @@ fetchGuides().then(allGuides => {
     });
   });
 
-  // ✅ Auto-click first asset type on page load
+  // Auto-click first asset type on page load
   const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
                             .find(b => b.style.display !== 'none');
   if (firstVisible) firstVisible.click();
 
   // Function to render guides by asset type
   function showGuidesByAssetType(type) {
-    const filtered = allGuides.filter(g => g.assetType === type)
-                              .sort((a,b) => a.title.localeCompare(b.title));
+    const filtered = allGuides
+      .filter(g => g.assetType === type)
+      .sort((a,b) => a.title.localeCompare(b.title));
     renderGuides('guides-grid', filtered);
   }
 
