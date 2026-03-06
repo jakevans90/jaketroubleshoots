@@ -38,16 +38,6 @@ function showQuestion() {
   btn.style.textAlign = "center";
   btn.style.transition = "0.2s";
 
-  // Hover effect
-  btn.addEventListener("mouseover", () => {
-    btn.style.background = "#f4f4f4"; // subtle light gray on hover
-    btn.style.borderColor = "#111";   // keep border black
-  });
-  btn.addEventListener("mouseout", () => {
-    btn.style.background = "#fff";
-    btn.style.borderColor = "#111";   // keep border black
-  });
-
   btn.onclick = () => checkAnswer(idx);
   optionsDiv.appendChild(btn);
 });
