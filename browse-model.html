@@ -129,14 +129,18 @@ fetch('data/guides.json')
 
     // Show/hide letters based on actual models
     letters.forEach(letterEl => {
-      const letter = letterEl.dataset.letter.toUpperCase();
-      if (letter !== 'ALL' && !lettersWithModels.has(letter)) {
-        letterEl.style.display = 'none';
-      } else {
-        letterEl.style.display = '';
-      }
-    });
-
+  const letter = letterEl.dataset.letter.toUpperCase();
+  
+  if (letter === 'ALL') {
+    letterEl.style.display = '';
+  } else if (letter === '0-9') {
+    // Show the 0-9 tab if at least one model starts with a digit
+    const hasNumber = models.some(m => /^[0-9]/.test(m));
+    letterEl.style.display = hasNumber ? '' : 'none';
+  } else {
+    letterEl.style.display = models.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
+  }
+});
     letters.forEach(letter => {
   letter.addEventListener('click', () => {
     const selected = letter.dataset.letter.toUpperCase();
