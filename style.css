@@ -192,8 +192,13 @@ footer a:hover {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   padding: 40px;
+  justify-content: center; /* centers partial rows */
+}
 
-  justify-content: center; /* centers the row if not full */
+@media (max-width: 500px) {
+  #guides-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .guide-card {
@@ -420,10 +425,4 @@ main {
   font-size: 1rem;
   margin-top: 25px;  /* increases space from grid/buttons */
   color: #111;
-}
-
-body.home #guides-grid {
-  /* Match the rest of the site */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  justify-content: center;
 }
