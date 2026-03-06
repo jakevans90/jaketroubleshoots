@@ -65,16 +65,16 @@ function checkAnswer(selected) {
   const q = questions[currentIndex];
   const feedback = document.getElementById("feedback");
   if (selected === q.answer) {
-    feedback.innerText = "✅ Correct!";
+    feedback.innerText = "Correct!";
     feedback.style.color = "#8fff00"; // limegreen for correct
   } else {
-    feedback.innerText = `❌ Wrong! Correct: ${q.options[q.answer]}`;
+    feedback.innerText = `Wrong! Correct: ${q.options[q.answer]}`;
     feedback.style.color = "#ff66cc"; // hotpink for wrong
   }
 
-  // Move to next question after 1.5s
+  // Move to next question after 3s
   setTimeout(() => {
     currentIndex = (currentIndex + 1) % questions.length;
     showQuestion();
-  }, 1500);
+  }, 3000);
 }
