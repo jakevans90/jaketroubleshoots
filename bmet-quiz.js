@@ -76,7 +76,7 @@ function checkAnswer(selected) {
     feedback.innerText = "Correct!";
     feedback.className = "correct";
   } else {
-    feedback.innerText = `Wrong! Correct: ${q.options[q.answer]}`;
+    feedback.innerText = `Wrong! Answer: ${q.options[q.answer]}`;
     feedback.className = "wrong";
   }
 
