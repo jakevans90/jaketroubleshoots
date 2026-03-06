@@ -135,9 +135,10 @@ fetchGuides().then(allGuides => {
         btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
       });
 
-      // Click first visible button if exists
-      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-      if (firstVisible) firstVisible.click();
+     // After creating all asset buttons
+const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
+                          .find(b => b.style.display !== 'none');
+if (firstVisible) firstVisible.click();
       else container.innerHTML = '';
     });
   });
