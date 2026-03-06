@@ -135,6 +135,11 @@ fetchGuides().then(allGuides => {
         btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
       });
 
+// Auto-click first visible asset type button
+const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
+                          .find(b => b.style.display !== 'none');
+if (firstVisible) firstVisible.click();
+      
      // After creating all asset buttons
 const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
                           .find(b => b.style.display !== 'none');
@@ -154,5 +159,4 @@ if (firstVisible) firstVisible.click();
 
 </body>
 </html>
-</body>
-</html>
+
