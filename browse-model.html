@@ -103,6 +103,7 @@ fetch('data/guides.json')
   .then(allGuides => {
     const container = document.getElementById('guides-grid');
     const buttonsContainer = document.getElementById('model-buttons');
+    const letters = document.querySelectorAll('.filter-letter');
 
     if (!container || !buttonsContainer) throw new Error('Required containers not found');
 
@@ -122,9 +123,20 @@ fetch('data/guides.json')
       buttonsContainer.appendChild(btn);
     });
 
-    // Letter filter logic
-    const letters = document.querySelectorAll('.filter-letter');
+    // Determine which letters actually have models
+    const lettersWithModels = new Set(models.map(m => m[0].toUpperCase()));
 
+    // Show/hide letters based on actual models
+    letters.forEach(letterEl => {
+      const letter = letterEl.dataset.letter.toUpperCase();
+      if (letter !== 'ALL' && !lettersWithModels.has(letter)) {
+        letterEl.style.display = 'none';
+      } else {
+        letterEl.style.display = '';
+      }
+    });
+
+    // Letter filter click logic
     letters.forEach(letter => {
       letter.addEventListener('click', () => {
         const selected = letter.dataset.letter.toLowerCase();
@@ -133,10 +145,7 @@ fetch('data/guides.json')
         letters.forEach(l => l.classList.remove('active'));
         letter.classList.add('active');
 
-        // Clear the grid immediately
-        container.innerHTML = '';
-
-        // Filter model buttons
+        // Show/hide buttons based on letter
         const buttons = document.querySelectorAll('#model-buttons .browse-button');
         buttons.forEach(btn => {
           const name = btn.textContent.toLowerCase();
@@ -146,6 +155,7 @@ fetch('data/guides.json')
         // Click first visible model button if exists
         const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
         if (firstVisible) firstVisible.click();
+        else container.innerHTML = '';
       });
     });
 
@@ -175,7 +185,7 @@ fetch('data/guides.json')
               <span class="badge manufacturer">${guide.manufacturer}</span>
               <span class="badge model">${guide.model}</span>
             </div>
-            <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
           </div>
         `;
         container.appendChild(card);

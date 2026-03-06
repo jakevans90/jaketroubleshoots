@@ -26,7 +26,6 @@
   <h2>Browse Guides by Asset Type</h2>
   <p>All troubleshooting guides organized by the type of equipment.</p>
 
-  <!-- Action buttons -->
   <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
     <a href="guides.html" class="hero-button">Browse All Guides</a>
   </div>
@@ -35,40 +34,42 @@
 <section class="browse-section">
   <h3>Asset Types</h3>
   <div class="letter-filter">
-  <span class="filter-letter active" data-letter="all">All</span>
-  <span class="filter-letter" data-letter="A">A</span>
-  <span class="filter-letter" data-letter="B">B</span>
-  <span class="filter-letter" data-letter="C">C</span>
-  <span class="filter-letter" data-letter="D">D</span>
-  <span class="filter-letter" data-letter="E">E</span>
-  <span class="filter-letter" data-letter="F">F</span>
-  <span class="filter-letter" data-letter="G">G</span>
-  <span class="filter-letter" data-letter="H">H</span>
-  <span class="filter-letter" data-letter="I">I</span>
-  <span class="filter-letter" data-letter="J">J</span>
-  <span class="filter-letter" data-letter="K">K</span>
-  <span class="filter-letter" data-letter="L">L</span>
-  <span class="filter-letter" data-letter="M">M</span>
-  <span class="filter-letter" data-letter="N">N</span>
-  <span class="filter-letter" data-letter="O">O</span>
-  <span class="filter-letter" data-letter="P">P</span>
-  <span class="filter-letter" data-letter="Q">Q</span>
-  <span class="filter-letter" data-letter="R">R</span>
-  <span class="filter-letter" data-letter="S">S</span>
-  <span class="filter-letter" data-letter="T">T</span>
-  <span class="filter-letter" data-letter="U">U</span>
-  <span class="filter-letter" data-letter="V">V</span>
-  <span class="filter-letter" data-letter="W">W</span>
-  <span class="filter-letter" data-letter="X">X</span>
-  <span class="filter-letter" data-letter="Y">Y</span>
-  <span class="filter-letter" data-letter="Z">Z</span>
-</div>
+    <span class="filter-letter active" data-letter="all">All</span>
+    <span class="filter-letter" data-letter="A">A</span>
+    <span class="filter-letter" data-letter="B">B</span>
+    <span class="filter-letter" data-letter="C">C</span>
+    <span class="filter-letter" data-letter="D">D</span>
+    <span class="filter-letter" data-letter="E">E</span>
+    <span class="filter-letter" data-letter="F">F</span>
+    <span class="filter-letter" data-letter="G">G</span>
+    <span class="filter-letter" data-letter="H">H</span>
+    <span class="filter-letter" data-letter="I">I</span>
+    <span class="filter-letter" data-letter="J">J</span>
+    <span class="filter-letter" data-letter="K">K</span>
+    <span class="filter-letter" data-letter="L">L</span>
+    <span class="filter-letter" data-letter="M">M</span>
+    <span class="filter-letter" data-letter="N">N</span>
+    <span class="filter-letter" data-letter="O">O</span>
+    <span class="filter-letter" data-letter="P">P</span>
+    <span class="filter-letter" data-letter="Q">Q</span>
+    <span class="filter-letter" data-letter="R">R</span>
+    <span class="filter-letter" data-letter="S">S</span>
+    <span class="filter-letter" data-letter="T">T</span>
+    <span class="filter-letter" data-letter="U">U</span>
+    <span class="filter-letter" data-letter="V">V</span>
+    <span class="filter-letter" data-letter="W">W</span>
+    <span class="filter-letter" data-letter="X">X</span>
+    <span class="filter-letter" data-letter="Y">Y</span>
+    <span class="filter-letter" data-letter="Z">Z</span>
+  </div>
+
   <div id="asset-buttons" class="browse-buttons">
-    <!-- Buttons injected here dynamically -->
+    <!-- Buttons will be injected dynamically -->
   </div>
 </section>
-  
-<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+
+<section id="guides-grid" class="guides-grid" 
+         style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
   <!-- Cards injected here -->
 </section>
 
@@ -78,108 +79,76 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
+<script src="guides.js"></script>
 <script>
-fetch('data/guides.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    // If guides.json is a list of filenames, fetch them all
-    if (Array.isArray(jsonData) && typeof jsonData[0] === 'string') {
-      return Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    } else {
-      return jsonData;
-    }
-  })
-  .then(allGuides => {
-    const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('asset-buttons');
+fetchGuides().then(allGuides => {
+  const container = document.getElementById('guides-grid');
+  const buttonsContainer = document.getElementById('asset-buttons');
+  const letters = document.querySelectorAll('.filter-letter');
 
-    if (!container || !buttonsContainer) throw new Error('Required containers not found');
+  if (!container || !buttonsContainer) return;
 
-    // Unique asset types
-    const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
+  // Unique asset types
+  const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
 
-    // Create buttons for each asset type
-    assetTypes.forEach(type => {
-      const btn = document.createElement('a');
-      btn.href = '#';
-      btn.textContent = type;
-      btn.classList.add('browse-button');
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        showGuidesByAssetType(type);
-      });
-      buttonsContainer.appendChild(btn);
+  // Create buttons
+  assetTypes.forEach(type => {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.textContent = type;
+    btn.classList.add('browse-button');
+
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showGuidesByAssetType(type);
     });
 
-    // Letter filter
-    const letters = document.querySelectorAll('.filter-letter');
+    buttonsContainer.appendChild(btn);
+  });
 
-    letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
+  // Determine which letters actually have asset types
+  const lettersWithAssets = new Set(assetTypes.map(type => type[0].toUpperCase()));
 
-        // Highlight active letter
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
+  // Show/hide letters based on actual asset types
+  letters.forEach(letterEl => {
+    const letter = letterEl.dataset.letter.toUpperCase();
+    letterEl.style.display = (letter === 'ALL' || lettersWithAssets.has(letter)) ? '' : 'none';
+  });
 
-        // Clear the grid immediately
-        container.innerHTML = '';
+  // Letter filter click logic
+  letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+      const selected = letter.dataset.letter.toLowerCase();
+      letters.forEach(l => l.classList.remove('active'));
+      letter.classList.add('active');
 
-        // Filter asset type buttons
-        const buttons = document.querySelectorAll('#asset-buttons .browse-button');
-        buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
-        });
-
-        // Click first visible button if exists
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) firstVisible.click(); 
-        // If none match, grid stays empty
+      // Show/hide buttons based on letter
+      const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+      buttons.forEach(btn => {
+        const name = btn.textContent.toLowerCase();
+        btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
       });
+
+      // Click first visible button if exists
+      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+      if (firstVisible) firstVisible.click();
+      else container.innerHTML = '';
     });
+  });
 
-    // Function to show guides for a selected asset type
-    function showGuidesByAssetType(type) {
-      container.innerHTML = '';
-      const filtered = allGuides
-        .filter(g => g.assetType === type)
-        .sort((a, b) => a.title.localeCompare(b.title));
+  // ✅ Auto-click first asset type on page load
+  const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
+                            .find(b => b.style.display !== 'none');
+  if (firstVisible) firstVisible.click();
 
-      filtered.forEach(guide => {
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
+  // Function to render guides by asset type
+  function showGuidesByAssetType(type) {
+    const filtered = allGuides.filter(g => g.assetType === type)
+                              .sort((a,b) => a.title.localeCompare(b.title));
+    renderGuides('guides-grid', filtered);
+  }
 
-        card.innerHTML = `
-          <div class="card-content">
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
-            <p class="date"><em>Date Added: ${guide.dateAdded}</em></p>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // Optionally, do NOT auto-click any asset type on load
-  })
-  .catch(err => console.error('Guide load error:', err));
+}).catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>
