@@ -422,91 +422,109 @@ main {
   color: #111;
 }
 
-/* BMET Flashcard Quiz Styling */
+/* ===========================================
+   Flashcard Quiz Container
+   =========================================== */
 #flashcard-container {
   max-width: 500px;
   margin: 30px auto;
   padding: 20px;
   border-radius: 12px;
+  min-height: 420px; /* prevents box from shrinking */
   background: linear-gradient(90deg, #ff66cc 0%, #8fff00 100%);
+  color: #111;
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-  color: #111;
-  text-align: center;
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-/* Quiz title */
+/* Header & intro text */
 #flashcard-container h3 {
-  font-size: 1.5rem;
-  font-weight: 900; /* extra bold */
-  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 12px;
   color: #111;
 }
 
-/* Subtitle / description */
 #flashcard-container p {
-  font-size: 1rem;
-  font-weight: 500;
+  text-align: center;
+  font-size: 0.95rem;
   margin-bottom: 20px;
   color: #111;
-  text-align: center; /* fix hanging left issue */
 }
 
-/* Question text */
-#bmet-quiz #question {
-  font-weight: 900;   /* extra bold */
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  color: #111;
+/* ===========================================
+   Question Styling
+   =========================================== */
+#bmet-quiz {
+  width: 100%;
+}
+
+#question {
+  font-weight: 900; /* extra bold */
+  font-size: 1.2rem;
+  margin: 15px 0;
   text-align: center;
+  color: #111;
 }
 
-/* Answer buttons */
-#bmet-quiz #options button {
+/* ===========================================
+   Answer Buttons
+   =========================================== */
+#options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#options button {
   display: block;
   width: 100%;
-  margin: 8px 0;
   padding: 12px;
   border-radius: 8px;
-  border: 2px solid #111; /* black border for contrast */
-  background: rgba(255,255,255,0.85); /* semi-transparent white */
-  color: #111;
+  border: 2px solid #111;   /* black border */
   font-weight: bold;
-  cursor: pointer;
   text-align: center;
-  transition: all 0.2s ease;
-}
-
-/* Answer button hover */
-#bmet-quiz #options button:hover {
-  background: rgba(255,255,255,1); /* solid white on hover */
-  border-color: #111;
+  cursor: pointer;
+  transition: 0.2s;
+  background: rgba(255, 255, 255, 0.9); /* semi-transparent over gradient */
   color: #111;
+  min-height: 50px; /* consistent button height */
+  font-size: 1rem;
 }
 
-/* Feedback text */
-#bmet-quiz #feedback {
-  margin-top: 12px;
+#options button:hover {
+  background: rgba(255, 255, 255, 1); /* full white on hover */
+  border-color: #111;
+  color: #000; /* text darker for contrast */
+}
+
+/* ===========================================
+   Feedback Text
+   =========================================== */
+#feedback {
+  margin-top: 15px;
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 24px;
+  min-height: 24px; /* prevents shifting */
 }
 
-/* Correct / Wrong colors handled via JS:
-   Correct: feedback.style.color = "#008000" (green)
-   Wrong: feedback.style.color = "#c00000" (red)
-*/
-
-/* Optional: Make links inside quiz black */
-#bmet-quiz a {
-  color: #111 !important;
-  text-decoration: none;
+/* Correct / Wrong Colors */
+.correct {
+  color: #008000; /* green */
 }
 
-/* Remove outlines / shadows */
+.wrong {
+  color: #c00000; /* red */
+}
+
+/* ===========================================
+   Remove outlines and enforce text color
+   =========================================== */
 #bmet-quiz * {
   outline: none !important;
-  box-shadow: none !important;
   text-shadow: none !important;
 }
