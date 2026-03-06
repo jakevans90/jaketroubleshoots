@@ -423,11 +423,12 @@ main {
 }
 
 /* ===========================================
-   Flashcard Quiz Container (Fixed Size)
+   Flashcard Quiz Container
    =========================================== */
 #bmet-quiz {
-  width: 500px;                  /* fixed width */
-  height: 400px;                 /* fixed height */
+  width: 100%;
+  max-width: 500px;
+  min-height: 350px;      /* minimum size to avoid jumps */
   margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
@@ -435,25 +436,20 @@ main {
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;              /* tighter gap between sections */
   box-sizing: border-box;
   color: #111;
-  flex-shrink: 0;
-  flex-grow: 0;
-  overflow: hidden;              /* keeps everything inside */
 }
 
 /* ===========================================
    Question Styling
    =========================================== */
 #question {
-  font-weight: 900;              /* extra bold */
+  font-weight: 900;
   font-size: 1.2rem;
   text-align: center;
   margin: 0;
-  min-height: 60px;              /* reserve space */
-  max-height: 100px;             /* prevent growing too tall */
-  overflow-y: auto;              /* scroll if question is long */
+  min-height: 50px;       /* keeps box from shrinking too much */
   word-wrap: break-word;
 }
 
@@ -463,9 +459,7 @@ main {
 #options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;                       /* take remaining space */
-  overflow-y: auto;              /* scroll if too many buttons */
+  gap: 4px;               /* tighter spacing */
 }
 
 #options button {
@@ -481,7 +475,7 @@ main {
   background: rgba(255, 255, 255, 0.9);
   color: #111;
   font-size: 1rem;
-  white-space: normal;           /* wrap long text */
+  white-space: normal;    /* wrap long text */
   box-sizing: border-box;
 }
 
@@ -499,11 +493,9 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 40px;              /* reserve space */
-  max-height: 60px;              /* prevent growing too tall */
+  min-height: 40px;
   line-height: 1.2;
   word-wrap: break-word;
-  overflow-y: auto;              /* scroll if feedback is long */
 }
 
 /* Correct / Wrong Colors */
