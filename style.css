@@ -437,9 +437,9 @@ main {
   flex-direction: column;
   gap: 15px;
   box-sizing: border-box;
-  height: 420px; /* FIXED height */
+  height: 420px; /* FIXED container height */
   color: #111;
-  overflow: hidden; /* prevent scroll/overflow issues */
+  overflow: hidden;
 }
 
 /* ===========================================
@@ -450,12 +450,11 @@ main {
   font-size: 1.1rem;
   margin: 0;
   text-align: center;
-  word-wrap: break-word;
-  min-height: 60px; /* reserve space so box doesn’t resize */
-  max-height: 80px; /* prevents huge questions from expanding box */
+  min-height: 60px; /* reserve space */
+  max-height: 80px;
   overflow-wrap: break-word;
-  overflow-y: auto; /* scroll if too long */
-  padding-right: 4px; /* avoids scrollbar overlap */
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 /* ===========================================
@@ -465,14 +464,16 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex-grow: 1; /* takes remaining space */
-  justify-content: flex-start; /* stack at top */
+  flex-grow: 1;
+  justify-content: flex-start;
+  overflow-y: auto; /* scroll if too many options or long text */
+  padding-right: 4px; /* prevent scrollbar overlap */
 }
 
 #options button {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   border: 2px solid #111;
   font-weight: bold;
@@ -482,9 +483,10 @@ main {
   background: rgba(255, 255, 255, 0.9);
   color: #111;
   font-size: 1rem;
-  height: 50px; /* FIXED height */
+  min-height: 40px;  /* small minimum height */
   overflow-wrap: break-word;
   box-sizing: border-box;
+  white-space: normal; /* allows text wrapping */
 }
 
 /* Hover effect */
@@ -501,11 +503,14 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  height: 50px; /* FIXED height */
+  min-height: 60px; /* bigger fixed space for feedback */
+  max-height: 100px; /* prevents overflow beyond box */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow-wrap: break-word;
+  overflow-y: auto; /* scroll if very long */
+  padding: 0 4px;
 }
 
 /* Correct / Wrong Colors */
