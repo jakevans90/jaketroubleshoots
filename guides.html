@@ -49,8 +49,15 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
-<!-- Load shared JS -->
 <script src="guides.js"></script>
+<script>
+  // Fetch all guides, sort alphabetically, render in #guides-grid
+  fetchGuides()
+    .then(allGuides => {
+      const sorted = sortGuidesAlphabetically(allGuides);
+      renderGuides('guides-grid', sorted);
+    });
+</script>
 
 </body>
 </html>
