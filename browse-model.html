@@ -36,6 +36,7 @@
   <h3>Models</h3>
   <div class="letter-filter">
   <span class="filter-letter active" data-letter="all">All</span>
+  <span class="filter-letter" data-letter="0-9">0-9</span>
   <span class="filter-letter" data-letter="A">A</span>
   <span class="filter-letter" data-letter="B">B</span>
   <span class="filter-letter" data-letter="C">C</span>
@@ -128,37 +129,44 @@ fetch('data/guides.json')
 
     // Show/hide letters based on actual models
     letters.forEach(letterEl => {
-      const letter = letterEl.dataset.letter.toUpperCase();
-      if (letter !== 'ALL' && !lettersWithModels.has(letter)) {
-        letterEl.style.display = 'none';
+  const letter = letterEl.dataset.letter.toUpperCase();
+  
+  if (letter === 'ALL') {
+    letterEl.style.display = '';
+  } else if (letter === '0-9') {
+    // Show the 0-9 tab if at least one model starts with a digit
+    const hasNumber = models.some(m => /^[0-9]/.test(m));
+    letterEl.style.display = hasNumber ? '' : 'none';
+  } else {
+    letterEl.style.display = models.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
+  }
+});
+    letters.forEach(letter => {
+  letter.addEventListener('click', () => {
+    const selected = letter.dataset.letter.toUpperCase();
+
+    letters.forEach(l => l.classList.remove('active'));
+    letter.classList.add('active');
+
+    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
+
+    buttons.forEach(btn => {
+      const firstChar = btn.textContent[0].toUpperCase();
+      if (selected === 'ALL') {
+        btn.style.display = '';
+      } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+        btn.style.display = '';
       } else {
-        letterEl.style.display = '';
+        btn.style.display = firstChar === selected ? '' : 'none';
       }
     });
 
-    // Letter filter click logic
-    letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
-
-        // Highlight active letter
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
-
-        // Show/hide buttons based on letter
-        const buttons = document.querySelectorAll('#model-buttons .browse-button');
-        buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
-        });
-
-        // Click first visible model button if exists
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) firstVisible.click();
-        else container.innerHTML = '';
-      });
-    });
-
+    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
+    else container.innerHTML = '';
+  });
+});
+    
     // Show first model by default
     const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
                               .find(b => b.style.display !== 'none');

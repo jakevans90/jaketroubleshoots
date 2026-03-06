@@ -36,6 +36,7 @@
   <h3>Manufacturers</h3>
   <div class="letter-filter">
   <span class="filter-letter active" data-letter="all">All</span>
+  <span class="filter-letter" data-letter="0-9">0-9</span>
   <span class="filter-letter" data-letter="A">A</span>
   <span class="filter-letter" data-letter="B">B</span>
   <span class="filter-letter" data-letter="C">C</span>
@@ -123,36 +124,42 @@ fetch('data/guides.json')
       buttonsContainer.appendChild(btn);
     });
 
-    // Determine which letters actually have manufacturers
-    const lettersWithManufacturers = new Set(manufacturers.map(m => m[0].toUpperCase()));
-
-    // Show/hide letters based on actual manufacturers
+    // Show/hide letters based on actual manufacturers, including 0-9
     letters.forEach(letterEl => {
       const letter = letterEl.dataset.letter.toUpperCase();
-      if (letter !== 'ALL' && !lettersWithManufacturers.has(letter)) {
-        letterEl.style.display = 'none';
-      } else {
+      if (letter === 'ALL') {
         letterEl.style.display = '';
+      } else if (letter === '0-9') {
+        const hasNumber = manufacturers.some(m => /^[0-9]/.test(m));
+        letterEl.style.display = hasNumber ? '' : 'none';
+      } else {
+        const hasLetter = manufacturers.some(m => m[0].toUpperCase() === letter);
+        letterEl.style.display = hasLetter ? '' : 'none';
       }
     });
 
-    // Letter filter click logic
+    // Letter click logic
     letters.forEach(letter => {
       letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toLowerCase();
+        const selected = letter.dataset.letter.toUpperCase();
 
         // Highlight active letter
         letters.forEach(l => l.classList.remove('active'));
         letter.classList.add('active');
 
-        // Show/hide buttons based on letter
         const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+
         buttons.forEach(btn => {
-          const name = btn.textContent.toLowerCase();
-          btn.style.display = (selected === 'all' || name.startsWith(selected)) ? '' : 'none';
+          const firstChar = btn.textContent[0].toUpperCase();
+          if (selected === 'ALL') {
+            btn.style.display = '';
+          } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+            btn.style.display = '';
+          } else {
+            btn.style.display = firstChar === selected ? '' : 'none';
+          }
         });
 
-        // Click first visible manufacturer button if exists
         const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
         if (firstVisible) firstVisible.click();
         else container.innerHTML = '';
