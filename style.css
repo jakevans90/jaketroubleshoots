@@ -438,8 +438,9 @@ main {
   justify-content: flex-start;
   gap: 20px;
   box-sizing: border-box;
-  min-height: 400px; /* stable container height */
+  height: 400px; /* FIXED height */
   color: #111;
+  overflow: hidden; /* prevents scroll/overflow issues */
 }
 
 /* ===========================================
@@ -451,6 +452,7 @@ main {
   margin: 0;
   text-align: center;
   word-wrap: break-word;
+  min-height: 60px; /* reserve space so box doesn’t resize */
 }
 
 /* ===========================================
@@ -460,22 +462,25 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-grow: 1; /* fills available space */
+  justify-content: center; /* center buttons vertically */
 }
 
 #options button {
   display: block;
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   border-radius: 8px;
   border: 2px solid #111;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
   transition: 0.2s;
-  background: rgba(255, 255, 255, 0.85); /* slightly transparent over gradient */
+  background: rgba(255, 255, 255, 0.85); /* semi-transparent over gradient */
   color: #111;
   font-size: 1rem;
-  min-height: 55px;  /* consistent button height */
+  min-height: 50px;  /* FIXED height */
+  overflow-wrap: break-word; /* prevents stretching for long answers */
   box-sizing: border-box;
 }
 
@@ -492,7 +497,11 @@ main {
   font-weight: bold;
   text-align: center;
   font-size: 1rem;
-  min-height: 50px; /* reserves space so container doesn't jump */
+  height: 50px; /* FIXED height to prevent box resize */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-wrap: break-word;
 }
 
 /* Correct / Wrong Colors */
