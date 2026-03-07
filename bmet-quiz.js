@@ -1,6 +1,6 @@
 let questions = [];
 let currentIndex = 0;
-let locked = false;           // ← added: prevents rapid clicking
+let locked = false;
 
 fetch('data/bmet-questions.json')
   .then(response => response.json())
@@ -16,12 +16,25 @@ fetch('data/bmet-questions.json')
   .catch(err => console.error("Failed to load questions:", err));
 
 function showQuestion() {
-  locked = false;               // ← unlock when new question loads
+  locked = false;
   if (!questions.length) return;
   const q = questions[currentIndex];
+
   const questionDiv = document.getElementById("question");
   questionDiv.innerText = q.q;
   questionDiv.style.color = "#111";
+
+  if (q.cert) {
+    const certLabel = document.createElement("div");
+    certLabel.innerText = q.cert;
+    certLabel.style.marginTop = "8px";
+    certLabel.style.fontSize = "0.75rem";
+    certLabel.style.fontWeight = "900";
+    certLabel.style.opacity = "0.5";
+    certLabel.style.letterSpacing = "0.12em";
+    certLabel.style.textTransform = "uppercase";
+    questionDiv.appendChild(certLabel);
+  }
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
@@ -61,13 +74,12 @@ function showQuestion() {
 }
 
 function checkAnswer(selected) {
-  if (locked) return;           // ← bail out if already answered
-  locked = true;                // ← lock immediately on first click
+  if (locked) return;
+  locked = true;
 
   const q = questions[currentIndex];
   const feedback = document.getElementById("feedback");
 
-  // Visually disable all buttons
   document.querySelectorAll("#options button").forEach(btn => {
     btn.style.cursor = "default";
     btn.style.opacity = "0.6";
@@ -87,39 +99,12 @@ function checkAnswer(selected) {
   }, 3000);
 }
 
-// ===========================================
-// Utility Functions
-// ===========================================
 function shuffleArray(array) {
   return array
     .map(value => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 }
-
-function showQuestion() {
-  locked = false;
-  if (!questions.length) return;
-  const q = questions[currentIndex];
-
-  const questionDiv = document.getElementById("question");
-  questionDiv.innerText = q.q;
-  questionDiv.style.color = "#111";
-
-  // ← Add cert label at the bottom if it exists
-  if (q.cert) {
-    const certLabel = document.createElement("div");
-    certLabel.innerText = q.cert;
-    certLabel.style.marginTop = "8px";
-    certLabel.style.fontSize = "0.75rem";
-    certLabel.style.fontWeight = "900";
-    certLabel.style.opacity = "0.5";
-    certLabel.style.letterSpacing = "0.12em";
-    certLabel.style.textTransform = "uppercase";
-    questionDiv.appendChild(certLabel);
-  }
-
-  // ... rest of your showQuestion code unchanged
 
 function shuffleArrayWithIndex(array, correctIndex) {
   const indexed = array.map((value, i) => ({ value, originalIndex: i }));
