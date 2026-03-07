@@ -97,6 +97,30 @@ function shuffleArray(array) {
     .map(({ value }) => value);
 }
 
+function showQuestion() {
+  locked = false;
+  if (!questions.length) return;
+  const q = questions[currentIndex];
+
+  const questionDiv = document.getElementById("question");
+  questionDiv.innerText = q.q;
+  questionDiv.style.color = "#111";
+
+  // ← Add cert label at the bottom if it exists
+  if (q.cert) {
+    const certLabel = document.createElement("div");
+    certLabel.innerText = q.cert;
+    certLabel.style.marginTop = "8px";
+    certLabel.style.fontSize = "0.75rem";
+    certLabel.style.fontWeight = "900";
+    certLabel.style.opacity = "0.5";
+    certLabel.style.letterSpacing = "0.12em";
+    certLabel.style.textTransform = "uppercase";
+    questionDiv.appendChild(certLabel);
+  }
+
+  // ... rest of your showQuestion code unchanged
+
 function shuffleArrayWithIndex(array, correctIndex) {
   const indexed = array.map((value, i) => ({ value, originalIndex: i }));
   const shuffled = shuffleArray(indexed);
