@@ -428,7 +428,7 @@ main {
 #bmet-quiz {
   width: 100%;
   max-width: 500px;
-  min-height: 500px;      /* minimum size to avoid jumps */
+  min-height: 500px;
   margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
@@ -436,8 +436,9 @@ main {
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  /* spread question, buttons, feedback */
-  gap: 10px;              /* tighter gap between sections */
+  justify-content: center;        /* ← was space-between, now centers vertically */
+  align-items: center;            /* ← added: centers children horizontally too */
+  gap: 10px;
   box-sizing: border-box;
   color: #111;
 }
@@ -450,8 +451,9 @@ main {
   font-size: 1.2rem;
   text-align: center;
   margin: 0;
-  min-height: 50px;       /* keeps box from shrinking too much */
+  min-height: 50px;
   word-wrap: break-word;
+  width: 100%;                    /* ← added: keeps question full width */
 }
 
 /* ===========================================
@@ -460,13 +462,14 @@ main {
 #options {
   display: flex;
   flex-direction: column;
-  gap: 4px;               /* tighter spacing */
-  align-items: center;    /* center buttons horizontally */
+  gap: 4px;
+  align-items: center;
+  width: 100%;                    /* ← added: so buttons have something to be % of */
 }
 
 #options button {
   display: block;
-  width: 60%;             /* adjust width as needed */
+  width: 60%;
   padding: 12px;
   border-radius: 8px;
   border: 2px solid #111;
@@ -477,7 +480,7 @@ main {
   background: rgba(255, 255, 255, 0.9);
   color: #111;
   font-size: 1rem;
-  white-space: normal;    /* wrap long text */
+  white-space: normal;
   box-sizing: border-box;
 }
 
@@ -498,14 +501,13 @@ main {
   min-height: 40px;
   line-height: 1.2;
   word-wrap: break-word;
-  margin-top: auto;       /* push feedback to bottom */
+  width: 100%;                    /* ← added: keeps feedback full width */
 }
 
 /* Correct / Wrong Colors */
 .correct {
   color: #008000;
 }
-
 .wrong {
   color: #c00000;
 }
