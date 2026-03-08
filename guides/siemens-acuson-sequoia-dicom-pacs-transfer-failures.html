@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Siemens Healthineers ACUSON Sequoia - DICOM/PACS Transfer Failures</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Siemens Healthineers ACUSON Sequoia</h2>
+  <p>DICOM/PACS Transfer Failures</p>
+</section>
+
+<main style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+
+<h3>Asset Type</h3>
+<p>Ultrasound System</p>
+
+<h3>Manufacturer</h3>
+<p>Siemens Healthineers</p>
+
+<h3>Model</h3>
+<p>ACUSON Sequoia</p>
+
+<h2>What This Guide Helps With</h2>
+<p>This guide assists Clinical Engineering in troubleshooting situations where the ACUSON Sequoia fails to transfer images to PACS or encounters DICOM communication errors. Common presentations include:</p>
+<ul>
+  <li>Failed or delayed image transfers</li>
+  <li>Error messages such as “DICOM connection failed” or “Server unreachable”</li>
+  <li>System cannot reach network servers or PACS</li>
+</ul>
+<p>The guide focuses on external and easily verifiable checks before considering internal issues.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>Verify Network Connectivity</h4>
+<ul>
+  <li>Ensure the ultrasound system is properly connected to the hospital network.</li>
+  <li>Check Ethernet cable connections, Wi-Fi if applicable, and network port lights.</li>
+  <li><strong>Why:</strong> Network connectivity is a common cause of PACS transfer failures.</li>
+</ul>
+
+<h4>Ping the PACS Server</h4>
+<ul>
+  <li>Use system network tools to ping the PACS server IP.</li>
+  <li>If the server is unreachable, note the network error.</li>
+  <li><strong>Why:</strong> Confirms whether communication is blocked at the network level.</li>
+</ul>
+
+<h4>Check DICOM Configuration</h4>
+<ul>
+  <li>Verify the AE Title, IP address, and port of the PACS server in the Sequoia DICOM settings.</li>
+  <li>Ensure there are no typos or misconfigurations.</li>
+  <li><strong>Why:</strong> Incorrect DICOM settings prevent proper image transfer.</li>
+</ul>
+
+<h4>Confirm PACS Server Availability</h4>
+<ul>
+  <li>Check if the PACS server is online and accepting connections.</li>
+  <li>Coordinate with the IT department if necessary.</li>
+  <li><strong>Why:</strong> Even with correct settings, the PACS server must be operational.</li>
+</ul>
+
+<h4>Test with Another Modality or Workstation</h4>
+<ul>
+  <li>If possible, send a test image from another system to the same PACS destination.</li>
+  <li><strong>Why:</strong> Helps isolate whether the issue is with the Sequoia or the PACS/network.</li>
+</ul>
+
+<h4>Review System Logs</h4>
+<ul>
+  <li>Check the Sequoia DICOM transfer logs for error codes.</li>
+  <li>Note recurring messages or patterns.</li>
+  <li><strong>Why:</strong> Logs often indicate the source of failure (network timeout, server refusal, etc.).</li>
+</ul>
+
+<h4>Restart DICOM Service or System</h4>
+<ul>
+  <li>Restart the Sequoia DICOM service or perform a system reboot if external checks pass.</li>
+  <li><strong>Why:</strong> Clears temporary software or communication issues.</li>
+</ul>
+
+<h2>If the Problem Persists</h2>
+<p>External network and configuration issues have been ruled out. Device should be:</p>
+<ul>
+  <li>Removed from service</li>
+  <li>Labeled Out of Service</li>
+  <li>Sent for vendor-assisted evaluation</li>
+</ul>
+<p>Escalation ensures patient safety and prevents wasted troubleshooting on internal software/hardware.</p>
+
+<h2>Clinical Use Tip</h2>
+<ul>
+  <li>Do not attempt transfers while a patient is actively on the system.</li>
+  <li>Ensure patient exams are sent from another functioning modality if imaging is urgent.</li>
+  <li>Troubleshoot only when the system is idle to prevent delays in patient care.</li>
+</ul>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>
+“Sequoia ultrasound system cannot send images to PACS; error ‘DICOM connection failed.’”</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>
+“Network connectivity verified; PACS server reachable; Sequoia DICOM configuration checked—settings correct; logs show repeated timeouts.”</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Examples:</em><br>
+“Escalated device to vendor for internal software/communication evaluation; system labeled Out of Service; alternative imaging modality provided for patient exams.”</p>
+
+<h2>Helpful Details to Include</h2>
+<ul>
+  <li>Outlet tested and verified</li>
+  <li>Network cables swapped/tested</li>
+  <li>PACS server status at time of failure</li>
+  <li>Error codes from DICOM logs</li>
+  <li>Attempts from other devices to same PACS destination</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>Patient safety and continuity of care rely on accurate image transfers. A methodical, logic-based troubleshooting approach prevents unnecessary internal disassembly and ensures issues are escalated appropriately. Proper documentation reinforces accountability and aids future issue resolution.</p>
+
+<p><strong>That is successful troubleshooting.</strong></p>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid"
+       class="guides-grid"
+       style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;">
+  </div>
+</section>
+
+<script src="../related-guides.js"></script>
+
+</main>
+
+<footer>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
