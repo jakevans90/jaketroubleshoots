@@ -9,32 +9,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // get current page filename
-  const currentPage = window.location.pathname.split("/").pop();
+  // Get current page name and normalize it
+  const currentPage = window.location.pathname
+    .split("/")
+    .pop()
+    .replace(".html", "")
+    .toLowerCase();
 
   fetch("/data/guides.json")
     .then(res => res.json())
-    .then(fileList => {
-
-      // if guides.json contains a list of JSON files
-      if (Array.isArray(fileList) && typeof fileList[0] === "string") {
-
-        return Promise.all(
-          fileList.map(file =>
-            fetch("/" + file).then(r => r.json())
-          )
-        ).then(data => data.flat());
-
-      }
-
-      return fileList;
-
-    })
     .then(allGuides => {
 
-      // find current guide
+      // Find the guide matching this page
       const currentGuide = allGuides.find(g =>
-        g.url.split("/").pop() === currentPage
+        g.url.split("/").pop().replace(".html","").toLowerCase() === currentPage
       );
 
       if (!currentGuide) {
@@ -42,10 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // find related guides by model
+      // Find related guides by model
       const related = allGuides.filter(g =>
         g.model === currentGuide.model &&
-        g.url.split("/").pop() !== currentPage
+        g.url.split("/").pop().replace(".html","").toLowerCase() !== currentPage
       );
 
       if (related.length === 0) {
