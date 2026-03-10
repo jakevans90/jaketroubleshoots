@@ -1,10 +1,13 @@
 // related-guides.js
 
-const container = document.getElementById("related-guides-grid");
+document.addEventListener("DOMContentLoaded", function() {
 
-if (!container) {
-  console.log("No related guides container on this page.");
-} else {
+  const container = document.getElementById("related-guides-grid");
+
+  if (!container) {
+    console.log("No related guides container on this page.");
+    return;
+  }
 
   // current page filename
   const currentPage = window.location.pathname.split("/").pop();
@@ -13,15 +16,12 @@ if (!container) {
     .then(res => res.json())
     .then(fileList => {
 
-      // If guides.json contains a list of json files
       if (Array.isArray(fileList) && typeof fileList[0] === "string") {
-
         return Promise.all(
           fileList.map(file =>
             fetch("../" + file).then(r => r.json())
           )
         ).then(data => data.flat());
-
       }
 
       return fileList;
@@ -29,7 +29,6 @@ if (!container) {
     })
     .then(allGuides => {
 
-      // find current guide
       const currentGuide = allGuides.find(g =>
         g.url.split("/").pop() === currentPage
       );
@@ -39,7 +38,6 @@ if (!container) {
         return;
       }
 
-      // find related guides by model
       const related = allGuides.filter(g =>
         g.model === currentGuide.model &&
         g.url.split("/").pop() !== currentPage
@@ -51,34 +49,32 @@ if (!container) {
       }
 
       related.forEach(guide => {
+        const card = document.createElement("a");
 
-  const card = document.createElement("a");
+        // Fix relative path
+        card.href = "../" + guide.url;
 
-  // Fix relative path
-  card.href = "../" + guide.url;
+        card.className = "guide-card";
 
-  card.className = "guide-card";
+        card.innerHTML = `
+          <div class="card-content">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
 
-  card.innerHTML = `
-    <div class="card-content">
-      <h3>${guide.title}</h3>
-      <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
 
-      <div class="badges">
-        <span class="badge asset">${guide.assetType}</span>
-        <span class="badge manufacturer">${guide.manufacturer}</span>
-        <span class="badge model">${guide.model}</span>
-      </div>
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+          </div>
+        `;
 
-      <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-    </div>
-  `;
-
-  container.appendChild(card);
-
-});
+        container.appendChild(card);
+      });
 
     })
     .catch(err => console.error("Related guides error:", err));
 
-}
+});
