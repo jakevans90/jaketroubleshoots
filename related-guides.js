@@ -1,6 +1,6 @@
 // related-guides.js
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
   const container = document.getElementById("related-guides-grid");
 
@@ -9,19 +9,22 @@ document.addEventListener("DOMContentLoaded", function() {
     return;
   }
 
-  // current page filename
+  // get current page filename
   const currentPage = window.location.pathname.split("/").pop();
 
-  fetch("../data/guides.json")
+  fetch("/data/guides.json")
     .then(res => res.json())
     .then(fileList => {
 
+      // if guides.json contains a list of JSON files
       if (Array.isArray(fileList) && typeof fileList[0] === "string") {
+
         return Promise.all(
           fileList.map(file =>
-            fetch("../" + file).then(r => r.json())
+            fetch("/" + file).then(r => r.json())
           )
         ).then(data => data.flat());
+
       }
 
       return fileList;
@@ -29,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(allGuides => {
 
+      // find current guide
       const currentGuide = allGuides.find(g =>
         g.url.split("/").pop() === currentPage
       );
@@ -38,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
+      // find related guides by model
       const related = allGuides.filter(g =>
         g.model === currentGuide.model &&
         g.url.split("/").pop() !== currentPage
@@ -49,11 +54,10 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       related.forEach(guide => {
+
         const card = document.createElement("a");
 
-        // Fix relative path
-        card.href = "../" + guide.url;
-
+        card.href = "/" + guide.url;
         card.className = "guide-card";
 
         card.innerHTML = `
@@ -72,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
 
         container.appendChild(card);
+
       });
 
     })
