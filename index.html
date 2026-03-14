@@ -111,10 +111,13 @@
 </div>
 
 <section style="padding:40px; text-align:center;">
+  <h3>Featured Guides</h3>
+  <div id="featured-grid" class="guides-grid"></div>
+</section>
+
+<section style="padding:40px; text-align:center;">
   <h3>Most Recent Guides</h3>
-  <div id="guides-grid" class="guides-grid">
-  <!-- Cards will be injected here by JS -->
-</div>
+  <div id="guides-grid" class="guides-grid"></div>
 </section>
 
 <footer>
@@ -128,11 +131,26 @@
   // Homepage logic
 fetchGuides()
   .then(allGuides => {
-    const recent = getRecentGuides(allGuides, 24); // override default 12 → 24
+    // Change these 6 URLs whenever you want to swap featured guides
+    const featuredUrls = [
+      'guides/medtronic-valleylab-force-fx-return-electrode-alarm.html',
+      'guides/medtronic-valleylab-force-fx-no-output.html',
+      'guides/medtronic-valleylab-ft10-instrument-detection-errors.html',
+      'guides/medtronic-valleylab-ft10-footswitch-communication-failure.html',
+      'guides/medtronic-valleylab-ft10-energy-delivery-interruptions.html',
+      'guides/medtronic-valleylab-ft10-internal-cooling-system-or-fan-faults.html',
+    ];
+
+    const featured = featuredUrls
+      .map(url => allGuides.find(g => g.url === url))
+      .filter(Boolean);
+
+    renderGuides('featured-grid', featured);
+
+    const recent = getRecentGuides(allGuides, 12);
     renderGuides('guides-grid', recent);
   })
-    .catch(err => console.error('Guide load error:', err));
-
+  .catch(err => console.error('Guide load error:', err));
   // Homepage search redirect
   const form = document.getElementById('home-search-form');
   form.addEventListener('submit', e => {
