@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GE Healthcare OEC 9900 Series - PACS / Network Communication Failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>GE HEALTHCARE OEC 9900 SERIES</h2>
+  <p>PACS / Network Communication Failure</p>
+</section>
+
+<main style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+  <h3>Asset Type</h3>
+  <p>C-Arm</p>
+
+  <h3>Manufacturer</h3>
+  <p>GE Healthcare</p>
+
+  <h3>Model</h3>
+  <p>OEC 9900 Series</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>This guide assists Clinical Engineering in troubleshooting a GE Healthcare OEC 9900 Series C-Arm that is unable to communicate with PACS or networked imaging systems. Symptoms may include:</p>
+  <ul>
+    <li>Images not appearing on PACS</li>
+    <li>Network error messages on the console</li>
+    <li>Failure to send or receive DICOM images</li>
+  </ul>
+  <p>The guide focuses on external and verifiable network issues first, before assuming internal device failure.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>Verify Network Connectivity</h4>
+  <ul>
+    <li>Check that the C-Arm is physically connected to the network via Ethernet or Wi-Fi.</li>
+    <li>Confirm link lights on network ports are active.</li>
+    <li><strong>Reason:</strong> A disconnected or faulty network cable is the most common cause of communication failure.</li>
+  </ul>
+
+  <h4>Check IP Configuration</h4>
+  <ul>
+    <li>Access the device’s network settings to confirm IP address, subnet mask, gateway, and DNS are correctly configured.</li>
+    <li><strong>Reason:</strong> Incorrect IP settings prevent PACS communication.</li>
+  </ul>
+
+  <h4>Ping PACS / Server</h4>
+  <ul>
+    <li>From the C-Arm or connected workstation, ping the PACS server to verify network reachability.</li>
+    <li><strong>Reason:</strong> Confirms that the device can reach the destination server.</li>
+  </ul>
+
+  <h4>Verify PACS Server Status</h4>
+  <ul>
+    <li>Confirm the PACS server is online, reachable, and accepting incoming connections.</li>
+    <li><strong>Reason:</strong> The problem may originate on the server side rather than the C-Arm.</li>
+  </ul>
+
+  <h4>Check Firewall / Port Settings</h4>
+  <ul>
+    <li>Ensure the necessary DICOM ports (usually 104 or configured ports) are open between the C-Arm and PACS server.</li>
+    <li><strong>Reason:</strong> Firewalls can block DICOM communication.</li>
+  </ul>
+
+  <h4>Test DICOM AE Titles and Settings</h4>
+  <ul>
+    <li>Confirm the C-Arm AE Title, PACS AE Title, and port numbers match the PACS configuration.</li>
+    <li><strong>Reason:</strong> Mismatched AE Titles prevent successful image transfer.</li>
+  </ul>
+
+  <h4>Restart Network Equipment</h4>
+  <ul>
+    <li>Power cycle network switches, routers, or access points if connectivity is uncertain.</li>
+    <li><strong>Reason:</strong> Temporary network glitches can disrupt communication.</li>
+  </ul>
+
+  <h2>If the Problem Persists</h2>
+  <p>External network checks have been ruled out.</p>
+  <p>The device may have an internal network interface failure or corrupted network settings.</p>
+  <ul>
+    <li>Remove device from service.</li>
+    <li>Label “Out of Service – Network Issue.”</li>
+    <li>Escalate to GE service or in-house bench evaluation.</li>
+  </ul>
+  <p>Knowing when to stop prevents unnecessary downtime and ensures patient safety.</p>
+
+  <h2>Clinical Use Tip</h2>
+  <ul>
+    <li>Do not attempt to troubleshoot network failures while the device is actively imaging a patient.</li>
+    <li>Move the patient to another operational C-Arm if possible.</li>
+    <li>Ensure troubleshooting occurs in a safe, controlled environment.</li>
+  </ul>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>“C-Arm unable to send images to PACS; error displayed on console.”</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>“Device could not communicate with PACS server; network link and IP settings verified. Server reachable via other devices.”</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Examples:</em><br>“Device removed from service and labeled out of service. Escalated to GE service for network interface evaluation.”</p>
+
+  <h2>Helpful Details to Include</h2>
+  <ul>
+    <li>Network cable tested and swapped</li>
+    <li>Link lights observed</li>
+    <li>IP configuration verified</li>
+    <li>Ping and connectivity tests results</li>
+    <li>PACS AE titles and ports checked</li>
+    <li>Network switch or firewall changes noted</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>Patient safety and logical troubleshooting are paramount. Start with simple network checks, document all observations, and escalate when internal issues are suspected. Proper CCR documentation ensures continuity and accountability.</p>
+  <p><strong>That is successful troubleshooting.</strong></p>
+
+  <section style="padding:40px; text-align:center;">
+    <h3>Related Guides</h3>
+    <div id="related-guides-grid"
+         class="guides-grid"
+         style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;">
+    </div>
+  </section>
+
+  <script src="/related-guides.js"></script>
+</main>
+
+<footer>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
