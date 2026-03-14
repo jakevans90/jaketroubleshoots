@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GE Healthcare OEC 9800 - PACS / DICOM Transfer Failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>GE Healthcare OEC 9800</h2>
+  <p>PACS / DICOM Transfer Failure</p>
+</section>
+
+<main style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+  <h3>Asset Type</h3>
+  <p>C-Arm</p>
+
+  <h3>Manufacturer</h3>
+  <p>GE Healthcare</p>
+
+  <h3>Model</h3>
+  <p>OEC 9800</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>This guide assists Clinical Engineering in troubleshooting a GE Healthcare OEC 9800 C-Arm that is unable to send images to a PACS server or other DICOM destinations. Symptoms may include images not appearing in PACS, error messages related to DICOM transfer, or failure to complete image export after acquisition. The focus is on verifying external and network-related causes before considering internal device faults.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>Confirm device status and acquisition</h4>
+  <ul>
+    <li>Ensure the C-Arm has successfully captured images and that they appear on the local monitor.</li>
+    <li>Reason: If images are not acquired correctly, DICOM transfer will fail.</li>
+  </ul>
+
+  <h4>Check network connections</h4>
+  <ul>
+    <li>Verify Ethernet or fiber connections from the C-Arm to the network switch.</li>
+    <li>Confirm cables are securely plugged in and undamaged.</li>
+    <li>Reason: Loose or damaged cables are a common cause of transfer failure.</li>
+  </ul>
+
+  <h4>Verify IP configuration</h4>
+  <ul>
+    <li>Confirm the C-Arm has a valid IP address on the hospital network.</li>
+    <li>Check subnet mask, gateway, and PACS server address settings.</li>
+    <li>Reason: Misconfigured IP or network settings prevent DICOM communication.</li>
+  </ul>
+
+  <h4>Ping PACS server</h4>
+  <ul>
+    <li>From the C-Arm or connected workstation, attempt to ping the PACS server.</li>
+    <li>Reason: Confirms network reachability; failure indicates network or firewall issues.</li>
+  </ul>
+
+  <h4>Check PACS server status</h4>
+  <ul>
+    <li>Confirm the PACS server is online and accepting DICOM connections.</li>
+    <li>Reason: Server downtime can mimic device issues.</li>
+  </ul>
+
+  <h4>Verify AE Titles and ports</h4>
+  <ul>
+    <li>Ensure the C-Arm’s DICOM AE Title matches the PACS configuration.</li>
+    <li>Confirm the DICOM port is correct and not blocked by firewall.</li>
+    <li>Reason: Mismatched AE Titles or blocked ports prevent successful DICOM transfer.</li>
+  </ul>
+
+  <h4>Restart network interfaces</h4>
+  <ul>
+    <li>Power-cycle the C-Arm’s network interface or restart the device if safe.</li>
+    <li>Reason: Temporary network glitches can be resolved by a restart.</li>
+  </ul>
+
+  <h4>Check DICOM logs</h4>
+  <ul>
+    <li>Access DICOM logs on the C-Arm to identify errors during transfer.</li>
+    <li>Reason: Logs provide error codes to help isolate the cause.</li>
+  </ul>
+
+  <h2>If the Problem Persists</h2>
+  <p>If all external network checks and PACS configuration are verified and transfer still fails:</p>
+  <ul>
+    <li>Remove the device from service.</li>
+    <li>Label it “Out of Service.”</li>
+    <li>Escalate to internal repair or vendor support for potential network interface board or DICOM software fault.</li>
+    <li>Reason: Continuing to troubleshoot internally without proper expertise may risk patient safety or device integrity.</li>
+  </ul>
+
+  <h2>Clinical Use Tip</h2>
+  <ul>
+    <li>Never troubleshoot DICOM transfers while the C-Arm is in active use on a patient.</li>
+    <li>Move the patient to another imaging system first.</li>
+    <li>Only perform network and device checks when the system is idle and safe to test.</li>
+  </ul>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>“PACS transfer failed; images not reaching server.”</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>“Network cable found loose; device could not communicate with PACS server.”</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Examples:</em><br>“Secured cable, verified network connection, restarted C-Arm, successfully completed DICOM transfer test.”</p>
+
+  <h2>Helpful Details to Include</h2>
+  <ul>
+    <li>Cable tested/li>
+    <li>Network switch port verified</li>
+    <li>IP address and AE Title confirmed</li>
+    <li>Firewall or port block checked</li>
+    <li>Final device status: Transfer successful or device labeled OOS if unresolved</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>Patient safety and proper escalation are paramount. Troubleshooting DICOM issues requires a methodical approach, starting with network and configuration checks before assuming internal failure. Accurate CCR documentation ensures the issue is tracked and resolved efficiently.</p>
+
+  <p><strong>That is successful troubleshooting.</strong></p>
+
+  <section style="padding:40px; text-align:center;">
+    <h3>Related Guides</h3>
+
+    <div id="related-guides-grid"
+         class="guides-grid"
+         style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;">
+    </div>
+  </section>
+
+  <script src="/related-guides.js"></script>
+</main>
+
+<footer>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
