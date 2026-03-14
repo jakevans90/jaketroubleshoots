@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jaeger Medical Vyntus Series (ONE / SPIRO / BODY / CPX) - Network / EMR Communication Failure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Jaeger Medical Vyntus Series (ONE / SPIRO / BODY / CPX)</h2>
+  <p>Network / EMR Communication Failure</p>
+</section>
+
+<main style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+
+<h3>Asset Type</h3>
+<p>Pulmonary Function Tester</p>
+
+<h3>Manufacturer</h3>
+<p>Jaeger Medical</p>
+
+<h3>Model</h3>
+<p>Vyntus Series (ONE / SPIRO / BODY / CPX)</p>
+
+<h2>What This Guide Helps With</h2>
+<p>This guide assists Clinical Engineering in troubleshooting situations where a Jaeger Medical Vyntus pulmonary function testing system cannot communicate with the hospital network or Electronic Medical Record (EMR). Symptoms may include failed patient record uploads, inability to retrieve patient demographics, or communication errors within the pulmonary testing software.</p>
+<p>Because these systems rely heavily on PC software, network configuration, and interface engines, many failures are caused by simple connection or configuration issues rather than hardware faults.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>1. Verify the System Is Powered and the Software Is Running</h4>
+<ul>
+<li>Confirm the Vyntus PC workstation and pulmonary software are fully powered on and functioning normally.</li>
+<li>Look for: software error messages, frozen application windows, delayed system response.</li>
+<li>If the software is not functioning normally, restart the workstation and reopen the Vyntus software before continuing.</li>
+</ul>
+
+<h4>2. Confirm the Network Connection on the PC</h4>
+<ul>
+<li>Check that the PC connected to the Vyntus system has an active network connection.</li>
+<li>Verify: Ethernet cable is securely connected, network port indicator lights are active, the PC shows a valid network connection in Windows.</li>
+<li>If the network connection is lost, reconnect the cable or move to a known working network port.</li>
+</ul>
+
+<h4>3. Verify the PC Has a Valid IP Address</h4>
+<ul>
+<li>Open the network settings or command prompt and confirm the workstation has a valid IP address assigned by the hospital network.</li>
+<li>Look for: valid IP address, proper subnet, default gateway.</li>
+<li>An invalid or missing IP address may indicate a network configuration or DHCP issue.</li>
+</ul>
+
+<h4>4. Confirm EMR Interface Settings in the Vyntus Software</h4>
+<ul>
+<li>Open the configuration settings within the pulmonary testing software and verify the interface settings.</li>
+<li>Check: EMR interface enabled, correct interface server address, correct port configuration, correct protocol settings (HL7 or other interface).</li>
+<li>Incorrect settings may prevent communication with the hospital integration engine.</li>
+</ul>
+
+<h4>5. Verify Communication With the Interface Engine</h4>
+<ul>
+<li>Many Vyntus systems communicate with the EMR through an integration engine such as Cerner Connectivity Engine or similar middleware.</li>
+<li>Check for: interface connection status within the software, interface error logs, failed message queues.</li>
+<li>If possible, attempt a test message or patient record transmission.</li>
+</ul>
+
+<h4>6. Confirm Patient Demographic Import Function</h4>
+<ul>
+<li>If the system normally retrieves patient data from the EMR, attempt a patient lookup.</li>
+<li>Observe: whether the lookup function works, any returned error messages, slow response from the system.</li>
+<li>Failure here often indicates a server communication issue rather than a device problem.</li>
+</ul>
+
+<h4>7. Restart the Vyntus Software and Workstation</h4>
+<ul>
+<li>If communication appears intermittent, restart the system.</li>
+<li>Steps: close the pulmonary testing software, restart the workstation, reopen the application and attempt communication again.</li>
+<li>This clears temporary network or software interface faults.</li>
+</ul>
+
+<h4>8. Verify the Hospital Network Is Operational</h4>
+<ul>
+<li>Check with IT or verify another networked workstation in the same room.</li>
+<li>Confirm: other devices on the network function normally, no current network outage, no recent network configuration changes.</li>
+<li>Network outages frequently appear as device communication failures.</li>
+</ul>
+
+<h2>If the Problem Persists</h2>
+<p>If all external network and configuration checks have been completed and communication with the EMR still fails, the issue is likely related to: software interface configuration, integration engine issues, server-side interface failures, PC software corruption.</p>
+<p>At this point the device should be:</p>
+<ul>
+<li>Removed from clinical use if patient records cannot be reliably stored</li>
+<li>Labeled Out of Service</li>
+<li>Escalated to IT, interface support, or manufacturer service for further investigation</li>
+</ul>
+<p>Recognizing when the issue is outside the device itself is an important part of effective troubleshooting.</p>
+
+<h2>Clinical Use Tip</h2>
+<p>Never troubleshoot EMR communication issues while a patient test is actively being performed. Allow the clinical staff to complete or cancel the test first and ensure patient data has been safely documented before restarting software or network connections.</p>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>
+“Pulmonary lab reported that the Vyntus system could not upload test results to the EMR and patient demographics were not importing.”</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>
+“Network cable at the workstation was found partially disconnected, causing intermittent network communication.”</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Examples:</em><br>
+“Reseated the Ethernet cable and verified network connectivity. Confirmed successful patient lookup and test result upload to the EMR.”</p>
+
+<h2>Helpful Details to Include</h2>
+<ul>
+<li>Network connection status</li>
+<li>IP address verified</li>
+<li>Software error messages observed</li>
+<li>Interface engine connection status</li>
+<li>Cable condition and port tested</li>
+<li>Workstation reboot performed</li>
+<li>Test message or patient lookup result</li>
+<li>Final device status</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>Many EMR communication problems originate from network connectivity, software configuration, or interface engine issues rather than hardware failure. Clinical Engineering troubleshooting should always begin with simple external checks before escalating. Ensuring accurate documentation and knowing when to involve IT or vendor support helps maintain both system reliability and patient data integrity.</p>
+<p><strong>That is successful troubleshooting.</strong></p>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid"
+       class="guides-grid"
+       style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;">
+  </div>
+</section>
+
+<script src="/related-guides.js"></script>
+
+</main>
+
+<footer>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
