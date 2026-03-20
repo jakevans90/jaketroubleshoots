@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Grab all feedback widgets (you'll have one per page)
   const widgets = document.querySelectorAll(".guide-feedback");
 
   widgets.forEach(widget => {
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const iframe = widget.querySelector(".feedback-iframe");
 
     // Auto-detect guide name
-    let guideName = document.querySelector("h1.guide-title")?.textContent
+    let guideName = document.querySelector("h2")?.textContent // pick your main guide heading
                     || document.title
                     || "Unknown Guide";
 
