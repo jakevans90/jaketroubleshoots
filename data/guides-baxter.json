@@ -865,5 +865,329 @@
     "Air presence in lines",
     "Final device status (in service or removed)"
   ]
+},
+        {
+  "title": "Baxter Novum IQ - Network Connectivity or EMR Sync Failure",
+  "description": "Troubleshooting guide for Novum IQ infusion pump network connectivity and EMR synchronization failures.",
+  "assetType": "Infusion Pump",
+  "manufacturer": "Baxter",
+  "model": "Novum IQ",
+  "url": "guides/baxter-novum-iq-network-connectivity-or-emr-sync-failure.html",
+  "dateAdded": "2026-03-20",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Do not troubleshoot on a pump actively infusing a patient. Move the patient to another verified pump before troubleshooting. Only perform connectivity troubleshooting when patient safety is ensured."
+    },
+    {
+      "title": "Check Pump Power and Status",
+      "instructions": "Ensure the pump is powered on and not in a “standby” or “error” state. Confirm battery is adequately charged or connected to AC power. Why: A powered-down pump cannot communicate with the network."
+    },
+    {
+      "title": "Verify Network Cable or Wi-Fi Connection",
+      "instructions": "Inspect the network cable for damage and ensure it is securely connected. If using Wi-Fi, confirm the pump is connected to the correct SSID. Why: Loose or damaged cables or incorrect Wi-Fi credentials prevent network communication."
+    },
+    {
+      "title": "Confirm IP Address and Network Settings",
+      "instructions": "Check the pump’s network configuration menu for a valid IP address, subnet mask, and gateway. Ensure DHCP is functioning or the static IP does not conflict with another device. Why: Network misconfiguration is a common cause of EMR sync failures."
+    },
+    {
+      "title": "Check Hospital Network Status",
+      "instructions": "Verify that the network switch, access point, or port the pump is connected to is operational. Confirm no recent network maintenance or firewall changes are blocking communication. Why: External network issues can appear as pump connectivity problems."
+    },
+    {
+      "title": "Confirm EMR Integration Settings",
+      "instructions": "Ensure the pump is registered in the EMR system with correct identifiers. Verify that the integration server or middleware (e.g., Smart Pump Interface) is operational. Why: If the server or integration settings are misconfigured, data will not sync."
+    },
+    {
+      "title": "Restart Pump and/or Network Connection",
+      "instructions": "Reboot the pump and, if possible, reset the network connection. Observe whether the pump successfully reconnects to the EMR. Why: Some transient network errors are resolved with a reboot."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Pump not showing infusion data in EMR; network connection failure alarm present.",
+      "Cause": "Observed pump powered on, connected to network, valid IP, but EMR integration server unreachable.",
+      "Resolution": "Restarted pump and network connection; issue persisted. Pump removed from service and sent for bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Network port tested: Yes/No",
+    "Wi-Fi credentials confirmed: Yes/No",
+    "IP address and subnet verified",
+    "Network switch or AP status",
+    "EMR integration server status",
+    "Pump reboot attempts",
+    "Final pump status (Out of Service / In Service)"
+  ]
+},
+        {
+  "title": "Baxter Novum IQ - Drug Library Not Loading or Corrupted",
+  "description": "Troubleshooting guide for Novum IQ infusion pump drug library loading or corruption issues.",
+  "assetType": "Infusion Pump",
+  "manufacturer": "Baxter",
+  "model": "Novum IQ",
+  "url": "guides/baxter-novum-iq-drug-library-not-loading-or-corrupted.html",
+  "dateAdded": "2026-03-20",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Do not troubleshoot while the pump is actively infusing a patient. Move the patient to a properly functioning pump before proceeding."
+    },
+    {
+      "title": "Verify the Reported Issue",
+      "instructions": "Power on the pump and attempt to access the drug library. Note any error messages (e.g., “Library Not Found,” “Library Corrupt,” or sync errors). Confirm whether the issue is consistent or intermittent."
+    },
+    {
+      "title": "Check Correct Care Area/Profile Selection",
+      "instructions": "Ensure the correct care unit or profile is selected on the pump. Some libraries are unit-specific and may appear missing if the wrong profile is chosen."
+    },
+    {
+      "title": "Confirm Network Connectivity",
+      "instructions": "Verify the pump is connected to Wi-Fi or the hospital network. Check for network indicators or connection status on the device. Move the pump to a known good coverage area if needed."
+    },
+    {
+      "title": "Force Library Sync / Refresh",
+      "instructions": "Attempt to manually sync or refresh the drug library from the settings menu. Reboot the pump and allow time for automatic synchronization."
+    },
+    {
+      "title": "Check Server / Integration Status",
+      "instructions": "Confirm with IT or clinical systems that the drug library server or integration platform is operational. Verify there are no ongoing outages or deployment issues."
+    },
+    {
+      "title": "Compare with Another Pump",
+      "instructions": "Check a known working Novum IQ pump on the same unit. Verify if the drug library loads correctly on that device."
+    },
+    {
+      "title": "Inspect for Incomplete Updates",
+      "instructions": "Determine if a recent drug library update was pushed. Look for signs of interrupted updates (battery loss during update, network drop)."
+    },
+    {
+      "title": "Check Date and Time Settings",
+      "instructions": "Ensure the system date and time are correct."
+    },
+    {
+      "title": "Perform a Controlled Reboot",
+      "instructions": "Power cycle the pump fully and allow it to reconnect and resync."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Nursing reported infusion pump drug library would not load; pump displayed “Library Not Found” and could not start medication using guardrails.",
+      "Cause": "Pump was not connected to the network and failed to sync the drug library. After reconnecting, library still failed to load, suggesting incomplete or corrupted update.",
+      "Resolution": "Attempted network reconnection, forced sync, and reboot with no success. Removed pump from service and sent to vendor for software reload."
+    }
+  },
+  "helpfulDetails": [
+    "Network connection status verified",
+    "Sync attempt results",
+    "Error messages displayed",
+    "Comparison with known working pump",
+    "Recent update activity",
+    "Date/time accuracy",
+    "Final device status (removed from service or returned to use)"
+  ]
+},
+        {
+  "title": "Baxter Novum IQ - Occlusion Alarm Troubleshooting",
+  "description": "Guide for troubleshooting occlusion alarms on the Baxter Novum IQ infusion pump by identifying and resolving external flow restrictions before escalation.",
+  "assetType": "Infusion Pump",
+  "manufacturer": "Baxter",
+  "model": "Novum IQ",
+  "url": "guides/baxter-novum-iq-occlusion-alarm-troubleshooting.html",
+  "dateAdded": "2026-03-20",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Do not troubleshoot while the pump is actively infusing a patient. Ensure the patient is safely transitioned to another functioning device before continuing."
+    },
+    {
+      "title": "Confirm the Alarm Condition",
+      "instructions": "Verify the exact alarm message (e.g., upstream vs downstream occlusion). This helps determine whether the restriction is before or after the pump mechanism."
+    },
+    {
+      "title": "Check for Closed or Partially Closed Clamps",
+      "instructions": "Inspect all roller clamps and slide clamps on the IV tubing. A partially closed clamp is one of the most common causes of occlusion alarms."
+    },
+    {
+      "title": "Inspect the IV Tubing for Kinks or Obstructions",
+      "instructions": "Trace the tubing from the bag to the patient. Look for kinks or tight bends and compression under bed rails or equipment. Straighten or reposition as needed."
+    },
+    {
+      "title": "Verify Proper Tubing Installation in the Pump",
+      "instructions": "Ensure the administration set is correctly seated in the pump channel and fully loaded according to manufacturer guidance. Misalignment can create artificial resistance."
+    },
+    {
+      "title": "Check the IV Site (If Applicable)",
+      "instructions": "Coordinate with clinical staff to assess infiltration, catheter occlusion, and patient positioning affecting flow. Resistance at the patient site will trigger downstream occlusion alarms."
+    },
+    {
+      "title": "Inspect the Fluid Bag and Upstream Flow",
+      "instructions": "Ensure the fluid bag is not empty. Confirm the spike is properly inserted and the drip chamber is correctly filled. Check for collapsed bags (especially with non-vented sets)."
+    },
+    {
+      "title": "Verify Correct Administration Set Type",
+      "instructions": "Ensure the tubing set is compatible with the Novum IQ. Incorrect or non-approved sets may cause flow resistance or sensor misinterpretation."
+    },
+    {
+      "title": "Power Cycle the Pump",
+      "instructions": "Turn the pump off and back on. This can clear temporary sensor or software-related faults."
+    },
+    {
+      "title": "Test with a Known Good Setup",
+      "instructions": "Replace tubing with a new, known good administration set. Run a controlled test infusion (per policy) to see if the alarm persists. This helps isolate whether the issue is setup-related or device-related."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Nursing reported frequent occlusion alarms during infusion despite proper setup.",
+      "Cause": "Kinked tubing found under bed rail causing intermittent downstream occlusion.",
+      "Resolution": "Repositioned tubing, verified proper flow, and confirmed pump operation without further alarms."
+    }
+  },
+  "helpfulDetails": [
+    "Tubing inspected and repositioned",
+    "Clamps verified open",
+    "Administration set replaced",
+    "Alarm type (upstream/downstream) noted",
+    "Pump power cycled",
+    "Test infusion performed",
+    "Final device status (returned to service or sent for repair)"
+  ]
+},
+        {
+  "title": "Baxter Novum IQ - Air-in-Line Detector Errors",
+  "description": "Troubleshooting air-in-line detector errors on the Baxter Novum IQ infusion pump with a focus on external causes and safe escalation.",
+  "assetType": "Infusion Pump",
+  "manufacturer": "Baxter",
+  "model": "Novum IQ",
+  "url": "guides/baxter-novum-iq-air-in-line-detector-errors.html",
+  "dateAdded": "2026-03-20",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the pump is not actively infusing on a patient, transfer the patient to a functioning device if needed, and recognize that air-in-line conditions can pose serious risk if ignored."
+    },
+    {
+      "title": "Verify the Alarm Message and Behavior",
+      "instructions": "Confirm the exact alarm displayed (air-in-line, air detected, or similar) and note if the alarm is continuous or intermittent to determine whether the issue is actual air vs. detection inconsistency."
+    },
+    {
+      "title": "Inspect the IV Tubing for Air Bubbles",
+      "instructions": "Visually inspect the entire fluid path from bag to patient, look for visible air bubbles, gaps, or foam, and remove air by priming the line per hospital protocol if present."
+    },
+    {
+      "title": "Check for Improper Priming",
+      "instructions": "Confirm the tubing was fully primed before connection and re-prime if necessary since partial priming can leave microbubbles that trigger alarms."
+    },
+    {
+      "title": "Verify Correct Tubing Type and Setup",
+      "instructions": "Ensure the correct Baxter-approved tubing set is being used and that the tubing is properly loaded in the pump channel, as misalignment can interfere with the sensor."
+    },
+    {
+      "title": "Inspect the Air-in-Line Sensor Area",
+      "instructions": "Open the pump door and inspect the sensor region for residue, dried fluid, condensation, debris, or dust, and clean per approved procedures if contamination is present."
+    },
+    {
+      "title": "Check for Kinks or Irregular Flow",
+      "instructions": "Inspect tubing for kinks, compression, or sharp bends and ensure clamps are fully open since irregular flow can introduce air pockets or trigger detection errors."
+    },
+    {
+      "title": "Swap Tubing Set",
+      "instructions": "Replace the IV tubing with a new, properly primed set to rule out defective or compromised tubing."
+    },
+    {
+      "title": "Test with a Known Good Setup",
+      "instructions": "Set up the pump with a test fluid bag and new tubing and run a controlled infusion to determine if the alarm persists."
+    },
+    {
+      "title": "Power Cycle the Pump",
+      "instructions": "Turn the pump off and back on and re-test with proper setup to clear temporary sensor or software faults."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Nursing reported repeated air-in-line alarms during infusion despite no visible air in tubing.",
+      "Cause": "Observed no air in line; sensor area had visible residue causing intermittent false detection.",
+      "Resolution": "Cleaned sensor area, replaced tubing, and tested with known good setup. Alarm cleared and unit returned to service."
+    }
+  },
+  "helpfulDetails": [
+    "Tubing fully primed and free of visible air",
+    "Tubing type verified and swapped",
+    "Sensor area condition (clean/dirty)",
+    "Alarm frequency (constant/intermittent)",
+    "Pump tested with known good setup",
+    "Any visible residue or condensation",
+    "Final operational status"
+  ]
+},
+        {
+  "title": "Baxter Novum IQ - Battery or Power Module Failure",
+  "description": "Troubleshooting guide for resolving battery and power-related issues on the Baxter Novum IQ infusion pump.",
+  "assetType": "Infusion Pump",
+  "manufacturer": "Baxter",
+  "model": "Novum IQ",
+  "url": "guides/baxter-novum-iq-battery-or-power-module-failure.html",
+  "dateAdded": "2026-03-20",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Do not troubleshoot on a device connected to a patient. Transition the patient to a properly functioning infusion pump before removing this device from service."
+    },
+    {
+      "title": "Verify AC Power Source",
+      "instructions": "Confirm the outlet is functional using a known working device. Check for switched outlets or power strips that may be turned off. Why: Many “no power” issues are caused by unavailable or interrupted AC power."
+    },
+    {
+      "title": "Inspect the Power Cord and Adapter",
+      "instructions": "Ensure the correct Baxter-approved power cord is being used. Check for visible damage (cuts, bent prongs, loose connections). Reseat both ends of the cord firmly. Why: Damaged or loose cords can prevent charging or powering."
+    },
+    {
+      "title": "Check Power Indicator Lights",
+      "instructions": "Observe if any LEDs illuminate when plugged into AC power. Look for charging indicators or fault lights. Why: Indicator behavior helps differentiate between battery vs. internal power failure."
+    },
+    {
+      "title": "Attempt Power-On with AC Connected",
+      "instructions": "Plug the pump into AC power and attempt to power on. If the unit powers on only when plugged in, suspect battery degradation. Why: This isolates battery function from the main power supply."
+    },
+    {
+      "title": "Check Battery Status on Screen (if accessible)",
+      "instructions": "Navigate to system/battery status if the device powers on. Look for: Low capacity warnings, Charging status, Battery not detected messages. Why: Provides direct feedback on battery health and recognition."
+    },
+    {
+      "title": "Inspect Battery Compartment (External Only)",
+      "instructions": "If accessible without tools, verify battery is properly seated. Look for corrosion, swelling, or damage. Do not open the device or access internal components. Why: Poor battery contact can prevent proper operation."
+    },
+    {
+      "title": "Swap with Known Good Power Cord or Battery (if available)",
+      "instructions": "Replace the power cord with a known working one. If batteries are user-replaceable, try a known good battery. Why: Helps isolate whether the issue is accessory-related vs. device-related."
+    },
+    {
+      "title": "Check for Intermittent Power Loss",
+      "instructions": "Gently move the power cord at the connection point. Observe for power drops or flickering. Why: May indicate a worn power port or loose connection."
+    },
+    {
+      "title": "Listen and Observe During Charging",
+      "instructions": "Check for unusual heat, noise, or burning smell. Why: These may indicate internal power supply issues and require immediate removal from service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Pump would not power on and displayed battery failure alarm during use.",
+      "Cause": "Battery not holding charge and device only powered on when connected to AC. Verified with known good outlet and power cord.",
+      "Resolution": "Removed pump from service and sent for battery replacement and internal power module evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Outlet tested and verified",
+    "Power cord condition and swap performed",
+    "Battery status message (if available)",
+    "Indicator light behavior",
+    "Device powers on with AC only vs. battery",
+    "Any intermittent power loss observed",
+    "Presence of heat, odor, or noise",
+    "Final device status (removed from service)"
+  ]
 }
 ]
