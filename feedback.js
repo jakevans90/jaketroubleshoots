@@ -1,23 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const yesBtn = document.querySelector(".thumb-btn.yes");
-  const noBtn = document.querySelector(".thumb-btn.no");
-  const buttons = document.querySelector(".thumb-buttons");
-  const thanks = document.querySelector(".feedback-thanks");
+  const widget = document.querySelector(".guide-feedback");
+  if (!widget) return;
 
-  const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfcgW_n0cunK0HfeiWh2HjBGCHnhK0QI_V1gak_eQv_9rMfNw/viewform";
+  const yesBtn = widget.querySelector(".thumb-btn.yes");
+  const noBtn = widget.querySelector(".thumb-btn.no");
+  const buttons = widget.querySelector(".thumb-buttons");
+  const thanks = widget.querySelector(".feedback-thanks");
+
+  // Get guide name automatically
+  const guideName =
+    document.querySelector(".hero h2")?.textContent ||
+    document.title ||
+    "Unknown Guide";
+
+  // Your Google Form (KEEP embedded=true — important)
+  const formURL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSfcgW_n0cunK0HfeiWh2HjBGCHnhK0QI_V1gak_eQv_9rMfNw/viewform?embedded=true";
 
   if (!yesBtn || !noBtn) return;
 
-  // 👍 YES (simple)
+  // 👍 YES
   yesBtn.addEventListener("click", () => {
     buttons.style.display = "none";
     thanks.style.display = "block";
 
-    // OPTIONAL: log it silently (we can improve this later)
+    // (Optional future upgrade: send "Yes" silently)
+    console.log("Helpful:", guideName);
   });
 
-  // 👎 NO (open form properly)
+  // 👎 NO
   noBtn.addEventListener("click", () => {
-    window.open(formURL, "_blank"); // opens in new tab
+    // Open form in new tab (works reliably)
+    window.open(formURL, "_blank");
+
+    // Optional: hide buttons after click
+    buttons.style.display = "none";
   });
 });
