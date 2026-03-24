@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title id="page-title">Model Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <!-- reuse your header -->
+</header>
+
+<section class="hero">
+  <h2 id="model-name">Model</h2>
+  <p id="model-description"></p>
+</section>
+
+<section class="browse-section">
+  <h3>Manufacturer</h3>
+  <div id="manufacturer-link" class="browse-buttons"></div>
+</section>
+
+<section class="browse-section">
+  <h3>Related Models</h3>
+  <div id="related-models" class="browse-buttons"></div>
+</section>
+
+<section class="guides-grid" id="guides-grid"></section>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const name = params.get('name');
+
+document.getElementById('model-name').textContent = name;
+document.getElementById('page-title').textContent = name + " | Model Hub";
+
+// Load hub metadata
+fetch('data/hub-model.json')
+  .then(res => res.json())
+  .then(hubs => {
+    const hub = hubs.find(h => h.name === name);
+    if (!hub) return;
+
+    document.getElementById('model-description').textContent = hub.description || '';
+
+    // Manufacturer link
+    if (hub.manufacturer) {
+      const a = document.createElement('a');
+      a.href = `hub-manufacturer.html?name=${encodeURIComponent(hub.manufacturer)}`;
+      a.textContent = hub.manufacturer;
+      a.classList.add('browse-button');
+      document.getElementById('manufacturer-link').appendChild(a);
+    }
+
+    // Related models
+    (hub.relatedModels || []).forEach(rel => {
+      const a = document.createElement('a');
+      a.href = `hub-model.html?name=${encodeURIComponent(rel)}`;
+      a.textContent = rel;
+      a.classList.add('browse-button');
+      document.getElementById('related-models').appendChild(a);
+    });
+  });
+
+// Load guides
+fetch('data/guides.json')
+  .then(res => res.json())
+  .then(data => {
+    const guides = Array.isArray(data) ? data : [];
+    const container = document.getElementById('guides-grid');
+
+    const filtered = guides
+      .filter(g => g.model === name)
+      .sort((a, b) => a.title.localeCompare(b.title));
+
+    filtered.forEach(g => {
+      const card = document.createElement('a');
+      card.href = g.url;
+      card.classList.add('guide-card');
+
+      card.innerHTML = `
+        <div class="card-content">
+          <h3>${g.title}</h3>
+          <p>${g.description}</p>
+          <div class="badges">
+            <span class="badge asset">${g.assetType}</span>
+            <span class="badge manufacturer">${g.manufacturer}</span>
+            <span class="badge model">${g.model}</span>
+          </div>
+          <p class="date"><em>Last Revision: ${g.dateAdded}</em></p>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+  });
+</script>
+
+</body>
+</html>
