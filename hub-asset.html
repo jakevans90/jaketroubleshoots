@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Asset Type Hub - Jake Troubleshoots</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- SEO -->
+  <meta name="description" content="Explore medical equipment troubleshooting guides by asset type including anesthesia machines, monitors, ventilators, and more.">
+
+  <!-- Google tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <!-- Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="site-logo">
+    <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
+    <a href="search.html">Search</a>
+    <a href="vendors.html">Vendors</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h2>Asset Type Hub</h2>
+  <p>Understand and explore troubleshooting guides by equipment category.</p>
+
+  <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="browse-asset.html" class="hero-button">Browse All Asset Types</a>
+  </div>
+</section>
+
+<!-- WHAT IS ASSET TYPE -->
+<section class="content-box">
+  <h3>What is an Asset Type?</h3>
+  <p>
+    An asset type represents a category of medical equipment, such as anesthesia machines,
+    patient monitors, or infusion pumps. Grouping guides by asset type allows you to quickly
+    identify common failure patterns, safety concerns, and troubleshooting approaches
+    across similar devices.
+  </p>
+  <p>
+    Start by selecting an asset type below to explore all related manufacturers, models,
+    and troubleshooting guides.
+  </p>
+</section>
+
+<!-- ASSET TYPE SELECTOR -->
+<section class="browse-section">
+  <h3>Select an Asset Type</h3>
+
+  <div class="letter-filter">
+    <span class="filter-letter active" data-letter="all">All</span>
+    <span class="filter-letter" data-letter="0-9">0-9</span>
+    <span class="filter-letter" data-letter="A">A</span>
+    <span class="filter-letter" data-letter="B">B</span>
+    <span class="filter-letter" data-letter="C">C</span>
+    <span class="filter-letter" data-letter="D">D</span>
+    <span class="filter-letter" data-letter="E">E</span>
+    <span class="filter-letter" data-letter="F">F</span>
+    <span class="filter-letter" data-letter="G">G</span>
+    <span class="filter-letter" data-letter="H">H</span>
+    <span class="filter-letter" data-letter="I">I</span>
+    <span class="filter-letter" data-letter="J">J</span>
+    <span class="filter-letter" data-letter="K">K</span>
+    <span class="filter-letter" data-letter="L">L</span>
+    <span class="filter-letter" data-letter="M">M</span>
+    <span class="filter-letter" data-letter="N">N</span>
+    <span class="filter-letter" data-letter="O">O</span>
+    <span class="filter-letter" data-letter="P">P</span>
+    <span class="filter-letter" data-letter="Q">Q</span>
+    <span class="filter-letter" data-letter="R">R</span>
+    <span class="filter-letter" data-letter="S">S</span>
+    <span class="filter-letter" data-letter="T">T</span>
+    <span class="filter-letter" data-letter="U">U</span>
+    <span class="filter-letter" data-letter="V">V</span>
+    <span class="filter-letter" data-letter="W">W</span>
+    <span class="filter-letter" data-letter="X">X</span>
+    <span class="filter-letter" data-letter="Y">Y</span>
+    <span class="filter-letter" data-letter="Z">Z</span>
+  </div>
+
+  <div id="asset-buttons" class="browse-buttons"></div>
+</section>
+
+<!-- CTA INSTEAD OF FULL GUIDE GRID -->
+<section class="content-box" style="text-align:center;">
+  <h3>Explore Guides</h3>
+  <p>Select an asset type above to browse all related troubleshooting guides.</p>
+  <a href="browse-asset.html" class="hero-button">Go to Full Asset Browser</a>
+</section>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+<script src="guides.js"></script>
+
+<script>
+fetchGuides().then(allGuides => {
+
+  const buttonsContainer = document.getElementById('asset-buttons');
+  const letters = document.querySelectorAll('.filter-letter');
+
+  const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
+
+  assetTypes.forEach(type => {
+    const btn = document.createElement('a');
+    btn.href = `browse-asset.html?asset=${encodeURIComponent(type)}`;
+    btn.textContent = type;
+    btn.classList.add('browse-button');
+    buttonsContainer.appendChild(btn);
+  });
+
+  // Letter filtering
+  letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+      const selected = letter.dataset.letter.toUpperCase();
+
+      letters.forEach(l => l.classList.remove('active'));
+      letter.classList.add('active');
+
+      const buttons = document.querySelectorAll('#asset-buttons .browse-button');
+
+      buttons.forEach(btn => {
+        const firstChar = btn.textContent[0].toUpperCase();
+
+        if (selected === 'ALL') {
+          btn.style.display = '';
+        } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+          btn.style.display = '';
+        } else {
+          btn.style.display = firstChar === selected ? '' : 'none';
+        }
+      });
+    });
+  });
+
+}).catch(err => console.error('Guide load error:', err));
+</script>
+
+</body>
+</html>
