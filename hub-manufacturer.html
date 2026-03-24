@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Browse by Manufacturer - Jake Troubleshoots</title>
+  <link rel="stylesheet" href="style.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1L34E3TJL6');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="site-logo">
+    <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
+    <a href="search.html">Search</a>
+    <a href="vendors.html">Vendors</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Browse Guides by Manufacturer</h2>
+  <p>All troubleshooting guides organized by equipment manufacturer.</p>
+
+    <!-- Action buttons -->
+  <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="guides.html" class="hero-button">Browse All Guides</a>
+  </div>
+</section>
+
+<section class="browse-section">
+  <h3>Manufacturers</h3>
+  <div class="letter-filter">
+  <span class="filter-letter active" data-letter="all">All</span>
+  <span class="filter-letter" data-letter="0-9">0-9</span>
+  <span class="filter-letter" data-letter="A">A</span>
+  <span class="filter-letter" data-letter="B">B</span>
+  <span class="filter-letter" data-letter="C">C</span>
+  <span class="filter-letter" data-letter="D">D</span>
+  <span class="filter-letter" data-letter="E">E</span>
+  <span class="filter-letter" data-letter="F">F</span>
+  <span class="filter-letter" data-letter="G">G</span>
+  <span class="filter-letter" data-letter="H">H</span>
+  <span class="filter-letter" data-letter="I">I</span>
+  <span class="filter-letter" data-letter="J">J</span>
+  <span class="filter-letter" data-letter="K">K</span>
+  <span class="filter-letter" data-letter="L">L</span>
+  <span class="filter-letter" data-letter="M">M</span>
+  <span class="filter-letter" data-letter="N">N</span>
+  <span class="filter-letter" data-letter="O">O</span>
+  <span class="filter-letter" data-letter="P">P</span>
+  <span class="filter-letter" data-letter="Q">Q</span>
+  <span class="filter-letter" data-letter="R">R</span>
+  <span class="filter-letter" data-letter="S">S</span>
+  <span class="filter-letter" data-letter="T">T</span>
+  <span class="filter-letter" data-letter="U">U</span>
+  <span class="filter-letter" data-letter="V">V</span>
+  <span class="filter-letter" data-letter="W">W</span>
+  <span class="filter-letter" data-letter="X">X</span>
+  <span class="filter-letter" data-letter="Y">Y</span>
+  <span class="filter-letter" data-letter="Z">Z</span>
+</div>
+  <div id="manufacturer-buttons" class="browse-buttons">
+    <!-- Buttons injected here dynamically -->
+  </div>
+</section>
+
+<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+  <!-- Guide cards injected here dynamically -->
+</section>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+<script>
+fetch('data/guides.json')
+  .then(res => {
+    if (!res.ok) throw new Error('Could not load guides.json');
+    return res.json();
+  })
+  .then(jsonData => {
+    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+
+    if (isFileList) {
+      return Promise.all(
+        jsonData.map(file =>
+          fetch(file).then(res => {
+            if (!res.ok) throw new Error('Could not load ' + file);
+            return res.json();
+          })
+        )
+      ).then(allData => allData.flat());
+    } else {
+      return jsonData;
+    }
+  })
+  .then(allGuides => {
+    const container = document.getElementById('guides-grid');
+    const buttonsContainer = document.getElementById('manufacturer-buttons');
+    const letters = document.querySelectorAll('.filter-letter');
+
+    if (!container || !buttonsContainer) throw new Error('Required containers not found');
+
+    // Create unique sorted list of manufacturers
+    const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
+
+    // Create buttons for each manufacturer
+    manufacturers.forEach(man => {
+      const btn = document.createElement('a');
+      btn.href = '#';
+      btn.textContent = man;
+      btn.classList.add('browse-button');
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        showGuidesByManufacturer(man);
+      });
+      buttonsContainer.appendChild(btn);
+    });
+
+    // Show/hide letters based on actual manufacturers, including 0-9
+    letters.forEach(letterEl => {
+      const letter = letterEl.dataset.letter.toUpperCase();
+      if (letter === 'ALL') {
+        letterEl.style.display = '';
+      } else if (letter === '0-9') {
+        const hasNumber = manufacturers.some(m => /^[0-9]/.test(m));
+        letterEl.style.display = hasNumber ? '' : 'none';
+      } else {
+        const hasLetter = manufacturers.some(m => m[0].toUpperCase() === letter);
+        letterEl.style.display = hasLetter ? '' : 'none';
+      }
+    });
+
+    // Letter click logic
+    letters.forEach(letter => {
+      letter.addEventListener('click', () => {
+        const selected = letter.dataset.letter.toUpperCase();
+
+        // Highlight active letter
+        letters.forEach(l => l.classList.remove('active'));
+        letter.classList.add('active');
+
+        const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+
+        buttons.forEach(btn => {
+          const firstChar = btn.textContent[0].toUpperCase();
+          if (selected === 'ALL') {
+            btn.style.display = '';
+          } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+            btn.style.display = '';
+          } else {
+            btn.style.display = firstChar === selected ? '' : 'none';
+          }
+        });
+
+        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+        if (firstVisible) firstVisible.click();
+        else container.innerHTML = '';
+      });
+    });
+
+    // Show first manufacturer by default
+    const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
+                              .find(b => b.style.display !== 'none');
+    if (firstVisible) firstVisible.click();
+
+    // Function to display guides for a manufacturer
+    function showGuidesByManufacturer(man) {
+      container.innerHTML = '';
+      const filtered = allGuides
+        .filter(g => g.manufacturer === man)
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+      filtered.forEach(guide => {
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.classList.add('guide-card');
+
+        card.innerHTML = `
+          <div class="card-content">
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+  })
+  .catch(err => console.error('Guide load error:', err));
+</script>
+
+</body>
+</html>
