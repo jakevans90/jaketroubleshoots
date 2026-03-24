@@ -2,99 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title id="page-title">Model Hub</title>
+  <title>Model Hub - Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <!-- reuse your header -->
+  <a href="index.html" class="site-logo">
+    <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
+    <a href="search.html">Search</a>
+    <a href="vendors.html">Vendors</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 </header>
 
 <section class="hero">
-  <h2 id="model-name">Model</h2>
-  <p id="model-description"></p>
+  <h2>Browse Guides by Model</h2>
+  <p>Select a model to view all related guides.</p>
 </section>
 
 <section class="browse-section">
-  <h3>Manufacturer</h3>
-  <div id="manufacturer-link" class="browse-buttons"></div>
+  <h3>Models</h3>
+  <div class="letter-filter">
+    <span class="filter-letter active" data-letter="all">All</span>
+    <span class="filter-letter" data-letter="0-9">0-9</span>
+    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+  </div>
+  <div id="model-buttons" class="browse-buttons"></div>
 </section>
 
-<section class="browse-section">
-  <h3>Related Models</h3>
-  <div id="related-models" class="browse-buttons"></div>
-</section>
+<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;"></section>
 
-<section class="guides-grid" id="guides-grid"></section>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const name = params.get('name');
-
-document.getElementById('model-name').textContent = name;
-document.getElementById('page-title').textContent = name + " | Model Hub";
-
-// Load hub metadata
-fetch('data/hub-model.json')
-  .then(res => res.json())
-  .then(hubs => {
-    const hub = hubs.find(h => h.name === name);
-    if (!hub) return;
-
-    document.getElementById('model-description').textContent = hub.description || '';
-
-    // Manufacturer link
-    if (hub.manufacturer) {
-      const a = document.createElement('a');
-      a.href = `hub-manufacturer.html?name=${encodeURIComponent(hub.manufacturer)}`;
-      a.textContent = hub.manufacturer;
-      a.classList.add('browse-button');
-      document.getElementById('manufacturer-link').appendChild(a);
-    }
-
-    // Related models
-    (hub.relatedModels || []).forEach(rel => {
-      const a = document.createElement('a');
-      a.href = `hub-model.html?name=${encodeURIComponent(rel)}`;
-      a.textContent = rel;
-      a.classList.add('browse-button');
-      document.getElementById('related-models').appendChild(a);
-    });
-  });
-
-// Load guides
 fetch('data/guides.json')
-  .then(res => res.json())
-  .then(data => {
-    const guides = Array.isArray(data) ? data : [];
+  .then(res=>res.json())
+  .then(data=>{
+    const isFileList = Array.isArray(data) && typeof data[0]==='string';
+    return isFileList ? Promise.all(data.map(file=>fetch(file).then(r=>r.json()))).then(all=>all.flat()) : data;
+  })
+  .then(allGuides=>{
     const container = document.getElementById('guides-grid');
+    const buttonsContainer = document.getElementById('model-buttons');
+    const letters = document.querySelectorAll('.filter-letter');
 
-    const filtered = guides
-      .filter(g => g.model === name)
-      .sort((a, b) => a.title.localeCompare(b.title));
+    const models = [...new Set(allGuides.map(g=>g.model))].sort();
 
-    filtered.forEach(g => {
-      const card = document.createElement('a');
-      card.href = g.url;
-      card.classList.add('guide-card');
-
-      card.innerHTML = `
-        <div class="card-content">
-          <h3>${g.title}</h3>
-          <p>${g.description}</p>
-          <div class="badges">
-            <span class="badge asset">${g.assetType}</span>
-            <span class="badge manufacturer">${g.manufacturer}</span>
-            <span class="badge model">${g.model}</span>
-          </div>
-          <p class="date"><em>Last Revision: ${g.dateAdded}</em></p>
-        </div>
-      `;
-
-      container.appendChild(card);
+    // Create model buttons
+    models.forEach(model=>{
+      const btn = document.createElement('a');
+      btn.href='#';
+      btn.textContent=model;
+      btn.classList.add('browse-button');
+      btn.addEventListener('click', e=>{
+        e.preventDefault();
+        showGuides(model);
+      });
+      buttonsContainer.appendChild(btn);
     });
-  });
+
+    // Letter filter
+    letters.forEach(letter=>{
+      letter.addEventListener('click', ()=>{
+        const sel = letter.dataset.letter.toUpperCase();
+        letters.forEach(l=>l.classList.remove('active'));
+        letter.classList.add('active');
+
+        document.querySelectorAll('#model-buttons .browse-button').forEach(btn=>{
+          const first=btn.textContent[0].toUpperCase();
+          if(sel==='ALL') btn.style.display='';
+          else if(sel==='0-9' && /[0-9]/.test(first)) btn.style.display='';
+          else btn.style.display=first===sel?'':'none';
+        });
+
+        const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button')).find(b=>b.style.display!=='none');
+        if(firstVisible) firstVisible.click();
+        else container.innerHTML='';
+      });
+    });
+
+    // Show first model by default
+    const first = Array.from(document.querySelectorAll('#model-buttons .browse-button')).find(b=>b.style.display!=='none');
+    if(first) first.click();
+
+    function showGuides(model){
+      container.innerHTML='';
+      const filtered = allGuides.filter(g=>g.model===model).sort((a,b)=>a.title.localeCompare(b.title));
+
+      filtered.forEach(g=>{
+        const card = document.createElement('a');
+        card.href=g.url;
+        card.classList.add('guide-card');
+        card.innerHTML=`
+          <div class="card-content">
+            <h3>${g.title}</h3>
+            <p>${g.description}</p>
+            <div class="badges">
+              <span class="badge asset">${g.assetType}</span>
+              <span class="badge manufacturer">${g.manufacturer}</span>
+              <span class="badge model">${g.model}</span>
+            </div>
+            <p class="date"><em>Last Revision: ${g.dateAdded}</em></p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  })
+  .catch(err=>console.error('Model Hub load error:', err));
 </script>
 
 </body>
