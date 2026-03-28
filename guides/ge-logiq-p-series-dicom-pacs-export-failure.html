@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GE Healthcare LOGIQ P Series Ultrasound System - DICOM / PACS Export Failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>GE Healthcare LOGIQ P Series</h2>
+  <p>DICOM / PACS Export Failure</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+<h3>Asset Type</h3><p>Ultrasound System</p>
+<h3>Manufacturer</h3><p>GE Healthcare</p>
+<h3>Model</h3><p>LOGIQ P Series</p>
+
+<h2>What This Guide Helps With</h2>
+<p>Addresses failures in sending images or studies to PACS due to network issues, DICOM configuration errors, or system communication faults before assuming hardware failure.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>Ensure Patient Safety</h4>
+<p>Confirm no patient is dependent on immediate image transfer. Perform troubleshooting on completed studies or with a test patient to prevent disruption.</p>
+
+<h4>Check Network Connectivity</h4>
+<ul>
+  <li>Verify Ethernet/Wi-Fi connections are secure and the system has network access.</li>
+  <li>Ping the PACS server from the system if possible.</li>
+  <li><strong>Expected Outcome:</strong> Network responds; no packet loss.</li>
+  <li><strong>Why:</strong> DICOM export requires reliable network communication.</li>
+</ul>
+
+<h4>Verify PACS/DICOM Settings</h4>
+<ul>
+  <li>Confirm correct AE Title, IP address, port, and DICOM node configuration in the system.</li>
+  <li>Check that the PACS server is set to accept connections from this device.</li>
+  <li><strong>Expected Outcome:</strong> Settings match PACS server.</li>
+  <li><strong>Why:</strong> Incorrect configuration prevents study transfer.</li>
+</ul>
+
+<h4>Test with Another Study or Modality</h4>
+<ul>
+  <li>Export a small test study or image set.</li>
+  <li><strong>Expected Outcome:</strong> Test study successfully exports.</li>
+  <li><strong>Why:</strong> Confirms whether the issue is study-specific or system-wide.</li>
+</ul>
+
+<h4>Check for Software or Export Queues</h4>
+<ul>
+  <li>Look for any stuck DICOM queues or software alerts on the LOGIQ system.</li>
+  <li>Restart the DICOM service or system if allowed.</li>
+  <li><strong>Expected Outcome:</strong> Queue clears, export resumes.</li>
+  <li><strong>Why:</strong> Stalled queues or software errors often block new exports.</li>
+</ul>
+
+<h4>Review Storage Media and Permissions</h4>
+<ul>
+  <li>Ensure the system has access to local storage if the PACS workflow uses intermediate caching.</li>
+  <li>Confirm sufficient disk space and proper folder permissions.</li>
+  <li><strong>Expected Outcome:</strong> No storage errors reported.</li>
+  <li><strong>Why:</strong> Insufficient storage or permission errors can block DICOM export.</li>
+</ul>
+
+<h4>Check Firewall or Security Restrictions</h4>
+<ul>
+  <li>Confirm that firewalls, antivirus, or network policies are not blocking DICOM ports (usually TCP 104 or configured port).</li>
+  <li><strong>Expected Outcome:</strong> DICOM port allowed; connection established.</li>
+  <li><strong>Why:</strong> Network security measures may silently block DICOM transfer.</li>
+</ul>
+
+<h2>If the Problem Persists</h2>
+<p>If all external causes—network, configuration, queues, and storage—have been ruled out, the issue is likely internal software or DICOM stack corruption.</p>
+<ul>
+  <li>Remove the system from PACS workflow.</li>
+  <li>Label as Out of Service for DICOM export.</li>
+  <li>Escalate to GE service or in-house repair bench for software evaluation.</li>
+</ul>
+
+<h2>Clinical Use Tip</h2>
+<p>Always move the patient or study to another functioning system before attempting extended troubleshooting.</p>
+<p>Do not interrupt imaging on active patients for network troubleshooting.</p>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>"Unable to send completed studies to PACS; export fails with network error."</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>"Network and DICOM configuration verified; export queue cleared, but failures persist."</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Example:</em><br>"System removed from PACS workflow and labeled Out of Service; sent for service evaluation."</p>
+
+<h2>Helpful Details to Include (If Known)</h2>
+<ul>
+  <li>Network connectivity check results</li>
+  <li>DICOM AE Titles and IP addresses</li>
+  <li>Export queue status</li>
+  <li>Software version and recent updates</li>
+  <li>Any error codes or messages</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>DICOM export issues often stem from external factors like network settings or misconfigured nodes. Following a structured, logic-based troubleshooting path ensures patient safety, avoids unnecessary internal repair, and provides clear documentation for service escalation.</p>
+<p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../feedback.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
