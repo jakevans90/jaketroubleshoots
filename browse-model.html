@@ -10,7 +10,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1L34E3TJL6');
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
@@ -23,7 +22,6 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
-
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
@@ -36,8 +34,6 @@
 <section class="hero">
   <h2>Browse Guides by Model</h2>
   <p>Find troubleshooting guides organized by equipment model.</p>
-
-    <!-- Action buttons -->
   <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
     <a href="guides.html" class="hero-button">Browse All Guides</a>
   </div>
@@ -46,177 +42,189 @@
 <section class="browse-section">
   <h3>Models</h3>
   <div class="letter-filter">
-  <span class="filter-letter active" data-letter="all">All</span>
-  <span class="filter-letter" data-letter="0-9">0-9</span>
-  <span class="filter-letter" data-letter="A">A</span>
-  <span class="filter-letter" data-letter="B">B</span>
-  <span class="filter-letter" data-letter="C">C</span>
-  <span class="filter-letter" data-letter="D">D</span>
-  <span class="filter-letter" data-letter="E">E</span>
-  <span class="filter-letter" data-letter="F">F</span>
-  <span class="filter-letter" data-letter="G">G</span>
-  <span class="filter-letter" data-letter="H">H</span>
-  <span class="filter-letter" data-letter="I">I</span>
-  <span class="filter-letter" data-letter="J">J</span>
-  <span class="filter-letter" data-letter="K">K</span>
-  <span class="filter-letter" data-letter="L">L</span>
-  <span class="filter-letter" data-letter="M">M</span>
-  <span class="filter-letter" data-letter="N">N</span>
-  <span class="filter-letter" data-letter="O">O</span>
-  <span class="filter-letter" data-letter="P">P</span>
-  <span class="filter-letter" data-letter="Q">Q</span>
-  <span class="filter-letter" data-letter="R">R</span>
-  <span class="filter-letter" data-letter="S">S</span>
-  <span class="filter-letter" data-letter="T">T</span>
-  <span class="filter-letter" data-letter="U">U</span>
-  <span class="filter-letter" data-letter="V">V</span>
-  <span class="filter-letter" data-letter="W">W</span>
-  <span class="filter-letter" data-letter="X">X</span>
-  <span class="filter-letter" data-letter="Y">Y</span>
-  <span class="filter-letter" data-letter="Z">Z</span>
-</div>
-  <div id="model-buttons" class="browse-buttons">
-    <!-- Buttons injected here dynamically -->
+    <span class="filter-letter active" data-letter="all">All</span>
+    <span class="filter-letter" data-letter="0-9">0-9</span>
+    <span class="filter-letter" data-letter="A">A</span>
+    <span class="filter-letter" data-letter="B">B</span>
+    <span class="filter-letter" data-letter="C">C</span>
+    <span class="filter-letter" data-letter="D">D</span>
+    <span class="filter-letter" data-letter="E">E</span>
+    <span class="filter-letter" data-letter="F">F</span>
+    <span class="filter-letter" data-letter="G">G</span>
+    <span class="filter-letter" data-letter="H">H</span>
+    <span class="filter-letter" data-letter="I">I</span>
+    <span class="filter-letter" data-letter="J">J</span>
+    <span class="filter-letter" data-letter="K">K</span>
+    <span class="filter-letter" data-letter="L">L</span>
+    <span class="filter-letter" data-letter="M">M</span>
+    <span class="filter-letter" data-letter="N">N</span>
+    <span class="filter-letter" data-letter="O">O</span>
+    <span class="filter-letter" data-letter="P">P</span>
+    <span class="filter-letter" data-letter="Q">Q</span>
+    <span class="filter-letter" data-letter="R">R</span>
+    <span class="filter-letter" data-letter="S">S</span>
+    <span class="filter-letter" data-letter="T">T</span>
+    <span class="filter-letter" data-letter="U">U</span>
+    <span class="filter-letter" data-letter="V">V</span>
+    <span class="filter-letter" data-letter="W">W</span>
+    <span class="filter-letter" data-letter="X">X</span>
+    <span class="filter-letter" data-letter="Y">Y</span>
+    <span class="filter-letter" data-letter="Z">Z</span>
   </div>
+  <div id="model-buttons" class="browse-buttons"></div>
 </section>
 
+<!-- Hub banner injects here via JS -->
+<div id="hub-banner-inject"></div>
+
 <section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
-  <!-- Guide cards injected dynamically -->
 </section>
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
   <p>
-    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
     <a href="terms-of-use.html">Terms of Use</a>
   </p>
   <p>Guides intended for trained personnel only.</p>
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
+<script src="guides.js"></script>
 <script>
-fetch('data/guides.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Could not load guides.json');
-    return res.json();
-  })
-  .then(jsonData => {
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
+Promise.all([
+  fetchGuides(),
+  fetch('data/hub-model.json').then(r => r.json())
+]).then(([allGuides, hubData]) => {
 
-    if (isFileList) {
-      return Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      ).then(allData => allData.flat());
-    } else {
-      return jsonData;
-    }
-  })
-  .then(allGuides => {
-    const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('model-buttons');
-    const letters = document.querySelectorAll('.filter-letter');
+  const container = document.getElementById('guides-grid');
+  const buttonsContainer = document.getElementById('model-buttons');
+  const letters = document.querySelectorAll('.filter-letter');
 
-    if (!container || !buttonsContainer) throw new Error('Required containers not found');
+  if (!container || !buttonsContainer) return;
 
-    // Create unique sorted list of models
-    const models = [...new Set(allGuides.map(g => g.model))].sort();
+  // Unique sorted models
+  const models = [...new Set(allGuides.map(g => g.model))].sort();
 
-    // Create buttons for each model
-    models.forEach(mod => {
-      const btn = document.createElement('a');
-      btn.href = '#';
-      btn.textContent = mod;
-      btn.classList.add('browse-button');
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        showGuidesByModel(mod);
-      });
-      buttonsContainer.appendChild(btn);
+  // Create buttons
+  models.forEach(mod => {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.textContent = mod;
+    btn.classList.add('browse-button');
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showGuidesByModel(mod);
     });
-
-    // Determine which letters actually have models
-    const lettersWithModels = new Set(models.map(m => m[0].toUpperCase()));
-
-    // Show/hide letters based on actual models
-    letters.forEach(letterEl => {
-  const letter = letterEl.dataset.letter.toUpperCase();
-  
-  if (letter === 'ALL') {
-    letterEl.style.display = '';
-  } else if (letter === '0-9') {
-    // Show the 0-9 tab if at least one model starts with a digit
-    const hasNumber = models.some(m => /^[0-9]/.test(m));
-    letterEl.style.display = hasNumber ? '' : 'none';
-  } else {
-    letterEl.style.display = models.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
-  }
-});
-    letters.forEach(letter => {
-  letter.addEventListener('click', () => {
-    const selected = letter.dataset.letter.toUpperCase();
-
-    letters.forEach(l => l.classList.remove('active'));
-    letter.classList.add('active');
-
-    const buttons = document.querySelectorAll('#model-buttons .browse-button'); // or #asset-buttons
-
-    buttons.forEach(btn => {
-      const firstChar = btn.textContent[0].toUpperCase();
-      if (selected === 'ALL') {
-        btn.style.display = '';
-      } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
-        btn.style.display = '';
-      } else {
-        btn.style.display = firstChar === selected ? '' : 'none';
-      }
-    });
-
-    const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click();
-    else container.innerHTML = '';
+    buttonsContainer.appendChild(btn);
   });
-});
-    
-    // Show first model by default
-    const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
-                              .find(b => b.style.display !== 'none');
-    if (firstVisible) firstVisible.click();
 
-    // Function to display guides for a model
-    function showGuidesByModel(mod) {
-      container.innerHTML = '';
-      const filtered = allGuides
-        .filter(g => g.model === mod)
-        .sort((a, b) => a.title.localeCompare(b.title));
-
-      filtered.forEach(guide => {
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
-
-        card.innerHTML = `
-          <div class="card-content">
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+  // Show/hide letter filters
+  letters.forEach(letterEl => {
+    const letter = letterEl.dataset.letter.toUpperCase();
+    if (letter === 'ALL') {
+      letterEl.style.display = '';
+    } else if (letter === '0-9') {
+      letterEl.style.display = models.some(m => /^[0-9]/.test(m)) ? '' : 'none';
+    } else {
+      letterEl.style.display = models.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
     }
+  });
 
-  })
-  .catch(err => console.error('Guide load error:', err));
+  // Letter click logic
+  letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+      const selected = letter.dataset.letter.toUpperCase();
+      letters.forEach(l => l.classList.remove('active'));
+      letter.classList.add('active');
+
+      const buttons = document.querySelectorAll('#model-buttons .browse-button');
+      buttons.forEach(btn => {
+        const firstChar = btn.textContent[0].toUpperCase();
+        if (selected === 'ALL') {
+          btn.style.display = '';
+        } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
+          btn.style.display = '';
+        } else {
+          btn.style.display = firstChar === selected ? '' : 'none';
+        }
+      });
+
+      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+      if (firstVisible) firstVisible.click();
+      else container.innerHTML = '';
+    });
+  });
+
+  // Auto-click first model on load
+  const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
+                            .find(b => b.style.display !== 'none');
+  if (firstVisible) firstVisible.click();
+
+  // Hub banner function
+  function showModelHubBanner(modelName) {
+    const bannerEl = document.getElementById('hub-banner-inject');
+    bannerEl.innerHTML = '';
+
+    const hub = hubData.find(h => h.name === modelName && h.flags.exists === true);
+    if (!hub) return;
+
+    const guides = allGuides.filter(g => g.model === modelName);
+    const manufacturer = guides[0] ? guides[0].manufacturer : '';
+    const assetType = guides[0] ? guides[0].assetType : '';
+
+    const blurb = hub.profile.blurb
+      ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
+      : '';
+
+    bannerEl.innerHTML = `
+      <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
+        <div class="hub-banner-card">
+          <div class="hub-info">
+            <h3 style="margin:0 0 6px;color:white;font-size:1.15rem;">${hub.name}</h3>
+            ${blurb}
+            <div class="hub-banner-meta">
+              <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
+              ${manufacturer ? `<span>${manufacturer}</span>` : ''}
+              ${assetType ? `<span>${assetType}</span>` : ''}
+            </div>
+          </div>
+          <a class="hub-banner-btn" href="${hub.url}">View Model Hub →</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // Show guides by model
+  function showGuidesByModel(mod) {
+    showModelHubBanner(mod);
+
+    container.innerHTML = '';
+    const filtered = allGuides
+      .filter(g => g.model === mod)
+      .sort((a, b) => a.title.localeCompare(b.title));
+
+    filtered.forEach(guide => {
+      const card = document.createElement('a');
+      card.href = guide.url;
+      card.classList.add('guide-card');
+      card.innerHTML = `
+        <div class="card-content">
+          <h3>${guide.title}</h3>
+          <p>${guide.description}</p>
+          <div class="badges">
+            <span class="badge asset">${guide.assetType}</span>
+            <span class="badge manufacturer">${guide.manufacturer}</span>
+            <span class="badge model">${guide.model}</span>
+          </div>
+          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+}).catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>
