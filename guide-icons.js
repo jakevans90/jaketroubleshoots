@@ -32,8 +32,8 @@
 
   if (!container) {
     container = document.createElement('div');
-    container.className = 'guide-hero-icon';
-    container.id = 'guide-hero-icon';
+    container.className = 'asset-hero-icon';
+container.id = 'guide-hero-icon';
     container.style.display = 'none';
 
     const img = document.createElement('img');
