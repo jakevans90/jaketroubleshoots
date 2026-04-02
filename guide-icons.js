@@ -14,10 +14,10 @@
 
   if (!assetType) return;
 
-  const slug = assetType
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '');
+ const slug = assetType
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '');
 
   const iconPath = `/images/icons-asset/${slug}.png`;
 
