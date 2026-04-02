@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hologic Selenia Series Mammography System - DICOM / PACS transfer failures</title>
+<link rel="stylesheet" href="../style.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1L34E3TJL6');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Hologic Selenia Series</h2>
+  <p>DICOM / PACS transfer failures</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+<h3>Asset Type</h3><p>Mammography System</p>
+<h3>Manufacturer</h3><p>Hologic</p>
+<h3>Model</h3><p>Selenia Series</p>
+
+<h2>What This Guide Helps With</h2>
+<p>Identifies external causes of DICOM/PACS transfer failures such as network issues, configuration errors, or server availability preventing image transmission.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>Ensure Patient and Data Safety</h4>
+<ul>
+<li>Confirm no active exam is in progress and all acquired images are saved locally.</li>
+<li>If needed, move patient workflow to another unit.</li>
+<li>Why: Prevents data loss and workflow disruption during troubleshooting.</li>
+</ul>
+
+<h4>Verify Network Connection Status</h4>
+<ul>
+<li>Check network indicators on the acquisition workstation:</li>
+<li>Network icon status (connected vs disconnected)</li>
+<li>Link lights on Ethernet ports</li>
+<li>Expected Outcome:</li>
+<li>System shows active network connection.</li>
+<li>Why: Loss of network connectivity is the most common cause of DICOM transfer failure.</li>
+</ul>
+
+<h4>Inspect Ethernet and Network Cabling</h4>
+<ul>
+<li>Check all visible network cables between:</li>
+<li>Workstation and wall port</li>
+<li>System cabinets and switches</li>
+<li>Reseat cables and inspect for damage.</li>
+<li>Expected Outcome:</li>
+<li>Secure connections restore communication if cabling was loose.</li>
+<li>Why: Physical layer issues often cause intermittent or complete transfer failures.</li>
+</ul>
+
+<h4>Test Network Port / Wall Connection</h4>
+<ul>
+<li>If possible, connect to a known working network port or test the port using another device (laptop).</li>
+<li>Expected Outcome:</li>
+<li>Verified active network port.</li>
+<li>Why: Rules out facility network drop or switch port failure.</li>
+</ul>
+
+<h4>Confirm PACS Connectivity and Availability</h4>
+<ul>
+<li>Check if other modalities can send images to PACS.</li>
+<li>Contact IT or PACS admin if needed.</li>
+<li>Expected Outcome:</li>
+<li>PACS is reachable and accepting studies.</li>
+<li>Why: If PACS is down or rejecting studies, the issue is not with the modality.</li>
+</ul>
+
+<h4>Verify DICOM Configuration Settings</h4>
+<ul>
+<li>Review DICOM settings on the workstation:</li>
+<li>AE Title</li>
+<li>IP address</li>
+<li>Port number</li>
+<li>Destination configuration</li>
+<li>Compare against known correct configuration.</li>
+<li>Expected Outcome:</li>
+<li>Settings match PACS configuration.</li>
+<li>Why: Incorrect configuration prevents successful association with PACS.</li>
+</ul>
+
+<h4>Attempt Manual Resend of Images</h4>
+<ul>
+<li>Select a stored study and manually resend to PACS.</li>
+<li>Expected Outcome:</li>
+<li>Successful transmission confirms restored communication.</li>
+<li>Why: Verifies whether the issue is persistent or intermittent.</li>
+</ul>
+
+<h4>Check for Error Messages or Queue Backlog</h4>
+<ul>
+<li>Review system message logs or DICOM queue:</li>
+<li>Stuck or failed studies</li>
+<li>Repeated transmission errors</li>
+<li>Clear or retry failed jobs if appropriate.</li>
+<li>Expected Outcome:</li>
+<li>Queue clears and studies transmit successfully.</li>
+<li>Why: Backlogged or failed jobs can block new transmissions.</li>
+</ul>
+
+<h4>Perform a Controlled System Restart</h4>
+<ul>
+<li>Shut down the system properly, wait 2–3 minutes, and power back on.</li>
+<li>Expected Outcome:</li>
+<li>Temporary communication or software issues are resolved.</li>
+<li>Why: Restart resets network services and DICOM processes.</li>
+</ul>
+
+<h2>If the Problem Persists</h2>
+<p>If all network connections, configuration settings, and PACS availability have been verified, the issue is likely internal (software, interface board, or system integration fault).</p>
+<p>Remove the system from service, label it Out of Service, and escalate for vendor support or bench evaluation.</p>
+<p>Knowing when to stop prevents unnecessary risk and wasted troubleshooting time.</p>
+
+<h2>Clinical Use Tip</h2>
+<p>Do not troubleshoot during an active patient exam. Always ensure studies are saved locally before attempting network or system changes to prevent data loss.</p>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>"Mammography unit unable to send images to PACS; studies stuck in queue."</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>"Loose Ethernet connection at workstation causing intermittent network loss."</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Example:</em><br>"Reseated network cable, verified connectivity, and successfully resent queued studies."</p>
+
+<h2>Helpful Details to Include (If Known)</h2>
+<ul>
+<li>Network outlet tested</li>
+<li>Ethernet cables reseated or replaced</li>
+<li>PACS availability confirmed</li>
+<li>DICOM settings verified</li>
+<li>Error messages or codes observed</li>
+<li>Transfer queue status</li>
+<li>Final system status (operational or removed from service)</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>DICOM transfer failures are most often caused by simple external issues like network connectivity or configuration mismatches. A structured approach ensures patient data is protected while quickly isolating the root cause. Escalation is appropriate once external factors are ruled out, reinforcing safe and efficient troubleshooting practices.</p>
+<p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
