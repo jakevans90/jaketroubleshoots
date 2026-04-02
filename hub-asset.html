@@ -107,6 +107,14 @@ const iconPath = hub?.icon || `/images/icons-asset/${slug}.png`;
 document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
 document.getElementById('hub-name').textContent = name;
 
+if (!document.querySelector('.asset-hero-icon')) {
+  document.getElementById('hub-name').insertAdjacentHTML('beforebegin', `
+    <div class="asset-hero-icon">
+      <img src="${iconPath}" alt="${name} icon" loading="eager">
+    </div>
+  `);
+}
+      
 document.getElementById('hub-name').insertAdjacentHTML('beforebegin', `
   <div class="asset-hero-icon">
     <img src="${iconPath}" alt="${name} icon" loading="eager">
