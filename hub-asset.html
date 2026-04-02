@@ -31,7 +31,12 @@
 </header>
 
 <section class="hero">
-  <h2 id="hub-name">Loading…</h2>
+  document.getElementById('hub-name').innerHTML = `
+  <span class="hub-title">
+    <img src="${iconPath}" alt="${name} icon">
+    ${name}
+  </span>
+`;
   <p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
   <div style="margin-top:20px;">
@@ -114,12 +119,6 @@ if (!document.querySelector('.asset-hero-icon')) {
     </div>
   `);
 }
-      
-document.getElementById('hub-name').insertAdjacentHTML('beforebegin', `
-  <div class="asset-hero-icon">
-    <img src="${iconPath}" alt="${name} icon" loading="eager">
-  </div>
-`);
 
       const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
       const models = [...new Set(guides.map(g => g.model))];
