@@ -1,5 +1,4 @@
 (function () {
-  // Find "Asset Type" value from the guide page
   const headings = document.querySelectorAll('main h3');
   let assetType = null;
 
@@ -15,7 +14,6 @@
 
   if (!assetType) return;
 
-  // Convert to slug (Infusion Pump → infusion-pump)
   const slug = assetType
     .toLowerCase()
     .replace(/\s+/g, '-')
@@ -23,24 +21,21 @@
 
   const iconPath = `/images/icons-asset/${slug}.png`;
 
-  // Get hero section
   const hero = document.querySelector('.hero');
   if (!hero) return;
 
-  // Create container if it doesn't exist
   let container = document.getElementById('guide-hero-icon');
 
   if (!container) {
     container = document.createElement('div');
     container.className = 'asset-hero-icon';
-container.id = 'guide-hero-icon';
+    container.id = 'guide-hero-icon';
     container.style.display = 'none';
 
     const img = document.createElement('img');
     img.id = 'guide-hero-img';
     container.appendChild(img);
 
-    // Insert BEFORE the subtitle paragraph
     const subtitle = hero.querySelector('p');
     if (subtitle) {
       subtitle.insertAdjacentElement('beforebegin', container);
