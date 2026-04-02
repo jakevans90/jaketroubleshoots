@@ -109,10 +109,30 @@ Promise.all([
 
   // Create buttons
   assetTypes.forEach(type => {
-    const btn = document.createElement('a');
-    btn.href = '#';
-    btn.textContent = type;
-    btn.classList.add('browse-button');
+   const btn = document.createElement('a');
+btn.href = '#';
+btn.classList.add('browse-button');
+
+const slug = type.toLowerCase().replace(/\s+/g, '-');
+const hub = hubData.find(h => h.name === type);
+const iconPath = hub?.icon || `/images/icons-asset/${slug}.png`;
+
+btn.innerHTML = `
+  <div class="asset-button-inner">
+    <img src="${iconPath}" 
+         alt="${type} icon" 
+         class="asset-button-icon"
+         onerror="this.style.display='none'">
+    <span>${type}</span>
+  </div>
+`;
+
+btn.addEventListener('click', e => {
+  e.preventDefault();
+  showGuidesByAssetType(type);
+});
+
+buttonsContainer.appendChild(btn);
     btn.addEventListener('click', e => {
       e.preventDefault();
       showGuidesByAssetType(type);
