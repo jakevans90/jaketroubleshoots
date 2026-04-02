@@ -252,6 +252,19 @@
 
       document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
       hubNameEl.textContent = name;
+      const iconEl = document.getElementById('asset-hero-icon');
+const iconImg = document.getElementById('asset-hero-img');
+
+iconImg.src = iconPath;
+iconImg.alt = `${name} icon`;
+
+iconImg.onload = () => {
+  iconEl.style.display = 'flex';
+};
+
+iconImg.onerror = () => {
+  iconEl.style.display = 'none';
+};
 
       clearElement(hubMetaEl);
       const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
