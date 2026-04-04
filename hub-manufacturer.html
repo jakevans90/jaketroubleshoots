@@ -45,21 +45,6 @@
 
   <div class="content-box" id="hub-profile" style="display:none;"></div>
 
-  <div class="content-box" id="section-issues" style="display:none;">
-    <h3>Common Issues</h3>
-    <ul id="hub-issues" style="padding-left:20px; margin:0;"></ul>
-  </div>
-
-  <div id="section-tips" style="display:none; max-width:900px; margin:30px auto; padding:0 20px; box-sizing:border-box; display:none; gap:20px; grid-template-columns:1fr 1fr;">
-    <div class="content-box" id="hub-tips-box" style="display:none;">
-      <h3>💡 Tips</h3>
-      <ul id="hub-tips" style="padding-left:20px; margin:0;"></ul>
-    </div>
-    <div class="content-box" id="hub-warnings-box" style="display:none;">
-      <h3>⚠️ Warnings</h3>
-      <ul id="hub-warnings" style="padding-left:20px; margin:0;"></ul>
-    </div>
-  </div>
 
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
     <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Guides by Model</h3>
@@ -150,22 +135,6 @@
           document.getElementById('hub-profile').style.display = '';
         }
 
-        if (hub.content.commonIssues && hub.content.commonIssues.length) {
-          hub.content.commonIssues.forEach(issue => { const li = document.createElement('li'); li.textContent = issue; document.getElementById('hub-issues').appendChild(li); });
-          document.getElementById('section-issues').style.display = '';
-        }
-
-        if (hub.content.tips && hub.content.tips.length) {
-          hub.content.tips.forEach(t => { const li = document.createElement('li'); li.textContent = t; document.getElementById('hub-tips').appendChild(li); });
-          document.getElementById('hub-tips-box').style.display = '';
-          document.getElementById('section-tips').style.display = 'grid';
-        }
-
-        if (hub.content.warnings && hub.content.warnings.length) {
-          hub.content.warnings.forEach(w => { const li = document.createElement('li'); li.textContent = w; document.getElementById('hub-warnings').appendChild(li); });
-          document.getElementById('hub-warnings-box').style.display = '';
-          document.getElementById('section-tips').style.display = 'grid';
-        }
       }
 
       const modelSection = document.getElementById('model-section');
