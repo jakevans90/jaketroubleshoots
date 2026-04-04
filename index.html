@@ -6,17 +6,14 @@
   <meta name="description" content="A growing library of symptom-based troubleshooting guides for BMETs and clinical engineers — built by a working BMET with 15+ years in clinical environments.">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-  <link rel="icon" type="image/png" href="images/favicon.png"> <!-- optional PNG fallback -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1L34E3TJL6');
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
@@ -45,7 +42,6 @@
   <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
   Real-world fixes organized by manufacturer, device type, and model — one searchable place.
     
-  <!-- Search bar -->
 <form id="home-search-form">
   <input type="text" id="home-search-input" placeholder="Search...">
  <button type="submit" class="hero-button">Search</button>
@@ -100,38 +96,108 @@
 
 <script src="guides.js"></script>
 <script>
-  // Homepage logic
-fetchGuides()
-  .then(allGuides => {
-    // Change these 6 URLs whenever you want to swap featured guides
-    const featuredUrls = [
-      'guides/bd-alaris-air-in-line.html',
-      'guides/ge-aisys-fails-system-checkout.html',
-      'guides/philips-intellivue-mp-leads-not-detected.html',
-      'guides/hillrom-progressa-wont-move.html',
-      'guides/siemens-acuson-sequoia-probe-detection-failures.html',
-      'guides/steris-amsco-4085-hand-control-failure.html',
-    ];
+function slugify(text) {
+  return (text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
 
-    const featured = featuredUrls
-      .map(url => allGuides.find(g => g.url === url))
-      .filter(Boolean);
+let assetHubDataGlobal = [];
 
-    renderGuides('featured-grid', featured);
+function findAssetHub(assetType) {
+  return assetHubDataGlobal.find(a =>
+    a.name === assetType || a.slug === slugify(assetType)
+  );
+}
 
-    const recent = getRecentGuides(allGuides, 12);
-    renderGuides('guides-grid', recent);
-  })
-  .catch(err => console.error('Guide load error:', err));
-  // Homepage search redirect
-  const form = document.getElementById('home-search-form');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const query = document.getElementById('home-search-input').value.trim();
-    if(query) {
-      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
-    }
+function getIconPath(assetType) {
+  const assetHub = findAssetHub(assetType);
+  return assetHub?.icon || '';
+}
+
+// 🔥 Override renderGuides globally
+const originalRenderGuides = window.renderGuides;
+
+window.renderGuides = function(containerId, guides) {
+  originalRenderGuides(containerId, guides);
+
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.guide-card');
+
+  cards.forEach((card, index) => {
+    const guide = guides[index];
+    if (!guide) return;
+
+    const iconPath = getIconPath(guide.assetType);
+    if (!iconPath) return;
+
+    if (card.querySelector('.guide-card-icon')) return;
+
+    const content = card.querySelector('.card-content');
+    if (!content) return;
+
+    const iconWrap = document.createElement('div');
+    iconWrap.style.display = 'flex';
+    iconWrap.style.justifyContent = 'center';
+    iconWrap.style.marginBottom = '14px';
+
+    iconWrap.innerHTML = `
+      <img
+        src="${iconPath}"
+        alt="${guide.assetType} icon"
+        class="guide-card-icon"
+        style="width:56px; height:56px; object-fit:contain;"
+        onerror="this.style.display='none'"
+      >
+    `;
+
+    content.prepend(iconWrap);
   });
+};
+
+// Homepage logic
+Promise.all([
+  fetchGuides(),
+  fetch('data/hub-asset.json').then(r => r.json())
+])
+.then(([allGuides, assetHubData]) => {
+
+  assetHubDataGlobal = assetHubData;
+
+  const featuredUrls = [
+    'guides/bd-alaris-air-in-line.html',
+    'guides/ge-aisys-fails-system-checkout.html',
+    'guides/philips-intellivue-mp-leads-not-detected.html',
+    'guides/hillrom-progressa-wont-move.html',
+    'guides/siemens-acuson-sequoia-probe-detection-failures.html',
+    'guides/steris-amsco-4085-hand-control-failure.html',
+  ];
+
+  const featured = featuredUrls
+    .map(url => allGuides.find(g => g.url === url))
+    .filter(Boolean);
+
+  renderGuides('featured-grid', featured);
+
+  const recent = getRecentGuides(allGuides, 12);
+  renderGuides('guides-grid', recent);
+
+})
+.catch(err => console.error('Guide load error:', err));
+
+// Search
+const form = document.getElementById('home-search-form');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const query = document.getElementById('home-search-input').value.trim();
+  if(query) {
+    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+  }
+});
 </script>
 
 <script src="bmet-quiz.js"></script>
