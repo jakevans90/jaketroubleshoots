@@ -100,6 +100,17 @@
       .replace(/[^a-z0-9-]/g, '');
   }
 
+  function findAssetHub(assetType, assetHubData) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType, assetHubData) {
+    const assetHub = findAssetHub(assetType, assetHubData);
+    return assetHub?.icon || '';
+  }
+
   if (!slug) {
     document.getElementById('loading').textContent = 'No model specified.';
   } else {
@@ -109,12 +120,11 @@
       fetch('data/hub-asset.json').then(r => r.json())
     ])
     .then(([allGuides, hubData, assetHubData]) => {
+
       const hub = hubData.find(h => h.slug === slug);
 
       const guides = allGuides.filter(g =>
-        hub
-          ? g.model === hub.name
-          : slugify(g.model) === slug
+        hub ? g.model === hub.name : slugify(g.model) === slug
       ).sort((a, b) => a.title.localeCompare(b.title));
 
       const name = hub ? hub.name : (guides[0] ? guides[0].model : slug);
@@ -134,12 +144,9 @@
           metaEl.appendChild(span);
         });
 
-      // Pull icon from hub-asset.json based on model asset type
-      const assetHub = assetHubData.find(a =>
-        a.name === assetType || a.slug === slugify(assetType)
-      );
-
+      const assetHub = findAssetHub(assetType, assetHubData);
       const iconPath = assetHub?.icon || '';
+
       const iconWrap = document.getElementById('model-hero-icon');
       const iconImg = document.getElementById('model-hero-img');
 
@@ -147,34 +154,18 @@
         iconImg.src = iconPath;
         iconImg.alt = `${assetType} icon`;
 
-        iconImg.onload = () => {
-          iconWrap.style.display = 'flex';
-        };
-
-        iconImg.onerror = () => {
-          iconWrap.style.display = 'none';
-        };
+        iconImg.onload = () => iconWrap.style.display = 'flex';
+        iconImg.onerror = () => iconWrap.style.display = 'none';
       }
 
       if (hub) {
         const p = hub.profile || {};
         let html = '';
 
-        if (p.blurb) {
-          html += `<p>${p.blurb}</p>`;
-        }
-
-        if (p.manufacturer) {
-          html += `<p><strong>Manufacturer:</strong> ${p.manufacturer}</p>`;
-        }
-
-        if (p.assetType) {
-          html += `<p><strong>Asset Type:</strong> ${p.assetType}</p>`;
-        }
-
-        if (p.website) {
-          html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank" rel="noopener">${p.website.replace('https://', '')}</a></p>`;
-        }
+        if (p.blurb) html += `<p>${p.blurb}</p>`;
+        if (p.manufacturer) html += `<p><strong>Manufacturer:</strong> ${p.manufacturer}</p>`;
+        if (p.assetType) html += `<p><strong>Asset Type:</strong> ${p.assetType}</p>`;
+        if (p.website) html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank">${p.website.replace('https://','')}</a></p>`;
 
         if (html) {
           document.getElementById('hub-profile').innerHTML = `<h3>${name}</h3>${html}`;
@@ -214,11 +205,27 @@
       const grid = document.getElementById('guides-grid');
 
       guides.forEach(guide => {
+        const iconPath = getIconPath(guide.assetType, assetHubData);
+
         const card = document.createElement('a');
         card.href = guide.url;
         card.classList.add('guide-card');
+
         card.innerHTML = `
           <div class="card-content">
+
+            ${iconPath ? `
+              <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                <img
+                  src="${iconPath}"
+                  alt="${guide.assetType} icon"
+                  class="guide-card-icon"
+                  style="width:56px; height:56px; object-fit:contain;"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            ` : ''}
+
             <h3>${guide.title}</h3>
             <p>${guide.description}</p>
             <div class="badges">
@@ -229,12 +236,14 @@
             <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
           </div>
         `;
+
         grid.appendChild(card);
       });
 
       document.getElementById('loading').style.display = 'none';
       document.getElementById('hub-body').style.display = '';
       document.getElementById('hub-suggest').style.display = '';
+
     })
     .catch(err => {
       document.getElementById('loading').textContent = 'Error loading data.';
