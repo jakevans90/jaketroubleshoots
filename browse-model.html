@@ -76,7 +76,6 @@
   <div id="model-buttons" class="browse-buttons"></div>
 </section>
 
-<!-- Hub banner injects here via JS -->
 <div id="hub-banner-inject"></div>
 
 <section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
@@ -99,7 +98,6 @@
     fetch('data/hub-model.json').then(r => r.json()),
     fetch('data/hub-asset.json').then(r => r.json())
   ]).then(([allGuides, hubData, assetHubData]) => {
-
     const container = document.getElementById('guides-grid');
     const buttonsContainer = document.getElementById('model-buttons');
     const letters = document.querySelectorAll('.filter-letter');
@@ -118,6 +116,87 @@
       return assetHubData.find(a =>
         a.name === assetType || a.slug === slugify(assetType)
       );
+    }
+
+    function showModelHubBanner(modelName) {
+      const bannerEl = document.getElementById('hub-banner-inject');
+      bannerEl.innerHTML = '';
+
+      const hub = hubData.find(h => h.name === modelName && h.flags.exists === true);
+      if (!hub) return;
+
+      const guides = allGuides.filter(g => g.model === modelName);
+      const manufacturer = guides[0] ? guides[0].manufacturer : '';
+      const assetType = hub?.profile?.assetType || (guides[0] ? guides[0].assetType : '');
+      const assetHub = findAssetHub(assetType);
+      const iconPath = assetHub?.icon || '';
+
+      const blurb = hub.profile?.blurb
+        ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
+        : '';
+
+      bannerEl.innerHTML = `
+        <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
+          <div class="hub-banner-card">
+            <div class="hub-info">
+              <div class="hub-banner-title">
+                ${iconPath ? `<img src="${iconPath}" alt="${assetType} icon" onerror="this.style.display='none'">` : ''}
+                <h3>${hub.name}</h3>
+              </div>
+              ${blurb}
+              <div class="hub-banner-meta">
+                <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
+                ${manufacturer ? `<span>${manufacturer}</span>` : ''}
+                ${assetType ? `<span>${assetType}</span>` : ''}
+              </div>
+            </div>
+            <a class="hub-banner-btn" href="${hub.url}">View Model Hub →</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function showGuidesByModel(mod) {
+      showModelHubBanner(mod);
+      container.innerHTML = '';
+
+      const filtered = allGuides
+        .filter(g => g.model === mod)
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+      filtered.forEach(guide => {
+        const assetHub = findAssetHub(guide.assetType);
+        const iconPath = assetHub?.icon || '';
+
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.classList.add('guide-card');
+
+        card.innerHTML = `
+          <div class="card-content">
+            ${iconPath ? `
+              <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                <img
+                  src="${iconPath}"
+                  alt="${guide.assetType} icon"
+                  style="width:56px; height:56px; object-fit:contain;"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            ` : ''}
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
     }
 
     const models = [...new Set(allGuides.map(g => g.model))].sort();
@@ -175,85 +254,6 @@
         }
       });
     });
-
-    function showModelHubBanner(modelName) {
-     const bannerEl = document.getElementById('hub-banner-inject');
-bannerEl.innerHTML = '';
-
-const hub = hubData.find(h => h.name === modelName && h.flags.exists === true);
-if (!hub) return;
-
-const guides = allGuides.filter(g => g.model === modelName);
-const manufacturer = guides[0] ? guides[0].manufacturer : '';
-const assetType = hub?.profile?.assetType || (guides[0] ? guides[0].assetType : '');
-const assetHub = findAssetHub(assetType);
-const iconPath = assetHub?.icon || '';
-
-const blurb = hub.profile?.blurb
-  ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
-  : '';
-
-bannerEl.innerHTML = `
-  <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
-    <div class="hub-banner-card">
-      <div class="hub-info">
-        <div class="hub-banner-title">
-          ${iconPath ? `<img src="${iconPath}" alt="${assetType} icon" onerror="this.style.display='none'">` : ''}
-          <h3>${hub.name}</h3>
-        </div>
-        ${blurb}
-        <div class="hub-banner-meta">
-          <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
-          ${manufacturer ? `<span>${manufacturer}</span>` : ''}
-          ${assetType ? `<span>${assetType}</span>` : ''}
-        </div>
-      </div>
-      <a class="hub-banner-btn" href="${hub.url}">View Model Hub →</a>
-    </div>
-  </div>
-`;
-    function showGuidesByModel(mod) {
-      showModelHubBanner(mod);
-
-      container.innerHTML = '';
-
-      const filtered = allGuides
-        .filter(g => g.model === mod)
-        .sort((a, b) => a.title.localeCompare(b.title));
-
-      filtered.forEach(guide => {
-        const assetHub = findAssetHub(guide.assetType);
-        const iconPath = assetHub?.icon || '';
-
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
-
-        card.innerHTML = `
-          <div class="card-content">
-            ${iconPath ? `
-              <div style="display:flex; justify-content:center; margin-bottom:14px;">
-                <img
-                  src="${iconPath}"
-                  alt="${guide.assetType} icon"
-                  style="width:56px; height:56px; object-fit:contain;"
-                >
-              </div>
-            ` : ''}
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-    }
 
     const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
       .find(b => b.style.display !== 'none');
