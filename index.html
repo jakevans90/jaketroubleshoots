@@ -170,19 +170,11 @@ window.renderGuides = function(containerId, guides) {
 function buildStatsLine(allGuides) {
   const totalGuides = allGuides.length;
 
-  const uniqueModels = new Set(
-    allGuides
-      .map(g => (g.model || '').trim())
-      .filter(Boolean)
-  );
+  const models = new Set(allGuides.map(g => g.model).filter(Boolean));
+  const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
+  const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
 
-  const uniqueManufacturers = new Set(
-    allGuides
-      .map(g => (g.manufacturer || '').trim())
-      .filter(Boolean)
-  );
-
-  return `${totalGuides} ${pluralize(totalGuides, 'guide', 'guides')} covering ${uniqueModels.size} ${pluralize(uniqueModels.size, 'model', 'models')} from ${uniqueManufacturers.size} ${pluralize(uniqueManufacturers.size, 'manufacturer', 'manufacturers')}.`;
+  return `${totalGuides} guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers.`;
 }
 
 // Homepage logic
