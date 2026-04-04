@@ -32,6 +32,9 @@
 
 <section class="hero">
   <h2 id="hub-name">Loading…</h2>
+  <div class="asset-hero-icon" id="model-hero-icon" style="display:none;">
+  <img id="model-hero-img" src="" alt="">
+  </div>
   <p id="hub-subtitle">All troubleshooting guides for this model</p>
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
   <div style="margin-top:20px;">
@@ -92,9 +95,10 @@
     document.getElementById('loading').textContent = 'No model specified.';
   } else {
     Promise.all([
-      fetchGuides(),
-      fetch('data/hub-model.json').then(r => r.json())
-    ]).then(([allGuides, hubData]) => {
+  fetchGuides(),
+  fetch('data/hub-model.json').then(r => r.json()),
+  fetch('data/hub-asset.json').then(r => r.json())
+]).then(([allGuides, hubData, assetHubData]) => {
       const hub = hubData.find(h => h.slug === slug);
       const guides = allGuides.filter(g =>
         hub ? g.model === hub.name
@@ -103,7 +107,59 @@
 
       const name = hub ? hub.name : (guides[0] ? guides[0].model : slug);
       const manufacturer = guides[0] ? guides[0].manufacturer : '';
-      const assetType = guides[0] ? guides[0].assetType : '';
+      const assetType = guides[0] ? guides[0].assetType : '';\
+
+      Promise.all([
+  fetchGuides(),
+  fetch('data/hub-model.json').then(r => r.json()),
+  fetch('data/hub-asset.json').then(r => r.json())
+]).then(([allGuides, hubData, assetHubData]) => {
+  const hub = hubData.find(h => h.slug === slug);
+  const guides = allGuides.filter(g =>
+    hub ? g.model === hub.name
+        : g.model.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === slug
+  ).sort((a, b) => a.title.localeCompare(b.title));
+
+  const name = hub ? hub.name : (guides[0] ? guides[0].model : slug);
+  const manufacturer = guides[0] ? guides[0].manufacturer : '';
+  const assetType = guides[0] ? guides[0].assetType : '';
+
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  const modelAssetType = hub?.profile?.assetType || assetType || '';
+  const assetHub = assetHubData.find(a =>
+    a.name === modelAssetType || a.slug === slugify(modelAssetType)
+  );
+
+  const iconPath = assetHub?.icon || '';
+
+  const iconWrap = document.getElementById('model-hero-icon');
+  const iconImg = document.getElementById('model-hero-img');
+
+  if (iconPath) {
+    iconImg.src = iconPath;
+    iconImg.alt = `${modelAssetType} icon`;
+
+    iconImg.onload = () => {
+      iconWrap.style.display = 'flex';
+    };
+
+    iconImg.onerror = () => {
+      iconWrap.style.display = 'none';
+    };
+  }
+
+  document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
+  document.getElementById('hub-name').textContent = name;
+
+  // rest of your existing code...
+});
 
       document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
       document.getElementById('hub-name').textContent = name;
