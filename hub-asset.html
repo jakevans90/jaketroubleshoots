@@ -32,13 +32,13 @@
 </header>
 
 <section class="hero">
- <h2 id="hub-name">Loading…</h2>
+  <h2 id="hub-name">Loading…</h2>
 
-<div class="asset-hero-icon" id="asset-hero-icon" style="display:none;">
-  <img id="asset-hero-img" src="" alt="">
-</div>
+  <div class="asset-hero-icon" id="asset-hero-icon" style="display:none;">
+    <img id="asset-hero-img" src="" alt="">
+  </div>
 
-<p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
+  <p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
   <div style="margin-top:20px;">
     <a href="browse-asset.html" class="hero-button">← All Asset Types</a>
@@ -136,15 +136,27 @@
       hubMetaEl.appendChild(span);
     }
 
+    function findAssetHub(assetType, assetHubData) {
+      return assetHubData.find(a =>
+        a.name === assetType || a.slug === slugify(assetType)
+      );
+    }
+
+    function getIconPath(assetType, assetHubData) {
+      const assetHub = findAssetHub(assetType, assetHubData);
+      return assetHub?.icon || '';
+    }
+
     function createProfileHtml(hub, name, iconPath) {
       const p = hub.profile || {};
       let html = '';
 
-    html += `
-  <h3 class="hub-profile-title">
-    <span>${name}</span>
-  </h3>
-`;
+      html += `
+        <h3 class="hub-profile-title">
+          <span>${name}</span>
+        </h3>
+      `;
+
       if (p.blurb) {
         html += `<p>${p.blurb}</p>`;
       }
@@ -170,7 +182,7 @@
       });
     }
 
-    function renderGuidesByManufacturer(guides) {
+    function renderGuidesByManufacturer(guides, assetHubData) {
       clearElement(manufacturerSectionEl);
 
       if (!guides.length) {
@@ -210,8 +222,22 @@
           const card = document.createElement('a');
           card.href = guide.url;
           card.classList.add('guide-card');
+
+          const iconPath = getIconPath(guide.assetType, assetHubData);
+
           card.innerHTML = `
             <div class="card-content">
+              ${iconPath ? `
+                <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                  <img
+                    src="${iconPath}"
+                    alt="${guide.assetType} icon"
+                    class="guide-card-icon"
+                    style="width:56px; height:56px; object-fit:contain;"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+              ` : ''}
               <h3>${guide.title}</h3>
               <p>${guide.description}</p>
               <div class="badges">
@@ -231,8 +257,12 @@
     }
 
     try {
-      const [allGuides, hubData] = await Promise.all([
+      const [allGuides, hubData, assetHubData] = await Promise.all([
         fetchGuides(),
+        fetch('data/hub-asset.json').then(r => {
+          if (!r.ok) throw new Error('Failed to load hub-asset.json');
+          return r.json();
+        }),
         fetch('data/hub-asset.json').then(r => {
           if (!r.ok) throw new Error('Failed to load hub-asset.json');
           return r.json();
@@ -250,19 +280,20 @@
 
       document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
       hubNameEl.textContent = name;
+
       const iconEl = document.getElementById('asset-hero-icon');
-const iconImg = document.getElementById('asset-hero-img');
+      const iconImg = document.getElementById('asset-hero-img');
 
-iconImg.src = iconPath;
-iconImg.alt = `${name} icon`;
+      iconImg.src = iconPath;
+      iconImg.alt = `${name} icon`;
 
-iconImg.onload = () => {
-  iconEl.style.display = 'flex';
-};
+      iconImg.onload = () => {
+        iconEl.style.display = 'flex';
+      };
 
-iconImg.onerror = () => {
-  iconEl.style.display = 'none';
-};
+      iconImg.onerror = () => {
+        iconEl.style.display = 'none';
+      };
 
       clearElement(hubMetaEl);
       const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
@@ -307,7 +338,7 @@ iconImg.onerror = () => {
         tipsSectionEl.style.display = 'none';
       }
 
-      renderGuidesByManufacturer(guides);
+      renderGuidesByManufacturer(guides, assetHubData);
 
       loadingEl.style.display = 'none';
       hubBodyEl.style.display = '';
