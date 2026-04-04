@@ -6,8 +6,15 @@ async function loadRelatedGuides() {
     return;
   }
 
-  const currentPage = window.location.pathname.split("/").pop().split("?")[0].replace(".html", "");
-  const currentPath = window.location.pathname.replace(/^\//, "").split("?")[0];
+  const currentPage = window.location.pathname
+    .split("/")
+    .pop()
+    .split("?")[0]
+    .replace(".html", "");
+
+  const currentPath = window.location.pathname
+    .replace(/^\//, "")
+    .split("?")[0];
 
   function slugify(text) {
     return (text || "")
@@ -17,32 +24,45 @@ async function loadRelatedGuides() {
       .replace(/[^a-z0-9-]/g, "");
   }
 
+  function normalizeGuideUrl(url) {
+    return (url || "").replace(/^\//, "");
+  }
+
   try {
     const [allGuides, assetHubData] = await Promise.all([
       fetchGuides(),
-      fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json())
+      fetch("../data/hub-asset.json").then(res => {
+        if (!res.ok) throw new Error("Could not load hub-asset.json");
+        return res.json();
+      })
     ]);
 
     const currentGuide = allGuides.find(g => {
-      const guideFile = (g.url || "").split("/").pop().replace(".html", "");
+      const guideUrl = normalizeGuideUrl(g.url);
+      const guideFile = guideUrl.split("/").pop().replace(".html", "");
+
       return (
         guideFile === currentPage ||
-        g.url === currentPath ||
-        (g.url || "").replace(".html", "") === currentPath.replace(".html", "") ||
-        (g.url || "").endsWith(currentPage + ".html") ||
-        (g.url || "").endsWith(currentPage)
+        guideUrl === currentPath ||
+        guideUrl.replace(".html", "") === currentPath.replace(".html", "") ||
+        guideUrl.endsWith(currentPage + ".html") ||
+        guideUrl.endsWith(currentPage)
       );
     });
 
     if (!currentGuide) {
       console.warn("Guide not found in JSON:", currentPage, "|", currentPath);
+      container.innerHTML = "<p>No related guides found.</p>";
       return;
     }
 
-    const related = allGuides.filter(g =>
-      g.model === currentGuide.model &&
-      (g.url || "").split("/").pop().replace(".html", "") !== currentPage
-    );
+    const related = allGuides.filter(g => {
+      const guideFile = normalizeGuideUrl(g.url).split("/").pop().replace(".html", "");
+      return (
+        g.model === currentGuide.model &&
+        guideFile !== currentPage
+      );
+    });
 
     if (related.length === 0) {
       container.innerHTML = "<p>No related guides yet.</p>";
@@ -56,11 +76,14 @@ async function loadRelatedGuides() {
         a.name === guide.assetType || a.slug === slugify(guide.assetType)
       );
 
-      const iconPath = assetHub?.icon || "";
+      const iconPath = assetHub?.icon
+        ? "../" + assetHub.icon.replace(/^\//, "")
+        : "";
 
       const card = document.createElement("a");
-      card.href = "/" + guide.url;
+      card.href = "../" + normalizeGuideUrl(guide.url);
       card.className = "guide-card";
+
       card.innerHTML = `
         <div class="card-content">
           ${iconPath ? `
@@ -84,10 +107,12 @@ async function loadRelatedGuides() {
           <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
         </div>
       `;
+
       container.appendChild(card);
     });
   } catch (err) {
     console.error("Related guides error:", err);
+    container.innerHTML = "<p>No related guides found.</p>";
   }
 }
 
