@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <title>Jake Troubleshoots — Guides</title>
   <link rel="stylesheet" href="style.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1L34E3TJL6');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
      crossorigin="anonymous"></script>
 </head>
 <body>
@@ -47,12 +46,9 @@
   </div>
 </section>
 
-<!-- Grid for all guides -->
 <section id="guides-grid" class="guides-grid" style="padding:40px;"></section>
 
-<!-- TOTAL GUIDES -->
 <p id="total-guides" style="margin-top: 15px; font-weight: bold;"></p>
-</section>
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
@@ -66,12 +62,84 @@
 
 <script src="guides.js"></script>
 <script>
-  // Fetch all guides, sort alphabetically, render in #guides-grid
-  fetchGuides()
-    .then(allGuides => {
-      const sorted = sortGuidesAlphabetically(allGuides);
-      renderGuides('guides-grid', sorted);
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  let assetHubDataGlobal = [];
+
+  function findAssetHub(assetType) {
+    return assetHubDataGlobal.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType) {
+    const assetHub = findAssetHub(assetType);
+    return assetHub?.icon || '';
+  }
+
+  const originalRenderGuides = window.renderGuides;
+
+  window.renderGuides = function(containerId, guides) {
+    originalRenderGuides(containerId, guides);
+
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.guide-card');
+
+    cards.forEach((card, index) => {
+      const guide = guides[index];
+      if (!guide) return;
+
+      const iconPath = getIconPath(guide.assetType);
+      if (!iconPath) return;
+
+      if (card.querySelector('.guide-card-icon')) return;
+
+      const content = card.querySelector('.card-content');
+      if (!content) return;
+
+      const iconWrap = document.createElement('div');
+      iconWrap.style.display = 'flex';
+      iconWrap.style.justifyContent = 'center';
+      iconWrap.style.marginBottom = '14px';
+
+      iconWrap.innerHTML = `
+        <img
+          src="${iconPath}"
+          alt="${guide.assetType} icon"
+          class="guide-card-icon"
+          style="width:56px; height:56px; object-fit:contain;"
+          onerror="this.style.display='none'"
+        >
+      `;
+
+      content.prepend(iconWrap);
     });
+  };
+
+  Promise.all([
+    fetchGuides(),
+    fetch('data/hub-asset.json').then(r => r.json())
+  ])
+  .then(([allGuides, assetHubData]) => {
+    assetHubDataGlobal = assetHubData;
+
+    const sorted = sortGuidesAlphabetically(allGuides);
+    renderGuides('guides-grid', sorted);
+
+    const totalEl = document.getElementById('total-guides');
+    if (totalEl) {
+      totalEl.textContent = `${sorted.length} Guide${sorted.length !== 1 ? 's' : ''} Total`;
+    }
+  })
+  .catch(err => console.error('Guide load error:', err));
 </script>
 
 </body>

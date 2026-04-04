@@ -88,13 +88,34 @@
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
 
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function findAssetHub(assetType, assetHubData) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType, assetHubData) {
+    const assetHub = findAssetHub(assetType, assetHubData);
+    return assetHub?.icon || '';
+  }
+
   if (!slug) {
     document.getElementById('loading').textContent = 'No manufacturer specified.';
   } else {
     Promise.all([
       fetchGuides(),
-      fetch('data/hub-manufacturer.json').then(r => r.json())
-    ]).then(([allGuides, hubData]) => {
+      fetch('data/hub-manufacturer.json').then(r => r.json()),
+      fetch('data/hub-asset.json').then(r => r.json()) // 👈 added
+    ]).then(([allGuides, hubData, assetHubData]) => {
+
       const hub = hubData.find(h => h.slug === slug);
       const guides = allGuides.filter(g =>
         hub ? g.manufacturer === hub.name
@@ -153,18 +174,50 @@
 
       Object.keys(byModel).sort().forEach(model => {
         const modelGuides = byModel[model].sort((a, b) => a.title.localeCompare(b.title));
+
         const block = document.createElement('div');
         block.style.marginBottom = '40px';
         block.innerHTML = `<h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;">${model}<span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}</span></h4>`;
+
         const grid = document.createElement('div');
         grid.id = 'guides-grid';
+
         modelGuides.forEach(guide => {
+          const iconPath = getIconPath(guide.assetType, assetHubData);
+
           const card = document.createElement('a');
           card.href = guide.url;
           card.classList.add('guide-card');
-          card.innerHTML = `<div class="card-content"><h3>${guide.title}</h3><p>${guide.description}</p><div class="badges"><span class="badge asset">${guide.assetType}</span><span class="badge manufacturer">${guide.manufacturer}</span><span class="badge model">${guide.model}</span></div><p class="date"><em>Last Revision: ${guide.dateAdded}</em></p></div>`;
+
+          card.innerHTML = `
+            <div class="card-content">
+
+              ${iconPath ? `
+                <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                  <img
+                    src="${iconPath}"
+                    alt="${guide.assetType} icon"
+                    class="guide-card-icon"
+                    style="width:56px; height:56px; object-fit:contain;"
+                    onerror="this.style.display='none'"
+                  >
+                </div>
+              ` : ''}
+
+              <h3>${guide.title}</h3>
+              <p>${guide.description}</p>
+              <div class="badges">
+                <span class="badge asset">${guide.assetType}</span>
+                <span class="badge manufacturer">${guide.manufacturer}</span>
+                <span class="badge model">${guide.model}</span>
+              </div>
+              <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+            </div>
+          `;
+
           grid.appendChild(card);
         });
+
         block.appendChild(grid);
         modelSection.appendChild(block);
       });
@@ -172,14 +225,12 @@
       document.getElementById('loading').style.display = 'none';
       document.getElementById('hub-body').style.display = '';
       document.getElementById('hub-suggest').style.display = '';
+
     }).catch(err => {
       document.getElementById('loading').textContent = 'Error loading data.';
       console.error(err);
     });
   }
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>

@@ -9,19 +9,30 @@ function loadRelatedGuides() {
   const currentPage = window.location.pathname.split("/").pop().split("?")[0].replace(".html", "");
   const currentPath = window.location.pathname.replace(/^\//, "").split("?")[0];
 
-  fetch("/data/guides.json?v=" + Date.now())
-    .then(res => res.json())
-    .then(fileList => {
-      if (Array.isArray(fileList) && typeof fileList[0] === "string") {
-        return Promise.all(
-          fileList.map(file =>
-            fetch("/" + file + "?v=" + Date.now()).then(r => r.json())
-          )
-        ).then(data => data.flat());
-      }
-      return fileList;
-    })
-    .then(allGuides => {
+  function slugify(text) {
+    return (text || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  }
+
+  Promise.all([
+    fetch("/data/guides.json?v=" + Date.now())
+      .then(res => res.json())
+      .then(fileList => {
+        if (Array.isArray(fileList) && typeof fileList[0] === "string") {
+          return Promise.all(
+            fileList.map(file =>
+              fetch("/" + file + "?v=" + Date.now()).then(r => r.json())
+            )
+          ).then(data => data.flat());
+        }
+        return fileList;
+      }),
+    fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json())
+  ])
+    .then(([allGuides, assetHubData]) => {
       const currentGuide = allGuides.find(g => {
         const guideFile = g.url.split("/").pop().replace(".html", "");
         return (
@@ -48,12 +59,31 @@ function loadRelatedGuides() {
         return;
       }
 
+      container.innerHTML = "";
+
       related.forEach(guide => {
+        const assetHub = assetHubData.find(a =>
+          a.name === guide.assetType || a.slug === slugify(guide.assetType)
+        );
+
+        const iconPath = assetHub?.icon || "";
+
         const card = document.createElement("a");
         card.href = "/" + guide.url;
         card.className = "guide-card";
         card.innerHTML = `
           <div class="card-content">
+            ${iconPath ? `
+              <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                <img
+                  src="/${iconPath.replace(/^\//, "")}"
+                  alt="${guide.assetType} icon"
+                  class="guide-card-icon"
+                  style="width:56px; height:56px; object-fit:contain;"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            ` : ""}
             <h3>${guide.title}</h3>
             <p>${guide.description}</p>
             <div class="badges">

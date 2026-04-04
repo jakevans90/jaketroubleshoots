@@ -1,5 +1,7 @@
 // guides.js
 
+let assetHubDataCache = null;
+
 // Fetch all guides (handles JSON array or list of JSON filenames)
 async function fetchGuides() {
   try {
@@ -29,10 +31,47 @@ async function fetchGuides() {
   }
 }
 
+// Fetch asset hub data once and cache it
+async function fetchAssetHubData() {
+  if (assetHubDataCache) return assetHubDataCache;
+
+  try {
+    const res = await fetch('data/hub-asset.json');
+    if (!res.ok) throw new Error('Could not load hub-asset.json');
+    assetHubDataCache = await res.json();
+    return assetHubDataCache;
+  } catch (err) {
+    console.error('Asset hub load error:', err);
+    assetHubDataCache = [];
+    return assetHubDataCache;
+  }
+}
+
+function slugify(text) {
+  return (text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+function findAssetHub(assetType, assetHubData) {
+  return assetHubData.find(a =>
+    a.name === assetType || a.slug === slugify(assetType)
+  );
+}
+
+function getIconPath(assetType, assetHubData) {
+  const assetHub = findAssetHub(assetType, assetHubData);
+  return assetHub?.icon || '';
+}
+
 // Render guides in a container
-function renderGuides(containerId, guides) {
+async function renderGuides(containerId, guides) {
   const container = document.getElementById(containerId);
   if (!container) return;
+
+  const assetHubData = await fetchAssetHubData();
 
   container.innerHTML = ''; // Clear old content
 
@@ -41,8 +80,21 @@ function renderGuides(containerId, guides) {
     card.href = guide.url;
     card.classList.add('guide-card');
 
+    const iconPath = getIconPath(guide.assetType, assetHubData);
+
     card.innerHTML = `
       <div class="card-content">
+        ${iconPath ? `
+          <div style="display:flex; justify-content:center; margin-bottom:14px;">
+            <img
+              src="${iconPath}"
+              alt="${guide.assetType} icon"
+              class="guide-card-icon"
+              style="width:56px; height:56px; object-fit:contain;"
+              onerror="this.style.display='none'"
+            >
+          </div>
+        ` : ''}
         <h3>${guide.title}</h3>
         <p>${guide.description}</p>
         <div class="badges">
@@ -70,7 +122,7 @@ function sortGuidesAlphabetically(guides) {
 }
 
 // Utility: get most recent guides
-function getRecentGuides(guides, count = 24) { // changed from 12 → 24
+function getRecentGuides(guides, count = 24) {
   return guides
     .slice()
     .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))

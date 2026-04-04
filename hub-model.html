@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
   <title id="page-title">Model Hub – Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -32,6 +31,11 @@
 
 <section class="hero">
   <h2 id="hub-name">Loading…</h2>
+
+  <div class="asset-hero-icon" id="model-hero-icon" style="display:none;">
+    <img id="model-hero-img" src="" alt="">
+  </div>
+
   <p id="hub-subtitle">All troubleshooting guides for this model</p>
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
   <div style="margin-top:20px;">
@@ -88,77 +92,160 @@
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
 
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function findAssetHub(assetType, assetHubData) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType, assetHubData) {
+    const assetHub = findAssetHub(assetType, assetHubData);
+    return assetHub?.icon || '';
+  }
+
   if (!slug) {
     document.getElementById('loading').textContent = 'No model specified.';
   } else {
     Promise.all([
       fetchGuides(),
-      fetch('data/hub-model.json').then(r => r.json())
-    ]).then(([allGuides, hubData]) => {
+      fetch('data/hub-model.json').then(r => r.json()),
+      fetch('data/hub-asset.json').then(r => r.json())
+    ])
+    .then(([allGuides, hubData, assetHubData]) => {
+
       const hub = hubData.find(h => h.slug === slug);
+
       const guides = allGuides.filter(g =>
-        hub ? g.model === hub.name
-            : g.model.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === slug
+        hub ? g.model === hub.name : slugify(g.model) === slug
       ).sort((a, b) => a.title.localeCompare(b.title));
 
       const name = hub ? hub.name : (guides[0] ? guides[0].model : slug);
       const manufacturer = guides[0] ? guides[0].manufacturer : '';
-      const assetType = guides[0] ? guides[0].assetType : '';
+      const assetType = hub?.profile?.assetType || (guides[0] ? guides[0].assetType : '');
 
       document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
       document.getElementById('hub-name').textContent = name;
 
       const metaEl = document.getElementById('hub-meta');
-      [`${guides.length} guide${guides.length !== 1 ? 's' : ''}`, manufacturer, assetType].filter(Boolean).forEach(text => {
-        const span = document.createElement('span');
-        span.textContent = text;
-        span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
-        metaEl.appendChild(span);
-      });
+      [`${guides.length} guide${guides.length !== 1 ? 's' : ''}`, manufacturer, assetType]
+        .filter(Boolean)
+        .forEach(text => {
+          const span = document.createElement('span');
+          span.textContent = text;
+          span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
+          metaEl.appendChild(span);
+        });
+
+      const assetHub = findAssetHub(assetType, assetHubData);
+      const iconPath = assetHub?.icon || '';
+
+      const iconWrap = document.getElementById('model-hero-icon');
+      const iconImg = document.getElementById('model-hero-img');
+
+      if (iconPath && iconWrap && iconImg) {
+        iconImg.src = iconPath;
+        iconImg.alt = `${assetType} icon`;
+
+        iconImg.onload = () => iconWrap.style.display = 'flex';
+        iconImg.onerror = () => iconWrap.style.display = 'none';
+      }
 
       if (hub) {
-        const p = hub.profile;
+        const p = hub.profile || {};
         let html = '';
+
         if (p.blurb) html += `<p>${p.blurb}</p>`;
         if (p.manufacturer) html += `<p><strong>Manufacturer:</strong> ${p.manufacturer}</p>`;
         if (p.assetType) html += `<p><strong>Asset Type:</strong> ${p.assetType}</p>`;
-        if (p.website) html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank" rel="noopener">${p.website.replace('https://', '')}</a></p>`;
+        if (p.website) html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank">${p.website.replace('https://','')}</a></p>`;
+
         if (html) {
           document.getElementById('hub-profile').innerHTML = `<h3>${name}</h3>${html}`;
           document.getElementById('hub-profile').style.display = '';
         }
 
-        if (hub.content.commonIssues && hub.content.commonIssues.length) {
-          hub.content.commonIssues.forEach(issue => { const li = document.createElement('li'); li.textContent = issue; document.getElementById('hub-issues').appendChild(li); });
+        if (hub.content?.commonIssues?.length) {
+          hub.content.commonIssues.forEach(issue => {
+            const li = document.createElement('li');
+            li.textContent = issue;
+            document.getElementById('hub-issues').appendChild(li);
+          });
           document.getElementById('section-issues').style.display = '';
         }
 
-        if (hub.content.tips && hub.content.tips.length) {
-          hub.content.tips.forEach(t => { const li = document.createElement('li'); li.textContent = t; document.getElementById('hub-tips').appendChild(li); });
+        if (hub.content?.tips?.length) {
+          hub.content.tips.forEach(tip => {
+            const li = document.createElement('li');
+            li.textContent = tip;
+            document.getElementById('hub-tips').appendChild(li);
+          });
           document.getElementById('hub-tips-box').style.display = '';
           document.getElementById('section-tips').style.display = 'grid';
         }
 
-        if (hub.content.warnings && hub.content.warnings.length) {
-          hub.content.warnings.forEach(w => { const li = document.createElement('li'); li.textContent = w; document.getElementById('hub-warnings').appendChild(li); });
+        if (hub.content?.warnings?.length) {
+          hub.content.warnings.forEach(warning => {
+            const li = document.createElement('li');
+            li.textContent = warning;
+            document.getElementById('hub-warnings').appendChild(li);
+          });
           document.getElementById('hub-warnings-box').style.display = '';
           document.getElementById('section-tips').style.display = 'grid';
         }
       }
 
       const grid = document.getElementById('guides-grid');
+
       guides.forEach(guide => {
+        const iconPath = getIconPath(guide.assetType, assetHubData);
+
         const card = document.createElement('a');
         card.href = guide.url;
         card.classList.add('guide-card');
-        card.innerHTML = `<div class="card-content"><h3>${guide.title}</h3><p>${guide.description}</p><div class="badges"><span class="badge asset">${guide.assetType}</span><span class="badge manufacturer">${guide.manufacturer}</span><span class="badge model">${guide.model}</span></div><p class="date"><em>Last Revision: ${guide.dateAdded}</em></p></div>`;
+
+        card.innerHTML = `
+          <div class="card-content">
+
+            ${iconPath ? `
+              <div style="display:flex; justify-content:center; margin-bottom:14px;">
+                <img
+                  src="${iconPath}"
+                  alt="${guide.assetType} icon"
+                  class="guide-card-icon"
+                  style="width:56px; height:56px; object-fit:contain;"
+                  onerror="this.style.display='none'"
+                >
+              </div>
+            ` : ''}
+
+            <h3>${guide.title}</h3>
+            <p>${guide.description}</p>
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+
         grid.appendChild(card);
       });
 
       document.getElementById('loading').style.display = 'none';
       document.getElementById('hub-body').style.display = '';
       document.getElementById('hub-suggest').style.display = '';
-    }).catch(err => {
+
+    })
+    .catch(err => {
       document.getElementById('loading').textContent = 'Error loading data.';
       console.error(err);
     });

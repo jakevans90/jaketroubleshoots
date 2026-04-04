@@ -104,26 +104,89 @@ Promise.all([
 
   if (!container || !buttonsContainer) return;
 
-  // Unique sorted asset types
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function findAssetHub(assetType) {
+    return hubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType) {
+    const assetHub = findAssetHub(assetType);
+    return assetHub?.icon || '';
+  }
+
+  // 🔥 PATCH renderGuides (DO NOT CHANGE ORIGINAL FILE)
+  const originalRenderGuides = window.renderGuides;
+
+  window.renderGuides = function(containerId, guides) {
+    // run original renderer first
+    originalRenderGuides(containerId, guides);
+
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.guide-card');
+
+    cards.forEach((card, index) => {
+      const guide = guides[index];
+      if (!guide) return;
+
+      const iconPath = getIconPath(guide.assetType);
+      if (!iconPath) return;
+
+      // prevent duplicate injection
+      if (card.querySelector('.guide-card-icon')) return;
+
+      const content = card.querySelector('.card-content');
+      if (!content) return;
+
+      const iconWrapper = document.createElement('div');
+      iconWrapper.style.display = 'flex';
+      iconWrapper.style.justifyContent = 'center';
+      iconWrapper.style.marginBottom = '14px';
+
+      iconWrapper.innerHTML = `
+        <img
+          src="${iconPath}"
+          alt="${guide.assetType} icon"
+          class="guide-card-icon"
+          style="width:56px; height:56px; object-fit:contain;"
+          onerror="this.style.display='none'"
+        >
+      `;
+
+      content.prepend(iconWrapper);
+    });
+  };
+
+  // -------------------------------
+  // EXISTING CODE (UNCHANGED)
+  // -------------------------------
+
   const assetTypes = [...new Set(allGuides.map(g => g.assetType))].sort();
 
-// Create buttons
-assetTypes.forEach(type => {
-  const btn = document.createElement('a');
-  btn.href = '#';
-  btn.textContent = type;   // 👈 back to simple text
-  btn.classList.add('browse-button');
+  assetTypes.forEach(type => {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.textContent = type;
+    btn.classList.add('browse-button');
 
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    showGuidesByAssetType(type);
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showGuidesByAssetType(type);
+    });
+
+    buttonsContainer.appendChild(btn);
   });
 
-
-  buttonsContainer.appendChild(btn);
-});
-
-  // Show/hide letter filters
   letters.forEach(letterEl => {
     const letter = letterEl.dataset.letter.toUpperCase();
     if (letter === 'ALL') {
@@ -135,7 +198,6 @@ assetTypes.forEach(type => {
     }
   });
 
-  // Letter click logic
   letters.forEach(letter => {
     letter.addEventListener('click', () => {
       const selected = letter.dataset.letter.toUpperCase();
@@ -160,50 +222,47 @@ assetTypes.forEach(type => {
     });
   });
 
-  // Auto-click first asset type on load
   const firstVisible = Array.from(document.querySelectorAll('#asset-buttons .browse-button'))
                             .find(b => b.style.display !== 'none');
   if (firstVisible) firstVisible.click();
 
-  // Hub banner function
   function showAssetHubBanner(assetName) {
-  const bannerEl = document.getElementById('hub-banner-inject');
-  bannerEl.innerHTML = '';
+    const bannerEl = document.getElementById('hub-banner-inject');
+    bannerEl.innerHTML = '';
 
-  const hub = hubData.find(h => h.name === assetName && h.flags.exists === true);
-  if (!hub) return;
+    const hub = hubData.find(h => h.name === assetName && h.flags.exists === true);
+    if (!hub) return;
 
-  const guides = allGuides.filter(g => g.assetType === assetName);
-  const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
-  const models = [...new Set(guides.map(g => g.model))];
-  const iconPath = hub.icon || `/images/icons-asset/${hub.slug}.png`;
+    const guides = allGuides.filter(g => g.assetType === assetName);
+    const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
+    const models = [...new Set(guides.map(g => g.model))];
+    const iconPath = hub.icon || `/images/icons-asset/${hub.slug}.png`;
 
-  const blurb = hub.profile?.blurb
-    ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
-    : '';
+    const blurb = hub.profile?.blurb
+      ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
+      : '';
 
-  bannerEl.innerHTML = `
-    <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
-      <div class="hub-banner-card">
-        <div class="hub-info">
-          <div class="hub-banner-title">
-            <img src="${iconPath}" alt="${hub.name} icon" onerror="this.style.display='none'">
-            <h3>${hub.name}</h3>
+    bannerEl.innerHTML = `
+      <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
+        <div class="hub-banner-card">
+          <div class="hub-info">
+            <div class="hub-banner-title">
+              <img src="${iconPath}" alt="${hub.name} icon" onerror="this.style.display='none'">
+              <h3>${hub.name}</h3>
+            </div>
+            ${blurb}
+            <div class="hub-banner-meta">
+              <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
+              <span>${manufacturers.length} manufacturer${manufacturers.length !== 1 ? 's' : ''}</span>
+              <span>${models.length} model${models.length !== 1 ? 's' : ''}</span>
+            </div>
           </div>
-          ${blurb}
-          <div class="hub-banner-meta">
-            <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
-            <span>${manufacturers.length} manufacturer${manufacturers.length !== 1 ? 's' : ''}</span>
-            <span>${models.length} model${models.length !== 1 ? 's' : ''}</span>
-          </div>
+          <a class="hub-banner-btn" href="${hub.url}">View Asset Hub →</a>
         </div>
-        <a class="hub-banner-btn" href="${hub.url}">View Asset Hub →</a>
       </div>
-    </div>
-  `;
-}
+    `;
+  }
 
-  // Show guides by asset type
   function showGuidesByAssetType(type) {
     showAssetHubBanner(type);
     const filtered = allGuides
