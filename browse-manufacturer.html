@@ -93,8 +93,9 @@
 <script>
 Promise.all([
   fetchGuides(),
-  fetch('data/hub-manufacturer.json').then(r => r.json())
-]).then(([allGuides, hubData]) => {
+  fetch('data/hub-manufacturer.json').then(r => r.json()),
+  fetch('data/hub-asset.json').then(r => r.json()) // 👈 added
+]).then(([allGuides, hubData, assetHubData]) => {
 
   const container = document.getElementById('guides-grid');
   const buttonsContainer = document.getElementById('manufacturer-buttons');
@@ -102,10 +103,31 @@ Promise.all([
 
   if (!container || !buttonsContainer) return;
 
-  // Unique sorted manufacturers
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function findAssetHub(assetType) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType) {
+    const assetHub = findAssetHub(assetType);
+    return assetHub?.icon || '';
+  }
+
+  // -------------------------------
+  // EXISTING CODE (UNCHANGED)
+  // -------------------------------
+
   const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
 
-  // Create buttons
   manufacturers.forEach(man => {
     const btn = document.createElement('a');
     btn.href = '#';
@@ -118,7 +140,6 @@ Promise.all([
     buttonsContainer.appendChild(btn);
   });
 
-  // Show/hide letter filters
   letters.forEach(letterEl => {
     const letter = letterEl.dataset.letter.toUpperCase();
     if (letter === 'ALL') {
@@ -130,7 +151,6 @@ Promise.all([
     }
   });
 
-  // Letter click logic
   letters.forEach(letter => {
     letter.addEventListener('click', () => {
       const selected = letter.dataset.letter.toUpperCase();
@@ -155,12 +175,10 @@ Promise.all([
     });
   });
 
-  // Auto-click first manufacturer on load
   const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
                             .find(b => b.style.display !== 'none');
   if (firstVisible) firstVisible.click();
 
-  // Hub banner function
   function showManufacturerHubBanner(manufacturerName) {
     const bannerEl = document.getElementById('hub-banner-inject');
     bannerEl.innerHTML = '';
@@ -194,7 +212,6 @@ Promise.all([
     `;
   }
 
-  // Show guides for a manufacturer
   function showGuidesByManufacturer(man) {
     showManufacturerHubBanner(man);
 
@@ -204,11 +221,27 @@ Promise.all([
       .sort((a, b) => a.title.localeCompare(b.title));
 
     filtered.forEach(guide => {
+      const iconPath = getIconPath(guide.assetType); // 👈 added
+
       const card = document.createElement('a');
       card.href = guide.url;
       card.classList.add('guide-card');
+
       card.innerHTML = `
         <div class="card-content">
+
+          ${iconPath ? `
+            <div style="display:flex; justify-content:center; margin-bottom:14px;">
+              <img
+                src="${iconPath}"
+                alt="${guide.assetType} icon"
+                class="guide-card-icon"
+                style="width:56px; height:56px; object-fit:contain;"
+                onerror="this.style.display='none'"
+              >
+            </div>
+          ` : ''}
+
           <h3>${guide.title}</h3>
           <p>${guide.description}</p>
           <div class="badges">
@@ -219,12 +252,12 @@ Promise.all([
           <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
         </div>
       `;
+
       container.appendChild(card);
     });
   }
 
 }).catch(err => console.error('Guide load error:', err));
 </script>
-
 </body>
 </html>
