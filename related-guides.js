@@ -1,25 +1,27 @@
 // related-guides.js
 async function loadRelatedGuides() {
-  const containerId = "related-guides-grid";
-  const container = document.getElementById(containerId);
-
+  const container = document.getElementById("related-guides-grid");
   if (!container) {
     console.log("No related guides container on this page.");
     return;
   }
 
-  const currentPage = window.location.pathname
-    .split("/")
-    .pop()
-    .split("?")[0]
-    .replace(".html", "");
+  const currentPage = window.location.pathname.split("/").pop().split("?")[0].replace(".html", "");
+  const currentPath = window.location.pathname.replace(/^\//, "").split("?")[0];
 
-  const currentPath = window.location.pathname
-    .replace(/^\//, "")
-    .split("?")[0];
+  function slugify(text) {
+    return (text || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  }
 
   try {
-    const allGuides = await fetchGuides();
+    const [allGuides, assetHubData] = await Promise.all([
+      fetchGuides(),
+      fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json())
+    ]);
 
     const currentGuide = allGuides.find(g => {
       const guideFile = (g.url || "").split("/").pop().replace(".html", "");
@@ -47,7 +49,43 @@ async function loadRelatedGuides() {
       return;
     }
 
-    await renderGuides(containerId, related);
+    container.innerHTML = "";
+
+    related.forEach(guide => {
+      const assetHub = assetHubData.find(a =>
+        a.name === guide.assetType || a.slug === slugify(guide.assetType)
+      );
+
+      const iconPath = assetHub?.icon || "";
+
+      const card = document.createElement("a");
+      card.href = "/" + guide.url;
+      card.className = "guide-card";
+      card.innerHTML = `
+        <div class="card-content">
+          ${iconPath ? `
+            <div style="display:flex; justify-content:center; margin-bottom:14px;">
+              <img
+                src="${iconPath}"
+                alt="${guide.assetType} icon"
+                class="guide-card-icon"
+                style="width:56px; height:56px; object-fit:contain;"
+                onerror="this.style.display='none'"
+              >
+            </div>
+          ` : ""}
+          <h3>${guide.title}</h3>
+          <p>${guide.description}</p>
+          <div class="badges">
+            <span class="badge asset">${guide.assetType}</span>
+            <span class="badge manufacturer">${guide.manufacturer}</span>
+            <span class="badge model">${guide.model}</span>
+          </div>
+          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
   } catch (err) {
     console.error("Related guides error:", err);
   }
