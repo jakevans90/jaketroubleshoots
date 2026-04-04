@@ -9,15 +9,16 @@
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="icon" type="image/png" href="images/favicon.png">
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1L34E3TJL6');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
-     crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+       crossorigin="anonymous"></script>
 </head>
 <body>
   
@@ -40,18 +41,21 @@
   <h2>Biomedical Equipment Troubleshooting Guides for BMETs & Clinical Engineers.</h2>
   <p>A growing library of symptom-based guides and vendor contacts — built by a working BMET with 15+ years in clinical environments.</p>
   <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
-  Real-world fixes organized by manufacturer, device type, and model — one searchable place.
-    
-<form id="home-search-form">
-  <input type="text" id="home-search-input" placeholder="Search...">
- <button type="submit" class="hero-button">Search</button>
-</form>
+    Real-world fixes organized by manufacturer, device type, and model — one searchable place.
+  </p>
+
+  <p id="stats-line" style="max-width:700px; margin:12px auto 0; font-size:0.95em; font-weight:600; opacity:0.95;"></p>
+
+  <form id="home-search-form">
+    <input type="text" id="home-search-input" placeholder="Search...">
+    <button type="submit" class="hero-button">Search</button>
+  </form>
   
-<div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-  <a href="guides.html" class="hero-button">Browse All Guides</a>
-  <a href="vendors.html" class="hero-button">Browse Vendor Contacts</a>
-  <a href="suggest.html" class="hero-button">Suggest a Guide</a>
-</div>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="guides.html" class="hero-button">Browse All Guides</a>
+    <a href="vendors.html" class="hero-button">Browse Vendor Contacts</a>
+    <a href="suggest.html" class="hero-button">Suggest a Guide</a>
+  </div>
 </section>
 
 <section class="browse-section">
@@ -104,6 +108,10 @@ function slugify(text) {
     .replace(/[^a-z0-9-]/g, '');
 }
 
+function pluralize(count, singular, plural) {
+  return count === 1 ? singular : plural;
+}
+
 let assetHubDataGlobal = [];
 
 function findAssetHub(assetType) {
@@ -117,7 +125,7 @@ function getIconPath(assetType) {
   return assetHub?.icon || '';
 }
 
-// 🔥 Override renderGuides globally
+// Override renderGuides globally
 const originalRenderGuides = window.renderGuides;
 
 window.renderGuides = function(containerId, guides) {
@@ -159,14 +167,36 @@ window.renderGuides = function(containerId, guides) {
   });
 };
 
+function buildStatsLine(allGuides) {
+  const totalGuides = allGuides.length;
+
+  const uniqueModels = new Set(
+    allGuides
+      .map(g => (g.model || '').trim())
+      .filter(Boolean)
+  );
+
+  const uniqueManufacturers = new Set(
+    allGuides
+      .map(g => (g.manufacturer || '').trim())
+      .filter(Boolean)
+  );
+
+  return `${totalGuides} ${pluralize(totalGuides, 'guide', 'guides')} covering ${uniqueModels.size} ${pluralize(uniqueModels.size, 'model', 'models')} from ${uniqueManufacturers.size} ${pluralize(uniqueManufacturers.size, 'manufacturer', 'manufacturers')}.`;
+}
+
 // Homepage logic
 Promise.all([
   fetchGuides(),
   fetch('data/hub-asset.json').then(r => r.json())
 ])
 .then(([allGuides, assetHubData]) => {
-
   assetHubDataGlobal = assetHubData;
+
+  const statsLine = document.getElementById('stats-line');
+  if (statsLine) {
+    statsLine.textContent = buildStatsLine(allGuides);
+  }
 
   const featuredUrls = [
     'guides/bd-alaris-air-in-line.html',
@@ -185,7 +215,6 @@ Promise.all([
 
   const recent = getRecentGuides(allGuides, 12);
   renderGuides('guides-grid', recent);
-
 })
 .catch(err => console.error('Guide load error:', err));
 
@@ -194,7 +223,7 @@ const form = document.getElementById('home-search-form');
 form.addEventListener('submit', e => {
   e.preventDefault();
   const query = document.getElementById('home-search-input').value.trim();
-  if(query) {
+  if (query) {
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
   }
 });
