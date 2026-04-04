@@ -32,13 +32,13 @@
 </header>
 
 <section class="hero">
- <h2 id="hub-name">Loading…</h2>
+  <h2 id="hub-name">Loading…</h2>
 
-<div class="asset-hero-icon" id="asset-hero-icon" style="display:none;">
-  <img id="asset-hero-img" src="" alt="">
-</div>
+  <div class="asset-hero-icon" id="asset-hero-icon" style="display:none;">
+    <img id="asset-hero-img" src="" alt="">
+  </div>
 
-<p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
+  <p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
   <div style="margin-top:20px;">
     <a href="browse-asset.html" class="hero-button">← All Asset Types</a>
@@ -136,15 +136,22 @@
       hubMetaEl.appendChild(span);
     }
 
-    function createProfileHtml(hub, name, iconPath) {
+    function findAssetHub(assetType, hubData) {
+      return hubData.find(a =>
+        a.name === assetType || a.slug === slugify(assetType)
+      );
+    }
+
+    function createProfileHtml(hub, name) {
       const p = hub.profile || {};
       let html = '';
 
-    html += `
-  <h3 class="hub-profile-title">
-    <span>${name}</span>
-  </h3>
-`;
+      html += `
+        <h3 class="hub-profile-title">
+          <span>${name}</span>
+        </h3>
+      `;
+
       if (p.blurb) {
         html += `<p>${p.blurb}</p>`;
       }
@@ -170,7 +177,7 @@
       });
     }
 
-    function renderGuidesByManufacturer(guides) {
+    function renderGuidesByManufacturer(guides, hubData) {
       clearElement(manufacturerSectionEl);
 
       if (!guides.length) {
@@ -207,11 +214,22 @@
         grid.id = 'guides-grid';
 
         mfrGuides.forEach(guide => {
+          const assetHub = findAssetHub(guide.assetType, hubData);
+          const cardIconPath = assetHub?.icon || '';
+
           const card = document.createElement('a');
           card.href = guide.url;
           card.classList.add('guide-card');
           card.innerHTML = `
             <div class="card-content">
+              ${cardIconPath ? `
+                <img
+                  src="${cardIconPath}"
+                  alt="${guide.assetType} icon"
+                  class="guide-card-icon"
+                  onerror="this.style.display='none'"
+                >
+              ` : ''}
               <h3>${guide.title}</h3>
               <p>${guide.description}</p>
               <div class="badges">
@@ -250,19 +268,20 @@
 
       document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
       hubNameEl.textContent = name;
+
       const iconEl = document.getElementById('asset-hero-icon');
-const iconImg = document.getElementById('asset-hero-img');
+      const iconImg = document.getElementById('asset-hero-img');
 
-iconImg.src = iconPath;
-iconImg.alt = `${name} icon`;
+      iconImg.src = iconPath;
+      iconImg.alt = `${name} icon`;
 
-iconImg.onload = () => {
-  iconEl.style.display = 'flex';
-};
+      iconImg.onload = () => {
+        iconEl.style.display = 'flex';
+      };
 
-iconImg.onerror = () => {
-  iconEl.style.display = 'none';
-};
+      iconImg.onerror = () => {
+        iconEl.style.display = 'none';
+      };
 
       clearElement(hubMetaEl);
       const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
@@ -273,7 +292,7 @@ iconImg.onerror = () => {
       addMetaPill(`${models.length} model${models.length !== 1 ? 's' : ''}`);
 
       if (hub) {
-        hubProfileEl.innerHTML = createProfileHtml(hub, name, iconPath);
+        hubProfileEl.innerHTML = createProfileHtml(hub, name);
         hubProfileEl.style.display = '';
 
         if (Array.isArray(hub.content?.commonIssues) && hub.content.commonIssues.length) {
@@ -307,7 +326,7 @@ iconImg.onerror = () => {
         tipsSectionEl.style.display = 'none';
       }
 
-      renderGuidesByManufacturer(guides);
+      renderGuidesByManufacturer(guides, hubData);
 
       loadingEl.style.display = 'none';
       hubBodyEl.style.display = '';
