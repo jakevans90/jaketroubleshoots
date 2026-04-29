@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   
-  <title>Siemens Healthineers SOMATOM Series - Patient Table Will Not Move / Position Error</title>
+  <title>Siemens SOMATOM CT Scanner Patient Table Will Not Move or Position Error</title>
   <link rel="stylesheet" href="../style.css">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -49,12 +49,14 @@
   <h2>What This Guide Helps With</h2>
   <p>This guide assists Clinical Engineering in troubleshooting situations where the patient table on a Siemens Healthineers SOMATOM Series CT scanner will not move or generates a position error. Symptoms may include the table not responding to controls, stopping mid-movement, or the system reporting a table position fault during scanning or positioning.</p>
   <p>This guide focuses on verifying external causes first, such as obstructions, control inputs, power issues, and safety interlocks, before assuming an internal table drive or positioning failure.</p>
+  <p>Table movement issues may occur during patient setup, after system startup, or following cleaning or repositioning of the table, where position tracking or safety conditions may not be fully satisfied.</p>
 
   <h2>Step-by-Step Troubleshooting</h2>
   <h4>1. Verify the System Is Fully Initialized</h4>
   <ul>
     <li>Ensure the CT system has completed startup and gantry initialization.</li>
     <li>If the system is still booting or initialization failed, table movement may be disabled until the system reaches ready status.</li>
+    <li>If initialization does not complete normally, see <a href="/guides/siemens-somatom-series-gantry-initialization-failure-system-will-not-start.html">Gantry Initialization Failure / System Will Not Start</a>.</li>
   </ul>
 
   <h4>2. Check the Table Control Panel</h4>
@@ -82,6 +84,7 @@
       </ul>
     </li>
     <li>Even small obstructions can trigger a safety stop or position error.</li>
+    <li>On CT systems, even small items near the base, rail path, or accessory mounting points can trigger a safety stop before a visible obstruction is obvious.</li>
   </ul>
 
   <h4>4. Verify Emergency Stop Is Not Activated</h4>
@@ -132,6 +135,7 @@
       </ul>
     </li>
     <li>Minor encoder or position errors may clear with a reposition command.</li>
+    <li>Position errors can occur if the table loses its reference during startup, interrupted movement, or incomplete initialization.</li>
   </ul>
 
   <h4>8. Power Cycle the Table System</h4>
@@ -176,8 +180,8 @@
   <p>Recognizing when internal repair is required is an important part of proper troubleshooting.</p>
 
   <h2>Clinical Use Tip</h2>
-  <p>Do not troubleshoot table movement while a patient is on the CT table.</p>
-  <p>If the issue occurs during patient setup, safely assist the patient off the table and move them to another CT system if available before continuing troubleshooting.</p>
+  <p>Do not troubleshoot table movement while a patient is on the CT table. If movement is required for testing, ensure the patient has been safely removed and transferred.</p>
+  <p>CT tables can move unexpectedly during resets or reposition commands. Verify the table path is clear and staff are positioned safely before initiating movement.</p>
 
   <h2>Work Order Documentation (CCR Method)</h2>
   <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
@@ -185,17 +189,17 @@
   <h4>Complaint</h4>
   <p>What was reported by the clinical staff.</p>
   <p><em>Example:</em><br>
-  Staff reported the CT scanner patient table would not move when attempting to position the patient. The system displayed a table position error.</p>
+  Staff reported the Siemens SOMATOM CT patient table would not move during patient positioning. A table position error was displayed on the console.</p>
 
   <h4>Cause</h4>
   <p>What was observed during troubleshooting.</p>
   <p><em>Example:</em><br>
-  Inspection revealed the emergency stop button on the gantry had been activated, preventing table movement.</p>
+  Emergency stop button on the gantry was found engaged, preventing table motion.</p>
 
   <h4>Resolution</h4>
   <p>What action was taken.</p>
   <p><em>Example:</em><br>
-  Released the emergency stop, verified normal table movement using console controls, and confirmed the CT system returned to normal operation.</p>
+  Released emergency stop, reinitialized system per facility procedure, verified normal table movement from console controls, and returned the unit to service.</p>
 
   <h2>Helpful Details to Include</h2>
   <ul>
@@ -251,3 +255,4 @@
 </footer>
 </body>
 </html>
+
