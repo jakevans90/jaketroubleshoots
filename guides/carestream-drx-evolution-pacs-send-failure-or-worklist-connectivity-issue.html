@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carestream DRX-Evolution Radiographic System - PACS Send Failure or Worklist Connectivity Issue</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Carestream DRX-Evolution</h2>
+  <p>PACS Send Failure or Worklist Connectivity Issue</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+  <h3>Asset Type</h3><p>Radiographic System</p>
+  <h3>Manufacturer</h3><p>Carestream</p>
+  <h3>Model</h3><p>DRX-Evolution</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>Troubleshooting DRX-Evolution PACS send failures, missing worklist updates, network issues, destination errors, or failed image transfer.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>Ensure Patient Safety First</h4>
+  <p>Do not troubleshoot network transfer issues during active imaging if it delays patient care.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the exam is complete or pause troubleshooting until patient imaging is safely finished.</li>
+    <li>If additional imaging is needed urgently, use another radiographic room or approved downtime workflow.</li>
+    <li>Do not delete images, retry exams unnecessarily, or modify patient data without confirming clinical workflow requirements.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Patient care continues safely while image transfer or worklist troubleshooting is handled separately.</p>
+  <p>If this resolves the workflow concern, stop.</p>
+
+  <h4>Verify the Reported Problem</h4>
+  <p>Confirm whether the issue is with PACS sending, worklist retrieval, or both.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask staff what failed:</li>
+    <li>Images not sending to PACS</li>
+    <li>Images stuck in queue</li>
+    <li>Worklist not loading</li>
+    <li>Patient orders missing</li>
+    <li>Incorrect destination selected</li>
+    <li>Network or DICOM error displayed</li>
+    <li>Check whether the issue affects one patient, one exam, or all studies.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The failure type is clearly identified before troubleshooting continues.</p>
+
+  <h4>Check for Facility-Wide PACS or Network Problems</h4>
+  <p>A room issue should not be assumed until broader system problems are ruled out.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask if other imaging rooms are sending normally.</li>
+    <li>Check whether PACS, RIS, or worklist services are known to be down.</li>
+    <li>Contact imaging informatics or IT if multiple rooms are affected.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> You determine whether the DRX-Evolution room is isolated or part of a larger outage.</p>
+  <p>If multiple systems are affected, escalate to IT/imaging informatics and stop local equipment troubleshooting.</p>
+
+  <h4>Confirm the System Is on the Correct Network</h4>
+  <p>PACS and worklist communication depend on the acquisition workstation being connected to the correct hospital network.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Verify the network cable is fully seated at the workstation, wall jack, or network switch connection.</li>
+    <li>Check for link/activity lights at the network port if visible.</li>
+    <li>Confirm the system has not been moved, disconnected, or plugged into the wrong network jack.</li>
+    <li>If wireless networking is used in the local setup, confirm it is connected to the correct clinical network.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The workstation has a valid physical or wireless network connection.</p>
+  <p>If reconnecting the network restores worklist or PACS transfer, document the connection issue and stop.</p>
+
+  <h4>Restart the Acquisition Workstation Only If Safe</h4>
+  <p>A software or communication service may recover after a controlled restart.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm no active acquisition is in progress.</li>
+    <li>Save or protect any unsent images according to local workflow.</li>
+    <li>Perform a normal shutdown and restart of the acquisition workstation.</li>
+    <li>Recheck worklist and PACS send after startup.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Communication services reload and normal DICOM transfer or worklist query returns.</p>
+  <p>If the restart resolves the issue, stop.</p>
+
+  <h4>Check the Worklist Search Criteria</h4>
+  <p>Missing worklist entries can be caused by search filters rather than system failure.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the correct date range is selected.</li>
+    <li>Check modality, location, accession, patient name, and patient ID filters.</li>
+    <li>Clear overly narrow filters and refresh the worklist.</li>
+    <li>Confirm registration or order entry was completed in the upstream system.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The correct patient order appears if the issue was caused by filtering or incomplete order entry.</p>
+  <p>If the worklist appears after correcting filters, stop.</p>
+
+  <h4>Verify DICOM Destination Selection</h4>
+  <p>Images may fail to send if the wrong PACS destination or archive route is selected.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check the selected send destination on the DRX-Evolution workstation.</li>
+    <li>Confirm staff did not select a test, offline, secondary, or incorrect destination.</li>
+    <li>Retry send to the normal PACS destination if available.</li>
+    <li>Avoid changing DICOM configuration unless authorized by imaging informatics or service support.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Images are routed to the correct configured PACS destination.</p>
+  <p>If sending succeeds after selecting the correct destination, stop.</p>
+
+  <h4>Review the Send Queue or Failed Jobs</h4>
+  <p>The queue can show whether images are waiting, failed, rejected, or actively transferring.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Open the image transfer/send queue.</li>
+    <li>Identify failed or pending studies.</li>
+    <li>Note the error message, destination, time of failure, accession number, and patient/exam details.</li>
+    <li>Retry one failed send if safe and appropriate.</li>
+    <li>Do not repeatedly retry a large queue if the network or PACS is unavailable.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> You identify whether the issue is a single failed study or a broader transfer failure.</p>
+
+  <h4>Confirm Patient and Exam Data Are Valid</h4>
+  <p>PACS may reject studies with missing or mismatched patient, accession, or exam information.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check for missing accession number, incorrect patient ID, mismatched exam type, or duplicate study information.</li>
+    <li>Compare the study information against the order in the RIS or EHR.</li>
+    <li>Have imaging staff correct patient/order data using approved workflow if needed.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The study contains valid demographic and order information for PACS acceptance.</p>
+  <p>If correcting demographics or order details allows the image to send, stop.</p>
+
+  <h4>Check for Local Storage or Queue Backup</h4>
+  <p>A full local drive or overloaded queue can prevent normal image transfer.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check whether the workstation reports storage, archive, or queue capacity warnings.</li>
+    <li>Ask staff whether multiple studies have been stuck for an extended period.</li>
+    <li>Avoid deleting studies unless the images are confirmed archived and deletion is approved by department policy.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Storage or queue limitations are identified without risking image loss.</p>
+
+  <h4>Test Basic Network Function If Available</h4>
+  <p>Clinical Engineering should verify simple network indicators before assuming equipment failure.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the workstation shows network connectivity.</li>
+    <li>Check whether other network functions on the system work, if available.</li>
+    <li>If local policy allows, coordinate with IT to verify IP address, network jack, VLAN, and connectivity to PACS/worklist servers.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Basic network communication is either confirmed or escalated to IT.</p>
+
+  <h4>Escalate Configuration or Server Issues</h4>
+  <p>DICOM AE titles, IP addresses, ports, and server-side routing are usually controlled by imaging informatics, IT, or vendor service.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Escalate if:</li>
+    <li>PACS destination fails repeatedly</li>
+    <li>Worklist cannot query</li>
+    <li>DICOM association errors appear</li>
+    <li>AE title, IP, or port errors are suspected</li>
+    <li>Other rooms are working but this room cannot communicate</li>
+    <li>Provide exact error messages, screenshots if permitted, and affected accession examples.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The correct support team can troubleshoot DICOM routing, PACS, RIS, firewall, or workstation configuration.</p>
+
+  <h2>If the Problem Persists</h2>
+  <p>If PACS send failure or worklist connectivity problems continue after checking patient safety, network connection, worklist filters, destination selection, send queue status, patient demographics, and basic connectivity, the likely cause is deeper software, DICOM configuration, network routing, or workstation failure.</p>
+  <p>The DRX-Evolution room should be:</p>
+  <ul>
+    <li>Removed from clinical use if images cannot be safely acquired, stored, or transmitted.</li>
+    <li>Labeled Out of Service if the issue affects patient care or image availability.</li>
+    <li>Escalated to imaging informatics, IT, Carestream service, or internal repair/bench evaluation as appropriate.</li>
+  </ul>
+  <p>Knowing when to stop is proper troubleshooting. Do not perform unauthorized DICOM configuration changes or risk image loss by deleting studies without confirmation.</p>
+
+  <h2>Clinical Use Tip</h2>
+  <p>Do not troubleshoot PACS transfer problems on an active patient if it delays care. Finish the exam safely, preserve acquired images, and move the patient to another room if imaging must continue.</p>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>"Radiology reported that the Carestream DRX-Evolution could not send completed studies to PACS and the modality worklist was not updating."</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>"Found network cable loose at the acquisition workstation, causing intermittent PACS and worklist communication failure."</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Example:</em><br>"Reseated network cable, verified link lights, restarted the workstation, refreshed worklist, and confirmed test study successfully transferred to PACS."</p>
+
+  <h2>Helpful Details to Include (If Known)</h2>
+  <ul>
+    <li>Whether other radiographic rooms were affected</li>
+    <li>Alarm behavior, system messages, or DICOM error behavior</li>
+    <li>Accessories swapped or network components checked</li>
+    <li>Power behavior or workstation restart behavior</li>
+    <li>Environmental factors such as recent room moves, cable disturbance, network work, or downtime events</li>
+    <li>Indicator lights, including network link/activity lights</li>
+    <li>PACS send queue status</li>
+    <li>Worklist behavior</li>
+    <li>Exact error messages displayed</li>
+    <li>Network cable or wall jack checked</li>
+    <li>Destination selected</li>
+    <li>Patient/order filters checked</li>
+    <li>Accession or demographic mismatch found</li>
+    <li>Study successfully resent or still pending</li>
+    <li>IT/imaging informatics ticket number if escalated</li>
+    <li>Final device status</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>PACS and worklist issues should be approached logically before assuming a system failure. Start with patient safety, confirm whether the issue is local or facility-wide, check physical network connections, verify filters and destinations, and protect patient images from accidental loss. Good documentation helps Clinical Engineering, IT, imaging informatics, and vendor service quickly identify whether the issue is workflow, network, configuration, or equipment related.</p>
+  <p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
