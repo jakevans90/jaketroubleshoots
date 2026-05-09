@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GE Healthcare Discovery XR656 Radiographic System - Image Not Sending to PACS or Worklist Not Updating</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>GE Healthcare Discovery XR656</h2>
+  <p>Image Not Sending to PACS or Worklist Not Updating</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+  <h3>Asset Type</h3><p>Radiographic System</p>
+  <h3>Manufacturer</h3><p>GE Healthcare</p>
+  <h3>Model</h3><p>Discovery XR656</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>Troubleshooting PACS send failures, missing studies, delayed image transfer, or worklist refresh issues caused by network, configuration, or workflow problems.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>Ensure Patient Safety First</h4>
+  <p>Confirm the patient exam is complete or that imaging can safely continue before troubleshooting the Discovery XR656.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Do not troubleshoot network or image-transfer issues during active patient positioning if it delays care.</li>
+    <li>Confirm images are available locally at the acquisition workstation.</li>
+    <li>If the system cannot send images but imaging is clinically urgent, notify radiology staff and follow downtime workflow.</li>
+    <li>Use another room or portable system if patient care would be delayed.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Patient care continues safely while image transfer or worklist issues are investigated.</p>
+  <p><strong>Why it matters:</strong> PACS and worklist problems can delay reporting, but troubleshooting should not interrupt safe patient imaging.</p>
+
+  <h4>Verify the Reported Problem</h4>
+  <p>Confirm whether the issue is with image sending, worklist updating, or both.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask staff what they are seeing:</li>
+    <li>Images stuck in queue</li>
+    <li>Send failed message</li>
+    <li>Study not visible in PACS</li>
+    <li>Modality worklist not refreshing</li>
+    <li>Patient not appearing on the worklist</li>
+    <li>Wrong patient or accession information</li>
+    <li>Check whether the problem affects one exam, multiple exams, or all exams.</li>
+    <li>Confirm if other radiographic rooms are sending normally.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The issue is narrowed to PACS transfer, worklist communication, patient/exam data, or a larger network problem.</p>
+  <p>If the issue is isolated to one patient or one accession, focus on order/data issues first.</p>
+
+  <h4>Confirm Images Are Stored Locally</h4>
+  <p>Verify the acquired images are still present on the Discovery XR656 workstation.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Open the local study list or image review area.</li>
+    <li>Confirm the completed exam and images are visible.</li>
+    <li>Check for unsent, pending, failed, or queued images.</li>
+    <li>Do not delete or reprocess images unless the department’s workflow allows it.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Images are confirmed to be locally available and can potentially be resent.</p>
+  <p>If the images are missing locally, stop and escalate according to imaging downtime or data recovery policy.</p>
+
+  <h4>Check the Send Queue or Network Queue</h4>
+  <p>Look for failed, pending, or stuck DICOM transfers.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Open the system’s send queue, transfer queue, or network status area if accessible.</li>
+    <li>Look for failed destinations, repeated retries, or stuck studies.</li>
+    <li>Note the PACS destination name and any displayed error text.</li>
+    <li>Attempt a resend only if local workflow permits and patient/study information is correct.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Failed studies either resend successfully or provide useful error behavior for documentation.</p>
+  <p>If resend works, confirm image receipt in PACS and stop.</p>
+
+  <h4>Verify Network Connection at the Room</h4>
+  <p>Check the easiest physical network causes before assuming a software or PACS issue.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Inspect the network cable at the acquisition workstation, wall jack, and network drop.</li>
+    <li>Confirm the cable is fully seated and not damaged.</li>
+    <li>Check for link lights at the network port if visible.</li>
+    <li>Verify no one moved the workstation, unplugged a cable, or connected it to the wrong jack.</li>
+    <li>Do not randomly move network cables between ports without knowing the assigned network drop.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The workstation has a stable physical network connection.</p>
+  <p>If a loose cable or disconnected jack is found and corrected, retry worklist refresh or PACS send.</p>
+
+  <h4>Check Power and Status of Related Network Equipment</h4>
+  <p>Confirm nearby network-dependent components are powered and normal.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check the acquisition workstation, system cabinet, monitor, and any visible network hardware in the room.</li>
+    <li>Look for abnormal power loss, error indicators, or recently restarted components.</li>
+    <li>Confirm the workstation is not frozen or partially booted.</li>
+    <li>Ask staff if there was a recent power outage, room shutdown, or network maintenance.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> No obvious power or startup issue is affecting communication.</p>
+  <p>If the workstation is frozen or partially responsive, follow approved restart workflow or escalate before forcing shutdown.</p>
+
+  <h4>Verify Modality Worklist Search Criteria</h4>
+  <p>A worklist may appear “down” when the search filters are too narrow or incorrect.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check date range, modality, location, scheduled station, patient name, and accession filters.</li>
+    <li>Refresh the worklist using a broad search if allowed.</li>
+    <li>Confirm the patient order exists in the RIS/EHR.</li>
+    <li>Compare the patient’s scheduled location to the XR656 room location.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Valid orders appear once correct filters and location criteria are used.</p>
+  <p>If the order appears after correcting filters, the device is functioning and the issue is workflow/search-related.</p>
+
+  <h4>Confirm Patient and Accession Data</h4>
+  <p>Incorrect or incomplete exam data can prevent successful PACS association or routing.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Review patient name, MRN, accession number, exam type, and date of birth.</li>
+    <li>Confirm the exam was started from the correct worklist entry when possible.</li>
+    <li>Check whether the exam was manually entered instead of selected from the worklist.</li>
+    <li>Ask imaging staff whether the order was changed, cancelled, merged, or reordered.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Patient and accession data match the active order.</p>
+  <p>If the image was acquired under incorrect data, follow radiology/PACS correction workflow. Do not guess or manually alter patient data outside approved policy.</p>
+
+  <h4>Compare With Other Modalities or Rooms</h4>
+  <p>Determine whether the issue is local to the Discovery XR656 or part of a larger system problem.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask if other x-ray rooms, CT, MRI, or portable units are sending to PACS.</li>
+    <li>Ask if other rooms are receiving worklist.</li>
+    <li>Contact radiology IT/PACS support if multiple systems are affected.</li>
+    <li>Check whether there is a known PACS, RIS, interface, or network outage.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The problem is identified as either device-specific or enterprise/network-wide.</p>
+  <p>If multiple systems are affected, escalation should go to PACS/RIS/network support rather than treating the XR656 as failed.</p>
+
+  <h4>Check Destination Selection</h4>
+  <p>Images may fail to send if routed to the wrong destination or if the expected destination is disabled.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the selected send destination is the correct PACS/archive destination.</li>
+    <li>Check whether the exam was sent to a secondary destination, local storage, CD/export queue, or QA destination instead of PACS.</li>
+    <li>Review any available destination status indicators.</li>
+    <li>Avoid changing DICOM destination settings unless authorized.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Images are routed to the correct PACS destination.</p>
+  <p>If the wrong destination was selected and the correct destination resend succeeds, confirm image receipt and stop.</p>
+
+  <h4>Perform a Controlled Worklist Refresh</h4>
+  <p>Refresh the worklist without disrupting active patient workflow.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm no active acquisition is in progress.</li>
+    <li>Refresh the worklist from the normal user interface.</li>
+    <li>Search by broad date range or specific patient if allowed.</li>
+    <li>If the order still does not appear, confirm the order exists in RIS/EHR and is assigned to the correct modality/location.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Worklist updates with expected scheduled exams.</p>
+  <p>If worklist remains unavailable but other network functions work, suspect RIS/worklist server, AE title, scheduled station mapping, or interface issue.</p>
+
+  <h4>Perform a Controlled Resend Test</h4>
+  <p>Use an existing completed study or approved test workflow to confirm PACS communication.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Select a completed study that is allowed to be resent.</li>
+    <li>Send to the correct PACS destination.</li>
+    <li>Watch for immediate failure, pending status, or successful completion.</li>
+    <li>Have PACS/radiology staff confirm whether the study arrived.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The study transfers successfully and appears in PACS.</p>
+  <p>If the queue shows success but PACS cannot find the image, suspect routing, reconciliation, patient matching, or PACS-side issue.</p>
+
+  <h4>Restart Only When Appropriate</h4>
+  <p>A restart may clear a software communication hang, but it should be done carefully.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the room is not actively imaging a patient.</li>
+    <li>Verify all acquired images are saved locally.</li>
+    <li>Notify radiology staff before restarting the acquisition workstation or system.</li>
+    <li>Use the approved shutdown/restart process.</li>
+    <li>After restart, recheck worklist and PACS send.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Network services reload and normal communication returns.</p>
+  <p>If restart resolves the issue, document the behavior and final successful send/worklist update.</p>
+
+  <h4>Escalate Configuration or DICOM Issues</h4>
+  <p>If basic checks pass, the issue may involve DICOM configuration, AE title, IP address, port, routing rules, firewall rules, RIS mapping, or PACS interface behavior.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Do not randomly change AE titles, IP addresses, ports, or destination settings.</li>
+    <li>Capture the exact error message and destination name.</li>
+    <li>Record whether worklist, send, or both are affected.</li>
+    <li>Escalate to PACS/radiology IT, network support, or GE service as appropriate.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The issue is escalated with enough information to avoid unnecessary troubleshooting delays.</p>
+
+  <h2>If the Problem Persists</h2>
+  <p>If local images are present, cables are connected, worklist search criteria are correct, patient/order data is valid, and resend attempts still fail, common external causes have been ruled out.</p>
+  <p>The Discovery XR656 should be:</p>
+  <ul>
+    <li>Removed from service if patient care, image availability, or exam integrity is affected</li>
+    <li>Labeled Out of Service if it cannot reliably send images or receive worklist</li>
+    <li>Sent for repair, bench evaluation, or vendor/PACS/network escalation as appropriate</li>
+  </ul>
+  <p>Knowing when to stop is proper troubleshooting. PACS and worklist failures often involve shared systems, DICOM configuration, or network infrastructure that should not be changed casually at the device.</p>
+
+  <h2>Clinical Use Tip</h2>
+  <p>Do not troubleshoot PACS or worklist failures on an active patient if it delays imaging or creates confusion. Complete the exam safely, confirm images are stored locally, and move the patient or exam workflow to another system if needed. Patient care and therapy continuity should not depend on a system with unresolved image-transfer or worklist communication problems.</p>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>"Radiology reported the GE Discovery XR656 was not sending completed images to PACS and the modality worklist was not updating."</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>"Images were present locally, but the DICOM send queue showed failed transfers and the room network connection was found loose at the workstation."</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Example:</em><br>"Reseated the network cable, confirmed link status, refreshed the worklist, resent the pending study to PACS, and verified image receipt with radiology staff."</p>
+
+  <h2>Helpful Details to Include (If Known)</h2>
+  <ul>
+    <li>Whether images were stored locally</li>
+    <li>Whether the issue affected PACS send, worklist, or both</li>
+    <li>Exact error message or queue status</li>
+    <li>PACS destination name used</li>
+    <li>Whether resend was attempted</li>
+    <li>Whether other rooms/modalities were affected</li>
+    <li>Network cable and wall jack condition</li>
+    <li>Link light status if visible</li>
+    <li>Whether the order existed in RIS/EHR</li>
+    <li>Whether patient/accession data matched</li>
+    <li>Whether the system was restarted</li>
+    <li>Alarm behavior or displayed system communication messages</li>
+    <li>Accessories or cables swapped during troubleshooting</li>
+    <li>Power behavior, restart behavior, or frozen workstation behavior</li>
+    <li>Environmental factors such as recent power outage, room shutdown, or network maintenance</li>
+    <li>Indicator lights, link lights, queue status, or destination status indicators</li>
+    <li>Final device status</li>
+    <li>Whether PACS/radiology IT or GE service was contacted</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>PACS and worklist issues should be approached logically. Protect the patient first, confirm the images are safe locally, check simple network and workflow causes, then escalate when the issue points beyond the radiographic system. Clear CCR documentation helps separate device problems from PACS, RIS, network, and order-entry issues.</p>
+  <p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
