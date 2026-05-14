@@ -10079,5 +10079,400 @@
     "Indicator lights",
     "Final device status"
   ]
+},
+ {
+  "title": "GE Healthcare CARESCAPE Central Station Central Monitoring Station - Bedside Monitor Not Communicating With Central Station",
+  "description": "Troubleshooting loss of communication between a GE bedside monitor and CARESCAPE Central Station from external, network, setup, or assignment issues.",
+  "assetType": "Central Monitoring Station",
+  "manufacturer": "GE Healthcare",
+  "model": "CARESCAPE Central Station",
+  "url": "guides/ge-carescape-central-station-bedside-monitor-not-communicating-with-central-station.html",
+  "dateAdded": "2026-05-15",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "A bedside monitor communication failure can prevent alarms, waveforms, or vital signs from appearing at the central station. Confirm the patient is still being monitored locally at the bedside monitor. Have clinical staff verify patient condition, active alarms, and vital signs directly at the bedside. Do not rely on the central station display until communication is restored and verified. If central monitoring is required and cannot be restored quickly, move the patient to another monitored bed or use an approved alternate monitoring method. Expected outcome: Patient monitoring continues safely while the communication issue is investigated. Why it matters: The bedside monitor may still be functioning, but the central station may not be receiving data or alarms."
+    },
+    {
+      "title": "Verify the Reported Communication Failure",
+      "instructions": "Confirm whether the issue is isolated to one bed or affects multiple beds. Check the CARESCAPE Central Station for the affected bed sector. Look for messages such as offline, no communication, no data, disconnected, blank waveform area, or missing parameters. Ask clinical staff when the issue started and whether the bedside monitor was moved, rebooted, swapped, admitted, discharged, or reassigned. Expected outcome: You determine whether the issue is a single-bed problem, a unit-wide communication problem, or a patient-association issue. If the issue affects multiple beds, skip ahead to network and central station checks."
+    },
+    {
+      "title": "Check the Bedside Monitor Locally",
+      "instructions": "Go to the bedside monitor and confirm it is powered on and monitoring the patient correctly. Verify the bedside monitor display is active. Confirm ECG, SpO2, NIBP, invasive pressure, respiration, or other expected parameters are displayed locally. Check for local technical alarms, network indicators, communication icons, or connection warnings. Expected outcome: The bedside monitor is confirmed to be functioning locally. If the bedside monitor itself is frozen, powered off, or not acquiring patient data, troubleshoot the bedside monitor first before focusing on the central station."
+    },
+    {
+      "title": "Confirm the Patient Is on the Correct Bedside Monitor",
+      "instructions": "Verify that the monitor being viewed at the bedside is the monitor expected to report to that central station bed sector. Check the bed label, room number, care unit, and patient association at the bedside monitor. Compare it to the bed sector shown on the CARESCAPE Central Station. Confirm the monitor was not moved from another room without updating the bed assignment. Expected outcome: The bedside monitor and central station are looking for the same bed, room, and patient context. If the bed label or unit assignment is incorrect, correct the assignment according to site workflow and verify communication returns. If this resolves the issue, stop troubleshooting."
+    },
+    {
+      "title": "Check the Network Cable at the Bedside",
+      "instructions": "A loose or damaged network cable is one of the most common external causes of central station communication loss. Inspect the network cable connected to the bedside monitor, docking station, wall jack, or monitor network adapter. Confirm the cable is fully seated at both ends. Look for broken locking tabs, crushed cable, bent connector pins, or signs of strain. Reseat the cable if safe to do so. Expected outcome: A secure physical network path is confirmed between the bedside monitor and the wall or network connection point. If reseating the cable restores central station communication, monitor briefly and stop troubleshooting."
+    },
+    {
+      "title": "Check Network Link Lights If Visible",
+      "instructions": "Network link lights can help confirm whether the monitor has a live physical network connection. Check the bedside network port, docking station, wall jack, or nearby switch port if accessible. Look for active link or activity lights. Compare the affected connection to a known working bedside monitor connection if possible. Expected outcome: A normal network link should show active connection or activity indicators. If there are no link lights on the affected connection but a known-good cable and monitor work elsewhere, suspect the wall jack, patch cable, switch port, or network infrastructure."
+    },
+    {
+      "title": "Swap with Known-Good External Components When Safe",
+      "instructions": "Use controlled swaps to isolate whether the failure follows the monitor, cable, or location. Swap the network cable with a known-good cable if available. If permitted by site policy, connect the affected bedside monitor to a known-good network jack. If clinically appropriate, compare with another bedside monitor in the same room or nearby bed. Expected outcome: If the issue follows the bedside monitor, suspect monitor configuration, network settings, or monitor hardware. If the issue stays with the room or jack, suspect the network drop, patch panel, switch port, or infrastructure. If the issue resolves after replacing the cable, document the cable as the cause and stop troubleshooting."
+    },
+    {
+      "title": "Verify the Bedside Monitor Is Assigned to the Correct Central Station",
+      "instructions": "Communication may fail if the monitor is on the wrong care unit, wrong bed, wrong network group, or wrong monitoring zone. Check the bedside monitor’s care unit, bed name, room assignment, and central monitoring destination according to site workflow. Verify the central station has the bed sector configured and available. Confirm the patient was not discharged, transferred, or admitted under a different bed location. Expected outcome: The bedside monitor is assigned to the correct central station and bed sector. If correcting the assignment restores communication, stop troubleshooting."
+    },
+    {
+      "title": "Check for Duplicate or Conflicting Bed Assignments",
+      "instructions": "A bedside monitor may not communicate correctly if another device is assigned to the same bed or if the central station is expecting a different device. Look for duplicate bed labels or duplicate patient sectors at the central station. Check whether another monitor is still associated with the same bed. Ask staff whether a monitor was recently swapped, transported, cleaned, or returned from another room. Expected outcome: Only the correct bedside monitor is associated with the intended bed sector. If a duplicate or stale assignment is found, correct it according to site workflow and verify the central station receives data."
+    },
+    {
+      "title": "Restart Only When Clinically Safe",
+      "instructions": "A reboot may clear a temporary software or communication lockup, but it should not be done while it could interrupt active patient monitoring. Confirm clinical staff approve the restart. Ensure alternate patient monitoring is available if needed. Restart the bedside monitor only if local monitoring interruption is acceptable. If the central station sector appears frozen or only one sector is affected, follow site procedure for refreshing or restarting the affected application or workstation. Expected outcome: Temporary communication or software lockups clear after a controlled restart. If communication returns and remains stable, document the restart and final status."
+    },
+    {
+      "title": "Check Whether the Issue Is Central Station-Wide",
+      "instructions": "If multiple bedside monitors are not communicating, treat the issue as a possible central station, gateway, network switch, VLAN, server, or interface problem. Check whether other beds on the same unit are communicating. Check whether other central stations can see the same bedside monitors. Ask whether there was recent network maintenance, power interruption, server work, or application restart. Inspect the central station workstation for frozen display, network disconnect, error banners, or abnormal system behavior. Expected outcome: You determine whether the issue is isolated to one monitor or part of a larger central monitoring communication failure. If multiple beds are affected, escalate according to site policy to Clinical Engineering, IT/network support, and the monitoring vendor as appropriate."
+    },
+    {
+      "title": "Verify Communication After Any Correction",
+      "instructions": "Do not close the issue immediately after the bed appears online. Confirm live waveform data is updating at the central station. Verify current vital signs match the bedside monitor. Confirm alarms from the bedside monitor are visible or routed correctly according to hospital policy. Ask clinical staff to confirm the correct patient and bed are displayed. Expected outcome: The central station is receiving accurate, current data from the correct bedside monitor. If data is delayed, intermittent, or assigned to the wrong patient, continue troubleshooting."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Nursing reported that the bedside monitor in Room 412 was not communicating with the GE CARESCAPE Central Station.",
+      "Cause": "Found the bedside monitor operating locally, but the network cable at the wall jack had a broken latch and no stable network link.",
+      "Resolution": "Replaced the network cable, verified the correct bed assignment, confirmed live ECG waveform and vital signs were updating at the CARESCAPE Central Station, and returned the bed to service."
+    }
+  },
+  "helpfulDetails": [
+    "Patient was verified safe before troubleshooting.",
+    "Bedside monitor was functioning locally.",
+    "Correct bed, room, and patient assignment were checked.",
+    "Network cable condition.",
+    "Wall jack or switch link light status.",
+    "Whether issue affected one bed or multiple beds.",
+    "Any recent monitor swap, room transfer, or patient discharge/admit.",
+    "Central station messages shown.",
+    "Waveform and vital sign update status after correction.",
+    "Alarm behavior after communication was restored.",
+    "Environmental factors such as recent network maintenance, power interruption, server work, or workstation restart.",
+    "Indicator lights, network icons, link lights, or warning messages observed.",
+    "Final device or bed status."
+  ]
+},
+ {
+  "title": "GE Healthcare CARESCAPE Central Station Central Monitoring Station - Waveform Dropout or Delayed Vital Sign Updates",
+  "description": "Troubleshooting intermittent waveform loss, delayed parameter updates, or slow bedside monitor data refresh at the central station.",
+  "assetType": "Central Monitoring Station",
+  "manufacturer": "GE Healthcare",
+  "model": "CARESCAPE Central Station",
+  "url": "guides/ge-carescape-central-station-waveform-dropout-or-delayed-vital-sign-updates.html",
+  "dateAdded": "2026-05-15",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Waveform dropout or delayed vital sign updates can affect alarm awareness and patient visibility at the central station. Action: Confirm the patient is being actively monitored at the bedside monitor. Notify clinical staff that central monitoring data may be delayed or intermittent. Have staff rely on the bedside monitor until central station display accuracy is confirmed. Do not assume the central station is showing real-time patient data until verified. Expected outcome: Patient monitoring continues safely while the central display issue is investigated. Why it matters: The bedside monitor is the immediate source of patient data. A central station display delay may create a false sense of visibility."
+    },
+    {
+      "title": "Verify the Reported Behavior",
+      "instructions": "Confirm whether the issue is waveform dropout, delayed numeric updates, missing parameters, or a complete bed communication loss. Action: Ask staff which bed, waveform, or parameter is affected. Check whether ECG, SpO2, NIBP, invasive pressure, respiration, or all parameters are delayed. Compare the central station display to the bedside monitor in real time. Expected outcome: The issue is narrowed to one parameter, one bed, multiple beds, or the entire central station. If the central station updates correctly after comparison and no dropout occurs, document the finding and stop."
+    },
+    {
+      "title": "Check the Bedside Monitor First",
+      "instructions": "Verify that the bedside monitor itself has stable waveforms and current vital signs. Action: Go to the affected bedside monitor. Confirm the waveform is present and stable locally. Check for loose ECG leads, disconnected SpO2 probes, inactive modules, or paused measurements. Verify that the bedside monitor is not in standby, discharge, transport, demo, or disconnected mode. Expected outcome: The bedside monitor should display clean, current patient data. If the bedside monitor is not producing stable data, correct the bedside issue first. The central station cannot display data that the source monitor is not providing."
+    },
+    {
+      "title": "Confirm the Issue Is Not Patient Lead or Accessory Related",
+      "instructions": "A waveform dropout at the central station may be caused by poor signal quality at the patient connection. Action: Inspect ECG lead wires, trunk cable, SpO2 sensor, pressure cables, and other connected accessories. Look for intermittent movement-related dropout. Ask clinical staff whether the issue happens during patient movement, repositioning, bathing, transport, or lead changes. Swap a suspected external accessory if available and safe to do so. Expected outcome: The waveform should remain stable at the bedside and central station after poor accessories or connections are corrected. If replacing or reseating the external accessory resolves the dropout, document the accessory issue and stop."
+    },
+    {
+      "title": "Check Bed Assignment and Patient Sector",
+      "instructions": "Confirm the bedside monitor is assigned to the correct bed and is displayed in the correct central station sector. Action: Verify the bed label shown at the bedside monitor. Compare it to the bed label at the CARESCAPE Central Station. Confirm the patient sector is not showing an old bed, wrong unit, discharged patient, or duplicate bed association. Expected outcome: The bedside monitor and central station should show the same bed association. If the wrong bed is assigned, correct the bed assignment through the approved clinical workflow or escalate to the appropriate system administrator."
+    },
+    {
+      "title": "Check for a Single-Bed Versus Multi-Bed Problem",
+      "instructions": "Determine whether the issue affects only one monitored bed or multiple beds. Action: Review other patient sectors on the CARESCAPE Central Station. Ask staff if other beds have delayed updates or waveform dropout. Compare one known-good bedside monitor to the central station. Expected outcome: If only one bed is affected, focus on that bedside monitor, cable path, network jack, or bed assignment. If multiple beds are affected, suspect a central station, network, switch, gateway, or system communication issue."
+    },
+    {
+      "title": "Inspect Network and Physical Connections",
+      "instructions": "External network problems can cause delayed updates, intermittent waveform loss, or communication dropouts. Action: Check the bedside monitor network cable if wired. Verify the cable is fully seated at the monitor, wall jack, and any approved local network connection. Inspect for damaged cables, loose connectors, bent clips, or cables under tension. Check the central station network connection if accessible and safe. Do not move network cables between unknown ports unless following site-approved network labeling and configuration practices. Expected outcome: Network cabling should be secure, undamaged, and connected to the correct labeled ports. If a loose or damaged cable is found and corrected, verify stable real-time waveform updates before returning the setup to normal use."
+    },
+    {
+      "title": "Check for Local Display or Workstation Lag",
+      "instructions": "Sometimes the patient data is being received, but the central station display is slow, frozen, or not refreshing properly. Action: Look for delayed mouse response, frozen patient sectors, slow screen redraw, or repeated display lag. Check whether only one display is affected or all CARESCAPE Central Station screens are affected. Confirm whether alarms and numerics are updating while waveforms lag, or whether all data is delayed. Expected outcome: The central station should respond normally and refresh patient data without visible lag. If the central station appears frozen or sluggish, follow your facility-approved restart or escalation process. Do not reboot a central monitoring station without notifying clinical staff and ensuring patient monitoring coverage."
+    },
+    {
+      "title": "Review Alarm and Communication Indicators",
+      "instructions": "Communication indicators can help distinguish a signal issue from a network or central station issue. Action: Look for monitor offline messages, communication loss indicators, delayed alarm banners, missing waveforms, or stale numeric values. Check whether alarm annunciation still occurs when waveform dropout happens. Confirm whether the bedside monitor shows any network or central monitoring communication alerts. Expected outcome: Communication alarms or offline indicators help identify whether the issue is network-related rather than patient-signal-related. If alarms are delayed or not annunciating, treat the issue as higher priority and escalate immediately."
+    },
+    {
+      "title": "Verify Recent Changes",
+      "instructions": "Recent changes often explain central monitoring communication problems. Action: Ask whether the bedside monitor was recently moved, replaced, discharged, admitted, transferred, or reassigned. Check whether the central station, network switch, CARESCAPE Gateway, or monitoring system had recent maintenance. Ask if the issue began after a power outage, network event, software update, or unit move. Expected outcome: Recent changes may identify a configuration, assignment, or network path issue. If the issue started after a known system change, escalate to the monitoring system administrator, network team, or vendor support as appropriate."
+    },
+    {
+      "title": "Perform a Controlled Recheck",
+      "instructions": "After correcting any external issue, verify that updates are stable. Action: Compare the bedside monitor and central station for several minutes. Confirm waveforms are continuous. Confirm numerics update within the expected clinical workflow. Confirm alarms display and annunciate at the central station according to facility policy. Expected outcome: The central station should show current, stable patient data matching the bedside monitor. If the waveform and vital sign updates remain stable, document the resolution and return the system to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Clinical staff reported intermittent ECG waveform dropout and delayed vital sign updates for Bed 12 on the GE CARESCAPE Central Station.",
+      "Cause": "Bedside monitor waveforms were stable, but the network cable at the bedside monitor was loose and caused intermittent central station communication.",
+      "Resolution": "Reseated the bedside network cable, verified correct bed assignment, confirmed stable waveform and numeric updates at the central station, and returned monitoring path to service."
+    }
+  },
+  "helpfulDetails": [
+    "Outlet or UPS status checked if central station power was involved",
+    "Affected bed number or unit",
+    "Whether one bed or multiple beds were affected",
+    "Bedside monitor waveform status",
+    "Central station waveform behavior",
+    "Vital sign update delay observed",
+    "Any monitor offline or communication messages",
+    "Network cable or wall jack checked",
+    "Accessories swapped or reseated",
+    "Alarm behavior during dropout",
+    "Recent bed move, discharge, admit, or system change",
+    "Indicator lights observed on monitor, network jack, switch, workstation, or connected equipment",
+    "Final device or monitoring path status"
+  ]
+},
+ {
+  "title": "GE Healthcare CARESCAPE Central Station Central Monitoring Station - Alarm Not Annunciating At Central Station",
+  "description": "Troubleshooting missed, silent, delayed, or non-displayed alarms at a GE CARESCAPE Central Station.",
+  "assetType": "Central Monitoring Station",
+  "manufacturer": "GE Healthcare",
+  "model": "CARESCAPE Central Station",
+  "url": "guides/ge-carescape-central-station-alarm-not-annunciating-at-central-station.html",
+  "dateAdded": "2026-05-15",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Treat any report of alarms not annunciating at the central station as a patient safety issue. Action: Confirm the bedside monitor is actively alarming at the patient location. Have clinical staff respond to the patient at the bedside. Do not rely on the central station until alarm display and audible annunciation are verified. If needed, assign direct bedside observation or move the patient to another monitored bed. Expected outcome: Patient safety is protected before technical troubleshooting begins. Why it matters: A central station alarm issue can delay clinical response if staff assume alarms are being displayed or heard centrally."
+    },
+    {
+      "title": "Verify the Reported Alarm Behavior",
+      "instructions": "Confirm exactly what is not working. Action: Ask clinical staff what alarm occurred and where it was seen. Determine whether the issue is: No audible alarm. No visual alarm. Alarm appears late. Alarm appears at bedside but not central. Alarm appears on one central station but not another. Alarm message appears but sound is muted or too low. Expected outcome: The problem is narrowed to audio, display, routing, network communication, or alarm configuration. If the issue is only low volume or muted audio, continue with audio checks before assuming a system failure."
+    },
+    {
+      "title": "Confirm the Correct Patient Sector and Bed Assignment",
+      "instructions": "Verify that the correct bed is assigned to the expected central station sector. Action: Check that the patient’s bedside monitor is associated with the correct bed label. Confirm the patient sector is visible on the CARESCAPE Central Station. Verify that the patient has not been admitted, transferred, discharged, or moved to a different monitoring sector incorrectly. Expected outcome: The correct patient and bed appear at the central station. If the wrong bed, wrong patient, or missing patient sector is found, correct the patient association or escalate to the clinical systems/network support process as appropriate."
+    },
+    {
+      "title": "Check Whether the Bedside Monitor Is Communicating",
+      "instructions": "A central station cannot annunciate alarms from a monitor that is not communicating properly. Action: Look for offline, disconnected, no data, or communication-related messages at the central station. Verify that waveforms and numeric parameters are updating. Compare the bedside monitor display to the central station display. Expected outcome: Live data from the bedside monitor is visible and updating at the central station. If live data is missing or frozen, troubleshoot the bedside monitor connection, network jack, cable, wireless connection, or monitoring network before focusing on alarm settings."
+    },
+    {
+      "title": "Confirm the Alarm Is Active at the Bedside Monitor",
+      "instructions": "Verify that the bedside device is actually generating an alarm. Action: Check the bedside monitor for active physiological or technical alarms. Confirm the alarm priority and message. Check whether the alarm was already acknowledged, paused, silenced, or resolved before it could annunciate centrally. Expected outcome: The alarm condition is confirmed at the source device. If the bedside monitor is not alarming, the issue may be patient condition, parameter settings, alarm limits, or monitor configuration rather than the central station."
+    },
+    {
+      "title": "Check Alarm Pause, Silence, and Audio Status",
+      "instructions": "Confirm that alarm audio has not been intentionally or accidentally silenced. Action: Check the CARESCAPE Central Station for alarm pause, audio pause, silence, or speaker-muted indicators. Verify the audible alarm volume is not set too low. Confirm the central station speakers are functioning. Check whether the workstation audio is routed through external speakers, built-in speakers, or another audio output device. Expected outcome: Alarm audio is enabled and loud enough to be heard in the clinical area. If alarm audio was paused or muted and restoring it resolves the issue, document the finding and stop."
+    },
+    {
+      "title": "Verify Workstation Sound Output",
+      "instructions": "If the alarm appears visually but is not heard, check the central station audio path. Action: Confirm the central station is not muted at the operating system or hardware level if accessible within approved support procedures. Check external speaker power, volume, and cable connection if external speakers are used. Inspect for loose, damaged, disconnected, or swapped audio cables. Listen for any normal system tones or test sounds if permitted by site procedure. Expected outcome: The central station can produce audible output. If visual alarms display correctly but no sound is produced, the issue may be speaker, audio output, workstation configuration, or internal audio hardware."
+    },
+    {
+      "title": "Check Alarm Routing and Unit Assignment",
+      "instructions": "Confirm the alarm is supposed to annunciate at this central station. Action: Verify the patient bed is assigned to the correct unit, care area, or central monitoring group. Confirm that the alarm is not routed to a different central station, remote viewer, or surveillance area. Check whether the issue affects only one bed, one unit, or all monitored beds. Expected outcome: The affected bed is assigned to the correct central station alarm group. If the bed is routed incorrectly, correct the assignment if within Clinical Engineering scope, or escalate to the monitoring system administrator/network support team."
+    },
+    {
+      "title": "Compare With Another Known-Good Bed",
+      "instructions": "Use comparison to determine whether the issue is isolated or system-wide. Action: Check a nearby bed that is known to be communicating properly. Confirm whether alarms from that bed display and sound at the central station. Compare sector behavior, waveform updates, alarm messages, and audio response. Expected outcome: The issue is identified as one-bed-specific, one-sector-specific, or central-station-wide. If only one bed is affected, focus on that bedside monitor, network connection, bed assignment, and patient association. If multiple beds are affected, focus on the central station, network path, switch, gateway, or alarm configuration."
+    },
+    {
+      "title": "Check Network and Communication Indicators",
+      "instructions": "Alarm annunciation depends on reliable communication between the bedside monitor, monitoring network, and central station. Action: Inspect network cables connected to the central station workstation. Check for disconnected, damaged, or loose Ethernet connections. Verify network link lights where visible. Confirm whether other central monitoring functions are affected, such as waveform display, patient data updates, or remote viewing. Expected outcome: The central station has active network communication. If network communication is degraded or lost, escalate according to site procedure for monitoring network, switch, gateway, or server support."
+    },
+    {
+      "title": "Restart Only When Safe and Appropriate",
+      "instructions": "Do not restart a central monitoring station without protecting active patient monitoring. Action: Notify clinical staff before any reboot or application restart. Confirm another monitoring method is available during downtime. Restart the CARESCAPE Central Station application or workstation only if permitted by site procedure and patient monitoring coverage is maintained. After restart, verify that patient sectors return, waveforms update, and alarms annunciate correctly. Expected outcome: The system returns to normal operation without compromising patient monitoring. If the issue clears after restart, continue observing for recurrence and document the restart."
+    },
+    {
+      "title": "Verify Resolution",
+      "instructions": "Confirm the central station is functioning correctly before returning it to normal use. Action: Verify live waveforms and numeric values are updating. Confirm the correct bed labels and patient associations are displayed. Confirm audible alarm annunciation is restored. Confirm clinical staff can hear and see alarms from the expected location. Expected outcome: The central station displays and annunciates alarms correctly for the assigned monitored beds. If the alarm annunciation issue is resolved, document the verified status and stop."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Clinical staff reported that alarms from a monitored patient were not annunciating at the GE CARESCAPE Central Station.",
+      "Cause": "The bedside monitor was communicating, but the central station alarm audio was muted and the alarm volume was not audible in the nursing station.",
+      "Resolution": "Restored central station alarm audio, verified live patient data, confirmed audible alarm annunciation with staff, and returned the central station to service."
+    }
+  },
+  "helpfulDetails": [
+    "Outlet tested",
+    "Central station powered on normally",
+    "Correct patient and bed label verified",
+    "Bedside monitor alarm confirmed",
+    "Waveforms updating at central station",
+    "Alarm visual display present or absent",
+    "Alarm audio present, muted, delayed, or low volume",
+    "Speaker connections checked",
+    "Network cable and link status checked",
+    "Number of affected beds",
+    "Whether issue followed one bed, one sector, or entire central station",
+    "Any restart performed",
+    "Final device status"
+  ]
+},
+ {
+  "title": "GE Healthcare CARESCAPE Central Station Central Monitoring Station - Incorrect Bed Label, Patient Association, Or Unit Assignment",
+  "description": "Troubleshooting incorrect bed labels, patient associations, or unit assignments affecting patient display, alarm routing, or central station monitoring.",
+  "assetType": "Central Monitoring Station",
+  "manufacturer": "GE Healthcare",
+  "model": "CARESCAPE Central Station",
+  "url": "guides/ge-carescape-central-station-incorrect-bed-label-patient-association-or-unit-assignment.html",
+  "dateAdded": "2026-05-15",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Incorrect bed or patient association at a central station can create a serious patient safety risk. Action: Confirm clinical staff are aware that the displayed patient, bed, or unit assignment may be incorrect. Verify the patient’s identity directly at the bedside before relying on central station data. Confirm alarms are being monitored at the bedside monitor while the central station issue is investigated. Do not make clinical decisions based only on a questionable central station patient association. Expected outcome: Patient monitoring continues safely while the display or assignment issue is corrected. Why it matters: A central station may show valid physiologic data under the wrong bed or patient label if the device, network, or admission association is incorrect."
+    },
+    {
+      "title": "Verify the Reported Issue",
+      "instructions": "Action: Confirm exactly what is incorrect. Wrong bed label shown at the CARESCAPE Central Station. Patient name shown under the wrong bed. Bed assigned to the wrong unit. Bedside monitor data appearing in the wrong patient sector. Patient demographic mismatch between the bedside monitor, central station, and ADT system. Expected outcome: The issue is clearly identified before changes are made. If the issue is only a display misunderstanding or old patient information that can be safely corrected through normal clinical workflow, correct it and stop."
+    },
+    {
+      "title": "Compare Central Station Display to the Bedside Monitor",
+      "instructions": "Action: Go to the patient’s bedside monitor and compare the bed label. Compare the room number. Compare the patient name or ID, if displayed. Compare the unit or care area. Compare the active monitoring status. Expected outcome: The bedside monitor and central station should agree. If the bedside monitor itself has the wrong bed label or patient association, the issue likely originates at the bedside monitor configuration or patient admission workflow. Correct the bedside-side information per facility process and verify the central station updates."
+    },
+    {
+      "title": "Confirm the Patient Is Physically in the Correct Bed or Room",
+      "instructions": "Action: Confirm with clinical staff whether the patient was recently transferred, discharged, moved, or swapped between rooms. Check whether the patient was moved before the bedside monitor or central station assignment was updated. Expected outcome: The equipment assignment should match the patient’s actual location. If the patient was recently moved and the system has not been updated, have clinical staff complete the proper transfer, discharge, admit, or bed reassignment workflow. Verify the central station updates afterward."
+    },
+    {
+      "title": "Check for Duplicate or Old Patient Associations",
+      "instructions": "Action: Look for the same patient appearing in more than one bed sector. Look for an old patient name remaining after discharge. Look for a bed showing active data but assigned to a previous patient. Look for a new patient connected to a monitor still associated with the prior patient. Expected outcome: Each monitored patient should have only one correct central station association. If duplicate or stale patient information is found, follow the facility’s normal discharge, transfer, or reassociation process. Confirm the corrected patient appears in the proper bed sector."
+    },
+    {
+      "title": "Verify Bed Label and Care Unit Assignment",
+      "instructions": "Action: Confirm the bed label assigned to the bedside monitor matches the intended unit and central station sector. Check for incorrect unit naming, room number mismatch, or wrong care area selection. Confirm the bed is assigned to the correct monitoring group or central station view. Expected outcome: The central station should display the bedside monitor in the correct unit and bed location. If the bed was assigned to the wrong care unit, correct the assignment through the approved configuration or clinical workflow. If Clinical Engineering does not have access to change this safely, escalate to the monitoring system administrator or IT/network support."
+    },
+    {
+      "title": "Check Network and Communication Status",
+      "instructions": "Action: Verify the bedside monitor is communicating normally with the CARESCAPE Central Station. Check for intermittent connection. Check for an offline or disconnected bed. Check for delayed update after patient transfer. Check for incorrect data appearing after network recovery. Check for multiple monitors with similar bed labels. Expected outcome: The central station should receive current data from the correct bedside monitor. If communication is unstable, troubleshoot network connectivity, bedside monitor connection, wall network jack, patch cable, docking station, and switch port as appropriate."
+    },
+    {
+      "title": "Confirm ADT or Demographic Interface Behavior",
+      "instructions": "Action: Determine whether patient demographics come from an ADT interface, manual admission, or another hospital system. Check whether the mismatch appears in the CARESCAPE Central Station only. Check whether the mismatch appears in the bedside monitor only. Check whether the mismatch appears in the EMR/ADT system only. Check whether the mismatch appears in multiple systems at the same time. Expected outcome: The source of the incorrect demographic information should be identified. If the incorrect patient association appears to originate from ADT, registration, or interface feed behavior, escalate to IT or the appropriate clinical informatics team."
+    },
+    {
+      "title": "Refresh or Reopen the Central Station View",
+      "instructions": "Action: If the bedside monitor and source systems appear correct, refresh the central station display using approved local workflow. Change views and return to the patient sector, if approved by local workflow. Log out and back in, if appropriate. Restart the central station application or workstation only if patient monitoring coverage is maintained. Expected outcome: The central station should reload the correct bed and patient association. If the display corrects after refresh, monitor briefly to confirm the issue does not return. Document the action and stop."
+    },
+    {
+      "title": "Check for Similar Bed Names or Configuration Conflicts",
+      "instructions": "Action: Look for duplicate bed labels. Look for old rooms still active in the system. Look for similar unit names. Look for an incorrectly assigned monitor location. Check whether there was a recent unit expansion, bed move, or central station configuration change. Expected outcome: Each monitor location should have a unique and correct bed identity. If a configuration conflict is suspected, do not make unverified changes. Escalate to the monitoring system administrator, IT network team, or GE support depending on facility process."
+    },
+    {
+      "title": "Verify Alarm Routing After Correction",
+      "instructions": "Action: Confirm the correct patient appears in the correct sector. Confirm waveforms and numerics match the bedside monitor. Confirm alarm messages appear under the correct bed. Confirm alarm audio and visual indicators route to the correct central station. Expected outcome: Monitoring and alarm routing are correct before the issue is considered resolved. If alarm routing remains questionable, remove the affected bed from reliance on central monitoring until the configuration is verified."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Nursing reported that the CARESCAPE Central Station was showing the wrong patient name in Bed 12 after a room transfer.",
+      "Cause": "Bedside monitor information and recent transfer workflow were reviewed, and the central station still displayed stale patient association after the patient move.",
+      "Resolution": "Patient association was corrected through approved workflow, central station display was refreshed, and Bed 12 waveform, numerics, patient name, and alarm routing were verified against the bedside monitor."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior after correction.",
+    "Accessories swapped, including network cable, patch cable, wall network jack, docking station, or monitor connection if applicable.",
+    "Power behavior, including workstation power status if workstation power was involved.",
+    "Environmental factors, including recent patient transfer, discharge, room move, bed swap, unit expansion, or central station configuration change.",
+    "Indicator lights, including network link lights, monitor communication status, offline indicators, or central station connection status.",
+    "Final device status, including whether the affected bed, monitor, central station sector, or monitoring path was returned to service, removed from clinical reliance, labeled Out of Service, or escalated to IT, clinical informatics, GE support, or system administration."
+  ]
+},
+ {
+  "title": "GE Healthcare CARESCAPE Central Station Central Monitoring Station - Network Switch / CIC Pro / CARESCAPE Gateway Communication Issue",
+  "description": "Troubleshooting communication loss between CARESCAPE Central Station, CIC Pro, network switches, bedside monitors, or CARESCAPE Gateway interfaces.",
+  "assetType": "Central Monitoring Station",
+  "manufacturer": "GE Healthcare",
+  "model": "CARESCAPE Central Station",
+  "url": "guides/ge-carescape-central-station-network-switch-cic-pro-carescape-gateway-communication-issue.html",
+  "dateAdded": "2026-05-15",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "A central monitoring communication issue can prevent alarms, waveforms, or patient data from displaying where staff expect to see them. Action: Confirm patients are being monitored directly at the bedside. Notify clinical staff that central monitoring or gateway communication may be unreliable. Have staff verify alarms locally at the bedside monitor. Do not rely on the central station as the only alarm observation point until communication is restored. Expected outcome: Patient monitoring continues safely while the network communication issue is investigated. Why it matters: A network issue may affect visibility of alarms and patient data at the central station, even if the bedside monitor is still functioning. If patient monitoring is protected and bedside monitoring is functional, continue."
+    },
+    {
+      "title": "Verify the Reported Communication Problem",
+      "instructions": "Confirm exactly what is not communicating. Action: Determine whether the issue affects one bedside monitor. Determine whether the issue affects one patient sector. Determine whether the issue affects one CIC Pro station. Determine whether the issue affects one CARESCAPE Central Station. Determine whether the issue affects multiple central stations. Determine whether the issue affects the CARESCAPE Gateway interface. Determine whether the issue affects an entire unit or VLAN/network segment. Expected outcome: The failure pattern helps separate a single-device issue from a network switch, gateway, or system-wide communication issue. If only one bedside monitor is affected, focus on that monitor, wall jack, cable, and assigned bed configuration first. If multiple devices are affected, continue network path troubleshooting."
+    },
+    {
+      "title": "Check Whether Bedside Monitoring Is Still Working Locally",
+      "instructions": "Go to the affected bedside monitor. Action: Verify the monitor is powered on. Confirm ECG, SpO2, NIBP, invasive pressure, or other active parameters are displaying locally. Check whether local alarms are active and audible. Confirm the patient is assigned to the correct bed or care area if applicable. Expected outcome: The bedside monitor should still show patient data locally even if central communication is down. If the bedside monitor itself is malfunctioning, troubleshoot the bedside monitor first. If the bedside monitor is functioning locally but not visible centrally, continue."
+    },
+    {
+      "title": "Verify the Scope at the Central Station",
+      "instructions": "Check the CARESCAPE Central Station or CIC Pro display. Action: Look for messages such as Bed offline. Look for messages such as No communication. Look for messages such as Monitor disconnected. Look for messages such as Data unavailable. Look for messages such as Gateway communication failure. Look for messages such as Blank patient sector. Look for messages such as Missing waveforms or delayed data. Confirm whether the issue is isolated to one bed or multiple beds. Expected outcome: The central station should help identify whether communication loss is limited or widespread. If only one bed is offline, continue with the bedside network path. If many beds are offline at once, skip ahead to switch, gateway, or network infrastructure checks."
+    },
+    {
+      "title": "Check the Physical Network Cable at the Bedside Monitor",
+      "instructions": "Inspect the network connection for the affected bedside monitor or docking location. Action: Verify the Ethernet cable is fully seated. Check for a broken latch, loose connector, damaged cable jacket, or kinked cable. Confirm the cable is connected to the correct wall jack or network port. If available and allowed by site policy, swap with a known-good network cable. Expected outcome: A loose or damaged network cable should be corrected, and communication may restore after the device reconnects. If communication restores, confirm the bed appears correctly at the central station and stop."
+    },
+    {
+      "title": "Check the Wall Jack or Network Drop",
+      "instructions": "Inspect the wall port serving the affected monitor. Action: Confirm the Ethernet cable is connected to the correct labeled jack. Look for damaged wall plates, loose ports, bent contacts, or signs of impact. If the room has another known-good clinical network jack approved for monitoring, test from that jack according to site policy. Avoid using random network jacks that may be assigned to a different VLAN or non-monitoring network. Expected outcome: The monitor should communicate when connected to a valid, active monitoring network jack. If the issue follows the wall jack, escalate to IT/network support for jack, patch panel, or switch-port investigation."
+    },
+    {
+      "title": "Check Network Link Lights Where Accessible",
+      "instructions": "At the bedside device, dock, switch, or patch point, check link/activity indicators if visible and accessible. Action: Look for network link lights. Compare with a known-working bed or station. Verify that the port is not dark, intermittently flashing abnormally, or physically damaged. Expected outcome: A valid network connection usually shows link/activity at the active network port. If there are no link lights on a known powered device, suspect cable, jack, patching, switch port, or network configuration."
+    },
+    {
+      "title": "Verify CARESCAPE Central Station or CIC Pro Power and Network Connection",
+      "instructions": "Check the central station workstation or CIC Pro station. Action: Confirm the station is powered on and not frozen. Verify the network cable is connected. Check that the workstation is on the correct clinical monitoring network. Look for disconnected cables behind the workstation, under the desk, or at the wall jack. Confirm the keyboard, mouse, display, and system are responsive. Expected outcome: The central station should be powered, responsive, and physically connected to the correct network. If the station is frozen but other stations are working, perform a controlled restart only if approved by site policy and patient monitoring coverage is maintained."
+    },
+    {
+      "title": "Compare With Another Central Station or Viewer",
+      "instructions": "Determine whether the same beds are visible on another central station. Action: Check a nearby CARESCAPE Central Station, CIC Pro station, or approved viewer. Compare whether the same patient sectors are online or offline. Confirm whether alarms and waveforms appear normally elsewhere. Expected outcome: If another central station displays the beds correctly, the issue may be local to one workstation, network port, or software session. If all central stations lose the same beds, suspect upstream network, switch, gateway, or bedside monitor communication."
+    },
+    {
+      "title": "Check Network Switch Power and Basic Status",
+      "instructions": "If the issue affects multiple beds or an entire area, check the related network switch if accessible to Clinical Engineering. Action: Verify the switch has power. Check for power supply alarms, dark status LEDs, or abnormal indicator lights. Confirm network cables are seated. Look for accidental unplugging, recent work in the closet, or a tripped power strip/UPS issue. Do not move patch cables unless authorized and properly documented. Expected outcome: The switch should be powered, stable, and showing active links on expected monitoring ports. If the switch is powered off, unstable, or showing abnormal status, escalate to IT/network support immediately and keep clinical leadership informed."
+    },
+    {
+      "title": "Check for Recent Network or Room Changes",
+      "instructions": "Communication failures often follow physical changes. Action: Ask whether a room move occurred recently. Ask whether a monitor swap occurred recently. Ask whether a bed reassignment occurred recently. Ask whether network closet work occurred recently. Ask whether a switch replacement occurred recently. Ask whether a patch panel change occurred recently. Ask whether a software update occurred recently. Ask whether a power outage occurred recently. Ask whether construction or cabling work occurred recently. Expected outcome: Recent changes may explain why the bedside monitor, CIC Pro, CARESCAPE Central Station, or Gateway is no longer communicating correctly. If the issue started after network work, involve IT/network support with the affected rooms, switch ports, and timestamps."
+    },
+    {
+      "title": "Verify CARESCAPE Gateway Communication",
+      "instructions": "If the issue involves data not reaching another system, check the CARESCAPE Gateway path. Action: Confirm whether bedside data is visible at the central station. Confirm whether the issue is only with data leaving the monitoring network, such as export to an EMR, interface engine, or downstream system. Check the Gateway workstation/server power and network connection if accessible. Look for gateway-related error messages or interface communication warnings. Expected outcome: If central monitoring works but downstream data does not transfer, the issue may be isolated to the CARESCAPE Gateway or interface path. If the Gateway is not communicating, escalate to the appropriate GE, IT, or interface support team according to site policy."
+    },
+    {
+      "title": "Check for IP Address, Bed Assignment, or Configuration Mismatch",
+      "instructions": "Do not assume hardware failure if communication fails after a device swap or bed move. Action: Confirm the bedside monitor is assigned to the correct bed/location. Verify that the central station sector corresponds to the correct care area. Check whether the device was recently replaced with another monitor. Confirm whether the replacement device is approved and configured for that unit. Expected outcome: The monitor should be assigned to the correct location and recognized by the central monitoring system. If configuration appears wrong, escalate to the authorized system administrator, GE support, or Clinical Engineering staff trained on CARESCAPE network configuration."
+    },
+    {
+      "title": "Restart Only When Safe and Appropriate",
+      "instructions": "A restart may restore a local workstation or monitor connection, but it should not be the first step during active monitoring. Action: Confirm patient monitoring coverage before restarting anything. Restart only the affected device or workstation if allowed by site policy. Do not restart network switches, central stations, CIC Pro systems, or gateway servers without understanding the patient monitoring impact. After restart, confirm communication, waveforms, parameters, and alarms return. Expected outcome: A temporary software or session issue may clear after a controlled restart. If the problem returns, treat it as unresolved and escalate."
+    },
+    {
+      "title": "Confirm Alarm and Waveform Recovery",
+      "instructions": "Once communication appears restored, verify more than just the bed name. Action: Confirm the patient sector is visible. Verify ECG waveform or active parameters are updating. Confirm alarm status is displayed appropriately. Check that delayed, stale, or frozen data is not being mistaken for live data. Ask clinical staff to confirm the patient appears correctly at the central station. Expected outcome: The central station should show current patient data, live waveforms, and expected alarm behavior. If data is incomplete, delayed, or unstable, continue escalation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "ICU reported that multiple beds were offline at the GE CARESCAPE Central Station and one CIC Pro station was not receiving patient data.",
+      "Cause": "Found bedside monitors functioning locally, but the affected unit switch had no active link on several monitoring ports after recent network closet work.",
+      "Resolution": "Verified patient safety with clinical staff, documented affected beds and switch location, escalated to IT/network support, and confirmed central station communication restored after switch port issue was corrected."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or central station messages displayed",
+    "Accessories swapped, including network cable, wall jack, or workstation connection",
+    "Power behavior, including outlet, UPS, switch, workstation, or bedside monitor power status",
+    "Environmental factors, including recent room moves, network closet work, construction, cabling work, or power outages",
+    "Indicator lights, including network link lights, switch status LEDs, workstation status, or gateway status",
+    "Final device status, including whether one bed, one station, multiple beds, CIC Pro, CARESCAPE Gateway, or the monitoring network remained affected"
+  ]
 }
 ]
