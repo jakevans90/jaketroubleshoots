@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GE Healthcare CARESCAPE Central Station Central Monitoring Station - Network Switch / CIC Pro / CARESCAPE Gateway Communication Issue</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>GE Healthcare CARESCAPE Central Station</h2>
+  <p>Network Switch / CIC Pro / CARESCAPE Gateway Communication Issue</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+<h3>Asset Type</h3><p>Central Monitoring Station</p>
+<h3>Manufacturer</h3><p>GE Healthcare</p>
+<h3>Model</h3><p>CARESCAPE Central Station</p>
+
+<h2>What This Guide Helps With</h2>
+<p>Troubleshooting communication loss between CARESCAPE Central Station, CIC Pro, network switches, bedside monitors, or CARESCAPE Gateway interfaces.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>Ensure Patient Safety First</h4>
+<p>A central monitoring communication issue can prevent alarms, waveforms, or patient data from displaying where staff expect to see them.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm patients are being monitored directly at the bedside.</li>
+  <li>Notify clinical staff that central monitoring or gateway communication may be unreliable.</li>
+  <li>Have staff verify alarms locally at the bedside monitor.</li>
+  <li>Do not rely on the central station as the only alarm observation point until communication is restored.</li>
+</ul>
+<p>Expected outcome: Patient monitoring continues safely while the network communication issue is investigated.</p>
+<p>Why it matters: A network issue may affect visibility of alarms and patient data at the central station, even if the bedside monitor is still functioning.</p>
+<p>If patient monitoring is protected and bedside monitoring is functional, continue.</p>
+
+<h4>Verify the Reported Communication Problem</h4>
+<p>Confirm exactly what is not communicating.</p>
+<p>Action:</p>
+<ul>
+  <li>Determine whether the issue affects one bedside monitor.</li>
+  <li>Determine whether the issue affects one patient sector.</li>
+  <li>Determine whether the issue affects one CIC Pro station.</li>
+  <li>Determine whether the issue affects one CARESCAPE Central Station.</li>
+  <li>Determine whether the issue affects multiple central stations.</li>
+  <li>Determine whether the issue affects the CARESCAPE Gateway interface.</li>
+  <li>Determine whether the issue affects an entire unit or VLAN/network segment.</li>
+</ul>
+<p>Expected outcome: The failure pattern helps separate a single-device issue from a network switch, gateway, or system-wide communication issue.</p>
+<p>If only one bedside monitor is affected, focus on that monitor, wall jack, cable, and assigned bed configuration first.</p>
+<p>If multiple devices are affected, continue network path troubleshooting.</p>
+
+<h4>Check Whether Bedside Monitoring Is Still Working Locally</h4>
+<p>Go to the affected bedside monitor.</p>
+<p>Action:</p>
+<ul>
+  <li>Verify the monitor is powered on.</li>
+  <li>Confirm ECG, SpO2, NIBP, invasive pressure, or other active parameters are displaying locally.</li>
+  <li>Check whether local alarms are active and audible.</li>
+  <li>Confirm the patient is assigned to the correct bed or care area if applicable.</li>
+</ul>
+<p>Expected outcome: The bedside monitor should still show patient data locally even if central communication is down.</p>
+<p>If the bedside monitor itself is malfunctioning, troubleshoot the bedside monitor first.</p>
+<p>If the bedside monitor is functioning locally but not visible centrally, continue.</p>
+
+<h4>Verify the Scope at the Central Station</h4>
+<p>Check the CARESCAPE Central Station or CIC Pro display.</p>
+<p>Action:</p>
+<ul>
+  <li>Look for messages such as Bed offline.</li>
+  <li>Look for messages such as No communication.</li>
+  <li>Look for messages such as Monitor disconnected.</li>
+  <li>Look for messages such as Data unavailable.</li>
+  <li>Look for messages such as Gateway communication failure.</li>
+  <li>Look for messages such as Blank patient sector.</li>
+  <li>Look for messages such as Missing waveforms or delayed data.</li>
+  <li>Confirm whether the issue is isolated to one bed or multiple beds.</li>
+</ul>
+<p>Expected outcome: The central station should help identify whether communication loss is limited or widespread.</p>
+<p>If only one bed is offline, continue with the bedside network path.</p>
+<p>If many beds are offline at once, skip ahead to switch, gateway, or network infrastructure checks.</p>
+
+<h4>Check the Physical Network Cable at the Bedside Monitor</h4>
+<p>Inspect the network connection for the affected bedside monitor or docking location.</p>
+<p>Action:</p>
+<ul>
+  <li>Verify the Ethernet cable is fully seated.</li>
+  <li>Check for a broken latch, loose connector, damaged cable jacket, or kinked cable.</li>
+  <li>Confirm the cable is connected to the correct wall jack or network port.</li>
+  <li>If available and allowed by site policy, swap with a known-good network cable.</li>
+</ul>
+<p>Expected outcome: A loose or damaged network cable should be corrected, and communication may restore after the device reconnects.</p>
+<p>If communication restores, confirm the bed appears correctly at the central station and stop.</p>
+
+<h4>Check the Wall Jack or Network Drop</h4>
+<p>Inspect the wall port serving the affected monitor.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm the Ethernet cable is connected to the correct labeled jack.</li>
+  <li>Look for damaged wall plates, loose ports, bent contacts, or signs of impact.</li>
+  <li>If the room has another known-good clinical network jack approved for monitoring, test from that jack according to site policy.</li>
+  <li>Avoid using random network jacks that may be assigned to a different VLAN or non-monitoring network.</li>
+</ul>
+<p>Expected outcome: The monitor should communicate when connected to a valid, active monitoring network jack.</p>
+<p>If the issue follows the wall jack, escalate to IT/network support for jack, patch panel, or switch-port investigation.</p>
+
+<h4>Check Network Link Lights Where Accessible</h4>
+<p>At the bedside device, dock, switch, or patch point, check link/activity indicators if visible and accessible.</p>
+<p>Action:</p>
+<ul>
+  <li>Look for network link lights.</li>
+  <li>Compare with a known-working bed or station.</li>
+  <li>Verify that the port is not dark, intermittently flashing abnormally, or physically damaged.</li>
+</ul>
+<p>Expected outcome: A valid network connection usually shows link/activity at the active network port.</p>
+<p>If there are no link lights on a known powered device, suspect cable, jack, patching, switch port, or network configuration.</p>
+
+<h4>Verify CARESCAPE Central Station or CIC Pro Power and Network Connection</h4>
+<p>Check the central station workstation or CIC Pro station.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm the station is powered on and not frozen.</li>
+  <li>Verify the network cable is connected.</li>
+  <li>Check that the workstation is on the correct clinical monitoring network.</li>
+  <li>Look for disconnected cables behind the workstation, under the desk, or at the wall jack.</li>
+  <li>Confirm the keyboard, mouse, display, and system are responsive.</li>
+</ul>
+<p>Expected outcome: The central station should be powered, responsive, and physically connected to the correct network.</p>
+<p>If the station is frozen but other stations are working, perform a controlled restart only if approved by site policy and patient monitoring coverage is maintained.</p>
+
+<h4>Compare With Another Central Station or Viewer</h4>
+<p>Determine whether the same beds are visible on another central station.</p>
+<p>Action:</p>
+<ul>
+  <li>Check a nearby CARESCAPE Central Station, CIC Pro station, or approved viewer.</li>
+  <li>Compare whether the same patient sectors are online or offline.</li>
+  <li>Confirm whether alarms and waveforms appear normally elsewhere.</li>
+</ul>
+<p>Expected outcome: If another central station displays the beds correctly, the issue may be local to one workstation, network port, or software session.</p>
+<p>If all central stations lose the same beds, suspect upstream network, switch, gateway, or bedside monitor communication.</p>
+
+<h4>Check Network Switch Power and Basic Status</h4>
+<p>If the issue affects multiple beds or an entire area, check the related network switch if accessible to Clinical Engineering.</p>
+<p>Action:</p>
+<ul>
+  <li>Verify the switch has power.</li>
+  <li>Check for power supply alarms, dark status LEDs, or abnormal indicator lights.</li>
+  <li>Confirm network cables are seated.</li>
+  <li>Look for accidental unplugging, recent work in the closet, or a tripped power strip/UPS issue.</li>
+  <li>Do not move patch cables unless authorized and properly documented.</li>
+</ul>
+<p>Expected outcome: The switch should be powered, stable, and showing active links on expected monitoring ports.</p>
+<p>If the switch is powered off, unstable, or showing abnormal status, escalate to IT/network support immediately and keep clinical leadership informed.</p>
+
+<h4>Check for Recent Network or Room Changes</h4>
+<p>Communication failures often follow physical changes.</p>
+<p>Action:</p>
+<ul>
+  <li>Ask whether a room move occurred recently.</li>
+  <li>Ask whether a monitor swap occurred recently.</li>
+  <li>Ask whether a bed reassignment occurred recently.</li>
+  <li>Ask whether network closet work occurred recently.</li>
+  <li>Ask whether a switch replacement occurred recently.</li>
+  <li>Ask whether a patch panel change occurred recently.</li>
+  <li>Ask whether a software update occurred recently.</li>
+  <li>Ask whether a power outage occurred recently.</li>
+  <li>Ask whether construction or cabling work occurred recently.</li>
+</ul>
+<p>Expected outcome: Recent changes may explain why the bedside monitor, CIC Pro, CARESCAPE Central Station, or Gateway is no longer communicating correctly.</p>
+<p>If the issue started after network work, involve IT/network support with the affected rooms, switch ports, and timestamps.</p>
+
+<h4>Verify CARESCAPE Gateway Communication</h4>
+<p>If the issue involves data not reaching another system, check the CARESCAPE Gateway path.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm whether bedside data is visible at the central station.</li>
+  <li>Confirm whether the issue is only with data leaving the monitoring network, such as export to an EMR, interface engine, or downstream system.</li>
+  <li>Check the Gateway workstation/server power and network connection if accessible.</li>
+  <li>Look for gateway-related error messages or interface communication warnings.</li>
+</ul>
+<p>Expected outcome: If central monitoring works but downstream data does not transfer, the issue may be isolated to the CARESCAPE Gateway or interface path.</p>
+<p>If the Gateway is not communicating, escalate to the appropriate GE, IT, or interface support team according to site policy.</p>
+
+<h4>Check for IP Address, Bed Assignment, or Configuration Mismatch</h4>
+<p>Do not assume hardware failure if communication fails after a device swap or bed move.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm the bedside monitor is assigned to the correct bed/location.</li>
+  <li>Verify that the central station sector corresponds to the correct care area.</li>
+  <li>Check whether the device was recently replaced with another monitor.</li>
+  <li>Confirm whether the replacement device is approved and configured for that unit.</li>
+</ul>
+<p>Expected outcome: The monitor should be assigned to the correct location and recognized by the central monitoring system.</p>
+<p>If configuration appears wrong, escalate to the authorized system administrator, GE support, or Clinical Engineering staff trained on CARESCAPE network configuration.</p>
+
+<h4>Restart Only When Safe and Appropriate</h4>
+<p>A restart may restore a local workstation or monitor connection, but it should not be the first step during active monitoring.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm patient monitoring coverage before restarting anything.</li>
+  <li>Restart only the affected device or workstation if allowed by site policy.</li>
+  <li>Do not restart network switches, central stations, CIC Pro systems, or gateway servers without understanding the patient monitoring impact.</li>
+  <li>After restart, confirm communication, waveforms, parameters, and alarms return.</li>
+</ul>
+<p>Expected outcome: A temporary software or session issue may clear after a controlled restart.</p>
+<p>If the problem returns, treat it as unresolved and escalate.</p>
+
+<h4>Confirm Alarm and Waveform Recovery</h4>
+<p>Once communication appears restored, verify more than just the bed name.</p>
+<p>Action:</p>
+<ul>
+  <li>Confirm the patient sector is visible.</li>
+  <li>Verify ECG waveform or active parameters are updating.</li>
+  <li>Confirm alarm status is displayed appropriately.</li>
+  <li>Check that delayed, stale, or frozen data is not being mistaken for live data.</li>
+  <li>Ask clinical staff to confirm the patient appears correctly at the central station.</li>
+</ul>
+<p>Expected outcome: The central station should show current patient data, live waveforms, and expected alarm behavior.</p>
+<p>If data is incomplete, delayed, or unstable, continue escalation.</p>
+
+<h2>If the Problem Persists</h2>
+<p>If power, cables, wall jacks, bedside monitor status, central station status, switch status, and basic configuration checks have been ruled out, the issue is likely beyond simple external troubleshooting.</p>
+<p>The affected device, station, network path, or gateway should be removed from clinical reliance if monitoring is compromised, labeled Out of Service if the local device or workstation is suspected, sent for repair, bench evaluation, or authorized system/network support, and escalated to GE Healthcare support, IT/network support, or the interface team as appropriate.</p>
+<p>Knowing when to stop is proper troubleshooting. Central monitoring network issues can affect multiple patients, so unnecessary resets, random cable moves, or undocumented configuration changes can create larger failures.</p>
+
+<h2>Clinical Use Tip</h2>
+<p>Do not troubleshoot a central monitoring communication issue as if it is only a computer problem. Confirm bedside monitoring and alarm visibility first. If central monitoring is unreliable, clinical staff must monitor patients locally or move them to a verified monitoring setup until communication is restored. Do not troubleshoot on an active patient without moving the patient to a backup device or verified monitoring method first when therapy or monitoring continuity is at risk.</p>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>"ICU reported that multiple beds were offline at the GE CARESCAPE Central Station and one CIC Pro station was not receiving patient data."</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>"Found bedside monitors functioning locally, but the affected unit switch had no active link on several monitoring ports after recent network closet work."</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Example:</em><br>"Verified patient safety with clinical staff, documented affected beds and switch location, escalated to IT/network support, and confirmed central station communication restored after switch port issue was corrected."</p>
+
+<h2>Helpful Details to Include (If Known)</h2>
+<ul>
+  <li>Alarm behavior or central station messages displayed</li>
+  <li>Accessories swapped, including network cable, wall jack, or workstation connection</li>
+  <li>Power behavior, including outlet, UPS, switch, workstation, or bedside monitor power status</li>
+  <li>Environmental factors, including recent room moves, network closet work, construction, cabling work, or power outages</li>
+  <li>Indicator lights, including network link lights, switch status LEDs, workstation status, or gateway status</li>
+  <li>Final device status, including whether one bed, one station, multiple beds, CIC Pro, CARESCAPE Gateway, or the monitoring network remained affected</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>Central monitoring communication issues should be handled with a patient-safety-first mindset. Start with what can be verified externally: bedside monitoring, cables, wall jacks, workstation status, network switch power, and the scope of the failure. Escalate when the issue points to network infrastructure, gateway communication, configuration, or recurring system instability. Clear CCR documentation helps separate a single-device failure from a larger monitoring network problem.</p>
+<p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
