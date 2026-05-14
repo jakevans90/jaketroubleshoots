@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Functional Testing vs Calibration vs Verification | Jake Troubleshoots</title>
+  <meta name="description" content="A plain-English explanation of functional testing, calibration, verification, PM checks, and what each one actually proves in biomedical equipment work.">
+  <link rel="stylesheet" href="../style.css">
+
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Functional Testing vs Calibration vs Verification</h2>
+  <p>What is the difference?</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    A plain-English explanation of what these words mean, what each test actually proves, and why the wording matters in biomed documentation.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+  </div>
+</section>
+
+<main>
+  <section class="content-box">
+    <h3>What This Page Explains</h3>
+    <p>In biomed work, people use words like <strong>functional test</strong>, <strong>calibration</strong>, <strong>verification</strong>, <strong>PM</strong>, and <strong>safety check</strong> all the time.</p>
+    <p>Sometimes they use them correctly.</p>
+    <p>Sometimes they use them like they all mean the same thing.</p>
+    <p>They do not.</p>
+    <p>This matters because the words you use affect what you actually proved.</p>
+    <p>A device can pass a functional test and still be out of calibration.</p>
+    <p>A device can be calibrated and still fail a functional check.</p>
+    <p>A device can pass electrical safety testing and still not function correctly.</p>
+    <p>A device can complete a PM and still need further troubleshooting if something does not make sense.</p>
+    <p>This page explains the difference in plain English.</p>
+    <p>The goal is not to turn this into a metrology textbook. The goal is to help biomeds understand what they are actually doing, what they are documenting, and what a test result really means.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Jump to a Section</h3>
+    <ul>
+      <li><a href="#simple-version">The Simple Version</a></li>
+      <li><a href="#why-confusing">Why These Words Get Confusing</a></li>
+      <li><a href="#functional-testing">What Functional Testing Means</a></li>
+      <li><a href="#calibration">What Calibration Means</a></li>
+      <li><a href="#verification">What Verification Means</a></li>
+      <li><a href="#thermometer-example">A Simple Example Using a Thermometer</a></li>
+      <li><a href="#infusion-pump-example">A Simple Example Using an Infusion Pump</a></li>
+      <li><a href="#patient-monitor-example">A Simple Example Using a Patient Monitor</a></li>
+      <li><a href="#pm-includes">What Preventive Maintenance Usually Includes</a></li>
+      <li><a href="#electrical-safety">What Electrical Safety Testing Proves</a></li>
+      <li><a href="#tested-good">Why “Tested Good” Is Weak Documentation</a></li>
+      <li><a href="#common-mistakes">Common Mistakes</a></li>
+      <li><a href="#when-calibration-matters">When Calibration Actually Matters</a></li>
+      <li><a href="#when-functional-testing-is-enough">When Functional Testing Is Enough</a></li>
+      <li><a href="#when-verification-is-right">When Verification Is the Right Word</a></li>
+      <li><a href="#troubleshooting">How to Think About It During Troubleshooting</a></li>
+      <li><a href="#documentation-examples">Simple Documentation Examples</a></li>
+      <li><a href="#final-thoughts">Final Thoughts</a></li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="simple-version">
+    <h3>The Simple Version</h3>
+    <p>Here is the short version:</p>
+    <p><strong>Functional testing</strong> checks whether the device does what it is supposed to do.</p>
+    <p><strong>Calibration</strong> adjusts the device so its output or measurement matches a known standard.</p>
+    <p><strong>Verification</strong> checks whether the device is within an acceptable limit without necessarily adjusting it.</p>
+    <p>That is the basic difference.</p>
+    <p>In plain English:</p>
+    <p>
+      <strong>Functional test:</strong> Does it work?<br>
+      <strong>Verification:</strong> Is it accurate enough?<br>
+      <strong>Calibration:</strong> Adjust it so it is accurate.
+    </p>
+    <p>Those are not perfect definitions for every situation, but they are a good way to start thinking about it.</p>
+  </section>
+
+  <section class="content-box" id="why-confusing">
+    <h3>Why These Words Get Confusing</h3>
+    <p>These words get confusing because different people use them differently.</p>
+    <p>A nurse may say:</p>
+    <p><em>“Did you calibrate it?”</em></p>
+    <p>when they really mean:</p>
+    <p><em>“Did you check it?”</em></p>
+    <p>A manager may say:</p>
+    <p><em>“Was the PM done?”</em></p>
+    <p>when they really mean:</p>
+    <p><em>“Is it safe to use?”</em></p>
+    <p>A vendor may say:</p>
+    <p><em>“Calibration passed.”</em></p>
+    <p>when they mean:</p>
+    <p><em>“The readings were verified within tolerance and no adjustment was needed.”</em></p>
+    <p>A biomed may write:</p>
+    <p><em>“Tested good.”</em></p>
+    <p>when another tech later has no idea what was actually tested.</p>
+    <p>That is the problem.</p>
+    <p>The words matter because they describe the level of evidence you have.</p>
+    <p>If your documentation says a device was calibrated, that implies something different than saying it was functionally tested or verified.</p>
+  </section>
+
+  <section class="content-box" id="functional-testing">
+    <h3>What Functional Testing Means</h3>
+    <p>A <strong>functional test</strong> checks whether the device performs its expected function.</p>
+    <p>It answers a basic question:</p>
+    <p><strong>Does the device do the thing it is supposed to do?</strong></p>
+    <p>Examples:</p>
+    <ul>
+      <li>Does the infusion pump power on?</li>
+      <li>Does the pump run without error?</li>
+      <li>Does the bed move up and down?</li>
+      <li>Does the monitor display ECG?</li>
+      <li>Does the NIBP pump inflate and deflate?</li>
+      <li>Does the warmer heat?</li>
+      <li>Does the suction regulator control vacuum?</li>
+      <li>Does the defibrillator charge and discharge?</li>
+      <li>Does the ventilator deliver breaths?</li>
+      <li>Does the alarm sound?</li>
+      <li>Does the device communicate with the central station?</li>
+    </ul>
+    <p>Functional testing is practical. It is usually about confirming operation.</p>
+    <p>But functional testing does not always prove accuracy.</p>
+    <p>For example, if a thermometer turns on and displays a temperature, that is a functional check.</p>
+    <p>If you compare it to a known temperature standard and confirm it is within tolerance, that is verification.</p>
+    <p>If you adjust it because it is reading incorrectly, that is calibration.</p>
+    <p>Those are different levels of testing.</p>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>What Calibration Means</h3>
+    <p><strong>Calibration</strong> means comparing a device to a known standard and adjusting it if needed.</p>
+    <p>The important word is <strong>adjusting</strong>.</p>
+    <p>Calibration is not just looking at a reading. It usually means you are making the device match a known reference or standard.</p>
+    <p>Example:</p>
+    <p>A pressure transducer reads 96 mmHg when the known applied pressure is 100 mmHg.</p>
+    <p>If you adjust the device so it reads 100 mmHg correctly, that is calibration.</p>
+    <p>Another example:</p>
+    <p>A scale is reading slightly low. You apply certified test weights, enter calibration mode, and adjust the scale so the reading matches the known weights.</p>
+    <p>That is calibration.</p>
+    <p>Calibration usually requires:</p>
+    <ul>
+      <li>A known reference standard</li>
+      <li>A defined procedure</li>
+      <li>Acceptable limits</li>
+      <li>Adjustment capability</li>
+      <li>Documentation</li>
+      <li>Often some kind of traceability depending on your facility and equipment type</li>
+    </ul>
+    <p>Not every device can be calibrated by the biomed department.</p>
+    <p>
+      Some devices require vendor tools.<br>
+      Some require service passwords.<br>
+      Some require factory service.<br>
+      Some are verified only and replaced if out of tolerance.<br>
+      Some are not worth adjusting because the module or accessory is disposable or exchange-based.
+    </p>
+    <p>So “calibration” should not be used casually.</p>
+    <p>If you did not adjust anything, you probably verified it rather than calibrated it.</p>
+  </section>
+
+  <section class="content-box" id="verification">
+    <h3>What Verification Means</h3>
+    <p><strong>Verification</strong> means checking whether the device meets the expected requirement or tolerance.</p>
+    <p>It answers:</p>
+    <p><strong>Is this device reading or performing within the acceptable limit?</strong></p>
+    <p>Verification may involve a known standard, but it does not necessarily involve adjustment.</p>
+    <p>Example:</p>
+    <p>You connect a patient monitor to a simulator.</p>
+    <p>The simulator outputs a heart rate of 80 bpm.</p>
+    <p>The monitor displays 80 bpm.</p>
+    <p>You verified that the monitor reads correctly under that test condition.</p>
+    <p>Another example:</p>
+    <p>You apply 100 mmHg to an NIBP or pressure measurement system, and the device reads within the allowed tolerance.</p>
+    <p>You verified the reading.</p>
+    <p>No adjustment was made.</p>
+    <p>That is verification.</p>
+    <p>Verification is extremely common in biomed work.</p>
+    <p>A lot of PMs are really a mix of:</p>
+    <ul>
+      <li>Visual inspection</li>
+      <li>Functional testing</li>
+      <li>Safety testing</li>
+      <li>Performance verification</li>
+      <li>Documentation</li>
+    </ul>
+    <p>People may casually call all of that “calibration,” but that is not always accurate.</p>
+  </section>
+
+  <section class="content-box" id="thermometer-example">
+    <h3>A Simple Example Using a Thermometer</h3>
+    <p>A thermometer is a good simple example.</p>
+    <p>If you turn it on and it displays a reading, that is a functional check.</p>
+    <p>If you place it in a known temperature bath and confirm it reads within tolerance, that is verification.</p>
+    <p>If you adjust the thermometer so it matches the known temperature reference, that is calibration.</p>
+    <p>If it cannot be adjusted and fails verification, you may remove it from service or send it for repair/replacement.</p>
+    <p>Same device.</p>
+    <p>Different actions.</p>
+    <p>Different meanings.</p>
+  </section>
+
+  <section class="content-box" id="infusion-pump-example">
+    <h3>A Simple Example Using an Infusion Pump</h3>
+    <p>An infusion pump can also show the difference.</p>
+    <p>If you power it on, load tubing, start an infusion, and confirm it runs without alarms, that is functional testing.</p>
+    <p>If you measure the delivered volume or flow rate against a known method and confirm it is within tolerance, that is verification.</p>
+    <p>If the pump has an adjustment procedure and you adjust its delivery accuracy to bring it back within spec, that is calibration.</p>
+    <p>If the pump cannot be adjusted in the field, or if the failure points to a bad mechanism, sensor, or board, then it may need repair instead of calibration.</p>
+    <p>That is why the words matter.</p>
+    <p>“Pump tested good” is not the same as:</p>
+    <p><em>Pump passed flow accuracy verification using facility procedure.</em></p>
+    <p>And neither of those is the same as:</p>
+    <p><em>Pump calibrated after failing flow accuracy test.</em></p>
+  </section>
+
+  <section class="content-box" id="patient-monitor-example">
+    <h3>A Simple Example Using a Patient Monitor</h3>
+    <p>A patient monitor may get several types of checks.</p>
+    <p>You may check that it powers on, boots normally, displays waveforms, responds to buttons, and alarms.</p>
+    <p>That is functional testing.</p>
+    <p>You may connect a simulator and verify ECG heart rate, SpO2, invasive pressure, temperature, respiration, and NIBP readings.</p>
+    <p>That is performance verification.</p>
+    <p>If a module or parameter can be adjusted against a known standard, that may be calibration.</p>
+    <p>But many modern monitors are not field-calibrated in the old-school sense. A failed parameter may require module replacement, service software, factory repair, or vendor service.</p>
+    <p>So again, saying “calibrated monitor” may not be accurate unless calibration was actually performed.</p>
+  </section>
+
+  <section class="content-box" id="pm-includes">
+    <h3>What Preventive Maintenance Usually Includes</h3>
+    <p>A PM is usually not one single thing.</p>
+    <p>A PM may include:</p>
+    <ul>
+      <li>Visual inspection</li>
+      <li>Cleaning check</li>
+      <li>Power cord inspection</li>
+      <li>Ground resistance test</li>
+      <li>Leakage current test</li>
+      <li>Battery check</li>
+      <li>Functional testing</li>
+      <li>Performance verification</li>
+      <li>Alarm testing</li>
+      <li>Accessory inspection</li>
+      <li>Software/configuration check</li>
+      <li>Mechanical inspection</li>
+      <li>Documentation</li>
+      <li>Labeling</li>
+    </ul>
+    <p>So when someone says:</p>
+    <p><em>“Did you PM it?”</em></p>
+    <p>that may include many different checks.</p>
+    <p>The better question is:</p>
+    <p><strong>What did the PM procedure require, and did the device pass those checks?</strong></p>
+    <p>A completed PM does not always mean the device was calibrated.</p>
+    <p>A completed PM does not always mean every possible function was tested.</p>
+    <p>A completed PM means the required maintenance procedure was performed and documented according to the process being used.</p>
+    <p>That distinction matters.</p>
+  </section>
+
+  <section class="content-box" id="electrical-safety">
+    <h3>What Electrical Safety Testing Proves</h3>
+    <p>Electrical safety testing is another piece of the picture.</p>
+    <p>It may check things like:</p>
+    <ul>
+      <li>Ground resistance</li>
+      <li>Leakage current</li>
+      <li>Patient leakage</li>
+      <li>Touch current</li>
+      <li>Applied part leakage</li>
+      <li>Normal and fault conditions</li>
+    </ul>
+    <p>But an electrical safety test does not prove the device performs correctly.</p>
+    <p>A device can pass electrical safety and still have a bad battery.</p>
+    <p>A device can pass electrical safety and still fail flow accuracy.</p>
+    <p>A device can pass electrical safety and still have a broken alarm speaker.</p>
+    <p>A device can pass electrical safety and still be missing an accessory.</p>
+    <p>Electrical safety testing is important, but it is not the same as functional testing, calibration, or performance verification.</p>
+    <p>It answers a different safety question.</p>
+  </section>
+
+  <section class="content-box" id="tested-good">
+    <h3>Why “Tested Good” Is Weak Documentation</h3>
+    <p>One of the weakest notes in biomed documentation is:</p>
+    <p><em>Tested good.</em></p>
+    <p>That note may be true, but it is not very useful.</p>
+    <p>What was tested?</p>
+    <p>
+      Was it a visual inspection?<br>
+      Was it a functional test?<br>
+      Was it electrical safety?<br>
+      Was it performance verification?<br>
+      Was it calibration?<br>
+      Was it a full PM?<br>
+      Was the reported issue actually duplicated?<br>
+      Was the device tested with the same accessory involved in the complaint?
+    </p>
+    <p>Better documentation says what you actually did.</p>
+    <p>Instead of:</p>
+    <p><em>Tested good.</em></p>
+    <p>Write something like:</p>
+    <p><em>Verified ECG and SpO2 operation with simulator. Alarm audio functional. No fault duplicated. Device passed functional check and returned to service.</em></p>
+    <p>Or:</p>
+    <p><em>Flow accuracy verification completed per PM procedure. Pump delivered within acceptable tolerance. Electrical safety passed. Returned to service.</em></p>
+    <p>Or:</p>
+    <p><em>Failed NIBP verification using simulator. Removed from service and sent for repair.</em></p>
+    <p>Those notes tell the next person what happened.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Calling every check a calibration.</strong></p>
+    <p>If you did not adjust the device, be careful with the word calibration.</p>
+    <p><strong>Assuming a functional test proves accuracy.</strong></p>
+    <p>A device may appear to work but still be outside tolerance.</p>
+    <p><strong>Assuming verification means repair was performed.</strong></p>
+    <p>Verification may only confirm whether the device passed or failed.</p>
+    <p><strong>Treating a PM sticker like proof that every possible issue was checked.</strong></p>
+    <p>A PM sticker means the required procedure was completed. It does not mean every possible intermittent issue, accessory problem, setup issue, or clinical complaint was recreated.</p>
+    <p><strong>Using vague documentation.</strong></p>
+    <p>Words like “checked,” “tested,” and “works” are not always enough.</p>
+    <p>Better documentation says what was checked and what standard or expected result was met.</p>
+  </section>
+
+  <section class="content-box" id="when-calibration-matters">
+    <h3>When Calibration Actually Matters</h3>
+    <p>Calibration matters most when the device’s measurement or output affects patient care and can drift over time.</p>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Pressure measurement</li>
+      <li>Flow measurement</li>
+      <li>Temperature measurement</li>
+      <li>Weight measurement</li>
+      <li>Gas concentration</li>
+      <li>Electrical output</li>
+      <li>Volume delivery</li>
+      <li>Speed</li>
+      <li>Force</li>
+      <li>Energy delivery</li>
+    </ul>
+    <p>But not every device is calibrated the same way.</p>
+    <p>Some devices are adjusted.</p>
+    <p>Some are verified.</p>
+    <p>Some are repaired if out of tolerance.</p>
+    <p>Some are replaced.</p>
+    <p>Some are factory-calibrated.</p>
+    <p>Some use disposable sensors or accessories that change the situation.</p>
+    <p>The key is to follow the manufacturer procedure and facility policy.</p>
+    <p>Do not assume every device needs the same kind of calibration just because it is medical equipment.</p>
+  </section>
+
+  <section class="content-box" id="when-functional-testing-is-enough">
+    <h3>When Functional Testing Is Enough</h3>
+    <p>Sometimes a functional test is exactly what is needed.</p>
+    <p>If a staff member reports that a bed will not raise, you may need to verify that the bed raises and lowers properly.</p>
+    <p>If a warmer was unplugged and reported dead, you may need to confirm power, startup, heating operation, and alarms.</p>
+    <p>If a monitor will not display ECG, you may need to test the ECG cable, lead set, module, and simulator response.</p>
+    <p>In those cases, a functional test may answer the reported problem.</p>
+    <p>But if the issue involves accuracy, dosing, measurement, output, or patient treatment values, functional testing alone may not be enough.</p>
+    <p>You have to match the test to the risk.</p>
+  </section>
+
+  <section class="content-box" id="when-verification-is-right">
+    <h3>When Verification Is the Right Word</h3>
+    <p>Verification is the right word when you are confirming the device meets an expected value, tolerance, or requirement.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Verified temperature reading within tolerance</li>
+      <li>Verified pressure reading at 0, 100, and 200 mmHg</li>
+      <li>Verified ECG heart rate using simulator</li>
+      <li>Verified SpO2 simulator response</li>
+      <li>Verified flow delivery within acceptable range</li>
+      <li>Verified alarm activation</li>
+      <li>Verified battery runtime meets requirement</li>
+      <li>Verified nurse call output activates properly</li>
+    </ul>
+    <p>Verification is a powerful word because it says:</p>
+    <p><strong>I checked this against an expected result.</strong></p>
+    <p>That is more useful than saying:</p>
+    <p><em>Looks good.</em></p>
+  </section>
+
+  <section class="content-box" id="troubleshooting">
+    <h3>How to Think About It During Troubleshooting</h3>
+    <p>When troubleshooting, ask yourself:</p>
+    <p><strong>What am I actually trying to prove?</strong></p>
+    <p>Am I proving the device turns on?</p>
+    <p>That is basic function.</p>
+    <p>Am I proving the device performs the expected action?</p>
+    <p>That is functional testing.</p>
+    <p>Am I proving the reading or output is within tolerance?</p>
+    <p>That is verification.</p>
+    <p>Am I adjusting the device to match a standard?</p>
+    <p>That is calibration.</p>
+    <p>Am I proving it is electrically safe under the test conditions?</p>
+    <p>That is electrical safety testing.</p>
+    <p>Am I proving the reported issue does not happen anymore?</p>
+    <p>That may require a specific functional test or verification based on the complaint.</p>
+    <p>This mindset makes your troubleshooting cleaner.</p>
+    <p>It also makes your documentation better.</p>
+  </section>
+
+  <section class="content-box" id="documentation-examples">
+    <h3>Simple Documentation Examples</h3>
+    <p>Instead of:</p>
+    <p><em>PM completed.</em></p>
+    <p>You might write:</p>
+    <p><em>Preventive maintenance completed per facility procedure. Visual inspection, electrical safety, battery check, functional testing, and performance verification passed.</em></p>
+    <p>Instead of:</p>
+    <p><em>Calibrated.</em></p>
+    <p>You might write:</p>
+    <p><em>Pressure reading verified at 0, 100, and 200 mmHg using test equipment. Readings within tolerance. No adjustment required.</em></p>
+    <p>Instead of:</p>
+    <p><em>Fixed.</em></p>
+    <p>You might write:</p>
+    <p><em>Replaced damaged power cord. Electrical safety passed after repair. Functional check completed. Unit returned to service.</em></p>
+    <p>Instead of:</p>
+    <p><em>Unable to duplicate.</em></p>
+    <p>You might write:</p>
+    <p><em>Reported intermittent power loss not duplicated. Inspected power cord, plug, strain relief, inlet, and battery connection. Device operated for 30 minutes without shutdown. Returned to service per department procedure.</em></p>
+    <p>The goal is not to write a novel.</p>
+    <p>The goal is to write enough that the next person understands what was actually done.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts">
+    <h3>Final Thoughts</h3>
+    <p>Functional testing, calibration, and verification are related, but they are not the same thing.</p>
+    <p>A good biomed understands the difference.</p>
+    <p>Not because the words are fancy.</p>
+    <p>Because the words explain what was actually proven.</p>
+    <p>
+      Did the device work?<br>
+      Was it accurate enough?<br>
+      Was it adjusted?<br>
+      Was it electrically safe?<br>
+      Was the reported issue actually tested?
+    </p>
+    <p>That is the kind of thinking that separates button-pushing from real troubleshooting.</p>
+    <p>Biomed work is not just running tests.</p>
+    <p>It is understanding what the test proves.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview for biomedical equipment technicians, clinical engineers, students, and healthcare technology staff. Always follow your facility policy, manufacturer service documentation, applicable standards, test equipment procedures, and the requirements of your organization.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <p>More Biomed Basics topics are coming soon, including work order documentation, batteries, networking, alarm troubleshooting, and intermittent problem troubleshooting.</p>
+    <p><a href="../biomed-basics.html">Back to Biomed Basics</a></p>
+  </section>
+</main>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="../terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
