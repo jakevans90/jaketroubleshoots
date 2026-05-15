@@ -265,8 +265,29 @@ Promise.all([
 
   renderGuides('featured-grid', featured);
 
-  const recent = getRecentGuides(allGuides, 12);
-  renderGuides('guides-grid', recent);
+function getGridColumnCount(container) {
+  if (!container) return 1;
+
+  const styles = window.getComputedStyle(container);
+  const columns = styles.getPropertyValue('grid-template-columns');
+
+  if (!columns || columns === 'none') return 1;
+
+  return columns.split(' ').length;
+}
+
+function renderGuideRows(containerId, allGuides, rowCount) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const columns = getGridColumnCount(container);
+  const cardCount = columns * rowCount;
+
+  const guidesToShow = getRecentGuides(allGuides, cardCount);
+  renderGuides(containerId, guidesToShow);
+}
+  
+renderGuideRows('guides-grid', allGuides, 4);
 })
 .catch(err => console.error('Guide load error:', err));
 
