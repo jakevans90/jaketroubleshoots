@@ -185,7 +185,39 @@ function getIconPath(assetType) {
   return assetHub?.icon || '';
 }
 
-// Override renderGuides globally
+function buildStatsLine(allGuides) {
+  const totalGuides = allGuides.length;
+
+  const models = new Set(allGuides.map(g => g.model).filter(Boolean));
+  const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
+  const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
+
+  return `${totalGuides} guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers.`;
+}
+
+function getGridColumnCount(container) {
+  if (!container) return 1;
+
+  const styles = window.getComputedStyle(container);
+  const columns = styles.getPropertyValue('grid-template-columns');
+
+  if (!columns || columns === 'none') return 1;
+
+  return columns.split(' ').length;
+}
+
+function renderGuideRows(containerId, allGuides, rowCount) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const columns = getGridColumnCount(container);
+  const cardCount = columns * rowCount;
+
+  const guidesToShow = getRecentGuides(allGuides, cardCount);
+  renderGuides(containerId, guidesToShow);
+}
+
+// Override renderGuides globally so guide cards can show asset icons
 const originalRenderGuides = window.renderGuides;
 
 window.renderGuides = function(containerId, guides) {
@@ -227,16 +259,6 @@ window.renderGuides = function(containerId, guides) {
   });
 };
 
-function buildStatsLine(allGuides) {
-  const totalGuides = allGuides.length;
-
-  const models = new Set(allGuides.map(g => g.model).filter(Boolean));
-  const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
-  const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
-
-  return `${totalGuides} guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers.`;
-}
-
 // Homepage logic
 Promise.all([
   fetchGuides(),
@@ -265,29 +287,17 @@ Promise.all([
 
   renderGuides('featured-grid', featured);
 
-function getGridColumnCount(container) {
-  if (!container) return 1;
+  // Show 4 full rows of recent guides based on the current screen width
+  renderGuideRows('guides-grid', allGuides, 4);
 
-  const styles = window.getComputedStyle(container);
-  const columns = styles.getPropertyValue('grid-template-columns');
-
-  if (!columns || columns === 'none') return 1;
-
-  return columns.split(' ').length;
-}
-
-function renderGuideRows(containerId, allGuides, rowCount) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  const columns = getGridColumnCount(container);
-  const cardCount = columns * rowCount;
-
-  const guidesToShow = getRecentGuides(allGuides, cardCount);
-  renderGuides(containerId, guidesToShow);
-}
-  
-renderGuideRows('guides-grid', allGuides, 4);
+  // Recalculate recent guide count when the browser window is resized
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      renderGuideRows('guides-grid', allGuides, 4);
+    }, 150);
+  });
 })
 .catch(err => console.error('Guide load error:', err));
 
@@ -295,7 +305,9 @@ renderGuideRows('guides-grid', allGuides, 4);
 const form = document.getElementById('home-search-form');
 form.addEventListener('submit', e => {
   e.preventDefault();
+
   const query = document.getElementById('home-search-input').value.trim();
+
   if (query) {
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
   }
