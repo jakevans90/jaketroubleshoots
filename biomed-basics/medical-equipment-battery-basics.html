@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Equipment Battery Basics for Biomeds | Jake Troubleshoots</title>
+  <meta name="description" content="A plain-English guide to medical equipment battery basics for BMETs and clinical engineers, including alkaline, NiCd, NiMH, lithium-ion, LiFePO4, sealed lead-acid batteries, charging issues, runtime problems, and battery safety.">
+  <link rel="stylesheet" href="../style.css">
+
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Medical Equipment Battery Basics for Biomeds</h2>
+  <p>Battery types, charging problems, runtime failures, and what biomeds should actually check.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    A plain-English look at alkaline, nickel, lithium, and lead-acid batteries in medical equipment.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+  </div>
+</section>
+
+<main>
+  <section class="content-box">
+    <h3>What This Page Explains</h3>
+    <p>Batteries are everywhere in medical equipment.</p>
+    <p>Patient monitors, infusion pumps, defibrillators, transport ventilators, beds, stretchers, bladder scanners, vein finders, portable suction, dopplers, power tools, ultrasound systems, workstations, and backup systems all depend on batteries in some way.</p>
+    <p>And when those batteries fail, the complaint usually sounds simple:</p>
+    <p><em>Battery will not hold charge.</em></p>
+    <p>or:</p>
+    <p><em>Device dies during transport.</em></p>
+    <p>or:</p>
+    <p><em>Unit shuts off when unplugged.</em></p>
+    <p>or:</p>
+    <p><em>Battery error.</em></p>
+    <p>But battery problems are not always just “bad battery.”</p>
+    <p>
+      Sometimes the battery is old.<br>
+      Sometimes it was stored wrong.<br>
+      Sometimes the charger is the problem.<br>
+      Sometimes the device is not charging it.<br>
+      Sometimes the battery contacts are dirty.<br>
+      Sometimes the battery is not seated.<br>
+      Sometimes the battery is fine, but the device is drawing too much current.<br>
+      Sometimes staff think the device is charging when it is not.
+    </p>
+    <p>This page explains battery basics in plain English: what batteries do, why different battery types behave differently, how biomeds should think through battery problems, and why “battery replaced” is not always the whole story.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Jump to a Section</h3>
+    <ul>
+      <li><a href="#why-batteries-matter">Why Batteries Matter in Medical Equipment</a></li>
+      <li><a href="#simple-version">The Simple Version</a></li>
+      <li><a href="#battery-history">A Simple Battery History for Biomeds</a></li>
+      <li><a href="#what-battery-does">What a Battery Is Actually Doing</a></li>
+      <li><a href="#voltage-capacity">Battery Voltage vs Battery Capacity</a></li>
+      <li><a href="#amp-hours">What Amp-Hours Mean</a></li>
+      <li><a href="#alkaline">Alkaline Batteries</a></li>
+      <li><a href="#nicd">Nickel-Cadmium Batteries</a></li>
+      <li><a href="#nimh">Nickel-Metal Hydride Batteries</a></li>
+      <li><a href="#lithium-ion">Lithium-Ion Batteries</a></li>
+      <li><a href="#lifepo4">Lithium Iron Phosphate Batteries</a></li>
+      <li><a href="#lead-acid">Sealed Lead-Acid Batteries</a></li>
+      <li><a href="#primary-rechargeable">Primary vs Rechargeable Batteries</a></li>
+      <li><a href="#smart-batteries">Smart Batteries</a></li>
+      <li><a href="#why-batteries-fail">Why Batteries Fail</a></li>
+      <li><a href="#runtime-problems">Battery Runtime Problems</a></li>
+      <li><a href="#charging-problems">Battery Charging Problems</a></li>
+      <li><a href="#contacts-seating">Battery Contacts and Seating</a></li>
+      <li><a href="#temperature">Temperature and Batteries</a></li>
+      <li><a href="#age-date-codes">Battery Age and Date Codes</a></li>
+      <li><a href="#pm-checks">Battery PM Checks</a></li>
+      <li><a href="#replacement-mistakes">Battery Replacement Mistakes</a></li>
+      <li><a href="#troubleshooting">How a Biomed Should Troubleshoot Battery Complaints</a></li>
+      <li><a href="#testing-proves">What Battery Testing Does and Does Not Prove</a></li>
+      <li><a href="#battery-safety">Battery Safety</a></li>
+      <li><a href="#documentation-tip">Documentation Tip</a></li>
+      <li><a href="#final-thoughts">Final Thoughts</a></li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-batteries-matter">
+    <h3>Why Batteries Matter in Medical Equipment</h3>
+    <p>A battery in medical equipment is not just a convenience.</p>
+    <p>It may be part of the safety plan.</p>
+    <p>Batteries allow devices to keep working during:</p>
+    <ul>
+      <li>Patient transport</li>
+      <li>Power loss</li>
+      <li>Room transfers</li>
+      <li>Bedside movement</li>
+      <li>Emergency response</li>
+      <li>Unplugged use</li>
+      <li>Backup operation</li>
+      <li>Procedures away from wall power</li>
+    </ul>
+    <p>If a battery fails, the device may still work perfectly while plugged into AC power, but fail when it actually matters.</p>
+    <p>That is why battery issues should not be ignored.</p>
+    <p>A monitor that works plugged in but dies in the hallway is not ready for transport.</p>
+    <p>A defibrillator with a weak battery may not be ready for an emergency.</p>
+    <p>An infusion pump with a poor battery may stop during patient movement.</p>
+    <p>A transport ventilator battery problem can become a serious clinical risk very quickly.</p>
+    <p>Battery performance matters because medical equipment is often expected to work when it is not plugged into the wall.</p>
+  </section>
+
+  <section class="content-box" id="simple-version">
+    <h3>The Simple Version</h3>
+    <p>A battery stores electrical energy so the device can run without being connected to AC power.</p>
+    <p>Different battery types store energy in different chemical ways.</p>
+    <p>The most common battery types you may run into are:</p>
+    <ul>
+      <li>Alkaline</li>
+      <li>Nickel-cadmium, also called NiCd</li>
+      <li>Nickel-metal hydride, also called NiMH</li>
+      <li>Lithium-ion, also called Li-ion</li>
+      <li>Lithium iron phosphate, also called LiFePO4</li>
+      <li>Sealed lead-acid, also called SLA</li>
+    </ul>
+    <p>In plain English:</p>
+    <p><strong>Alkaline batteries</strong> are usually disposable.</p>
+    <p><strong>Nickel batteries</strong> are older rechargeable battery types.</p>
+    <p><strong>Lithium-ion batteries</strong> are common in modern portable equipment because they are lighter and hold more energy.</p>
+    <p><strong>Lead-acid batteries</strong> are heavier but still used in some backup, emergency, and larger equipment applications.</p>
+    <p>Every type has tradeoffs.</p>
+    <p>No battery is perfect.</p>
+  </section>
+
+  <section class="content-box" id="battery-history">
+    <h3>A Simple Battery History for Biomeds</h3>
+    <p>Early medical and electrical devices did not have the kind of rechargeable batteries we think of today.</p>
+    <p>Battery technology developed over a long time as people learned how to store and release electrical energy through chemical reactions.</p>
+    <p>Lead-acid batteries became important because they could be recharged and provide strong current. They are old technology, but they are still useful because they are reliable, relatively inexpensive, and capable of delivering power when needed.</p>
+    <p>Nickel-cadmium batteries became common in portable equipment for a long time because they were rechargeable, durable, and could handle repeated use. But they had problems, including memory effect concerns and toxic cadmium.</p>
+    <p>Nickel-metal hydride batteries came later and improved on some NiCd issues. They offered better capacity and avoided cadmium, but still had self-discharge and aging concerns.</p>
+    <p>Lithium batteries changed the game because they could store more energy in a smaller, lighter package. That is why modern portable devices often use lithium-ion packs.</p>
+    <p>Medical equipment followed the same general trend as other electronics:</p>
+    <p>
+      Heavy batteries first.<br>
+      Better rechargeable batteries later.<br>
+      Smaller, lighter, smarter lithium packs now.
+    </p>
+    <p>But hospitals are not always on the newest battery technology. You may still find lead-acid, nickel, alkaline, and lithium batteries in the same facility.</p>
+    <p>That is why biomeds need to understand the differences.</p>
+  </section>
+
+  <section class="content-box" id="what-battery-does">
+    <h3>What a Battery Is Actually Doing</h3>
+    <p>A battery converts chemical energy into electrical energy.</p>
+    <p>You do not need to be a chemist to understand the basic idea.</p>
+    <p>Inside the battery, chemical reactions create a difference in electrical potential between two terminals.</p>
+    <p>When the device circuit is connected, current can flow.</p>
+    <p>That current powers the device.</p>
+    <p>When the battery is rechargeable, applying charging current reverses or partially reverses the chemical reaction so the battery can store energy again.</p>
+    <p>That is the simple idea.</p>
+    <p>The important thing for biomeds is this:</p>
+    <p><strong>A battery is not just a box of electricity. It is a chemical device that ages, wears out, reacts to temperature, and changes with use.</strong></p>
+    <p>That is why batteries fail even when they are not physically broken.</p>
+  </section>
+
+  <section class="content-box" id="voltage-capacity">
+    <h3>Battery Voltage vs Battery Capacity</h3>
+    <p>Two battery terms get mixed up a lot: voltage and capacity.</p>
+    <p><strong>Voltage</strong> is the electrical pressure the battery provides.</p>
+    <p><strong>Capacity</strong> is how much energy the battery can store and deliver over time.</p>
+    <p>A battery can show a normal voltage and still have poor capacity.</p>
+    <p>That is a big biomed lesson.</p>
+    <p>A weak battery may measure okay with no load, but collapse when the device actually tries to use it.</p>
+    <p>That is like a water tank that looks fine from the outside, but barely has any water inside.</p>
+    <p>This is why a simple voltage check does not always prove the battery is good.</p>
+    <p>For medical equipment, runtime and load behavior often matter more than just open-circuit voltage.</p>
+  </section>
+
+  <section class="content-box" id="amp-hours">
+    <h3>What Amp-Hours Mean</h3>
+    <p>Battery capacity is often listed in amp-hours, written as Ah, or milliamp-hours, written as mAh.</p>
+    <p>In simple terms, amp-hours describe how much current a battery can provide over time.</p>
+    <p>A 2 Ah battery might theoretically provide 2 amps for 1 hour, or 1 amp for 2 hours.</p>
+    <p>Real life is not always that clean because battery performance depends on load, temperature, age, chemistry, and device design.</p>
+    <p>But the basic idea is:</p>
+    <p><strong>Higher amp-hour rating usually means more stored energy and longer runtime, assuming voltage and battery type are appropriate.</strong></p>
+    <p>Do not replace a medical equipment battery with “whatever fits.”</p>
+    <p>Voltage, chemistry, connector, capacity, safety approvals, charging method, and manufacturer requirements all matter.</p>
+  </section>
+
+  <section class="content-box" id="alkaline">
+    <h3>Alkaline Batteries</h3>
+    <p>Alkaline batteries are common disposable batteries.</p>
+    <p>You see them in things like small handheld devices, accessories, remote controls, some thermometers, some flashlights, small diagnostic tools, and low-power equipment.</p>
+    <p>Common sizes include:</p>
+    <ul>
+      <li>AA</li>
+      <li>AAA</li>
+      <li>C</li>
+      <li>D</li>
+      <li>9V</li>
+    </ul>
+    <p>Alkaline batteries are useful because they are inexpensive, easy to find, and have decent shelf life.</p>
+    <p>But they are usually not rechargeable.</p>
+    <p>Common alkaline battery issues include:</p>
+    <ul>
+      <li>Leakage</li>
+      <li>Corrosion in battery compartments</li>
+      <li>Wrong orientation</li>
+      <li>Mixed old and new batteries</li>
+      <li>Mixed brands or chemistry types</li>
+      <li>Weak battery under load</li>
+      <li>Devices left unused for long periods</li>
+      <li>Battery contacts damaged by leakage</li>
+    </ul>
+    <p>Alkaline leakage is a real problem.</p>
+    <p>If a device has been sitting in a drawer for months, the battery compartment may be crusted, corroded, or damaged.</p>
+    <p>A device may not be broken at all. It may just have leaking batteries and dirty contacts.</p>
+    <p>Biomed tip:</p>
+    <p><strong>If a small device will be stored for a long time, batteries may need to be removed depending on the device and facility process.</strong></p>
+  </section>
+
+  <section class="content-box" id="nicd">
+    <h3>Nickel-Cadmium Batteries</h3>
+    <p>Nickel-cadmium batteries, or NiCd batteries, are older rechargeable batteries.</p>
+    <p>They were common in older portable medical equipment, battery packs, power tools, emergency lights, and other rechargeable devices.</p>
+    <p>NiCd batteries were known for being durable and able to deliver strong current.</p>
+    <p>But they also had downsides.</p>
+    <p>Common NiCd issues include:</p>
+    <ul>
+      <li>Memory effect</li>
+      <li>Lower energy density than lithium</li>
+      <li>Toxic cadmium</li>
+      <li>Aging over charge cycles</li>
+      <li>Capacity loss</li>
+      <li>Self-discharge</li>
+      <li>Need for proper recycling</li>
+    </ul>
+    <p>The “memory effect” idea gets talked about a lot. The simple version is that some NiCd batteries could appear to lose usable capacity if repeatedly charged and discharged in certain patterns.</p>
+    <p>In real biomed work, the takeaway is:</p>
+    <p><strong>Older nickel battery packs may not behave like modern lithium batteries, and they may need different care, testing, and replacement expectations.</strong></p>
+    <p>Do not assume all rechargeable batteries should be treated the same way.</p>
+  </section>
+
+  <section class="content-box" id="nimh">
+    <h3>Nickel-Metal Hydride Batteries</h3>
+    <p>Nickel-metal hydride batteries, or NiMH batteries, improved on some NiCd limitations.</p>
+    <p>They became common in rechargeable AA/AAA batteries and some equipment battery packs.</p>
+    <p>Compared with NiCd, NiMH batteries generally offer better capacity and avoid cadmium.</p>
+    <p>But they still have issues.</p>
+    <p>Common NiMH issues include:</p>
+    <ul>
+      <li>Self-discharge</li>
+      <li>Capacity loss over time</li>
+      <li>Heat during charging</li>
+      <li>Aging over cycles</li>
+      <li>Sensitivity to charging method</li>
+      <li>Runtime dropping as the pack ages</li>
+    </ul>
+    <p>NiMH batteries can be useful, but they still require the right charger and the right replacement type.</p>
+    <p>Biomed tip:</p>
+    <p><strong>If a device was designed for NiMH, do not casually swap in another chemistry unless the manufacturer specifically allows it.</strong></p>
+    <p>The charging circuit matters.</p>
+  </section>
+
+  <section class="content-box" id="lithium-ion">
+    <h3>Lithium-Ion Batteries</h3>
+    <p>Lithium-ion batteries are common in modern medical equipment.</p>
+    <p>You see them in many newer portable devices because they are lighter, smaller, and store more energy than older rechargeable types.</p>
+    <p>Lithium-ion batteries are used in things like:</p>
+    <ul>
+      <li>Patient monitors</li>
+      <li>Infusion pumps</li>
+      <li>Transport monitors</li>
+      <li>Ultrasound systems</li>
+      <li>Portable diagnostic devices</li>
+      <li>Defibrillators</li>
+      <li>Video laryngoscopes</li>
+      <li>Bladder scanners</li>
+      <li>Workstations</li>
+      <li>Some surgical and therapy devices</li>
+    </ul>
+    <p>Lithium-ion batteries are powerful, but they are not magic.</p>
+    <p>Common lithium-ion issues include:</p>
+    <ul>
+      <li>Aging over time</li>
+      <li>Capacity loss with charge cycles</li>
+      <li>Swelling</li>
+      <li>Protection circuit faults</li>
+      <li>Charging errors</li>
+      <li>Communication errors with smart batteries</li>
+      <li>Damage from heat</li>
+      <li>Damage from deep discharge</li>
+      <li>Device not recognizing the battery</li>
+      <li>Battery not seating fully</li>
+      <li>Runtime shorter than expected</li>
+    </ul>
+    <p>A lithium battery may contain internal protection electronics.</p>
+    <p>Some are “smart batteries” that communicate with the device or charger.</p>
+    <p>That means a battery problem may show up as:</p>
+    <ul>
+      <li>Battery error</li>
+      <li>Battery communication error</li>
+      <li>Replace battery</li>
+      <li>Battery not detected</li>
+      <li>Battery temperature high</li>
+      <li>Battery aged</li>
+      <li>Battery calibration required</li>
+      <li>Battery charge failure</li>
+    </ul>
+    <p>Lithium batteries should be taken seriously.</p>
+    <p>If a lithium battery is swollen, damaged, leaking, extremely hot, or physically deformed, do not keep using it.</p>
+    <p>Follow your facility policy for removal, isolation, and disposal.</p>
+  </section>
+
+  <section class="content-box" id="lifepo4">
+    <h3>Lithium Iron Phosphate Batteries</h3>
+    <p>Lithium iron phosphate batteries, often shortened to LiFePO4 or LFP, are a type of lithium battery.</p>
+    <p>They are known for being more stable and having long cycle life compared with some other lithium-ion chemistries.</p>
+    <p>You may see them in some backup power, mobility, transport, and equipment applications.</p>
+    <p>The key point is:</p>
+    <p><strong>Lithium battery does not always mean one exact chemistry.</strong></p>
+    <p>Different lithium chemistries have different strengths, weaknesses, charging requirements, and safety characteristics.</p>
+    <p>So again, do not replace batteries based only on voltage and shape.</p>
+    <p>Use the manufacturer-approved battery type.</p>
+  </section>
+
+  <section class="content-box" id="lead-acid">
+    <h3>Sealed Lead-Acid Batteries</h3>
+    <p>Sealed lead-acid batteries, or SLA batteries, are older but still very common in certain equipment.</p>
+    <p>They are heavier and larger than lithium batteries, but they can deliver solid current and are relatively inexpensive.</p>
+    <p>You may see sealed lead-acid batteries in:</p>
+    <ul>
+      <li>Defibrillators</li>
+      <li>Emergency backup systems</li>
+      <li>UPS units</li>
+      <li>Some beds</li>
+      <li>Stretchers</li>
+      <li>Lifts</li>
+      <li>Portable suction equipment</li>
+      <li>Older transport devices</li>
+      <li>Some larger battery-powered medical equipment</li>
+    </ul>
+    <p>Common lead-acid issues include:</p>
+    <ul>
+      <li>Sulfation</li>
+      <li>Capacity loss</li>
+      <li>Weak runtime</li>
+      <li>Failure after sitting discharged</li>
+      <li>Heavy weight</li>
+      <li>Swelling or case deformation</li>
+      <li>Terminal corrosion</li>
+      <li>Charger failure</li>
+      <li>Battery showing voltage but failing under load</li>
+    </ul>
+    <p>Lead-acid batteries especially do not like being left discharged.</p>
+    <p>A lead-acid battery that sits dead for too long may never recover properly.</p>
+    <p>Biomed tip:</p>
+    <p><strong>If a device uses lead-acid batteries and sits unused for long periods, battery maintenance and charging practices matter a lot.</strong></p>
+  </section>
+
+  <section class="content-box" id="primary-rechargeable">
+    <h3>Primary vs Rechargeable Batteries</h3>
+    <p>Some batteries are primary.</p>
+    <p>Some are rechargeable.</p>
+    <p><strong>Primary batteries</strong> are meant to be used once and replaced.</p>
+    <p>Examples include many alkaline batteries and some lithium primary batteries.</p>
+    <p><strong>Rechargeable batteries</strong> are designed to be charged and reused.</p>
+    <p>Examples include NiCd, NiMH, lithium-ion, lithium iron phosphate, and sealed lead-acid batteries.</p>
+    <p>This matters because installing the wrong type can be unsafe.</p>
+    <p>Do not try to recharge non-rechargeable batteries.</p>
+    <p>Do not put rechargeable batteries in a device unless the device is designed for them.</p>
+    <p>Do not mix disposable and rechargeable batteries.</p>
+    <p>Do not mix battery chemistries.</p>
+    <p>Do not mix old and new batteries unless the device instructions specifically allow the configuration.</p>
+    <p>Battery chemistry matters.</p>
+  </section>
+
+  <section class="content-box" id="smart-batteries">
+    <h3>Smart Batteries</h3>
+    <p>Many modern medical devices use smart batteries.</p>
+    <p>A smart battery is not just cells in a plastic case.</p>
+    <p>It may include electronics that track or communicate things like:</p>
+    <ul>
+      <li>Battery charge level</li>
+      <li>Cycle count</li>
+      <li>Temperature</li>
+      <li>Estimated runtime</li>
+      <li>Battery health</li>
+      <li>Serial number</li>
+      <li>Manufacture date</li>
+      <li>Error condition</li>
+      <li>Protection status</li>
+    </ul>
+    <p>This can be helpful, but it also adds another failure point.</p>
+    <p>A battery may fail because the cells are weak.</p>
+    <p>Or it may fail because the battery management electronics are not communicating properly.</p>
+    <p>Or the device may reject the battery because it is not approved, not recognized, too old, too hot, or reporting an internal fault.</p>
+    <p>This is why “battery error” does not always mean “dead cells.”</p>
+    <p>Sometimes it means the device and battery are not talking correctly.</p>
+  </section>
+
+  <section class="content-box" id="why-batteries-fail">
+    <h3>Why Batteries Fail</h3>
+    <p>Batteries fail because they are consumable parts.</p>
+    <p>They age.</p>
+    <p>They wear out.</p>
+    <p>They are affected by heat, charging habits, discharge depth, storage conditions, cycle count, and device design.</p>
+    <p>Common reasons batteries fail include:</p>
+    <ul>
+      <li>Normal aging</li>
+      <li>Too many charge/discharge cycles</li>
+      <li>Heat exposure</li>
+      <li>Deep discharge</li>
+      <li>Long storage without charging</li>
+      <li>Wrong charger</li>
+      <li>Poor charging contacts</li>
+      <li>Damaged battery terminals</li>
+      <li>Swelling</li>
+      <li>Internal cell failure</li>
+      <li>Battery management circuit failure</li>
+      <li>Using the wrong battery type</li>
+      <li>Fluid intrusion or contamination</li>
+      <li>Physical damage</li>
+      <li>Device charging circuit failure</li>
+    </ul>
+    <p>A battery can fail slowly or suddenly.</p>
+    <p>It may go from “seems okay” to “dies quickly” without much warning.</p>
+    <p>That is why battery testing and replacement intervals matter.</p>
+  </section>
+
+  <section class="content-box" id="runtime-problems">
+    <h3>Battery Runtime Problems</h3>
+    <p>Battery runtime complaints are very common.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Device only runs for 5 minutes unplugged.</li>
+      <li>Battery drops from 100% to 20% quickly.</li>
+      <li>Device shuts down during transport.</li>
+      <li>Battery says charged but dies under load.</li>
+      <li>Runtime is much shorter than expected.</li>
+      <li>Battery charges but does not last.</li>
+    </ul>
+    <p>When troubleshooting runtime problems, ask:</p>
+    <ul>
+      <li>How long should the battery normally last?</li>
+      <li>How old is the battery?</li>
+      <li>Is the battery fully charging?</li>
+      <li>Is the device actually charging it?</li>
+      <li>Is the device drawing more current than normal?</li>
+      <li>Was the device stored unplugged?</li>
+      <li>Was the battery deeply discharged?</li>
+      <li>Was the complaint during transport, standby, or active use?</li>
+      <li>Was the same battery tested in another device, if allowed?</li>
+      <li>Was a known-good battery tested in this device, if allowed?</li>
+    </ul>
+    <p>Runtime is often more useful than voltage alone.</p>
+    <p>A battery that drops quickly under real use is not healthy just because it showed a decent voltage at rest.</p>
+  </section>
+
+  <section class="content-box" id="charging-problems">
+    <h3>Battery Charging Problems</h3>
+    <p>A battery charging issue may be caused by the battery, the charger, the device, the contacts, or the power source.</p>
+    <p>Common causes include:</p>
+    <ul>
+      <li>Battery not seated properly</li>
+      <li>Dirty contacts</li>
+      <li>Damaged battery terminals</li>
+      <li>Bad charger</li>
+      <li>Bad charging dock</li>
+      <li>Device power supply issue</li>
+      <li>Charging board failure</li>
+      <li>Battery too hot</li>
+      <li>Battery too cold</li>
+      <li>Battery protection circuit open</li>
+      <li>Battery too deeply discharged</li>
+      <li>Wrong battery type</li>
+      <li>Old battery no longer accepting charge</li>
+      <li>Firmware or smart battery communication issue</li>
+    </ul>
+    <p>Do not automatically replace the battery without checking the charging path.</p>
+    <p>If three batteries fail to charge in the same device, maybe the device is the problem.</p>
+    <p>If one battery fails in multiple known-good devices or chargers, the battery is more likely the problem.</p>
+    <p>Cross-checking can save parts and time.</p>
+  </section>
+
+  <section class="content-box" id="contacts-seating">
+    <h3>Battery Contacts and Seating</h3>
+    <p>Battery contacts matter more than people think.</p>
+    <p>A device may show:</p>
+    <ul>
+      <li>Battery missing</li>
+      <li>Battery error</li>
+      <li>Battery not charging</li>
+      <li>Intermittent shutdown</li>
+      <li>Battery communication error</li>
+      <li>Low battery warning</li>
+      <li>Random power loss</li>
+    </ul>
+    <p>and the cause may be simple:</p>
+    <ul>
+      <li>Battery not seated fully</li>
+      <li>Bent contacts</li>
+      <li>Dirty contacts</li>
+      <li>Corroded contacts</li>
+      <li>Loose battery latch</li>
+      <li>Damaged connector</li>
+      <li>Worn docking interface</li>
+      <li>Battery door not closing properly</li>
+    </ul>
+    <p>Always inspect the physical connection.</p>
+    <p>Especially if the complaint is intermittent.</p>
+    <p>A battery that loses contact for half a second can cause a shutdown, alarm, or error.</p>
+  </section>
+
+  <section class="content-box" id="temperature">
+    <h3>Temperature and Batteries</h3>
+    <p>Temperature affects batteries.</p>
+    <p>Heat is especially bad for many battery types.</p>
+    <p>High temperature can speed up aging, reduce capacity, trigger battery alarms, and create safety concerns.</p>
+    <p>Cold temperature can reduce available capacity and make a battery seem weak during use.</p>
+    <p>Medical equipment may show temperature-related messages such as:</p>
+    <ul>
+      <li>Battery temperature too high</li>
+      <li>Battery temperature too low</li>
+      <li>Charging paused</li>
+      <li>Battery not charging</li>
+      <li>Battery error</li>
+    </ul>
+    <p>A battery that just came from a hot environment, cold ambulance, storage room, or charging dock may behave differently than one at normal room temperature.</p>
+    <p>Biomed tip:</p>
+    <p><strong>If a battery temperature alarm appears, do not just clear it and move on. Check the environment, battery condition, charger, and device behavior.</strong></p>
+  </section>
+
+  <section class="content-box" id="age-date-codes">
+    <h3>Battery Age and Date Codes</h3>
+    <p>Battery age matters.</p>
+    <p>Some batteries have date codes, manufacture dates, installation dates, service dates, or replacement labels.</p>
+    <p>A battery may fail because it is old even if it has not been used heavily.</p>
+    <p>This is especially true if it was stored poorly, left discharged, exposed to heat, or rarely cycled.</p>
+    <p>Good battery documentation may include:</p>
+    <ul>
+      <li>Date installed</li>
+      <li>Battery lot or serial number if tracked</li>
+      <li>Runtime result if tested</li>
+      <li>Reason for replacement</li>
+      <li>Device returned to service or removed from service</li>
+      <li>Proper disposal or recycling path</li>
+    </ul>
+    <p>If your facility has a battery replacement schedule, follow it.</p>
+    <p>If your device has a manufacturer-recommended battery replacement interval, follow that.</p>
+    <p>Do not assume “it still powers on” means the battery is reliable.</p>
+  </section>
+
+  <section class="content-box" id="pm-checks">
+    <h3>Battery PM Checks</h3>
+    <p>Battery checks during PM may include:</p>
+    <ul>
+      <li>Visual inspection</li>
+      <li>Battery age check</li>
+      <li>Charge status check</li>
+      <li>Runtime test</li>
+      <li>Load test</li>
+      <li>Device self-test</li>
+      <li>Charger function check</li>
+      <li>Battery contact inspection</li>
+      <li>Battery latch inspection</li>
+      <li>Alarm check</li>
+      <li>Replacement interval check</li>
+      <li>Documentation</li>
+    </ul>
+    <p>Not every device needs the same battery test.</p>
+    <p>Some devices have built-in battery diagnostics.</p>
+    <p>Some require runtime testing.</p>
+    <p>Some require replacement at set intervals.</p>
+    <p>Some require specific analyzer or service software checks.</p>
+    <p>Some batteries are replaced when they fail testing.</p>
+    <p>Some are replaced proactively.</p>
+    <p>The important thing is to know what the PM procedure actually requires.</p>
+  </section>
+
+  <section class="content-box" id="replacement-mistakes">
+    <h3>Battery Replacement Mistakes</h3>
+    <p>Common mistakes include:</p>
+    <ul>
+      <li>Replacing the battery without checking the charger</li>
+      <li>Using the wrong battery chemistry</li>
+      <li>Using the wrong voltage</li>
+      <li>Using an unapproved aftermarket battery</li>
+      <li>Ignoring swollen batteries</li>
+      <li>Mixing old and new batteries</li>
+      <li>Mixing battery types</li>
+      <li>Not documenting the install date</li>
+      <li>Not charging the new battery fully before use when required</li>
+      <li>Not running a functional check after replacement</li>
+      <li>Not performing electrical safety testing when the repair requires it</li>
+      <li>Throwing batteries in regular trash</li>
+      <li>Returning device to service without confirming battery operation</li>
+    </ul>
+    <p>Battery replacement sounds simple.</p>
+    <p>Sometimes it is.</p>
+    <p>But medical equipment battery replacement still needs to be done correctly.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting">
+    <h3>How a Biomed Should Troubleshoot Battery Complaints</h3>
+    <p>When a battery complaint comes in, slow down and ask what actually happened.</p>
+    <p>A good troubleshooting path may look like this:</p>
+    <ol>
+      <li>Confirm the complaint.</li>
+      <li>Check whether the device operates on AC power.</li>
+      <li>Check whether the device operates on battery power.</li>
+      <li>Check battery charge status.</li>
+      <li>Inspect battery seating and contacts.</li>
+      <li>Inspect charger, dock, or power supply.</li>
+      <li>Check battery age or cycle count if available.</li>
+      <li>Test with a known-good battery if allowed.</li>
+      <li>Test the suspect battery in a known-good device or charger if allowed.</li>
+      <li>Run the device battery test or self-test if available.</li>
+      <li>Check runtime if required.</li>
+      <li>Replace battery only after confirming the likely cause.</li>
+      <li>Document what was found and what was done.</li>
+    </ol>
+    <p>Do not just throw a battery at every battery complaint.</p>
+    <p>That works sometimes.</p>
+    <p>It wastes parts other times.</p>
+  </section>
+
+  <section class="content-box" id="testing-proves">
+    <h3>What Battery Testing Does and Does Not Prove</h3>
+    <p>A battery test may prove the battery passed a specific test at that time.</p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>The device charging circuit is good</li>
+      <li>The battery will never fail</li>
+      <li>The device has no intermittent connection issue</li>
+      <li>The runtime will match every clinical use case</li>
+      <li>The battery was stored correctly before testing</li>
+      <li>The device has no other power problem</li>
+    </ul>
+    <p>Battery testing is part of the picture.</p>
+    <p>It is not magic.</p>
+    <p>A device with battery complaints may require battery testing, charger testing, contact inspection, runtime testing, and functional testing.</p>
+  </section>
+
+  <section class="content-box" id="battery-safety">
+    <h3>Battery Safety</h3>
+    <p>Battery safety matters.</p>
+    <p>Do not ignore batteries that are:</p>
+    <ul>
+      <li>Swollen</li>
+      <li>Leaking</li>
+      <li>Cracked</li>
+      <li>Hot</li>
+      <li>Smoking</li>
+      <li>Smelling unusual</li>
+      <li>Physically damaged</li>
+      <li>Corroded</li>
+      <li>Not recognized by the device</li>
+      <li>Showing repeated charging errors</li>
+    </ul>
+    <p>Follow facility policy for removal, isolation, storage, recycling, and disposal.</p>
+    <p>Lithium batteries especially require proper handling when damaged or swollen.</p>
+    <p>Lead-acid batteries also need proper recycling.</p>
+    <p>Alkaline leakage needs careful cleanup and contact inspection.</p>
+    <p>Biomed work is not just replacing the battery and moving on.</p>
+    <p>It is making sure the device is safe and the bad battery is handled properly.</p>
+  </section>
+
+  <section class="content-box" id="documentation-tip">
+    <h3>Documentation Tip</h3>
+    <p>Battery work orders should still tell the story clearly.</p>
+    <p>Instead of writing:</p>
+    <p><em>Replaced battery.</em></p>
+    <p>write something more useful:</p>
+    <p><em>Reported monitor shutting down during transport. Battery failed runtime check and dropped from full charge to shutdown in 6 minutes. Replaced battery, verified charging, confirmed operation on AC and battery power, and returned unit to service.</em></p>
+    <p>The point is simple: document what was reported, what you found, what you did, and whether the device was returned to service.</p>
+    <p>For a deeper explanation, see the Biomed Basics page on <a href="biomed-work-order-notes-ccr-method.html">writing better work order notes using the CCR method</a>.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts">
+    <h3>Final Thoughts</h3>
+    <p>Batteries seem simple until they are not.</p>
+    <p>They are one of the most common sources of medical equipment problems, and they are easy to underestimate.</p>
+    <p>A device that works on the bench may still fail during transport.</p>
+    <p>A battery that shows voltage may still have poor runtime.</p>
+    <p>A charger problem can look like a battery problem.</p>
+    <p>A contact problem can look like a battery problem.</p>
+    <p>A swollen lithium battery is not something to ignore.</p>
+    <p>Good biomeds understand that batteries are consumable, chemical, aging parts of the equipment system.</p>
+    <p>They do not just ask:</p>
+    <p><em>Is the battery charged?</em></p>
+    <p>They ask:</p>
+    <p><strong>Is the battery safe, healthy, charging correctly, connected properly, and able to support the device when it matters?</strong></p>
+    <p>That is the difference.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview for biomedical equipment technicians, clinical engineers, students, and healthcare technology staff. Always follow your facility policy, manufacturer service documentation, battery handling requirements, disposal/recycling procedures, and the requirements of your organization.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="biomed-bmet-clinical-engineering-htm.html">Biomed, BMET, Clinical Engineering, and HTM</a></li>
+      <li><a href="electrical-safety-testing-medical-equipment.html">Electrical Safety Testing for Medical Equipment</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">Biomed Work Order Notes Using the CCR Method</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="../terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
