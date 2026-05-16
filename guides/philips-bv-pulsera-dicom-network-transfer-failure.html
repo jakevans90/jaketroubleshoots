@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Philips BV Pulsera C-Arm - DICOM / Network Transfer Failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Philips BV Pulsera</h2>
+  <p>DICOM / Network Transfer Failure</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+  <h3>Asset Type</h3><p>C-Arm</p>
+  <h3>Manufacturer</h3><p>Philips</p>
+  <h3>Model</h3><p>BV Pulsera</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>Troubleshooting failed DICOM send, PACS transfer, worklist, or network communication issues on a Philips BV Pulsera C-arm.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>1. Ensure Patient Safety First</h4>
+  <p>Do not troubleshoot network transfers during an active procedure unless image availability has been protected.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the procedure is complete or paused safely.</li>
+    <li>Verify that needed images are still available locally on the BV Pulsera.</li>
+    <li>Confirm with clinical staff whether images are urgently needed for patient care.</li>
+    <li>If images are required immediately, use an approved alternate export method if available, such as CD/DVD, USB, or local print, depending on site policy.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Patient care is not delayed while the network issue is investigated.</p>
+  <p><strong>Why it matters:</strong> A DICOM failure may not affect live fluoroscopy, but it can delay image review, documentation, surgical follow-up, or PACS availability.</p>
+
+  <h4>2. Verify the Reported Failure</h4>
+  <p>Confirm exactly what is failing.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask clinical staff what they were trying to do when the issue occurred.</li>
+    <li>Determine whether the problem involves DICOM image send, PACS transfer, modality worklist, patient query, network storage destination, or printer transfer.</li>
+    <li>Check whether the system gives an error message, timeout, failed queue, or no response.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The failure type is clearly identified before troubleshooting continues.</p>
+  <p>If the issue was a one-time failed send and a retry completes successfully, document the event and stop.</p>
+
+  <h4>3. Confirm Images Are Stored Locally</h4>
+  <p>Before making changes, confirm the images are still present on the BV Pulsera.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Open the local patient or study list.</li>
+    <li>Verify that the expected images or runs are still available.</li>
+    <li>Do not delete, overwrite, or clear patient data during troubleshooting.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The study remains available locally and can be resent after the issue is corrected.</p>
+  <p><strong>Why it matters:</strong> The first priority is preserving the acquired images.</p>
+
+  <h4>4. Check the Physical Network Connection</h4>
+  <p>Inspect the basic network path first.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Verify the Ethernet cable is connected securely to the C-arm workstation or network connection point.</li>
+    <li>Check the wall jack, network drop, patch cable, and any cart-mounted network connection.</li>
+    <li>Look for damaged cable ends, loose connectors, broken locking tabs, or cables pulled tight during room movement.</li>
+    <li>If available, try a known-good network cable and known-good wall jack approved for that imaging device.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The system has a stable physical network connection.</p>
+  <p>If reseating or replacing the cable restores transfer, resend the study, confirm receipt in PACS, document the correction, and stop.</p>
+
+  <h4>5. Check Link Lights and Network Activity</h4>
+  <p>Look for signs that the network port is active.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check for link/activity lights at the network port if visible.</li>
+    <li>Compare the behavior to a nearby known-working network connection if possible.</li>
+    <li>If there are no link lights, test the cable and jack with a known-good device or request IT network verification.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The network port shows an active connection.</p>
+  <p>If no link is present after cable and jack checks, the issue is likely network drop, switch port, cable, or internal network hardware related.</p>
+
+  <h4>6. Confirm the Correct Network Location Is Being Used</h4>
+  <p>C-arms are often moved between rooms, and not every wall jack may be configured for imaging network traffic.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask whether the BV Pulsera was recently moved.</li>
+    <li>Verify it is connected to the correct network jack for that procedure area.</li>
+    <li>Confirm with IT or imaging support that the jack is patched to the correct VLAN or network segment for DICOM/PACS communication.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The C-arm is connected to a network path intended for imaging transfers.</p>
+  <p>If connecting to the correct jack restores transfer, resend the study, verify receipt, document, and stop.</p>
+
+  <h4>7. Check System Network Status</h4>
+  <p>Review the system’s network status if available from the user-accessible service or configuration area.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the system shows a valid network connection.</li>
+    <li>Check whether the system has an IP address.</li>
+    <li>Look for signs of duplicate IP, missing IP, disconnected network, or communication timeout.</li>
+    <li>Do not change IP, AE Title, port, gateway, or destination settings unless authorized by site process.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The BV Pulsera has valid network status and is not showing a basic connection failure.</p>
+  <p><strong>Why it matters:</strong> Incorrect network settings can break PACS transfer, worklist, and storage communication.</p>
+
+  <h4>8. Verify DICOM Destination Selection</h4>
+  <p>Confirm the user is sending to the correct destination.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Check whether multiple destinations are listed.</li>
+    <li>Verify the selected destination matches the intended PACS, archive, review station, or DICOM printer.</li>
+    <li>Ask whether other C-arms or imaging systems are currently sending successfully to the same destination.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The correct DICOM destination is selected.</p>
+  <p>If the wrong destination was selected, choose the correct one, retry the transfer, confirm receipt, document, and stop.</p>
+
+  <h4>9. Check the Transfer Queue</h4>
+  <p>A failed or stuck queue can prevent new studies from sending.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Review the DICOM transfer queue if accessible.</li>
+    <li>Look for failed, pending, retrying, or stuck studies.</li>
+    <li>Attempt a resend of the failed study if appropriate.</li>
+    <li>Do not delete queued studies unless clinical staff confirms they are no longer needed and site policy allows it.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The failed transfer is retried or the queue behavior is confirmed.</p>
+  <p>If the resend is successful and PACS confirms receipt, document the successful transfer and stop.</p>
+
+  <h4>10. Test With a Known Good Study or Test Send</h4>
+  <p>Use a controlled test when patient images are not at risk.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>If allowed by site policy, send a test study or non-critical study to the configured destination.</li>
+    <li>Confirm whether the transfer fails immediately, times out, or completes.</li>
+    <li>Compare with another known-working modality on the same network if available.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The failure is narrowed to the BV Pulsera, the network path, or the receiving system.</p>
+  <p><strong>Why it matters:</strong> A transfer failure may be caused by the C-arm, network infrastructure, PACS, DICOM router, or destination storage.</p>
+
+  <h4>11. Check Whether PACS or DICOM Services Are Available</h4>
+  <p>The C-arm may be working correctly while the receiving system is unavailable.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Contact PACS, radiology IT, or imaging informatics.</li>
+    <li>Ask whether PACS, DICOM router, modality worklist, or storage services are currently down or degraded.</li>
+    <li>Ask whether other modalities are experiencing the same issue.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> External system availability is confirmed.</p>
+  <p>If PACS or the DICOM router is down, leave the study stored locally, notify clinical staff, document the external outage, and stop device repair troubleshooting.</p>
+
+  <h4>12. Power Cycle Only When Safe</h4>
+  <p>If the system appears locked, queue behavior is abnormal, or network communication does not recover, perform a controlled restart only when it is safe.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the procedure is complete and images are stored.</li>
+    <li>Follow normal shutdown procedures.</li>
+    <li>Restart the BV Pulsera workstation/system.</li>
+    <li>Allow the system to fully boot and reconnect to the network.</li>
+    <li>Retry the transfer.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Temporary software or network session issues clear after restart.</p>
+  <p>If the transfer completes after restart, confirm receipt in PACS, document the action, and stop.</p>
+
+  <h4>13. Check for Repeated or Widespread Failures</h4>
+  <p>Determine whether the issue is isolated or recurring.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Review recent user reports.</li>
+    <li>Ask if the failure happens in one room, one wall jack, one destination, one user workflow, or every transfer attempt.</li>
+    <li>Check whether the issue follows the C-arm when moved to another approved network location.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The pattern helps separate device failure from network or PACS infrastructure problems.</p>
+  <p>If the issue follows the C-arm across known-good network drops, the device requires further evaluation.</p>
+
+  <h2>If the Problem Persists</h2>
+  <p>If the BV Pulsera still cannot send DICOM studies after physical connections, network drop, destination selection, transfer queue, restart, and PACS availability have been checked, common external causes have been ruled out.</p>
+  <p>The device should be removed from service if image transfer is required for clinical workflow, labeled Out of Service, and sent for bench evaluation or escalated to Philips service, PACS support, or network engineering as appropriate.</p>
+  <p>Knowing when to stop is proper troubleshooting. Repeatedly changing DICOM, AE Title, IP, port, or network configuration without authorization can create larger imaging connectivity problems.</p>
+
+  <h2>Clinical Use Tip</h2>
+  <p>Do not troubleshoot network transfer problems while the C-arm is actively needed for patient imaging unless the clinical team has a safe backup plan. Move the patient to a backup device first if imaging or transfer availability is needed for continued care. Confirm images are saved locally before restarting, moving, or removing the system from service to protect therapy continuity and clinical documentation.</p>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>"Clinical staff reported that the Philips BV Pulsera C-arm would not send procedure images to PACS after the case."</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>"Found Ethernet cable connected to an inactive wall jack, preventing DICOM communication with the PACS destination."</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Example:</em><br>"Connected the system to the approved imaging network jack, resent the study successfully, and confirmed image receipt with radiology/PACS staff."</p>
+
+  <h2>Helpful Details to Include (If Known)</h2>
+  <ul>
+    <li>Alarm behavior, exact error message, timeout behavior, failed queue status, or no response condition</li>
+    <li>Accessories swapped, including Ethernet cable, network drop, wall jack, patch cable, or cart-mounted connection</li>
+    <li>Power behavior, restart results, boot status, network reconnect status, and whether the transfer worked after restart</li>
+    <li>Environmental factors, including outlet or room location used, whether the C-arm was recently moved, and whether other modalities were affected</li>
+    <li>Indicator lights, including link/activity light status at the network port if visible</li>
+    <li>Final device status, including whether images remained stored locally, whether study resend was successful, PACS or IT confirmation, and whether the device was returned to service or labeled Out of Service</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>DICOM transfer failures should be approached logically from the outside in. Protect the patient and the stored images first, then check the network cable, wall jack, destination, queue, and PACS availability before suspecting the C-arm itself. Good documentation helps separate device problems from network or PACS issues and prevents repeat troubleshooting.</p>
+  <p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
