@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Siemens Healthineers Cios Alpha C-Arm - DICOM/PACS Export Failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Siemens Healthineers Cios Alpha</h2>
+  <p>DICOM/PACS Export Failure</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+  <h3>Asset Type</h3><p>C-Arm</p>
+  <h3>Manufacturer</h3><p>Siemens Healthineers</p>
+  <h3>Model</h3><p>Cios Alpha</p>
+
+  <h2>What This Guide Helps With</h2>
+  <p>Troubleshooting Cios Alpha DICOM or PACS export failures caused by network, destination, patient data, or configuration issues.</p>
+
+  <h2>Step-by-Step Troubleshooting</h2>
+
+  <h4>1. Ensure Patient Safety First</h4>
+  <p>Before troubleshooting, confirm the C-arm is not actively needed for a procedure.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Do not troubleshoot DICOM export during an active case unless clinical staff confirms it is safe.</li>
+    <li>Confirm images needed for patient care are still visible locally on the Cios Alpha.</li>
+    <li>If imaging is urgently needed, allow the clinical team to continue using the system locally while export troubleshooting waits.</li>
+    <li>Do not delete studies, exams, or patient data during troubleshooting.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Patient care continues safely, and stored images are protected.</p>
+  <p><strong>Why it matters:</strong> A DICOM/PACS export issue is usually a connectivity or workflow issue, but accidental deletion or interruption during a case can create a patient care risk.</p>
+
+  <h4>2. Verify the Reported Export Failure</h4>
+  <p>Confirm exactly what is failing.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask whether the issue affects one study, one patient, one destination, or all exports.</li>
+    <li>Check whether the export fails immediately, stays queued, times out, or reports a specific DICOM/network error.</li>
+    <li>Confirm whether images are stored locally on the C-arm.</li>
+    <li>Try exporting a non-critical test or completed study if permitted by site policy.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> You identify whether this is a single-study issue, destination issue, or system-wide export problem.</p>
+  <p>If export works for other studies or destinations, stop broad troubleshooting and focus on the affected study, patient data, or destination.</p>
+
+  <h4>3. Confirm the C-Arm Is Connected to the Network</h4>
+  <p>Check the simplest external network causes first.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Verify the network cable is connected securely to the Cios Alpha or docking/network connection point.</li>
+    <li>Confirm the cable is connected to the correct wall jack or network switch port.</li>
+    <li>Look for link/activity lights at the network jack, switch, or adapter if visible.</li>
+    <li>If the system uses a docking station, cart interface, or hospital network drop, reseat the connection.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The C-arm has a valid physical network connection.</p>
+  <p>If a loose or disconnected cable is found, reconnect it and retry export. If the export succeeds, document the cable/network connection issue and stop.</p>
+
+  <h4>4. Test With a Known-Good Network Drop or Cable</h4>
+  <p>Rule out a bad cable, jack, or local network path.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Swap the Ethernet cable with a known-good cable if available.</li>
+    <li>Move to a known-working network jack approved for imaging/PACS traffic if practical.</li>
+    <li>Avoid using random public or non-clinical network ports unless IT confirms they are configured correctly.</li>
+    <li>Confirm whether other imaging devices on the same network area are exporting normally.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The export either works on a known-good connection or continues to fail.</p>
+  <p>If the export works after changing the cable or network drop, the original cable, jack, or network path is the likely cause. Stop and document the finding.</p>
+
+  <h4>5. Check for Local Network Address Problems</h4>
+  <p>Confirm the system appears to have normal network connectivity.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Review the C-arm network status/settings if accessible under normal user or service-permitted menus.</li>
+    <li>Look for missing IP address, incorrect subnet, gateway issue, or disconnected network status.</li>
+    <li>Confirm whether the device is configured for DHCP or static IP according to site standards.</li>
+    <li>Compare the displayed network information to the hospital’s expected configuration, if available.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The C-arm has a valid network identity for the imaging network.</p>
+  <p>If the IP address is missing, incorrect, duplicated, or outside the expected range, escalate to IT/PACS support or approved service support before changing network configuration.</p>
+
+  <h4>6. Confirm the Correct DICOM/PACS Destination Is Selected</h4>
+  <p>A wrong destination can look like a device failure.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Verify the selected export destination is the correct PACS, archive, workstation, or DICOM node.</li>
+    <li>Confirm the destination name matches the site workflow.</li>
+    <li>If multiple destinations exist, try a known-good destination if permitted.</li>
+    <li>Ask staff whether a recent PACS, network, or destination change occurred.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The system is attempting export to the correct destination.</p>
+  <p>If another DICOM destination works, the issue is likely destination-specific rather than a total C-arm failure.</p>
+
+  <h4>7. Verify Patient and Study Information</h4>
+  <p>Incorrect or incomplete patient/study data can interfere with DICOM workflow.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the patient name, patient ID/MRN, accession number, study date, and modality information are entered correctly.</li>
+    <li>Check for unusual characters, missing required fields, duplicate patient entries, or mismatched accession numbers.</li>
+    <li>Confirm whether the study was created through the expected worklist process or manually entered.</li>
+    <li>If the problem is limited to one patient or exam, compare it with a study that exported successfully.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Required DICOM fields are complete and reasonable.</p>
+  <p>If correcting patient/study information allows export, document the data issue and stop.</p>
+
+  <h4>8. Check Modality Worklist or Order Association</h4>
+  <p>If the site uses modality worklist, export may depend on proper order selection.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the exam was selected from the correct worklist entry when applicable.</li>
+    <li>Verify the accession number and patient identifiers match the order in the hospital system.</li>
+    <li>Ask clinical staff whether the case was performed under an emergency/manual entry workflow.</li>
+    <li>If the worklist is not loading or patient data does not match, involve PACS/RIS/IT support.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The exported study is properly associated with the correct order.</p>
+  <p>If the study exports after proper order association, the issue was likely workflow or demographic mismatch.</p>
+
+  <h4>9. Review the Export Queue</h4>
+  <p>Check whether studies are stuck, pending, failed, or repeatedly retrying.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Open the export, send, archive, or network queue if available.</li>
+    <li>Look for failed studies, repeated retries, or a backlog of unsent exams.</li>
+    <li>Confirm whether all studies are stuck or only one study is failing.</li>
+    <li>Do not clear, delete, or purge queued studies unless approved by clinical leadership and site policy.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> You determine whether the problem is a queue backlog, a single failed study, or total DICOM communication failure.</p>
+  <p>If one study is blocking the queue, escalate to PACS/IT or vendor support before deleting or altering data.</p>
+
+  <h4>10. Confirm PACS or DICOM Destination Availability</h4>
+  <p>The C-arm may be functioning normally while the receiving system is unavailable.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask PACS/IT whether the destination is online and accepting DICOM studies.</li>
+    <li>Confirm whether other modalities are sending successfully to the same destination.</li>
+    <li>Verify whether there was recent PACS maintenance, network maintenance, firewall change, or server migration.</li>
+    <li>Check whether the destination AE Title, IP address, and port may have changed.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The receiving PACS/DICOM node is confirmed available.</p>
+  <p>If other devices also cannot export, the issue is likely PACS, network, or destination-side rather than the Cios Alpha.</p>
+
+  <h4>11. Check for Recent Configuration Changes</h4>
+  <p>Determine whether the issue started after a change.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Ask staff when export last worked.</li>
+    <li>Check whether the C-arm was moved to a different room, network jack, or OR.</li>
+    <li>Ask whether the hospital changed PACS, VLANs, firewall rules, IP ranges, AE Titles, or ports.</li>
+    <li>Review recent service activity, software updates, or network configuration changes.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> You identify whether the failure began after a known environmental or configuration change.</p>
+  <p>If the issue began after a network or PACS change, coordinate with IT/PACS and vendor support as needed.</p>
+
+  <h4>12. Power Cycle Only When Safe</h4>
+  <p>A restart may clear a temporary software or communication hang, but it should not interrupt care.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Confirm the C-arm is not being used for an active procedure.</li>
+    <li>Verify images are stored locally before restarting.</li>
+    <li>Perform a normal shutdown and restart according to site procedure.</li>
+    <li>After restart, confirm the system boots normally and retry export.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> Temporary software or network session issues may clear.</p>
+  <p>If export succeeds after restart, monitor for recurrence and document the restart as the corrective action.</p>
+
+  <h4>13. Escalate for DICOM Configuration or Internal Fault Evaluation</h4>
+  <p>Do not guess or make unauthorized DICOM configuration changes.</p>
+  <p><strong>Action:</strong></p>
+  <ul>
+    <li>Escalate to PACS/IT if network reachability, AE Title, IP address, port, firewall, worklist, or destination availability is suspected.</li>
+    <li>Escalate to Siemens service or approved imaging service support if the C-arm appears to have a software, storage, DICOM service, or internal communication issue.</li>
+    <li>Preserve failed export details, error messages, timestamps, patient/study identifiers, and destination name for support.</li>
+  </ul>
+  <p><strong>Expected outcome:</strong> The correct support team receives enough information to isolate the failure.</p>
+
+  <h2>If the Problem Persists</h2>
+  <p>If the Cios Alpha still cannot export after checking network connection, cable, network drop, destination selection, patient data, worklist association, export queue, and PACS availability, the issue is likely configuration-related, software-related, network-side, or internal to the system.</p>
+  <p>The device should be:</p>
+  <ul>
+    <li>Removed from clinical use if images cannot be reliably stored, retrieved, or exported according to site workflow.</li>
+    <li>Labeled Out of Service if the failure affects clinical availability or required image transfer.</li>
+    <li>Sent for repair, imaging service evaluation, or PACS/IT escalation as appropriate.</li>
+  </ul>
+  <p>Knowing when to stop is proper troubleshooting. DICOM and PACS problems often involve both the medical device and hospital network environment, so escalation should include accurate details rather than unnecessary internal disassembly.</p>
+
+  <h2>Clinical Use Tip</h2>
+  <p>Do not troubleshoot export workflow during an active procedure unless the clinical team confirms it is safe. If imaging is needed, allow the case to continue locally and resolve the PACS export issue after patient care is protected. Do not troubleshoot on an active patient when therapy or imaging continuity is at risk; move patient care to a backup device or workflow first.</p>
+
+  <h2>Work Order Documentation (CCR Method)</h2>
+  <p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+  <h4>Complaint</h4>
+  <p>What was reported by the clinical staff.</p>
+  <p><em>Example:</em><br>"Clinical staff reported that the Siemens Healthineers Cios Alpha C-arm would not export images to PACS after a completed case."</p>
+
+  <h4>Cause</h4>
+  <p>What was observed during troubleshooting.</p>
+  <p><em>Example:</em><br>"Troubleshooting found the C-arm connected to a network wall jack that was not configured for the imaging/PACS network."</p>
+
+  <h4>Resolution</h4>
+  <p>What action was taken.</p>
+  <p><em>Example:</em><br>"Reconnected the C-arm to an approved imaging network port, verified local image storage, successfully exported a test study to PACS, and returned the unit to service."</p>
+
+  <h2>Helpful Details to Include (If Known)</h2>
+  <ul>
+    <li>Whether the issue affected one study or all studies</li>
+    <li>Exact DICOM/export error message</li>
+    <li>Date and time of failed export</li>
+    <li>PACS destination selected</li>
+    <li>Patient/study/accession issue noted, if applicable</li>
+    <li>Accessories swapped, including Ethernet cable, docking connection, or network adapter</li>
+    <li>Power behavior before and after restart</li>
+    <li>Environmental factors, including room, network jack, OR, or recent relocation</li>
+    <li>Network cable condition</li>
+    <li>Network jack or room location used</li>
+    <li>Whether link lights were present</li>
+    <li>Whether other modalities could export</li>
+    <li>Whether the worklist was functioning</li>
+    <li>Whether a restart was performed</li>
+    <li>Final export status</li>
+    <li>Whether PACS/IT or Siemens service was contacted</li>
+    <li>Final device status</li>
+  </ul>
+
+  <h2>Final Thought</h2>
+  <p>DICOM/PACS export failures should be approached logically. Confirm patient safety first, then verify local image availability, network connection, destination selection, patient demographics, worklist association, and PACS availability. Avoid unnecessary internal repair assumptions until external network and workflow causes are ruled out. Clear CCR documentation helps Clinical Engineering, PACS, IT, and vendor support resolve the issue faster.</p>
+  <p><strong>That is successful troubleshooting.</strong></p>
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
