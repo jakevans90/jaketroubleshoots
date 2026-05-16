@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>Preventive Maintenance Procedures | Jake Troubleshoots</title>
+
+  <meta name="description" content="Preventive maintenance procedures for biomedical equipment, including manufacturer-listed PM intervals, electrical safety documentation, AEM notes, and CMMS work order copy text.">
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="site-logo">
+    <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
+    <a href="search.html">Search</a>
+    <a href="vendors.html">Vendors</a>
+    <a href="contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Preventive Maintenance Procedures</h2>
+
+  <p>
+    Equipment-specific PM procedures for BMETs, clinical engineers, and HTM departments.
+  </p>
+
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    Browse preventive maintenance procedures with manufacturer-listed intervals, AEM notes, electrical safety documentation, pass/fail checks, and CMMS copy text.
+  </p>
+</section>
+
+<main>
+
+  <section class="content-box">
+    <h3>Biomedical Equipment PM Procedure Library</h3>
+
+    <p>
+      This section contains preventive maintenance procedures built around manufacturer-listed maintenance activities, service intervals, inspection steps, electrical safety documentation, and practical work order notes.
+    </p>
+
+    <p>
+      PM intervals and activities may vary by facility policy and approved AEM program. Always follow your facility’s maintenance strategy, risk assessment, manufacturer documentation, and applicable regulatory requirements.
+    </p>
+  </section>
+
+  <section class="browse-section">
+    <h3>Browse Preventive Maintenance Procedures</h3>
+
+    <div class="browse-buttons">
+      <button class="browse-button" type="button" data-filter-type="all" data-filter-value="">All PM Procedures</button>
+      <button class="browse-button" type="button" data-filter-type="electrical" data-filter-value="true">Requires Electrical Safety</button>
+    </div>
+  </section>
+
+  <section class="content-box">
+    <h3>Search PM Procedures</h3>
+
+    <input
+      type="text"
+      id="pm-search"
+      placeholder="Search by model, manufacturer, asset type, interval, or PM procedure..."
+      style="width:100%; max-width:600px; padding:12px 16px; font-size:16px; border-radius:6px; border:1px solid #ccc;"
+    >
+  </section>
+
+</main>
+
+<section style="padding:40px;">
+  <div id="pm-grid" class="guides-grid"></div>
+</section>
+
+<p id="total-pm" style="margin-top: 15px; font-weight: bold; text-align:center;"></p>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+    <a href="terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+<script>
+function slugify(text) {
+  return (text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+let allPmProcedures = [];
+let assetHubDataGlobal = [];
+
+function findAssetHub(assetType) {
+  return assetHubDataGlobal.find(a =>
+    a.name === assetType || a.slug === slugify(assetType)
+  );
+}
+
+function getIconPath(assetType) {
+  const assetHub = findAssetHub(assetType);
+  return assetHub?.icon || '';
+}
+
+function renderPmProcedures(procedures) {
+  const grid = document.getElementById('pm-grid');
+  const totalEl = document.getElementById('total-pm');
+
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  if (!procedures.length) {
+    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No preventive maintenance procedures found.</p>';
+  }
+
+  procedures.forEach(pm => {
+    const iconPath = getIconPath(pm.assetType);
+
+    const card = document.createElement('a');
+    card.className = 'guide-card';
+    card.href = pm.url;
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${
+          iconPath
+            ? `<img src="${iconPath}" alt="${pm.assetType} icon" class="guide-card-icon" onerror="this.style.display='none'">`
+            : ''
+        }
+
+        <h3>${pm.title}</h3>
+
+        <div class="badges">
+          <span class="badge asset">${pm.assetType}</span>
+          <span class="badge manufacturer">${pm.manufacturer}</span>
+          <span class="badge model">${pm.model}</span>
+        </div>
+
+        <p>${pm.description}</p>
+
+        <p><strong>Interval:</strong> ${pm.interval}</p>
+
+        <p><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Yes' : 'No / Not specified'}</p>
+
+        <p class="date">Added: ${pm.dateAdded}</p>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  if (totalEl) {
+    totalEl.textContent = `${procedures.length} Preventive Maintenance Procedure${procedures.length !== 1 ? 's' : ''} Total`;
+  }
+}
+
+function filterPmProcedures() {
+  const searchInput = document.getElementById('pm-search');
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+  let filtered = [...allPmProcedures];
+
+  if (query) {
+    filtered = filtered.filter(pm => {
+      const searchableText = `
+        ${pm.title}
+        ${pm.description}
+        ${pm.assetType}
+        ${pm.manufacturer}
+        ${pm.model}
+        ${pm.interval}
+      `.toLowerCase();
+
+      return searchableText.includes(query);
+    });
+  }
+
+  filtered.sort((a, b) => a.title.localeCompare(b.title));
+
+  renderPmProcedures(filtered);
+}
+
+Promise.all([
+  fetch('data/preventive-maintenance.json').then(r => r.json()),
+  fetch('data/hub-asset.json').then(r => r.json())
+])
+.then(([pmProcedures, assetHubData]) => {
+  allPmProcedures = pmProcedures;
+  assetHubDataGlobal = assetHubData;
+
+  const sorted = [...allPmProcedures].sort((a, b) => a.title.localeCompare(b.title));
+  renderPmProcedures(sorted);
+
+  const searchInput = document.getElementById('pm-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', filterPmProcedures);
+  }
+
+  document.querySelectorAll('[data-filter-type="electrical"]').forEach(button => {
+    button.addEventListener('click', () => {
+      const filtered = allPmProcedures.filter(pm => pm.requiresElectricalSafety === true);
+      renderPmProcedures(filtered);
+    });
+  });
+
+  document.querySelectorAll('[data-filter-type="all"]').forEach(button => {
+    button.addEventListener('click', () => {
+      const sorted = [...allPmProcedures].sort((a, b) => a.title.localeCompare(b.title));
+      renderPmProcedures(sorted);
+    });
+  });
+})
+.catch(err => {
+  console.error('Preventive maintenance load error:', err);
+
+  const grid = document.getElementById('pm-grid');
+  if (grid) {
+    grid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Preventive maintenance procedures could not be loaded.</p>';
+  }
+});
+</script>
+
+</body>
+</html>
