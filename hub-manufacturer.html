@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
+
   <title id="page-title">Manufacturer Hub – Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
+
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,8 +16,10 @@
     gtag('js', new Date());
     gtag('config', 'G-1L34E3TJL6');
   </script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -21,6 +27,7 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
@@ -32,30 +39,39 @@
 
 <section class="hero">
   <h2 id="hub-name">Loading…</h2>
-  <p id="hub-subtitle">Troubleshooting guides organized by model</p>
+
+  <p id="hub-subtitle">Troubleshooting guides and preventive maintenance procedures organized by manufacturer.</p>
+
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
+
   <div style="margin-top:20px;">
     <a href="browse-manufacturer.html" class="hero-button">← All Manufacturers</a>
   </div>
 </section>
 
-<div id="loading" style="text-align:center; padding:60px 20px; color:#666; font-size:1.1rem;">Loading…</div>
+<div id="loading" style="text-align:center; padding:60px 20px; color:#666; font-size:1.1rem;">
+  Loading…
+</div>
 
 <main id="hub-body" style="display:none;">
 
   <div class="content-box" id="hub-profile" style="display:none;"></div>
 
+  <div id="pm-section-wrap" style="display:none; max-width:1100px; margin:0 auto 40px; padding:0 20px;">
+    <h3 style="border-bottom:3px solid #ff66cc; padding-bottom:8px;">Preventive Maintenance Procedures</h3>
+    <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
+  </div>
 
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
-    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Guides by Model</h3>
+    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Model</h3>
     <div id="model-section"></div>
   </div>
 
 </main>
 
 <div class="content-box" id="hub-suggest" style="display:none; text-align:center; max-width:700px;">
-  <h3>Missing a guide for this Manufacturer?</h3>
-  <p style="color:#555;">Tell us what equipment or problem you'd like covered.</p>
+  <h3>Missing a guide or PM procedure for this Manufacturer?</h3>
+  <p style="color:#555;">Tell us what equipment, problem, or PM procedure you'd like covered.</p>
   <div class="suggest-cta">
     <a href="suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
   </div>
@@ -69,9 +85,27 @@
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
+(async function () {
+  const loadingEl = document.getElementById('loading');
+  const hubBodyEl = document.getElementById('hub-body');
+  const hubSuggestEl = document.getElementById('hub-suggest');
+  const hubNameEl = document.getElementById('hub-name');
+  const hubMetaEl = document.getElementById('hub-meta');
+  const hubProfileEl = document.getElementById('hub-profile');
+
+  const pmSectionWrapEl = document.getElementById('pm-section-wrap');
+  const pmGridEl = document.getElementById('pm-grid');
+  const modelSectionEl = document.getElementById('model-section');
+
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
+
+  if (!slug) {
+    loadingEl.textContent = 'No manufacturer specified.';
+    return;
+  }
 
   function slugify(text) {
     return (text || '')
@@ -79,6 +113,19 @@
       .trim()
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function clearElement(el) {
+    if (el) el.innerHTML = '';
+  }
+
+  function addMetaPill(text) {
+    if (!text) return;
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
+    hubMetaEl.appendChild(span);
   }
 
   function findAssetHub(assetType, assetHubData) {
@@ -92,114 +139,250 @@
     return assetHub?.icon || '';
   }
 
-  if (!slug) {
-    document.getElementById('loading').textContent = 'No manufacturer specified.';
-  } else {
-    Promise.all([
-      fetchGuides(),
-      fetch('data/hub-manufacturer.json').then(r => r.json()),
-      fetch('data/hub-asset.json').then(r => r.json()) // 👈 added
-    ]).then(([allGuides, hubData, assetHubData]) => {
+  function createManufacturerProfileHtml(hub, name) {
+    const p = hub.profile || {};
+    let html = '';
 
-      const hub = hubData.find(h => h.slug === slug);
-      const guides = allGuides.filter(g =>
-        hub ? g.manufacturer === hub.name
-            : g.manufacturer.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === slug
-      );
+    html += `<h3>${name}</h3>`;
 
-      const name = hub ? hub.name : (guides[0] ? guides[0].manufacturer : slug);
-      document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
-      document.getElementById('hub-name').textContent = name;
+    if (p.blurb) {
+      html += `<p>${p.blurb}</p>`;
+    }
 
-      const models = [...new Set(guides.map(g => g.model))];
-      const assetTypes = [...new Set(guides.map(g => g.assetType))];
+    if (p.website) {
+      html += `<p><strong>Website:</strong> <a href="${p.website}" target="_blank" rel="noopener">${p.website.replace('https://', '').replace('http://', '')}</a></p>`;
+    }
 
-      const metaEl = document.getElementById('hub-meta');
-      [`${guides.length} guide${guides.length !== 1 ? 's' : ''}`, `${models.length} model${models.length !== 1 ? 's' : ''}`, assetTypes.join(' · ')].forEach(text => {
-        const span = document.createElement('span');
-        span.textContent = text;
-        span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
-        metaEl.appendChild(span);
-      });
+    if (p.headquarters) {
+      html += `<p><strong>Headquarters:</strong> ${p.headquarters}</p>`;
+    }
 
-      if (hub) {
-        const p = hub.profile;
-        let html = '';
-        if (p.blurb) html += `<p>${p.blurb}</p>`;
-        if (p.website) html += `<p><strong>Website:</strong> <a href="${p.website}" target="_blank" rel="noopener">${p.website.replace('https://', '')}</a></p>`;
-        if (p.headquarters) html += `<p><strong>Headquarters:</strong> ${p.headquarters}</p>`;
-        if (p.founded) html += `<p><strong>Founded:</strong> ${p.founded}</p>`;
-        if (p.specialties && p.specialties.length) html += `<p><strong>Specialties:</strong> ${p.specialties.join(', ')}</p>`;
-        if (html) {
-          document.getElementById('hub-profile').innerHTML = `<h3>${name}</h3>${html}`;
-          document.getElementById('hub-profile').style.display = '';
-        }
+    if (p.founded) {
+      html += `<p><strong>Founded:</strong> ${p.founded}</p>`;
+    }
 
-      }
+    if (Array.isArray(p.specialties) && p.specialties.length) {
+      html += `<p><strong>Specialties:</strong> ${p.specialties.join(', ')}</p>`;
+    }
 
-      const modelSection = document.getElementById('model-section');
-      const byModel = {};
-      guides.forEach(g => { if (!byModel[g.model]) byModel[g.model] = []; byModel[g.model].push(g); });
+    return html;
+  }
 
-      Object.keys(byModel).sort().forEach(model => {
-        const modelGuides = byModel[model].sort((a, b) => a.title.localeCompare(b.title));
+  function renderPmCards(pmProcedures, assetHubData) {
+    clearElement(pmGridEl);
 
-        const block = document.createElement('div');
-        block.style.marginBottom = '40px';
-        block.innerHTML = `<h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;">${model}<span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}</span></h4>`;
+    if (!pmProcedures.length) {
+      pmSectionWrapEl.style.display = 'none';
+      return;
+    }
 
-        const grid = document.createElement('div');
-        grid.id = 'guides-grid';
+    pmProcedures
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .forEach(pm => {
+        const iconPath = getIconPath(pm.assetType, assetHubData);
 
-        modelGuides.forEach(guide => {
-          const iconPath = getIconPath(guide.assetType, assetHubData);
+        const card = document.createElement('a');
+        card.href = pm.url;
+        card.className = 'guide-card pm-card';
 
-          const card = document.createElement('a');
-          card.href = guide.url;
-          card.classList.add('guide-card');
+        card.innerHTML = `
+          <div class="card-content">
+            ${iconPath ? `
+              <img
+                src="${iconPath}"
+                alt="${pm.assetType} icon"
+                class="guide-card-icon"
+                onerror="this.style.display='none'"
+              >
+            ` : ''}
 
-          card.innerHTML = `
-            <div class="card-content">
+            <span class="pm-card-label">PM Procedure</span>
 
-              ${iconPath ? `
-                <div style="display:flex; justify-content:center; margin-bottom:14px;">
-                  <img
-                    src="${iconPath}"
-                    alt="${guide.assetType} icon"
-                    class="guide-card-icon"
-                    style="width:56px; height:56px; object-fit:contain;"
-                    onerror="this.style.display='none'"
-                  >
-                </div>
-              ` : ''}
+            <h3>${pm.title}</h3>
 
-              <h3>${guide.title}</h3>
-              <p>${guide.description}</p>
-              <div class="badges">
-                <span class="badge asset">${guide.assetType}</span>
-                <span class="badge manufacturer">${guide.manufacturer}</span>
-                <span class="badge model">${guide.model}</span>
-              </div>
-              <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+            <div class="badges">
+              <span class="badge asset">${pm.assetType}</span>
+              <span class="badge manufacturer">${pm.manufacturer}</span>
+              <span class="badge model">${pm.model}</span>
             </div>
-          `;
 
-          grid.appendChild(card);
-        });
+            <p>${pm.description}</p>
 
-        block.appendChild(grid);
-        modelSection.appendChild(block);
+            <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
+
+            <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
+
+            <p class="date">Added: ${pm.dateAdded}</p>
+          </div>
+        `;
+
+        pmGridEl.appendChild(card);
       });
 
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('hub-body').style.display = '';
-      document.getElementById('hub-suggest').style.display = '';
+    pmSectionWrapEl.style.display = '';
+  }
 
-    }).catch(err => {
-      document.getElementById('loading').textContent = 'Error loading data.';
-      console.error(err);
+  function renderGuidesByModel(guides, assetHubData) {
+    clearElement(modelSectionEl);
+
+    if (!guides.length) {
+      modelSectionEl.innerHTML = `
+        <div class="content-box" style="max-width:100%; margin-top:20px;">
+          <p style="margin:0;">No troubleshooting guides found for this manufacturer yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const byModel = {};
+
+    guides.forEach(guide => {
+      if (!byModel[guide.model]) byModel[guide.model] = [];
+      byModel[guide.model].push(guide);
+    });
+
+    Object.keys(byModel).sort().forEach(model => {
+      const modelGuides = byModel[model].sort((a, b) => a.title.localeCompare(b.title));
+
+      const block = document.createElement('div');
+      block.style.marginBottom = '40px';
+
+      block.innerHTML = `
+        <h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          ${model}
+          <span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
+            ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
+          </span>
+        </h4>
+      `;
+
+      const grid = document.createElement('div');
+      grid.className = 'guides-grid';
+      grid.style.padding = '20px 0';
+
+      modelGuides.forEach(guide => {
+        const iconPath = getIconPath(guide.assetType, assetHubData);
+
+        const card = document.createElement('a');
+        card.href = guide.url;
+        card.classList.add('guide-card');
+
+        card.innerHTML = `
+          <div class="card-content">
+            ${iconPath ? `
+              <img
+                src="${iconPath}"
+                alt="${guide.assetType} icon"
+                class="guide-card-icon"
+                onerror="this.style.display='none'"
+              >
+            ` : ''}
+
+            <h3>${guide.title}</h3>
+
+            <p>${guide.description}</p>
+
+            <div class="badges">
+              <span class="badge asset">${guide.assetType}</span>
+              <span class="badge manufacturer">${guide.manufacturer}</span>
+              <span class="badge model">${guide.model}</span>
+            </div>
+
+            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      block.appendChild(grid);
+      modelSectionEl.appendChild(block);
     });
   }
+
+  try {
+    const [allGuides, allPmProcedures, hubData, assetHubData] = await Promise.all([
+      fetchGuides(),
+
+      fetch('data/preventive-maintenance.json')
+        .then(r => r.ok ? r.json() : [])
+        .catch(() => []),
+
+      fetch('data/hub-manufacturer.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-manufacturer.json');
+        return r.json();
+      }),
+
+      fetch('data/hub-asset.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-asset.json');
+        return r.json();
+      })
+    ]);
+
+    const hub = hubData.find(h => h.slug === slug);
+
+    const guides = allGuides.filter(guide => {
+      if (hub) return guide.manufacturer === hub.name;
+      return slugify(guide.manufacturer) === slug;
+    });
+
+    const pmProcedures = allPmProcedures.filter(pm => {
+      if (hub) return pm.manufacturer === hub.name;
+      return slugify(pm.manufacturer) === slug;
+    });
+
+    const name = hub ? hub.name : (guides[0]?.manufacturer || pmProcedures[0]?.manufacturer || slug);
+
+    document.title = `${name} Resources – Jake Troubleshoots`;
+    hubNameEl.textContent = name;
+
+    clearElement(hubMetaEl);
+
+    const guideModels = [...new Set(guides.map(g => g.model).filter(Boolean))];
+    const pmModels = [...new Set(pmProcedures.map(pm => pm.model).filter(Boolean))];
+    const allModels = [...new Set([...guideModels, ...pmModels])];
+
+    const guideAssetTypes = [...new Set(guides.map(g => g.assetType).filter(Boolean))];
+    const pmAssetTypes = [...new Set(pmProcedures.map(pm => pm.assetType).filter(Boolean))];
+    const allAssetTypes = [...new Set([...guideAssetTypes, ...pmAssetTypes])];
+
+    addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`);
+
+    if (pmProcedures.length) {
+      addMetaPill(`${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}`);
+    }
+
+    addMetaPill(`${allModels.length} model${allModels.length !== 1 ? 's' : ''}`);
+
+    if (allAssetTypes.length) {
+      addMetaPill(`${allAssetTypes.length} asset type${allAssetTypes.length !== 1 ? 's' : ''}`);
+    }
+
+    if (hub) {
+      const html = createManufacturerProfileHtml(hub, name);
+
+      if (html.trim()) {
+        hubProfileEl.innerHTML = html;
+        hubProfileEl.style.display = '';
+      } else {
+        hubProfileEl.style.display = 'none';
+      }
+    } else {
+      hubProfileEl.style.display = 'none';
+    }
+
+    renderPmCards(pmProcedures, assetHubData);
+    renderGuidesByModel(guides, assetHubData);
+
+    loadingEl.style.display = 'none';
+    hubBodyEl.style.display = '';
+    hubSuggestEl.style.display = '';
+  } catch (err) {
+    console.error(err);
+    loadingEl.textContent = 'Error loading manufacturer hub data.';
+  }
+})();
 </script>
+
 </body>
 </html>
