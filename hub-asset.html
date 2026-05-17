@@ -83,7 +83,7 @@
   </div>
 
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
-    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Manufacturer</h3>
+    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Manufacturer and Model</h3>
     <div id="manufacturer-section"></div>
   </div>
 
@@ -262,7 +262,42 @@
     pmSectionWrapEl.style.display = '';
   }
 
-  function renderGuidesByManufacturer(guides, assetHubData) {
+  function createGuideCard(guide, assetHubData) {
+    const iconPath = getIconPath(guide.assetType, assetHubData);
+
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <h3>${guide.title}</h3>
+
+        <p>${guide.description}</p>
+
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
+        </div>
+
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderGuidesByManufacturerAndModel(guides, assetHubData) {
     clearElement(manufacturerSectionEl);
 
     if (!guides.length) {
@@ -274,69 +309,65 @@
       return;
     }
 
-    const byMfr = {};
+    const byManufacturer = {};
 
     guides.forEach(guide => {
-      if (!byMfr[guide.manufacturer]) byMfr[guide.manufacturer] = [];
-      byMfr[guide.manufacturer].push(guide);
+      if (!byManufacturer[guide.manufacturer]) {
+        byManufacturer[guide.manufacturer] = {};
+      }
+
+      if (!byManufacturer[guide.manufacturer][guide.model]) {
+        byManufacturer[guide.manufacturer][guide.model] = [];
+      }
+
+      byManufacturer[guide.manufacturer][guide.model].push(guide);
     });
 
-    Object.keys(byMfr).sort().forEach(mfr => {
-      const mfrGuides = byMfr[mfr].sort((a, b) => a.title.localeCompare(b.title));
+    Object.keys(byManufacturer).sort().forEach(manufacturer => {
+      const manufacturerBlock = document.createElement('div');
+      manufacturerBlock.style.marginBottom = '48px';
 
-      const block = document.createElement('div');
-      block.style.marginBottom = '40px';
+      const manufacturerGuideCount = Object.values(byManufacturer[manufacturer])
+        .reduce((total, modelGuides) => total + modelGuides.length, 0);
 
-      block.innerHTML = `
-        <h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          ${mfr}
+      manufacturerBlock.innerHTML = `
+        <h4 style="margin:0 0 18px;font-size:1.2rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          ${manufacturer}
           <span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
-            ${mfrGuides.length} guide${mfrGuides.length !== 1 ? 's' : ''}
+            ${manufacturerGuideCount} guide${manufacturerGuideCount !== 1 ? 's' : ''}
           </span>
         </h4>
       `;
 
-      const grid = document.createElement('div');
-      grid.className = 'guides-grid';
-      grid.style.padding = '20px 0';
+      Object.keys(byManufacturer[manufacturer]).sort().forEach(model => {
+        const modelGuides = byManufacturer[manufacturer][model]
+          .sort((a, b) => a.title.localeCompare(b.title));
 
-      mfrGuides.forEach(guide => {
-        const iconPath = getIconPath(guide.assetType, assetHubData);
+        const modelBlock = document.createElement('div');
+        modelBlock.style.margin = '0 0 34px 0';
 
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
-
-        card.innerHTML = `
-          <div class="card-content">
-            ${iconPath ? `
-              <img
-                src="${iconPath}"
-                alt="${guide.assetType} icon"
-                class="guide-card-icon"
-                onerror="this.style.display='none'"
-              >
-            ` : ''}
-
-            <h3>${guide.title}</h3>
-
-            <p>${guide.description}</p>
-
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
-
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
+        modelBlock.innerHTML = `
+          <h5 style="margin:0 0 14px;font-size:1rem;color:#333;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            ${model}
+            <span style="background:#f2f2f2;color:#111;font-size:0.76rem;font-weight:bold;padding:3px 10px;border-radius:20px;border:1px solid #ddd;">
+              ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
+            </span>
+          </h5>
         `;
 
-        grid.appendChild(card);
+        const grid = document.createElement('div');
+        grid.className = 'guides-grid';
+        grid.style.padding = '10px 0 20px';
+
+        modelGuides.forEach(guide => {
+          grid.appendChild(createGuideCard(guide, assetHubData));
+        });
+
+        modelBlock.appendChild(grid);
+        manufacturerBlock.appendChild(modelBlock);
       });
 
-      block.appendChild(grid);
-      manufacturerSectionEl.appendChild(block);
+      manufacturerSectionEl.appendChild(manufacturerBlock);
     });
   }
 
@@ -393,13 +424,13 @@
 
     clearElement(hubMetaEl);
 
-    const manufacturers = [...new Set(guides.map(g => g.manufacturer).filter(Boolean))];
+    const guideManufacturers = [...new Set(guides.map(g => g.manufacturer).filter(Boolean))];
     const pmManufacturers = [...new Set(pmProcedures.map(pm => pm.manufacturer).filter(Boolean))];
-    const allManufacturers = [...new Set([...manufacturers, ...pmManufacturers])];
+    const allManufacturers = [...new Set([...guideManufacturers, ...pmManufacturers])];
 
-    const models = [...new Set(guides.map(g => g.model).filter(Boolean))];
+    const guideModels = [...new Set(guides.map(g => g.model).filter(Boolean))];
     const pmModels = [...new Set(pmProcedures.map(pm => pm.model).filter(Boolean))];
-    const allModels = [...new Set([...models, ...pmModels])];
+    const allModels = [...new Set([...guideModels, ...pmModels])];
 
     addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`);
 
@@ -446,7 +477,7 @@
     }
 
     renderPmCards(pmProcedures, assetHubData);
-    renderGuidesByManufacturer(guides, assetHubData);
+    renderGuidesByManufacturerAndModel(guides, assetHubData);
 
     loadingEl.style.display = 'none';
     hubBodyEl.style.display = '';
