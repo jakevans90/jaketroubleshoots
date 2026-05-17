@@ -4,17 +4,22 @@
   <meta charset="UTF-8">
   <title>Browse by Manufacturer - Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1L34E3TJL6');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
      crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -22,6 +27,7 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
@@ -32,15 +38,18 @@
 </header>
 
 <section class="hero">
-  <h2>Browse Guides by Manufacturer</h2>
-  <p>All troubleshooting guides organized by equipment manufacturer.</p>
+  <h2>Browse Resources by Manufacturer</h2>
+  <p>Find troubleshooting guides and preventive maintenance procedures by equipment manufacturer.</p>
+
   <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-    <a href="guides.html" class="hero-button">Browse All Guides</a>
+    <a href="guides.html" class="hero-button">Browse All Troubleshooting Guides</a>
+    <a href="preventive-maintenance.html" class="hero-button">Browse PM Procedures</a>
   </div>
 </section>
 
 <section class="browse-section">
   <h3>Manufacturers</h3>
+
   <div class="letter-filter">
     <span class="filter-letter active" data-letter="all">All</span>
     <span class="filter-letter" data-letter="0-9">0-9</span>
@@ -71,13 +80,21 @@
     <span class="filter-letter" data-letter="Y">Y</span>
     <span class="filter-letter" data-letter="Z">Z</span>
   </div>
+
   <div id="manufacturer-buttons" class="browse-buttons"></div>
 </section>
 
-<!-- Hub banner injects here via JS -->
 <div id="hub-banner-inject"></div>
 
-<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;"></section>
+<section id="pm-section-wrap" style="display:none; max-width:1100px; margin:0 auto 20px; padding:0 40px;">
+  <h3 style="border-bottom:3px solid #ff66cc; padding-bottom:8px;">Preventive Maintenance Procedures</h3>
+  <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
+</section>
+
+<section id="guide-section-wrap" style="max-width:1100px; margin:0 auto; padding:0 40px;">
+  <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides</h3>
+  <div id="guides-grid" class="guides-grid" style="padding:20px 0;"></div>
+</section>
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
@@ -90,18 +107,21 @@
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
 Promise.all([
   fetchGuides(),
+  fetch('data/preventive-maintenance.json').then(r => r.ok ? r.json() : []).catch(() => []),
   fetch('data/hub-manufacturer.json').then(r => r.json()),
-  fetch('data/hub-asset.json').then(r => r.json()) // 👈 added
-]).then(([allGuides, hubData, assetHubData]) => {
-
-  const container = document.getElementById('guides-grid');
+  fetch('data/hub-asset.json').then(r => r.json())
+]).then(([allGuides, allPmProcedures, hubData, assetHubData]) => {
+  const guideContainer = document.getElementById('guides-grid');
+  const pmContainer = document.getElementById('pm-grid');
+  const pmSectionWrap = document.getElementById('pm-section-wrap');
   const buttonsContainer = document.getElementById('manufacturer-buttons');
   const letters = document.querySelectorAll('.filter-letter');
 
-  if (!container || !buttonsContainer) return;
+  if (!guideContainer || !pmContainer || !buttonsContainer) return;
 
   function slugify(text) {
     return (text || '')
@@ -109,6 +129,17 @@ Promise.all([
       .trim()
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function sortAlpha(items) {
+    return [...items].sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true })
+    );
+  }
+
+  function firstCharKey(text) {
+    const char = (text || '').trim().charAt(0).toUpperCase();
+    return /^[0-9]/.test(char) ? '0-9' : char;
   }
 
   function findAssetHub(assetType) {
@@ -122,62 +153,80 @@ Promise.all([
     return assetHub?.icon || '';
   }
 
-  // -------------------------------
-  // EXISTING CODE (UNCHANGED)
-  // -------------------------------
+  function createGuideCard(guide) {
+    const iconPath = getIconPath(guide.assetType);
 
-  const manufacturers = [...new Set(allGuides.map(g => g.manufacturer))].sort();
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
 
-  manufacturers.forEach(man => {
-    const btn = document.createElement('a');
-    btn.href = '#';
-    btn.textContent = man;
-    btn.classList.add('browse-button');
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      showGuidesByManufacturer(man);
-    });
-    buttonsContainer.appendChild(btn);
-  });
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
 
-  letters.forEach(letterEl => {
-    const letter = letterEl.dataset.letter.toUpperCase();
-    if (letter === 'ALL') {
-      letterEl.style.display = '';
-    } else if (letter === '0-9') {
-      letterEl.style.display = manufacturers.some(m => /^[0-9]/.test(m)) ? '' : 'none';
-    } else {
-      letterEl.style.display = manufacturers.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
-    }
-  });
+        <h3>${guide.title}</h3>
+        <p>${guide.description}</p>
 
-  letters.forEach(letter => {
-    letter.addEventListener('click', () => {
-      const selected = letter.dataset.letter.toUpperCase();
-      letters.forEach(l => l.classList.remove('active'));
-      letter.classList.add('active');
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
+        </div>
 
-      const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
-      buttons.forEach(btn => {
-        const firstChar = btn.textContent[0].toUpperCase();
-        if (selected === 'ALL') {
-          btn.style.display = '';
-        } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
-          btn.style.display = '';
-        } else {
-          btn.style.display = firstChar === selected ? '' : 'none';
-        }
-      });
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
 
-      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-      if (firstVisible) firstVisible.click();
-      else container.innerHTML = '';
-    });
-  });
+    return card;
+  }
 
-  const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
-                            .find(b => b.style.display !== 'none');
-  if (firstVisible) firstVisible.click();
+  function createPmCard(pm) {
+    const iconPath = getIconPath(pm.assetType);
+
+    const card = document.createElement('a');
+    card.href = pm.url;
+    card.className = 'guide-card pm-card';
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${pm.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <span class="pm-card-label">PM Procedure</span>
+
+        <h3>${pm.title}</h3>
+
+        <div class="badges">
+          <span class="badge asset">${pm.assetType}</span>
+          <span class="badge manufacturer">${pm.manufacturer}</span>
+          <span class="badge model">${pm.model}</span>
+        </div>
+
+        <p>${pm.description}</p>
+
+        <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
+
+        <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
+
+        <p class="date">Added: ${pm.dateAdded}</p>
+      </div>
+    `;
+
+    return card;
+  }
 
   function showManufacturerHubBanner(manufacturerName) {
     const bannerEl = document.getElementById('hub-banner-inject');
@@ -187,11 +236,20 @@ Promise.all([
     if (!hub) return;
 
     const guides = allGuides.filter(g => g.manufacturer === manufacturerName);
-    const models = [...new Set(guides.map(g => g.model))];
-    const assetTypes = [...new Set(guides.map(g => g.assetType))];
+    const pmProcedures = allPmProcedures.filter(pm => pm.manufacturer === manufacturerName);
 
-    const blurb = hub.profile.blurb
-      ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
+    const models = [...new Set([
+      ...guides.map(g => g.model),
+      ...pmProcedures.map(pm => pm.model)
+    ].filter(Boolean))];
+
+    const assetTypes = [...new Set([
+      ...guides.map(g => g.assetType),
+      ...pmProcedures.map(pm => pm.assetType)
+    ].filter(Boolean))];
+
+    const blurb = hub.profile?.blurb
+      ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 140)}${hub.profile.blurb.length > 140 ? '…' : ''}</p>`
       : '';
 
     bannerEl.innerHTML = `
@@ -199,65 +257,121 @@ Promise.all([
         <div class="hub-banner-card">
           <div class="hub-info">
             <h3 style="margin:0 0 6px;color:white;font-size:1.15rem;">${hub.name}</h3>
+
             ${blurb}
+
             <div class="hub-banner-meta">
               <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
+              ${pmProcedures.length ? `<span>${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}</span>` : ''}
               <span>${models.length} model${models.length !== 1 ? 's' : ''}</span>
-              <span>${assetTypes.join(' · ')}</span>
+              <span>${assetTypes.length} asset type${assetTypes.length !== 1 ? 's' : ''}</span>
             </div>
           </div>
+
           <a class="hub-banner-btn" href="${hub.url}">View Manufacturer Hub →</a>
         </div>
       </div>
     `;
   }
 
-  function showGuidesByManufacturer(man) {
-    showManufacturerHubBanner(man);
+  function showResourcesByManufacturer(manufacturerName) {
+    showManufacturerHubBanner(manufacturerName);
 
-    container.innerHTML = '';
-    const filtered = allGuides
-      .filter(g => g.manufacturer === man)
-      .sort((a, b) => a.title.localeCompare(b.title));
+    const filteredPm = allPmProcedures
+      .filter(pm => pm.manufacturer === manufacturerName)
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
 
-    filtered.forEach(guide => {
-      const iconPath = getIconPath(guide.assetType); // 👈 added
+    const filteredGuides = allGuides
+      .filter(g => g.manufacturer === manufacturerName)
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
 
-      const card = document.createElement('a');
-      card.href = guide.url;
-      card.classList.add('guide-card');
+    pmContainer.innerHTML = '';
+    guideContainer.innerHTML = '';
 
-      card.innerHTML = `
-        <div class="card-content">
+    if (filteredPm.length) {
+      filteredPm.forEach(pm => pmContainer.appendChild(createPmCard(pm)));
+      pmSectionWrap.style.display = '';
+    } else {
+      pmSectionWrap.style.display = 'none';
+    }
 
-          ${iconPath ? `
-            <div style="display:flex; justify-content:center; margin-bottom:14px;">
-              <img
-                src="${iconPath}"
-                alt="${guide.assetType} icon"
-                class="guide-card-icon"
-                style="width:56px; height:56px; object-fit:contain;"
-                onerror="this.style.display='none'"
-              >
-            </div>
-          ` : ''}
-
-          <h3>${guide.title}</h3>
-          <p>${guide.description}</p>
-          <div class="badges">
-            <span class="badge asset">${guide.assetType}</span>
-            <span class="badge manufacturer">${guide.manufacturer}</span>
-            <span class="badge model">${guide.model}</span>
-          </div>
-          <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-        </div>
-      `;
-
-      container.appendChild(card);
-    });
+    if (filteredGuides.length) {
+      filteredGuides.forEach(guide => guideContainer.appendChild(createGuideCard(guide)));
+    } else {
+      guideContainer.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No troubleshooting guides found for this manufacturer yet.</p>';
+    }
   }
 
-}).catch(err => console.error('Guide load error:', err));
+  const manufacturers = sortAlpha([
+    ...new Set([
+      ...allGuides.map(g => g.manufacturer),
+      ...allPmProcedures.map(pm => pm.manufacturer)
+    ].filter(Boolean))
+  ]);
+
+  manufacturers.forEach(manufacturer => {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.textContent = manufacturer;
+    btn.classList.add('browse-button');
+
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showResourcesByManufacturer(manufacturer);
+    });
+
+    buttonsContainer.appendChild(btn);
+  });
+
+  letters.forEach(letterEl => {
+    const letter = letterEl.dataset.letter.toUpperCase();
+
+    if (letter === 'ALL') {
+      letterEl.style.display = '';
+    } else {
+      letterEl.style.display = manufacturers.some(manufacturer => firstCharKey(manufacturer) === letter) ? '' : 'none';
+    }
+  });
+
+  letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+      const selected = letter.dataset.letter.toUpperCase();
+
+      letters.forEach(l => l.classList.remove('active'));
+      letter.classList.add('active');
+
+      const buttons = document.querySelectorAll('#manufacturer-buttons .browse-button');
+
+      buttons.forEach(btn => {
+        const key = firstCharKey(btn.textContent);
+
+        if (selected === 'ALL') {
+          btn.style.display = '';
+        } else {
+          btn.style.display = key === selected ? '' : 'none';
+        }
+      });
+
+      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+
+      if (firstVisible) {
+        firstVisible.click();
+      } else {
+        guideContainer.innerHTML = '';
+        pmContainer.innerHTML = '';
+        pmSectionWrap.style.display = 'none';
+        document.getElementById('hub-banner-inject').innerHTML = '';
+      }
+    });
+  });
+
+  const firstVisible = Array.from(document.querySelectorAll('#manufacturer-buttons .browse-button'))
+    .find(b => b.style.display !== 'none');
+
+  if (firstVisible) firstVisible.click();
+
+}).catch(err => console.error('Resource load error:', err));
 </script>
+
 </body>
 </html>
