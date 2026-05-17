@@ -91,43 +91,32 @@
 
 <section class="homepage-section pm-aem-section">
   <div class="section-header">
-    <p class="section-kicker">In Development</p>
-    <h3>PM Procedures &amp; AEM</h3>
+    <p class="section-kicker">Preventive Maintenance</p>
+    <h3>PM Procedures &amp; AEM Documentation</h3>
     <p>
-      A future library of practical preventive maintenance procedures and AEM support resources for clinical engineering and HTM teams.
+      Equipment-specific preventive maintenance procedures with manufacturer-listed intervals, electrical safety documentation, AEM notes, and CMMS-ready copy/paste work order text.
     </p>
   </div>
 
   <div class="pm-aem-main-card">
-    <h4>Preventive Maintenance Procedure Library Coming Soon</h4>
+    <h4>Preventive Maintenance Procedure Library</h4>
 
     <p>
-      This section will focus on equipment-specific PM procedures, inspection steps, operational checks, electrical safety testing considerations, documentation points, and pass/fail items used during preventive maintenance.
+      PM procedure pages are structured as field-ready maintenance workflows, not general articles. Each page focuses on practical inspection steps, pass/fail criteria, manufacturer-listed maintenance intervals, and documentation language biomeds can use in real work orders.
     </p>
-
-    <p>
-      PM procedure pages are planned to be structured like field-ready maintenance workflows, not general educational articles.
-    </p>
-
-    <div class="pm-procedure-preview">
-      <p><strong>Future PM procedure pages may include:</strong></p>
-
-      <ul>
-        <li>Safety checks before service</li>
-        <li>Visual inspection items</li>
-        <li>Functional and operational verification steps</li>
-        <li>Electrical safety testing notes when applicable</li>
-        <li>Manufacturer maintenance interval references</li>
-        <li>Common PM findings</li>
-        <li>Documentation tips for work orders</li>
-        <li>When to remove equipment from service</li>
-      </ul>
-    </div>
 
     <div class="hero-buttons" style="margin-top:18px;">
+      <a href="preventive-maintenance.html" class="hero-button">Browse PM Procedures</a>
       <a href="biomed-basics/electrical-safety-testing-medical-equipment.html" class="hero-button">Related: Electrical Safety Testing</a>
     </div>
   </div>
+
+  <div class="section-header" style="margin-top:34px;">
+    <p class="section-kicker">Recently Added</p>
+    <h3>Recent PM Procedures</h3>
+  </div>
+
+  <div id="pm-preview-grid" class="guides-grid"></div>
 </section>
 
 <section class="homepage-section learning-section">
@@ -311,6 +300,62 @@ function renderGuideRows(containerId, allGuides, rowCount) {
   renderGuides(containerId, guidesToShow);
 }
 
+function getRecentPmProcedures(allPmProcedures, count) {
+  return [...allPmProcedures]
+    .sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
+    .slice(0, count);
+}
+
+function renderPmPreviewCards(containerId, procedures) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  if (!procedures.length) {
+    container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Preventive maintenance procedures are being added.</p>';
+    return;
+  }
+
+  procedures.forEach(pm => {
+    const iconPath = getIconPath(pm.assetType);
+
+    const card = document.createElement('a');
+    card.className = 'guide-card pm-card';
+    card.href = pm.url;
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${
+          iconPath
+            ? `<img src="${iconPath}" alt="${pm.assetType} icon" class="guide-card-icon" onerror="this.style.display='none'">`
+            : ''
+        }
+
+        <span class="pm-card-label">PM Procedure</span>
+
+        <h3>${pm.title}</h3>
+
+        <div class="badges">
+          <span class="badge asset">${pm.assetType}</span>
+          <span class="badge manufacturer">${pm.manufacturer}</span>
+          <span class="badge model">${pm.model}</span>
+        </div>
+
+        <p>${pm.description}</p>
+
+        <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
+
+        <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
+
+        <p class="date">Added: ${pm.dateAdded}</p>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 // Override renderGuides globally so guide cards can show asset icons
 const originalRenderGuides = window.renderGuides;
 
@@ -356,9 +401,10 @@ window.renderGuides = function(containerId, guides) {
 // Homepage logic
 Promise.all([
   fetchGuides(),
-  fetch('data/hub-asset.json').then(r => r.json())
+  fetch('data/hub-asset.json').then(r => r.json()),
+  fetch('data/preventive-maintenance.json').then(r => r.json()).catch(() => [])
 ])
-.then(([allGuides, assetHubData]) => {
+.then(([allGuides, assetHubData, allPmProcedures]) => {
   assetHubDataGlobal = assetHubData;
 
   const statsLine = document.getElementById('stats-line');
@@ -384,6 +430,10 @@ Promise.all([
   // Show 4 full rows of recent guides based on the current screen width
   renderGuideRows('guides-grid', allGuides, 4);
 
+  // Show up to 3 recent preventive maintenance procedures
+  const recentPmProcedures = getRecentPmProcedures(allPmProcedures, 3);
+  renderPmPreviewCards('pm-preview-grid', recentPmProcedures);
+
   // Recalculate recent guide count when the browser window is resized
   let resizeTimer;
   window.addEventListener('resize', () => {
@@ -393,7 +443,7 @@ Promise.all([
     }, 150);
   });
 })
-.catch(err => console.error('Guide load error:', err));
+.catch(err => console.error('Homepage load error:', err));
 
 // Search
 const form = document.getElementById('home-search-form');
