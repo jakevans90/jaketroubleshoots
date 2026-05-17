@@ -2,32 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Search Guides - Jake Troubleshoots</title>
+
+  <title>Troubleshooting Guide Search | Jake Troubleshoots</title>
+
+  <meta name="description" content="Search Jake Troubleshoots biomedical equipment troubleshooting guides by title, description, asset type, manufacturer, model, alarm, error code, symptom, or troubleshooting step.">
+
   <link rel="stylesheet" href="style.css">
 
-  <style>
-    /* Search bar styling */
-    #search-bar {
-      width: 100%;
-      max-width: 600px;
-      padding: 12px 16px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin: 20px auto;
-      display: block;
-      box-sizing: border-box;
-    }
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
-    /* "No results" message */
-    #no-results {
-      text-align: center;
-      font-style: italic;
-      margin-top: 40px;
-      color: #666;
-    }
-  </style>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -35,9 +19,11 @@
     gtag('js', new Date());
     gtag('config', 'G-1L34E3TJL6');
   </script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
      crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -57,142 +43,226 @@
 
 <section class="hero">
   <h2>Search Troubleshooting Guides</h2>
-  <p>Find guides quickly by title, description, asset type, manufacturer, model, or steps.</p>
+
+  <p>
+    Search biomedical equipment troubleshooting guides by alarm, error, symptom, equipment type, manufacturer, model, or troubleshooting step.
+  </p>
+
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    This search currently covers troubleshooting guides only. For scheduled maintenance, use the PM procedure library.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="guides.html" class="hero-button">All Troubleshooting Guides</a>
+    <a href="browse-asset.html" class="hero-button">Browse by Asset Type</a>
+    <a href="browse-manufacturer.html" class="hero-button">Browse by Manufacturer</a>
+    <a href="browse-model.html" class="hero-button">Browse by Model</a>
+    <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
+  </div>
 </section>
 
-<section class="search-section">
-  <input type="text" id="search-bar" placeholder="Type to search guides...">
-  <div id="no-results" style="display:none;">No results found.</div>
+<main>
 
-  <div id="search-results" class="guides-grid"
-       style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+  <section class="content-box" style="text-align:center;">
+    <h3>Guide Search</h3>
+
+    <p>
+      Type a model, manufacturer, asset type, alarm, fault, symptom, or equipment issue to filter the troubleshooting guide library.
+    </p>
+
+    <input
+      type="text"
+      id="search-bar"
+      placeholder="Search guides by model, manufacturer, error, alarm, symptom, or issue..."
+    >
+
+    <div id="no-results" style="display:none;">
+      No troubleshooting guides found.
+    </div>
+  </section>
+
+</main>
+
+<section class="homepage-section recent-guides-section">
+  <div class="section-header">
+    <p class="section-kicker">Search Results</p>
+    <h3>Troubleshooting Guide Results</h3>
+    <p id="search-count">
+      Loading troubleshooting guides...
+    </p>
   </div>
+
+  <div id="search-results" class="guides-grid"></div>
 </section>
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+
   <p>
-    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
     <a href="terms-of-use.html">Terms of Use</a>
   </p>
+
   <p>Guides intended for trained personnel only.</p>
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
-  function slugify(text) {
-    return (text || '')
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '');
+function slugify(text) {
+  return (text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+let assetHubDataGlobal = [];
+
+function findAssetHub(assetType) {
+  return assetHubDataGlobal.find(a =>
+    a.name === assetType || a.slug === slugify(assetType)
+  );
+}
+
+function getIconPath(assetType) {
+  const assetHub = findAssetHub(assetType);
+  return assetHub?.icon || '';
+}
+
+const originalRenderGuides = window.renderGuides;
+
+window.renderGuides = function(containerId, guides) {
+  originalRenderGuides(containerId, guides);
+
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.guide-card');
+
+  cards.forEach((card, index) => {
+    const guide = guides[index];
+    if (!guide) return;
+
+    const iconPath = getIconPath(guide.assetType);
+    if (!iconPath) return;
+
+    if (card.querySelector('.guide-card-icon')) return;
+
+    const content = card.querySelector('.card-content');
+    if (!content) return;
+
+    const iconWrap = document.createElement('div');
+    iconWrap.style.display = 'flex';
+    iconWrap.style.justifyContent = 'center';
+    iconWrap.style.marginBottom = '14px';
+
+    iconWrap.innerHTML = `
+      <img
+        src="${iconPath}"
+        alt="${guide.assetType} icon"
+        class="guide-card-icon"
+        style="width:56px; height:56px; object-fit:contain;"
+        onerror="this.style.display='none'"
+      >
+    `;
+
+    content.prepend(iconWrap);
+  });
+};
+
+Promise.all([
+  fetchGuides(),
+  fetch('data/hub-asset.json').then(r => r.json())
+])
+.then(([allGuides, assetHubData]) => {
+  assetHubDataGlobal = assetHubData;
+
+  const searchBar = document.getElementById('search-bar');
+  const noResults = document.getElementById('no-results');
+  const searchCount = document.getElementById('search-count');
+
+  const sortedGuides = [...allGuides].sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true })
+  );
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q') || '';
+
+  searchBar.value = initialQuery;
+
+  function normalize(text) {
+    return (text || '').toLowerCase();
   }
 
-  let assetHubDataGlobal = [];
+  function filterGuides(query) {
+    const q = normalize(query).trim();
 
-  function findAssetHub(assetType) {
-    return assetHubDataGlobal.find(a =>
-      a.name === assetType || a.slug === slugify(assetType)
-    );
-  }
+    if (!q) {
+      return sortedGuides;
+    }
 
-  function getIconPath(assetType) {
-    const assetHub = findAssetHub(assetType);
-    return assetHub?.icon || '';
-  }
+    return sortedGuides.filter(guide => {
+      const title = normalize(guide.title);
+      const description = normalize(guide.description);
+      const assetType = normalize(guide.assetType);
+      const manufacturer = normalize(guide.manufacturer);
+      const model = normalize(guide.model);
+      const url = normalize(guide.url);
 
-  const originalRenderGuides = window.renderGuides;
+      const stepsText = Array.isArray(guide.steps)
+        ? normalize(guide.steps.map(step => step.instructions || '').join(' '))
+        : '';
 
-  window.renderGuides = function(containerId, guides) {
-    originalRenderGuides(containerId, guides);
-
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    const cards = container.querySelectorAll('.guide-card');
-
-    cards.forEach((card, index) => {
-      const guide = guides[index];
-      if (!guide) return;
-
-      const iconPath = getIconPath(guide.assetType);
-      if (!iconPath) return;
-
-      if (card.querySelector('.guide-card-icon')) return;
-
-      const content = card.querySelector('.card-content');
-      if (!content) return;
-
-      const iconWrap = document.createElement('div');
-      iconWrap.style.display = 'flex';
-      iconWrap.style.justifyContent = 'center';
-      iconWrap.style.marginBottom = '14px';
-
-      iconWrap.innerHTML = `
-        <img
-          src="${iconPath}"
-          alt="${guide.assetType} icon"
-          class="guide-card-icon"
-          style="width:56px; height:56px; object-fit:contain;"
-          onerror="this.style.display='none'"
-        >
+      const searchableText = `
+        ${title}
+        ${description}
+        ${assetType}
+        ${manufacturer}
+        ${model}
+        ${url}
+        ${stepsText}
       `;
 
-      content.prepend(iconWrap);
+      return searchableText.includes(q);
     });
-  };
+  }
 
-  Promise.all([
-    fetchGuides(),
-    fetch('data/hub-asset.json').then(r => r.json())
-  ])
-  .then(([allGuides, assetHubData]) => {
-    assetHubDataGlobal = assetHubData;
+  function updateCount(query, count) {
+    if (!searchCount) return;
 
-    const searchBar = document.getElementById('search-bar');
-    const noResults = document.getElementById('no-results');
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialQuery = urlParams.get('q')?.toLowerCase() || '';
-    searchBar.value = initialQuery;
-
-    function filterGuides(query) {
-      query = query.toLowerCase();
-      return allGuides.filter(guide => {
-        const title = guide.title?.toLowerCase() || '';
-        const description = guide.description?.toLowerCase() || '';
-        const assetType = guide.assetType?.toLowerCase() || '';
-        const manufacturer = guide.manufacturer?.toLowerCase() || '';
-        const model = guide.model?.toLowerCase() || '';
-        const stepsText = guide.steps?.map(s => s.instructions).join(' ').toLowerCase() || '';
-
-        return title.includes(query) ||
-               description.includes(query) ||
-               assetType.includes(query) ||
-               manufacturer.includes(query) ||
-               model.includes(query) ||
-               stepsText.includes(query);
-      });
+    if (!query.trim()) {
+      searchCount.textContent = `${count} troubleshooting guide${count !== 1 ? 's' : ''} available. Start typing to filter the library.`;
+      return;
     }
 
-    function renderFiltered(filtered) {
-      if (filtered.length === 0) {
-        noResults.style.display = 'block';
-      } else {
-        noResults.style.display = 'none';
-      }
-      renderGuides('search-results', filtered);
-    }
+    searchCount.textContent = `${count} troubleshooting guide result${count !== 1 ? 's' : ''} for “${query.trim()}”.`;
+  }
 
-    renderFiltered(initialQuery ? filterGuides(initialQuery) : allGuides);
+  function renderFiltered(query) {
+    const filtered = filterGuides(query);
 
-    searchBar.addEventListener('input', e => {
-      const query = e.target.value;
-      renderFiltered(filterGuides(query));
-    });
-  })
-  .catch(err => console.error('Search load error:', err));
+    noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+
+    renderGuides('search-results', filtered);
+    updateCount(query, filtered.length);
+  }
+
+  renderFiltered(initialQuery);
+
+  searchBar.addEventListener('input', e => {
+    renderFiltered(e.target.value);
+  });
+})
+.catch(err => {
+  console.error('Search load error:', err);
+
+  const searchCount = document.getElementById('search-count');
+  if (searchCount) {
+    searchCount.textContent = 'Troubleshooting guides could not be loaded.';
+  }
+});
 </script>
 
 </body>
