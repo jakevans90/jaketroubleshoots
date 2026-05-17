@@ -268,14 +268,21 @@ function getIconPath(assetType) {
   return assetHub?.icon || '';
 }
 
-function buildStatsLine(allGuides) {
+function buildStatsLine(allGuides, allPmProcedures = []) {
   const totalGuides = allGuides.length;
+  const totalPm = allPmProcedures.length;
 
   const models = new Set(allGuides.map(g => g.model).filter(Boolean));
   const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
   const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
 
-  return `${totalGuides} guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers.`;
+  const guideText = `${totalGuides} troubleshooting guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers`;
+
+  if (!totalPm) {
+    return `${guideText}.`;
+  }
+
+  return `${guideText} — plus ${totalPm} preventive maintenance procedure${totalPm !== 1 ? 's' : ''} and growing.`;
 }
 
 function getGridColumnCount(container) {
@@ -409,7 +416,7 @@ Promise.all([
 
   const statsLine = document.getElementById('stats-line');
   if (statsLine) {
-    statsLine.textContent = buildStatsLine(allGuides);
+    statsLine.textContent = buildStatsLine(allGuides, allPmProcedures);
   }
 
   const featuredUrls = [
