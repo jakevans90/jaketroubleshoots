@@ -321,7 +321,7 @@ function renderPmPreviewCards(containerId, procedures) {
     const iconPath = getIconPath(pm.assetType);
 
     const card = document.createElement('a');
-    card.className = 'guide-card';
+    card.className = 'guide-card pm-card';
     card.href = pm.url;
 
     card.innerHTML = `
@@ -331,6 +331,8 @@ function renderPmPreviewCards(containerId, procedures) {
             ? `<img src="${iconPath}" alt="${pm.assetType} icon" class="guide-card-icon" onerror="this.style.display='none'">`
             : ''
         }
+
+        <span class="pm-card-label">PM Procedure</span>
 
         <h3>${pm.title}</h3>
 
@@ -342,9 +344,9 @@ function renderPmPreviewCards(containerId, procedures) {
 
         <p>${pm.description}</p>
 
-        <p><strong>Interval:</strong> ${pm.interval}</p>
+        <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
 
-        <p><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Yes' : 'No / Not specified'}</p>
+        <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
 
         <p class="date">Added: ${pm.dateAdded}</p>
       </div>
