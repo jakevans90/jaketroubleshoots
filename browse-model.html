@@ -5,7 +5,9 @@
   <title>Browse by Model - Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Google tag (gtag.js) -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -14,9 +16,10 @@
     gtag('config', 'G-1L34E3TJL6');
   </script>
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704"
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
      crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -24,6 +27,7 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
@@ -34,15 +38,20 @@
 </header>
 
 <section class="hero">
-  <h2>Browse Guides by Model</h2>
-  <p>Find troubleshooting guides organized by equipment model.</p>
+  <h2>Browse Resources by Model</h2>
+  <p>Find troubleshooting guides and preventive maintenance procedures by equipment model.</p>
+
   <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-    <a href="guides.html" class="hero-button">Browse All Guides</a>
+    <a href="browse-asset.html" class="hero-button">Browse by Asset Type</a>
+    <a href="browse-manufacturer.html" class="hero-button">Browse by Manufacturer</a>
+    <a href="guides.html" class="hero-button">All Troubleshooting Guides</a>
+    <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
   </div>
 </section>
 
 <section class="browse-section">
   <h3>Models</h3>
+
   <div class="letter-filter">
     <span class="filter-letter active" data-letter="all">All</span>
     <span class="filter-letter" data-letter="0-9">0-9</span>
@@ -73,12 +82,20 @@
     <span class="filter-letter" data-letter="Y">Y</span>
     <span class="filter-letter" data-letter="Z">Z</span>
   </div>
+
   <div id="model-buttons" class="browse-buttons"></div>
 </section>
 
 <div id="hub-banner-inject"></div>
 
-<section id="guides-grid" class="guides-grid" style="padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
+<section id="pm-section-wrap" style="display:none; max-width:1100px; margin:0 auto 20px; padding:0 40px;">
+  <h3 style="border-bottom:3px solid #ff66cc; padding-bottom:8px;">Preventive Maintenance Procedures</h3>
+  <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
+</section>
+
+<section id="guide-section-wrap" style="max-width:1100px; margin:0 auto; padding:0 40px;">
+  <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides</h3>
+  <div id="guides-grid" class="guides-grid" style="padding:20px 0;"></div>
 </section>
 
 <footer>
@@ -92,175 +109,278 @@
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
-  Promise.all([
-    fetchGuides(),
-    fetch('data/hub-model.json').then(r => r.json()),
-    fetch('data/hub-asset.json').then(r => r.json())
-  ]).then(([allGuides, hubData, assetHubData]) => {
-    const container = document.getElementById('guides-grid');
-    const buttonsContainer = document.getElementById('model-buttons');
-    const letters = document.querySelectorAll('.filter-letter');
+Promise.all([
+  fetchGuides(),
+  fetch('data/preventive-maintenance.json').then(r => r.ok ? r.json() : []).catch(() => []),
+  fetch('data/hub-model.json').then(r => r.json()),
+  fetch('data/hub-asset.json').then(r => r.json())
+]).then(([allGuides, allPmProcedures, hubData, assetHubData]) => {
+  const guideContainer = document.getElementById('guides-grid');
+  const pmContainer = document.getElementById('pm-grid');
+  const pmSectionWrap = document.getElementById('pm-section-wrap');
+  const buttonsContainer = document.getElementById('model-buttons');
+  const letters = document.querySelectorAll('.filter-letter');
 
-    if (!container || !buttonsContainer) return;
+  if (!guideContainer || !pmContainer || !buttonsContainer) return;
 
-    function slugify(text) {
-      return (text || '')
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '');
-    }
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
 
-    function findAssetHub(assetType) {
-      return assetHubData.find(a =>
-        a.name === assetType || a.slug === slugify(assetType)
-      );
-    }
+  function sortAlpha(items) {
+    return [...items].sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true })
+    );
+  }
 
-    function showModelHubBanner(modelName) {
-      const bannerEl = document.getElementById('hub-banner-inject');
-      bannerEl.innerHTML = '';
+  function firstCharKey(text) {
+    const char = (text || '').trim().charAt(0).toUpperCase();
+    return /^[0-9]/.test(char) ? '0-9' : char;
+  }
 
-      const hub = hubData.find(h => h.name === modelName && h.flags.exists === true);
-      if (!hub) return;
+  function findAssetHub(assetType) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
 
-      const guides = allGuides.filter(g => g.model === modelName);
-      const manufacturer = guides[0] ? guides[0].manufacturer : '';
-      const assetType = hub?.profile?.assetType || (guides[0] ? guides[0].assetType : '');
-      const assetHub = findAssetHub(assetType);
-      const iconPath = assetHub?.icon || '';
+  function getIconPath(assetType) {
+    const assetHub = findAssetHub(assetType);
+    return assetHub?.icon || '';
+  }
 
-      const blurb = hub.profile?.blurb
-        ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 120)}${hub.profile.blurb.length > 120 ? '…' : ''}</p>`
-        : '';
+  function createGuideCard(guide) {
+    const iconPath = getIconPath(guide.assetType);
 
-      bannerEl.innerHTML = `
-        <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
-          <div class="hub-banner-card">
-            <div class="hub-info">
-              <div class="hub-banner-title">
-                ${iconPath ? `<img src="${iconPath}" alt="${assetType} icon" onerror="this.style.display='none'">` : ''}
-                <h3>${hub.name}</h3>
-              </div>
-              ${blurb}
-              <div class="hub-banner-meta">
-                <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
-                ${manufacturer ? `<span>${manufacturer}</span>` : ''}
-                ${assetType ? `<span>${assetType}</span>` : ''}
-              </div>
-            </div>
-            <a class="hub-banner-btn" href="${hub.url}">View Model Hub →</a>
-          </div>
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <h3>${guide.title}</h3>
+        <p>${guide.description}</p>
+
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
         </div>
-      `;
-    }
 
-    function showGuidesByModel(mod) {
-      showModelHubBanner(mod);
-      container.innerHTML = '';
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
 
-      const filtered = allGuides
-        .filter(g => g.model === mod)
-        .sort((a, b) => a.title.localeCompare(b.title));
+    return card;
+  }
 
-      filtered.forEach(guide => {
-        const assetHub = findAssetHub(guide.assetType);
-        const iconPath = assetHub?.icon || '';
+  function createPmCard(pm) {
+    const iconPath = getIconPath(pm.assetType);
 
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
+    const card = document.createElement('a');
+    card.href = pm.url;
+    card.className = 'guide-card pm-card';
 
-        card.innerHTML = `
-          <div class="card-content">
-            ${iconPath ? `
-              <img
-                src="${iconPath}"
-                alt="${guide.assetType} icon"
-                class="guide-card-icon"
-                onerror="this.style.display='none'"
-              >
-            ` : ''}
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${pm.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <span class="pm-card-label">PM Procedure</span>
+
+        <h3>${pm.title}</h3>
+
+        <div class="badges">
+          <span class="badge asset">${pm.assetType}</span>
+          <span class="badge manufacturer">${pm.manufacturer}</span>
+          <span class="badge model">${pm.model}</span>
+        </div>
+
+        <p>${pm.description}</p>
+
+        <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
+
+        <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
+
+        <p class="date">Added: ${pm.dateAdded}</p>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function showModelHubBanner(modelName) {
+    const bannerEl = document.getElementById('hub-banner-inject');
+    bannerEl.innerHTML = '';
+
+    const hub = hubData.find(h => h.name === modelName && h.flags.exists === true);
+    if (!hub) return;
+
+    const guides = allGuides.filter(g => g.model === modelName);
+    const pmProcedures = allPmProcedures.filter(pm => pm.model === modelName);
+
+    const manufacturer =
+      hub?.profile?.manufacturer ||
+      guides[0]?.manufacturer ||
+      pmProcedures[0]?.manufacturer ||
+      '';
+
+    const assetType =
+      hub?.profile?.assetType ||
+      guides[0]?.assetType ||
+      pmProcedures[0]?.assetType ||
+      '';
+
+    const assetHub = findAssetHub(assetType);
+    const iconPath = assetHub?.icon || '';
+
+    const blurb = hub.profile?.blurb
+      ? `<p style="margin:0 0 10px;color:#aaa;font-size:0.88rem;line-height:1.5;">${hub.profile.blurb.slice(0, 140)}${hub.profile.blurb.length > 140 ? '…' : ''}</p>`
+      : '';
+
+    bannerEl.innerHTML = `
+      <div style="max-width:1100px;margin:0 auto 24px;padding:0 40px;">
+        <div class="hub-banner-card">
+          <div class="hub-info">
+            <div class="hub-banner-title">
+              ${iconPath ? `<img src="${iconPath}" alt="${assetType} icon" onerror="this.style.display='none'">` : ''}
+              <h3>${hub.name}</h3>
             </div>
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
-        `;
 
-        container.appendChild(card);
-      });
+            ${blurb}
+
+            <div class="hub-banner-meta">
+              <span>${guides.length} guide${guides.length !== 1 ? 's' : ''}</span>
+              ${pmProcedures.length ? `<span>${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}</span>` : ''}
+              ${manufacturer ? `<span>${manufacturer}</span>` : ''}
+              ${assetType ? `<span>${assetType}</span>` : ''}
+            </div>
+          </div>
+
+          <a class="hub-banner-btn" href="${hub.url}">View Model Hub →</a>
+        </div>
+      </div>
+    `;
+  }
+
+  function showResourcesByModel(modelName) {
+    showModelHubBanner(modelName);
+
+    const filteredPm = allPmProcedures
+      .filter(pm => pm.model === modelName)
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
+
+    const filteredGuides = allGuides
+      .filter(g => g.model === modelName)
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
+
+    pmContainer.innerHTML = '';
+    guideContainer.innerHTML = '';
+
+    if (filteredPm.length) {
+      filteredPm.forEach(pm => pmContainer.appendChild(createPmCard(pm)));
+      pmSectionWrap.style.display = '';
+    } else {
+      pmSectionWrap.style.display = 'none';
     }
 
-    const models = [...new Set(allGuides.map(g => g.model))].sort();
+    if (filteredGuides.length) {
+      filteredGuides.forEach(guide => guideContainer.appendChild(createGuideCard(guide)));
+    } else {
+      guideContainer.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No troubleshooting guides found for this model yet.</p>';
+    }
+  }
 
-    models.forEach(mod => {
-      const btn = document.createElement('a');
-      btn.href = '#';
-      btn.textContent = mod;
-      btn.classList.add('browse-button');
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        showGuidesByModel(mod);
-      });
-      buttonsContainer.appendChild(btn);
+  const models = sortAlpha([
+    ...new Set([
+      ...allGuides.map(g => g.model),
+      ...allPmProcedures.map(pm => pm.model)
+    ].filter(Boolean))
+  ]);
+
+  models.forEach(model => {
+    const btn = document.createElement('a');
+    btn.href = '#';
+    btn.textContent = model;
+    btn.classList.add('browse-button');
+
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showResourcesByModel(model);
     });
 
-    letters.forEach(letterEl => {
-      const letter = letterEl.dataset.letter.toUpperCase();
+    buttonsContainer.appendChild(btn);
+  });
 
-      if (letter === 'ALL') {
-        letterEl.style.display = '';
-      } else if (letter === '0-9') {
-        letterEl.style.display = models.some(m => /^[0-9]/.test(m)) ? '' : 'none';
-      } else {
-        letterEl.style.display = models.some(m => m[0].toUpperCase() === letter) ? '' : 'none';
-      }
-    });
+  letters.forEach(letterEl => {
+    const letter = letterEl.dataset.letter.toUpperCase();
 
-    letters.forEach(letter => {
-      letter.addEventListener('click', () => {
-        const selected = letter.dataset.letter.toUpperCase();
-        letters.forEach(l => l.classList.remove('active'));
-        letter.classList.add('active');
+    if (letter === 'ALL') {
+      letterEl.style.display = '';
+    } else {
+      letterEl.style.display = models.some(model => firstCharKey(model) === letter) ? '' : 'none';
+    }
+  });
 
-        const buttons = document.querySelectorAll('#model-buttons .browse-button');
+  letters.forEach(letter => {
+    letter.addEventListener('click', () => {
+      const selected = letter.dataset.letter.toUpperCase();
 
-        buttons.forEach(btn => {
-          const firstChar = btn.textContent[0].toUpperCase();
+      letters.forEach(l => l.classList.remove('active'));
+      letter.classList.add('active');
 
-          if (selected === 'ALL') {
-            btn.style.display = '';
-          } else if (selected === '0-9' && /[0-9]/.test(firstChar)) {
-            btn.style.display = '';
-          } else {
-            btn.style.display = firstChar === selected ? '' : 'none';
-          }
-        });
+      const buttons = document.querySelectorAll('#model-buttons .browse-button');
 
-        const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
-        if (firstVisible) {
-          firstVisible.click();
+      buttons.forEach(btn => {
+        const key = firstCharKey(btn.textContent);
+
+        if (selected === 'ALL') {
+          btn.style.display = '';
         } else {
-          container.innerHTML = '';
-          document.getElementById('hub-banner-inject').innerHTML = '';
+          btn.style.display = key === selected ? '' : 'none';
         }
       });
+
+      const firstVisible = Array.from(buttons).find(b => b.style.display !== 'none');
+
+      if (firstVisible) {
+        firstVisible.click();
+      } else {
+        guideContainer.innerHTML = '';
+        pmContainer.innerHTML = '';
+        pmSectionWrap.style.display = 'none';
+        document.getElementById('hub-banner-inject').innerHTML = '';
+      }
     });
-
-    const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
-      .find(b => b.style.display !== 'none');
-
-    if (firstVisible) firstVisible.click();
-
-  }).catch(err => {
-    console.error('Guide load error:', err);
   });
+
+  const firstVisible = Array.from(document.querySelectorAll('#model-buttons .browse-button'))
+    .find(b => b.style.display !== 'none');
+
+  if (firstVisible) firstVisible.click();
+
+}).catch(err => console.error('Resource load error:', err));
 </script>
 
 </body>
