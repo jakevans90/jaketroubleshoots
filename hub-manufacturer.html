@@ -63,8 +63,8 @@
   </div>
 
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
-    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Model</h3>
-    <div id="model-section"></div>
+    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Asset Type and Model</h3>
+    <div id="asset-section"></div>
   </div>
 
 </main>
@@ -97,7 +97,7 @@
 
   const pmSectionWrapEl = document.getElementById('pm-section-wrap');
   const pmGridEl = document.getElementById('pm-grid');
-  const modelSectionEl = document.getElementById('model-section');
+  const assetSectionEl = document.getElementById('asset-section');
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
@@ -222,11 +222,46 @@
     pmSectionWrapEl.style.display = '';
   }
 
-  function renderGuidesByModel(guides, assetHubData) {
-    clearElement(modelSectionEl);
+  function createGuideCard(guide, assetHubData) {
+    const iconPath = getIconPath(guide.assetType, assetHubData);
+
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <h3>${guide.title}</h3>
+
+        <p>${guide.description}</p>
+
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
+        </div>
+
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderGuidesByAssetTypeAndModel(guides, assetHubData) {
+    clearElement(assetSectionEl);
 
     if (!guides.length) {
-      modelSectionEl.innerHTML = `
+      assetSectionEl.innerHTML = `
         <div class="content-box" style="max-width:100%; margin-top:20px;">
           <p style="margin:0;">No troubleshooting guides found for this manufacturer yet.</p>
         </div>
@@ -234,69 +269,75 @@
       return;
     }
 
-    const byModel = {};
+    const byAssetType = {};
 
     guides.forEach(guide => {
-      if (!byModel[guide.model]) byModel[guide.model] = [];
-      byModel[guide.model].push(guide);
+      if (!byAssetType[guide.assetType]) {
+        byAssetType[guide.assetType] = {};
+      }
+
+      if (!byAssetType[guide.assetType][guide.model]) {
+        byAssetType[guide.assetType][guide.model] = [];
+      }
+
+      byAssetType[guide.assetType][guide.model].push(guide);
     });
 
-    Object.keys(byModel).sort().forEach(model => {
-      const modelGuides = byModel[model].sort((a, b) => a.title.localeCompare(b.title));
+    Object.keys(byAssetType).sort().forEach(assetType => {
+      const assetBlock = document.createElement('div');
+      assetBlock.style.marginBottom = '48px';
 
-      const block = document.createElement('div');
-      block.style.marginBottom = '40px';
+      const assetGuideCount = Object.values(byAssetType[assetType])
+        .reduce((total, modelGuides) => total + modelGuides.length, 0);
 
-      block.innerHTML = `
-        <h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          ${model}
+      const assetIconPath = getIconPath(assetType, assetHubData);
+
+      assetBlock.innerHTML = `
+        <h4 style="margin:0 0 18px;font-size:1.2rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          ${assetIconPath ? `
+            <img
+              src="${assetIconPath}"
+              alt="${assetType} icon"
+              style="width:32px; height:32px; object-fit:contain; border-radius:8px; border:2px solid #111; padding:3px; background:#fff;"
+              onerror="this.style.display='none'"
+            >
+          ` : ''}
+          ${assetType}
           <span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
-            ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
+            ${assetGuideCount} guide${assetGuideCount !== 1 ? 's' : ''}
           </span>
         </h4>
       `;
 
-      const grid = document.createElement('div');
-      grid.className = 'guides-grid';
-      grid.style.padding = '20px 0';
+      Object.keys(byAssetType[assetType]).sort().forEach(model => {
+        const modelGuides = byAssetType[assetType][model]
+          .sort((a, b) => a.title.localeCompare(b.title));
 
-      modelGuides.forEach(guide => {
-        const iconPath = getIconPath(guide.assetType, assetHubData);
+        const modelBlock = document.createElement('div');
+        modelBlock.style.margin = '0 0 34px 0';
 
-        const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
-
-        card.innerHTML = `
-          <div class="card-content">
-            ${iconPath ? `
-              <img
-                src="${iconPath}"
-                alt="${guide.assetType} icon"
-                class="guide-card-icon"
-                onerror="this.style.display='none'"
-              >
-            ` : ''}
-
-            <h3>${guide.title}</h3>
-
-            <p>${guide.description}</p>
-
-            <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
-            </div>
-
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-          </div>
+        modelBlock.innerHTML = `
+          <h5 style="margin:0 0 14px;font-size:1rem;color:#333;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            ${model}
+            <span style="background:#f2f2f2;color:#111;font-size:0.76rem;font-weight:bold;padding:3px 10px;border-radius:20px;border:1px solid #ddd;">
+              ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
+            </span>
+          </h5>
         `;
 
-        grid.appendChild(card);
+        const grid = document.createElement('div');
+        grid.className = 'guides-grid';
+        grid.style.padding = '10px 0 20px';
+
+        modelGuides.forEach(guide => {
+          grid.appendChild(createGuideCard(guide, assetHubData));
+        });
+
+        modelBlock.appendChild(grid);
+        assetBlock.appendChild(modelBlock);
       });
 
-      block.appendChild(grid);
-      modelSectionEl.appendChild(block);
+      assetSectionEl.appendChild(assetBlock);
     });
   }
 
@@ -372,7 +413,7 @@
     }
 
     renderPmCards(pmProcedures, assetHubData);
-    renderGuidesByModel(guides, assetHubData);
+    renderGuidesByAssetTypeAndModel(guides, assetHubData);
 
     loadingEl.style.display = 'none';
     hubBodyEl.style.display = '';
