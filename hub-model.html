@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title id="page-title">Model Hub – Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
+
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,8 +15,10 @@
     gtag('js', new Date());
     gtag('config', 'G-1L34E3TJL6');
   </script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -20,10 +26,12 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
     <a href="search.html">Search</a>
+    <a href="preventive-maintenance.html">PMs</a>
     <a href="vendors.html">Vendors</a>
     <a href="contact.html">About</a>
   </nav>
@@ -36,14 +44,18 @@
     <img id="model-hero-img" src="" alt="">
   </div>
 
-  <p id="hub-subtitle">All troubleshooting guides for this model</p>
+  <p id="hub-subtitle">Troubleshooting guides and preventive maintenance procedures for this model.</p>
+
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
+
   <div style="margin-top:20px;">
     <a href="browse-model.html" class="hero-button">← All Models</a>
   </div>
 </section>
 
-<div id="loading" style="text-align:center; padding:60px 20px; color:#666; font-size:1.1rem;">Loading…</div>
+<div id="loading" style="text-align:center; padding:60px 20px; color:#666; font-size:1.1rem;">
+  Loading…
+</div>
 
 <main id="hub-body" style="display:none;">
 
@@ -59,22 +71,28 @@
       <h3>💡 Tips</h3>
       <ul id="hub-tips" style="padding-left:20px; margin:0;"></ul>
     </div>
+
     <div class="content-box" id="hub-warnings-box" style="display:none;">
       <h3>⚠️ Warnings</h3>
       <ul id="hub-warnings" style="padding-left:20px; margin:0;"></ul>
     </div>
   </div>
 
+  <div id="pm-section-wrap" style="display:none; max-width:1100px; margin:0 auto 40px; padding:0 20px;">
+    <h3 style="border-bottom:3px solid #ff66cc; padding-bottom:8px;">Preventive Maintenance Procedures</h3>
+    <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
+  </div>
+
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
-    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">All Guides</h3>
-    <div id="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:20px 0;"></div>
+    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides</h3>
+    <div id="guides-grid" class="guides-grid" style="padding:20px 0;"></div>
   </div>
 
 </main>
 
 <div class="content-box" id="hub-suggest" style="display:none; text-align:center; max-width:700px;">
-  <h3>Missing a guide for this Model?</h3>
-  <p style="color:#555;">Tell us what equipment or problem you'd like covered.</p>
+  <h3>Missing a guide or PM procedure for this Model?</h3>
+  <p style="color:#555;">Tell us what equipment, problem, or PM procedure you'd like covered.</p>
   <div class="suggest-cta">
     <a href="suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
   </div>
@@ -88,9 +106,37 @@
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
+(async function () {
+  const loadingEl = document.getElementById('loading');
+  const hubBodyEl = document.getElementById('hub-body');
+  const hubSuggestEl = document.getElementById('hub-suggest');
+  const hubNameEl = document.getElementById('hub-name');
+  const hubMetaEl = document.getElementById('hub-meta');
+  const hubProfileEl = document.getElementById('hub-profile');
+
+  const issuesSectionEl = document.getElementById('section-issues');
+  const issuesListEl = document.getElementById('hub-issues');
+
+  const tipsSectionEl = document.getElementById('section-tips');
+  const tipsBoxEl = document.getElementById('hub-tips-box');
+  const tipsListEl = document.getElementById('hub-tips');
+
+  const warningsBoxEl = document.getElementById('hub-warnings-box');
+  const warningsListEl = document.getElementById('hub-warnings');
+
+  const pmSectionWrapEl = document.getElementById('pm-section-wrap');
+  const pmGridEl = document.getElementById('pm-grid');
+  const guidesGridEl = document.getElementById('guides-grid');
+
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
+
+  if (!slug) {
+    loadingEl.textContent = 'No model specified.';
+    return;
+  }
 
   function slugify(text) {
     return (text || '')
@@ -98,6 +144,19 @@
       .trim()
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function clearElement(el) {
+    if (el) el.innerHTML = '';
+  }
+
+  function addMetaPill(text) {
+    if (!text) return;
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
+    hubMetaEl.appendChild(span);
   }
 
   function findAssetHub(assetType, assetHubData) {
@@ -111,145 +170,283 @@
     return assetHub?.icon || '';
   }
 
-  if (!slug) {
-    document.getElementById('loading').textContent = 'No model specified.';
-  } else {
-    Promise.all([
-      fetchGuides(),
-      fetch('data/hub-model.json').then(r => r.json()),
-      fetch('data/hub-asset.json').then(r => r.json())
-    ])
-    .then(([allGuides, hubData, assetHubData]) => {
+  function renderList(items, listEl) {
+    clearElement(listEl);
 
-      const hub = hubData.find(h => h.slug === slug);
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      listEl.appendChild(li);
+    });
+  }
 
-      const guides = allGuides.filter(g =>
-        hub ? g.model === hub.name : slugify(g.model) === slug
-      ).sort((a, b) => a.title.localeCompare(b.title));
+  function createModelProfileHtml(hub, name) {
+    const p = hub.profile || {};
+    let html = '';
 
-      const name = hub ? hub.name : (guides[0] ? guides[0].model : slug);
-      const manufacturer = guides[0] ? guides[0].manufacturer : '';
-      const assetType = hub?.profile?.assetType || (guides[0] ? guides[0].assetType : '');
+    html += `<h3>${name}</h3>`;
 
-      document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
-      document.getElementById('hub-name').textContent = name;
+    if (p.blurb) {
+      html += `<p>${p.blurb}</p>`;
+    }
 
-      const metaEl = document.getElementById('hub-meta');
-      [`${guides.length} guide${guides.length !== 1 ? 's' : ''}`, manufacturer, assetType]
-        .filter(Boolean)
-        .forEach(text => {
-          const span = document.createElement('span');
-          span.textContent = text;
-          span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
-          metaEl.appendChild(span);
-        });
+    if (p.manufacturer) {
+      html += `<p><strong>Manufacturer:</strong> ${p.manufacturer}</p>`;
+    }
 
-      const assetHub = findAssetHub(assetType, assetHubData);
-      const iconPath = assetHub?.icon || '';
+    if (p.assetType) {
+      html += `<p><strong>Asset Type:</strong> ${p.assetType}</p>`;
+    }
 
-      const iconWrap = document.getElementById('model-hero-icon');
-      const iconImg = document.getElementById('model-hero-img');
+    if (p.website) {
+      html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank" rel="noopener">${p.website.replace('https://', '').replace('http://', '')}</a></p>`;
+    }
 
-      if (iconPath && iconWrap && iconImg) {
-        iconImg.src = iconPath;
-        iconImg.alt = `${assetType} icon`;
+    return html;
+  }
 
-        iconImg.onload = () => iconWrap.style.display = 'flex';
-        iconImg.onerror = () => iconWrap.style.display = 'none';
-      }
+  function renderPmCards(pmProcedures, assetHubData) {
+    clearElement(pmGridEl);
 
-      if (hub) {
-        const p = hub.profile || {};
-        let html = '';
+    if (!pmProcedures.length) {
+      pmSectionWrapEl.style.display = 'none';
+      return;
+    }
 
-        if (p.blurb) html += `<p>${p.blurb}</p>`;
-        if (p.manufacturer) html += `<p><strong>Manufacturer:</strong> ${p.manufacturer}</p>`;
-        if (p.assetType) html += `<p><strong>Asset Type:</strong> ${p.assetType}</p>`;
-        if (p.website) html += `<p><strong>More Info:</strong> <a href="${p.website}" target="_blank">${p.website.replace('https://','')}</a></p>`;
-
-        if (html) {
-          document.getElementById('hub-profile').innerHTML = `<h3>${name}</h3>${html}`;
-          document.getElementById('hub-profile').style.display = '';
-        }
-
-        if (hub.content?.commonIssues?.length) {
-          hub.content.commonIssues.forEach(issue => {
-            const li = document.createElement('li');
-            li.textContent = issue;
-            document.getElementById('hub-issues').appendChild(li);
-          });
-          document.getElementById('section-issues').style.display = '';
-        }
-
-        if (hub.content?.tips?.length) {
-          hub.content.tips.forEach(tip => {
-            const li = document.createElement('li');
-            li.textContent = tip;
-            document.getElementById('hub-tips').appendChild(li);
-          });
-          document.getElementById('hub-tips-box').style.display = '';
-          document.getElementById('section-tips').style.display = 'grid';
-        }
-
-        if (hub.content?.warnings?.length) {
-          hub.content.warnings.forEach(warning => {
-            const li = document.createElement('li');
-            li.textContent = warning;
-            document.getElementById('hub-warnings').appendChild(li);
-          });
-          document.getElementById('hub-warnings-box').style.display = '';
-          document.getElementById('section-tips').style.display = 'grid';
-        }
-      }
-
-      const grid = document.getElementById('guides-grid');
-
-      guides.forEach(guide => {
-        const iconPath = getIconPath(guide.assetType, assetHubData);
+    pmProcedures
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .forEach(pm => {
+        const iconPath = getIconPath(pm.assetType, assetHubData);
 
         const card = document.createElement('a');
-        card.href = guide.url;
-        card.classList.add('guide-card');
+        card.href = pm.url;
+        card.className = 'guide-card pm-card';
 
         card.innerHTML = `
           <div class="card-content">
-
             ${iconPath ? `
-              <div style="display:flex; justify-content:center; margin-bottom:14px;">
-                <img
-                  src="${iconPath}"
-                  alt="${guide.assetType} icon"
-                  class="guide-card-icon"
-                  style="width:56px; height:56px; object-fit:contain;"
-                  onerror="this.style.display='none'"
-                >
-              </div>
+              <img
+                src="${iconPath}"
+                alt="${pm.assetType} icon"
+                class="guide-card-icon"
+                onerror="this.style.display='none'"
+              >
             ` : ''}
 
-            <h3>${guide.title}</h3>
-            <p>${guide.description}</p>
+            <span class="pm-card-label">PM Procedure</span>
+
+            <h3>${pm.title}</h3>
+
             <div class="badges">
-              <span class="badge asset">${guide.assetType}</span>
-              <span class="badge manufacturer">${guide.manufacturer}</span>
-              <span class="badge model">${guide.model}</span>
+              <span class="badge asset">${pm.assetType}</span>
+              <span class="badge manufacturer">${pm.manufacturer}</span>
+              <span class="badge model">${pm.model}</span>
             </div>
-            <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+
+            <p>${pm.description}</p>
+
+            <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
+
+            <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
+
+            <p class="date">Added: ${pm.dateAdded}</p>
           </div>
         `;
 
-        grid.appendChild(card);
+        pmGridEl.appendChild(card);
       });
 
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('hub-body').style.display = '';
-      document.getElementById('hub-suggest').style.display = '';
-
-    })
-    .catch(err => {
-      document.getElementById('loading').textContent = 'Error loading data.';
-      console.error(err);
-    });
+    pmSectionWrapEl.style.display = '';
   }
+
+  function createGuideCard(guide, assetHubData) {
+    const iconPath = getIconPath(guide.assetType, assetHubData);
+
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <h3>${guide.title}</h3>
+
+        <p>${guide.description}</p>
+
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
+        </div>
+
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderGuideCards(guides, assetHubData) {
+    clearElement(guidesGridEl);
+
+    if (!guides.length) {
+      guidesGridEl.innerHTML = `
+        <p style="text-align:center; grid-column:1/-1;">No troubleshooting guides found for this model yet.</p>
+      `;
+      return;
+    }
+
+    guides
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .forEach(guide => {
+        guidesGridEl.appendChild(createGuideCard(guide, assetHubData));
+      });
+  }
+
+  try {
+    const [allGuides, allPmProcedures, hubData, assetHubData] = await Promise.all([
+      fetchGuides(),
+
+      fetch('data/preventive-maintenance.json')
+        .then(r => r.ok ? r.json() : [])
+        .catch(() => []),
+
+      fetch('data/hub-model.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-model.json');
+        return r.json();
+      }),
+
+      fetch('data/hub-asset.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-asset.json');
+        return r.json();
+      })
+    ]);
+
+    const hub = hubData.find(h => h.slug === slug);
+
+    const guides = allGuides.filter(guide => {
+      if (hub) return guide.model === hub.name;
+      return slugify(guide.model) === slug;
+    });
+
+    const pmProcedures = allPmProcedures.filter(pm => {
+      if (hub) return pm.model === hub.name;
+      return slugify(pm.model) === slug;
+    });
+
+    const name = hub ? hub.name : (guides[0]?.model || pmProcedures[0]?.model || slug);
+
+    const manufacturer =
+      hub?.profile?.manufacturer ||
+      guides[0]?.manufacturer ||
+      pmProcedures[0]?.manufacturer ||
+      '';
+
+    const assetType =
+      hub?.profile?.assetType ||
+      guides[0]?.assetType ||
+      pmProcedures[0]?.assetType ||
+      '';
+
+    document.title = `${name} Resources – Jake Troubleshoots`;
+    hubNameEl.textContent = name;
+
+    clearElement(hubMetaEl);
+
+    addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`);
+
+    if (pmProcedures.length) {
+      addMetaPill(`${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}`);
+    }
+
+    if (manufacturer) {
+      addMetaPill(manufacturer);
+    }
+
+    if (assetType) {
+      addMetaPill(assetType);
+    }
+
+    const assetHub = findAssetHub(assetType, assetHubData);
+    const iconPath = assetHub?.icon || '';
+
+    const iconWrap = document.getElementById('model-hero-icon');
+    const iconImg = document.getElementById('model-hero-img');
+
+    if (iconPath && iconWrap && iconImg) {
+      iconImg.src = iconPath;
+      iconImg.alt = `${assetType} icon`;
+
+      iconImg.onload = () => {
+        iconWrap.style.display = 'flex';
+      };
+
+      iconImg.onerror = () => {
+        iconWrap.style.display = 'none';
+      };
+    }
+
+    if (hub) {
+      const html = createModelProfileHtml(hub, name);
+
+      if (html.trim()) {
+        hubProfileEl.innerHTML = html;
+        hubProfileEl.style.display = '';
+      } else {
+        hubProfileEl.style.display = 'none';
+      }
+
+      if (Array.isArray(hub.content?.commonIssues) && hub.content.commonIssues.length) {
+        renderList(hub.content.commonIssues, issuesListEl);
+        issuesSectionEl.style.display = '';
+      } else {
+        issuesSectionEl.style.display = 'none';
+      }
+
+      const hasTips = Array.isArray(hub.content?.tips) && hub.content.tips.length;
+      const hasWarnings = Array.isArray(hub.content?.warnings) && hub.content.warnings.length;
+
+      if (hasTips) {
+        renderList(hub.content.tips, tipsListEl);
+        tipsBoxEl.style.display = '';
+      } else {
+        tipsBoxEl.style.display = 'none';
+      }
+
+      if (hasWarnings) {
+        renderList(hub.content.warnings, warningsListEl);
+        warningsBoxEl.style.display = '';
+      } else {
+        warningsBoxEl.style.display = 'none';
+      }
+
+      tipsSectionEl.style.display = (hasTips || hasWarnings) ? 'grid' : 'none';
+    } else {
+      hubProfileEl.style.display = 'none';
+      issuesSectionEl.style.display = 'none';
+      tipsSectionEl.style.display = 'none';
+    }
+
+    renderPmCards(pmProcedures, assetHubData);
+    renderGuideCards(guides, assetHubData);
+
+    loadingEl.style.display = 'none';
+    hubBodyEl.style.display = '';
+    hubSuggestEl.style.display = '';
+  } catch (err) {
+    console.error(err);
+    loadingEl.textContent = 'Error loading model hub data.';
+  }
+})();
 </script>
+
 </body>
 </html>

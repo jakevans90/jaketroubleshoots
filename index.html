@@ -36,6 +36,7 @@
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
     <a href="search.html">Search</a>
+    <a href="preventive-maintenance.html">PMs</a>
     <a href="vendors.html">Vendors</a>
     <a href="contact.html">About</a>
   </nav>
@@ -49,8 +50,8 @@
   </p>
 
   <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
-    Search guides by device, model, manufacturer, alarm, error, or equipment issue — with biomed basics, PM procedure planning, and vendor resources being built around the guide library.
-  </p>
+  Search by device, model, manufacturer, alarm, error, or issue — with PM procedures, Biomed Basics, vendor contacts, and equipment hubs built around the guide library.
+</p>
 
   <p id="stats-line" style="max-width:700px; margin:12px auto 0; font-size:0.95em; font-weight:600; opacity:0.95;"></p>
 
@@ -60,9 +61,11 @@
   </form>
 
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-    <a href="guides.html" class="hero-button">Browse All Guides</a>
-    <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
-  </div>
+  <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
+  <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
+  <a href="search.html" class="hero-button">Guide Search</a>
+  <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
+</div>
 </section>
 
 <section class="homepage-section troubleshooting-section">
@@ -75,9 +78,9 @@
   </div>
 
   <div class="browse-buttons browse-buttons-large">
-    <a href="browse-asset.html">Asset Type</a>
-    <a href="browse-manufacturer.html">Manufacturer</a>
-    <a href="browse-model.html">Model</a>
+    <a href="browse-asset.html">Browse by Asset Type</a>
+    <a href="browse-manufacturer.html">Browse by Manufacturer</a>
+    <a href="browse-model.html">Browse by Model</a>
   </div>
 
   <div class="section-callout">
@@ -85,7 +88,10 @@
       The troubleshooting guide library is the core of Jake Troubleshoots. Guides are organized so BMETs and clinical engineering staff can search by equipment type, manufacturer, model, alarm, error, symptom, or issue.
     </p>
 
-    <a href="guides.html" class="hero-button">View All Troubleshooting Guides</a>
+    <div class="hero-buttons" style="margin-top:18px;">
+      <a href="guides.html" class="hero-button">View All Troubleshooting Guides</a>
+      <a href="preventive-maintenance.html" class="hero-button">View PM Procedures</a>
+    </div>
   </div>
 </section>
 
@@ -119,6 +125,20 @@
   <div id="pm-preview-grid" class="guides-grid"></div>
 </section>
 
+<section class="content-box vendor-home-section" style="text-align:center;">
+  <p class="section-kicker">Vendor Support</p>
+
+  <h3>Vendor Contact Rolodex</h3>
+
+  <p>
+    Need manufacturer support? Browse vendor contact information for medical equipment companies and service support resources.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px;">
+    <a href="vendors.html" class="hero-button">Browse Vendor Contacts</a>
+  </div>
+</section>
+  
 <section class="homepage-section learning-section">
   <div class="section-header">
     <p class="section-kicker">Learn &amp; Practice</p>
@@ -190,19 +210,6 @@
   </div>
 </section>
 
-<section class="content-box vendor-home-section" style="text-align:center;">
-  <p class="section-kicker">Vendor Support</p>
-
-  <h3>Vendor Contact Rolodex</h3>
-
-  <p>
-    Need manufacturer support? Browse vendor contact information for medical equipment companies and service support resources.
-  </p>
-
-  <div class="hero-buttons" style="margin-top:20px;">
-    <a href="vendors.html" class="hero-button">Browse Vendor Contacts</a>
-  </div>
-</section>
 
 <section class="homepage-section featured-guides-section">
   <div class="section-header">
@@ -221,7 +228,7 @@
     <p class="section-kicker">Recently Added</p>
     <h3>Most Recent Guides</h3>
     <p>
-      Newly published troubleshooting guides and recently added equipment resources.
+      Newly published troubleshooting guides added to the biomedical equipment troubleshooting database.
     </p>
   </div>
 
@@ -268,14 +275,21 @@ function getIconPath(assetType) {
   return assetHub?.icon || '';
 }
 
-function buildStatsLine(allGuides) {
+function buildStatsLine(allGuides, allPmProcedures = []) {
   const totalGuides = allGuides.length;
+  const totalPm = allPmProcedures.length;
 
   const models = new Set(allGuides.map(g => g.model).filter(Boolean));
   const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
   const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
 
-  return `${totalGuides} guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers.`;
+  const guideText = `${totalGuides} troubleshooting guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers`;
+
+  if (!totalPm) {
+    return `${guideText}.`;
+  }
+
+  return `${guideText} — plus ${totalPm} preventive maintenance procedure${totalPm !== 1 ? 's' : ''} and growing.`;
 }
 
 function getGridColumnCount(container) {
@@ -299,6 +313,16 @@ function renderGuideRows(containerId, allGuides, rowCount) {
   const guidesToShow = getRecentGuides(allGuides, cardCount);
   renderGuides(containerId, guidesToShow);
 }
+
+function renderFixedGuideRows(containerId, guides, rowCount) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const columns = getGridColumnCount(container);
+  const cardCount = columns * rowCount;
+
+  renderGuides(containerId, guides.slice(0, cardCount));
+}  
 
 function getRecentPmProcedures(allPmProcedures, count) {
   return [...allPmProcedures]
@@ -409,7 +433,7 @@ Promise.all([
 
   const statsLine = document.getElementById('stats-line');
   if (statsLine) {
-    statsLine.textContent = buildStatsLine(allGuides);
+    statsLine.textContent = buildStatsLine(allGuides, allPmProcedures);
   }
 
   const featuredUrls = [
@@ -419,13 +443,19 @@ Promise.all([
     'guides/zoll-x-series-battery-wont-charge-or-hold-power.html',
     'guides/siemens-rapidpoint-500-500e-series-sample-aspiration-failure.html',
     'guides/welch-allyn-connex-6000-series-error-000000013-the-communication-module-or-main-board-failed.html',
+    'guides/ge-b850-error-0xhost1002-internal-voltage-out-of-spec.html',
+    'guides/zoll-r-series-error-check-recorder.html',
+    'guides/puritan-bennett-840-alarm-no-o2-supply-loss-of-oxygen-source.html',
+    'guides/steris-amsco-4085-table-movement-functions-inoperative.html',
+    'guides/medtronic-valleylab-ft10-error-e235-rem-pad-contact-quality.html',
+    'guides/icu-medical-plum-360-air-in-line-alarms.html'
   ];
 
   const featured = featuredUrls
     .map(url => allGuides.find(g => g.url === url))
     .filter(Boolean);
 
-  renderGuides('featured-grid', featured);
+renderFixedGuideRows('featured-grid', featured, 2);
 
   // Show 4 full rows of recent guides based on the current screen width
   renderGuideRows('guides-grid', allGuides, 4);
@@ -437,11 +467,12 @@ Promise.all([
   // Recalculate recent guide count when the browser window is resized
   let resizeTimer;
   window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      renderGuideRows('guides-grid', allGuides, 4);
-    }, 150);
-  });
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    renderFixedGuideRows('featured-grid', featured, 2);
+    renderGuideRows('guides-grid', allGuides, 4);
+  }, 150);
+});
 })
 .catch(err => console.error('Homepage load error:', err));
 

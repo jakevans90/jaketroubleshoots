@@ -268,17 +268,30 @@ footer a:hover {
 .email-box {
   display: inline-block;
   background: var(--black-soft);
-  color: var(--lime);
-  padding: 20px 30px;
-  border-radius: var(--radius-xl);
+  color: white;
+  padding: 16px 24px;
+  border-radius: var(--radius-sm);
   margin: 20px auto 0;
   text-align: center;
+  font-weight: bold;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.email-box:hover {
+  background: var(--black);
+  border-color: var(--lime);
 }
 
 .email-box a {
-  color: var(--lime);
-  font-size: 1.2rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
   text-decoration: none;
+}
+
+.email-box:hover a {
+  color: var(--lime);
 }
 
 /* =========================
@@ -484,18 +497,20 @@ footer a:hover {
 /* =========================
    Vendor Grid / Cards
    ========================= */
+
 #vendors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
   gap: 20px;
-  justify-items: center;
+  justify-content: center;
   padding: 20px 0;
 }
 
 .vendor-card {
   width: 100%;
-  max-width: 450px;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
   text-decoration: none;
   color: inherit;
   box-sizing: border-box;
@@ -510,11 +525,11 @@ footer a:hover {
 .vendor-card .card-content {
   background: var(--surface);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  min-height: 100%;
+  flex: 1 1 auto;
+  height: 100%;
   box-shadow: var(--shadow-sm);
   font-size: 14px;
   line-height: 1.4;
@@ -545,6 +560,45 @@ footer a:hover {
   font-size: 14px;
   color: var(--text);
   text-decoration: underline;
+}
+
+.homepage-section.vendor-directory-section {
+  max-width: none;
+  width: 100%;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.vendor-directory-section .section-header {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vendor-directory-section #vendors-grid {
+  width: 100%;
+}
+
+#vendor-search-input {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  min-width: 200px;
+  box-sizing: border-box;
+  margin: 20px auto 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .homepage-section.vendor-directory-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 /* =========================
@@ -1443,4 +1497,70 @@ footer a:hover {
   font-size: 0.85rem;
   font-weight: bold;
   color: var(--text);
+}
+
+/* =========================
+   Biomed Basics Article Cards
+   ========================= */
+
+.guide-card.basics-card {
+  min-height: 320px;
+}
+
+.guide-card.basics-card .card-content {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.guide-card.basics-card .card-content h3 {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.guide-card.basics-card .card-content p:not(.date) {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  overflow: visible !important;
+  max-height: none !important;
+  line-height: 1.5;
+}
+
+.guide-card.basics-card .badges {
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.guide-card.basics-card .date {
+  text-align: center;
+}
+
+/* Contact email button */
+.content-box .email-box {
+  display: inline-block;
+  background: var(--black);
+  color: white;
+  padding: 14px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin: 20px auto 0;
+  text-align: center;
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.content-box .email-box:hover {
+  background: var(--black-soft);
+  border-color: var(--lime);
+}
+
+.content-box .email-box a {
+  color: white !important;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.content-box .email-box:hover a {
+  color: var(--lime) !important;
 }

@@ -5,6 +5,9 @@
   <title>Asset Type Hub – Jake Troubleshoots</title>
   <link rel="stylesheet" href="style.css">
 
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,6 +18,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
 <header>
@@ -22,10 +26,12 @@
     <img src="images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
     <span class="logo-text">Jake Troubleshoots</span>
   </a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="guides.html">Guides</a>
     <a href="search.html">Search</a>
+    <a href="preventive-maintenance.html">PMs</a>
     <a href="vendors.html">Vendors</a>
     <a href="contact.html">About</a>
   </nav>
@@ -38,8 +44,10 @@
     <img id="asset-hero-img" src="" alt="">
   </div>
 
-  <p id="hub-subtitle">Troubleshooting guides organized by manufacturer</p>
+  <p id="hub-subtitle">Troubleshooting guides and preventive maintenance procedures organized by asset type.</p>
+
   <div id="hub-meta" style="margin-top:12px; display:flex; justify-content:center; flex-wrap:wrap; gap:10px;"></div>
+
   <div style="margin-top:20px;">
     <a href="browse-asset.html" class="hero-button">← All Asset Types</a>
   </div>
@@ -63,22 +71,28 @@
       <h3>💡 Tips</h3>
       <ul id="hub-tips" style="padding-left:20px; margin:0;"></ul>
     </div>
+
     <div class="content-box" id="hub-warnings-box" style="display:none;">
       <h3>⚠️ Warnings</h3>
       <ul id="hub-warnings" style="padding-left:20px; margin:0;"></ul>
     </div>
   </div>
 
+  <div id="pm-section-wrap" style="display:none; max-width:1100px; margin:0 auto 40px; padding:0 20px;">
+    <h3 style="border-bottom:3px solid #ff66cc; padding-bottom:8px;">Preventive Maintenance Procedures</h3>
+    <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
+  </div>
+
   <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
-    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Guides by Manufacturer</h3>
+    <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides by Manufacturer and Model</h3>
     <div id="manufacturer-section"></div>
   </div>
 
 </main>
 
 <div class="content-box" id="hub-suggest" style="display:none; text-align:center; max-width:700px;">
-  <h3>Missing a guide for this Asset Type?</h3>
-  <p style="color:#555;">Tell us what equipment or problem you'd like covered.</p>
+  <h3>Missing a guide or PM procedure for this Asset Type?</h3>
+  <p style="color:#555;">Tell us what equipment, problem, or PM procedure you'd like covered.</p>
   <div class="suggest-cta">
     <a href="suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
   </div>
@@ -92,262 +106,388 @@
 </footer>
 
 <script src="guides.js"></script>
+
 <script>
-  (async function () {
-    const loadingEl = document.getElementById('loading');
-    const hubBodyEl = document.getElementById('hub-body');
-    const hubSuggestEl = document.getElementById('hub-suggest');
-    const hubNameEl = document.getElementById('hub-name');
-    const hubMetaEl = document.getElementById('hub-meta');
-    const hubProfileEl = document.getElementById('hub-profile');
-    const issuesSectionEl = document.getElementById('section-issues');
-    const issuesListEl = document.getElementById('hub-issues');
-    const tipsSectionEl = document.getElementById('section-tips');
-    const tipsBoxEl = document.getElementById('hub-tips-box');
-    const tipsListEl = document.getElementById('hub-tips');
-    const warningsBoxEl = document.getElementById('hub-warnings-box');
-    const warningsListEl = document.getElementById('hub-warnings');
-    const manufacturerSectionEl = document.getElementById('manufacturer-section');
+(async function () {
+  const loadingEl = document.getElementById('loading');
+  const hubBodyEl = document.getElementById('hub-body');
+  const hubSuggestEl = document.getElementById('hub-suggest');
+  const hubNameEl = document.getElementById('hub-name');
+  const hubMetaEl = document.getElementById('hub-meta');
+  const hubProfileEl = document.getElementById('hub-profile');
 
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get('slug');
+  const issuesSectionEl = document.getElementById('section-issues');
+  const issuesListEl = document.getElementById('hub-issues');
 
-    if (!slug) {
-      loadingEl.textContent = 'No asset type specified.';
+  const tipsSectionEl = document.getElementById('section-tips');
+  const tipsBoxEl = document.getElementById('hub-tips-box');
+  const tipsListEl = document.getElementById('hub-tips');
+
+  const warningsBoxEl = document.getElementById('hub-warnings-box');
+  const warningsListEl = document.getElementById('hub-warnings');
+
+  const pmSectionWrapEl = document.getElementById('pm-section-wrap');
+  const pmGridEl = document.getElementById('pm-grid');
+  const manufacturerSectionEl = document.getElementById('manufacturer-section');
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+
+  if (!slug) {
+    loadingEl.textContent = 'No asset type specified.';
+    return;
+  }
+
+  function slugify(text) {
+    return (text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
+  function clearElement(el) {
+    if (el) el.innerHTML = '';
+  }
+
+  function addMetaPill(text) {
+    if (!text) return;
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
+    hubMetaEl.appendChild(span);
+  }
+
+  function findAssetHub(assetType, assetHubData) {
+    return assetHubData.find(a =>
+      a.name === assetType || a.slug === slugify(assetType)
+    );
+  }
+
+  function getIconPath(assetType, assetHubData) {
+    const assetHub = findAssetHub(assetType, assetHubData);
+    return assetHub?.icon || '';
+  }
+
+  function createProfileHtml(hub, name) {
+    const p = hub.profile || {};
+    let html = '';
+
+    html += `
+      <h3 class="hub-profile-title">
+        <span>${name}</span>
+      </h3>
+    `;
+
+    if (p.blurb) {
+      html += `<p>${p.blurb}</p>`;
+    }
+
+    if (Array.isArray(p.clinicalSetting) && p.clinicalSetting.length) {
+      html += `<p><strong>Clinical Settings:</strong> ${p.clinicalSetting.join(', ')}</p>`;
+    }
+
+    if (Array.isArray(p.commonManufacturers) && p.commonManufacturers.length) {
+      html += `<p><strong>Common Manufacturers:</strong> ${p.commonManufacturers.join(', ')}</p>`;
+    }
+
+    if (Array.isArray(p.relatedAssets) && p.relatedAssets.length) {
+      html += `<p><strong>Related Equipment:</strong> ${p.relatedAssets.join(', ')}</p>`;
+    }
+
+    return html;
+  }
+
+  function renderList(items, listEl) {
+    clearElement(listEl);
+
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      listEl.appendChild(li);
+    });
+  }
+
+  function renderPmCards(pmProcedures, assetHubData) {
+    clearElement(pmGridEl);
+
+    if (!pmProcedures.length) {
+      pmSectionWrapEl.style.display = 'none';
       return;
     }
 
-    function slugify(text) {
-      return (text || '')
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '');
-    }
+    pmProcedures
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .forEach(pm => {
+        const iconPath = getIconPath(pm.assetType, assetHubData);
 
-    function clearElement(el) {
-      el.innerHTML = '';
-    }
+        const card = document.createElement('a');
+        card.href = pm.url;
+        card.className = 'guide-card pm-card';
 
-    function addMetaPill(text) {
-      const span = document.createElement('span');
-      span.textContent = text;
-      span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
-      hubMetaEl.appendChild(span);
-    }
+        card.innerHTML = `
+          <div class="card-content">
+            ${iconPath ? `
+              <img
+                src="${iconPath}"
+                alt="${pm.assetType} icon"
+                class="guide-card-icon"
+                onerror="this.style.display='none'"
+              >
+            ` : ''}
 
-    function findAssetHub(assetType, assetHubData) {
-      return assetHubData.find(a =>
-        a.name === assetType || a.slug === slugify(assetType)
-      );
-    }
+            <span class="pm-card-label">PM Procedure</span>
 
-    function getIconPath(assetType, assetHubData) {
-      const assetHub = findAssetHub(assetType, assetHubData);
-      return assetHub?.icon || '';
-    }
+            <h3>${pm.title}</h3>
 
-    function createProfileHtml(hub, name, iconPath) {
-      const p = hub.profile || {};
-      let html = '';
+            <div class="badges">
+              <span class="badge asset">${pm.assetType}</span>
+              <span class="badge manufacturer">${pm.manufacturer}</span>
+              <span class="badge model">${pm.model}</span>
+            </div>
 
-      html += `
-        <h3 class="hub-profile-title">
-          <span>${name}</span>
-        </h3>
-      `;
+            <p>${pm.description}</p>
 
-      if (p.blurb) {
-        html += `<p>${p.blurb}</p>`;
-      }
-      if (Array.isArray(p.clinicalSetting) && p.clinicalSetting.length) {
-        html += `<p><strong>Clinical Settings:</strong> ${p.clinicalSetting.join(', ')}</p>`;
-      }
-      if (Array.isArray(p.commonManufacturers) && p.commonManufacturers.length) {
-        html += `<p><strong>Common Manufacturers:</strong> ${p.commonManufacturers.join(', ')}</p>`;
-      }
-      if (Array.isArray(p.relatedAssets) && p.relatedAssets.length) {
-        html += `<p><strong>Related Equipment:</strong> ${p.relatedAssets.join(', ')}</p>`;
-      }
+            <p class="pm-interval"><strong>Interval:</strong> ${pm.interval}</p>
 
-      return html;
-    }
+            <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
 
-    function renderList(items, listEl) {
-      clearElement(listEl);
-      items.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item;
-        listEl.appendChild(li);
-      });
-    }
-
-    function renderGuidesByManufacturer(guides, assetHubData) {
-      clearElement(manufacturerSectionEl);
-
-      if (!guides.length) {
-        manufacturerSectionEl.innerHTML = `
-          <div class="content-box" style="max-width:100%; margin-top:20px;">
-            <p style="margin:0;">No guides found for this asset type yet.</p>
+            <p class="date">Added: ${pm.dateAdded}</p>
           </div>
         `;
-        return;
-      }
 
-      const byMfr = {};
-      guides.forEach(guide => {
-        if (!byMfr[guide.manufacturer]) byMfr[guide.manufacturer] = [];
-        byMfr[guide.manufacturer].push(guide);
+        pmGridEl.appendChild(card);
       });
 
-      Object.keys(byMfr).sort().forEach(mfr => {
-        const mfrGuides = byMfr[mfr].sort((a, b) => a.title.localeCompare(b.title));
+    pmSectionWrapEl.style.display = '';
+  }
 
-        const block = document.createElement('div');
-        block.style.marginBottom = '40px';
+  function createGuideCard(guide, assetHubData) {
+    const iconPath = getIconPath(guide.assetType, assetHubData);
 
-        block.innerHTML = `
-          <h4 style="margin:0 0 16px;font-size:1.1rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            ${mfr}
-            <span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
-              ${mfrGuides.length} guide${mfrGuides.length !== 1 ? 's' : ''}
+    const card = document.createElement('a');
+    card.href = guide.url;
+    card.classList.add('guide-card');
+
+    card.innerHTML = `
+      <div class="card-content">
+        ${iconPath ? `
+          <img
+            src="${iconPath}"
+            alt="${guide.assetType} icon"
+            class="guide-card-icon"
+            onerror="this.style.display='none'"
+          >
+        ` : ''}
+
+        <h3>${guide.title}</h3>
+
+        <p>${guide.description}</p>
+
+        <div class="badges">
+          <span class="badge asset">${guide.assetType}</span>
+          <span class="badge manufacturer">${guide.manufacturer}</span>
+          <span class="badge model">${guide.model}</span>
+        </div>
+
+        <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderGuidesByManufacturerAndModel(guides, assetHubData) {
+    clearElement(manufacturerSectionEl);
+
+    if (!guides.length) {
+      manufacturerSectionEl.innerHTML = `
+        <div class="content-box" style="max-width:100%; margin-top:20px;">
+          <p style="margin:0;">No troubleshooting guides found for this asset type yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const byManufacturer = {};
+
+    guides.forEach(guide => {
+      if (!byManufacturer[guide.manufacturer]) {
+        byManufacturer[guide.manufacturer] = {};
+      }
+
+      if (!byManufacturer[guide.manufacturer][guide.model]) {
+        byManufacturer[guide.manufacturer][guide.model] = [];
+      }
+
+      byManufacturer[guide.manufacturer][guide.model].push(guide);
+    });
+
+    Object.keys(byManufacturer).sort().forEach(manufacturer => {
+      const manufacturerBlock = document.createElement('div');
+      manufacturerBlock.style.marginBottom = '48px';
+
+      const manufacturerGuideCount = Object.values(byManufacturer[manufacturer])
+        .reduce((total, modelGuides) => total + modelGuides.length, 0);
+
+      manufacturerBlock.innerHTML = `
+        <h4 style="margin:0 0 18px;font-size:1.2rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          ${manufacturer}
+          <span style="background:#111;color:#FF66CC;font-size:0.78rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
+            ${manufacturerGuideCount} guide${manufacturerGuideCount !== 1 ? 's' : ''}
+          </span>
+        </h4>
+      `;
+
+      Object.keys(byManufacturer[manufacturer]).sort().forEach(model => {
+        const modelGuides = byManufacturer[manufacturer][model]
+          .sort((a, b) => a.title.localeCompare(b.title));
+
+        const modelBlock = document.createElement('div');
+        modelBlock.style.margin = '0 0 34px 0';
+
+        modelBlock.innerHTML = `
+          <h5 style="margin:0 0 14px;font-size:1rem;color:#333;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            ${model}
+            <span style="background:#f2f2f2;color:#111;font-size:0.76rem;font-weight:bold;padding:3px 10px;border-radius:20px;border:1px solid #ddd;">
+              ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
             </span>
-          </h4>
+          </h5>
         `;
 
         const grid = document.createElement('div');
-        grid.id = 'guides-grid';
+        grid.className = 'guides-grid';
+        grid.style.padding = '10px 0 20px';
 
-        mfrGuides.forEach(guide => {
-          const card = document.createElement('a');
-          card.href = guide.url;
-          card.classList.add('guide-card');
-
-          const iconPath = getIconPath(guide.assetType, assetHubData);
-
-          card.innerHTML = `
-            <div class="card-content">
-              ${iconPath ? `
-                <div style="display:flex; justify-content:center; margin-bottom:14px;">
-                  <img
-                    src="${iconPath}"
-                    alt="${guide.assetType} icon"
-                    class="guide-card-icon"
-                    style="width:56px; height:56px; object-fit:contain;"
-                    onerror="this.style.display='none'"
-                  >
-                </div>
-              ` : ''}
-              <h3>${guide.title}</h3>
-              <p>${guide.description}</p>
-              <div class="badges">
-                <span class="badge asset">${guide.assetType}</span>
-                <span class="badge manufacturer">${guide.manufacturer}</span>
-                <span class="badge model">${guide.model}</span>
-              </div>
-              <p class="date"><em>Last Revision: ${guide.dateAdded}</em></p>
-            </div>
-          `;
-          grid.appendChild(card);
+        modelGuides.forEach(guide => {
+          grid.appendChild(createGuideCard(guide, assetHubData));
         });
 
-        block.appendChild(grid);
-        manufacturerSectionEl.appendChild(block);
+        modelBlock.appendChild(grid);
+        manufacturerBlock.appendChild(modelBlock);
       });
+
+      manufacturerSectionEl.appendChild(manufacturerBlock);
+    });
+  }
+
+  try {
+    const [allGuides, allPmProcedures, hubData, assetHubData] = await Promise.all([
+      fetchGuides(),
+
+      fetch('data/preventive-maintenance.json')
+        .then(r => r.ok ? r.json() : [])
+        .catch(() => []),
+
+      fetch('data/hub-asset.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-asset.json');
+        return r.json();
+      }),
+
+      fetch('data/hub-asset.json').then(r => {
+        if (!r.ok) throw new Error('Failed to load hub-asset.json');
+        return r.json();
+      })
+    ]);
+
+    const hub = hubData.find(h => h.slug === slug);
+
+    const guides = allGuides.filter(g => {
+      if (hub) return g.assetType === hub.name;
+      return slugify(g.assetType) === slug;
+    });
+
+    const pmProcedures = allPmProcedures.filter(pm => {
+      if (hub) return pm.assetType === hub.name;
+      return slugify(pm.assetType) === slug;
+    });
+
+    const name = hub ? hub.name : (guides[0]?.assetType || pmProcedures[0]?.assetType || slug);
+    const iconPath = hub?.icon || `/images/icons-asset/${slug}.png`;
+
+    document.title = `${name} Resources – Jake Troubleshoots`;
+    hubNameEl.textContent = name;
+
+    const iconEl = document.getElementById('asset-hero-icon');
+    const iconImg = document.getElementById('asset-hero-img');
+
+    iconImg.src = iconPath;
+    iconImg.alt = `${name} icon`;
+
+    iconImg.onload = () => {
+      iconEl.style.display = 'flex';
+    };
+
+    iconImg.onerror = () => {
+      iconEl.style.display = 'none';
+    };
+
+    clearElement(hubMetaEl);
+
+    const guideManufacturers = [...new Set(guides.map(g => g.manufacturer).filter(Boolean))];
+    const pmManufacturers = [...new Set(pmProcedures.map(pm => pm.manufacturer).filter(Boolean))];
+    const allManufacturers = [...new Set([...guideManufacturers, ...pmManufacturers])];
+
+    const guideModels = [...new Set(guides.map(g => g.model).filter(Boolean))];
+    const pmModels = [...new Set(pmProcedures.map(pm => pm.model).filter(Boolean))];
+    const allModels = [...new Set([...guideModels, ...pmModels])];
+
+    addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`);
+
+    if (pmProcedures.length) {
+      addMetaPill(`${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}`);
     }
 
-    try {
-      const [allGuides, hubData, assetHubData] = await Promise.all([
-        fetchGuides(),
-        fetch('data/hub-asset.json').then(r => {
-          if (!r.ok) throw new Error('Failed to load hub-asset.json');
-          return r.json();
-        }),
-        fetch('data/hub-asset.json').then(r => {
-          if (!r.ok) throw new Error('Failed to load hub-asset.json');
-          return r.json();
-        })
-      ]);
+    addMetaPill(`${allManufacturers.length} manufacturer${allManufacturers.length !== 1 ? 's' : ''}`);
+    addMetaPill(`${allModels.length} model${allModels.length !== 1 ? 's' : ''}`);
 
-      const hub = hubData.find(h => h.slug === slug);
-      const guides = allGuides.filter(g => {
-        if (hub) return g.assetType === hub.name;
-        return slugify(g.assetType) === slug;
-      });
+    if (hub) {
+      hubProfileEl.innerHTML = createProfileHtml(hub, name);
+      hubProfileEl.style.display = '';
 
-      const name = hub ? hub.name : (guides[0]?.assetType || slug);
-      const iconPath = hub?.icon || `/images/icons-asset/${slug}.png`;
-
-      document.title = `${name} Troubleshooting Guides – Jake Troubleshoots`;
-      hubNameEl.textContent = name;
-
-      const iconEl = document.getElementById('asset-hero-icon');
-      const iconImg = document.getElementById('asset-hero-img');
-
-      iconImg.src = iconPath;
-      iconImg.alt = `${name} icon`;
-
-      iconImg.onload = () => {
-        iconEl.style.display = 'flex';
-      };
-
-      iconImg.onerror = () => {
-        iconEl.style.display = 'none';
-      };
-
-      clearElement(hubMetaEl);
-      const manufacturers = [...new Set(guides.map(g => g.manufacturer))];
-      const models = [...new Set(guides.map(g => g.model))];
-
-      addMetaPill(`${guides.length} guide${guides.length !== 1 ? 's' : ''}`);
-      addMetaPill(`${manufacturers.length} manufacturer${manufacturers.length !== 1 ? 's' : ''}`);
-      addMetaPill(`${models.length} model${models.length !== 1 ? 's' : ''}`);
-
-      if (hub) {
-        hubProfileEl.innerHTML = createProfileHtml(hub, name, iconPath);
-        hubProfileEl.style.display = '';
-
-        if (Array.isArray(hub.content?.commonIssues) && hub.content.commonIssues.length) {
-          renderList(hub.content.commonIssues, issuesListEl);
-          issuesSectionEl.style.display = '';
-        } else {
-          issuesSectionEl.style.display = 'none';
-        }
-
-        const hasTips = Array.isArray(hub.content?.tips) && hub.content.tips.length;
-        const hasWarnings = Array.isArray(hub.content?.warnings) && hub.content.warnings.length;
-
-        if (hasTips) {
-          renderList(hub.content.tips, tipsListEl);
-          tipsBoxEl.style.display = '';
-        } else {
-          tipsBoxEl.style.display = 'none';
-        }
-
-        if (hasWarnings) {
-          renderList(hub.content.warnings, warningsListEl);
-          warningsBoxEl.style.display = '';
-        } else {
-          warningsBoxEl.style.display = 'none';
-        }
-
-        tipsSectionEl.style.display = (hasTips || hasWarnings) ? 'grid' : 'none';
+      if (Array.isArray(hub.content?.commonIssues) && hub.content.commonIssues.length) {
+        renderList(hub.content.commonIssues, issuesListEl);
+        issuesSectionEl.style.display = '';
       } else {
-        hubProfileEl.style.display = 'none';
         issuesSectionEl.style.display = 'none';
-        tipsSectionEl.style.display = 'none';
       }
 
-      renderGuidesByManufacturer(guides, assetHubData);
+      const hasTips = Array.isArray(hub.content?.tips) && hub.content.tips.length;
+      const hasWarnings = Array.isArray(hub.content?.warnings) && hub.content.warnings.length;
 
-      loadingEl.style.display = 'none';
-      hubBodyEl.style.display = '';
-      hubSuggestEl.style.display = '';
-    } catch (err) {
-      console.error(err);
-      loadingEl.textContent = 'Error loading asset hub data.';
+      if (hasTips) {
+        renderList(hub.content.tips, tipsListEl);
+        tipsBoxEl.style.display = '';
+      } else {
+        tipsBoxEl.style.display = 'none';
+      }
+
+      if (hasWarnings) {
+        renderList(hub.content.warnings, warningsListEl);
+        warningsBoxEl.style.display = '';
+      } else {
+        warningsBoxEl.style.display = 'none';
+      }
+
+      tipsSectionEl.style.display = (hasTips || hasWarnings) ? 'grid' : 'none';
+    } else {
+      hubProfileEl.style.display = 'none';
+      issuesSectionEl.style.display = 'none';
+      tipsSectionEl.style.display = 'none';
     }
-  })();
+
+    renderPmCards(pmProcedures, assetHubData);
+    renderGuidesByManufacturerAndModel(guides, assetHubData);
+
+    loadingEl.style.display = 'none';
+    hubBodyEl.style.display = '';
+    hubSuggestEl.style.display = '';
+  } catch (err) {
+    console.error(err);
+    loadingEl.textContent = 'Error loading asset hub data.';
+  }
+})();
 </script>
 
 </body>
