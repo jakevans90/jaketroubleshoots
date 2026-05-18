@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Networking for Medical Equipment | Jake Troubleshoots</title>
+  <meta name="description" content="A plain-English guide to basic networking for medical equipment for BMETs and clinical engineers, including IP addresses, MAC addresses, DHCP, static IPs, VLANs, servers, Wi-Fi, wired connections, Biomed and IT overlap, and network troubleshooting basics.">
+  <link rel="stylesheet" href="../style.css">
+
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Basic Networking for Medical Equipment</h2>
+  <p>What biomeds need to know.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    A plain-English introduction to IP addresses, MAC addresses, hostnames, wired and wireless connections, servers, VLANs, and the growing overlap between Biomed and IT.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+  </div>
+</section>
+
+<main>
+  <section class="content-box">
+    <h3>What This Page Explains</h3>
+    <p>Medical equipment is not just standalone equipment anymore.</p>
+    <p>A patient monitor may talk to a central station. An ultrasound system may send images to PACS. A ventilator may send data to middleware. An infusion pump may connect to a server. A bed may talk to nurse call.</p>
+    <p>A device may need Wi-Fi, Ethernet, IP settings, certificates, servers, ports, VLANs, and IT support before it is fully useful.</p>
+    <p>That means modern biomed work is not just about fixing the box.</p>
+    <p>Sometimes the device works, but it does not communicate. Sometimes the network works, but the device is configured wrong. Sometimes IT says the network is fine. Sometimes Biomed says the device is fine. And sometimes the truth is somewhere in the middle.</p>
+    <p>This page explains basic networking for medical equipment in plain English.</p>
+    <p>The goal is not to turn every biomed into a network engineer. The goal is to help biomeds understand enough networking to troubleshoot smarter, collect better information, and work better with IT.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Jump to a Section</h3>
+    <ul>
+      <li><a href="#why-networking-matters">Why Networking Matters in Modern Medical Equipment</a></li>
+      <li><a href="#biomed-it-overlap">How Biomed and IT Started Overlapping</a></li>
+      <li><a href="#simple-version">The Simple Version</a></li>
+      <li><a href="#what-network-does">What a Network Actually Does</a></li>
+      <li><a href="#wired-wireless">Wired vs Wireless Medical Devices</a></li>
+      <li><a href="#ip-address">IP Address Explained</a></li>
+      <li><a href="#mac-address">MAC Address Explained</a></li>
+      <li><a href="#hostname">Hostname Explained</a></li>
+      <li><a href="#dhcp-static">DHCP vs Static IP</a></li>
+      <li><a href="#subnet-gateway-dns">Subnet, Gateway, and DNS in Plain English</a></li>
+      <li><a href="#switch-port">What a Switch Port Is</a></li>
+      <li><a href="#wall-jack">What a Wall Jack Is</a></li>
+      <li><a href="#vlan">What a VLAN Is</a></li>
+      <li><a href="#server-connection">What a Server Connection Means</a></li>
+      <li><a href="#device-not-communicating">What “Device Not Communicating” Can Actually Mean</a></li>
+      <li><a href="#examples">Common Networked Medical Equipment Examples</a></li>
+      <li><a href="#central-middleware-emr">Central Stations, Middleware, and EMR Connections</a></li>
+      <li><a href="#hl7-dicom-nurse-call">HL7, DICOM, and Nurse Call: Different Kinds of Communication</a></li>
+      <li><a href="#cybersecurity">Cybersecurity and Medical Devices</a></li>
+      <li><a href="#before-calling-it">What Biomeds Should Check Before Calling IT</a></li>
+      <li><a href="#what-it-needs">What IT May Need From Biomed</a></li>
+      <li><a href="#common-problems">Common Networking Problems in Medical Equipment</a></li>
+      <li><a href="#not-everything-it">Not Everything Is an IT Problem</a></li>
+      <li><a href="#documentation-tips">Documentation Tips</a></li>
+      <li><a href="#final-thoughts">Final Thoughts</a></li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-networking-matters">
+    <h3>Why Networking Matters in Modern Medical Equipment</h3>
+    <p>Years ago, a lot of medical equipment troubleshooting was local.</p>
+    <p>Did it power on? Did the buttons work? Did it measure correctly? Did it pass PM? Did the alarm sound? Did the motor move? Did the pump run?</p>
+    <p>That still matters.</p>
+    <p>But now a device can pass all of that and still be considered “not working” because it is not communicating.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Patient monitor not showing at central station</li>
+      <li>Infusion pump not connecting to server</li>
+      <li>Ultrasound not sending images to PACS</li>
+      <li>Ventilator data not flowing to middleware</li>
+      <li>Bed exit alarm not reaching nurse call</li>
+      <li>Device not uploading results to the EMR</li>
+      <li>Scanner not connecting to Wi-Fi</li>
+      <li>Workstation not reaching the application server</li>
+      <li>Telemetry pack not connecting to the monitoring system</li>
+    </ul>
+    <p>The device may be physically working, but clinically incomplete because the data is not going where it needs to go.</p>
+    <p>That is why networking matters.</p>
+    <p>Medical equipment does not just treat, monitor, measure, and alarm anymore. It communicates.</p>
+  </section>
+
+  <section class="content-box" id="biomed-it-overlap">
+    <h3>How Biomed and IT Started Overlapping</h3>
+    <p>Biomed and IT used to feel more separate.</p>
+    <p>Biomed handled medical equipment. IT handled computers and networks.</p>
+    <p>That line is not as clean anymore.</p>
+    <p>A modern medical device may include:</p>
+    <ul>
+      <li>Hardware</li>
+      <li>Software</li>
+      <li>Network settings</li>
+      <li>Wi-Fi configuration</li>
+      <li>Server connections</li>
+      <li>Cybersecurity requirements</li>
+      <li>Operating system updates</li>
+      <li>Certificates</li>
+      <li>Interfaces</li>
+      <li>Integration with the EMR</li>
+      <li>Vendor remote support</li>
+      <li>Device management software</li>
+    </ul>
+    <p>That is where the line gets blurry.</p>
+    <p>Biomed may understand the clinical device better. IT may understand the network better. The vendor may understand the application better. Clinical staff may understand the workflow better. And the problem may require all of them.</p>
+    <p>That is the modern reality.</p>
+    <p>A good biomed does not need to know everything IT knows.</p>
+    <p>But a good biomed should understand enough to know what information matters and when to escalate.</p>
+  </section>
+
+  <section class="content-box" id="simple-version">
+    <h3>The Simple Version</h3>
+    <p>A network lets devices communicate.</p>
+    <p>For medical equipment, that communication might be between:</p>
+    <ul>
+      <li>A patient monitor and a central station</li>
+      <li>A bedside device and a server</li>
+      <li>An ultrasound system and PACS</li>
+      <li>A lab analyzer and middleware</li>
+      <li>A pump and a drug library server</li>
+      <li>A ventilator and an integration system</li>
+      <li>A workstation and a hospital application</li>
+      <li>A device and the EMR</li>
+      <li>A bed and nurse call</li>
+      <li>A vendor service tool and the device</li>
+    </ul>
+    <p><strong>The network is the road system that lets medical devices send and receive information.</strong></p>
+    <p>If the road is blocked, the device may not communicate.</p>
+    <p>If the device has the wrong address, the data may not go where it should.</p>
+    <p>If the destination server is down, the device may have nowhere to send data.</p>
+    <p>If the device is configured wrong, the network may be fine but communication still fails.</p>
+    <p>That is the basic idea.</p>
+  </section>
+
+  <section class="content-box" id="what-network-does">
+    <h3>What a Network Actually Does</h3>
+    <p>A network connects devices so they can exchange information.</p>
+    <p>That information may be:</p>
+    <ul>
+      <li>Patient data</li>
+      <li>Waveforms</li>
+      <li>Images</li>
+      <li>Alarms</li>
+      <li>Device status</li>
+      <li>Configuration files</li>
+      <li>Drug libraries</li>
+      <li>Software updates</li>
+      <li>Orders</li>
+      <li>Results</li>
+      <li>Logs</li>
+      <li>Time synchronization</li>
+      <li>Remote service data</li>
+    </ul>
+    <p>The network is not one single thing.</p>
+    <p>It may include:</p>
+    <ul>
+      <li>Device network port</li>
+      <li>Ethernet cable</li>
+      <li>Wall jack</li>
+      <li>Patch panel</li>
+      <li>Switch port</li>
+      <li>Wi-Fi access point</li>
+      <li>Router</li>
+      <li>Firewall</li>
+      <li>Server</li>
+      <li>Application</li>
+      <li>Database</li>
+      <li>Interface engine</li>
+      <li>EMR connection</li>
+      <li>Vendor system</li>
+    </ul>
+    <p>So when someone says, <em>“the network is down,”</em> that may mean a lot of different things.</p>
+    <p>A good first question is:</p>
+    <p><strong>What exactly is not communicating, and where is it supposed to communicate?</strong></p>
+  </section>
+
+  <section class="content-box" id="wired-wireless">
+    <h3>Wired vs Wireless Medical Devices</h3>
+    <p>Some medical devices are wired. Some are wireless. Some use both.</p>
+    <p><strong>Wired devices</strong> usually connect using an Ethernet cable.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Central stations</li>
+      <li>Bedside monitors</li>
+      <li>Imaging systems</li>
+      <li>Some lab equipment</li>
+      <li>Workstations</li>
+      <li>Servers</li>
+      <li>Docking stations</li>
+      <li>Some pumps or gateways</li>
+    </ul>
+    <p>Common wired problems include:</p>
+    <ul>
+      <li>Bad Ethernet cable</li>
+      <li>Wrong wall jack</li>
+      <li>Damaged wall jack</li>
+      <li>Inactive switch port</li>
+      <li>Device plugged into wrong network</li>
+      <li>Bent network port pins</li>
+      <li>Loose cable</li>
+      <li>Bad patch cable</li>
+      <li>VLAN mismatch</li>
+      <li>IP configuration issue</li>
+    </ul>
+    <p><strong>Wireless devices</strong> connect through Wi-Fi or another wireless system.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Telemetry devices</li>
+      <li>Mobile monitors</li>
+      <li>Workstations on wheels</li>
+      <li>Some infusion pumps</li>
+      <li>Some scanners</li>
+      <li>Portable imaging or diagnostic devices</li>
+      <li>Some beds or asset tracking devices</li>
+    </ul>
+    <p>Common wireless problems include:</p>
+    <ul>
+      <li>Weak signal</li>
+      <li>Wrong Wi-Fi network</li>
+      <li>Authentication issue</li>
+      <li>Certificate issue</li>
+      <li>Roaming problem</li>
+      <li>Dead zone</li>
+      <li>Interference</li>
+      <li>Access point problem</li>
+      <li>Device profile issue</li>
+      <li>Battery/power save behavior</li>
+      <li>Device not approved on network</li>
+    </ul>
+    <p><strong>The device needs the right connection, the right settings, and a working destination.</strong></p>
+  </section>
+
+  <section class="content-box" id="ip-address">
+    <h3>IP Address Explained</h3>
+    <p>An IP address is like a device’s network address.</p>
+    <p>Example:</p>
+    <p><em>10.25.40.123</em></p>
+    <p><strong>An IP address tells the network where the device lives.</strong></p>
+    <p>If a device has no IP address, it may not be connected properly.</p>
+    <p>If it has the wrong IP address, it may be on the wrong network.</p>
+    <p>If two devices have the same IP address, they can conflict.</p>
+    <p>If the IP address does not match the expected range for that area or system, something may be configured wrong.</p>
+    <p>Biomed does not always need to fix the IP address, but biomed should know how to find it when needed.</p>
+  </section>
+
+  <section class="content-box" id="mac-address">
+    <h3>MAC Address Explained</h3>
+    <p>A MAC address is a unique hardware address for a network interface.</p>
+    <p>It usually looks something like:</p>
+    <p><em>00:1A:2B:3C:4D:5E</em></p>
+    <p><strong>A MAC address is like the network card’s serial number.</strong></p>
+    <p>IT may ask for the MAC address when adding a device to the network, troubleshooting a connection, checking switch logs, or approving a device.</p>
+    <p>A device may have more than one MAC address:</p>
+    <ul>
+      <li>One for wired Ethernet</li>
+      <li>One for Wi-Fi</li>
+      <li>One for a dock</li>
+      <li>One for a communication module</li>
+    </ul>
+    <p>If IT asks for the MAC address, make sure you are giving the correct one for the connection being used.</p>
+  </section>
+
+  <section class="content-box" id="hostname">
+    <h3>Hostname Explained</h3>
+    <p>A hostname is the device’s network name.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>OR-MONITOR-03</li>
+      <li>ICU-BED12-MON</li>
+      <li>US-RAD-02</li>
+      <li>PUMP-SERVER-GW1</li>
+    </ul>
+    <p><strong>A hostname is the device’s network name tag.</strong></p>
+    <p>Hostnames can help identify devices, locations, or systems.</p>
+    <p>But they can also cause problems if they are duplicated, incorrect, or not updated after equipment moves.</p>
+    <p>A monitor named for ICU Bed 4 that is now sitting in ED Bed 12 may confuse troubleshooting.</p>
+    <p>Names matter.</p>
+  </section>
+
+  <section class="content-box" id="dhcp-static">
+    <h3>DHCP vs Static IP</h3>
+    <p>Devices usually get an IP address in one of two ways.</p>
+    <p><strong>DHCP</strong> means the network automatically gives the device an IP address.</p>
+    <p><strong>The device asks the network for an address, and the network assigns one.</strong></p>
+    <p><strong>Static IP</strong> means the IP address is manually set on the device.</p>
+    <p><strong>The device is told exactly what address to use.</strong></p>
+    <p>Both methods are used in healthcare.</p>
+    <p>DHCP can be easier to manage, especially for mobile devices.</p>
+    <p>Static IPs can be useful for devices that need a fixed address, like servers, gateways, central stations, or certain integrations.</p>
+    <p>Common problems include:</p>
+    <ul>
+      <li>Device set to static when it should be DHCP</li>
+      <li>Device set to DHCP when it should be static</li>
+      <li>Wrong static IP</li>
+      <li>Wrong subnet mask</li>
+      <li>Wrong gateway</li>
+      <li>Duplicate IP address</li>
+      <li>DHCP not assigning an address</li>
+      <li>Device moved to a network where its static IP does not belong</li>
+    </ul>
+    <p>If a device is not communicating, checking whether it has the correct IP setup is a good starting point.</p>
+  </section>
+
+  <section class="content-box" id="subnet-gateway-dns">
+    <h3>Subnet, Gateway, and DNS in Plain English</h3>
+    <p><strong>Subnet</strong> tells the device what local network it belongs to.</p>
+    <p><strong>The subnet tells the device who is in its local neighborhood.</strong></p>
+    <p><strong>Gateway</strong> is the path out of that local network.</p>
+    <p><strong>The gateway is the door the device uses to reach other networks.</strong></p>
+    <p><strong>DNS</strong> helps convert names into IP addresses.</p>
+    <p><strong>DNS is like a phonebook for network names.</strong></p>
+    <p>If DNS is wrong, a device may not reach a server by name.</p>
+    <p>If the gateway is wrong, the device may talk locally but not reach systems outside its local network.</p>
+    <p>If the subnet is wrong, the device may think it is in the wrong network neighborhood.</p>
+  </section>
+
+  <section class="content-box" id="switch-port">
+    <h3>What a Switch Port Is</h3>
+    <p>A network switch connects wired devices to the network.</p>
+    <p>A wall jack usually connects back to a switch port somewhere in a network closet.</p>
+    <p>When a device is plugged into the wall, it is really connecting through:</p>
+    <p><strong>Device → Ethernet cable → Wall jack → Building cabling → Patch panel → Switch port → Network</strong></p>
+    <p>If the switch port is disabled, wrong, misconfigured, or assigned to the wrong VLAN, the device may not communicate.</p>
+    <p>That is why IT may ask what wall jack it is plugged into or whether the device has link lights.</p>
+  </section>
+
+  <section class="content-box" id="wall-jack">
+    <h3>What a Wall Jack Is</h3>
+    <p>A wall jack is the physical network connection in the room.</p>
+    <p>Common wall jack issues include:</p>
+    <ul>
+      <li>Device plugged into the wrong jack</li>
+      <li>Jack not active</li>
+      <li>Jack damaged</li>
+      <li>Jack assigned to wrong network</li>
+      <li>Jack label missing or incorrect</li>
+      <li>Cable not fully seated</li>
+      <li>Jack used for a different purpose</li>
+      <li>Patch panel connection changed</li>
+    </ul>
+    <p>If a device does not communicate, try to find out:</p>
+    <ul>
+      <li>What jack is it plugged into?</li>
+      <li>Is that jack active?</li>
+      <li>Is that jack approved for medical device use?</li>
+      <li>Does another known-good device work on that jack?</li>
+      <li>Does this device work on another known-good jack?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="vlan">
+    <h3>What a VLAN Is</h3>
+    <p>A VLAN is a virtual network.</p>
+    <p><strong>A VLAN separates network traffic into different lanes.</strong></p>
+    <p>A hospital may have different VLANs for:</p>
+    <ul>
+      <li>Medical devices</li>
+      <li>Staff computers</li>
+      <li>Guest Wi-Fi</li>
+      <li>Imaging systems</li>
+      <li>Patient monitoring</li>
+      <li>Voice systems</li>
+      <li>Security cameras</li>
+      <li>Building systems</li>
+      <li>Vendor systems</li>
+    </ul>
+    <p>A medical device may need to be on the correct VLAN to reach the correct server or system.</p>
+    <p>A device plugged into the wrong network can look like it is connected but still not communicate with the correct destination.</p>
+  </section>
+
+  <section class="content-box" id="server-connection">
+    <h3>What a Server Connection Means</h3>
+    <p>Many medical devices do not just connect to “the network.” They connect to a specific server or system.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Central monitoring server</li>
+      <li>Pump server</li>
+      <li>Middleware server</li>
+      <li>EMR interface</li>
+      <li>PACS server</li>
+      <li>DICOM storage destination</li>
+      <li>Time server</li>
+      <li>License server</li>
+      <li>Vendor application server</li>
+      <li>Device management server</li>
+    </ul>
+    <p>If the device cannot reach the server, it may show errors like:</p>
+    <ul>
+      <li>Server unavailable</li>
+      <li>Network error</li>
+      <li>Communication failure</li>
+      <li>Connection lost</li>
+      <li>Upload failed</li>
+      <li>Unable to send</li>
+      <li>Not connected</li>
+      <li>Offline</li>
+      <li>Host unreachable</li>
+      <li>Login failed</li>
+      <li>Authentication failed</li>
+    </ul>
+    <p>This could be caused by the device, the network, the server, credentials, certificates, firewall rules, or configuration.</p>
+    <p>That is why the exact error matters.</p>
+  </section>
+
+  <section class="content-box" id="device-not-communicating">
+    <h3>What “Device Not Communicating” Can Actually Mean</h3>
+    <p>“Device not communicating” is vague.</p>
+    <p>It could mean:</p>
+    <ul>
+      <li>Device has no network connection</li>
+      <li>Device has no IP address</li>
+      <li>Device has wrong IP settings</li>
+      <li>Device is on the wrong VLAN</li>
+      <li>Ethernet cable is bad</li>
+      <li>Wall jack is inactive</li>
+      <li>Wi-Fi signal is weak</li>
+      <li>Server is down</li>
+      <li>Middleware is down</li>
+      <li>Central station is offline</li>
+      <li>Device is not assigned to the right bed/room</li>
+      <li>Device hostname is wrong</li>
+      <li>MAC address is not approved</li>
+      <li>Certificate expired</li>
+      <li>Time/date is wrong</li>
+      <li>Software version mismatch</li>
+      <li>Wrong destination configured</li>
+      <li>Firewall blocking communication</li>
+      <li>Device is working, but the receiving system is not</li>
+    </ul>
+    <p>Do not stop at: <em>It is not communicating.</em></p>
+    <p>Ask: <strong>What is it supposed to communicate with, and what part is failing?</strong></p>
+  </section>
+
+  <section class="content-box" id="examples">
+    <h3>Common Networked Medical Equipment Examples</h3>
+    <ul>
+      <li>Patient monitors</li>
+      <li>Central stations</li>
+      <li>Telemetry systems</li>
+      <li>Infusion pumps</li>
+      <li>Ventilators</li>
+      <li>Anesthesia machines</li>
+      <li>Ultrasound systems</li>
+      <li>CT and MRI workstations</li>
+      <li>X-ray systems</li>
+      <li>Lab analyzers</li>
+      <li>Bladder scanners</li>
+      <li>Medication systems</li>
+      <li>Beds</li>
+      <li>Nurse call systems</li>
+      <li>Physiological data systems</li>
+      <li>Workstations on wheels</li>
+      <li>Device gateways</li>
+      <li>Middleware appliances</li>
+    </ul>
+    <p>Some devices send patient data. Some send images. Some send alarms. Some receive configuration files. Some receive drug libraries. Some only need network access for service, software, or logs.</p>
+    <p>The network need depends on the device and workflow.</p>
+  </section>
+
+  <section class="content-box" id="central-middleware-emr">
+    <h3>Central Stations, Middleware, and EMR Connections</h3>
+    <p>A device may not send data directly to the EMR.</p>
+    <p>There may be multiple systems in between.</p>
+    <p><strong>Patient monitor → Central station/server → Middleware → EMR</strong></p>
+    <p><strong>Infusion pump → Pump server → Integration engine → EMR</strong></p>
+    <p><strong>Ventilator → Gateway/middleware → Clinical documentation system</strong></p>
+    <p>This matters because the problem may be at any point in the chain.</p>
+    <p>If the monitor shows data locally but the central station does not show it, the issue may be between the monitor and central station.</p>
+    <p>If the central station shows data but the EMR does not, the issue may be middleware or interface-related.</p>
+    <p>If one device is failing, the issue may be local.</p>
+    <p>If every device on a unit is failing, the issue may be network, server, or system-wide.</p>
+    <p><strong>Where does the data stop?</strong></p>
+    <p>That question is huge.</p>
+  </section>
+
+  <section class="content-box" id="hl7-dicom-nurse-call">
+    <h3>HL7, DICOM, and Nurse Call: Different Kinds of Communication</h3>
+    <p>Not all medical device communication is the same.</p>
+    <p><strong>HL7</strong> is commonly used for healthcare data exchange, like results, observations, admissions, orders, and patient information.</p>
+    <p><strong>HL7 helps healthcare systems pass patient and clinical data between systems.</strong></p>
+    <p><strong>DICOM</strong> is commonly used for medical imaging.</p>
+    <p><strong>DICOM helps imaging devices store, send, and manage medical images.</strong></p>
+    <p><strong>Nurse call</strong> is often about alerts, calls, bed exit, alarm integration, or staff notification.</p>
+    <p><strong>Nurse call helps get the right alert to the right staff location.</strong></p>
+    <p>A device can have network connectivity and still fail HL7. A modality can be on the network and still fail DICOM send. A bed can work mechanically and still fail nurse call output.</p>
+    <p>That is why “networked” does not mean “all communication is the same.”</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity">
+    <h3>Cybersecurity and Medical Devices</h3>
+    <p>Medical devices are part of the hospital’s cybersecurity environment.</p>
+    <p>That means IT and security teams may care about:</p>
+    <ul>
+      <li>Operating system version</li>
+      <li>Unsupported software</li>
+      <li>Default passwords</li>
+      <li>Open ports</li>
+      <li>Remote access</li>
+      <li>Antivirus or allowlisting</li>
+      <li>Network segmentation</li>
+      <li>Patching</li>
+      <li>Vendor access</li>
+      <li>Certificates</li>
+      <li>Encryption</li>
+      <li>Device inventory</li>
+      <li>Vulnerabilities</li>
+    </ul>
+    <p>This can create tension.</p>
+    <p>Biomed may say: <em>The device needs to stay running for patient care.</em></p>
+    <p>IT may say: <em>The device is a security risk.</em></p>
+    <p>Both may be right.</p>
+    <p>The goal is not for Biomed and IT to fight. The goal is to manage risk together.</p>
+    <p>Medical equipment has to be safe for patients and safe for the network.</p>
+  </section>
+
+  <section class="content-box" id="before-calling-it">
+    <h3>What Biomeds Should Check Before Calling IT</h3>
+    <p>Before escalating to IT, check the basics.</p>
+    <p>For a wired device:</p>
+    <ul>
+      <li>Is the device powered on?</li>
+      <li>Is the network cable connected?</li>
+      <li>Is the cable damaged?</li>
+      <li>Is it plugged into the correct wall jack?</li>
+      <li>Is the wall jack labeled?</li>
+      <li>Does the device show link lights if available?</li>
+      <li>Does a known-good cable help?</li>
+      <li>Did the device recently move?</li>
+      <li>Does the device have an IP address?</li>
+      <li>Is the IP address expected?</li>
+      <li>Is the hostname correct?</li>
+      <li>Is the device configured for the correct location or department?</li>
+      <li>Is the issue affecting one device or many?</li>
+    </ul>
+    <p>For a wireless device:</p>
+    <ul>
+      <li>Is Wi-Fi enabled?</li>
+      <li>Is the battery charged?</li>
+      <li>Is the device in a known coverage area?</li>
+      <li>Is the signal weak?</li>
+      <li>Is it connected to the correct wireless network?</li>
+      <li>Did it recently move units?</li>
+      <li>Does another device work in the same area?</li>
+      <li>Is the issue one device or multiple devices?</li>
+      <li>Is the device time/date correct?</li>
+      <li>Are there any certificate or authentication errors?</li>
+    </ul>
+    <p>You do not need to solve every network issue yourself.</p>
+    <p>But you should collect enough information that escalation is useful.</p>
+  </section>
+
+  <section class="content-box" id="what-it-needs">
+    <h3>What IT May Need From Biomed</h3>
+    <p>When calling IT, do not just say: <em>The monitor is not working.</em></p>
+    <p>Give them useful information:</p>
+    <ul>
+      <li>Device type</li>
+      <li>Manufacturer and model</li>
+      <li>Asset tag</li>
+      <li>Serial number if needed</li>
+      <li>Location</li>
+      <li>Wired or wireless</li>
+      <li>Wall jack number if wired</li>
+      <li>MAC address if available</li>
+      <li>IP address if available</li>
+      <li>Hostname if available</li>
+      <li>Error message</li>
+      <li>What system it should connect to</li>
+      <li>Whether one device or many are affected</li>
+      <li>Whether the device was recently moved</li>
+      <li>What troubleshooting was already done</li>
+      <li>Whether a known-good cable, jack, or battery was tested</li>
+    </ul>
+    <p>Better escalation sounds like:</p>
+    <p><em>Bedside monitor in ICU 12 is monitoring locally but not appearing at central station. Device is wired to jack ICU-12A. Tested with known-good Ethernet cable. Device has no IP address. Other monitors on the unit are communicating normally.</em></p>
+    <p>That gives IT something to work with.</p>
+  </section>
+
+  <section class="content-box" id="common-problems">
+    <h3>Common Networking Problems in Medical Equipment</h3>
+    <ul>
+      <li>Bad Ethernet cable</li>
+      <li>Wrong wall jack</li>
+      <li>Inactive switch port</li>
+      <li>Weak Wi-Fi signal</li>
+      <li>Wrong Wi-Fi profile</li>
+      <li>Device on wrong VLAN</li>
+      <li>Static IP wrong</li>
+      <li>Duplicate IP</li>
+      <li>DHCP failure</li>
+      <li>Wrong gateway</li>
+      <li>DNS issue</li>
+      <li>Server down</li>
+      <li>Middleware down</li>
+      <li>Certificate expired</li>
+      <li>MAC address not allowed</li>
+      <li>Device not assigned to correct bed</li>
+      <li>Wrong destination configured</li>
+      <li>Software update changed settings</li>
+      <li>Firewall change</li>
+      <li>Time/date mismatch</li>
+      <li>Device moved without network reconfiguration</li>
+      <li>Vendor application issue</li>
+    </ul>
+    <p>The fix depends on the cause.</p>
+    <p>That is why details matter.</p>
+  </section>
+
+  <section class="content-box" id="not-everything-it">
+    <h3>Not Everything Is an IT Problem</h3>
+    <p>This section matters.</p>
+    <p>Not every communication complaint is IT’s fault.</p>
+    <p>A device may fail to communicate because:</p>
+    <ul>
+      <li>It is powered off</li>
+      <li>Battery is dead</li>
+      <li>Network cable is unplugged</li>
+      <li>Device is in the wrong mode</li>
+      <li>Wrong patient or location selected</li>
+      <li>Accessory is missing</li>
+      <li>Dock is not seated</li>
+      <li>Module is not connected</li>
+      <li>Software is frozen</li>
+      <li>Device has an internal communication fault</li>
+      <li>Device configuration is wrong</li>
+      <li>User workflow is incomplete</li>
+    </ul>
+    <p>It is easy to say: <em>Call IT.</em></p>
+    <p>Sometimes that is correct. But sometimes Biomed needs to check the device side first.</p>
+    <p>The best troubleshooting is not Biomed vs IT.</p>
+    <p>It is Biomed and IT narrowing the problem together.</p>
+  </section>
+
+  <section class="content-box" id="documentation-tips">
+    <h3>Documentation Tips</h3>
+    <p>Network-related notes should be specific.</p>
+    <p>Weak note:</p>
+    <p><em>Network issue. Called IT.</em></p>
+    <p>Better note:</p>
+    <p><em>Reported monitor not appearing at central station. Monitor powered on and displaying patient parameters locally. Checked Ethernet cable and wall jack connection. Tested with known-good cable. Device showed no IP address. Escalated to IT with device location, asset tag, MAC address, and wall jack number.</em></p>
+    <p>Another example:</p>
+    <p><em>Reported ultrasound unable to send images to PACS. Device connected to network and able to reach local worklist. DICOM send failed with destination error. PACS team notified with AE title, IP address, error message, and exam details.</em></p>
+    <p>That is much better than: <em>Won’t send. IT notified.</em></p>
+    <p>For a deeper explanation of better documentation, see the Biomed Basics page on <a href="biomed-work-order-notes-ccr-method.html">writing better work order notes using the CCR method</a>.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts">
+    <h3>Final Thoughts</h3>
+    <p>Modern biomed work is not just fixing isolated boxes anymore.</p>
+    <p>Medical devices are part of bigger systems.</p>
+    <p>They connect to networks. They send data. They receive configuration. They talk to servers. They support clinical workflows. They create cybersecurity questions.</p>
+    <p>And when communication breaks, the problem may sit somewhere between the device, the network, the server, the software, the vendor, and the user workflow.</p>
+    <p>That can be frustrating.</p>
+    <p>But it also makes the work more important.</p>
+    <p>A good biomed does not need to know every networking detail.</p>
+    <p>But a good biomed should know enough to ask better questions, check the obvious things, collect useful information, and work with IT instead of just throwing the problem over the wall.</p>
+    <p>The future of biomed and IT is already overlapping.</p>
+    <p>The better we understand each other, the better we support patient care.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview for biomedical equipment technicians, clinical engineers, students, and healthcare technology staff. Always follow your facility policy, network security requirements, manufacturer service documentation, IT procedures, cybersecurity requirements, and the requirements of your organization.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="biomed-bmet-clinical-engineering-htm.html">Biomed, BMET, Clinical Engineering, and HTM</a></li>
+      <li><a href="electrical-safety-testing-medical-equipment.html">Electrical Safety Testing for Medical Equipment</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="../terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
