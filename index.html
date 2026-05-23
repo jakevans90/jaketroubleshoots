@@ -50,8 +50,8 @@
   </p>
 
   <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
-  Search by device, model, manufacturer, alarm, error, or issue — with PM procedures, Biomed Basics, vendor contacts, and equipment hubs built around the guide library.
-</p>
+    Search by device, model, manufacturer, alarm, error, or issue — with PM procedures, Biomed Basics, vendor contacts, and equipment hubs built around the guide library.
+  </p>
 
   <p id="stats-line" style="max-width:700px; margin:12px auto 0; font-size:0.95em; font-weight:600; opacity:0.95;"></p>
 
@@ -61,11 +61,11 @@
   </form>
 
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-  <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
-  <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
-  <a href="search.html" class="hero-button">Guide Search</a>
-  <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
-</div>
+    <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
+    <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
+    <a href="search.html" class="hero-button">Guide Search</a>
+    <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
+  </div>
 </section>
 
 <section class="homepage-section troubleshooting-section">
@@ -90,6 +90,8 @@
 
     <div class="hero-buttons" style="margin-top:18px;">
       <a href="guides.html" class="hero-button">View All Troubleshooting Guides</a>
+      <a href="#featured-guides" class="hero-button">Featured Guides</a>
+      <a href="#recent-guides" class="hero-button">Recent Guides</a>
       <a href="preventive-maintenance.html" class="hero-button">View PM Procedures</a>
     </div>
   </div>
@@ -150,48 +152,48 @@
 
   <div class="learning-grid">
 
-   <div class="biomed-basics-panel">
-  <h3>Biomed Basics</h3>
+    <div class="biomed-basics-panel">
+      <h3>Biomed Basics</h3>
 
-  <p>
-    Practical explanations of the concepts biomeds use every day.
-  </p>
+      <p>
+        Practical explanations of the concepts biomeds use every day.
+      </p>
 
-  <div class="basics-topic-list">
-    <span>What biomed, BMET, clinical engineering, and HTM mean</span>
-    <span>Medical equipment terminology confusion</span>
-    <span>Electrical safety testing</span>
-    <span>Functional testing vs calibration</span>
-    <span>Better work order notes using CCR</span>
-    <span>Battery basics</span>
-  </div>
+      <div class="basics-topic-list">
+        <span>What biomed, BMET, clinical engineering, and HTM mean</span>
+        <span>Medical equipment terminology confusion</span>
+        <span>Electrical safety testing</span>
+        <span>Functional testing vs calibration</span>
+        <span>Better work order notes using CCR</span>
+        <span>Battery basics</span>
+      </div>
 
-  <a href="biomed-basics.html" class="learning-button">View Biomed Basics</a>
+      <a href="biomed-basics.html" class="learning-button">View Biomed Basics</a>
 
-  <div class="basics-quick-links">
-    <p>Quick links:</p>
+      <div class="basics-quick-links">
+        <p>Quick links:</p>
 
-    <a href="biomed-basics/biomed-bmet-clinical-engineering-htm.html">
-      What Is Biomed?
-    </a>
+        <a href="biomed-basics/biomed-bmet-clinical-engineering-htm.html">
+          What Is Biomed?
+        </a>
 
-    <a href="biomed-basics/biomed-translation-problems-medical-equipment-names.html">
-      Terminology Confusion
-    </a>
+        <a href="biomed-basics/biomed-translation-problems-medical-equipment-names.html">
+          Terminology Confusion
+        </a>
 
-    <a href="biomed-basics/electrical-safety-testing-medical-equipment.html">
-      Electrical Safety Testing
-    </a>
+        <a href="biomed-basics/electrical-safety-testing-medical-equipment.html">
+          Electrical Safety Testing
+        </a>
 
-    <a href="biomed-basics/functional-testing-vs-calibration-vs-verification.html">
-      Functional Testing vs Calibration
-    </a>
+        <a href="biomed-basics/functional-testing-vs-calibration-vs-verification.html">
+          Functional Testing vs Calibration
+        </a>
 
-    <a href="biomed-basics/biomed-work-order-notes-ccr-method.html">
-      Work Order Notes / CCR
-    </a>
-  </div>
-</div>
+        <a href="biomed-basics/biomed-work-order-notes-ccr-method.html">
+          Work Order Notes / CCR
+        </a>
+      </div>
+    </div>
 
     <div id="flashcard-container" class="quiz-panel">
       <h3>BMET Quiz</h3>
@@ -210,8 +212,7 @@
   </div>
 </section>
 
-
-<section class="homepage-section featured-guides-section">
+<section id="featured-guides" class="homepage-section featured-guides-section">
   <div class="section-header">
     <p class="section-kicker">Selected Guides</p>
     <h3>Featured Guides</h3>
@@ -223,7 +224,7 @@
   <div id="featured-grid" class="guides-grid"></div>
 </section>
 
-<section class="homepage-section recent-guides-section">
+<section id="recent-guides" class="homepage-section recent-guides-section">
   <div class="section-header">
     <p class="section-kicker">Recently Added</p>
     <h3>Most Recent Guides</h3>
@@ -455,7 +456,7 @@ Promise.all([
     .map(url => allGuides.find(g => g.url === url))
     .filter(Boolean);
 
-renderFixedGuideRows('featured-grid', featured, 2);
+  renderFixedGuideRows('featured-grid', featured, 2);
 
   // Show 4 full rows of recent guides based on the current screen width
   renderGuideRows('guides-grid', allGuides, 4);
@@ -464,15 +465,15 @@ renderFixedGuideRows('featured-grid', featured, 2);
   const recentPmProcedures = getRecentPmProcedures(allPmProcedures, 3);
   renderPmPreviewCards('pm-preview-grid', recentPmProcedures);
 
-  // Recalculate recent guide count when the browser window is resized
+  // Recalculate guide counts when the browser window is resized
   let resizeTimer;
   window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    renderFixedGuideRows('featured-grid', featured, 2);
-    renderGuideRows('guides-grid', allGuides, 4);
-  }, 150);
-});
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      renderFixedGuideRows('featured-grid', featured, 2);
+      renderGuideRows('guides-grid', allGuides, 4);
+    }, 150);
+  });
 })
 .catch(err => console.error('Homepage load error:', err));
 
