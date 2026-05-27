@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital EMRs and Medical Device Integration | Jake Troubleshoots</title>
+  <meta name="description" content="A plain-English guide to hospital EMRs and medical device integration for biomeds, including middleware, interface engines, HL7, DICOM, PACS, ADT, patient association, bed assignment, time sync, and troubleshooting device data that does not chart.">
+  <link rel="stylesheet" href="../style.css">
+
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Hospital EMRs and Medical Device Integration</h2>
+  <p>What biomeds should know.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
+    A plain-English look at EMRs, middleware, HL7, DICOM, PACS, patient association, and why device data does not always make it to the chart.
+  </p>
+
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+  </div>
+</section>
+
+<main>
+  <section class="content-box">
+    <h3>What This Page Explains</h3>
+    <p>Medical equipment does not always stop at the bedside anymore.</p>
+    <p>A monitor may display vitals locally, but those vitals may also need to show up in the patient chart.</p>
+    <p>A ventilator may be delivering breaths correctly, but the respiratory values may also need to flow into a documentation system.</p>
+    <p>An ultrasound system may capture images, but those images may need to be sent to PACS.</p>
+    <p>An infusion pump may run properly, but it may also need to connect to a pump server, receive a drug library, or send data to another system.</p>
+    <p>That is where EMRs and device integration come in.</p>
+    <p>This page explains hospital EMRs, medical device integration, middleware, interfaces, HL7, DICOM, patient association, and why device data does not always make it to the chart.</p>
+    <p>The goal is not to turn every biomed into an EMR analyst.</p>
+    <p>The goal is to help biomeds understand the basic path data takes, why integration matters, and what can break along the way.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Jump to a Section</h3>
+    <ul>
+      <li><a href="#what-emr-is">What an EMR Is</a></li>
+      <li><a href="#why-emrs">Why Hospitals Use EMRs</a></li>
+      <li><a href="#common-emrs">Common EMR Systems Biomeds May Hear About</a></li>
+      <li><a href="#device-integration">What Medical Device Integration Means</a></li>
+      <li><a href="#why-integration">Why Device Integration Is Done</a></li>
+      <li><a href="#simple-version">The Simple Version</a></li>
+      <li><a href="#manual-vs-integrated">Device Data vs Manual Charting</a></li>
+      <li><a href="#data-path">How Data Moves From Device to Chart</a></li>
+      <li><a href="#middleware">What Middleware Does</a></li>
+      <li><a href="#interface-engine">What an Interface Engine Does</a></li>
+      <li><a href="#hl7">HL7 in Plain English</a></li>
+      <li><a href="#dicom">DICOM in Plain English</a></li>
+      <li><a href="#pacs">PACS in Plain English</a></li>
+      <li><a href="#adt">ADT: Patient Admit, Discharge, and Transfer Data</a></li>
+      <li><a href="#patient-association">Why Patient Association Matters</a></li>
+      <li><a href="#bed-room">Why Bed and Room Assignment Matters</a></li>
+      <li><a href="#time-sync">Why Time Sync Matters</a></li>
+      <li><a href="#common-devices">Common Integrated Medical Devices</a></li>
+      <li><a href="#common-problems">Common Integration Problems</a></li>
+      <li><a href="#device-works-data-does-not">When the Device Works but Data Does Not Chart</a></li>
+      <li><a href="#biomed-checks">What Biomeds Should Check First</a></li>
+      <li><a href="#it-informatics-needs">What IT or Clinical Informatics May Need</a></li>
+      <li><a href="#who-owns-what">Biomed, IT, Informatics, Vendor: Who Owns What?</a></li>
+      <li><a href="#documentation-tips">Documentation Tips</a></li>
+      <li><a href="#final-thoughts">Final Thoughts</a></li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-emr-is">
+    <h3>What an EMR Is</h3>
+    <p>EMR stands for <strong>Electronic Medical Record</strong>.</p>
+    <p>You may also hear EHR, which means <strong>Electronic Health Record</strong>.</p>
+    <p>In everyday hospital language, people often use EMR and EHR loosely to mean the main electronic charting system.</p>
+    <p>The EMR is where patient information is documented, reviewed, stored, and shared across the hospital.</p>
+    <p>It may include things like:</p>
+    <ul>
+      <li>Patient demographics</li>
+      <li>Allergies</li>
+      <li>Medications</li>
+      <li>Orders</li>
+      <li>Vitals</li>
+      <li>Notes</li>
+      <li>Lab results</li>
+      <li>Imaging results</li>
+      <li>Respiratory documentation</li>
+      <li>Nursing documentation</li>
+      <li>Medication administration</li>
+      <li>Care plans</li>
+      <li>Procedure documentation</li>
+      <li>Discharge information</li>
+    </ul>
+    <p>In plain English:</p>
+    <p><strong>The EMR is the patient chart, but electronic and connected to many hospital systems.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-emrs">
+    <h3>Why Hospitals Use EMRs</h3>
+    <p>Hospitals use EMRs because paper charts are limited.</p>
+    <p>Paper can be lost.</p>
+    <p>Paper is hard to share quickly.</p>
+    <p>Paper can be hard to read.</p>
+    <p>Paper does not automatically connect to lab systems, imaging systems, pharmacy systems, or device data.</p>
+    <p>EMRs help hospitals:</p>
+    <ul>
+      <li>Document patient care</li>
+      <li>Share information between departments</li>
+      <li>Track orders and results</li>
+      <li>Reduce duplicate documentation</li>
+      <li>Support billing and coding</li>
+      <li>Improve access to patient history</li>
+      <li>Connect clinical systems</li>
+      <li>Support reporting and quality programs</li>
+      <li>Improve medication workflows</li>
+      <li>Support regulatory documentation</li>
+    </ul>
+    <p>That does not mean EMRs are perfect.</p>
+    <p>Anyone who has worked in a hospital knows electronic charting can be frustrating.</p>
+    <p>But EMRs are a major part of modern healthcare, and medical equipment often has to interact with them.</p>
+  </section>
+
+  <section class="content-box" id="common-emrs">
+    <h3>Common EMR Systems Biomeds May Hear About</h3>
+    <p>Depending on the hospital, you may hear names like:</p>
+    <ul>
+      <li>Epic</li>
+      <li>Oracle Health / Cerner</li>
+      <li>MEDITECH</li>
+      <li>Altera</li>
+      <li>athenahealth</li>
+      <li>eClinicalWorks</li>
+      <li>NextGen</li>
+    </ul>
+    <p>A biomed usually does not need to know every EMR detail.</p>
+    <p>But it helps to know which system your hospital uses, because device integration often depends on how equipment data flows into that system.</p>
+    <p>A monitor not charting vitals, a ventilator not sending data, or a device not matching the correct patient may involve the EMR, middleware, interface engine, device configuration, network, or clinical workflow.</p>
+  </section>
+
+  <section class="content-box" id="device-integration">
+    <h3>What Medical Device Integration Means</h3>
+    <p>Medical device integration means connecting medical equipment to other hospital systems so data can move electronically.</p>
+    <p>In plain English:</p>
+    <p><strong>Device integration is the path that lets medical equipment send useful information to the right clinical system for the right patient at the right time.</strong></p>
+    <p>That data might include:</p>
+    <ul>
+      <li>Vitals</li>
+      <li>Waveforms</li>
+      <li>Respiratory values</li>
+      <li>Ventilator settings</li>
+      <li>Infusion data</li>
+      <li>Lab results</li>
+      <li>Images</li>
+      <li>Alarms</li>
+      <li>Device status</li>
+      <li>Therapy information</li>
+      <li>Measurements</li>
+      <li>Procedure data</li>
+    </ul>
+    <p>The device may not always send data directly to the EMR.</p>
+    <p>Often, the data travels through other systems first.</p>
+  </section>
+
+  <section class="content-box" id="why-integration">
+    <h3>Why Device Integration Is Done</h3>
+    <p>Device integration is done because manual charting takes time and creates opportunities for mistakes.</p>
+    <p>If a nurse has to read vitals from a monitor and type them into the chart, several things can go wrong.</p>
+    <p>The wrong number can be entered.</p>
+    <p>The value can be entered under the wrong time.</p>
+    <p>The wrong patient can be selected.</p>
+    <p>The value can be missed during a busy shift.</p>
+    <p>The same data may need to be entered multiple times.</p>
+    <p>Integration can help reduce that burden.</p>
+    <p>It can allow device data to flow into the EMR or another clinical system more automatically.</p>
+    <p>But integration does not remove responsibility.</p>
+    <p>Bad data, wrong patient association, wrong bed assignment, wrong time, wrong device location, or failed communication can still create problems.</p>
+    <p>Automation is useful, but it has to be trusted carefully.</p>
+  </section>
+
+  <section class="content-box" id="simple-version">
+    <h3>The Simple Version</h3>
+    <p>Here is the simple version.</p>
+    <p>A device creates data.</p>
+    <p>That data needs to go somewhere.</p>
+    <p>The network carries the data.</p>
+    <p>Middleware or an interface may translate or route the data.</p>
+    <p>The EMR receives the data and displays or stores it in the patient chart.</p>
+    <p>In plain English:</p>
+    <p><strong>Medical device → Network → Middleware/interface → EMR or clinical system</strong></p>
+    <p>Sometimes the path is simple.</p>
+    <p>Sometimes it is not.</p>
+    <p>A patient monitor might send vitals through a monitoring server before the EMR sees them.</p>
+    <p>A ventilator might send data to middleware before it reaches respiratory documentation.</p>
+    <p>An ultrasound might send images to PACS instead of the EMR directly.</p>
+    <p>An infusion pump might talk to a pump server for drug libraries and status.</p>
+    <p>So when someone says:</p>
+    <p><em>“The device is not charting.”</em></p>
+    <p>the real question is:</p>
+    <p><strong>Where does the data stop?</strong></p>
+  </section>
+
+  <section class="content-box" id="manual-vs-integrated">
+    <h3>Device Data vs Manual Charting</h3>
+    <p>Manual charting means a person reads the value and enters it into the chart.</p>
+    <p>Device integration means the data is sent electronically from the device or system into another system.</p>
+    <p>Example:</p>
+    <p><strong>Manual charting:</strong></p>
+    <p><em>Nurse reads heart rate from monitor and types it into the EMR.</em></p>
+    <p><strong>Integrated charting:</strong></p>
+    <p><em>Monitor data flows through the monitoring system and interface into the EMR for review or documentation.</em></p>
+    <p>Integration can save time.</p>
+    <p>It can reduce transcription errors.</p>
+    <p>It can make data available faster.</p>
+    <p>But it can also create new troubleshooting questions.</p>
+    <p>Is the device working?</p>
+    <p>Is the device connected?</p>
+    <p>Is the correct patient associated?</p>
+    <p>Is the data crossing the network?</p>
+    <p>Is middleware receiving it?</p>
+    <p>Is the interface engine sending it?</p>
+    <p>Is the EMR accepting it?</p>
+    <p>Is the clinician expecting automatic charting or manual validation?</p>
+    <p>Those details matter.</p>
+  </section>
+
+  <section class="content-box" id="data-path">
+    <h3>How Data Moves From Device to Chart</h3>
+    <p>A common data path may look like this:</p>
+    <p><strong>Bedside device → Device network connection → Device server or gateway → Middleware → Interface engine → EMR</strong></p>
+    <p>That is not always the exact path, but it is a useful mental model.</p>
+    <p>For example:</p>
+    <p><strong>Patient monitor → Central monitoring server → Middleware → EMR</strong></p>
+    <p>or:</p>
+    <p><strong>Ventilator → Device gateway → Middleware → Respiratory documentation system</strong></p>
+    <p>or:</p>
+    <p><strong>Infusion pump → Pump server → Interface engine → EMR</strong></p>
+    <p>or:</p>
+    <p><strong>Ultrasound → PACS → EMR image/result link</strong></p>
+    <p>A failure can happen at any step.</p>
+    <p>That is why “the device is broken” may not be the right conclusion.</p>
+    <p>The device may be working locally, but the data path may be broken somewhere downstream.</p>
+  </section>
+
+  <section class="content-box" id="middleware">
+    <h3>What Middleware Does</h3>
+    <p>Middleware sits between systems.</p>
+    <p>It helps move, translate, filter, format, or route data.</p>
+    <p>In medical device integration, middleware may collect data from devices and prepare it for the EMR or another clinical system.</p>
+    <p>In plain English:</p>
+    <p><strong>Middleware is the translator and traffic controller between medical devices and hospital systems.</strong></p>
+    <p>Middleware may help with:</p>
+    <ul>
+      <li>Collecting device data</li>
+      <li>Matching data to a patient</li>
+      <li>Sending data to the correct destination</li>
+      <li>Formatting data for the EMR</li>
+      <li>Filtering values</li>
+      <li>Managing device connections</li>
+      <li>Handling alarms or messages</li>
+      <li>Supporting clinical workflows</li>
+      <li>Logging communication failures</li>
+    </ul>
+    <p>Some hospitals use middleware heavily.</p>
+    <p>Some workflows depend on it.</p>
+    <p>So if the device works but the chart does not update, middleware may be part of the investigation.</p>
+  </section>
+
+  <section class="content-box" id="interface-engine">
+    <h3>What an Interface Engine Does</h3>
+    <p>An interface engine moves data between hospital systems.</p>
+    <p>It may receive messages from one system, transform them, and send them to another system.</p>
+    <p>In plain English:</p>
+    <p><strong>An interface engine is a message router for hospital data.</strong></p>
+    <p>It may handle messages between systems like:</p>
+    <ul>
+      <li>EMR</li>
+      <li>Lab systems</li>
+      <li>Pharmacy systems</li>
+      <li>Radiology systems</li>
+      <li>Monitoring systems</li>
+      <li>Middleware</li>
+      <li>Registration systems</li>
+      <li>Billing systems</li>
+      <li>Device systems</li>
+    </ul>
+    <p>Biomeds may not manage the interface engine directly.</p>
+    <p>But they may hear IT or informatics say things like:</p>
+    <ul>
+      <li>Interface down</li>
+      <li>HL7 message failed</li>
+      <li>ADT feed issue</li>
+      <li>Results not crossing</li>
+      <li>Interface queue backed up</li>
+      <li>Messages rejected</li>
+      <li>Mapping issue</li>
+    </ul>
+    <p>That usually means the device may not be the only thing involved.</p>
+  </section>
+
+  <section class="content-box" id="hl7">
+    <h3>HL7 in Plain English</h3>
+    <p>HL7 is a common way healthcare systems exchange data.</p>
+    <p>It is often used for things like:</p>
+    <ul>
+      <li>Patient demographics</li>
+      <li>Admissions</li>
+      <li>Discharges</li>
+      <li>Transfers</li>
+      <li>Orders</li>
+      <li>Results</li>
+      <li>Observations</li>
+      <li>Clinical values</li>
+    </ul>
+    <p>In plain English:</p>
+    <p><strong>HL7 is one of the languages hospital systems use to send patient and clinical data to each other.</strong></p>
+    <p>For biomeds, HL7 may matter when device data needs to move into the EMR or another clinical system.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Vitals flowing into the chart</li>
+      <li>Ventilator values going to documentation</li>
+      <li>Lab results moving to the EMR</li>
+      <li>Patient information flowing to a device system</li>
+      <li>Orders or demographics feeding middleware</li>
+    </ul>
+    <p>You do not need to read raw HL7 messages to understand the concept.</p>
+    <p>Just know that HL7 is often part of the path between medical device data and hospital software.</p>
+  </section>
+
+  <section class="content-box" id="dicom">
+    <h3>DICOM in Plain English</h3>
+    <p>DICOM is commonly used for medical imaging.</p>
+    <p>It helps imaging devices store, send, retrieve, and manage medical images and related information.</p>
+    <p>In plain English:</p>
+    <p><strong>DICOM is the language medical imaging systems use to move images and image information.</strong></p>
+    <p>You may hear DICOM with:</p>
+    <ul>
+      <li>Ultrasound</li>
+      <li>X-ray</li>
+      <li>CT</li>
+      <li>MRI</li>
+      <li>C-arms</li>
+      <li>Fluoroscopy</li>
+      <li>PACS</li>
+      <li>Worklists</li>
+      <li>Image storage</li>
+      <li>Modality communication</li>
+    </ul>
+    <p>A device can be connected to the network and still fail DICOM send.</p>
+    <p>An ultrasound may scan fine but fail to send images.</p>
+    <p>A modality may pull the worklist but fail to store images.</p>
+    <p>A device may send images to the wrong destination.</p>
+    <p>DICOM is a major part of imaging integration.</p>
+  </section>
+
+  <section class="content-box" id="pacs">
+    <h3>PACS in Plain English</h3>
+    <p>PACS stands for <strong>Picture Archiving and Communication System</strong>.</p>
+    <p>In plain English:</p>
+    <p><strong>PACS is where medical images are stored, viewed, and managed.</strong></p>
+    <p>Imaging devices may send studies to PACS.</p>
+    <p>Clinicians may view images from PACS.</p>
+    <p>The EMR may link to images or reports stored in PACS.</p>
+    <p>Examples of PACS-related problems:</p>
+    <ul>
+      <li>Images not sending</li>
+      <li>Study stuck in queue</li>
+      <li>Wrong patient selected</li>
+      <li>Worklist not loading</li>
+      <li>Images sent to wrong destination</li>
+      <li>DICOM send failed</li>
+      <li>PACS destination unavailable</li>
+      <li>AE title mismatch</li>
+      <li>Network connection issue</li>
+    </ul>
+    <p>For biomeds, PACS matters because imaging equipment often depends on it.</p>
+    <p>An ultrasound system can work perfectly as an ultrasound machine but still be a problem if it cannot send images.</p>
+  </section>
+
+  <section class="content-box" id="adt">
+    <h3>ADT: Patient Admit, Discharge, and Transfer Data</h3>
+    <p>ADT stands for <strong>Admit, Discharge, Transfer</strong>.</p>
+    <p>ADT data tells systems who the patient is and where they are.</p>
+    <p>In plain English:</p>
+    <p><strong>ADT is patient identity and location information moving through hospital systems.</strong></p>
+    <p>ADT may include:</p>
+    <ul>
+      <li>Patient name</li>
+      <li>Medical record number</li>
+      <li>Account number</li>
+      <li>Date of birth</li>
+      <li>Visit information</li>
+      <li>Room</li>
+      <li>Bed</li>
+      <li>Unit</li>
+      <li>Admit status</li>
+      <li>Transfer status</li>
+      <li>Discharge status</li>
+    </ul>
+    <p>Why does this matter?</p>
+    <p>Because devices and middleware often need to know which patient is connected to which bed, room, or device.</p>
+    <p>If ADT data is wrong, delayed, missing, or not matching, device data can fail to associate correctly.</p>
+    <p>That can lead to:</p>
+    <ul>
+      <li>No patient showing on device system</li>
+      <li>Wrong patient available</li>
+      <li>Data not charting</li>
+      <li>Patient not found</li>
+      <li>Bed mismatch</li>
+      <li>Device assigned to wrong location</li>
+      <li>Manual association required</li>
+    </ul>
+    <p>Patient identity matters.</p>
+    <p>A lot.</p>
+  </section>
+
+  <section class="content-box" id="patient-association">
+    <h3>Why Patient Association Matters</h3>
+    <p>Patient association means linking device data to the correct patient.</p>
+    <p>This is one of the most important parts of integration.</p>
+    <p>If a monitor is sending vitals, the system needs to know whose vitals they are.</p>
+    <p>If a ventilator is sending data, the system needs to know which patient is connected.</p>
+    <p>If a device is assigned to the wrong patient, the data may not chart correctly.</p>
+    <p>Worse, it could chart under the wrong patient if safeguards fail.</p>
+    <p>That is why patient association matters.</p>
+    <p>Integration is not just about moving data.</p>
+    <p>It is about moving the right data to the right patient.</p>
+    <p>Biomeds should take patient association issues seriously.</p>
+  </section>
+
+  <section class="content-box" id="bed-room">
+    <h3>Why Bed and Room Assignment Matters</h3>
+    <p>Many device systems rely on bed, room, or location assignment.</p>
+    <p>A monitor may need to know it belongs to ICU Bed 12.</p>
+    <p>A central station may need the device assigned to the correct bed.</p>
+    <p>Middleware may expect data from a specific device, bed, or location.</p>
+    <p>The EMR may expect the patient to be admitted to that location.</p>
+    <p>If the bed assignment is wrong, data may not flow correctly.</p>
+    <p>Common problems include:</p>
+    <ul>
+      <li>Device assigned to wrong bed</li>
+      <li>Patient transferred but device not updated</li>
+      <li>Room moved but system not updated</li>
+      <li>Bed label mismatch</li>
+      <li>Central station mismatch</li>
+      <li>Wrong department profile</li>
+      <li>Device still assigned to old location</li>
+    </ul>
+    <p>A device can be working locally but still fail integration because the location or patient association is wrong.</p>
+  </section>
+
+  <section class="content-box" id="time-sync">
+    <h3>Why Time Sync Matters</h3>
+    <p>Time matters in healthcare documentation.</p>
+    <p>If a device clock is wrong, data may appear at the wrong time, be rejected, or create confusion.</p>
+    <p>Medical devices and systems often use time synchronization to keep clocks aligned.</p>
+    <p>You may hear terms like:</p>
+    <ul>
+      <li>NTP</li>
+      <li>Time server</li>
+      <li>System time</li>
+      <li>Device clock</li>
+      <li>Timestamp</li>
+      <li>Time drift</li>
+    </ul>
+    <p>In plain English:</p>
+    <p><strong>Time sync helps devices and systems agree on when something happened.</strong></p>
+    <p>This matters for:</p>
+    <ul>
+      <li>Vitals</li>
+      <li>Alarms</li>
+      <li>Events</li>
+      <li>Waveforms</li>
+      <li>Medication data</li>
+      <li>Ventilator data</li>
+      <li>Imaging studies</li>
+      <li>Logs</li>
+      <li>Troubleshooting timelines</li>
+    </ul>
+    <p>If device time is wrong, do not ignore it.</p>
+    <p>It can affect documentation and troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="common-devices">
+    <h3>Common Integrated Medical Devices</h3>
+    <p>Many medical devices may be integrated in some way.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Patient monitors</li>
+      <li>Central stations</li>
+      <li>Telemetry systems</li>
+      <li>Ventilators</li>
+      <li>Anesthesia machines</li>
+      <li>Infusion pumps</li>
+      <li>Ultrasound systems</li>
+      <li>CT systems</li>
+      <li>MRI systems</li>
+      <li>X-ray systems</li>
+      <li>C-arms</li>
+      <li>Lab analyzers</li>
+      <li>Glucose meters</li>
+      <li>Bladder scanners</li>
+      <li>Smart beds</li>
+      <li>Nurse call systems</li>
+      <li>Physiological data systems</li>
+      <li>Device gateways</li>
+      <li>Workstations on wheels</li>
+    </ul>
+    <p>Some integration is about patient data.</p>
+    <p>Some is about images.</p>
+    <p>Some is about alarms.</p>
+    <p>Some is about device status.</p>
+    <p>Some is about orders.</p>
+    <p>Some is about configuration or software updates.</p>
+    <p>Not all integration is the same.</p>
+  </section>
+
+  <section class="content-box" id="common-problems">
+    <h3>Common Integration Problems</h3>
+    <p>Common integration problems include:</p>
+    <ul>
+      <li>Device not connected to network</li>
+      <li>Device has wrong IP settings</li>
+      <li>Device assigned to wrong bed</li>
+      <li>Patient not associated</li>
+      <li>Patient not admitted yet</li>
+      <li>ADT feed issue</li>
+      <li>Middleware down</li>
+      <li>Interface down</li>
+      <li>Server unavailable</li>
+      <li>Wrong destination configured</li>
+      <li>DICOM send failure</li>
+      <li>Worklist failure</li>
+      <li>PACS unavailable</li>
+      <li>HL7 messages rejected</li>
+      <li>Certificate expired</li>
+      <li>Time mismatch</li>
+      <li>Software version mismatch</li>
+      <li>Device moved without reconfiguration</li>
+      <li>Firewall or network change</li>
+      <li>Wrong profile selected</li>
+      <li>Data delayed</li>
+      <li>Data charting under the wrong encounter or not charting at all</li>
+    </ul>
+    <p>A lot can break.</p>
+    <p>That is why integration troubleshooting needs good information.</p>
+  </section>
+
+  <section class="content-box" id="device-works-data-does-not">
+    <h3>When the Device Works but Data Does Not Chart</h3>
+    <p>This is one of the most important concepts.</p>
+    <p>A device can be clinically working and still fail integration.</p>
+    <p>A monitor may show accurate vitals at the bedside but not send them to the EMR.</p>
+    <p>A ventilator may deliver breaths correctly but not document values.</p>
+    <p>An ultrasound may capture images but fail to send them to PACS.</p>
+    <p>An infusion pump may run correctly but fail to connect to the pump server.</p>
+    <p>A lab analyzer may produce a result but fail to send it to the lab system.</p>
+    <p>That means:</p>
+    <p><strong>The device working and the integration working are not the same statement.</strong></p>
+    <p>When troubleshooting, separate the questions:</p>
+    <ul>
+      <li>Is the device functioning locally?</li>
+      <li>Is the device connected to the network?</li>
+      <li>Is the data reaching the next system?</li>
+      <li>Is the data assigned to the correct patient?</li>
+      <li>Is the EMR receiving or displaying the data?</li>
+      <li>Is the workflow expecting manual review or automatic filing?</li>
+    </ul>
+    <p>That separation helps prevent finger-pointing.</p>
+  </section>
+
+  <section class="content-box" id="biomed-checks">
+    <h3>What Biomeds Should Check First</h3>
+    <p>Before escalating an integration issue, biomeds can often check the basics.</p>
+    <p>Ask:</p>
+    <ul>
+      <li>Is the device powered on and functioning locally?</li>
+      <li>Is the patient connected or is data being generated?</li>
+      <li>Is the device assigned to the correct bed, room, or patient?</li>
+      <li>Is the correct profile, department, or location selected?</li>
+      <li>Is the network cable connected?</li>
+      <li>Is Wi-Fi connected?</li>
+      <li>Does the device have an IP address?</li>
+      <li>Is there an error message?</li>
+      <li>Is the device time/date correct?</li>
+      <li>Did the device recently move?</li>
+      <li>Was a module, dock, battery, cable, or accessory changed?</li>
+      <li>Is the issue one device or many devices?</li>
+      <li>Is the central station, server, middleware, or EMR affected for multiple devices?</li>
+      <li>Where does the data stop?</li>
+    </ul>
+    <p>You may not be able to fix the integration yourself.</p>
+    <p>But you can collect the information that helps the right team fix it faster.</p>
+  </section>
+
+  <section class="content-box" id="it-informatics-needs">
+    <h3>What IT or Clinical Informatics May Need</h3>
+    <p>When escalating, useful information matters.</p>
+    <p>Do not just say:</p>
+    <p><em>It is not charting.</em></p>
+    <p>Give details.</p>
+    <p>Useful details may include:</p>
+    <ul>
+      <li>Device type</li>
+      <li>Manufacturer and model</li>
+      <li>Asset tag</li>
+      <li>Serial number</li>
+      <li>Location</li>
+      <li>Patient care area</li>
+      <li>Bed or room assignment</li>
+      <li>Wired or wireless connection</li>
+      <li>IP address</li>
+      <li>MAC address</li>
+      <li>Hostname</li>
+      <li>Error message</li>
+      <li>Destination system</li>
+      <li>Patient association status</li>
+      <li>Whether local device function is normal</li>
+      <li>Whether one device or many are affected</li>
+      <li>When the issue started</li>
+      <li>What changed recently</li>
+      <li>What troubleshooting was already done</li>
+    </ul>
+    <p>Better escalation sounds like:</p>
+    <p><em>ICU bedside monitor is displaying vitals locally and appears at central station, but vitals are not crossing into the EMR. Patient is admitted to ICU Bed 12. Monitor is assigned to ICU Bed 12. Other monitors on the unit are charting normally. Issue appears isolated to this bed.</em></p>
+    <p>That is much more useful than:</p>
+    <p><em>Monitor not working.</em></p>
+  </section>
+
+  <section class="content-box" id="who-owns-what">
+    <h3>Biomed, IT, Informatics, Vendor: Who Owns What?</h3>
+    <p>Integration problems often sit between groups.</p>
+    <p><strong>Biomed may own:</strong></p>
+    <ul>
+      <li>Device hardware</li>
+      <li>Local device function</li>
+      <li>Accessories</li>
+      <li>Modules</li>
+      <li>Device configuration</li>
+      <li>PM and service history</li>
+      <li>Vendor service coordination</li>
+    </ul>
+    <p><strong>IT may own:</strong></p>
+    <ul>
+      <li>Network infrastructure</li>
+      <li>Switches</li>
+      <li>Wireless</li>
+      <li>Servers</li>
+      <li>Firewalls</li>
+      <li>Security</li>
+      <li>User accounts</li>
+      <li>Certificates</li>
+      <li>System access</li>
+    </ul>
+    <p><strong>Clinical informatics may own:</strong></p>
+    <ul>
+      <li>EMR build</li>
+      <li>Clinical workflows</li>
+      <li>Charting configuration</li>
+      <li>Documentation rules</li>
+      <li>Patient association workflows</li>
+      <li>User training</li>
+      <li>Interface expectations</li>
+    </ul>
+    <p><strong>The vendor may own:</strong></p>
+    <ul>
+      <li>Proprietary software</li>
+      <li>Device gateways</li>
+      <li>Application settings</li>
+      <li>Service tools</li>
+      <li>Integration setup</li>
+      <li>Device-specific troubleshooting</li>
+      <li>Remote support</li>
+    </ul>
+    <p>Nobody likes problems that sit between teams.</p>
+    <p>But that is exactly where many integration issues live.</p>
+    <p>The best approach is not “that is not my problem.”</p>
+    <p>The best approach is:</p>
+    <p><strong>What do we know, where does the data stop, and who owns the next part of the path?</strong></p>
+  </section>
+
+  <section class="content-box" id="documentation-tips">
+    <h3>Documentation Tips</h3>
+    <p>Integration work orders should be specific.</p>
+    <p>Weak note:</p>
+    <p><em>EMR issue. Called IT.</em></p>
+    <p>Better:</p>
+    <p><em>Reported bedside monitor vitals not crossing to EMR. Monitor displayed vitals locally and appeared on central station. Verified network cable connected and device assigned to correct bed. Issue isolated to one room. Escalated to clinical informatics/IT with device asset tag, location, bed assignment, and observed behavior.</em></p>
+    <p>Another example:</p>
+    <p><em>Reported ultrasound unable to send images to PACS. Device acquired images normally. Network connected. DICOM send failed with destination error. PACS support notified with AE title, IP address, destination, and error message.</em></p>
+    <p>That is useful.</p>
+    <p>For a deeper explanation of good documentation structure, see the Biomed Basics page on the <a href="biomed-work-order-notes-ccr-method.html">CCR method</a>.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts">
+    <h3>Final Thoughts</h3>
+    <p>Medical device integration is one of the places where modern biomed work has changed the most.</p>
+    <p>The device is not always the whole system anymore.</p>
+    <p>The system may include the device, network, server, middleware, interface engine, EMR, patient association, clinical workflow, and vendor software.</p>
+    <p>That can be messy.</p>
+    <p>But it is also important.</p>
+    <p>A device can work perfectly at the bedside and still fail the clinical workflow if the data does not reach the right place.</p>
+    <p>A good biomed does not need to be an EMR analyst, network engineer, or interface expert.</p>
+    <p>But a good biomed should understand enough to ask better questions:</p>
+    <p>
+      Is the device working locally?<br>
+      Is it connected?<br>
+      Is the patient associated?<br>
+      Is the data reaching the next system?<br>
+      Where does the data stop?<br>
+      Who owns the next part of the path?
+    </p>
+    <p>That is the mindset.</p>
+    <p>Modern medical equipment does not just work alone.</p>
+    <p>It works inside a connected hospital.</p>
+    <p>And biomeds are increasingly part of that connection.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview for biomedical equipment technicians, clinical engineers, students, and healthcare technology staff. Always follow your facility policy, manufacturer service documentation, IT procedures, clinical informatics workflows, cybersecurity requirements, and the requirements of your organization.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="biomed-bmet-clinical-engineering-htm.html">Biomed, BMET, Clinical Engineering, and HTM</a></li>
+      <li><a href="electrical-safety-testing-medical-equipment.html">Electrical Safety Testing for Medical Equipment</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="biomed-translation-problems-medical-equipment-names.html">Biomed Translation Problems: Why Medical Equipment Has So Many Names</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p>
+    <a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; 
+    <a href="../terms-of-use.html">Terms of Use</a>
+  </p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
