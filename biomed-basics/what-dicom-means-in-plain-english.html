@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>What DICOM Means in Plain English | Jake Troubleshoots</title>
+  <meta name="description" content="A plain-English introduction to DICOM and PACS for BMETs and clinical engineers, including modalities, worklists, image storage, AE Titles, ports, DICOM Echo, Storage Commitment, and medical imaging communication troubleshooting.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+<section class="hero">
+  <h2>What DICOM Means in Plain English</h2>
+  <p>A Biomed Introduction to Medical Imaging Communication</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A practical introduction to DICOM, PACS, modalities, worklists, AE Titles, image storage, and why an imaging system can work locally but fail the clinical workflow.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+  </div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>DICOM is one of those terms biomeds hear all the time without always getting a clear explanation.</p>
+<p>A nurse may say:</p><p><em>The ultrasound will not send images.</em></p>
+<p>A radiology tech may say:</p><p><em>The worklist is blank.</em></p>
+<p>A vendor may ask:</p><p><em>What is the AE Title, IP address, and port?</em></p>
+<p>IT may say:</p><p><em>The modality can ping PACS.</em></p>
+<p>And the biomed standing in the middle may be thinking:</p><p><em>Cool. What exactly does any of that prove?</em></p>
+<p>This page explains DICOM, PACS, modalities, worklists, image storage, AE Titles, ports, Storage Commitment, and the kinds of imaging communication problems biomeds may run into.</p>
+<p>The goal is not to turn every biomed into a PACS administrator.</p>
+<p>The goal is to explain enough that when an imaging device will not send, receive, find, or store a study, you understand the basic path and can ask better questions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Jump to a Section</h3>
+    <ul>
+      <li><a href="#what-dicom-stands-for">What DICOM Stands For</a></li>
+      <li><a href="#simple-version">The Simple Version</a></li>
+      <li><a href="#why-dicom-matters">Why DICOM Matters to Biomeds</a></li>
+      <li><a href="#history">A Simple History of DICOM</a></li>
+      <li><a href="#more-than-an-image">DICOM Is More Than an Image File</a></li>
+      <li><a href="#modality">What a Modality Is</a></li>
+      <li><a href="#pacs">What PACS Is</a></li>
+      <li><a href="#ris">What RIS Is</a></li>
+      <li><a href="#study-workflow">How an Imaging Study Usually Moves</a></li>
+      <li><a href="#worklist">What Modality Worklist Means</a></li>
+      <li><a href="#why-worklist-matters">Why Worklist Matters</a></li>
+      <li><a href="#dicom-store">What DICOM Store Means</a></li>
+      <li><a href="#storage-commitment">What Storage Commitment Means</a></li>
+      <li><a href="#query-retrieve">What Query/Retrieve Means</a></li>
+      <li><a href="#mpps">What MPPS Means</a></li>
+      <li><a href="#ae-title">AE Title Explained</a></li>
+      <li><a href="#ip-port">IP Address and Port Number in DICOM</a></li>
+      <li><a href="#ping">Why Ping Does Not Prove DICOM Works</a></li>
+      <li><a href="#dicom-echo">What a DICOM Echo Is</a></li>
+      <li><a href="#conformance">What a DICOM Conformance Statement Is</a></li>
+      <li><a href="#common-problems">Common DICOM Problems Biomeds May See</a></li>
+      <li><a href="#workflow-fails">When the Imaging Device Works but the Workflow Does Not</a></li>
+      <li><a href="#patient-safety">Patient Safety and Wrong-Patient Imaging Problems</a></li>
+      <li><a href="#check-first">What Biomeds Should Check Before Escalating</a></li>
+      <li><a href="#escalation">What PACS, IT, or the Vendor May Need From Biomed</a></li>
+      <li><a href="#documentation">Documentation Tip</a></li>
+      <li><a href="#testing-proves">What DICOM Testing Does and Does Not Prove</a></li>
+      <li><a href="#references">Helpful References</a></li>
+      <li><a href="#final-thoughts">Final Thoughts</a></li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-dicom-stands-for">
+    <h3>What DICOM Stands For</h3>
+    <p>DICOM stands for:</p><p><strong>Digital Imaging and Communications in Medicine.</strong></p>
+<p>In plain English:</p><p><strong>DICOM is the standard that lets medical imaging systems create, identify, send, receive, store, retrieve, and display medical imaging information.</strong></p>
+<p>DICOM is not one manufacturer’s system. It is not the same thing as PACS. It is not just a file extension.</p>
+<p>It is the shared way medical imaging devices and systems communicate with each other.</p>
+<ul><li>Ultrasound systems</li><li>X-ray systems</li><li>CT scanners</li><li>MRI systems</li><li>C-arms</li><li>Mammography systems</li><li>Nuclear medicine systems</li><li>Cardiac imaging systems</li><li>PACS archives</li><li>Reading workstations</li><li>Imaging viewers</li><li>Vendor-neutral archives</li><li>Printers</li><li>Other imaging-related systems</li></ul>
+  </section>
+
+  <section class="content-box" id="simple-version">
+    <h3>The Simple Version</h3>
+    <p>An imaging device takes a study.</p><p>That study is more than a picture.</p>
+<p>It needs to be connected to the correct patient, the correct exam, the correct date and time, the correct study information, and the correct destination.</p>
+<p>DICOM helps make that possible.</p>
+<p>A basic imaging workflow may look like this:</p>
+<p><strong>Patient/exam is ordered<br>→ Imaging device receives the scheduled exam information<br>→ Technologist selects the correct patient and exam<br>→ Imaging device acquires images<br>→ Imaging device sends images through DICOM<br>→ PACS stores and displays the study<br>→ Radiologist or clinician reviews the images<br>→ Report or image access becomes available through the clinical workflow</strong></p>
+<p>In plain English:</p><p><strong>DICOM is how the imaging device and imaging systems understand what the images are, who they belong to, and where they need to go.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-dicom-matters">
+    <h3>Why DICOM Matters to Biomeds</h3>
+    <p>A biomed may not own the PACS server. A biomed may not build the radiology workflow. A biomed may not be responsible for every interface or imaging application.</p>
+<p>But biomeds absolutely run into DICOM problems.</p>
+<ul><li>Ultrasound system images will not send</li><li>C-arm is acquiring images but cannot send them</li><li>Portable X-ray has an empty worklist</li><li>Imaging system shows a destination error</li><li>New device needs to be connected to PACS</li><li>Replaced system cannot communicate with the archive</li><li>Vendor asks for AE Title, IP address, or port</li><li>Studies are stuck in the send queue</li><li>Device can send to one destination but not another</li><li>Device can pull worklist but cannot send images</li><li>Device can send images but users cannot find them</li><li>Modality was moved, replaced, or reconfigured and now communication fails</li></ul>
+<p>The important biomed lesson is:</p><p><strong>An imaging device can work perfectly as a piece of equipment and still fail its clinical workflow because the images are not getting where they need to go.</strong></p>
+<p>An ultrasound system that scans beautifully but cannot send the study is still a problem. A C-arm that produces images but cannot archive them is still a problem.</p><p>The device and the data path both matter.</p>
+  </section>
+
+  <section class="content-box" id="history">
+    <h3>A Simple History of DICOM</h3>
+    <p>Before common imaging standards, medical images could be difficult to move between equipment and systems from different manufacturers.</p>
+<p>In the early 1980s, CT and MRI images were often difficult for anyone other than the equipment manufacturer to decode or print.</p>
+<p>In 1983, the American College of Radiology and the National Electrical Manufacturers Association formed a committee to improve medical imaging communication.</p>
+<p>The first ACR-NEMA standard was released in 1985.</p>
+<p>By 1993, the standard had evolved to work across local area networks using TCP/IP, and the name became DICOM: Digital Imaging and Communications in Medicine.</p>
+<p>DICOM later expanded beyond basic image transfer to include worklists, structured reports, dose information, web services, and many other parts of modern imaging workflow.</p>
+<p>In plain English:</p><p><strong>DICOM exists because hospitals needed medical imaging equipment from different manufacturers to stop acting like isolated islands.</strong></p>
+  </section>
+
+  <section class="content-box" id="more-than-an-image">
+    <h3>DICOM Is More Than an Image File</h3>
+    <p>When people first hear DICOM, they may think:</p><p><em>It is the file format for medical images.</em></p>
+<p>That is partly true. But it is not the whole story.</p>
+<p>A DICOM object may contain the image itself and information connected to that image.</p>
+<ul><li>Patient name</li><li>Patient ID</li><li>Study description</li><li>Modality type</li><li>Exam date and time</li><li>Accession number</li><li>Series information</li><li>Image number</li><li>Body part</li><li>Referring physician</li><li>Procedure information</li><li>Device information</li><li>Other identifying or workflow-related data</li></ul>
+<p>That matters because a medical image without the correct patient and exam information can become a serious problem.</p>
+<p>A chest X-ray image by itself is not enough. The system needs to know:</p>
+<ul><li>Whose chest X-ray is this?</li><li>Which exam does it belong to?</li><li>When was it acquired?</li><li>Which system created it?</li><li>Where should it be stored?</li><li>How should it be found later?</li></ul>
+  </section>
+
+  <section class="content-box" id="modality">
+    <h3>What a Modality Is</h3>
+    <p>In imaging language, a <strong>modality</strong> is the equipment that acquires the medical images.</p>
+<ul><li>CT scanner</li><li>MRI scanner</li><li>Ultrasound system</li><li>X-ray system</li><li>Portable X-ray unit</li><li>C-arm</li><li>Mammography system</li><li>Nuclear medicine camera</li><li>PET system</li><li>Cardiac imaging system</li></ul>
+<p>In plain English:</p><p><strong>The modality is the imaging machine taking the pictures.</strong></p>
+<p>If someone says <em>the modality cannot send</em>, they mean the imaging equipment cannot successfully send the study or image data to its expected destination.</p>
+<p>For biomeds, that usually means figuring out whether the failure is equipment-related, network-related, configuration-related, PACS-related, worklist-related, patient/study-related, or vendor application-related.</p>
+  </section>
+
+  <section class="content-box" id="pacs">
+    <h3>What PACS Is</h3>
+    <p>PACS stands for:</p><p><strong>Picture Archiving and Communication System.</strong></p>
+<p>In plain English:</p><p><strong>PACS is the system used to receive, store, organize, retrieve, and display medical imaging studies.</strong></p>
+<p>You can think of PACS as the imaging archive and image-management system.</p>
+<p>A modality creates images. PACS is commonly where those images are sent so they can be stored and viewed later.</p>
+<ul><li>Image storage</li><li>Image viewing</li><li>Study retrieval</li><li>Radiologist worklists</li><li>Comparison with prior studies</li><li>Image distribution</li><li>Access from clinical viewers</li><li>Image links inside the EMR</li><li>Long-term archive workflows</li></ul>
+<p>A basic example:</p><p><strong>Ultrasound system acquires images<br>→ Ultrasound sends DICOM study<br>→ PACS receives and stores images<br>→ Radiologist or clinician views study<br>→ Report or image link is available through the clinical system</strong></p>
+<p>That is why PACS is such a big deal.</p><p>Without PACS or another appropriate archive workflow, imaging equipment may be taking images that cannot be reliably stored, retrieved, or used by the people who need them.</p>
+  </section>
+
+  <section class="content-box" id="ris">
+    <h3>What RIS Is</h3>
+    <p>RIS stands for:</p><p><strong>Radiology Information System.</strong></p>
+<p>In plain English:</p><p><strong>RIS helps manage radiology workflow, including scheduling, exam information, procedure tracking, and reporting-related workflow.</strong></p>
+<p>Depending on the hospital, RIS functions may be separate, partly built into another system, or closely connected with the EMR and PACS.</p>
+<p>A simple way to think about the roles is:</p>
+<p><strong>EMR / Hospital system:</strong> Patient chart, orders, patient care information<br><strong>RIS:</strong> Radiology scheduling and imaging workflow information<br><strong>Modality:</strong> The imaging device that acquires the images<br><strong>PACS:</strong> Stores and displays the images<br><strong>DICOM:</strong> The standard that helps imaging systems exchange imaging information</p>
+<p>The exact setup varies by hospital. But those basic roles help explain why an imaging problem may involve more than just the device.</p>
+  </section>
+
+  <section class="content-box" id="study-workflow">
+    <h3>How an Imaging Study Usually Moves</h3>
+    <p>A typical scheduled imaging study may move through several systems.</p>
+<p>A simplified workflow may look like this:</p>
+<p><strong>Provider orders the exam<br>→ Patient and order information reaches the imaging workflow<br>→ Imaging device pulls the scheduled exam from worklist<br>→ Technologist confirms the patient and exam<br>→ Modality acquires images<br>→ Modality sends images to PACS<br>→ PACS stores and makes images available for review<br>→ Radiologist reviews images and creates a report<br>→ Report becomes available through the clinical record</strong></p>
+<p>Not every department follows this exact workflow. Portable imaging, surgery, cardiology, emergency situations, and point-of-care imaging may use different processes.</p>
+<p>But the key concept is the same:</p><p><strong>The image is part of a workflow, not just a file being copied from one place to another.</strong></p>
+  </section>
+
+  <section class="content-box" id="worklist">
+    <h3>What Modality Worklist Means</h3>
+    <p><strong>Modality Worklist</strong> is one of the most useful DICOM concepts to understand.</p>
+<p>In plain English:</p><p><strong>Modality Worklist is the scheduled exam list that an imaging device pulls so the technologist can choose the correct patient and procedure instead of manually typing everything in.</strong></p>
+<p>A patient is scheduled for an ultrasound. The ultrasound system pulls a worklist. The technologist sees the patient name, medical record number, exam type, accession number, and related study information. They select the correct exam. The ultrasound uses that information when building the study and sending it to PACS.</p>
+<p>That is much safer than manually typing every detail from scratch.</p>
+<ul><li>Patient name</li><li>Patient ID</li><li>Sex</li><li>Date of birth or age</li><li>Exam description</li><li>Procedure code</li><li>Referring physician</li><li>Accession number</li><li>Reason for exam</li><li>Scheduled procedure information</li></ul>
+  </section>
+
+  <section class="content-box" id="why-worklist-matters">
+    <h3>Why Worklist Matters</h3>
+    <p>A blank worklist may sound like a minor inconvenience. It is not always minor.</p>
+<p>If the technologist cannot retrieve the correct patient and exam information, they may need to use a downtime or manual-entry workflow. That creates more room for mistakes.</p>
+<ul><li>Patient name typed incorrectly</li><li>Medical record number entered incorrectly</li><li>Wrong exam selected</li><li>Wrong accession number</li><li>Study not matching the original order</li><li>Images difficult to locate</li><li>Images associated with the wrong patient</li><li>Duplicate patient/study created</li><li>Delay while staff try to correct the issue</li></ul>
+<p>That is why the question is not only: <em>Can the modality acquire an image?</em></p>
+<p>The question is also:</p><p><strong>Can it safely identify, send, and store the correct study for the correct patient?</strong></p>
+  </section>
+
+  <section class="content-box" id="dicom-store">
+    <h3>What DICOM Store Means</h3>
+    <p><strong>DICOM Store</strong> is the service used to send images or other DICOM objects to another system, commonly PACS or an imaging workstation.</p>
+<p>In plain English:</p><p><strong>DICOM Store means sending the study to the archive or destination system.</strong></p>
+<p>Example: <strong>Ultrasound → PACS</strong></p>
+<p>The ultrasound acquires the images. The user selects send. The ultrasound attempts to send the images to the PACS destination configured in the system.</p>
+<p>If it works, the images arrive at PACS. If it fails, you may see:</p>
+<ul><li>Send failed</li><li>Destination unavailable</li><li>Unable to connect</li><li>DICOM store failed</li><li>Study queued</li><li>Archive failed</li><li>Association rejected</li><li>Communication error</li></ul>
+<p>That does not automatically mean the ultrasound itself is broken. It may mean the device cannot communicate with the destination correctly.</p>
+  </section>
+
+  <section class="content-box" id="storage-commitment">
+    <h3>What Storage Commitment Means</h3>
+    <p>This one is easy to overlook.</p><p>Sending an image is not always the same as knowing it has been safely stored.</p>
+<p><strong>Storage Commitment</strong> is a DICOM service used to confirm that the receiving system has taken responsibility for storing the images.</p>
+<p>In plain English:</p><p><strong>DICOM Store says, “I sent the images.”<br>Storage Commitment says, “The receiving system confirms it has safely stored them.”</strong></p>
+<p>Why does that matter? Because a modality may need to know that images are safely archived before local copies are cleared or treated as no longer needed.</p>
+<ul><li>Studies stuck in queues</li><li>Local storage filling up</li><li>Images sent but not confirmed</li><li>Devices waiting for archive confirmation</li><li>Troubleshooting whether images are safe to remove locally</li></ul>
+  </section>
+
+  <section class="content-box" id="query-retrieve">
+    <h3>What Query/Retrieve Means</h3>
+    <p><strong>Query/Retrieve</strong> lets a system search for stored studies and pull them back from an archive such as PACS.</p>
+<p>In plain English:</p><p><strong>Query means searching for the study.<br>Retrieve means bringing the study back for viewing or use.</strong></p>
+<ul><li>A workstation searches PACS for previous exams.</li><li>An imaging system pulls prior studies for comparison.</li><li>A viewer retrieves images for review.</li><li>A system checks whether a study is already stored.</li></ul>
+<p>A modality may be able to send images but not retrieve prior exams. Or it may be able to retrieve studies but not send new ones.</p><p>Those are different DICOM functions and may fail separately.</p>
+  </section>
+
+  <section class="content-box" id="mpps">
+    <h3>What MPPS Means</h3>
+    <p>You may eventually hear the term <strong>MPPS</strong>, which stands for:</p><p><strong>Modality Performed Procedure Step.</strong></p>
+<p>In plain English:</p><p><strong>MPPS helps the modality report what exam activity was actually performed.</strong></p>
+<ul><li>Procedure started</li><li>Procedure completed</li><li>Study timing</li><li>Images acquired</li><li>Procedure status</li><li>Some dose or acquisition-related information, depending on the system</li></ul>
+<p>This is not always the first thing a biomed needs to troubleshoot. But it helps explain why imaging workflow has more pieces than just: <em>Device sends picture to PACS.</em></p>
+  </section>
+
+  <section class="content-box" id="ae-title">
+    <h3>AE Title Explained</h3>
+    <p>This is one of the big DICOM terms vendors and PACS staff may ask for.</p>
+<p><strong>AE Title</strong> means <strong>Application Entity Title</strong>.</p>
+<p>In plain English:</p><p><strong>The AE Title is the DICOM name of the application or system trying to communicate.</strong></p>
+<ul><li>US_ROOM3</li><li>PACS_ARCHIVE</li><li>OR_CARM_01</li><li>CT_SCANNER_A</li></ul>
+<p>The exact name depends on how the system is configured.</p>
+<p>A DICOM destination often needs:</p><ul><li>AE Title</li><li>IP address</li><li>Port number</li></ul>
+<p>The easiest way to think of it is:</p><p><strong>IP address:</strong> Which building am I going to?<br><strong>Port number:</strong> Which door am I using?<br><strong>AE Title:</strong> Who am I trying to speak to inside?</p>
+<p>A device may be able to reach the network destination but still fail DICOM communication because the AE Title is wrong or not accepted.</p>
+  </section>
+
+  <section class="content-box" id="ip-port">
+    <h3>IP Address and Port Number in DICOM</h3>
+    <p>DICOM communication still depends on normal networking. The device and destination need to know how to reach each other.</p>
+<ul><li>IP address</li><li>Port number</li><li>AE Title</li></ul>
+<p><strong>IP address</strong> identifies where the destination system lives on the network.</p><p><strong>Port number</strong> identifies which application door is listening for the communication.</p><p><strong>AE Title</strong> identifies the DICOM application involved.</p>
+<p>Example:</p><p><strong>Destination:</strong> PACS<br><strong>AE Title:</strong> PACS_ARCHIVE<br><strong>IP Address:</strong> 10.20.30.40<br><strong>Port:</strong> 104</p>
+<p>That is only an example. Real settings must come from the hospital imaging/PACS configuration and vendor requirements.</p>
+<p>A wrong IP address may send the device to the wrong place. A wrong port may reach the system but not the DICOM service. A wrong AE Title may cause the destination to reject or not recognize the communication.</p>
+  </section>
+
+  <section class="content-box" id="ping">
+    <h3>Why Ping Does Not Prove DICOM Works</h3>
+    <p>This is a huge one.</p><p>Someone may say: <em>It pings, so the network is fine.</em></p>
+<p>That information is useful. But it does <strong>not</strong> prove DICOM is working.</p>
+<p>A successful ping may show that the device can reach the destination IP address at a basic network level.</p>
+<p>It does not prove:</p>
+<ul><li>The DICOM service is running</li><li>The correct DICOM port is open</li><li>The AE Title is correct</li><li>The destination accepts that modality</li><li>The device is configured for the correct PACS destination</li><li>Worklist is configured correctly</li><li>The images will store correctly</li><li>Storage Commitment will succeed</li><li>The study will be attached to the correct patient</li><li>Users will find the study where they expect it</li></ul>
+<p>In plain English:</p><p><strong>Ping may prove the building exists. It does not prove the correct department inside the building is open and willing to accept the study.</strong></p>
+<p>That is why a device can ping PACS and still fail to send images.</p>
+  </section>
+
+  <section class="content-box" id="dicom-echo">
+    <h3>What a DICOM Echo Is</h3>
+    <p>You may also hear about a <strong>DICOM Echo</strong> or <strong>Verification</strong> test.</p>
+<p>This is more specific than a normal network ping.</p>
+<p>In plain English:</p><p><strong>A DICOM Echo checks whether two DICOM applications can make basic DICOM contact with each other.</strong></p>
+<p>That is better information than a standard ping because it tests communication at the DICOM application level.</p>
+<p>But even a successful DICOM Echo still does not prove every workflow works.</p>
+<ul><li>Image store</li><li>Worklist</li><li>Query/Retrieve</li><li>Storage Commitment</li><li>Patient association</li><li>Correct image routing</li><li>Correct study display</li></ul>
+<p>So the progression is:</p>
+<p><strong>Ping:</strong> Can I reach that network address?<br><strong>DICOM Echo:</strong> Can I make basic DICOM contact with that application?<br><strong>DICOM Store:</strong> Can I send the images?<br><strong>Storage Commitment:</strong> Did the receiving system safely accept responsibility for storing them?<br><strong>Worklist:</strong> Can I retrieve the correct scheduled patient/exam information?</p>
+<p>That is a very useful troubleshooting mindset.</p>
+  </section>
+
+  <section class="content-box" id="conformance">
+    <h3>What a DICOM Conformance Statement Is</h3>
+    <p>This is another term you may hear during device installs or communication problems.</p>
+<p>A <strong>DICOM Conformance Statement</strong> is the manufacturer’s document describing how that system supports DICOM communication.</p>
+<p>In plain English:</p><p><strong>A DICOM Conformance Statement explains what kinds of DICOM conversations the device knows how to have.</strong></p>
+<ul><li>Supported DICOM services</li><li>Storage capabilities</li><li>Worklist support</li><li>Query/Retrieve support</li><li>Storage Commitment support</li><li>AE Title behavior</li><li>Port configuration</li><li>Image object types supported</li><li>Required configuration information</li><li>Connection limitations</li><li>Workflow assumptions</li></ul>
+<p>It is not usually light reading. But when two systems are supposed to communicate and do not, the conformance statement may matter.</p>
+<p>One device may support a certain service. Another system may expect a different service or configuration. The device may send a type of image object the destination does not handle correctly.</p>
+<p>A conformance statement helps the vendor, PACS team, and technical staff understand what the system is designed to support.</p>
+  </section>
+
+  <section class="content-box" id="common-problems">
+    <h3>Common DICOM Problems Biomeds May See</h3>
+    <p>Common DICOM-related complaints include:</p>
+<ul><li>Images will not send</li><li>Study stuck in send queue</li><li>DICOM store failed</li><li>Destination unavailable</li><li>PACS unavailable</li><li>Worklist blank</li><li>Worklist does not show correct patient</li><li>Patient not found</li><li>Wrong exam selected</li><li>Wrong patient selected</li><li>Study sent under wrong patient</li><li>Study sent but users cannot locate it</li><li>AE Title incorrect</li><li>Port number incorrect</li><li>IP address incorrect</li><li>DICOM Echo failure</li><li>Storage Commitment failure</li><li>Query/Retrieve failure</li><li>Device moved and communication no longer works</li><li>New device not accepted by PACS</li><li>One destination works but another does not</li><li>Images acquire normally but workflow fails</li></ul>
+<p>The exact wording depends on the manufacturer and software.</p><p>The biomed goal is not to memorize every possible DICOM error.</p><p>The goal is to understand which part of the workflow appears to be failing.</p>
+  </section>
+
+  <section class="content-box" id="workflow-fails">
+    <h3>When the Imaging Device Works but the Workflow Does Not</h3>
+    <p>This is the most important troubleshooting distinction.</p><p>A device may work locally and still fail the imaging workflow.</p>
+<ul><li>Ultrasound generates clear images but cannot send to PACS.</li><li>C-arm operates and saves images locally but cannot archive the study.</li><li>Portable X-ray acquires images but cannot retrieve the worklist.</li><li>Imaging workstation can view studies but cannot retrieve priors.</li><li>Modality sends images but they do not appear under the expected patient or exam.</li><li>Device passes self-test but cannot DICOM Echo the destination.</li></ul>
+<p>That means:</p><p><strong>Imaging function and imaging communication are related, but they are not the same thing.</strong></p>
+<p>Before deciding the equipment is “good” or “bad,” separate the questions:</p>
+<ul><li>Does it acquire images normally?</li><li>Does it store images locally?</li><li>Can it retrieve worklist?</li><li>Can it reach the network?</li><li>Can it DICOM Echo the destination?</li><li>Can it send a test study?</li><li>Does the study arrive in PACS?</li><li>Is it associated with the correct patient and exam?</li><li>Can clinicians see the study where expected?</li></ul>
+<p>That gives you a much clearer picture.</p>
+  </section>
+
+  <section class="content-box" id="patient-safety">
+    <h3>Patient Safety and Wrong-Patient Imaging Problems</h3>
+    <p>A DICOM problem is not always just: <em>The images did not send.</em></p>
+<p>Sometimes the more serious issue is: <em>The images are associated with the wrong patient or wrong study.</em></p>
+<p>That is a major problem.</p>
+<ul><li>Wrong patient selected from worklist</li><li>Patient manually entered incorrectly</li><li>Study performed under incorrect encounter</li><li>Images sent under incorrect name or medical record number</li><li>Duplicate patient created</li><li>Wrong accession number selected</li><li>Imaging device still configured for an old location or workflow</li></ul>
+<p>Do not casually rename, resend, delete, or manipulate studies when patient identity is involved.</p>
+<p>Follow the facility’s radiology, PACS, correction, and patient safety workflow.</p>
+<p>The goal is not merely to make images appear.</p>
+<p>The goal is to make sure the <strong>correct images</strong> are attached to the <strong>correct patient</strong> and <strong>correct study</strong>.</p>
+  </section>
+
+  <section class="content-box" id="check-first">
+    <h3>What Biomeds Should Check Before Escalating</h3>
+    <p>Before escalating a DICOM complaint, start by defining the problem.</p><p>Ask:</p>
+<ul><li>What imaging device is involved?</li><li>What is the manufacturer and model?</li><li>What is the asset tag or serial number?</li><li>Where is it located?</li><li>What kind of modality is it: ultrasound, X-ray, C-arm, CT, MRI, or something else?</li><li>Is it acquiring images normally?</li><li>Is it saving images locally?</li><li>Is the problem with worklist, image send, storage, retrieval, or viewing?</li><li>Is the issue one study or every study?</li><li>Is the issue one device or multiple devices?</li><li>Is the device connected to the network?</li><li>Does the device have the expected IP information?</li><li>What destination is configured?</li><li>What AE Title is configured?</li><li>What port number is configured?</li><li>What exact error is displayed?</li><li>Is there a send queue or failed study queue?</li><li>Is patient/study information correct?</li><li>Was the device recently moved, updated, replaced, or reconfigured?</li><li>Has anyone confirmed whether the images arrived in PACS?</li><li>Has anyone confirmed whether the study is under the correct patient?</li></ul>
+<p>You may not fix the DICOM issue yourself. But this information makes escalation far more useful.</p>
+  </section>
+
+  <section class="content-box" id="escalation">
+    <h3>What PACS, IT, or the Vendor May Need From Biomed</h3>
+    <p>If you escalate a DICOM issue, give useful information.</p><p>They may need:</p>
+<ul><li>Manufacturer</li><li>Model</li><li>Device type/modality</li><li>Asset tag</li><li>Serial number</li><li>Location</li><li>Network connection type</li><li>Device IP address</li><li>Device AE Title</li><li>Destination IP address</li><li>Destination AE Title</li><li>Destination port number</li><li>Exact error message</li><li>Screenshot of the error if allowed</li><li>Whether DICOM Echo passes or fails</li><li>Whether worklist works</li><li>Whether image send works</li><li>Whether local acquisition works</li><li>Whether the issue is one study or all studies</li><li>Whether other modalities are affected</li><li>Whether the device moved or changed recently</li><li>Whether failed studies are still queued locally</li></ul>
+<p>A useful escalation note sounds like:</p>
+<p><em>Reported ultrasound unable to send studies to PACS. Ultrasound acquires and stores images locally. Modality Worklist loads normally. DICOM send fails to configured PACS destination with association error. Device location, IP address, AE Title, destination AE Title, port, and error screenshot provided to PACS support/vendor.</em></p>
+<p>That tells people where to start.</p>
+  </section>
+
+  <section class="content-box" id="documentation">
+    <h3>Documentation Tip</h3>
+    <p>DICOM-related work orders should explain the exact failure point.</p>
+<p>Weak note:</p><p><em>Ultrasound not sending. Called IT.</em></p>
+<p>Better:</p><p><em>Reported ultrasound unable to send completed studies to PACS. Device acquired and saved images locally. Verified network cable connected and configured destination present. DICOM send failed with association error for all test studies. Escalated to PACS/vendor support with device location, IP address, AE Title, destination configuration, and displayed error.</em></p>
+<p>Another example:</p><p><em>Reported portable X-ray worklist blank. Device powered on and acquired images locally. Network connection present. Modality Worklist query returned no scheduled exams. Escalated to PACS/radiology IT with device identification, location, AE Title, and observed behavior.</em></p>
+<p>That is better than: <em>PACS issue.</em></p>
+<p>For a deeper explanation of documenting complaints, findings, and resolutions clearly, see the Biomed Basics page on the <a href="biomed-work-order-notes-ccr-method.html">CCR method</a>.</p>
+  </section>
+
+  <section class="content-box" id="testing-proves">
+    <h3>What DICOM Testing Does and Does Not Prove</h3>
+    <p>A successful test only proves what that test actually checked.</p>
+<p>A network ping may show basic network reachability.</p><p>A DICOM Echo may show basic DICOM application communication.</p><p>A successful worklist query may show the modality can retrieve scheduled exam information.</p><p>A successful DICOM Store may show that images transferred to the destination.</p><p>A successful Storage Commitment response may show that the receiving system accepted responsibility for safely storing the images.</p>
+<p>None of those, by themselves, prove every part of the imaging workflow is correct.</p>
+<ul><li>Correct patient</li><li>Correct study</li><li>Correct destination</li><li>Correct display location</li><li>Correct archive status</li><li>Correct clinical workflow</li></ul>
+<p>That is why troubleshooting should focus on where the workflow succeeds and where it stops.</p>
+  </section>
+
+  <section class="content-box" id="references">
+    <h3>Helpful References</h3>
+    <p>These resources provide deeper technical detail on DICOM and imaging workflow:</p>
+<ul><li><a href="https://www.dicomstandard.org/" target="_blank" rel="noopener noreferrer">DICOM Standard — Official Overview</a></li><li><a href="https://www.dicomstandard.org/history" target="_blank" rel="noopener noreferrer">DICOM Standard — History</a></li><li><a href="https://www.dicomstandard.org/concepts" target="_blank" rel="noopener noreferrer">DICOM Standard — Concepts and Services</a></li><li><a href="https://wiki.ihe.net/index.php/Scheduled_Workflow" target="_blank" rel="noopener noreferrer">IHE — Scheduled Workflow</a></li></ul>
+  </section>
+
+  <section class="content-box" id="final-thoughts">
+    <h3>Final Thoughts</h3>
+    <p>DICOM sounds complicated because it is part of a bigger imaging world most biomeds are not taught in a simple way.</p><p>But the basic idea is not impossible.</p>
+<p>A modality creates medical images.</p><p>DICOM gives those images structure, patient and study information, and a way to move between imaging systems.</p><p>PACS receives, stores, retrieves, and displays those images.</p><p>Worklist helps get the correct patient and exam information onto the modality.</p><p>AE Title, IP address, and port number help systems find and talk to each other.</p><p>And when a study will not send, the device may not be the only thing involved.</p>
+<p>A good biomed does not need to become the PACS administrator.</p><p>But a good biomed should understand enough to ask:</p>
+<p>Is the device acquiring images?<br>Is the worklist working?<br>Is the destination correct?<br>Can the systems make DICOM contact?<br>Did the images actually store?<br>Are they attached to the correct patient and study?<br>Where does the workflow stop?</p>
+<p>Because in medical imaging, getting the picture is only part of the job.</p><p>Getting the right picture to the right place for the right patient is what matters.</p><p>— Jake</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview for biomedical equipment technicians, clinical engineers, students, and healthcare technology staff. Always follow your facility policy, imaging/PACS procedures, patient identity correction workflow, manufacturer service documentation, IT/security requirements, and the procedures required by your organization.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="biomed-bmet-clinical-engineering-htm.html">Biomed, BMET, Clinical Engineering, and HTM</a></li>
+      <li><a href="electrical-safety-testing-medical-equipment.html">Electrical Safety Testing for Medical Equipment</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="biomed-translation-problems-medical-equipment-names.html">Biomed Translation Problems: Why Medical Equipment Has So Many Names</a></li>
+      <li><a href="hospital-emrs-and-medical-device-integration.html">Hospital EMRs and Medical Device Integration</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
