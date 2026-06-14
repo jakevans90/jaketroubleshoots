@@ -22,6 +22,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704"
      crossorigin="anonymous"></script>
+
   <link rel="canonical" href="https://jaketroubleshoots.com/search.html" />
 </head>
 
@@ -64,7 +65,6 @@
 </section>
 
 <main>
-
   <section class="content-box" style="text-align:center;">
     <h3>Guide Search</h3>
 
@@ -82,7 +82,6 @@
       No troubleshooting guides found.
     </div>
   </section>
-
 </main>
 
 <section class="homepage-section recent-guides-section">
@@ -172,7 +171,7 @@ function createGuideCard(guide) {
   return card;
 }
 
-function renderGuidesByAssetManufacturerModel(guides) {
+function renderGuidesByAssetManufacturer(guides) {
   const container = document.getElementById('search-results-organized');
   if (!container) return;
 
@@ -186,21 +185,16 @@ function renderGuidesByAssetManufacturerModel(guides) {
   guides.forEach(guide => {
     const assetType = guide.assetType || 'Unknown Asset Type';
     const manufacturer = guide.manufacturer || 'Unknown Manufacturer';
-    const model = guide.model || 'Unknown Model';
 
     if (!byAssetType[assetType]) {
       byAssetType[assetType] = {};
     }
 
     if (!byAssetType[assetType][manufacturer]) {
-      byAssetType[assetType][manufacturer] = {};
+      byAssetType[assetType][manufacturer] = [];
     }
 
-    if (!byAssetType[assetType][manufacturer][model]) {
-      byAssetType[assetType][manufacturer][model] = [];
-    }
-
-    byAssetType[assetType][manufacturer][model].push(guide);
+    byAssetType[assetType][manufacturer].push(guide);
   });
 
   Object.keys(byAssetType).sort((a, b) =>
@@ -210,10 +204,7 @@ function renderGuidesByAssetManufacturerModel(guides) {
     assetBlock.style.marginBottom = '56px';
 
     const assetGuideCount = Object.values(byAssetType[assetType])
-      .reduce((assetTotal, manufacturerGroup) => {
-        return assetTotal + Object.values(manufacturerGroup)
-          .reduce((manufacturerTotal, modelGuides) => manufacturerTotal + modelGuides.length, 0);
-      }, 0);
+      .reduce((total, manufacturerGuides) => total + manufacturerGuides.length, 0);
 
     const assetIconPath = getIconPath(assetType);
 
@@ -240,56 +231,43 @@ function renderGuidesByAssetManufacturerModel(guides) {
       const manufacturerBlock = document.createElement('div');
       manufacturerBlock.style.margin = '0 0 42px 0';
 
-      const manufacturerGuideCount = Object.values(byAssetType[assetType][manufacturer])
-        .reduce((total, modelGuides) => total + modelGuides.length, 0);
+      const manufacturerGuides = byAssetType[assetType][manufacturer]
+        .sort((a, b) => {
+          const modelCompare = (a.model || '').localeCompare(
+            b.model || '',
+            undefined,
+            { sensitivity: 'base', numeric: true }
+          );
+
+          if (modelCompare !== 0) return modelCompare;
+
+          return (a.title || '').localeCompare(
+            b.title || '',
+            undefined,
+            { sensitivity: 'base', numeric: true }
+          );
+        });
 
       manufacturerBlock.innerHTML = `
         <h5 style="margin:0 0 16px;font-size:1.08rem;color:#111;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           ${manufacturer}
           <span style="background:#111;color:#8fff00;font-size:0.76rem;font-weight:bold;padding:3px 10px;border-radius:20px;">
-            ${manufacturerGuideCount} guide${manufacturerGuideCount !== 1 ? 's' : ''}
+            ${manufacturerGuides.length} guide${manufacturerGuides.length !== 1 ? 's' : ''}
           </span>
         </h5>
       `;
 
-      Object.keys(byAssetType[assetType][manufacturer]).sort((a, b) =>
-        a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true })
-      ).forEach(model => {
-        const modelGuides = byAssetType[assetType][manufacturer][model]
-          .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
+      const grid = document.createElement('div');
+      grid.className = 'guides-grid';
+      grid.style.padding = '10px 0 20px';
+      grid.style.width = '100%';
+      grid.style.maxWidth = 'none';
 
-        const modelBlock = document.createElement('div');
-        modelBlock.style.margin = '0 0 34px 0';
-
-        modelBlock.innerHTML = `
-          <h6 style="margin:0 0 14px;font-size:1rem;color:#333;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            ${model}
-            <span style="background:#f2f2f2;color:#111;font-size:0.74rem;font-weight:bold;padding:3px 10px;border-radius:20px;border:1px solid #ddd;">
-              ${modelGuides.length} guide${modelGuides.length !== 1 ? 's' : ''}
-            </span>
-          </h6>
-        `;
-
-        const grid = document.createElement('div');
-
-if (modelGuides.length === 1) {
-  grid.className = 'guides-grid search-organized-grid single-result-grid';
-} else {
-  grid.className = 'guides-grid search-organized-grid';
-}
-
-grid.style.padding = '10px 0 20px';
-grid.style.width = '100%';
-grid.style.maxWidth = 'none';
-
-        modelGuides.forEach(guide => {
-          grid.appendChild(createGuideCard(guide));
-        });
-
-        modelBlock.appendChild(grid);
-        manufacturerBlock.appendChild(modelBlock);
+      manufacturerGuides.forEach(guide => {
+        grid.appendChild(createGuideCard(guide));
       });
 
+      manufacturerBlock.appendChild(grid);
       assetBlock.appendChild(manufacturerBlock);
     });
 
@@ -309,7 +287,7 @@ Promise.all([
   const searchCount = document.getElementById('search-count');
 
   const sortedGuides = [...allGuides].sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true })
+    (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base', numeric: true })
   );
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -370,7 +348,7 @@ Promise.all([
 
     noResults.style.display = filtered.length === 0 ? 'block' : 'none';
 
-    renderGuidesByAssetManufacturerModel(filtered);
+    renderGuidesByAssetManufacturer(filtered);
     updateCount(query, filtered.length);
   }
 
