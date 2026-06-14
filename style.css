@@ -1623,7 +1623,16 @@ footer a:hover {
   }
 }
 
+/* Search page organized results: match normal guide grid, but do not stretch one-card groups */
 .search-organized-grid {
   grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
   width: 100%;
+}
+
+/* Only when a search result subgroup has exactly one card */
+.search-organized-grid:has(.guide-card:only-child) {
+  grid-template-columns: minmax(var(--card-min), 1fr);
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
 }
