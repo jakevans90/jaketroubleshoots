@@ -94,8 +94,7 @@
     </p>
   </div>
 
-  <div id="search-results-organized" style="width:100%; max-width:none; padding:0;"></div>
-  <div id="search-results-flat" class="guides-grid" style="display:none; padding:20px 0;"></div>
+ <div id="search-results-organized" style="width:100%; max-width:none; padding:0;"></div>
 </section>
 
 <footer>
@@ -171,21 +170,6 @@ function createGuideCard(guide) {
   `;
 
   return card;
-}
-
-function renderFlatSearchResults(guides) {
-  const flatContainer = document.getElementById('search-results-flat');
-  const organizedContainer = document.getElementById('search-results-organized');
-
-  clearElement(flatContainer);
-  clearElement(organizedContainer);
-
-  organizedContainer.style.display = 'none';
-  flatContainer.style.display = 'grid';
-
-  guides.forEach(guide => {
-    flatContainer.appendChild(createGuideCard(guide));
-  });
 }
 
 function renderGuidesByAssetManufacturerModel(guides) {
@@ -290,10 +274,10 @@ function renderGuidesByAssetManufacturerModel(guides) {
         `;
 
         const grid = document.createElement('div');
-        grid.className = 'guides-grid';
-        grid.style.padding = '10px 0 20px';
-        grid.style.width = '100%';
-        grid.style.maxWidth = 'none';
+grid.className = 'guides-grid search-organized-grid';
+grid.style.padding = '10px 0 20px';
+grid.style.width = '100%';
+grid.style.maxWidth = 'none';
 
         modelGuides.forEach(guide => {
           grid.appendChild(createGuideCard(guide));
@@ -379,30 +363,23 @@ Promise.all([
   }
 
   function renderFiltered(query) {
-    const filtered = filterGuides(query);
-    const hasQuery = query.trim().length > 0;
+  const filtered = filterGuides(query);
 
-    noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+  noResults.style.display = filtered.length === 0 ? 'block' : 'none';
 
-    if (filtered.length === 0) {
-      clearElement(document.getElementById('search-results-organized'));
-      clearElement(document.getElementById('search-results-flat'));
-
-      document.getElementById('search-results-organized').style.display = 'none';
-      document.getElementById('search-results-flat').style.display = 'none';
-
-      updateCount(query, filtered.length);
-      return;
-    }
-
-    if (hasQuery) {
-      renderFlatSearchResults(filtered);
-    } else {
-      renderGuidesByAssetManufacturerModel(filtered);
-    }
+  if (filtered.length === 0) {
+    clearElement(document.getElementById('search-results-organized'));
+    document.getElementById('search-results-organized').style.display = 'none';
 
     updateCount(query, filtered.length);
+    return;
   }
+
+  document.getElementById('search-results-organized').style.display = 'block';
+
+  renderGuidesByAssetManufacturerModel(filtered);
+  updateCount(query, filtered.length);
+}
 
   renderFiltered(initialQuery);
 
