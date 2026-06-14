@@ -94,7 +94,7 @@
     </p>
   </div>
 
- <div id="search-results-organized" style="width:100%; max-width:none; padding:0;"></div>
+  <div id="search-results-organized" style="width:100%; max-width:none; padding:0;"></div>
 </section>
 
 <footer>
@@ -174,15 +174,12 @@ function createGuideCard(guide) {
 
 function renderGuidesByAssetManufacturerModel(guides) {
   const container = document.getElementById('search-results-organized');
-  const flatContainer = document.getElementById('search-results-flat');
+  if (!container) return;
 
   clearElement(container);
-  clearElement(flatContainer);
+  container.style.display = guides.length ? 'block' : 'none';
 
-  flatContainer.style.display = 'none';
-  container.style.display = 'block';
-
-  if (!container || !guides.length) return;
+  if (!guides.length) return;
 
   const byAssetType = {};
 
@@ -274,10 +271,10 @@ function renderGuidesByAssetManufacturerModel(guides) {
         `;
 
         const grid = document.createElement('div');
-grid.className = 'guides-grid search-organized-grid';
-grid.style.padding = '10px 0 20px';
-grid.style.width = '100%';
-grid.style.maxWidth = 'none';
+        grid.className = 'guides-grid search-organized-grid';
+        grid.style.padding = '10px 0 20px';
+        grid.style.width = '100%';
+        grid.style.maxWidth = 'none';
 
         modelGuides.forEach(guide => {
           grid.appendChild(createGuideCard(guide));
@@ -363,23 +360,13 @@ Promise.all([
   }
 
   function renderFiltered(query) {
-  const filtered = filterGuides(query);
+    const filtered = filterGuides(query);
 
-  noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+    noResults.style.display = filtered.length === 0 ? 'block' : 'none';
 
-  if (filtered.length === 0) {
-    clearElement(document.getElementById('search-results-organized'));
-    document.getElementById('search-results-organized').style.display = 'none';
-
+    renderGuidesByAssetManufacturerModel(filtered);
     updateCount(query, filtered.length);
-    return;
   }
-
-  document.getElementById('search-results-organized').style.display = 'block';
-
-  renderGuidesByAssetManufacturerModel(filtered);
-  updateCount(query, filtered.length);
-}
 
   renderFiltered(initialQuery);
 
