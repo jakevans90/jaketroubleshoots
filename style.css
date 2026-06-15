@@ -1627,3 +1627,195 @@ footer a:hover {
 .search-results-section .guides-grid {
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
 }
+
+/* =========================================================
+   Homepage photo hero + stats bar
+   Added as an override so the rest of the site keeps its
+   original Jake Troubleshoots style.
+   ========================================================= */
+
+.hero.hero-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  padding: 78px 20px 68px;
+  background:
+    linear-gradient(90deg, rgba(143, 255, 0, 0.88), rgba(255, 102, 204, 0.72)),
+    url("images/homepage-test-bench.jpg");
+  background-size: cover;
+  background-position: center;
+  color: var(--text);
+  text-align: center;
+}
+
+.hero.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.hero.hero-photo .hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.hero.hero-photo .hero-subtext {
+  max-width: 720px;
+  margin: 10px auto 0;
+  font-size: 0.95em;
+}
+
+.hero.hero-photo h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.12;
+  margin-bottom: 14px;
+}
+
+.hero.hero-photo p {
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.35);
+}
+
+.hero.hero-photo #home-search-form {
+  margin-top: 26px;
+}
+
+.hero.hero-photo #home-search-input {
+  max-width: 560px;
+  min-height: 48px;
+  border: 0;
+  box-shadow: var(--shadow-md);
+}
+
+.hero.hero-photo .hero-button {
+  box-shadow: var(--shadow-sm);
+}
+
+.home-stats-bar {
+  background: var(--black);
+  color: white;
+  padding: 22px 20px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-stats-inner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.home-stat {
+  padding: 6px 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.home-stat:last-child {
+  border-right: none;
+}
+
+.home-stat strong {
+  display: block;
+  color: var(--lime);
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.home-stat:nth-child(even) strong {
+  color: var(--pink);
+}
+
+.home-stat span {
+  display: block;
+  margin-top: 6px;
+  color: #eeeeee;
+  font-size: 0.82rem;
+  font-weight: bold;
+}
+
+.home-stats-line {
+  max-width: 820px;
+  margin: 14px auto 0;
+  color: #dddddd;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .hero.hero-photo {
+    min-height: auto;
+    padding: 56px 16px 46px;
+    background:
+      linear-gradient(90deg, rgba(143, 255, 0, 0.93), rgba(255, 102, 204, 0.86)),
+      url("images/homepage-test-bench.jpg");
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .hero.hero-photo .hero-inner {
+    max-width: 100%;
+  }
+
+  .hero.hero-photo h2 {
+    font-size: 2rem;
+  }
+
+  .hero.hero-photo .hero-subtext {
+    font-size: 0.95rem;
+  }
+
+  .hero.hero-photo #home-search-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero.hero-photo #home-search-input,
+  .hero.hero-photo #home-search-form button {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero.hero-photo .hero-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero.hero-photo .hero-buttons .hero-button {
+    width: 100%;
+  }
+
+  .home-stats-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 8px;
+  }
+
+  .home-stat {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding-bottom: 12px;
+  }
+
+  .home-stat:last-child {
+    grid-column: 1 / -1;
+    border-bottom: none;
+  }
+
+  .home-stat strong {
+    font-size: 1.65rem;
+  }
+
+  .home-stats-line {
+    font-size: 0.85rem;
+  }
+}
+
