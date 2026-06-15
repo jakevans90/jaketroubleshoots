@@ -120,7 +120,6 @@ nav a:hover {
 /* =========================
    Hero / Banner
    ========================= */
-.hero,
 .contact-banner {
   background: linear-gradient(to right, var(--lime), var(--pink));
   color: var(--text);
@@ -128,14 +127,68 @@ nav a:hover {
   text-align: center;
 }
 
+.hero {
+  color: var(--text);
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.hero-photo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 430px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(90deg, rgba(143, 255, 0, 0.92) 0%, rgba(143, 255, 0, 0.72) 34%, rgba(255, 102, 204, 0.78) 100%),
+    url("images/homepage-test-bench.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255, 255, 255, 0.35), transparent 34%),
+    rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.hero-kicker {
+  margin: 0 0 12px;
+  font-size: 0.82rem !important;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .hero h2 {
-  font-size: 40px;
-  margin: 0 0 10px;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.12;
+  margin: 0 0 14px;
 }
 
 .hero p {
   font-size: 18px;
-  margin: 0 0 25px;
+  margin: 0 0 20px;
+}
+
+.hero-subtext {
+  max-width: 720px;
+  margin: 10px auto 0 !important;
+  font-size: 0.95em !important;
+  line-height: 1.55;
 }
 
 .hero-button {
@@ -148,6 +201,7 @@ nav a:hover {
   font-weight: bold;
   text-decoration: none;
   transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-button:hover {
@@ -163,6 +217,65 @@ nav a:hover {
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* =========================
+   Homepage Stats Bar
+   ========================= */
+.home-stats-bar {
+  background: var(--black);
+  color: white;
+  padding: 22px 20px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-stats-inner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+.home-stat {
+  padding: 6px 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.home-stat:last-child {
+  border-right: none;
+}
+
+.home-stat strong {
+  display: block;
+  color: var(--lime);
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.home-stat:nth-child(even) strong {
+  color: var(--pink);
+}
+
+.home-stat span {
+  display: block;
+  margin-top: 6px;
+  color: #eeeeee;
+  font-size: 0.82rem;
+  font-weight: bold;
+}
+
+.home-stats-line {
+  max-width: 820px;
+  margin: 14px auto 0;
+  color: #dddddd;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
 
 /* =========================
    Browse Section
@@ -1174,6 +1287,16 @@ footer a:hover {
     font-size: 32px;
   }
 
+  .home-stats-inner {
+    grid-template-columns: repeat(5, minmax(90px, 1fr));
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .home-stat {
+    min-width: 90px;
+  }
+
   .hub-banner-card {
     padding: 20px;
   }
@@ -1189,7 +1312,16 @@ footer a:hover {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 60px 16px;
+    padding: 56px 16px 46px;
+  }
+
+  .hero-photo {
+    min-height: auto;
+    background:
+      linear-gradient(90deg, rgba(143, 255, 0, 0.94) 0%, rgba(143, 255, 0, 0.82) 38%, rgba(255, 102, 204, 0.88) 100%),
+      url("images/homepage-test-bench.jpg");
+    background-size: cover;
+    background-position: center top;
   }
 
   .hero h2 {
@@ -1198,6 +1330,58 @@ footer a:hover {
 
   .hero p {
     font-size: 16px;
+  }
+
+  .hero-subtext {
+    font-size: 0.95rem !important;
+  }
+
+  #home-search-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  #home-search-input,
+  #home-search-form button {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero-buttons .hero-button {
+    width: 100%;
+  }
+
+  .home-stats-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 8px;
+    overflow: visible;
+  }
+
+  .home-stat {
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    padding-bottom: 12px;
+  }
+
+  .home-stat:last-child {
+    grid-column: 1 / -1;
+    border-bottom: none;
+  }
+
+  .home-stat strong {
+    font-size: 1.65rem;
+  }
+
+  .home-stats-line {
+    font-size: 0.85rem;
   }
 
   #options button {
