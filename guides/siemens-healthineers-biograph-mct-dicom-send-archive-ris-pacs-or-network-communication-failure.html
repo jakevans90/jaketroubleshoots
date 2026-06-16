@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Siemens Healthineers Biograph mCT PET / CT System - DICOM send, archive, RIS/PACS, or network communication failure</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1L34E3TJL6');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/guides/siemens-healthineers-biograph-mct-dicom-send-archive-ris-pacs-or-network-communication-failure.html" />
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../search.html">Search</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../vendors.html">Vendors</a>
+    <a href="../contact.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Siemens Healthineers Biograph mCT</h2>
+  <p>DICOM send, archive, RIS/PACS, or network communication failure</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+
+<h3>Asset Type</h3><p>PET / CT System</p>
+<h3>Manufacturer</h3><p>Siemens Healthineers</p>
+<h3>Model</h3><p>Biograph mCT</p>
+
+<h2>What This Guide Helps With</h2>
+<p>Troubleshooting PET/CT DICOM send, archive, RIS/PACS, worklist, and network communication failures using safe external checks before escalation.</p>
+
+<h2>Step-by-Step Troubleshooting</h2>
+
+<h4>Ensure Patient Safety First</h4>
+<p>Confirm whether a patient exam is actively in progress.</p>
+<p>Do not interrupt an active PET/CT acquisition, reconstruction, or patient transfer unless directed by clinical leadership or imaging staff.</p>
+<p>Expected outcome: Patient imaging is not disrupted by network troubleshooting.</p>
+
+<h4>Confirm the Exact Communication Problem</h4>
+<p>Ask the technologist what failed and when it occurred.</p>
+<p>Identify whether the issue involves:</p>
+<ul>
+  <li>DICOM send failure</li>
+  <li>Images stuck in queue</li>
+  <li>PACS archive unavailable</li>
+  <li>RIS worklist not populating</li>
+  <li>Study mismatch or accession issue</li>
+  <li>PET, CT, or fused image series not transferring</li>
+  <li>Workstation cannot reach archive</li>
+  <li>Network login or host communication error</li>
+</ul>
+<p>Expected outcome: The failure mode is clearly defined before troubleshooting begins.</p>
+
+<h4>Verify Whether the Issue Affects One Study or All Studies</h4>
+<p>Check if only one patient/study failed to send or if all studies are failing.</p>
+<p>A single failed study may indicate demographics, accession, study status, or image series issue.</p>
+<p>Multiple failed studies may indicate network, destination, AE title, archive, or workstation communication failure.</p>
+<p>Expected outcome: The scope of the problem is identified.</p>
+
+<h4>Check for Obvious Workstation or Console Messages</h4>
+<p>Review the acquisition workstation, reconstruction workstation, and send/archive queue for error messages.</p>
+<p>Look for messages involving destination unavailable, association rejected, timeout, invalid AE title, network unreachable, or storage commitment failure.</p>
+<p>Expected outcome: The visible error helps narrow the fault before deeper checks.</p>
+
+<h4>Confirm the Correct Destination Was Selected</h4>
+<p>Verify that the technologist selected the correct PACS, archive, MIM, syngo.via, nuclear medicine workstation, or destination node.</p>
+<p>Confirm whether the failed send was manual, automatic, or part of a routing rule.</p>
+<p>Expected outcome: The study is not being sent to the wrong destination.</p>
+<p>If the study sends successfully after selecting the correct destination, document the issue and stop.</p>
+
+<h4>Check Whether Images Are Still Reconstructing</h4>
+<p>Confirm that PET, CT, attenuation correction, fused, MIP, or secondary capture series have completed reconstruction before sending.</p>
+<p>Incomplete reconstruction may cause missing series or delayed transfer.</p>
+<p>Expected outcome: The study is complete enough to transmit.</p>
+<p>If the send completes after reconstruction finishes, document the delay and stop.</p>
+
+<h4>Verify Patient and Study Demographics</h4>
+<p>Compare the study information on the Biograph mCT workstation with RIS/PACS information.</p>
+<p>Check:</p>
+<ul>
+  <li>Patient name</li>
+  <li>MRN</li>
+  <li>Accession number</li>
+  <li>Date of birth</li>
+  <li>Study description</li>
+  <li>Modality</li>
+  <li>Exam date and time</li>
+</ul>
+<p>Expected outcome: The study identifiers match the order and archive expectations.</p>
+<p>If demographics are incorrect, involve imaging leadership, PACS support, or the appropriate correction workflow before resending.</p>
+
+<h4>Check RIS Worklist Availability</h4>
+<p>If the issue is worklist related, confirm whether new orders are visible on the PET/CT system.</p>
+<p>Ask staff whether other modalities can retrieve worklist from RIS.</p>
+<p>Expected outcome: You determine whether the issue is isolated to the PET/CT system or affects multiple imaging systems.</p>
+
+<h4>Confirm Network Connectivity at the Workstation Area</h4>
+<p>Check for obvious external network issues:</p>
+<ul>
+  <li>Network cable connected</li>
+  <li>Cable not damaged</li>
+  <li>Wall jack not loose</li>
+  <li>Link lights present where visible</li>
+  <li>No recent cable moves or room work</li>
+  <li>No disconnected network switch or patch cable near the console</li>
+</ul>
+<p>Expected outcome: Basic physical network connectivity is confirmed.</p>
+<p>If a loose or disconnected cable is found and reconnecting restores communication, test a send and document the resolution.</p>
+
+<h4>Check for Power or Hardware Issues at Related Network Equipment</h4>
+<p>If there is local network equipment in the room or console area, confirm it has power and does not show obvious fault indicators.</p>
+<p>Do not reset hospital network switches without approval from IT or the site network team.</p>
+<p>Expected outcome: No obvious local network equipment failure is found.</p>
+
+<h4>Confirm Other Network Functions</h4>
+<p>Check whether the workstation can perform other communication tasks, such as opening network resources, reaching connected imaging software, or sending to another approved destination.</p>
+<p>Expected outcome: You determine whether the failure is destination-specific or system-wide.</p>
+
+<h4>Try Sending a Known Completed Study or Test Study if Site Policy Allows</h4>
+<p>Use a completed non-active study or approved test workflow to confirm whether DICOM send is functioning.</p>
+<p>Do not create, alter, or send patient data outside approved site policy.</p>
+<p>Expected outcome: The send either completes successfully or confirms an active communication fault.</p>
+
+<h4>Review the DICOM Queue</h4>
+<p>Check whether studies are pending, failed, paused, or repeatedly retrying.</p>
+<p>A backed-up queue may delay new studies from sending.</p>
+<p>Expected outcome: Queue status is understood before repeat sends are attempted.</p>
+<p>If the queue is paused or blocked by one failed study, follow site procedure for clearing or reordering the queue.</p>
+
+<h4>Check for Storage Destination Availability</h4>
+<p>Ask PACS or imaging informatics whether the archive, router, or destination node is online.</p>
+<p>A PET/CT system may appear faulty when the receiving archive or DICOM router is unavailable.</p>
+<p>Expected outcome: Receiving-system availability is confirmed.</p>
+
+<h4>Confirm No Recent IT, PACS, or RIS Changes</h4>
+<p>Ask whether there were recent changes to:</p>
+<ul>
+  <li>PACS server</li>
+  <li>DICOM router</li>
+  <li>RIS interface</li>
+  <li>IP address</li>
+  <li>AE title</li>
+  <li>Network VLAN</li>
+  <li>Firewall rule</li>
+  <li>Workstation replacement</li>
+  <li>Archive migration</li>
+</ul>
+<p>Expected outcome: Recent infrastructure changes are identified as possible causes.</p>
+
+<h4>Check Date and Time Consistency</h4>
+<p>Confirm the Biograph mCT workstation date and time appear reasonable and match the site’s expected time zone.</p>
+<p>Significant time mismatch may affect worklist, study matching, authentication, or archive acceptance.</p>
+<p>Expected outcome: Date and time are not an obvious communication problem source.</p>
+
+<h4>Perform a Controlled Software Restart Only if Appropriate</h4>
+<p>If no patient is active, no reconstruction is running, and imaging staff agrees, perform the approved workstation or application restart process.</p>
+<p>Do not power-cycle scanner hardware, gantry systems, or acquisition components during active clinical workflow unless directed by service or site policy.</p>
+<p>Expected outcome: Temporary workstation communication faults may clear.</p>
+<p>If communication restores after restart, perform a verified test send and document the action.</p>
+
+<h4>Escalate to IT, PACS, or Siemens Support Based on Findings</h4>
+<p>If the issue appears network-wide, involve IT.</p>
+<p>If the issue involves routing, archive rejection, worklist, or study matching, involve PACS/RIS support.</p>
+<p>If the Biograph mCT workstation, DICOM service, acquisition software, or scanner-side configuration appears faulty after external checks, escalate to Siemens service.</p>
+<p>Expected outcome: The correct support path is engaged without unnecessary internal repair attempts.</p>
+
+<h2>If the Problem Persists</h2>
+<p>If power, workstation status, study completion, demographics, queue status, destination selection, and basic network connectivity have been checked, common external causes have been ruled out.</p>
+<p>The issue may involve DICOM configuration, workstation software, network routing, PACS/RIS interface, archive rejection, or internal system communication.</p>
+<p>The device or affected workflow should be:</p>
+<ul>
+  <li>Removed from clinical use if images cannot be safely acquired, reviewed, archived, or associated with the correct patient record</li>
+  <li>Labeled Out of Service if the system cannot support safe clinical operation</li>
+  <li>Sent for repair, imaging informatics review, IT review, or Siemens service evaluation</li>
+</ul>
+<p>Knowing when to stop is proper troubleshooting. PET/CT communication faults can create patient record, image availability, and treatment-planning risks if handled incorrectly.</p>
+
+<h2>Clinical Use Tip</h2>
+<p>Do not troubleshoot network communication during an active patient scan unless the clinical team confirms it is safe. If images cannot be archived or matched correctly, pause further clinical use until a safe downtime or correction workflow is approved. Move the patient to a backup device or approved alternate workflow first when therapy continuity, image availability, or patient care would be affected.</p>
+
+<h2>Work Order Documentation (CCR Method)</h2>
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+<p>What was reported by the clinical staff.</p>
+<p><em>Example:</em><br>"Technologist reported that Biograph mCT PET/CT studies were failing DICOM send to PACS after reconstruction completed."</p>
+
+<h4>Cause</h4>
+<p>What was observed during troubleshooting.</p>
+<p><em>Example:</em><br>"DICOM queue showed multiple failed sends, and external checks confirmed the workstation was powered, network cable was connected, and the selected PACS destination was correct."</p>
+
+<h4>Resolution</h4>
+<p>What action was taken.</p>
+<p><em>Example:</em><br>"Verified basic network connectivity, confirmed the issue was not limited to one study, notified PACS/IT for archive communication review, and left the system Out of Service for PET/CT archiving until communication was restored."</p>
+
+<h2>Helpful Details to Include (If Known)</h2>
+<ul>
+  <li>Whether the issue affected one study or all studies</li>
+  <li>DICOM destination selected</li>
+  <li>RIS worklist status</li>
+  <li>PACS/archive status if confirmed</li>
+  <li>Error message displayed</li>
+  <li>DICOM queue status</li>
+  <li>Whether PET, CT, and fused series were complete</li>
+  <li>Whether demographics and accession matched</li>
+  <li>Network cable and link light status</li>
+  <li>Whether other modalities were affected</li>
+  <li>Any recent IT, PACS, RIS, or network changes</li>
+  <li>Whether workstation restart was performed</li>
+  <li>Final device or workflow status</li>
+</ul>
+
+<h2>Final Thought</h2>
+<p>PET/CT communication troubleshooting should protect patient data integrity as much as equipment uptime. Start with the visible workflow, study status, demographics, queue, and network connection before assuming a deeper system fault. Escalate appropriately when the issue involves PACS, RIS, routing, or Siemens service configuration, and document findings clearly using the CCR method.</p>
+<p><strong>That is successful troubleshooting.</strong></p>
+
+</main>
+
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js"></script>
+
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes">👍</button>
+    <button class="thumb-btn no">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+
+<script src="../hub-links.js"></script>
+<script src="../feedback.js"></script>
+<script src="../guide-icons.js"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
