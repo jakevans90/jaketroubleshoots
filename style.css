@@ -1818,3 +1818,57 @@ footer a:hover {
     font-size: 0.85rem;
   }
 }
+
+/* =========================================================
+   Interior page hero image
+   Uses PM sticker image on non-homepage hero banners.
+   Homepage .hero-photo stays separate.
+   ========================================================= */
+
+.hero:not(.hero-photo),
+.contact-banner {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(143, 255, 0, 0.84), rgba(255, 102, 204, 0.78)),
+    url("images/pm-stickers-header.jpg");
+  background-size: cover;
+  background-position: center;
+  color: var(--text);
+}
+
+.hero:not(.hero-photo)::after,
+.contact-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.hero:not(.hero-photo) > *,
+.contact-banner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero:not(.hero-photo) h2,
+.contact-banner h2 {
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.45);
+}
+
+.hero:not(.hero-photo) p,
+.contact-banner p {
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 640px) {
+  .hero:not(.hero-photo),
+  .contact-banner {
+    background:
+      linear-gradient(90deg, rgba(143, 255, 0, 0.9), rgba(255, 102, 204, 0.84)),
+      url("images/pm-stickers-header.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+}
