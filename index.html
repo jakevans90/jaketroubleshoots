@@ -43,29 +43,62 @@
   </nav>
 </header>
 
-<section class="hero">
-  <h2>Biomedical Equipment Troubleshooting Guides and Biomed Resources</h2>
+<section class="hero hero-photo">
+  <div class="hero-inner">
+    <p class="hero-kicker">Practical. Reliable. Biomed Expertise.</p>
 
-  <p>
-    A searchable troubleshooting guide database for BMETs, clinical engineers, and healthcare technology staff.
-  </p>
+    <h2>Biomedical Equipment Troubleshooting Guides and Biomed Resources</h2>
 
-  <p style="max-width:700px; margin:10px auto 0; font-size:0.95em;">
-    Search by device, model, manufacturer, alarm, error, or issue — with PM procedures, Biomed Basics, vendor contacts, and equipment hubs built around the guide library.
-  </p>
+    <p>
+      A searchable troubleshooting guide database for BMETs, clinical engineers, and healthcare technology staff.
+    </p>
 
-  <p id="stats-line" style="max-width:700px; margin:12px auto 0; font-size:0.95em; font-weight:600; opacity:0.95;"></p>
+    <p class="hero-subtext">
+      Search by device, model, manufacturer, alarm, error, or issue — with PM procedures, Biomed Basics, vendor contacts, and equipment hubs built around the guide library.
+    </p>
 
-  <form id="home-search-form">
-    <input type="text" id="home-search-input" placeholder="Search a model, alarm, error, device, or issue...">
-    <button type="submit" class="hero-button">Search</button>
-  </form>
+    <form id="home-search-form">
+      <input type="text" id="home-search-input" placeholder="Search a model, alarm, error, device, or issue...">
+      <button type="submit" class="hero-button">Search</button>
+    </form>
 
-  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-    <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
-    <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
-    <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
+    <div class="hero-buttons">
+      <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
+      <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
+      <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
+    </div>
   </div>
+</section>
+
+<section class="home-stats-bar" aria-label="Jake Troubleshoots guide library statistics">
+  <div class="home-stats-inner">
+    <div class="home-stat">
+      <strong id="stat-guides">0</strong>
+      <span>Guides</span>
+    </div>
+
+    <div class="home-stat">
+      <strong id="stat-models">0</strong>
+      <span>Models</span>
+    </div>
+
+    <div class="home-stat">
+      <strong id="stat-asset-types">0</strong>
+      <span>Equipment Types</span>
+    </div>
+
+    <div class="home-stat">
+      <strong id="stat-manufacturers">0</strong>
+      <span>Manufacturers</span>
+    </div>
+
+    <div class="home-stat">
+      <strong id="stat-pms">0</strong>
+      <span>PM Procedures</span>
+    </div>
+  </div>
+
+  <p id="stats-line" class="home-stats-line"></p>
 </section>
 
 <section class="homepage-section troubleshooting-section">
@@ -468,10 +501,28 @@ Promise.all([
 .then(([allGuides, assetHubData, allPmProcedures]) => {
   assetHubDataGlobal = assetHubData;
 
+  const totalGuides = allGuides.length;
+  const totalPm = allPmProcedures.length;
+  const models = new Set(allGuides.map(g => g.model).filter(Boolean));
+  const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
+  const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
+
   const statsLine = document.getElementById('stats-line');
   if (statsLine) {
     statsLine.textContent = buildStatsLine(allGuides, allPmProcedures);
   }
+
+  const statGuides = document.getElementById('stat-guides');
+  const statModels = document.getElementById('stat-models');
+  const statAssetTypes = document.getElementById('stat-asset-types');
+  const statManufacturers = document.getElementById('stat-manufacturers');
+  const statPms = document.getElementById('stat-pms');
+
+  if (statGuides) statGuides.textContent = totalGuides;
+  if (statModels) statModels.textContent = models.size;
+  if (statAssetTypes) statAssetTypes.textContent = assetTypes.size;
+  if (statManufacturers) statManufacturers.textContent = manufacturers.size;
+  if (statPms) statPms.textContent = totalPm;
 
   const featuredUrls = [
     'guides/siemens-somatom-series-patient-table-will-not-move.html',
