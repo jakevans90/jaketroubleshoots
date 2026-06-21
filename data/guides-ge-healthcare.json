@@ -14830,5 +14830,1279 @@
     "Test transmission result",
     "Final device status"
   ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Software Upgrade Failed",
+  "description": "Troubleshooting the GE Healthcare MAC 5 Software Upgrade Failed error caused by invalid, missing, unsigned, inaccessible, or failed installation software packages.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-software-upgrade-failed.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before attempting software upgrade troubleshooting. Do not perform software upgrades while the device is needed for active ECG acquisition, patient testing, or clinical workflow. Provide clinical staff with another verified ECG machine if patient testing is needed. Expected: The unit is safely unavailable for patient use during troubleshooting."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the displayed error is Software Upgrade Failed. Look for related upgrade failure messages such as invalid software image, missing software image, unsigned or invalid digital signature, failed file copy, failed software download, or installation failure. Observe whether the failure occurs at upgrade startup, while locating the USB or shared folder, while copying files, during digital signature validation, during installation, during reboot, or intermittently during a network upgrade. Expected: The upgrade failure is reproducible or clearly tied to a specific part of the upgrade process."
+    },
+    {
+      "title": "Confirm the Device Is on Stable Power",
+      "instructions": "Connect the MAC 5 to AC power before retrying the upgrade. Check that the power adapter is fully seated at the device and wall outlet. Avoid performing upgrades on battery power alone. Expected: The MAC 5 remains powered and stable throughout the upgrade attempt."
+    },
+    {
+      "title": "Verify the Correct Software Package",
+      "instructions": "Confirm the software package is intended for the GE Healthcare MAC 5. Verify that the upgrade files are the correct version supplied or approved for that device. Do not use renamed, extracted, incomplete, copied-from-another-device, or unofficial files. Expected: The upgrade source contains the correct MAC 5 software package."
+    },
+    {
+      "title": "Confirm the Software Image Is Digitally Signed",
+      "instructions": "Verify that the software image and required digital signature files are present. Do not modify the file names, file extensions, or folder structure unless the manufacturer instructions specifically require it. Expected: The device can identify the software image and validate its digital signature."
+    },
+    {
+      "title": "Check the USB Flash Drive",
+      "instructions": "If upgrading by USB, remove and reinsert the USB flash drive. Confirm the drive is detected by the MAC 5. Check that the software package is located where the device expects it, commonly the root directory of the USB drive when required. Try a known-good USB flash drive if detection, access, or copy errors occur. Expected: The MAC 5 detects the USB drive and can read the upgrade files."
+    },
+    {
+      "title": "Check USB Access Settings",
+      "instructions": "If the device reports USB access denial or does not allow external storage use, review the storage or system settings. Confirm external storage access is enabled if controlled by device configuration. Expected: The MAC 5 permits access to the USB flash drive."
+    },
+    {
+      "title": "Check the Shared Network Folder",
+      "instructions": "If upgrading through a shared path, confirm the MAC 5 is connected to the network. Verify LAN or WLAN connection status. Confirm the shared network path is enabled and configured. Check that the software image and digital signature files are present in the correct shared folder location. Expected: The MAC 5 can reach the shared folder and locate the required upgrade files."
+    },
+    {
+      "title": "Verify Permissions",
+      "instructions": "Confirm the USB drive or shared network folder allows the MAC 5 to read and copy the software upgrade files. If using a shared network path, verify credentials and access rights. If using USB, verify the files are not locked, restricted, or corrupted. Expected: The device can copy or download the required software files without permission errors."
+    },
+    {
+      "title": "Retry the Upgrade From a Known-Good Source",
+      "instructions": "After correcting the package, location, access, or network issue, retry the software upgrade. Use only one upgrade method at a time, such as USB upgrade with a known-good USB drive or network upgrade with a verified shared folder. Do not repeatedly retry with the same questionable package or storage device. Expected: The upgrade progresses past the previous failure point."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If the upgrade completes successfully, allow the MAC 5 to fully reboot. Confirm the device starts normally. Check basic ECG machine function before returning it to service, including power-on, date and time, user interface response, acquisition screen access, printer readiness if applicable, and network connection if applicable. Expected: The MAC 5 operates normally after the software upgrade."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported MAC 5 displayed Software Upgrade Failed during attempted software upgrade. Upgrade did not complete and device was removed from patient use.",
+      "Cause": "Software upgrade package, USB/shared-folder location, digital signature, network access, and file permissions were checked. Failure appeared related to upgrade source/configuration or persistent internal software installation issue.",
+      "Resolution": "Verified AC power, checked software package location, confirmed digitally signed upgrade files, tested USB/shared-folder access, and retried upgrade. If successful, device passed startup and functional checks and was returned to service. If unsuccessful, device was labeled Out of Service and escalated to GE HealthCare Service/bench repair."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior, including the exact displayed software upgrade error message and when it appeared during the upgrade.",
+    "Accessories swapped, including USB flash drive, AC adapter, network cable, or upgrade media tested.",
+    "Power behavior, including whether the MAC 5 was connected to AC power throughout the upgrade.",
+    "Environmental factors, including LAN/WLAN availability, shared-folder access, credentials, and storage access settings.",
+    "Indicator lights, including USB detection, charging status, network connection, and any startup behavior after reboot.",
+    "Final device status, including whether the upgrade completed, whether functional checks passed, or whether the unit was labeled Out of Service."
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Digital Signature Validation Failed",
+  "description": "Troubleshooting Digital Signature Validation Failed on a GE Healthcare MAC 5 when a software upgrade image on a USB flash drive or shared network folder is not digitally signed, corrupted, incomplete, incorrect, or not trusted by the device.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-digital-signature-validation-failed.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before attempting software upgrade troubleshooting. Do not attempt software upgrades while the device is needed for active ECG acquisition. Use another verified ECG machine if patient testing is needed."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact message shown is: Digital Signature Validation Failed. Identify whether the error appears during USB software upgrade, shared network folder software upgrade, after selecting the software image, or during validation before installation. Confirm whether the upgrade stops before installation begins."
+    },
+    {
+      "title": "Confirm the Upgrade Source",
+      "instructions": "Determine whether the upgrade is being attempted from a USB flash drive or a network shared folder. Verify that the user did not move, rename, unzip, modify, or copy only part of the upgrade package. Confirm the full upgrade package is present in the intended location."
+    },
+    {
+      "title": "Check the USB Flash Drive if Using USB Upgrade",
+      "instructions": "Remove the USB flash drive and inspect it for obvious damage. Confirm the software image is stored in the correct location, preferably the root directory if required by the upgrade process. Verify the file name and file size appear normal compared with the approved software package source. Try a different approved USB flash drive if available."
+    },
+    {
+      "title": "Check the Shared Folder if Using Network Upgrade",
+      "instructions": "Confirm the MAC 5 is connected to the network. Verify the shared folder path is configured correctly. Confirm the software image is present in the shared folder and accessible. Check that the device has permission to read the software image file."
+    },
+    {
+      "title": "Confirm the Software Image Is Digitally Signed",
+      "instructions": "Verify the software image came from an approved GE Healthcare source or approved internal software repository. Do not use software files copied from unknown locations, email attachments, old USB flash drives, or unofficial archives. If the file was downloaded, confirm the download completed successfully."
+    },
+    {
+      "title": "Replace the Software Image",
+      "instructions": "Delete the questionable software image from the USB flash drive or shared folder. Copy a fresh known-good digitally signed software image from the approved source. Use a clean transfer process and avoid renaming or modifying the file. Retry the upgrade."
+    },
+    {
+      "title": "Try the Alternate Upgrade Method",
+      "instructions": "If the error occurred using USB, attempt the upgrade using the approved shared network folder if available. If the error occurred using the shared folder, copy the valid software image to a known-good USB flash drive and retry."
+    },
+    {
+      "title": "Perform Post-Upgrade Functional Checks if Successful",
+      "instructions": "After a successful upgrade, confirm the MAC 5 boots normally. Verify basic ECG operation, touchscreen response, printer function if applicable, date and time, network status, and software version."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE Healthcare MAC 5 displayed Digital Signature Validation Failed during software upgrade attempt from USB flash drive or shared folder. Upgrade would not proceed.",
+      "Cause": "Software image on upgrade source was not accepted by the MAC 5 digital signature validation process. Possible unsigned, corrupted, incomplete, or incorrect software image.",
+      "Resolution": "Removed device from patient use. Verified upgrade source, checked USB/shared folder access, replaced software image with approved digitally signed package, and retried upgrade. If error persisted, device was labeled Out of Service and sent for bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Exact error displayed",
+    "Alarm behavior or whether the message appears immediately after selecting the software image",
+    "Accessories swapped, including USB flash drive tested or replaced",
+    "Power behavior during the upgrade attempt",
+    "Environmental factors, including network shared folder availability",
+    "Indicator lights or USB detection behavior",
+    "Upgrade source used: USB flash drive or shared folder",
+    "Whether the error occurred before or during installation",
+    "Shared folder path verified",
+    "Network connection status",
+    "Whether a fresh approved software image was used",
+    "Software image file name and version if known",
+    "Whether the file was renamed, moved, or downloaded",
+    "Final upgrade result",
+    "Final device status"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Invalid Software Image",
+  "description": "Troubleshooting the Invalid Software Image error when the GE Healthcare MAC 5 cannot recognize or validate the software image on a USB flash drive or shared network path.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-invalid-software-image.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before attempting software upgrade troubleshooting. Do not troubleshoot software upgrades while the device is being used for active ECG acquisition or clinical workflow. Use another verified ECG machine if patient testing is needed."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed error is: Invalid Software Image. Determine whether the error appears during USB software upgrade, shared network folder upgrade, immediately after selecting the upgrade package, or after the system attempts to read or validate the image."
+    },
+    {
+      "title": "Confirm the Upgrade Source",
+      "instructions": "Identify whether the upgrade is being attempted from a USB flash drive or a shared network folder. Confirm the operator selected the intended upgrade method. If multiple USB drives or shared folders are available, verify the correct one is being used."
+    },
+    {
+      "title": "Check the USB Flash Drive or Shared Folder Contents",
+      "instructions": "If using USB, remove the USB flash drive and verify its contents on an approved computer. If using a shared path, access the shared network folder from an approved workstation. Confirm the upgrade location contains the correct software image."
+    },
+    {
+      "title": "Confirm the Software Image Is Valid and Digitally Signed",
+      "instructions": "Verify that the software image is the approved GE Healthcare package intended for the MAC 5. Confirm the software image has not been altered, renamed, extracted incorrectly, or copied from an unofficial source. Use only the valid digitally signed software image approved for the device and facility process."
+    },
+    {
+      "title": "Check for Incomplete or Corrupted File Transfer",
+      "instructions": "If the file was recently copied to USB or a shared folder, delete it and copy it again from the original approved source. Use a known-good USB flash drive or a verified network location if available. Confirm the copy process completes without interruption."
+    },
+    {
+      "title": "Verify the Correct Package Was Used",
+      "instructions": "Confirm the software image is intended for the GE Healthcare MAC 5. Confirm the package matches the intended upgrade method if separate USB or network packages are provided. Confirm any required release, region, or facility-specific software package requirements before retrying."
+    },
+    {
+      "title": "Retry the Upgrade",
+      "instructions": "Reconnect the USB flash drive or reaccess the shared network folder. Restart the software upgrade process according to approved facility procedure. Observe whether the MAC 5 accepts the valid digitally signed image and proceeds with the upgrade."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If replacing the software image or upgrade source resolves the error, complete the software upgrade according to approved procedure. After the upgrade, verify the MAC 5 boots normally. Perform basic operational checks before returning the device to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "MAC 5 displayed Invalid Software Image during attempted software upgrade from USB flash drive or shared network path. Device would not proceed with upgrade.",
+      "Cause": "Software image in the upgrade source was invalid, not recognized as a valid digitally signed MAC 5 software image, corrupted, incomplete, or incorrect for the device.",
+      "Resolution": "Verified upgrade source, confirmed correct digitally signed MAC 5 software image, recopied package to USB/shared folder, retried upgrade, and confirmed whether error cleared. If unresolved, removed device from service for repair or vendor evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior, including when Invalid Software Image appeared",
+    "Accessories swapped, including USB flash drive or alternate upgrade media",
+    "Power behavior before and during the attempted upgrade",
+    "Environmental factors, including network share access or workstation file-copy issues",
+    "Indicator lights, USB detection behavior, or network connection status",
+    "Final device status, including returned to service, upgrade completed, or removed from service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Host Software Image Is Not Digitally Signed",
+  "description": "Troubleshooting the Host Software Image Is Not Digitally Signed error on the GE Healthcare MAC 5 when an unsigned, incorrect, corrupted, modified, or unapproved host software image prevents software upgrade validation from continuing.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-host-software-image-is-not-digitally-signed.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before attempting any software upgrade troubleshooting. Do not perform software upgrade work while the cardiograph is needed for active ECG acquisition, patient testing, or clinical workflow. Confirm the device is not connected to a patient and is available for safe bench troubleshooting."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed error is Host Software Image Is Not Digitally Signed. Determine whether the error appears during USB software upgrade, network/shared-folder software upgrade, after selecting the host software image, or during upgrade validation before installation begins."
+    },
+    {
+      "title": "Translate the Error Into the Real-World Problem",
+      "instructions": "Recognize that this error means the MAC 5 does not recognize the host software image as a valid digitally signed GE HealthCare software package. Consider likely external causes such as incorrect software image, incomplete software package, unofficial file, unsupported file, corrupted file, renamed file, modified file, wrong device package, or software obtained from an unapproved source."
+    },
+    {
+      "title": "Check the Upgrade Source",
+      "instructions": "If using USB, remove the USB flash drive and inspect the files on a computer. Confirm the host software image is present and has not been renamed, altered, zipped incorrectly, or placed inside an unexpected folder. Confirm the software image is present exactly as provided by GE HealthCare."
+    },
+    {
+      "title": "Confirm the Software Came From an Approved Source",
+      "instructions": "Ask where the software image came from. Do not continue if the file was copied from another device, downloaded from an unofficial source, sent informally, or modified locally. The software image should come from GE HealthCare Service Support or another approved GE HealthCare software distribution source."
+    },
+    {
+      "title": "Check for File Corruption or Incomplete Copy",
+      "instructions": "If the file was copied to USB or a shared folder, delete the existing file from the media and copy it again from the original approved source. Use a known-good USB flash drive or confirmed network shared folder if available. Confirm the copied file matches the original approved software image and is fully transferred."
+    },
+    {
+      "title": "Verify the File Location",
+      "instructions": "For USB upgrade, confirm the software image is in the required location on the USB flash drive, typically the root directory unless the approved upgrade instructions specify otherwise. For shared-folder upgrade, confirm the valid signed image is placed in the configured shared network path."
+    },
+    {
+      "title": "Retry the Upgrade With the Correct Image",
+      "instructions": "After confirming the software image is official, digitally signed, unmodified, and in the correct location, retry the software upgrade. Confirm the MAC 5 accepts the software image and allows the upgrade process to continue. If the error clears, complete the upgrade per approved facility procedure."
+    },
+    {
+      "title": "Do Not Attempt Workarounds",
+      "instructions": "Do not attempt to bypass the digital signature requirement. Do not rename files to force recognition. Do not use software images from another MAC 5 unless confirmed appropriate by GE HealthCare. Do not attempt internal repair for this error."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE MAC 5 displayed Host Software Image Is Not Digitally Signed during attempted host software upgrade. Upgrade would not continue.",
+      "Cause": "Host software image failed digital signature validation. External media and file location checked; software package suspected to be unsigned, incorrect, corrupted, modified, or not from approved GE HealthCare source.",
+      "Resolution": "Stopped upgrade attempt. Verified upgrade media and file placement. Removed device from service pending correct digitally signed host software image from GE HealthCare Service Support."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior, including whether the error appeared immediately or after file selection",
+    "Accessories swapped, including USB flash drive tested or replaced",
+    "Power behavior during the attempted software upgrade",
+    "Environmental factors, including USB use, shared network folder use, or network availability",
+    "Indicator lights, screen messages, software image file name, software version, and source of the software package",
+    "Final device status, including returned to service or removed from service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Cannot Find Compatible Software and Manual Packages",
+  "description": "Troubleshooting the Cannot Find Compatible Software and Manual Packages error that can prevent a GE Healthcare MAC 5 manual upgrade from continuing when required software or manual packages are missing, incompatible, misplaced, or inaccessible.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-cannot-find-compatible-software-and-manual-packages.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before attempting software or manual upgrade troubleshooting. Do not perform upgrade troubleshooting while the device is needed for active ECG acquisition, patient testing, or clinical workflow. Use another available ECG machine if patient testing is required."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed message is Cannot Find Compatible Software and Manual Packages. Determine whether the message appears before starting the manual upgrade, after selecting USB upgrade, after selecting shared network folder upgrade, after inserting the USB flash drive, or after browsing to the shared folder. Confirm whether the device otherwise powers on and operates normally."
+    },
+    {
+      "title": "Confirm the Upgrade Source Selected",
+      "instructions": "Confirm whether the upgrade is being attempted from a USB flash drive or a shared network folder. Verify that the selected upgrade path matches where the software and manual packages were actually placed."
+    },
+    {
+      "title": "Check the USB Flash Drive if USB Upgrade Is Being Used",
+      "instructions": "Remove and reinsert the USB flash drive. Confirm the USB flash drive is fully seated and detected by the MAC 5. Check that the USB flash drive contains the required software and manual packages. Try another known-good USB flash drive if the original media is not detected or appears unreliable."
+    },
+    {
+      "title": "Confirm Files Are in the Root Directory",
+      "instructions": "On a computer, open the USB flash drive or shared folder being used for the upgrade. Confirm the software and manual packages are placed directly in the root directory. Do not place the packages inside folders such as Downloads, MAC5 Upgrade, Software, Manuals, or version folders."
+    },
+    {
+      "title": "Verify Both Software and Manual Packages Are Present",
+      "instructions": "Confirm that both required package types are available: the software package and the manual package. Do not proceed if only one package is present. Keep both packages together in the same root location."
+    },
+    {
+      "title": "Confirm the Packages Are Compatible With the MAC 5",
+      "instructions": "Verify that the upgrade files are intended for the GE Healthcare MAC 5 and the planned upgrade version. Do not use files intended for another ECG model, another region, or a different software release. Use only the approved software and manual package set from the correct GE Healthcare source."
+    },
+    {
+      "title": "Check for Incomplete or Corrupted File Copy",
+      "instructions": "Re-copy the software and manual packages from the approved source. If using USB media, safely eject the USB flash drive from the computer before removing it. If using a shared folder, confirm the file transfer fully completed. Retry the upgrade only after confirming the files copied completely without interruption."
+    },
+    {
+      "title": "Check Shared Folder Access if Network Upgrade Is Being Used",
+      "instructions": "Confirm the MAC 5 has an active LAN or WLAN connection. Verify the shared network folder path is configured correctly. Confirm the MAC 5 has permission to access the shared folder. Confirm the software and manual packages are in the shared folder root directory."
+    },
+    {
+      "title": "Check for File Name or Package Alteration",
+      "instructions": "Confirm the package files have not been renamed. Confirm the package files have not been extracted, compressed into another archive, or modified. Use the package names and file structure provided by the approved GE Healthcare software source."
+    },
+    {
+      "title": "Retry the Manual Upgrade",
+      "instructions": "After confirming the correct package files are present in the root directory, retry the manual upgrade. Observe whether the MAC 5 proceeds past the package detection step. If the packages are recognized, allow the upgrade process to complete according to approved facility procedure. After completion, verify the device boots normally and no upgrade error remains."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "MAC 5 displayed Error: Cannot Find Compatible Software and Manual Packages during manual upgrade attempt. Device could not locate compatible upgrade files from the selected USB flash drive or shared folder.",
+      "Cause": "Software and manual packages were not available in the expected root directory, were incomplete, incompatible, altered, or not accessible from the selected upgrade source.",
+      "Resolution": "Verified upgrade source, checked USB flash drive or shared folder access, confirmed software and manual packages were present in the root directory, retried upgrade, and confirmed whether the upgrade proceeded. If unresolved, device was removed from service and escalated for repair or vendor support."
+    }
+  },
+  "helpfulDetails": [
+    "Exact error message displayed",
+    "Whether the error occurred before or after selecting the upgrade source",
+    "Whether upgrade was attempted from USB flash drive or shared network folder",
+    "USB flash drive tested and whether another USB drive was tried",
+    "Whether files were located in the root directory",
+    "Whether both software and manual packages were present",
+    "Whether package files were renamed, extracted, compressed, or modified",
+    "Power behavior before, during, and after the upgrade attempt",
+    "Network connection status if shared folder upgrade was used",
+    "Shared folder path and permissions verified",
+    "Environmental factors such as unstable network access, removed USB media, or interrupted file copy",
+    "Indicator lights, USB detection behavior, or network connection indicators",
+    "Whether the upgrade succeeded after file correction",
+    "Final device status"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Plug in the USB or Connect the Device to the Network and Then Continue the Upgrade Progress",
+  "description": "Troubleshooting MAC 5 upgrade interruption caused by removed USB media or lost network connection during manual software upgrade.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-plug-in-the-usb-or-connect-the-device-to-the-network-and-then-continue-the-upgrade-progress.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not being used for patient ECG acquisition. If the device is in a clinical area, remove it from patient use until the software upgrade issue is resolved. Use another ECG machine if patient testing is needed. Expected: No patient testing depends on a device in an incomplete or interrupted upgrade state."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the displayed error is exactly: Plug in the USB or Connect the Device to the Network and Then Continue the Upgrade Progress. Determine whether the error appeared during manual software upgrade, after the USB flash drive was removed, after the network connection dropped, after switching between USB and network upgrade sources, or during retry or continuation of upgrade progress. Expected: The error is clearly linked to interrupted access to the upgrade source. Why it matters: This confirms the issue is not a general boot failure or software corruption complaint, but a loss of access to the upgrade media or network path."
+    },
+    {
+      "title": "Check Whether the Upgrade Was Started from USB",
+      "instructions": "Ask the user or check the workflow to confirm whether the upgrade was being performed from a USB flash drive. If USB upgrade was used, verify the USB drive is still inserted securely into the MAC 5. Remove and reinsert the USB flash drive firmly. Expected: The device detects the USB drive and allows the upgrade process to continue or restart. Why it matters: The error can occur if the USB flash drive was removed before the manual upgrade completed."
+    },
+    {
+      "title": "Inspect the USB Flash Drive and USB Port",
+      "instructions": "Check the USB flash drive for obvious physical damage, bent connector, looseness, or contamination. Inspect the MAC 5 USB port for damage or poor fit. Try a known-good USB flash drive prepared with the correct upgrade files if available. Expected: The USB device remains connected and readable without intermittent disconnects. Why it matters: A loose or unreliable USB connection can interrupt the upgrade even if the user did not intentionally remove the drive."
+    },
+    {
+      "title": "Confirm the USB Contains the Upgrade Files",
+      "instructions": "Verify the USB flash drive contains the required software upgrade image and related files in the expected location. Do not move, rename, or delete files during the upgrade attempt. Expected: The USB drive contains the valid upgrade files required for the MAC 5 to continue. Why it matters: If the device reconnects to USB but cannot find the expected upgrade content, the upgrade may fail again or display a different upgrade error."
+    },
+    {
+      "title": "Check Whether the Upgrade Was Started from the Network",
+      "instructions": "If the upgrade was being performed from a shared network location, verify the MAC 5 is still connected to the network. Check for a disconnected LAN cable, loose Ethernet connector, docking or network adapter issue, WLAN disconnection, weak wireless signal, network settings changes, or a shared folder that is no longer reachable. Expected: The MAC 5 has a stable network connection before continuing the upgrade. Why it matters: The error can occur if the device loses access to the network upgrade source during manual upgrade."
+    },
+    {
+      "title": "Verify LAN or WLAN Connection",
+      "instructions": "For wired network use, reseat the Ethernet cable at both the MAC 5 and wall jack or network adapter. For wireless use, confirm the device is connected to the correct WLAN and has adequate signal. If available, test the network jack or cable with a known-good device, or move the MAC 5 to a known-good network connection. Expected: Network access is restored and stable."
+    },
+    {
+      "title": "Confirm the Network Shared Upgrade Location Is Available",
+      "instructions": "Verify the shared network path used for the upgrade is still available and correctly configured. Confirm the software image and required digital signature files remain in the shared folder. Expected: The MAC 5 can access the same network location used at the start of the upgrade. Why it matters: Reconnecting the network alone may not help if the shared folder or upgrade files are unavailable."
+    },
+    {
+      "title": "Continue or Retry the Upgrade",
+      "instructions": "Once the USB flash drive is reinserted or network connection is restored, continue the upgrade if the device allows it. If continuing is not available, restart the upgrade process using the same validated upgrade source. Expected: The upgrade resumes or restarts without the same error."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If reinserting the USB flash drive or restoring the network connection resolves the error, allow the upgrade to complete fully. Do not remove the USB drive, disconnect network cables, power off the device, or move the device during upgrade unless instructed by approved service documentation. After completion, verify the MAC 5 boots normally and is functional before returning it to service. Expected: Device upgrade completes and the MAC 5 is safe for clinical use."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "MAC 5 displayed error 'Plug in the USB or Connect the Device to the Network and Then Continue the Upgrade Progress' during manual software upgrade. Upgrade could not continue after source media or network connection was interrupted.",
+      "Cause": "USB flash drive was removed or network connection was lost during manual upgrade. External upgrade source connection required verification before continuing.",
+      "Resolution": "Removed device from service during troubleshooting. Reinserted USB flash drive or restored network connection, verified upgrade source was available, retried upgrade, and confirmed device completed upgrade and booted normally. Returned to service after functional check."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior during the upgrade",
+    "Accessories swapped, including USB flash drive, Ethernet cable, or network adapter",
+    "Power behavior during the upgrade attempt",
+    "Environmental factors such as device movement, weak WLAN signal, or unstable network location",
+    "Indicator lights, network icon status, USB detection behavior, or connection status",
+    "Final device status, including whether the upgrade completed and whether the MAC 5 was returned to service or sent for repair"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Image Is Not Found in the USB Path",
+  "description": "Troubleshooting a GE Healthcare MAC 5 USB software upgrade failure when the required digitally signed software image is not found on the inserted USB flash drive or cannot be located in the expected USB path.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-image-is-not-found-in-the-usb-path.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not being used for an active patient ECG. If the device is needed clinically, have staff use another ECG machine before continuing with software upgrade troubleshooting. Do not perform software upgrade work while patient testing depends on the device."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the device displays: Error: Image Is Not Found in the USB Path. Ask or observe when the message appears. Check whether it occurs immediately after selecting USB software upgrade or after the device scans the inserted USB flash drive. This confirms the device is detecting the upgrade attempt but cannot locate the expected software image file."
+    },
+    {
+      "title": "Confirm the USB Drive Is Inserted and Detected",
+      "instructions": "Remove and reinsert the USB flash drive securely. If the MAC 5 has more than one USB port, try the approved service-accessible USB port if applicable. Confirm the device recognizes the USB drive and continues to the software image search step. A loose connection or unreadable USB drive can appear similar to a missing file condition."
+    },
+    {
+      "title": "Check the USB Drive Contents on a Computer",
+      "instructions": "Insert the USB flash drive into a known-working computer. Verify the software image is actually present on the USB drive. Confirm the file was not left in a downloads folder, compressed archive, subfolder, or copied incompletely. The correct MAC 5 software image should be visible on the USB drive before retrying the upgrade."
+    },
+    {
+      "title": "Verify the Software Image Is in the Correct USB Location",
+      "instructions": "Confirm the software image is placed in the required USB path, typically the root directory unless the upgrade instructions specify otherwise. Do not place the image inside extra folders unless directed by the upgrade package instructions. Do not rename files unless the official upgrade instructions require it. The MAC 5 must be able to locate the image when the USB upgrade is attempted again."
+    },
+    {
+      "title": "Confirm the Correct Software Version and Package",
+      "instructions": "Verify the USB contains the correct version of the digitally signed software image for the GE Healthcare MAC 5. Make sure the file is not for a different GE ECG model, different platform, or incompatible software release. The device may fail to locate or reject files that do not match the expected upgrade package structure."
+    },
+    {
+      "title": "Confirm the Digital Signature File Is Present if Required",
+      "instructions": "Check that the digitally signed software image and any required associated signature files are both present. Keep the software image and required signature components intact. Software upgrade packages may depend on exact filenames, file locations, and signature validation."
+    },
+    {
+      "title": "Check for File Copy or Download Problems",
+      "instructions": "Recopy the software image to the USB drive from the approved source. If the file was downloaded, confirm the download completed successfully and was not interrupted. Use a fresh copy of the upgrade package if there is any doubt. The USB should contain a complete, readable software image before another upgrade attempt."
+    },
+    {
+      "title": "Try a Known-Good USB Flash Drive",
+      "instructions": "Copy the correct digitally signed software image to another known-good USB flash drive. Use a standard USB flash drive that is clean, functional, and compatible with medical device software transfer workflows. A USB drive may be readable on a computer but still unreliable or incompatible with the device."
+    },
+    {
+      "title": "Check USB Formatting and Access",
+      "instructions": "If the MAC 5 does not reliably read the USB drive, check the drive format and recreate the USB using the required file system format from the approved upgrade instructions. Avoid password-protected, encrypted, partitioned, or security-managed USB drives. The device must be able to read the USB path and locate the image file."
+    },
+    {
+      "title": "Repeat the USB Software Upgrade Attempt",
+      "instructions": "Safely eject the USB drive from the computer. Insert it into the MAC 5. Retry the software upgrade process. Expected result: the error no longer appears, and the device proceeds to the next upgrade step."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If the MAC 5 locates the image and proceeds with the software upgrade, continue only according to approved facility and manufacturer software update procedures. After upgrade completion, verify normal startup, ECG acquisition readiness, printing if applicable, and network configuration if affected. Return the device to service only after the MAC 5 passes functional checks."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE Healthcare MAC 5 displayed Error: Image Is Not Found in the USB Path during USB software upgrade. Device could not locate the required software image on the inserted USB flash drive.",
+      "Cause": "Software image was not present in the required USB path, incorrect package was loaded, USB media was unreadable, or device-side USB/software access issue remained after external checks.",
+      "Resolution": "Verified USB detection, checked USB contents, confirmed correct digitally signed MAC 5 software image and file location, recopied upgrade files to known-good USB drive, and retried upgrade. If unresolved, device was removed from service and sent for bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Exact alarm behavior or displayed message, including whether Error: Image Is Not Found in the USB Path appeared immediately or after USB scanning.",
+    "Accessories swapped, including USB flash drive, USB port used, and whether another known-good USB drive was tried.",
+    "Power behavior during the upgrade attempt, including AC power status, restart behavior, or any interruption during software loading.",
+    "Environmental factors, including whether the USB drive was password-protected, encrypted, partitioned, security-managed, or created from a shared workstation.",
+    "Indicator lights, USB detection behavior, computer detection results, and whether the image was in the root directory or another path.",
+    "Final device status, including final upgrade result, whether the MAC 5 passed functional checks, or whether it was removed from service."
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Connect the USB Drive to Upgrade Software",
+  "description": "Troubleshooting the GE Healthcare MAC 5 error Connect the USB Drive to Upgrade Software when USB software upgrade is selected but the device does not detect the USB flash drive.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-connect-the-usb-drive-to-upgrade-software.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before troubleshooting or attempting any software upgrade. Do not attempt a software upgrade while the ECG machine is needed for active patient testing. Use another ECG machine if patient testing is required. Expected: The device is safely available for service without interrupting patient care."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the displayed error is exactly: Connect the USB Drive to Upgrade Software. Verify that the error appears after selecting the USB software upgrade option. Confirm whether the MAC 5 fails to detect the USB flash drive entirely, or whether it detects the USB but later fails due to image, signature, or file issues. Expected: The error is reproducible when USB software upgrade is selected."
+    },
+    {
+      "title": "Check That the USB Drive Is Physically Installed",
+      "instructions": "Make sure the USB flash drive is fully inserted into the MAC 5 USB port. Remove and reinsert the USB drive firmly. Avoid using excessive force or wiggling the drive aggressively. Expected: The device recognizes the USB drive and proceeds to the next upgrade step."
+    },
+    {
+      "title": "Verify the Correct USB Drive Is Being Used",
+      "instructions": "Confirm the USB drive is the intended upgrade media and contains the digitally signed software image. Do not use a random storage USB, blank USB drive, or drive containing unrelated files only. Expected: The USB drive contains the proper software upgrade package."
+    },
+    {
+      "title": "Check the USB Drive for Physical Damage",
+      "instructions": "Inspect the USB connector for bent contacts, looseness, corrosion, cracking, or signs of contamination. Try the USB drive in a computer to confirm it is detected normally. Expected: The USB drive is physically intact and readable on another device."
+    },
+    {
+      "title": "Try a Known-Good USB Flash Drive",
+      "instructions": "If available, copy the valid digitally signed software image to a known-good USB drive following the required upgrade file structure. Insert the known-good USB drive and retry the USB software upgrade selection. Expected: The MAC 5 detects the replacement USB drive."
+    },
+    {
+      "title": "Confirm the Software Image Is on the USB Drive",
+      "instructions": "Verify the USB drive contains the host software image required for the MAC 5 upgrade. Confirm the software image is placed as required by the approved upgrade instructions. Expected: The USB contains the correct digitally signed software image."
+    },
+    {
+      "title": "Check for File Permission or Access Issues",
+      "instructions": "If the USB drive is detected by a computer, confirm the files are readable and not restricted by permissions. If the USB was prepared on a managed computer, confirm the software image and digital signature files can be accessed normally. Expected: The software files can be read from the USB drive."
+    },
+    {
+      "title": "Inspect the MAC 5 USB Port Externally",
+      "instructions": "Look for debris, bent contacts, looseness, or visible damage inside the USB port. Do not insert tools into the port unless appropriate ESD-safe inspection and cleaning practices are followed. Expected: The USB port is clean, intact, and not physically damaged."
+    },
+    {
+      "title": "Try Another USB Port if Available",
+      "instructions": "If the MAC 5 has more than one usable USB port, retry the upgrade using another port. Expected: The USB drive is detected on another port."
+    },
+    {
+      "title": "Power Cycle the MAC 5 and Retry",
+      "instructions": "Shut down the MAC 5 normally. Confirm the device is not in active clinical use. Restart the unit, reinsert the USB drive, and select the USB software upgrade option again. Expected: The MAC 5 detects the USB drive after restart."
+    },
+    {
+      "title": "Determine Whether the Failure Is Accessory-Related or Device-Related",
+      "instructions": "If one USB drive fails but another known-good USB drive works, treat the issue as USB media-related. If multiple known-good USB drives fail to detect, suspect the MAC 5 USB port, USB interface, or system software state. Expected: Troubleshooting narrows the fault to USB media, file preparation, port condition, or the MAC 5 itself."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If the MAC 5 detects the USB drive and proceeds with the software upgrade process, continue only according to approved software upgrade procedures. After upgrade activity is complete, verify normal boot, ECG acquisition readiness, printing if applicable, and network configuration if affected. Return the MAC 5 to service only after functional checks pass."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "MAC 5 displayed Connect the USB Drive to Upgrade Software after USB software upgrade was selected. Device did not detect the USB flash drive.",
+      "Cause": "USB upgrade media was not detected. Checked USB seating, USB media condition, software image presence, file access, and external USB port condition. If unresolved, likely device-side USB detection or interface failure.",
+      "Resolution": "Reseated USB drive and tested with known-good USB flash drive containing the digitally signed software image. If detected, upgrade process continued and device passed functional checks. If not detected, unit was removed from service for bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Exact displayed error message and when it appeared during the upgrade process",
+    "Whether the alarm behavior or error behavior occurred immediately after selecting USB upgrade",
+    "USB drive tested and whether accessory media was swapped",
+    "Whether the USB was detected on a computer",
+    "Whether software image and digital signature files were present",
+    "Power behavior before and after reboot",
+    "Environmental factors such as debris, contamination, or physical damage near the USB port",
+    "Indicator lights, on-screen prompts, or upgrade progress messages observed",
+    "Whether another USB port was tested",
+    "Final device status, including returned to service or removed from service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: USB Access Denied",
+  "description": "Troubleshooting USB Access Denied on a GE Healthcare MAC 5 when the device cannot access a USB flash drive during the software upgrade process.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-usb-access-denied.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not being used for an active patient ECG. If the unit is needed for clinical use, do not continue software-upgrade troubleshooting at the bedside. Use another ECG machine if patient testing is required. Expected: Troubleshooting is performed off-patient and does not interrupt patient care."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Select the USB software upgrade process again and confirm the exact message appears: USB Access Denied. Observe whether the error occurs immediately after selecting USB software upgrade. Check whether the error appears after inserting the USB flash drive. Note whether the error occurs while browsing or copying upgrade files. Determine whether the error is intermittent or occurs with one USB drive only. Expected: The error is clearly reproduced or confirmed by the user report."
+    },
+    {
+      "title": "Translate the Error Into the Real-World Condition",
+      "instructions": "This error means the MAC 5 attempted to use the USB flash drive for a software upgrade, but access to the USB storage device was denied. Treat the issue first as a USB permission, storage-access, media, or configuration problem. The most likely external or configuration-related cause is that external storage access is disabled in system settings. Expected: The issue is approached as a USB access condition before assuming internal device failure."
+    },
+    {
+      "title": "Confirm the USB Drive Is Properly Inserted",
+      "instructions": "Remove and reinsert the USB flash drive. Check that the USB drive seats fully in the USB port. Confirm the USB drive is not loose, angled, damaged, or partially inserted. Expected: The USB drive is physically connected and stable."
+    },
+    {
+      "title": "Inspect the USB Flash Drive and Port",
+      "instructions": "Check the USB drive for obvious damage, a bent connector, contamination, or signs of wear. Inspect the MAC 5 USB port for debris, looseness, or physical damage. If the USB port is damaged or loose, stop troubleshooting and remove the device from service for repair evaluation. Expected: The USB drive and USB port appear physically intact."
+    },
+    {
+      "title": "Check External Storage Settings",
+      "instructions": "Go to Settings > System > Storage. Confirm that access to external storage devices is enabled. If external storage access is disabled, enable it. Expected: The MAC 5 is allowed to access USB storage devices."
+    },
+    {
+      "title": "Retry the USB Software Upgrade",
+      "instructions": "After enabling external storage access, leave the USB drive connected and retry the USB software upgrade process. Confirm the MAC 5 can access the USB flash drive and proceed to look for the software upgrade files. If the error clears, continue the upgrade process according to the approved facility procedure. If this step resolves the issue, return the device to service only after confirming normal startup, ECG acquisition readiness, and no remaining error messages. Expected: The MAC 5 no longer displays USB Access Denied."
+    },
+    {
+      "title": "Test With a Known-Good USB Flash Drive",
+      "instructions": "If USB access is enabled but the error remains, try a known-good USB flash drive that has worked with the MAC 5 or with similar approved equipment. Use facility-approved media when available. Do not use damaged, unknown, or unapproved USB media for software upgrade troubleshooting. Expected: A known-good USB drive is detected without access denial."
+    },
+    {
+      "title": "Check for USB Drive Security Restrictions",
+      "instructions": "Confirm the USB flash drive is not hardware write-protected. Confirm the USB flash drive is not encrypted or password-protected. Confirm the USB flash drive is not controlled by endpoint security software. Confirm the USB flash drive is not formatted in a way the MAC 5 cannot access. Confirm the USB flash drive is not restricted by facility IT policy. Expected: USB media is accessible as standard removable storage."
+    },
+    {
+      "title": "Confirm the Issue Is Not File-Specific",
+      "instructions": "If the USB drive is accessible but the upgrade still fails later, separate this error from other software image issues. This guide applies to USB Access Denied specifically. If the MAC 5 later reports a missing software image, signature issue, copy failure, or installation failure, troubleshoot that new message separately. Expected: USB access is confirmed before moving on to software package validation."
+    },
+    {
+      "title": "Power Cycle and Recheck",
+      "instructions": "If external storage is enabled and the USB drive is known good, restart the MAC 5 and retry the process. Confirm whether the USB access error returns after restart. If the error does not return, complete functional checks before returning the device to service. Expected: Temporary software or setting recognition issues clear after restart."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported MAC 5 displayed USB Access Denied when USB software upgrade was selected. Device would not access USB flash drive for upgrade process.",
+      "Cause": "External storage access was disabled under Settings > System > Storage, preventing the MAC 5 from accessing the USB flash drive.",
+      "Resolution": "Enabled access to external storage devices, reinserted USB flash drive, and retried USB software upgrade. USB access was restored and device no longer displayed USB Access Denied. Verified device returned to normal operation."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact displayed message: USB Access Denied",
+    "Accessories swapped, including the USB flash drive or other approved USB media tested",
+    "Power behavior, including whether a restart or power cycle was performed",
+    "Environmental factors, including damaged media, restricted USB drives, endpoint security restrictions, or facility IT policy concerns",
+    "Indicator lights, USB detection behavior, or any visible response when USB media is inserted",
+    "Final device status, including whether the MAC 5 was returned to service or labeled Out of Service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Software Image Is Not Found in the USB",
+  "description": "Troubleshooting Software Image Is Not Found in the USB when USB software upgrade was selected, but the MAC 5 cannot locate the required software image on the inserted USB flash drive.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-software-image-is-not-found-in-the-usb.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not being used for an active patient ECG. Do not perform software upgrade troubleshooting while the device is connected to a patient or needed for immediate clinical use. Use another ECG machine if patient testing is required during troubleshooting."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed message is: Software Image Is Not Found in the USB. Verify that the error appears after selecting a USB software upgrade. Observe whether the MAC 5 recognizes the USB drive at all, or whether it enters the upgrade workflow and then fails to locate the image."
+    },
+    {
+      "title": "Confirm the Correct USB Flash Drive Is Being Used",
+      "instructions": "Remove the USB flash drive and verify it is the intended service USB. Check that the USB drive is not blank, damaged, mislabeled, or being confused with another USB device. Do not rely only on the USB label or folder name."
+    },
+    {
+      "title": "Verify the Software Image Is Present",
+      "instructions": "Insert the USB flash drive into a computer and confirm the host software image is actually on the drive. Confirm the file was copied from the approved software upgrade source. Check that the file was not left in a download folder, compressed folder, or temporary transfer location."
+    },
+    {
+      "title": "Check the USB Root Directory",
+      "instructions": "Confirm the host software image is placed in the root directory of the USB flash drive. The image should not be buried inside a folder unless the approved upgrade instructions specifically require that folder structure. Remove extra folder layers if the image was copied inside a downloaded ZIP folder or nested directory."
+    },
+    {
+      "title": "Check for Incorrect File Placement or Extra Folder Layers",
+      "instructions": "Look for common placement mistakes such as the software image being inside a downloaded ZIP folder. Check for the software image inside a nested folder. Check whether a Downloads folder was copied to USB instead of the actual image file. Remove multiple software image versions from the USB unless the approved procedure allows them."
+    },
+    {
+      "title": "Verify the Image File Appears Complete",
+      "instructions": "Compare the file name and size to the approved upgrade package information if available. If the file was downloaded or copied from a network share, copy it again from the approved source. Do not rename, alter, or manually modify the software image file."
+    },
+    {
+      "title": "Try a Known-Good USB Flash Drive",
+      "instructions": "Copy the host software image to a different known-good USB flash drive. Place the image in the USB root directory and retry the upgrade. Avoid using a damaged, unrecognized, heavily worn, or questionable USB device."
+    },
+    {
+      "title": "Check the USB Port and Physical Connection",
+      "instructions": "Inspect the MAC 5 USB port for looseness, debris, damage, or poor seating. Reinsert the USB drive firmly and retry the upgrade process. If another USB function is available, confirm the device can detect USB media normally."
+    },
+    {
+      "title": "Retry the USB Software Upgrade",
+      "instructions": "After confirming the correct file, correct location, and known-good USB media, retry the USB software upgrade. If the image is detected and the upgrade proceeds normally, continue following approved site software upgrade procedures. Confirm the MAC 5 boots normally and is ready for clinical use before returning it to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE Healthcare MAC 5 displayed Software Image Is Not Found in the USB during USB software upgrade attempt. Device could not locate the upgrade image on inserted USB flash drive.",
+      "Cause": "Host software image was missing from the USB root directory. USB upgrade workflow could not detect the required software image file.",
+      "Resolution": "Verified USB contents on computer, copied valid host software image to the USB flash drive root directory, reinserted USB into MAC 5, and retried software upgrade. Device detected image and proceeded with upgrade workflow."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior during the USB upgrade attempt",
+    "Accessories swapped, including USB flash drive tested",
+    "Power behavior during upgrade attempt, reboot, or retry",
+    "Environmental factors such as use of shared computers, network downloads, or questionable USB media",
+    "Indicator lights or USB detection behavior, if observed",
+    "Final device status, including whether the upgrade proceeded or the device was removed from service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Copying Software Upgrade Files Unsuccessful",
+  "description": "Troubleshooting Copying Software Upgrade Files Unsuccessful on a GE Healthcare MAC 5 when USB file permission issues prevent software upgrade files from copying.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-copying-software-upgrade-files-unsuccessful.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before troubleshooting software upgrade errors. Do not attempt software upgrade troubleshooting while the device is needed for active ECG acquisition. Move patient testing to another available ECG machine if needed. Expected: The device is safely available for service activity without interrupting patient care."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact message displayed is Copying Software Upgrade Files Unsuccessful. Determine whether the error appears during USB software upgrade, after the USB drive is inserted, while copying upgrade files, before the upgrade process starts, or repeatedly with the same USB flash drive. Expected: The error is reproducible during the software upgrade file copy process. This confirms a software upgrade media or file-access issue rather than a general device failure."
+    },
+    {
+      "title": "Confirm the USB Flash Drive Is the Intended Upgrade Media",
+      "instructions": "Verify the USB flash drive is the correct drive prepared for the MAC 5 software upgrade. Remove any unrelated USB devices from the unit. Expected: Only the intended upgrade USB drive is connected. Multiple USB devices or incorrect media can cause the wrong files or path to be accessed."
+    },
+    {
+      "title": "Check That the Required Upgrade Files Are Present",
+      "instructions": "On a workstation, inspect the USB flash drive and confirm the software image and digital signature files are present. Do not rename the software image or signature file unless directed by approved upgrade instructions. Expected: The USB drive contains the expected software image and matching digital signature file. The MAC 5 must be able to access both the software image and signature to continue the upgrade."
+    },
+    {
+      "title": "Check File Permissions on the USB Flash Drive",
+      "instructions": "From a computer, confirm the software image and digital signature files are not locked, restricted, blocked, or set with permissions that prevent access. Verify the files allow normal read/write access. Expected: The software upgrade files can be opened, copied, and accessed from the USB drive. This error specifically indicates the software image or digital signature does not have sufficient permissions to copy."
+    },
+    {
+      "title": "Test Copying the Files Manually on a Workstation",
+      "instructions": "Copy the software image and digital signature from the USB flash drive to a temporary folder on a computer. If appropriate, copy them back to the USB drive after confirming access. Expected: Files copy without permission errors. A manual copy test helps confirm whether the issue is related to file permissions, USB media, or file corruption."
+    },
+    {
+      "title": "Verify the USB Drive Is Not Write-Protected",
+      "instructions": "Inspect the USB flash drive for a physical write-protect switch if applicable. Check whether the computer reports the USB drive as read-only. Expected: The USB drive allows files to be written, modified, and copied. A write-protected or read-only USB drive can prevent upgrade file handling."
+    },
+    {
+      "title": "Reapply Proper File Permissions",
+      "instructions": "Provide appropriate read/write permissions to the software upgrade files on the USB flash drive. If the files were copied from a restricted network folder, secure archive, or locked computer account, recopy them from an approved source using proper permissions. Expected: The MAC 5 can access and copy the software image and digital signature files. The upgrade process depends on the system being able to read and copy the files without restriction."
+    },
+    {
+      "title": "Try a Known-Good USB Flash Drive",
+      "instructions": "If permissions appear correct but the error remains, prepare a different USB flash drive with the same valid upgrade files. Use a clean, reliable USB drive approved by the facility or service process. Expected: The upgrade copy process proceeds without the permission-related error. USB media can fail, mount incorrectly, or behave as read-only even when files appear present."
+    },
+    {
+      "title": "Restart the MAC 5 and Retry the Upgrade",
+      "instructions": "Safely power cycle the MAC 5. Reinsert the prepared USB flash drive and retry the software upgrade process. Expected: The software upgrade files copy successfully. Restarting clears temporary software states before retesting with corrected media."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If correcting file permissions or replacing the USB drive resolves the error, complete the upgrade process according to site procedure. Confirm the MAC 5 boots normally after upgrade activity. Return the device to service only after basic function checks pass. Expected: The error is cleared, the upgrade process completes or proceeds normally, and the device is operational."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "MAC 5 displayed Copying Software Upgrade Files Unsuccessful during USB software upgrade, and upgrade files would not copy from the USB flash drive.",
+      "Cause": "Software image or digital signature files on the USB flash drive did not have sufficient permissions for the device to copy the upgrade files. External USB file permission issue suspected or confirmed.",
+      "Resolution": "Removed device from patient use, verified USB upgrade contents, checked file access, corrected read/write permissions on the software image and digital signature files, and retried upgrade. Device returned to service after upgrade process continued successfully and functional checks passed."
+    }
+  },
+  "helpfulDetails": [
+    "Exact alarm behavior or error text displayed",
+    "Whether error occurred immediately or during file copy",
+    "USB flash drive tested",
+    "Software image present",
+    "Digital signature file present",
+    "Accessories or USB media swapped",
+    "Power behavior during upgrade attempt",
+    "Environmental factors such as workstation restrictions, locked files, or restricted network source",
+    "Indicator lights or USB detection behavior",
+    "File permissions checked and read/write access verified",
+    "Alternate USB drive attempted",
+    "Whether upgrade completed",
+    "Final device status"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Shared Network Folder Is Disabled in Settings Screen",
+  "description": "Troubleshooting MAC 5 shared network folder disabled errors that can prevent ECG export, archive access, or file transfer through a configured shared network folder.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-shared-network-folder-is-disabled-in-settings-screen.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not actively being used to acquire a patient ECG. If the error appears during or after a patient ECG, make sure the ECG is saved locally or printed if clinically needed before changing settings or restarting the device. Expected: Patient ECG data is protected before troubleshooting begins."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact error displayed is Shared Network Folder Is Disabled in Settings Screen. Ask the user when the message appears. Common situations include attempting to export ECGs to a network folder, trying to archive records to a shared location, sending or saving files through a configured network path, or selecting a shared folder destination that is not currently enabled. Expected: The error is reproducible when a shared network folder function is selected."
+    },
+    {
+      "title": "Confirm the Real-World Impact",
+      "instructions": "Determine what function is failing. Check whether the MAC 5 can still acquire ECGs, save ECGs locally, print ECGs, connect to LAN or WLAN, or send by another configured route if available. Expected: The ECG acquisition function may still work, but network shared folder export or archive is blocked."
+    },
+    {
+      "title": "Check Network Connection First",
+      "instructions": "Verify the MAC 5 is connected to the correct network. For wired LAN, check that the Ethernet cable is fully seated, the wall jack is known-good, the network link indicator is present if visible, and the cable or connector is not damaged. For WLAN, check that the correct wireless network is selected, signal strength is acceptable, and the device is not in an area with poor wireless coverage. Expected: The MAC 5 has a valid network connection before shared folder settings are tested."
+    },
+    {
+      "title": "Check the Shared Network Folder Setting",
+      "instructions": "Go to the network configuration area and check the shared folder option. Follow the path provided for this error: Network > Shared Network settings. Verify that the shared network path is enabled. Expected: Shared network folder access is enabled in settings."
+    },
+    {
+      "title": "Verify the Shared Path Configuration",
+      "instructions": "Confirm the shared network folder information is present and correct. Check the shared folder path, server name or IP address, folder name, username if required, password if required, domain if required by the facility, and correct slash format for the network path. Expected: The shared path is enabled and points to the correct network folder."
+    },
+    {
+      "title": "Compare With a Known-Good MAC 5",
+      "instructions": "If another MAC 5 is working on the same network, compare the shared folder settings. Check the shared path format, network destination, LAN or WLAN profile type, and authentication method. Do not copy credentials unless authorized by facility policy. Expected: The affected MAC 5 should match the approved configuration used by working devices."
+    },
+    {
+      "title": "Test With a Known-Good Network Location",
+      "instructions": "If allowed by site policy, test the MAC 5 from a known-good network jack or known-good wireless area. Retry the shared folder function after confirming the setting is enabled. Expected: The shared folder function proceeds without the disabled setting error."
+    },
+    {
+      "title": "Restart the MAC 5 After Configuration Changes",
+      "instructions": "After enabling or correcting the shared network setting, restart the MAC 5 if the setting does not take effect immediately. Retest the same workflow that originally triggered the error. Expected: The error no longer appears, and the shared folder function is available."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If enabling and configuring the shared network path resolves the error, document the corrected setting and return the MAC 5 to service. Confirm with the user that the intended export, archive, or shared folder workflow now works. Expected: Device is returned to service after successful functional confirmation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported MAC 5 displayed Shared Network Folder Is Disabled in Settings Screen when attempting to use the shared network folder for ECG export or archive.",
+      "Cause": "Shared network path was disabled under Network > Shared Network settings, preventing the configured shared folder workflow from being used.",
+      "Resolution": "Verified network connection, enabled and configured shared network path, restarted device, and confirmed shared folder function operated without the error. Returned MAC 5 to service."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior, including the exact error text displayed and whether the error occurs during export, archive, or send workflow",
+    "Accessories swapped, including Ethernet cable, network jack, or alternate approved network connection if tested",
+    "Power behavior, including whether the device was restarted after configuration changes",
+    "Environmental factors, including LAN or WLAN area tested, signal strength, and known-good network location used",
+    "Indicator lights, including network link indicators or connection status messages if visible",
+    "Final device status, including shared path enabled or disabled, shared folder path reviewed, credentials or permissions suspected, comparison with known-good MAC 5, and whether the device was returned to service or labeled Out of Service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Shared Network Not Configured",
+  "description": "Troubleshooting MAC 5 Shared Network Not Configured errors when a missing or incomplete shared path prevents ECG export, archive access, or shared network storage use.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-shared-network-not-configured.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not actively being used to acquire a patient ECG. If the error appears after an ECG has been acquired, make sure the ECG is saved locally or printed if clinically needed before changing network settings. Do not troubleshoot network settings while the device is connected to a patient or needed for immediate clinical use."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed message is: Shared Network Not Configured. Ask when the error appears, such as during ECG export, saving to a network folder, accessing a shared archive location, order/result transmission workflow, after a network configuration change, or after the device was moved."
+    },
+    {
+      "title": "Confirm Basic Network Connection First",
+      "instructions": "Check whether the MAC 5 is connected by LAN or WLAN. For LAN, verify the Ethernet cable is fully seated at the MAC 5 and wall jack. For WLAN, verify the wireless connection is active and signal strength is acceptable."
+    },
+    {
+      "title": "Check Whether the Issue Is Shared Network Specific",
+      "instructions": "Determine whether other network functions work. Check whether the MAC 5 can access worklist, send ECGs to another configured destination, or communicate with the normal ECG management system if applicable."
+    },
+    {
+      "title": "Review Shared Network Settings",
+      "instructions": "Go to the MAC 5 network configuration area and review the shared network setup. Check the shared path, server name or IP address, folder/share name, username if required, password if required, domain if required, destination or archive selection, and any required file naming or export settings."
+    },
+    {
+      "title": "Configure the Shared Path",
+      "instructions": "Go to Network > Shared Network settings. Enter or correct the shared network path using the facility-approved path format. Confirm the path points to the correct network share and not a local computer folder, old server, retired share, or test location."
+    },
+    {
+      "title": "Check for Recent Changes",
+      "instructions": "Ask whether anything recently changed, such as device replacement, software update, network migration, server rename, shared folder relocation, password change, domain change, department move, new VLAN, wireless profile change, reimaging, or configuration reset."
+    },
+    {
+      "title": "Verify Credentials and Permissions",
+      "instructions": "If the shared path is configured but still fails, confirm the account used by the MAC 5 has permission to access the share. Check with IT or the ECG system administrator as needed. Confirm the account is active, the password is current, the account is not locked, read/write permissions are correct, the folder is still shared, and the MAC 5 is allowed through network security controls."
+    },
+    {
+      "title": "Test with a Known Good Network Location if Available",
+      "instructions": "If facility policy allows, compare the MAC 5 configuration to another working MAC 5 in the same department. Verify the shared path format, server name, destination settings, and credential requirements match the working device where appropriate."
+    },
+    {
+      "title": "Restart and Retest",
+      "instructions": "After configuration changes are saved, restart the MAC 5 if required by the device workflow. Retest the shared network function. The error should no longer appear and the device should be able to access or save to the shared network location."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported GE Healthcare MAC 5 displaying Shared Network Not Configured when attempting to save or export ECGs to the shared network location.",
+      "Cause": "Shared network path was not configured under Network > Shared Network settings. Device network connection was present, but no valid shared path was entered.",
+      "Resolution": "Configured the approved shared network path, verified required network settings, restarted the MAC 5, and confirmed successful test export to the shared location. Device returned to service."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior and when the error occurs",
+    "Accessories swapped, including Ethernet cable, wall jack, or network adapter if applicable",
+    "Power behavior during restart and retest",
+    "Environmental factors such as department location, WLAN signal strength, VLAN, or recent device move",
+    "Indicator lights, network icon status, LAN link lights, or WLAN connection status",
+    "Shared path entered or corrected",
+    "Server/share name verified",
+    "Credential or domain issue found",
+    "Comparison to a known working MAC 5",
+    "Whether ECG export, archive, or worklist was affected",
+    "Final test export result",
+    "Final device status"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Software Image Not Found in Shared Folder",
+  "description": "Troubleshooting Software Image Not Found in Shared Folder on a GE Healthcare MAC 5 when the device cannot locate a valid software image in the configured network shared path.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-software-image-not-found-in-shared-folder.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before troubleshooting software update or software loading issues. Do not attempt software update troubleshooting while the device is needed for active ECG acquisition. Move patient ECG testing to another available ECG machine if needed."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the displayed message is exactly: Software Image Not Found in Shared Folder. Observe whether the error appears at startup, during a software update attempt, when accessing a shared network location, after changing network settings, or after replacing or moving software files."
+    },
+    {
+      "title": "Translate the Error Into the Real-World Problem",
+      "instructions": "This error means the MAC 5 is looking in a configured shared folder for a software image, but it does not find a valid image file there. Likely causes include an incorrect shared folder path, missing software image, wrong file copied to the folder, invalid or unsigned software image, network access issue, permission issue, credential issue, or incorrect shared path configuration."
+    },
+    {
+      "title": "Confirm the Device Is on a Stable Power Source",
+      "instructions": "Connect the MAC 5 to AC power before continuing. Do not perform software image checks or update-related work on battery power alone."
+    },
+    {
+      "title": "Confirm Basic Network Connectivity",
+      "instructions": "Verify whether the MAC 5 is connected by LAN or WLAN. For LAN, confirm the Ethernet cable is fully seated, check for link or activity lights if available, and try a known-good network cable and wall jack if possible. For WLAN, confirm the device is connected to the correct wireless network, check signal strength, and move closer to an access point if the issue is intermittent."
+    },
+    {
+      "title": "Verify the Shared Path",
+      "instructions": "Confirm the shared path entered on the MAC 5 matches the intended network location exactly. Check for an incorrect server name, wrong folder name, missing subfolder, typographical error, old share path from a previous update process, or path changed by IT or Clinical Engineering."
+    },
+    {
+      "title": "Confirm the Software Image Is Actually Present",
+      "instructions": "From a workstation with access to the same share, open the shared folder and verify that the software image file is present. Confirm the folder is not empty and that the file was not placed in a different subfolder."
+    },
+    {
+      "title": "Confirm the Software Image Is Valid and Digitally Signed",
+      "instructions": "Verify that the file placed in the shared folder is the correct GE Healthcare MAC 5 software image and not a renamed, incomplete, extracted, or unrelated file. Make sure the software image is valid and digitally signed as required."
+    },
+    {
+      "title": "Check for File Transfer or Copy Problems",
+      "instructions": "If the software image was recently copied to the shared folder, confirm the file copy completed successfully. Check for partial file transfer, zero-byte file, interrupted copy, compressed archive placement, wrong version, or security software quarantine."
+    },
+    {
+      "title": "Confirm Shared Folder Permissions",
+      "instructions": "Verify the MAC 5 or the account used by the MAC 5 has permission to access the shared folder. Confirm read permission exists, credentials are current, the password has not expired, and both share permissions and NTFS permissions allow access. Check with IT or the system administrator if needed."
+    },
+    {
+      "title": "Check Whether Other Devices Can Access the Same Image",
+      "instructions": "If multiple MAC 5 units use the same shared software image location, test whether another MAC 5 can see the image. If another MAC 5 works from the same shared folder, the issue may be isolated to this unit’s network configuration, credentials, or local software state. If no MAC 5 can see the image, the issue is likely with the shared folder, file placement, permissions, or image validity."
+    },
+    {
+      "title": "Restart and Recheck After Corrections",
+      "instructions": "After correcting the path, file placement, network access, or permissions, restart the MAC 5 and attempt the process again. The MAC 5 should locate the software image without displaying the error. If resolved, document the correction and return the device to service only after normal operation is confirmed."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If the valid digitally signed software image is placed in the correct shared path and the MAC 5 recognizes it, no further troubleshooting is needed. Confirm the device boots normally, network settings remain correct, and ECG acquisition is available before returning it to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported MAC 5 displays Software Image Not Found in Shared Folder during software image access or update attempt. Device could not locate update image in configured shared path.",
+      "Cause": "Shared folder did not contain a valid digitally signed software image, or the device could not access the correct shared path due to path, permission, credential, or network configuration issue.",
+      "Resolution": "Verified AC power, network connection, shared path, folder access, and software image placement. Confirmed valid digitally signed software image was present in the correct shared folder. Restarted device and verified error cleared. Returned device to service."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior",
+    "Accessories swapped, including network cable, wall jack, USB media, or workstation access path if applicable",
+    "Power behavior and whether AC power was connected during troubleshooting",
+    "Environmental factors, including network location, wireless signal strength, or recent device movement",
+    "Indicator lights, including LAN link/activity lights or wireless connection status",
+    "Final device status, including whether the error cleared, whether ECG acquisition was verified, and whether the device was returned to service or removed from service"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: No Network Connection",
+  "description": "Troubleshooting No Network Connection on the GE Healthcare MAC 5 when LAN or WLAN communication is unavailable and worklist download, ECG transmission, archive communication, MUSE communication, or EMR communication may be affected.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-no-network-connection.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not actively being used for a patient ECG. If the device cannot transmit ECGs, worklists, or patient demographics during clinical use, make sure staff save or print the ECG locally if needed. Use another ECG machine if network communication is required for immediate clinical workflow. Expected result: Patient testing is not delayed or dependent on a device with unresolved network communication failure."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the screen displays Error: No Network Connection. Ask when the message appears, such as at startup, when opening worklist, when attempting to send ECGs, when connecting to LAN, when using WLAN, or after the device was moved. Identify the associated impact, such as no worklist download, ECGs not transmitting, MUSE or archive destination unavailable, missing network icon, missing wireless signal, or local operation without network communication. Expected result: The No Network Connection error is clearly observed or reproducible."
+    },
+    {
+      "title": "Check Whether the Device Is Using LAN or WLAN",
+      "instructions": "Determine whether this MAC 5 is expected to connect by wired LAN, wireless WLAN, or both. Verify the correct network method is enabled in the device configuration. Expected result: The MAC 5 is configured for the connection type used in that clinical area."
+    },
+    {
+      "title": "Check the Wired LAN Connection",
+      "instructions": "If using LAN, inspect the Ethernet cable at the MAC 5 and the wall jack. Reseat both ends of the cable. Try a known-good Ethernet cable if available. Expected result: The network connection indicator returns, or the No Network Connection error clears."
+    },
+    {
+      "title": "Check the Network Wall Jack",
+      "instructions": "Plug the MAC 5 into a known-good network jack in the same area if available. If another MAC 5 or network device works on the original jack, the jack is less likely to be the problem. Expected result: The device connects on a known-good jack."
+    },
+    {
+      "title": "Check for Link Lights or Connection Indicators",
+      "instructions": "Inspect the Ethernet port, cable connection, dock, or adapter area if visible. Look for link or activity lights if the hardware provides them. No link indication may suggest a bad cable, inactive wall jack, disabled switch port, or device-side network issue. Expected result: Link or activity indication appears when connected to an active network jack."
+    },
+    {
+      "title": "Check Wireless Signal and Location",
+      "instructions": "If using WLAN, confirm the MAC 5 is in an area with known wireless coverage. Move the device to a location where another MAC 5 or approved clinical wireless device normally connects. Expected result: WLAN signal appears and the No Network Connection error clears."
+    },
+    {
+      "title": "Confirm WLAN Is Enabled and Correctly Configured",
+      "instructions": "Verify the device is set up for the correct wireless network profile. Check for obvious configuration problems such as WLAN disabled, wrong SSID, incorrect security setting, expired or changed credentials, incorrect IP configuration, or a WLAN profile that is not valid for the current location. Expected result: The WLAN configuration matches the approved hospital network settings."
+    },
+    {
+      "title": "Restart the MAC 5",
+      "instructions": "After saving any needed ECG data, power cycle the MAC 5. Allow the device to fully restart and attempt network reconnection. Expected result: The network connection restores after reboot if the issue was temporary."
+    },
+    {
+      "title": "Check Whether the Issue Affects One Device or Many",
+      "instructions": "Ask whether other MAC 5 units in the same department are also offline. Compare with a known-working MAC 5 using the same LAN jack, WLAN area, or workflow. Expected result: The issue is narrowed to one device, one room, one area, or a wider network problem."
+    },
+    {
+      "title": "Check Destination-Specific Communication",
+      "instructions": "Determine whether the MAC 5 has no network connection at all or whether it is connected but cannot reach a destination such as MUSE, worklist, archive, or EMR. Separate a true No Network Connection condition from a server unavailable, destination rejected, or order/worklist problem. Expected result: The error is confirmed as a network connection failure, not only a failed send destination."
+    },
+    {
+      "title": "Verify Device Configuration With Site Standards",
+      "instructions": "Compare the MAC 5 network settings against approved site configuration. Confirm settings such as IP address method, static IP or DHCP, gateway, subnet, DNS, WLAN profile, destination settings, and device location or department assignment. Expected result: Device settings match the hospital’s approved MAC 5 configuration."
+    },
+    {
+      "title": "Check for Recent Changes",
+      "instructions": "Ask whether the device was recently moved, taken offsite, reconfigured, repaired, connected to a different network jack, or affected by IT or vendor network changes. Correct any change that appears related to the network failure. Expected result: Any recent change is identified and corrected if related."
+    },
+    {
+      "title": "Isolate External Versus Device-Related Failure",
+      "instructions": "If the MAC 5 fails on multiple known-good LAN jacks or cannot connect to WLAN in a known-good coverage area, suspect a device-side issue. If another MAC 5 also fails on the same jack or in the same wireless area, escalate to IT or network support. Expected result: The problem is narrowed to network infrastructure, configuration, or device hardware/software."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If reconnecting LAN, correcting WLAN configuration, moving to a known-good network area, or restarting the device clears the error, confirm normal operation. Test the appropriate workflow, such as worklist download, ECG send, archive transmission, or network status indication. Return the device to service only after successful communication is confirmed."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE Healthcare MAC 5 displays No Network Connection. User reports device cannot connect to the network and ECGs/worklist communication are unavailable.",
+      "Cause": "LAN/WLAN connection issue confirmed. External network cable, wall jack, wireless coverage, and device network configuration checked. Fault resolved after reconnecting/configuring network, or persistent fault indicates likely device-side network/configuration issue requiring further evaluation.",
+      "Resolution": "Verified reported error, inspected LAN/WLAN connection, reseated or replaced network cable, checked known-good network jack or wireless area, confirmed network configuration, restarted device, and tested ECG transmission/worklist communication. Device returned to service after successful network connection, or removed from service and escalated for repair/network support."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior, including the exact error displayed and when No Network Connection appears.",
+    "Accessories swapped, including Ethernet cable, adapter, dock connection, or other external network accessory.",
+    "Power behavior, including whether a restart was performed and whether the error returned after reboot.",
+    "Environmental factors, including device location, WLAN coverage, network jack used, recent move, offsite use, or department change.",
+    "Indicator lights, including Ethernet link lights, network icon status, WLAN signal status, or other connection indicators.",
+    "Final device status, including whether worklist download, ECG send, archive transmission, or network connection test passed before return to service."
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Failed to Download Digital Signature",
+  "description": "Troubleshooting Failed to Download Digital Signature when the GE Healthcare MAC 5 cannot find or access the required digital signature file in the configured network shared path during a software image download or update workflow.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-failed-to-download-digital-signature.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before troubleshooting software download, signature, update, configuration, or network file access issues. Do not continue software loading or update attempts while the unit is needed for active patient ECG acquisition. Move patient ECG testing to another available ECG machine if needed."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact message displayed is: Failed to Download Digital Signature. Determine whether the error appears during software update, startup, network configuration, shared network access, or after a software image was placed on a server or shared folder."
+    },
+    {
+      "title": "Confirm Network Connection",
+      "instructions": "Check whether the MAC 5 is connected to the hospital network by LAN or WLAN. For LAN, confirm the Ethernet cable is fully seated, the network jack is active, link lights are present if visible, and the cable is not damaged. For WLAN, confirm wireless is enabled, signal strength is acceptable, the correct wireless profile is selected, and the device is connected to the expected network."
+    },
+    {
+      "title": "Verify the Network Shared Path",
+      "instructions": "Confirm the network shared path entered in the MAC 5 configuration is correct. Check for a misspelled server name, wrong folder name, incorrect slash direction or path format, changed server share name, retired server path, extra spaces, or extra characters."
+    },
+    {
+      "title": "Confirm the Digital Signature File Is Present",
+      "instructions": "Using an approved workstation or administrator access, verify that the network shared folder contains the required digital signature file. Confirm the expected digital signature file is present in the same required location as the software image or in the manufacturer-specified folder structure."
+    },
+    {
+      "title": "Confirm the Software Image Is the Correct Version",
+      "instructions": "Verify that the software image placed in the shared folder is intended for the GE Healthcare MAC 5. Confirm the image is not an incomplete, renamed, extracted, or partially copied file set. Check that the image came from an approved GE source and that the signature file belongs to the same software image."
+    },
+    {
+      "title": "Check Shared Folder Permissions",
+      "instructions": "Confirm the MAC 5 has permission to access the shared path. Check read permissions, network credentials, domain or local account access, firewall restrictions, server access restrictions, recent password changes, share permissions, and folder permissions."
+    },
+    {
+      "title": "Test Access From Another Device",
+      "instructions": "From a networked computer on the same clinical or biomedical network segment, attempt to access the shared path. Confirm that the folder opens and the signed software image file set is visible."
+    },
+    {
+      "title": "Retry the Download After Correcting the File Path or File Set",
+      "instructions": "After confirming the correct signed software image and digital signature file are present, retry the download or update process. Confirm the digital signature download completes without the error."
+    },
+    {
+      "title": "Verify Final Device Function",
+      "instructions": "Confirm startup completes without the error. Confirm no related software download, image, network, or signature errors return. Verify the ECG acquisition screen opens normally. Check that date, time, and network status are correct. Complete a test ECG or functional check per site procedure before returning the unit to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "GE Healthcare MAC 5 displayed Failed to Download Digital Signature during software/network download attempt. Device could not locate the required digital signature file from the configured network shared path.",
+      "Cause": "Digital signature file was missing from the network shared path, or the device could not access the correct signed software image file set due to path, permissions, or network share issue.",
+      "Resolution": "Removed device from patient use. Verified network connection and shared path. Confirmed signed software image and digital signature file placement. Corrected file/path access issue and retried download. Device completed download without error and passed functional check."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error behavior",
+    "Accessories swapped, including Ethernet cable or network jack if applicable",
+    "Power behavior during startup, download, or software update attempt",
+    "Environmental factors, including LAN/WLAN availability and network segment used",
+    "Indicator lights, link lights, WLAN status, or other visible network indicators",
+    "Final device status, including whether the unit was returned to service, labeled Out of Service, or escalated to GE or IT support"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Installation of Software Image Unsuccessful",
+  "description": "Troubleshooting the GE Healthcare MAC 5 Installation of Software Image Unsuccessful error when the device fails to extract the software image to the inactive partition during a shared network software upgrade.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-installation-of-software-image-unsuccessful.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Remove the MAC 5 from patient use before troubleshooting or retrying the software upgrade. Do not perform software upgrades while the device is connected to a patient or needed for active ECG acquisition. Move ECG testing to another available machine if clinical testing is required."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Confirm the exact displayed message is Installation of Software Image Unsuccessful. Ask when the error appeared: during software upgrade, while using a shared network location, during extraction of the software image, after download or file selection, or after a reboot or upgrade attempt."
+    },
+    {
+      "title": "Translate the Error Into the Real-World Failure",
+      "instructions": "This error means the MAC 5 could not successfully extract the software image to the inactive software partition during the upgrade. In practical terms, the device is seeing the upgrade file but cannot complete the installation process from the current source."
+    },
+    {
+      "title": "Stop Using the Shared Network Upgrade Source",
+      "instructions": "Do not keep retrying the same upgrade from the same shared network path. Network interruptions, permissions, file access problems, slow transfer, or incomplete reads can prevent successful extraction."
+    },
+    {
+      "title": "Verify the Software Image Is Valid",
+      "instructions": "Confirm the software image is the correct version and intended for the GE Healthcare MAC 5. Check that the file was fully downloaded or copied and was not renamed, partially transferred, modified, or mixed with unrelated upgrade files."
+    },
+    {
+      "title": "Prepare a USB Flash Drive",
+      "instructions": "Use a clean USB flash drive approved by site policy. Copy the valid software image directly to the USB flash drive. Avoid using a USB drive that contains unrelated files, multiple software images, questionable formatting, or old upgrade packages."
+    },
+    {
+      "title": "Retry the Software Upgrade From USB",
+      "instructions": "Insert the USB flash drive into the MAC 5. Retry the software upgrade using the USB copy of the valid software image. Do not remove power or USB media during the upgrade process."
+    },
+    {
+      "title": "Check Power Stability During the Upgrade",
+      "instructions": "Connect the MAC 5 to reliable AC power before retrying the upgrade. Confirm the AC adapter is connected securely and the unit is not relying only on battery power."
+    },
+    {
+      "title": "Check the USB Port and Media Recognition",
+      "instructions": "If the device does not detect the USB drive or image file, try a different known-good USB flash drive. Inspect the USB port for obvious physical damage, looseness, contamination, or poor fit."
+    },
+    {
+      "title": "Confirm the Error Does Not Return After Successful Upgrade",
+      "instructions": "After the upgrade completes, restart the MAC 5 and verify normal boot. Confirm there is no software image installation error on startup. Open ECG acquisition and verify basic device operation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported GE Healthcare MAC 5 displayed Installation of Software Image Unsuccessful during software upgrade from a shared network location.",
+      "Cause": "Software image installation failed during extraction to the inactive partition while using a shared network source. Shared network upgrade source was ruled out by preparing a valid software image on USB media.",
+      "Resolution": "Removed MAC 5 from patient use, verified reported error, copied valid software image to USB flash drive, retried upgrade from USB, confirmed successful upgrade, restarted device, and verified normal boot and basic ECG operation."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior or exact error message displayed",
+    "Accessories swapped, including USB flash drive or network cable if applicable",
+    "Power behavior, including whether AC power was connected during the upgrade",
+    "Environmental factors, including network share availability or interruption",
+    "Indicator lights or USB detection behavior",
+    "Final device status, including software version and whether the device was returned to service or removed for repair"
+  ]
+},
+ {
+  "title": "GE Healthcare MAC 5 Electrocardiograph (EKG) Machine - Error: Printer Error. Door Is Open.",
+  "description": "Troubleshooting the MAC 5 Printer Error. Door Is Open. message during Writer Diagnostics or printing when verifying printer door sensor function and printer door closure.",
+  "assetType": "Electrocardiograph (EKG) Machine",
+  "manufacturer": "GE Healthcare",
+  "model": "MAC 5",
+  "url": "guides/ge-healthcare-mac-5-error-printer-error-door-is-open.html",
+  "dateAdded": "2026-06-21",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the MAC 5 is not being used for an active patient ECG. If the printer issue occurs during clinical use, have staff save or repeat the ECG on another available machine if printing is needed for patient care. Expected: The device is removed from active patient use before troubleshooting. Why it matters: A printer door or printer sensor issue can prevent reliable ECG printout generation."
+    },
+    {
+      "title": "Verify the Reported Error and Behavior",
+      "instructions": "Enter or observe the MAC 5 during Writer Diagnostics. Confirm the exact message: Printer Error. Door Is Open. Note whether the message appears only during diagnostics, during startup, during printing, or intermittently during normal use. Expected: The error is clearly observed and tied to the printer door condition. Why it matters: This confirms whether the message is a normal diagnostic response or a true printer door sensing problem."
+    },
+    {
+      "title": "Open the Printer Door During Writer Diagnostics",
+      "instructions": "While in Writer Diagnostics, open the printer door. Watch the diagnostic screen for the message: Printer Error. Door Is Open. Expected: The message appears when the printer door is open. Why it matters: If the door is open and the message appears, the printer door sensor test passes."
+    },
+    {
+      "title": "Close the Printer Door",
+      "instructions": "Close the printer door fully and confirm it latches correctly. Verify the error message clears. Expected: The Printer Error. Door Is Open. message clears after the door is fully closed. Why it matters: This confirms the system recognizes the door closed condition."
+    },
+    {
+      "title": "Inspect the Printer Door for Simple External Causes",
+      "instructions": "Check for anything preventing the door from closing completely. Look for paper not seated correctly, a crooked paper roll, debris near the latch area, a damaged hinge or latch, a warped or loose printer door, or foreign material around the sensor area. Correct any obvious obstruction and close the door again. Expected: The door closes flush and the message clears. Why it matters: A mechanical closure issue can mimic a failed door sensor."
+    },
+    {
+      "title": "Check Printer Paper Loading",
+      "instructions": "Open the printer compartment and verify the paper is installed correctly. Make sure the paper is not pinched, folded, oversized, or interfering with the printer door. Close the door firmly. Expected: The printer door closes normally without pressure or misalignment. Why it matters: Incorrect paper loading is a common external cause of printer door errors."
+    },
+    {
+      "title": "Repeat the Diagnostic Door Sensor Test",
+      "instructions": "Open the printer door again during Writer Diagnostics. Confirm the message appears. Close the printer door again. Confirm the message clears. Expected: The error appears when open and clears when closed. Why it matters: This confirms the printer door sensor responds correctly in both states."
+    },
+    {
+      "title": "Determine Whether the Condition Is Sensor-Related or Door-Closure Related",
+      "instructions": "If the door is open and the message appears, the sensor test passes. If the door is open and the message does not appear, the printer door sensor test fails. If the door is closed and the message remains, inspect again for poor closure, latch damage, or obstruction. Expected: The issue is narrowed to normal diagnostic behavior, mechanical door closure, or likely sensor failure."
+    },
+    {
+      "title": "Stop When Resolved",
+      "instructions": "If the message appears when the door is open and clears when the door is closed, no repair is needed. Return the MAC 5 to service after confirming printer operation if clinically required. Expected: Printer door status is detected correctly and the ECG machine is usable."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "User reported MAC 5 displayed Printer Error. Door Is Open. during Writer Diagnostics or printer testing.",
+      "Cause": "Printer door diagnostic response verified. Message appeared when printer door was opened and cleared when door was closed. Printer door sensor test passed.",
+      "Resolution": "Opened printer door during Writer Diagnostics and confirmed Printer Error. Door Is Open. appeared. Closed printer door and confirmed message cleared. Checked printer door closure and paper loading. Device returned to service."
+    }
+  },
+  "helpfulDetails": [
+    "Alarm behavior, including whether the message appeared with the printer door open and cleared with the printer door closed",
+    "Accessories swapped, including printer paper roll or approved paper supply if replaced",
+    "Power behavior, including whether the error appeared at startup, during diagnostics, or during printing",
+    "Environmental factors, including debris, foreign material, paper storage condition, or damage around the printer compartment",
+    "Indicator lights or on-screen diagnostic messages observed during Writer Diagnostics",
+    "Final device status, including whether the MAC 5 was returned to service or removed from service for repair"
+  ]
 }
 ]
