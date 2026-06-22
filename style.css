@@ -2066,29 +2066,39 @@ footer p:nth-last-child(2) {
 
 /* =========================
    Preventive Maintenance Cards
+   Gradient border with hover flip
+   Must stay at bottom of CSS
    ========================= */
 
-.pm-card .card-content {
+.guide-card.pm-card .card-content {
   position: relative;
   text-align: left;
-  border: 1px solid var(--border-soft);
-  border-left: 1px solid var(--border-soft);
-  background: var(--surface);
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
 }
 
-.pm-card:hover .card-content {
-  border-color: var(--lime);
-  border-left-color: var(--lime);
+.guide-card.pm-card:hover .card-content {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
   box-shadow: var(--shadow-md);
 }
 
-.pm-card .card-content::before {
+/* PM cards should not inherit troubleshooting guide left-stripe behavior */
+.guide-card.pm-card:hover .card-content {
+  border-left-color: transparent;
+}
+
+.guide-card.pm-card .card-content::before {
   content: none;
 }
 
-.pm-card-label {
+.guide-card.pm-card .pm-card-label {
   display: inline-block;
   align-self: flex-start;
   margin-bottom: 10px;
@@ -2100,17 +2110,4 @@ footer p:nth-last-child(2) {
   font-weight: bold;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.pm-card .pm-interval {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.pm-card .pm-safety {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--text);
 }
