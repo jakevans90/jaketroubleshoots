@@ -1463,45 +1463,6 @@ footer a:hover {
 }
 
 /* =========================
-   Preventive Maintenance Cards
-   ========================= */
-
-.pm-card .card-content {
-  position: relative;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
-}
-
-.pm-card-label {
-  display: inline-block;
-  align-self: center;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--black-soft);
-  color: white;
-  font-size: 0.72rem;
-  font-weight: bold;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.pm-card .pm-interval {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.pm-card .pm-safety {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--text);
-}
-
-/* =========================
    Biomed Basics Article Cards
    ========================= */
 
@@ -2103,29 +2064,33 @@ footer p:nth-last-child(2) {
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
 }
 
-
 /* =========================
    Preventive Maintenance Cards
    ========================= */
 
 .pm-card .card-content {
   position: relative;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
-  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
+  text-align: left;
+  border: 1px solid var(--border-soft);
+  border-left: 1px solid var(--border-soft);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
 .pm-card:hover .card-content {
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
+  border-color: var(--lime);
+  border-left-color: var(--lime);
+  box-shadow: var(--shadow-md);
+}
+
+.pm-card .card-content::before {
+  content: none;
 }
 
 .pm-card-label {
   display: inline-block;
-  align-self: center;
+  align-self: flex-start;
   margin-bottom: 10px;
   padding: 5px 10px;
   border-radius: 999px;
@@ -2135,4 +2100,17 @@ footer p:nth-last-child(2) {
   font-weight: bold;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.pm-card .pm-interval {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.pm-card .pm-safety {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text);
 }
