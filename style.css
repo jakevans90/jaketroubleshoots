@@ -2129,3 +2129,126 @@ footer p:nth-last-child(2) {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
+/* =========================================================
+   Final Card Type Overrides
+   Keep this at the very bottom of style.css
+   ========================================================= */
+
+
+/* =========================
+   PM Cards: gradient only, no PM badge
+   ========================= */
+
+.guide-card.pm-card .card-content {
+  position: relative;
+  text-align: left;
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
+}
+
+.guide-card.pm-card:hover .card-content {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
+  box-shadow: var(--shadow-md);
+}
+
+/* Hide redundant PM Procedure pill */
+.guide-card.pm-card .pm-card-label {
+  display: none;
+}
+
+/* PM cards should not inherit troubleshooting left-stripe behavior */
+.guide-card.pm-card .card-content::before {
+  content: none;
+}
+
+
+/* =========================
+   Biomed Basics Cards: calm/original article look
+   ========================= */
+
+.guide-card.basics-card {
+  min-height: 320px;
+}
+
+.guide-card.basics-card .card-content {
+  text-align: center;
+  border: 1px solid var(--border-soft);
+  border-left: 1px solid var(--border-soft);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  justify-content: flex-start;
+}
+
+.guide-card.basics-card:hover .card-content {
+  border-left-color: var(--border-soft);
+  border-color: var(--border-soft);
+}
+
+.guide-card.basics-card .card-content h3 {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.guide-card.basics-card .card-content p:not(.date) {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  overflow: visible !important;
+  max-height: none !important;
+  line-height: 1.5;
+}
+
+.guide-card.basics-card .badges {
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.guide-card.basics-card .date {
+  text-align: center;
+}
+
+
+/* =========================
+   Vendor Cards: force original vendor look
+   ========================= */
+
+.vendor-card .card-content {
+  text-align: left;
+  border: 1px solid var(--border-soft);
+  border-left: 1px solid var(--border-soft);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.vendor-card:hover .card-content {
+  border-color: var(--border-soft);
+  border-left-color: var(--border-soft);
+}
+
+.vendor-card h3 {
+  display: block;
+  text-align: center;
+  background-color: var(--black-soft);
+  color: white;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.vendor-card p {
+  margin: 4px 0;
+  line-height: 1.4;
+  font-size: 14px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
