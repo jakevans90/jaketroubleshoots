@@ -75,6 +75,7 @@ header {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  border-top: 4px solid var(--lime);
 }
 
 .site-logo,
@@ -114,7 +115,8 @@ nav a {
 }
 
 nav a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  color: var(--lime);
 }
 
 /* =========================
@@ -1461,45 +1463,6 @@ footer a:hover {
 }
 
 /* =========================
-   Preventive Maintenance Cards
-   ========================= */
-
-.pm-card .card-content {
-  position: relative;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
-}
-
-.pm-card-label {
-  display: inline-block;
-  align-self: center;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--black-soft);
-  color: white;
-  font-size: 0.72rem;
-  font-weight: bold;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.pm-card .pm-interval {
-  margin-top: 8px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.pm-card .pm-safety {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--text);
-}
-
-/* =========================
    Biomed Basics Article Cards
    ========================= */
 
@@ -1871,4 +1834,280 @@ footer a:hover {
     background-size: cover;
     background-position: center;
   }
+}
+
+
+
+/* =========================================================
+   Jake Troubleshoots credibility polish overrides
+   Professional resource-library styling
+   Added CSS only — safe to remove later
+   ========================================================= */
+
+
+
+
+/* =========================
+   Guide Cards: Field Reference Look
+   ========================= */
+
+.guide-card .card-content {
+  position: relative;
+  text-align: left;
+  border: 1px solid var(--border-soft);
+  border-left: 6px solid var(--lime);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* No repeated "Troubleshooting Guide" pill — cleaner and less busy */
+.guide-card .card-content::before {
+  content: none;
+}
+
+.guide-card .card-content h3 {
+  text-align: left;
+  line-height: 1.25;
+}
+
+.guide-card .badges {
+  justify-content: flex-start;
+}
+
+.guide-card .date {
+  width: 100%;
+  border-top: 1px solid var(--border-soft);
+  margin-top: auto !important;
+  padding-top: 12px;
+}
+
+.guide-card:hover .card-content {
+  border-left-color: var(--pink);
+}
+
+
+/* PM cards already have their own "PM Procedure" label and gradient border */
+.pm-card .card-content {
+  border-left: 1px solid var(--border-soft);
+}
+
+.pm-card .card-content::before {
+  content: none;
+}
+
+
+/* Keep Biomed Basics cards calmer */
+.guide-card.basics-card .card-content {
+  border-left-color: var(--border-soft);
+}
+
+.guide-card.basics-card .card-content h3 {
+  text-align: center;
+}
+
+
+/* =========================
+   Homepage Hero Credibility Badge
+   ========================= */
+
+.hero-kicker {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--black-soft);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   Homepage Search: Database Feel
+   ========================= */
+
+#home-search-form {
+  background: rgba(255, 255, 255, 0.28);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
+}
+
+#home-search-input {
+  font-weight: bold;
+}
+
+#home-search-input::placeholder {
+  color: #555;
+  font-weight: normal;
+}
+
+
+/* =========================
+   Section Headers: Organized Resource System
+   ========================= */
+
+.section-header {
+  position: relative;
+  padding-bottom: 18px;
+}
+
+.section-header::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 18px auto 0;
+  border-radius: 999px;
+  background: #cccccc;
+}
+
+.section-kicker {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eeeeee;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-soft);
+}
+
+
+/* =========================
+   Homepage Stats Bar Polish
+   ========================= */
+
+.home-stats-bar {
+  border-top: 3px solid rgba(143, 255, 0, 0.85);
+  border-bottom: 3px solid rgba(255, 102, 204, 0.75);
+}
+
+.home-stat {
+  background: rgba(255, 255, 255, 0.045);
+  border-radius: var(--radius-md);
+  border-right: none;
+}
+
+.home-stats-line {
+  font-weight: bold;
+}
+
+
+/* =========================
+   Buttons: More Finished / App-Like
+   ========================= */
+
+.hero-button,
+.browse-buttons a,
+.browse-button,
+.learning-button,
+.suggest-cta a {
+  letter-spacing: 0.01em;
+}
+
+.hero-button:hover,
+.browse-buttons a:hover,
+.browse-button:hover,
+.learning-button:hover,
+.suggest-cta a:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   Content Cards: Slightly More Premium
+   ========================= */
+
+.section-callout,
+.pm-aem-main-card,
+.resource-card,
+.biomed-basics-panel,
+.content-box {
+  border-color: #d8d8d8;
+}
+
+.section-callout,
+.pm-aem-main-card,
+.resource-card,
+.biomed-basics-panel {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================
+   Footer Disclaimer Polish
+   ========================= */
+
+footer p:nth-last-child(2) {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid rgba(204, 204, 204, 0.45);
+  border-radius: 999px;
+  color: #eeeeee;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+/* Organized guide sections: prevent short model groups from stretching */
+.search-results-section .guides-grid,
+.recent-guides-section #guides-organized .guides-grid {
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+}
+
+/* =========================
+   Preventive Maintenance Cards
+   Gradient border with hover flip
+   Must stay at bottom of CSS
+   ========================= */
+
+.guide-card.pm-card .card-content {
+  position: relative;
+  text-align: left;
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
+}
+
+.guide-card.pm-card:hover .card-content {
+  border: 3px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
+  box-shadow: var(--shadow-md);
+}
+
+/* PM cards should not inherit troubleshooting guide left-stripe behavior */
+.guide-card.pm-card:hover .card-content {
+  border-left-color: transparent;
+}
+
+.guide-card.pm-card .card-content::before {
+  content: none;
+}
+
+.guide-card.pm-card .pm-card-label {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--black-soft);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }

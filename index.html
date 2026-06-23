@@ -320,6 +320,25 @@
 <script src="guides.js"></script>
 
 <script>
+// ── Nav active state (works on all pages automatically) ──────────────────────
+document.querySelectorAll('nav a').forEach(link => {
+  if (link.href === window.location.href) {
+    link.classList.add('active');
+  }
+});
+
+// ── Animated stats counter ───────────────────────────────────────────────────
+function animateCount(el, target, duration = 1200) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = Math.floor(start);
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+// ── Shared helpers ────────────────────────────────────────────────────────────
 function slugify(text) {
   return (text || '')
     .toLowerCase()
@@ -492,7 +511,7 @@ window.renderGuides = function(containerId, guides) {
   });
 };
 
-// Homepage logic
+// ── Homepage data + render ────────────────────────────────────────────────────
 Promise.all([
   fetchGuides(),
   fetch('data/hub-asset.json').then(r => r.json()),
@@ -512,17 +531,18 @@ Promise.all([
     statsLine.textContent = buildStatsLine(allGuides, allPmProcedures);
   }
 
+  // Animated counters instead of instant assignment
   const statGuides = document.getElementById('stat-guides');
   const statModels = document.getElementById('stat-models');
   const statAssetTypes = document.getElementById('stat-asset-types');
   const statManufacturers = document.getElementById('stat-manufacturers');
   const statPms = document.getElementById('stat-pms');
 
-  if (statGuides) statGuides.textContent = totalGuides;
-  if (statModels) statModels.textContent = models.size;
-  if (statAssetTypes) statAssetTypes.textContent = assetTypes.size;
-  if (statManufacturers) statManufacturers.textContent = manufacturers.size;
-  if (statPms) statPms.textContent = totalPm;
+  if (statGuides) animateCount(statGuides, totalGuides);
+  if (statModels) animateCount(statModels, models.size);
+  if (statAssetTypes) animateCount(statAssetTypes, assetTypes.size);
+  if (statManufacturers) animateCount(statManufacturers, manufacturers.size);
+  if (statPms) animateCount(statPms, totalPm);
 
   const featuredUrls = [
     'guides/siemens-somatom-series-patient-table-will-not-move.html',
@@ -544,15 +564,11 @@ Promise.all([
     .filter(Boolean);
 
   renderFixedGuideRows('featured-grid', featured, 2);
-
-  // Show 4 full rows of recent guides based on the current screen width
   renderGuideRows('guides-grid', allGuides, 4);
 
-  // Show up to 3 recent preventive maintenance procedures
   const recentPmProcedures = getRecentPmProcedures(allPmProcedures, 3);
   renderPmPreviewCards('pm-preview-grid', recentPmProcedures);
 
-  // Recalculate guide counts when the browser window is resized
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -564,7 +580,7 @@ Promise.all([
 })
 .catch(err => console.error('Homepage load error:', err));
 
-// Search
+// ── Search ────────────────────────────────────────────────────────────────────
 const form = document.getElementById('home-search-form');
 
 form.addEventListener('submit', e => {
