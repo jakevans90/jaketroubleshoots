@@ -721,5 +721,1404 @@
     "Application restart or workstation reboot performed",
     "Final device status"
   ]
+},
+  {
+  "title": "Beckman Coulter DxU Iris Workcell Urine Analyzer - Chemistry Analyzer Communication Fault",
+  "description": "Troubleshooting communication faults between the DxU Iris Workcell and chemistry analyzer before assuming internal analyzer or software failure.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU Iris Workcell",
+  "url": "guides/beckman-coulter-dxu-iris-workcell-chemistry-analyzer-communication-fault.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU Iris Workcell is not actively processing patient specimens before restarting systems, checking cables, or changing communication status. If urine testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: Patient testing and result reporting are protected while communication is evaluated."
+    },
+    {
+      "title": "Stop Additional Sample Processing",
+      "instructions": "Ask laboratory staff not to load additional racks until the chemistry analyzer communication fault is understood. Confirm whether any specimens were in process when the fault occurred and whether results were completed, pending, rejected, or require repeat testing per laboratory policy. Expected outcome: Incomplete or questionable chemistry results are not released."
+    },
+    {
+      "title": "Confirm the Exact Communication Complaint",
+      "instructions": "Ask staff what message or behavior was observed. Check whether the issue involves: Chemistry analyzer offline; Workcell not recognizing the chemistry analyzer; Chemistry results not transferring to the workcell software; Worklist not reaching the chemistry analyzer; Chemistry and microscopy results not combining; Delayed or missing chemistry results; Middleware or LIS rejection after chemistry testing. Expected outcome: The fault is narrowed to analyzer communication, workcell software, middleware, LIS, or result merge behavior."
+    },
+    {
+      "title": "Check Chemistry Analyzer Status",
+      "instructions": "Confirm the chemistry analyzer is powered on, initialized, and not in standby, maintenance, error, or offline mode. Look for visible status indicators, touchscreen messages, or workstation status showing disconnected or unavailable. Expected outcome: The chemistry analyzer is available for communication and not stopped by a local analyzer condition. If the analyzer was offline or paused and communication restores after returning it to ready status, verify with laboratory staff and stop."
+    },
+    {
+      "title": "Check Workcell Software Status",
+      "instructions": "Review the DxU Iris Workcell workstation or middleware screen for chemistry analyzer status. Confirm whether the chemistry module is listed as online, connected, ready, idle, busy, or unavailable. Expected outcome: The workcell software correctly detects the chemistry analyzer."
+    },
+    {
+      "title": "Verify Network and Data Cable Connections",
+      "instructions": "Inspect external network or communication cables between the chemistry analyzer, workstation, network switch, and workcell interface. Confirm cables are fully seated, not damaged, not loose, and connected to the correct ports. Expected outcome: No obvious disconnected or damaged cable is causing the communication fault. If reseating an external cable restores communication, document the cable connection issue and stop after confirming stable operation."
+    },
+    {
+      "title": "Check Network Switch and Port Indicators",
+      "instructions": "If the chemistry analyzer uses a network switch or wall data jack, confirm link lights are present at the switch, wall port, or analyzer network connection where visible. Expected outcome: The network path shows physical connectivity. No link light may indicate a disconnected cable, bad patch cable, disabled port, failed switch port, or network issue."
+    },
+    {
+      "title": "Swap Only External, Approved Cables When Safe",
+      "instructions": "If a damaged or questionable patch cable is found, replace it with a known-good, facility-approved cable of the same type. Do not change internal wiring or undocumented connections. Expected outcome: Communication restores if the external cable was the cause."
+    },
+    {
+      "title": "Check for Recent Changes",
+      "instructions": "Ask laboratory staff or IT whether anything changed recently, including: Workstation restart; Middleware update; LIS update; Network maintenance; Analyzer relocation; Power outage; IP address change; Port security change; Barcode or sample workflow change. Expected outcome: A recent change may explain the communication failure and direct escalation to IT, LIS, or vendor support."
+    },
+    {
+      "title": "Confirm Workstation and Middleware Are Running",
+      "instructions": "Check that the DxU Iris Workcell workstation, required interface software, and middleware applications are open and responsive. If the workstation is frozen, unresponsive, or showing database/interface errors, do not repeatedly restart without confirming result status with laboratory staff. Expected outcome: Communication software is active and able to exchange data with the chemistry analyzer."
+    },
+    {
+      "title": "Protect Stored Results Before Restarting",
+      "instructions": "Before restarting the workstation, chemistry analyzer, or workcell software, confirm with laboratory staff whether any patient results are pending transmission or review. Expected outcome: Stored or pending results are not lost, duplicated, or released incorrectly."
+    },
+    {
+      "title": "Perform a Controlled Restart When Appropriate",
+      "instructions": "If allowed by site procedure and no specimens are actively processing, restart only the affected external system in a controlled sequence. A typical safe approach is: Confirm testing is stopped; Confirm pending results are accounted for; Restart the affected workstation or interface application; Allow software to fully initialize; Confirm analyzer status returns online. Expected outcome: Communication restores if the fault was caused by a temporary software or interface hang."
+    },
+    {
+      "title": "Check Date and Time Consistency",
+      "instructions": "Confirm the chemistry analyzer, workcell workstation, and middleware time/date appear reasonable. Significant time differences can affect result handling, communication logs, worklists, or middleware acceptance. Expected outcome: Systems have consistent time references for communication and result tracking."
+    },
+    {
+      "title": "Verify Sample ID and Result Flow",
+      "instructions": "Ask laboratory staff whether the issue affects all specimens or only specific samples. If only specific samples fail, check for barcode, sample ID, rack position, order, or result merge issues rather than assuming full analyzer communication failure. Expected outcome: The problem is identified as either global communication failure or specimen-specific workflow failure."
+    },
+    {
+      "title": "Review Alarm or Error History",
+      "instructions": "Check available user-facing messages, logs, or event history for repeated chemistry analyzer offline, host communication, interface, worklist, or transmission errors. Expected outcome: Error patterns help identify whether the issue is intermittent, recent, recurring, or tied to a specific workflow step."
+    },
+    {
+      "title": "Confirm LIS or Middleware Status With IT/Lab Support",
+      "instructions": "If the chemistry analyzer communicates locally with the workcell but results do not reach the LIS, involve laboratory IT, middleware support, or LIS support. Expected outcome: The issue is separated from local analyzer hardware and directed toward the correct support group."
+    },
+    {
+      "title": "Run a Verification Workflow Only When Safe",
+      "instructions": "Once communication appears restored, have laboratory staff perform an approved test, QC, or non-patient verification process according to lab policy. Do not use active patient testing as the first proof of repair unless the laboratory determines it is appropriate. Expected outcome: Chemistry analyzer communication is confirmed without risking patient result integrity."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported the DxU Iris Workcell chemistry analyzer was offline and chemistry results were not transferring to the workcell software.",
+      "Cause": "Found the chemistry analyzer powered on, but the external network patch cable at the analyzer communication port was loose with no link indication.",
+      "Resolution": "Reseated the external network cable, confirmed link indication returned, verified the chemistry analyzer showed online at the workcell workstation, and released the system back to laboratory staff for approved verification."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were running when the fault occurred",
+    "Whether chemistry results were missing, delayed, rejected, or pending",
+    "Analyzer status at time of arrival",
+    "Workcell workstation status",
+    "Middleware or LIS status",
+    "Network cable condition",
+    "Switch or wall jack link lights",
+    "Any recent software, LIS, network, or power changes",
+    "Exact error or alarm message",
+    "Whether results were stored locally",
+    "Whether a controlled restart was performed",
+    "Verification method used after communication restored",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU Iris Workcell Urine Analyzer - Microscopy Analyzer Communication Fault",
+  "description": "Troubleshooting communication faults between the DxU Iris Workcell and microscopy analyzer before assuming internal analyzer failure.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU Iris Workcell",
+  "url": "guides/beckman-coulter-dxu-iris-workcell-microscopy-analyzer-communication-fault.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU Iris Workcell is not actively processing patient specimens before restarting systems, disconnecting cables, or checking workstation communication. If urine testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: Patient testing and result reporting are protected while communication is evaluated."
+    },
+    {
+      "title": "Stop Additional Sample Processing",
+      "instructions": "Ask laboratory staff not to load additional racks until the communication fault is understood. Confirm whether any specimens were in process when the fault occurred and whether results were completed, pending, rejected, or require repeat testing per lab policy. Expected outcome: Incomplete or questionable microscopy results are not released."
+    },
+    {
+      "title": "Confirm the Exact Communication Complaint",
+      "instructions": "Ask staff what message or behavior was observed. Check whether the issue involves: Microscopy analyzer offline; Workcell not recognizing the microscopy analyzer; Results not transferring from microscopy analyzer to workstation; Rack transfer stopping between modules; Middleware or LIS showing missing microscopy results; Analyzer status frozen or delayed on the workstation; Communication fault after restart or power interruption. Expected outcome: The fault is narrowed to analyzer-to-workstation, workcell control, middleware, LIS, or rack workflow communication."
+    },
+    {
+      "title": "Check Analyzer and Workstation Power Status",
+      "instructions": "Verify the microscopy analyzer, chemistry analyzer if connected, workcell transport components, and workstation are powered on. Check for blank screens, failed startup, boot errors, UPS alarms, or power strips turned off. Expected outcome: All required workcell components are powered and available for communication."
+    },
+    {
+      "title": "Check for Obvious Alarm or Status Messages",
+      "instructions": "Review the analyzer screen and workstation software for active communication, transport, database, or module status messages. Do not clear messages without confirming whether patient samples or pending results are involved. Expected outcome: The displayed fault helps identify whether the issue is communication-only or part of a larger workcell transport or system fault."
+    },
+    {
+      "title": "Confirm the Microscopy Analyzer Is Ready",
+      "instructions": "Verify the microscopy analyzer is not paused, initializing, in service mode, waiting for maintenance, or stopped due to another unresolved error. A module that is not in a ready state may appear as a communication failure to the workcell. Expected outcome: The microscopy analyzer is confirmed ready or a separate analyzer fault is identified."
+    },
+    {
+      "title": "Inspect External Network and Communication Cables",
+      "instructions": "Check the communication cable connections between the microscopy analyzer, workstation, network switch, interface box, or workcell controller as applicable. Look for loose Ethernet cables, damaged connectors, disconnected patch cables, or cables plugged into the wrong port. Expected outcome: External communication cabling is secure and correctly connected."
+    },
+    {
+      "title": "Check Network Switch or Interface Equipment",
+      "instructions": "If the workcell uses a local switch, hub, or interface device, verify it has power and link/activity lights. Compare link lights on the microscopy analyzer port and workstation port. Expected outcome: Network hardware shows active links between the analyzer and workstation."
+    },
+    {
+      "title": "Verify Workstation Software Status",
+      "instructions": "Confirm the DxU Iris workstation software is open, responsive, and not frozen. Check whether the workstation can display analyzer status, pending specimens, and module readiness. Expected outcome: The workstation is functioning and able to manage the workcell."
+    },
+    {
+      "title": "Check for Workstation Lockup or Resource Issue",
+      "instructions": "If the workstation is slow, frozen, or unresponsive, ask laboratory staff whether results are pending before restarting. Follow site-approved restart workflow only when safe and appropriate. Expected outcome: A workstation software lockup is identified or ruled out without risking pending results."
+    },
+    {
+      "title": "Confirm Date, Time, and Login State",
+      "instructions": "Verify the workstation is logged in under the proper user or service account and that the system date and time are reasonable. Authentication or system time issues can interfere with software services, result handling, and communication sessions. Expected outcome: Basic workstation operating conditions are verified."
+    },
+    {
+      "title": "Check LIS or Middleware Separately",
+      "instructions": "Determine whether the microscopy analyzer is failing to communicate with the workstation, or whether the workstation is communicating locally but results are not reaching LIS or middleware. If local analyzer status is normal but results are not uploading, focus on host, middleware, or LIS connection rather than the microscopy analyzer. Expected outcome: The issue is separated into internal workcell communication versus external result transmission."
+    },
+    {
+      "title": "Review Recent Changes",
+      "instructions": "Ask whether anything changed recently, including: Workstation restart; Analyzer reboot; Network maintenance; LIS or middleware update; Power outage; Cable movement; Workcell relocation; Vendor service activity. Expected outcome: A recent external change may explain the communication fault."
+    },
+    {
+      "title": "Perform a Controlled Restart Only When Safe",
+      "instructions": "If no specimens are in process and laboratory staff confirms it is safe, perform a controlled restart of the affected software or system components according to site policy. Avoid repeated power cycling. Restarting without protecting pending results can create result integrity issues. Expected outcome: Temporary communication sessions are restored, or the fault remains confirmed."
+    },
+    {
+      "title": "Verify Recovery With Staff",
+      "instructions": "After communication appears restored, have laboratory staff confirm module status, workcell readiness, and result transfer behavior using appropriate facility procedures. Do not return the workcell to full patient testing based only on link lights or a cleared message. Expected outcome: The microscopy analyzer communicates normally and the workcell can safely resume operation."
+    },
+    {
+      "title": "Stop If Communication Remains Unstable",
+      "instructions": "If communication drops again, module status remains unavailable, or the workstation cannot reliably recognize the microscopy analyzer, remove the workcell from service for further evaluation. Expected outcome: An intermittent or persistent communication fault is escalated instead of repeatedly disrupting testing."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the DxU Iris Workcell displayed a microscopy analyzer communication fault and microscopy results were not transferring to the workstation.",
+      "Cause": "External inspection found the microscopy analyzer Ethernet connection loose at the local workcell network switch.",
+      "Resolution": "Secured the communication cable, verified link activity, confirmed microscopy analyzer status returned online, and had laboratory staff verify result transfer before returning the workcell to service."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were in process",
+    "Exact communication message displayed",
+    "Analyzer and workstation power status",
+    "Workstation software status",
+    "Whether analyzer appeared offline, frozen, or unavailable",
+    "Network cable condition",
+    "Switch or interface box link lights",
+    "Any recent power, network, LIS, or middleware changes",
+    "Whether results were pending, missing, or delayed",
+    "Whether a controlled restart was performed",
+    "Alarm behavior",
+    "Accessories swapped",
+    "Power behavior",
+    "Environmental factors",
+    "Indicator lights",
+    "Final device status",
+    "Whether vendor service was contacted"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU Iris Workcell Urine Analyzer - Rack Transfer / Workcell Transport Error",
+  "description": "Troubleshooting rack transfer, sampler, workcell transport, positioning, or handoff errors caused by external or user-accessible issues.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU Iris Workcell",
+  "url": "guides/beckman-coulter-dxu-iris-workcell-rack-transfer-workcell-transport-error.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU Iris Workcell is not actively processing patient urine specimens before touching racks, transport paths, covers, or sampler areas. If testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: No specimen is interrupted, lost, misidentified, or reported from a workcell with an unresolved transport issue. If this resolves the immediate safety concern, continue only when the system is safe to inspect."
+    },
+    {
+      "title": "Stop Additional Rack Loading",
+      "instructions": "Ask staff not to load additional racks until the rack transfer issue is understood. Confirm whether any specimens were in process when the error occurred and whether results were completed, aborted, held, or need repeat testing per lab policy. Expected outcome: Incomplete or questionable urine results are not released."
+    },
+    {
+      "title": "Confirm the Exact Transport Complaint",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Rack not advancing; Rack stopped between modules; Rack stuck at the load or unload area; Rack transfer arm or pusher not moving; Rack detected in the wrong position; Rack barcode read failure causing transport delay; Analyzer waiting for rack handoff; Rack collision, skewing, or misalignment; Repeated transport error at the same location; Intermittent workcell communication or timing error between connected modules. Expected outcome: The issue is narrowed to a rack, path obstruction, sensor detection, module handoff, barcode, or workcell communication problem."
+    },
+    {
+      "title": "Inspect for Obvious Rack or Specimen Problems",
+      "instructions": "Verify the rack is the correct type for the workcell and is not cracked, warped, contaminated, or overloaded. Check that sample tubes are seated properly, capped or uncapped as required by lab procedure, and not leaning out of position. Expected outcome: The rack and specimens move freely without striking covers, guides, or transfer points. If a damaged rack or poorly seated tube caused the problem, remove it, have staff reload specimens correctly, clear the error, and stop."
+    },
+    {
+      "title": "Check for Physical Obstructions",
+      "instructions": "With the system stopped and safe, inspect the load area, transfer path, module handoff points, and unload area for: Loose caps; Labels; Broken tube fragments; Spilled urine; Paper debris; Misplaced racks; Cleaning materials; Objects near the rack path. Expected outcome: The transport path is clear and racks can travel without obstruction. If debris or a misplaced item caused the issue, remove it safely, clean any contamination per lab policy, clear the error, and stop."
+    },
+    {
+      "title": "Look for Specimen Tube Label Interference",
+      "instructions": "Check whether barcode labels are peeling, wrinkled, doubled over, or extending beyond the tube surface. A label that catches on rack guides or affects barcode readability can appear as a transport or rack positioning issue. Expected outcome: Tubes sit straight in the rack and labels do not interfere with rack movement or identification. If label interference caused the fault, have staff relabel or reload the specimen according to lab policy, then retest workflow."
+    },
+    {
+      "title": "Verify Rack Alignment at Entry and Handoff Points",
+      "instructions": "Confirm racks are inserted squarely and seated properly at the load area. Check for racks angled against the guide rails, partially inserted, or stacked incorrectly. Expected outcome: The rack reaches the expected start position and can be detected by the workcell. If poor loading caused the issue, reload the rack correctly, clear the error, and stop."
+    },
+    {
+      "title": "Check Doors, Covers, and Interlocks",
+      "instructions": "Verify all covers, doors, and access panels near the transport path are fully closed and seated. A slightly open cover may stop transport movement or prevent the system from resuming after a rack transfer error. Expected outcome: The analyzer recognizes all access points as closed and allows transport operation. If reseating a cover resolves the fault, document the finding and stop."
+    },
+    {
+      "title": "Inspect for Spills or Contamination in the Transport Area",
+      "instructions": "Look for urine, crystallized residue, dried fluid, or sticky contamination around rack guides, transfer surfaces, and sensors visible from the user-accessible areas. Do not perform deep disassembly or internal cleaning beyond approved external access. Expected outcome: Rack movement surfaces are clean, dry, and free of residue that could slow or block movement. If external contamination is found, have the area cleaned according to facility and manufacturer-approved cleaning practices, then verify transport operation."
+    },
+    {
+      "title": "Confirm Waste, Fluids, and System Readiness",
+      "instructions": "Check whether any system readiness condition is preventing rack movement, such as full waste, low reagent, maintenance lockout, pending rinse, module not ready, or an analyzer in standby/error state. A workcell may stop rack transfer if one connected module cannot accept the next rack. Expected outcome: All connected modules are ready to receive racks. If a readiness issue is corrected and transport resumes normally, document and stop."
+    },
+    {
+      "title": "Check Barcode Reader Area if Rack ID or Sample ID Is Involved",
+      "instructions": "If the error occurs at or near identification, inspect the barcode window or scanner area for dirt, obstruction, or misaligned labels. Confirm whether the issue follows one rack, one tube, or all racks. Expected outcome: Barcode reading is not preventing rack routing or transfer. If one specimen or rack label caused the issue, have staff correct the label or process the specimen per lab policy and stop."
+    },
+    {
+      "title": "Restart Only When Safe and Appropriate",
+      "instructions": "If the system is idle and no patient specimens are at risk, perform a controlled restart or reset according to site procedure and operator guidance. Do not repeatedly power cycle the workcell if the transport error returns. Expected outcome: A temporary software or position-state fault clears and the workcell returns to ready status. If the error clears and a test rack transfers normally, return the device to service after confirming with lab staff."
+    },
+    {
+      "title": "Run a Controlled Transport Check",
+      "instructions": "Using an empty rack or approved test workflow, have staff verify rack loading, transfer, handoff, and unloading through the affected area. Observe for hesitation, slipping, abnormal noise, repeated stopping, or rack skewing. Expected outcome: Rack movement is smooth and repeatable without errors. If transport passes and staff confirm normal operation, document the resolution and stop."
+    },
+    {
+      "title": "Evaluate for Repeated or Location-Specific Failure",
+      "instructions": "If the rack stops at the same point repeatedly, note the exact location and any related error message. Repeated failure at one handoff point may indicate a sensor, motor, belt, alignment, or module communication issue. Expected outcome: Clinical Engineering has enough information to escalate intelligently without guessing. Do not attempt internal sensor alignment, motor service, belt replacement, or board-level repair unless trained and authorized."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported the Beckman Coulter DxU Iris Workcell stopped during rack transfer and would not advance racks to the next module.",
+      "Cause": "Found a urine specimen tube sitting high in the rack with a peeling barcode label contacting the rack guide.",
+      "Resolution": "Removed the affected rack from service, had lab staff reseat and relabel the specimen per lab policy, cleared the transport error, and verified normal rack transfer with a test rack."
+    }
+  },
+  "helpfulDetails": [
+    "Outlet tested",
+    "Power status of each connected module",
+    "Exact rack transfer error or on-screen message",
+    "Rack location when fault occurred",
+    "Whether one rack or all racks were affected",
+    "Whether the issue followed a specific rack or tube",
+    "Tube seating checked",
+    "Barcode labels inspected",
+    "Obstructions removed",
+    "Covers and interlocks checked",
+    "Spills or residue observed",
+    "Unusual grinding, clicking, or motor noise",
+    "Module readiness status",
+    "Controlled restart performed",
+    "Test rack transfer result",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU Iris Workcell Urine Analyzer - Result Merge / Sample ID Mismatch",
+  "description": "Troubleshooting DxU Iris Workcell sample ID mismatches, result merge errors, barcode issues, or chemistry/microscopy result pairing concerns.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU Iris Workcell",
+  "url": "guides/beckman-coulter-dxu-iris-workcell-result-merge-sample-id-mismatch.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU Iris Workcell is not actively processing patient specimens before troubleshooting barcode, rack, workstation, or result merge issues. If patient testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: No patient result is released under the wrong specimen ID while the issue is unresolved."
+    },
+    {
+      "title": "Stop Releasing Questionable Results",
+      "instructions": "Ask laboratory staff whether any results were released after the mismatch, merge error, or sample ID concern appeared. Confirm whether affected specimens need to be held, repeated, manually reconciled, or reviewed according to laboratory policy. Expected outcome: Potentially mismatched chemistry and microscopy results are not released without verification."
+    },
+    {
+      "title": "Confirm the Exact Complaint",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Chemistry and microscopy results not merging; Results merging under the wrong sample ID; Duplicate sample IDs; Barcode read failure; Manual ID entry error; Rack position mismatch; Workcell-to-workstation mismatch; LIS or middleware rejection; Results visible on the workstation but not matching in the LIS. Expected outcome: The issue is narrowed to barcode, rack handling, workstation merge logic, or LIS/middleware transmission."
+    },
+    {
+      "title": "Verify Specimen Identification",
+      "instructions": "Inspect the sample tubes and labels for: Damaged barcode labels; Wrinkled or curved labels; Low-contrast print; Partial barcodes; Labels placed too high, too low, or at an angle; Multiple barcodes on one tube; Handwritten or manually relabeled specimens. Poor barcode quality is a common external cause of ID mismatch or failed result association. Expected outcome: Labels are readable, correctly placed, and consistent with laboratory specimen ID requirements. If correcting or replacing the label resolves the mismatch, document the finding and stop."
+    },
+    {
+      "title": "Check Rack Loading and Sample Order",
+      "instructions": "Confirm that specimens were loaded in the correct rack and position according to the workcell workflow. Ask whether any tube was removed, reinserted, swapped, skipped, or manually reordered during testing. Expected outcome: Physical sample order matches the rack position and electronic worklist expectations. If a loading or rack position error is found, have the lab repeat or reconcile affected samples per policy, document the cause, and stop."
+    },
+    {
+      "title": "Check for Duplicate or Reused Sample IDs",
+      "instructions": "Ask staff whether the same sample ID was run more than once or manually entered on multiple specimens. Review the workstation or result list for duplicate IDs, repeated accessions, or specimens with similar numbers. Expected outcome: Each sample result is associated with one correct, unique specimen ID. If duplicate IDs caused the issue, have the lab correct the workflow per policy and stop."
+    },
+    {
+      "title": "Verify Barcode Scanner Function",
+      "instructions": "Check whether the barcode reader is consistently reading sample IDs. Inspect the scanner window or read area for dust, urine residue, label debris, or obstruction. Confirm scanner cables are secure if an external scanner or workstation scanner accessory is used. Expected outcome: Barcode reads are consistent and match the label on the tube. If cleaning the scanner window or securing the scanner connection resolves the issue, document the correction and stop."
+    },
+    {
+      "title": "Review Recent Workflow Changes",
+      "instructions": "Ask whether the issue began after: New barcode label stock; New printer ribbon or label printer maintenance; LIS or middleware changes; Workstation software update; Rack workflow change; Manual entry process change; New operator workflow; Downtime recovery. Expected outcome: Any recent change that may affect sample ID handling is identified. If the issue correlates with a label, workflow, or LIS change, escalate to the lab supervisor, IT, or middleware team as appropriate."
+    },
+    {
+      "title": "Check Workcell Component Status",
+      "instructions": "Confirm both connected parts of the workcell are online and communicating normally with the workstation. Look for analyzer status messages, pending specimens, held results, communication warnings, or incomplete result records. Expected outcome: Chemistry and microscopy results are both reaching the workstation and are available for proper merge. If one side of the workcell is offline or delayed, do not force result release until result integrity is confirmed."
+    },
+    {
+      "title": "Confirm Workstation Date and Time",
+      "instructions": "Verify that the DxU Iris workstation date and time appear reasonable and match facility time. Time discrepancies can contribute to sorting, merge, or result association confusion, especially when multiple results are pending. Expected outcome: The workstation time is correct and does not appear to be contributing to result sequence issues."
+    },
+    {
+      "title": "Check LIS or Middleware Status",
+      "instructions": "Ask lab staff or IT whether the LIS or middleware is currently receiving, rejecting, holding, or modifying urine analyzer results. Confirm whether the mismatch appears only on the analyzer workstation or only after transmission to the LIS. Expected outcome: The fault location is separated between the DxU Iris Workcell/workstation and the external LIS or middleware system. If the analyzer workstation shows correct pairing but the LIS does not, escalate to LIS/middleware support."
+    },
+    {
+      "title": "Restart Only When Safe",
+      "instructions": "If no specimens are in process and staff confirm it is safe, restart the affected workstation or communication interface according to site practice. Do not restart while samples are being processed or while unresolved results may still need review. Expected outcome: Temporary workstation or communication hang clears without compromising pending results. If restart restores proper result merge and no mismatched results remain, document the action and stop."
+    },
+    {
+      "title": "Run a Controlled Verification Sample if Allowed",
+      "instructions": "With laboratory approval, have staff run a known test specimen, control, or non-patient verification sample using proper barcode workflow. Confirm whether the sample ID, rack position, chemistry result, microscopy result, and LIS transmission align correctly. Expected outcome: The workcell correctly associates and transmits results under the correct sample ID. If verification passes, return the device to service per lab policy."
+    },
+    {
+      "title": "Do Not Manually Reassign Results Without Lab Approval",
+      "instructions": "Clinical Engineering should not independently correct, merge, delete, or reassign patient results. Any result correction must follow laboratory, LIS, and patient safety policy. Expected outcome: Clinical Engineering supports troubleshooting without creating unauthorized result changes."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported that DxU Iris Workcell chemistry and microscopy results were not merging correctly and one specimen showed a possible sample ID mismatch.",
+      "Cause": "Inspection found a wrinkled barcode label on the affected urine tube and inconsistent barcode reads at the workstation.",
+      "Resolution": "Testing was paused, affected results were held for laboratory review, the specimen label was corrected, scanner read function was verified, and a controlled sample processed with correct result merge."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient results were held, released, repeated, or corrected",
+    "Exact mismatch or merge message displayed",
+    "Sample ID or accession range affected, according to site privacy policy",
+    "Barcode label condition",
+    "Rack number and position involved",
+    "Whether the tube was removed or reloaded",
+    "Barcode scanner behavior",
+    "Analyzer and workstation status indicators",
+    "Whether chemistry and microscopy results were both present",
+    "LIS or middleware transmission status",
+    "Any recent LIS, middleware, label printer, or workflow changes",
+    "Whether verification testing passed",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU Iris Workcell Urine Analyzer - Middleware / LIS / Workcell Software Failure",
+  "description": "Troubleshooting DxU Iris Workcell middleware, LIS, workstation, software, result transmission, or workcell communication failures before escalation.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU Iris Workcell",
+  "url": "guides/beckman-coulter-dxu-iris-workcell-middleware-lis-workcell-software-failure.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU Iris Workcell is not actively processing or releasing patient results before restarting software, disconnecting network cables, or changing communication settings. If urine testing must continue, have laboratory staff use another validated analyzer or follow the facility’s approved downtime process. Expected outcome: Patient results are protected while communication or software troubleshooting is performed."
+    },
+    {
+      "title": "Protect Result Integrity",
+      "instructions": "Ask laboratory staff whether any patient specimens were running when the software, middleware, or LIS failure occurred. Confirm whether results are: Completed but not transmitted; Pending review; Stuck in the workcell software; Mismatched to a sample ID; Rejected by middleware or LIS; Missing from the LIS; Duplicated or delayed. Expected outcome: Questionable or incomplete urine results are held until verified by laboratory policy."
+    },
+    {
+      "title": "Confirm the Exact Failure",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Workcell software frozen; Middleware connection down; LIS transmission failure; Results not crossing to the LIS; Worklist not downloading; Analyzer not communicating with the workstation; Microscopy and chemistry results not combining correctly; Repeated software error messages; Login or database access failure; Slow or unresponsive workstation. Expected outcome: The failure is narrowed to software, workstation, middleware, LIS, analyzer communication, or result handling."
+    },
+    {
+      "title": "Check for Active Error Messages",
+      "instructions": "Review the workcell software screen, middleware status, and LIS interface status if accessible. Record any displayed error text, host communication status, connection indicators, or software alerts before clearing messages or restarting anything. Expected outcome: Important diagnostic information is preserved for documentation or vendor support."
+    },
+    {
+      "title": "Verify Power to the Workstation and Workcell Components",
+      "instructions": "Confirm the workcell workstation, monitor, network equipment, analyzer modules, and any connected interface devices are powered on. Check for loose power cords, tripped power strips, failed UPS power, or equipment that was recently moved. Expected outcome: The failure is not caused by a simple power interruption to the workstation, analyzer, or network path."
+    },
+    {
+      "title": "Check Network and Interface Cables",
+      "instructions": "Inspect Ethernet cables between the workstation, analyzer modules, network jack, switch, and any middleware interface devices. Reseat only external, user-accessible cables that can be safely handled without disturbing active testing. Look for damaged connectors, unplugged cables, loose wall jacks, or link lights that are off. Expected outcome: External communication cabling is secure and network link activity is present where expected."
+    },
+    {
+      "title": "Confirm Whether the Problem Is Local or Wider Spread",
+      "instructions": "Ask the laboratory whether other analyzers, middleware-connected instruments, or LIS workstations are also having communication issues. If multiple instruments are affected, the issue may be middleware, LIS, network, server, or hospital IT related rather than a DxU Iris Workcell failure. Expected outcome: The fault is separated between a single workcell problem and a broader interface outage."
+    },
+    {
+      "title": "Check Workcell Software Responsiveness",
+      "instructions": "If safe to do so, verify whether the mouse, keyboard, touchscreen, or workstation input is responsive. Check whether the application is frozen, minimized, waiting for user input, displaying a database error, or showing a communication status warning. Expected outcome: The issue is identified as a frozen application, user-interface issue, or active communication fault."
+    },
+    {
+      "title": "Confirm Sample and Result Status Before Restarting",
+      "instructions": "Before restarting the software or workstation, ask laboratory staff to confirm there are no specimens actively being processed and that pending results have been reviewed or documented according to lab policy. Do not power-cycle or restart during active specimen processing unless directed by laboratory leadership, service support, or emergency downtime policy. Expected outcome: No specimens, images, or patient results are lost due to an unsafe restart."
+    },
+    {
+      "title": "Perform a Controlled Software Restart if Approved",
+      "instructions": "If the analyzer is idle and laboratory staff approve, close and reopen the workcell software using normal shutdown procedures. If the application does not respond, follow the facility’s approved process for restarting the workstation. Expected outcome: A temporary software lockup clears and communication returns. If this resolves the issue, verify result transmission with laboratory staff and stop."
+    },
+    {
+      "title": "Verify Workstation Login and User Access",
+      "instructions": "Confirm the workstation is logged in under the appropriate user profile and has not been locked, logged out, or blocked by a password, domain, or permissions issue. Check for Windows update prompts, login expiration messages, or unexpected security pop-ups that may be blocking the workcell software. Expected outcome: The software failure is not caused by workstation access or operating system interruption."
+    },
+    {
+      "title": "Check Date, Time, and Sample Identification Consistency",
+      "instructions": "Verify the workstation date and time appear correct. Ask laboratory staff whether sample IDs, accession numbers, or result timestamps look incorrect. Date/time or ID inconsistencies can interfere with worklists, result matching, and LIS acceptance. Expected outcome: The result transmission issue is not caused by obvious timestamp or sample ID mismatch."
+    },
+    {
+      "title": "Review Middleware or LIS Rejection Messages",
+      "instructions": "If middleware or LIS access is available to lab or IT staff, ask whether results are being received but rejected. Common rejection causes may include invalid sample ID, duplicate accession, missing order, invalid test code, inactive interface, or mismatched result format. Expected outcome: The problem is identified as LIS/middleware rejection rather than analyzer hardware failure."
+    },
+    {
+      "title": "Confirm Worklist Download Function",
+      "instructions": "Ask staff whether orders are reaching the DxU Iris Workcell. If results can be generated locally but worklists are not downloading, the issue may be host query, middleware routing, LIS order interface, or network communication. Expected outcome: The issue is separated between inbound orders and outbound results."
+    },
+    {
+      "title": "Verify Result Transmission After Any Recovery Step",
+      "instructions": "After any approved software restart, cable correction, or IT action, have laboratory staff run an approved test, QC, or non-patient verification process according to lab policy. Confirm that results appear correctly in the workcell software and transmit to the LIS or middleware as expected. Expected outcome: Software communication is restored and verified before the workcell returns to normal use."
+    },
+    {
+      "title": "Document Any Repeated or Recurring Failure",
+      "instructions": "If the issue returns after a restart, record the time of failure, software behavior, affected sample IDs if allowed by facility policy, error messages, and whether LIS/middleware was affected. Repeated software lockups or database errors should not be treated as a normal operator issue. Expected outcome: Reliable information is available for escalation to Beckman Coulter, IT, or LIS support."
+    },
+    {
+      "title": "Escalate When External Causes Are Ruled Out",
+      "instructions": "If power, network cabling, workstation access, software restart, and LIS/middleware status have been checked and the issue remains, remove the workcell from routine use until proper support evaluates it. Expected outcome: A possible software, database, interface, or internal communication fault is not allowed to affect patient reporting."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported the DxU Iris Workcell was not transmitting urine chemistry and microscopy results to the LIS.",
+      "Cause": "Found the workcell workstation powered on, but the software was unresponsive and host communication status was down; external network cabling was secure.",
+      "Resolution": "Confirmed no specimens were actively processing, restarted the workcell software with lab approval, verified host communication restored, and confirmed successful result transmission with laboratory staff."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were actively running",
+    "Whether results were missing, delayed, rejected, duplicated, or mismatched",
+    "Exact software or middleware error message",
+    "Workcell software status before restart",
+    "LIS or middleware status if provided by lab or IT",
+    "Network cable and link-light condition",
+    "Workstation power and login status",
+    "Whether other lab instruments were affected",
+    "Whether worklist download or result upload failed",
+    "Any sample ID or accession mismatch concern",
+    "Whether a controlled software or workstation restart was performed",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 840 Iris Urine Analyzer - Sample Aspiration / Probe Clog",
+  "description": "Troubleshooting DxU 840 Iris sample aspiration faults, probe clogs, low sample flow, or specimen pickup issues before repair escalation.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 840 Iris",
+  "url": "guides/beckman-coulter-dxu-840-iris-sample-aspiration-probe-clog.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 840 Iris is not actively processing patient specimens before opening covers, inspecting the sample area, or clearing any accessible obstruction. If urine microscopy testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: No patient specimen is delayed, lost, or resulted from a device with an unresolved aspiration issue."
+    },
+    {
+      "title": "Stop Additional Sample Loading",
+      "instructions": "Ask laboratory staff not to load additional racks or specimens until the aspiration issue is understood. Confirm whether any specimens were in process when the fault occurred and whether results were completed, flagged, aborted, or require repeat testing per lab policy. Expected outcome: Incomplete or questionable urine microscopy results are not released."
+    },
+    {
+      "title": "Confirm the Reported Symptom",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Sample aspiration error; Probe clog message; Low or no sample pickup; Repeated failed aspiration on one specimen; Failed aspiration across multiple specimens; Bubbles or gaps in visible fluid movement; Sample probe contacting the tube incorrectly; Carryover, debris, or flow-related flags. Expected outcome: The problem is narrowed to sample condition, rack/tube positioning, probe access, fluid path, or analyzer fault."
+    },
+    {
+      "title": "Check the Sample Tube and Specimen Condition",
+      "instructions": "Inspect the affected urine specimen container or tube for low volume, heavy sediment, clots, crystals, foam, debris, improper fill level, or an incorrect tube type. Urine with heavy particulate matter can contribute to aspiration problems or probe restriction. Expected outcome: If the problem follows one poor-quality specimen, have lab staff recollect, mix, centrifuge, or repeat according to lab policy. If resolved, stop troubleshooting."
+    },
+    {
+      "title": "Verify Rack and Tube Positioning",
+      "instructions": "Confirm the specimen tube is seated correctly in the rack and is not tilted, overfilled, underfilled, capped, or positioned in a way that prevents proper probe access. Check for damaged racks, incorrect rack type, barcode interference, or anything that prevents the tube from reaching the correct sampling position. Expected outcome: The probe can access the specimen correctly. If reseating or replacing the rack resolves the issue, return the analyzer to service after successful verification."
+    },
+    {
+      "title": "Inspect the Probe Area Externally",
+      "instructions": "With the analyzer stopped and safe to access, visually inspect the sample probe area for visible dried urine, crystals, debris, bent appearance, obstruction, or residue around the probe path. Do not force the probe, bend it, or remove internal components beyond normal user-accessible cleaning. Expected outcome: No obvious external contamination or obstruction is present. If visible residue is safely cleanable using approved facility/manufacturer cleaning practice, clean and retest."
+    },
+    {
+      "title": "Check for Probe Contact or Alignment Symptoms",
+      "instructions": "Observe whether the probe appears to enter the tube opening cleanly during a safe test cycle or service-supported operational check. If the probe strikes the tube edge, misses the tube, contacts the rack, or stops before reaching the sample, do not continue repeated testing. Expected outcome: A properly aligned probe should access the sample without impact or abnormal movement. Misalignment should be escalated for bench or vendor evaluation."
+    },
+    {
+      "title": "Check Reagent, Wash, and Fluid Containers",
+      "instructions": "Verify required system fluids, wash solutions, and waste containers are properly installed, not empty, not overfilled, and free of kinked external tubing. Some aspiration complaints may be related to wash, rinse, waste, or fluid handling faults rather than the specimen probe alone. Expected outcome: Fluid supply and waste conditions are normal. If correcting a bottle, cap, line, or waste condition clears the fault, perform verification testing before return to service."
+    },
+    {
+      "title": "Look for Kinked or Disconnected Accessible Tubing",
+      "instructions": "Inspect only user-accessible tubing and fluid connections for kinks, pinches, leaks, loose fittings, air gaps, or obvious blockage. Do not disassemble internal pumps, valves, syringes, sensors, or flow cell components during basic troubleshooting. Expected outcome: Accessible fluid paths appear intact and properly connected."
+    },
+    {
+      "title": "Run the Approved Cleaning or Flush Routine if Available",
+      "instructions": "If the analyzer provides an operator-accessible probe wash, rinse, unclog, or cleaning cycle, run it according to site procedure and manufacturer-approved materials. Do not use improvised wires, sharp tools, compressed air, or non-approved chemicals to clear the probe. Expected outcome: The cleaning routine completes without error and normal aspiration returns. If the issue clears, verify with QC or test material per lab policy and stop."
+    },
+    {
+      "title": "Restart Only When Safe and Appropriate",
+      "instructions": "If the analyzer is idle and no patient specimens are at risk, perform a controlled restart if the issue may be software-state or motion-state related. Confirm with lab staff before restarting because pending results, worklists, or queued specimens may be affected. Expected outcome: The analyzer initializes normally and the aspiration error does not return."
+    },
+    {
+      "title": "Verify With Non-Patient Material or Approved QC",
+      "instructions": "After any corrective action, have laboratory staff run appropriate QC, cleaning verification, or non-patient test material according to lab policy. Confirm sample pickup, fluid movement, and result acceptability before releasing the device for patient testing. Expected outcome: The DxU 840 Iris aspirates normally, produces acceptable results, and is safe to return to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the Beckman Coulter DxU 840 Iris displayed repeated sample aspiration/probe clog errors during urine specimen processing.",
+      "Cause": "Found heavy sediment in the affected specimen and residue around the accessible sample probe area; rack and external fluid containers were seated correctly.",
+      "Resolution": "Removed the affected specimen from testing workflow, cleaned the accessible probe area per approved procedure, ran the analyzer cleaning cycle, and lab verified operation with acceptable QC before return to service."
+    }
+  },
+  "helpfulDetails": [
+    "Error or message displayed on screen",
+    "Whether the issue affected one specimen or multiple specimens",
+    "Specimen condition, including sediment, foam, crystals, clots, or low volume",
+    "Rack and tube position checked",
+    "Probe area inspected for residue or visible obstruction",
+    "External tubing checked for kinks, leaks, or air gaps",
+    "Wash, reagent, and waste container status",
+    "Cleaning or flush cycle performed",
+    "QC or verification result after troubleshooting",
+    "Whether patient results were held, repeated, or unaffected",
+    "Final device status: returned to service or removed from service"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 840 Iris Urine Analyzer - Flow Cell / Imaging Quality Fault",
+  "description": "Troubleshooting DxU 840 Iris flow cell, imaging quality, debris, focus, or unclear urine microscopy image issues before repair escalation.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 840 Iris",
+  "url": "guides/beckman-coulter-dxu-840-iris-flow-cell-imaging-quality-fault.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 840 Iris is not actively processing patient specimens before pausing operation, inspecting sample areas, or initiating cleaning. If patient testing is urgent, have laboratory staff use another validated analyzer or follow the approved downtime procedure. Expected outcome: Patient testing is protected while image quality is evaluated."
+    },
+    {
+      "title": "Stop Reporting Questionable Results",
+      "instructions": "Ask laboratory staff whether poor image quality affected any patient specimens. Confirm whether results were released, flagged for review, repeated, or require manual microscopy per laboratory policy. Expected outcome: Questionable urine microscopy results are not released without appropriate review."
+    },
+    {
+      "title": "Confirm the Reported Imaging Issue",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Blurry images; Dark or low-contrast images; Debris in the image field; Streaking or bubbles; Repeated image quality flags; Poor particle recognition; Excessive manual review flags; Flow cell contamination message; Inconsistent results compared with manual review. Expected outcome: The complaint is confirmed as an imaging or flow cell quality issue, not a barcode, LIS, aspiration, or QC workflow issue."
+    },
+    {
+      "title": "Check Current Analyzer Status and Error Messages",
+      "instructions": "Review the analyzer and workstation for active alarms, fault messages, or maintenance prompts related to imaging, flow, focus, fluidics, or image quality. Do not clear messages without documenting them first. Expected outcome: Fault details are captured before troubleshooting changes the device state."
+    },
+    {
+      "title": "Verify Reagent, Diluent, and Wash Supply Status",
+      "instructions": "Confirm required fluids are present, not expired, properly seated, and connected. Low, empty, expired, or incorrectly installed fluids can affect sample flow, cleaning, and image clarity. Expected outcome: Fluid supply issues are corrected. If imaging returns to normal, document the correction and stop."
+    },
+    {
+      "title": "Inspect Waste and Drain Conditions",
+      "instructions": "Check that waste containers are not full and that drain tubing is not kinked, pinched, backed up, or improperly positioned. Poor waste flow can contribute to fluid handling problems and abnormal flow cell conditions. Expected outcome: Waste flow is unobstructed. If the issue clears after correcting waste handling, document and stop."
+    },
+    {
+      "title": "Check for Visible Leaks, Crystallization, or Residue",
+      "instructions": "Visually inspect user-accessible tubing, fittings, sample areas, and fluid paths for leaks, dried urine, salt deposits, crystallization, or residue. Do not disassemble internal fluidic assemblies. Expected outcome: Obvious external contamination or leakage is identified for cleaning or escalation."
+    },
+    {
+      "title": "Confirm Samples Are Properly Mixed and Suitable for Testing",
+      "instructions": "Ask staff whether affected samples were unusually cloudy, viscous, bloody, crystallized, old, or poorly mixed. Poor sample condition can create debris, bubbles, or inconsistent particle imaging. Expected outcome: The issue is separated from a specimen quality problem. If only isolated samples are affected, have staff repeat or manually review per lab policy."
+    },
+    {
+      "title": "Check Rack, Tube, and Sample Presentation",
+      "instructions": "Confirm the correct sample tubes and racks are being used and that tubes are seated correctly. Incorrect tube height, poor sample volume, or improper presentation can contribute to aspiration and flow issues that appear as image quality faults. Expected outcome: Sample presentation is verified before assuming a flow cell or camera problem."
+    },
+    {
+      "title": "Run the Approved Cleaning or Rinse Routine",
+      "instructions": "If available to Clinical Engineering or laboratory staff under local policy, initiate the analyzer’s approved user-level cleaning, rinse, or maintenance routine. Do not perform undocumented cleaning methods or introduce unauthorized chemicals. Expected outcome: Minor debris, residue, bubbles, or contamination are cleared. If image quality returns to normal, document the cleaning performed and stop."
+    },
+    {
+      "title": "Check for Bubble or Flow Pattern Symptoms",
+      "instructions": "Ask staff whether the issue appeared after reagent replacement, maintenance, bottle changes, shutdown, or startup. Air introduced into the fluid path can cause streaking, bubbles, or poor image fields. Expected outcome: The issue is linked to a recent fluid change or startup event if applicable."
+    },
+    {
+      "title": "Repeat with a Known Acceptable Control or Test Material",
+      "instructions": "Have laboratory staff run appropriate QC, control material, or a known acceptable test sample according to lab policy. Clinical Engineering should not independently validate patient result accuracy without laboratory involvement. Expected outcome: The analyzer either produces acceptable images/results or the imaging fault repeats under controlled conditions."
+    },
+    {
+      "title": "Compare Analyzer Results With Manual Review or Alternate Analyzer",
+      "instructions": "If the lab reports misclassification or unclear images, ask whether manual microscopy or another validated analyzer confirms the concern. Expected outcome: The problem is confirmed as an analyzer imaging issue rather than sample variability."
+    },
+    {
+      "title": "Review Recent Maintenance or Environmental Changes",
+      "instructions": "Check whether the analyzer was recently moved, cleaned, serviced, had fluids replaced, experienced a power interruption, or had software/workstation changes. Expected outcome: A recent change is identified that may explain the imaging fault."
+    },
+    {
+      "title": "Power Cycle Only When Safe",
+      "instructions": "If no specimens are processing and results are protected, restart the analyzer and associated workstation only according to facility procedure. Do not power cycle during active testing or pending result transmission. Expected outcome: Temporary software or imaging communication faults clear. If the fault returns, continue escalation."
+    },
+    {
+      "title": "Do Not Attempt Internal Optical or Flow Cell Repair in the Clinical Area",
+      "instructions": "Do not open internal optical assemblies, adjust cameras, alter focus, remove internal flow cell components, or perform board-level repair unless trained, authorized, and following approved service documentation. Expected outcome: Patient safety, analyzer integrity, and service compliance are maintained."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported repeated poor image quality and excessive review flags on the Beckman Coulter DxU 840 Iris during urine microscopy testing.",
+      "Cause": "Verified fluids and waste connections were acceptable, but image quality faults continued after approved cleaning and repeat testing.",
+      "Resolution": "Removed the DxU 840 Iris from service, labeled it Out of Service, documented observed imaging fault behavior, and escalated for bench/vendor evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were affected",
+    "Exact imaging or flow cell error message",
+    "Whether images were blurry, dark, streaked, or debris-filled",
+    "Whether bubbles were visible or suspected",
+    "Reagent, diluent, wash, and waste status",
+    "Lot numbers or expiration dates if related to QC or fluid replacement",
+    "Whether approved cleaning/rinse was performed",
+    "Whether QC or control material passed or failed",
+    "Whether manual microscopy confirmed abnormal results",
+    "Any recent maintenance, relocation, shutdown, or fluid replacement",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 840 Iris Urine Analyzer - Rack Transport or Sampler Movement Error",
+  "description": "Troubleshooting rack transport, sampler movement, rack loading, and specimen positioning errors caused by external or user-accessible issues.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 840 Iris",
+  "url": "guides/beckman-coulter-dxu-840-iris-rack-transport-or-sampler-movement-error.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 840 Iris is not actively processing patient specimens before touching the sampler, rack transport area, or specimen loading path. If urine testing is urgent, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: No patient specimen is interrupted, lost, or resulted from an analyzer with an unresolved transport issue."
+    },
+    {
+      "title": "Stop Additional Rack Loading",
+      "instructions": "Ask staff not to load additional racks until the transport or sampler fault is understood. Confirm whether any specimens were in process when the error occurred and whether results were completed, aborted, flagged, or require repeat testing per lab policy. Expected outcome: Incomplete or questionable urine results are not released."
+    },
+    {
+      "title": "Confirm the Exact Reported Symptom",
+      "instructions": "Ask staff what they observed. Determine whether the issue involves: Rack not advancing; Rack jammed in the loader; Sampler arm not moving; Sample probe not aligning with the tube; Repeated rack position error; Rack barcode/read position issue; Analyzer stopping during rack movement; Unusual motor noise or clicking. Expected outcome: The problem is narrowed to rack loading, rack movement, sampler positioning, or specimen alignment."
+    },
+    {
+      "title": "Check for Obvious Rack Obstruction",
+      "instructions": "With the analyzer stopped and safe to access, inspect the rack loading and transport path for a stuck rack, loose cap, tube, label, glove, wipe, or other debris. Remove only items that are clearly accessible without disassembly. Expected outcome: Any external obstruction is removed and the rack path is clear. If this resolves the error, return the analyzer to service after successful functional verification and stop."
+    },
+    {
+      "title": "Inspect the Rack for Damage or Incorrect Loading",
+      "instructions": "Check that the rack is not cracked, warped, contaminated, or incorrectly oriented. Verify tubes are seated fully and not leaning, overfilled, underfilled, uncapped incorrectly, or blocked by loose labels. Expected outcome: The rack and specimens can move normally through the sampler path."
+    },
+    {
+      "title": "Try a Known Good Rack",
+      "instructions": "If available, test the analyzer using an empty known good rack or facility-approved test rack. Do not use patient specimens for troubleshooting unless approved by lab procedure. Expected outcome: If the known good rack moves properly, the issue is likely rack-related rather than analyzer-related."
+    },
+    {
+      "title": "Check Sample Tube Fit and Label Placement",
+      "instructions": "Verify that the tube type, height, diameter, cap condition, and barcode label placement match the laboratory’s validated setup. Labels wrapped poorly, peeling, or placed too high or low can interfere with tube positioning or barcode reading. Expected outcome: Tubes sit correctly in the rack and do not interfere with rack or sampler movement."
+    },
+    {
+      "title": "Inspect the Sampler Area for Spills or Dried Urine Residue",
+      "instructions": "Look for visible contamination around the rack track, sample presentation area, probe access area, and nearby surfaces. Dried urine, crystals, or sticky residue can interfere with smooth rack movement or positioning. Clean only external/user-accessible areas according to facility-approved cleaning practices. Expected outcome: The movement path is clean and free of visible contamination."
+    },
+    {
+      "title": "Verify Covers, Doors, and Interlocks Are Properly Closed",
+      "instructions": "Confirm all access covers, doors, rack gates, and safety shields are fully closed and seated. A misaligned cover may stop sampler motion or prevent the analyzer from continuing. Expected outcome: The analyzer recognizes the safe operating condition and allows movement."
+    },
+    {
+      "title": "Check Power Stability",
+      "instructions": "Confirm the analyzer is connected to the correct outlet or UPS, if used by the facility. Look for signs of a recent power interruption, loose power cord, tripped outlet, or UPS alarm. Expected outcome: The analyzer has stable power and is not stopping movement due to power interruption."
+    },
+    {
+      "title": "Restart Only When Safe",
+      "instructions": "If no specimens are in process and the lab agrees, perform a controlled restart using the facility’s approved shutdown/startup process. Do not power-cycle during active testing. Expected outcome: Temporary motion control or software lockup clears and the sampler initializes normally. If this resolves the issue, perform a basic movement check before returning to service."
+    },
+    {
+      "title": "Observe Initialization and Movement Behavior",
+      "instructions": "During startup or a safe test cycle, observe whether the rack transport attempts to move, stalls, clicks, overshoots, or fails to home. Listen for grinding, repeated clicking, or abnormal motor noise. Expected outcome: Movement behavior helps distinguish an obstruction or rack issue from a likely internal motor, sensor, belt, encoder, or mechanism problem."
+    },
+    {
+      "title": "Check for Recurring Error After Clearing External Causes",
+      "instructions": "If the same rack transport or sampler movement error returns with a clean path, known good rack, proper tube loading, closed covers, and stable power, stop troubleshooting. Expected outcome: Common external causes have been ruled out and the device requires bench evaluation or vendor service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported that the Beckman Coulter DxU 840 Iris stopped during rack loading and displayed a sampler movement error.",
+      "Cause": "Found one urine rack with a loose, peeling barcode label interfering with tube seating and rack movement.",
+      "Resolution": "Removed the affected rack from use, verified the rack path was clear, tested movement with a known good rack, and returned the analyzer to service after successful operation."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were in process",
+    "Error message or code displayed",
+    "Rack position when the fault occurred",
+    "Whether a rack was jammed or misloaded",
+    "Rack condition checked",
+    "Tube type and label placement checked",
+    "Visible debris, dried urine, or obstruction found",
+    "Covers and doors verified closed",
+    "Power source or UPS checked",
+    "Unusual motor noise, clicking, grinding, or no movement",
+    "Whether restart cleared the issue",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 840 Iris Urine Analyzer - Particle Recognition / Review Flag Issue",
+  "description": "Troubleshooting excessive review flags, questionable particle recognition, or abnormal urine microscopy classification before assuming internal analyzer failure.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 840 Iris",
+  "url": "guides/beckman-coulter-dxu-840-iris-particle-recognition-review-flag-issue.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 840 Iris is not actively processing patient specimens before troubleshooting image review, sample handling, racks, or workstation settings. If testing must continue, have laboratory staff use another validated analyzer or approved manual microscopy workflow. Expected outcome: No questionable urine microscopy results are released while the recognition issue is unresolved."
+    },
+    {
+      "title": "Stop Reporting Questionable Results",
+      "instructions": "Ask laboratory staff whether results with abnormal review flags, unexpected classifications, or poor particle recognition were already generated. Confirm whether affected specimens require manual review, repeat testing, or manual microscopy per laboratory policy. Expected outcome: Patient results that may be misclassified are held or verified before release."
+    },
+    {
+      "title": "Confirm the Exact Recognition Problem",
+      "instructions": "Ask staff what they are seeing. Check whether the issue involves: Excessive review flags; RBC, WBC, epithelial cell, bacteria, yeast, crystal, cast, mucus, or sperm misclassification; Images not matching reported categories; Increased manual review workload; Sudden change after reagent, maintenance, QC, or software workflow changes; One specimen type repeatedly flagging more than others. Expected outcome: The issue is narrowed to classification behavior, image quality, specimen quality, operator review workflow, or system performance."
+    },
+    {
+      "title": "Check for Active Alarms, Errors, or Maintenance Messages",
+      "instructions": "Review the analyzer and workstation for messages related to imaging, flow, sample aspiration, focus, dirty flow cell, QC, database, or communication issues. Expected outcome: Any related system condition is identified before treating the problem as a particle recognition issue alone."
+    },
+    {
+      "title": "Verify QC and Control Status",
+      "instructions": "Confirm that required QC has passed and that there are no active QC lockouts, failed controls, expired materials, or recent unresolved QC trends. A recognition problem with failed QC should not be treated as a normal review workflow issue. Expected outcome: The analyzer is verified as acceptable for testing, or testing remains stopped until QC is resolved."
+    },
+    {
+      "title": "Confirm the Problem Is Not Specimen-Related",
+      "instructions": "Ask whether affected urine samples were highly turbid, bloody, viscous, contaminated, insufficiently mixed, or delayed before testing. Ensure specimens were handled according to laboratory policy. Expected outcome: Poor particle recognition caused by specimen condition is identified before suspecting analyzer failure."
+    },
+    {
+      "title": "Review Sample Mixing and Rack Handling",
+      "instructions": "Confirm staff are mixing specimens properly before loading and that racks are not causing sample position, aspiration, or handling problems. Poorly mixed urine can cause inconsistent particle distribution and unexpected review flags. Expected outcome: Sample preparation and rack handling are ruled out as causes."
+    },
+    {
+      "title": "Inspect the Sample Area for External Obstruction or Contamination",
+      "instructions": "With the analyzer safe and idle, visually check the accessible sample loading area, racks, specimen tubes, and surrounding surfaces for spills, debris, misloaded tubes, or rack interference. Expected outcome: No external contamination or loading issue is affecting sample processing."
+    },
+    {
+      "title": "Check for Aspiration or Flow-Related Symptoms",
+      "instructions": "Ask staff whether they have also seen low sample volume messages, aspiration errors, bubbles, clogs, carryover concerns, or flow cell warnings. Particle recognition issues can appear when sample flow or imaging conditions are unstable. Expected outcome: Flow or aspiration concerns are identified and handled as the primary issue if present."
+    },
+    {
+      "title": "Review Image Quality With Laboratory Staff",
+      "instructions": "Have qualified lab personnel review representative flagged images. Look for blurry images, debris, streaking, poor contrast, bubbles, uneven background, or particles that are difficult to classify. Expected outcome: The issue is separated into poor image quality versus valid images requiring manual classification."
+    },
+    {
+      "title": "Confirm Cleaning and Maintenance Status",
+      "instructions": "Check whether routine user-level cleaning or maintenance was missed, recently performed, or interrupted. Do not perform deep internal cleaning or disassembly unless authorized by service documentation and facility policy. Expected outcome: Missed or incomplete maintenance is identified as a possible contributor."
+    },
+    {
+      "title": "Compare With Recent Baseline Performance",
+      "instructions": "Ask whether review flags increased suddenly or gradually. Compare with recent QC, maintenance logs, specimen volume, reagent changes, and staff observations. Expected outcome: The issue is identified as a sudden fault, workflow change, specimen population change, or gradual performance decline."
+    },
+    {
+      "title": "Check Workstation Review Settings and User Workflow",
+      "instructions": "Confirm that review rules, flagging thresholds, operator permissions, and result review workflow were not recently changed. Avoid changing validated laboratory settings without laboratory leadership approval. Expected outcome: The issue is not caused by altered review configuration or workflow expectations."
+    },
+    {
+      "title": "Restart Only When Safe and Appropriate",
+      "instructions": "If the analyzer and workstation are idle, no specimens are in process, and laboratory leadership agrees, perform a controlled restart according to local procedure. Verify the system returns without errors. Expected outcome: Temporary workstation or software behavior is cleared, or the issue remains reproducible."
+    },
+    {
+      "title": "Run an Approved Check Sample or QC Process",
+      "instructions": "Have laboratory staff run the appropriate QC or approved verification material after troubleshooting. Clinical Engineering should not substitute unapproved samples for lab validation. Expected outcome: Particle recognition and review behavior is verified as acceptable by the lab before returning to routine use."
+    },
+    {
+      "title": "Return to Service Only If Results Are Acceptable",
+      "instructions": "If QC passes, images are clear, review flags return to expected behavior, and laboratory staff confirm acceptable performance, document the findings and return the analyzer to service. If this resolves the issue, stop troubleshooting."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported excessive review flags and questionable particle recognition on the Beckman Coulter DxU 840 Iris during urine microscopy review.",
+      "Cause": "Checked QC status, specimen handling, rack loading, accessible sample area, image quality, maintenance status, and workstation workflow; no external obstruction or user-accessible cause was confirmed.",
+      "Resolution": "Removed analyzer from service, labeled Out of Service, and escalated for vendor evaluation due to persistent particle recognition concerns."
+    }
+  },
+  "helpfulDetails": [
+    "Whether QC passed or failed",
+    "Specific particles being misclassified",
+    "Review flag type or frequency",
+    "Whether issue was sudden or gradual",
+    "Specimen appearance or handling concerns",
+    "Image quality observations",
+    "Any aspiration, flow, or dirty flow cell messages",
+    "Cleaning or maintenance status",
+    "Workstation restart performed",
+    "Whether settings or review rules changed",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 840 Iris Urine Analyzer - Workstation / LIS Communication Failure",
+  "description": "Troubleshooting DxU 840 Iris workstation, host, LIS, middleware, network, or result transmission communication failures.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 840 Iris",
+  "url": "guides/beckman-coulter-dxu-840-iris-workstation-lis-communication-failure.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 840 Iris is not actively processing or releasing patient results before restarting the analyzer, workstation, interface software, or network connection. If testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: Patient testing and result reporting are protected during troubleshooting."
+    },
+    {
+      "title": "Confirm the Exact Communication Complaint",
+      "instructions": "Ask laboratory staff what is failing. Determine whether the issue involves: Results not reaching the LIS; Worklist not downloading; Orders not appearing at the workstation; Results stuck in the workstation; Host communication error; Middleware rejection; Intermittent transmission delays; Analyzer-to-workstation communication failure. Expected outcome: The issue is narrowed to analyzer, workstation, middleware, LIS, or network communication."
+    },
+    {
+      "title": "Protect Result Integrity",
+      "instructions": "Confirm whether any patient specimens were processed while communication was down. Check whether results are stored locally on the workstation and whether staff have a manual reporting process available. Expected outcome: No urine microscopy or chemistry results are lost, duplicated, or released incorrectly."
+    },
+    {
+      "title": "Check Workstation Power and Status",
+      "instructions": "Verify the DxU workstation is powered on, booted normally, and not frozen, locked, or displaying database or application errors. Confirm the monitor, keyboard, and mouse are functional enough to review communication status. Expected outcome: The workstation is available for normal result review and transmission."
+    },
+    {
+      "title": "Check Analyzer and Workstation Connection",
+      "instructions": "Inspect the communication cable or network connection between the analyzer, workstation, and facility network. Look for loose Ethernet cables, damaged connectors, disconnected patch cords, or cables plugged into the wrong port. Expected outcome: Physical communication connections are secure and properly seated."
+    },
+    {
+      "title": "Verify Network Link Indicators",
+      "instructions": "Check for link/activity lights at the workstation network port, wall jack, network switch, or interface device if accessible. No link light may indicate a bad cable, inactive wall jack, disabled port, or network issue. Expected outcome: Network activity is present at the workstation or communication path."
+    },
+    {
+      "title": "Confirm Whether the Issue Is Local or Facility-Wide",
+      "instructions": "Ask laboratory staff whether other analyzers, middleware-connected instruments, or LIS workstations are also having communication issues. Expected outcome: The failure is identified as isolated to the DxU 840 Iris or part of a broader LIS/network outage."
+    },
+    {
+      "title": "Check Workstation Application Status",
+      "instructions": "Confirm the DxU workstation software is open and not stopped at a login screen, error prompt, frozen screen, or pending message. Do not clear unknown database or result-related errors without confirming result status with laboratory staff. Expected outcome: The workstation software is ready to receive, review, and transmit results."
+    },
+    {
+      "title": "Review Host or LIS Communication Status",
+      "instructions": "From the user-accessible communication or host status screen, check whether the LIS interface shows connected, disconnected, paused, offline, or error status. Avoid changing interface settings unless they are known and approved for the facility. Expected outcome: The communication state is confirmed without introducing configuration changes."
+    },
+    {
+      "title": "Check for Held, Pending, or Unsent Results",
+      "instructions": "Ask staff to verify whether results are waiting for review, held by rules, missing required demographics, or pending manual release. A workflow hold can appear like a communication failure. Expected outcome: Results are confirmed as truly failing to transmit, not simply waiting for review or release."
+    },
+    {
+      "title": "Verify Specimen ID and Order Matching",
+      "instructions": "Confirm that specimen IDs, barcodes, and worklist orders match expected LIS format. Mismatched IDs, duplicate accessions, or missing orders may cause rejection by middleware or the LIS. Expected outcome: The failure is not caused by patient/order data mismatch."
+    },
+    {
+      "title": "Check Barcode and Order Workflow",
+      "instructions": "If the issue is worklist-related, confirm staff are using the correct rack, sample ID, barcode format, and order download workflow. Expected outcome: Order download or result upload failure is not due to scanning or workflow error."
+    },
+    {
+      "title": "Restart Only When Safe and Approved",
+      "instructions": "If no specimens are running and results are protected, restart the workstation application first if appropriate. If needed, restart the workstation and analyzer following site-approved shutdown/startup practice. Expected outcome: Temporary software or communication lockups clear and normal communication returns."
+    },
+    {
+      "title": "Send or Queue a Test Transmission if Allowed",
+      "instructions": "With laboratory approval, attempt a manual resend, host reconnect, or non-patient/test result transmission if available and appropriate. Expected outcome: Communication is verified without risking patient result integrity."
+    },
+    {
+      "title": "Check With LIS, Middleware, or Network Support",
+      "instructions": "If the workstation and physical connections appear normal, contact LIS, middleware, or network support to verify: Interface status; HL7 connection status; Middleware queues; Network port activity; IP address conflicts; Recent firewall, switch, or LIS changes; Rejected or stuck messages. Expected outcome: External IT/interface causes are confirmed or ruled out."
+    },
+    {
+      "title": "Document Any Error Messages Exactly",
+      "instructions": "Record the exact workstation, analyzer, middleware, or LIS message shown. Include whether the issue is constant or intermittent and whether results are stored locally. Expected outcome: Repair, vendor, LIS, or network escalation has useful details."
+    },
+    {
+      "title": "Stop Troubleshooting if Communication Remains Down",
+      "instructions": "If cables, power, workflow, workstation status, network link, and LIS/middleware status have been checked and communication still fails, do not continue random setting changes. Expected outcome: The device is escalated appropriately without creating additional configuration problems."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported that the Beckman Coulter DxU 840 Iris workstation was not transmitting urine results to the LIS.",
+      "Cause": "Network cable and workstation power were verified, but the host interface remained offline and results were held locally on the workstation.",
+      "Resolution": "Confirmed patient results were retained locally, labeled the analyzer out of service for LIS communication failure, and escalated to LIS/network support and vendor service for interface evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient results were stored locally",
+    "Whether results failed to upload or orders failed to download",
+    "Exact workstation or LIS error message",
+    "Workstation power and application status",
+    "Ethernet cable condition and link lights",
+    "Wall jack or switch port tested",
+    "Whether other lab instruments were affected",
+    "Middleware queue or rejection status",
+    "Any recent network, LIS, or workstation changes",
+    "Whether a restart was performed",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 850 Iris Urine Analyzer - Sample Aspiration / Probe Clog",
+  "description": "Troubleshooting DxU 850 Iris sample aspiration, probe clog, low flow, specimen pickup, or fluid path issues before repair escalation.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 850 Iris",
+  "url": "guides/beckman-coulter-dxu-850-iris-sample-aspiration-probe-clog.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 850 Iris is not actively processing patient specimens before opening covers, handling racks, checking fluid areas, or initiating cleaning.\n\nExpected outcome: Patient testing is not interrupted, and no questionable urine microscopy results are released."
+    },
+    {
+      "title": "Stop Additional Sample Processing",
+      "instructions": "Ask laboratory staff not to load additional racks or specimens until the aspiration or clog issue is understood.\n\nConfirm whether any specimen was in process when the issue occurred and whether results were completed, flagged, rejected, or require repeat testing per lab policy.\n\nExpected outcome: Incomplete or unreliable urine results are not reported."
+    },
+    {
+      "title": "Confirm the Exact Complaint",
+      "instructions": "Ask staff what they observed. Check whether the issue involves:\n\nSample aspiration error\nProbe clog message\nLow sample volume\nMissed sample pickup\nAir in the sample path\nFrequent repeats or flagged results\nProbe contacting the wrong area\nAbnormal noise during aspiration\nIssue after a specific specimen type or rack\n\nExpected outcome: The issue is confirmed as aspiration, probe, sample handling, or fluid movement related."
+    },
+    {
+      "title": "Check the Specimen and Rack Setup",
+      "instructions": "Inspect the sample tube type, urine volume, cap status, barcode position, and rack placement.\n\nMake sure the tube is seated properly, has enough volume for testing, and is not foamy, excessively viscous, full of sediment, or improperly mixed.\n\nExpected outcome: The analyzer has a valid specimen presentation for aspiration.\n\nIf correcting the specimen or rack setup resolves the issue, document the finding and stop."
+    },
+    {
+      "title": "Inspect for Obvious External Obstruction",
+      "instructions": "Without performing deep disassembly, visually check the accessible sample probe area for dried urine, crystals, debris, bent alignment, or visible blockage.\n\nDo not force the probe or insert objects into the probe unless allowed by site procedure and manufacturer guidance.\n\nExpected outcome: Any visible external cause is identified without damaging the probe."
+    },
+    {
+      "title": "Check for Recent Problem Specimens",
+      "instructions": "Ask whether the issue began after a heavily sedimented, contaminated, or low-volume urine specimen.\n\nUrine sediment, crystals, mucus, or dried material can contribute to aspiration restriction or probe clog symptoms.\n\nExpected outcome: The issue is linked to a likely sample-related obstruction if applicable."
+    },
+    {
+      "title": "Verify Reagent, Wash, and Waste Conditions",
+      "instructions": "Check that required fluids are present, properly seated, not empty, not expired, and connected as expected.\n\nCheck the waste container or drain path for full containers, kinks, clogs, or improper positioning.\n\nExpected outcome: The analyzer has the required fluid support for normal aspiration, rinse, and waste movement."
+    },
+    {
+      "title": "Inspect Accessible Tubing and Fluid Areas",
+      "instructions": "Look for kinked tubing, disconnected lines, pinched hoses, leaks, bubbles, dried residue, or unusual fluid pooling in user-accessible areas.\n\nExpected outcome: External fluid path problems are either corrected or ruled out.\n\nIf a loose external connection, kink, or empty fluid container is corrected and the analyzer passes testing, document and stop."
+    },
+    {
+      "title": "Run the Appropriate Onboard Cleaning or Rinse Routine",
+      "instructions": "If available to Clinical Engineering at your site, run the analyzer’s approved probe cleaning, rinse, or maintenance routine.\n\nDo not bypass covers, defeat interlocks, or perform internal fluidics service from memory.\n\nExpected outcome: Minor debris or dried urine is cleared through the approved cleaning process."
+    },
+    {
+      "title": "Repeat with a Known Acceptable Sample or Control Material",
+      "instructions": "After cleaning, have laboratory staff run an appropriate control, blank, or approved test specimen according to lab policy.\n\nExpected outcome: Aspiration completes normally without clog, low volume, or flow-related errors.\n\nIf the test passes and QC/result review is acceptable, return the analyzer to service per facility process."
+    },
+    {
+      "title": "Check for Recurring or Intermittent Failure",
+      "instructions": "If the issue returns after cleaning, note whether it occurs on every sample, one rack position, one tube type, or only certain specimen conditions.\n\nExpected outcome: The failure pattern helps determine whether this is a specimen handling issue, probe issue, fluidics issue, or deeper mechanical problem."
+    },
+    {
+      "title": "Do Not Continue Repeated Patient Testing on a Questionable Analyzer",
+      "instructions": "If aspiration errors continue, stop troubleshooting at the operational level.\n\nRepeated aspiration faults may affect sample volume, image quality, result reliability, or specimen handling.\n\nExpected outcome: Patient result integrity is protected."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported the Beckman Coulter DxU 850 Iris was producing sample aspiration errors and possible probe clog messages during urine specimen processing.",
+      "Cause": "Checked specimen rack setup, tube volume, fluid containers, waste path, and accessible probe area; visible dried urine/debris was found near the sample probe area.",
+      "Resolution": "Removed the analyzer from active testing, performed approved cleaning/rinse routine, verified fluids and waste setup, and had lab confirm successful test/QC run before returning the unit to service."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were affected",
+    "Error or alarm message shown",
+    "Rack position involved",
+    "Tube type and urine volume",
+    "Whether sample had heavy sediment, crystals, mucus, or foam",
+    "Probe area condition",
+    "Fluid container status",
+    "Waste container or drain condition",
+    "Any visible leaks, bubbles, or kinked tubing",
+    "Cleaning or rinse routine performed",
+    "QC or test result after troubleshooting",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 850 Iris Urine Analyzer - Flow Cell / Imaging Quality Fault",
+  "description": "Troubleshooting poor image quality, flow cell debris, imaging artifacts, unclear microscopy images, or questionable particle images on the DxU 850 Iris.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 850 Iris",
+  "url": "guides/beckman-coulter-dxu-850-iris-flow-cell-imaging-quality-fault.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 850 Iris is not actively processing patient specimens before pausing operation, opening user-accessible areas, inspecting tubing, or initiating cleaning. If urine microscopy testing is urgent, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: Patient testing is protected while the imaging or flow cell issue is evaluated."
+    },
+    {
+      "title": "Stop Reporting Questionable Results",
+      "instructions": "Ask laboratory staff whether any patient specimens were processed while poor image quality or flow cell-related errors were present. Confirm whether affected results were flagged, manually reviewed, repeated, or held according to laboratory policy. Expected outcome: Questionable urine microscopy results are not released without proper review."
+    },
+    {
+      "title": "Confirm the Reported Imaging Fault",
+      "instructions": "Ask staff what they observed on the workstation or analyzer. Check whether the issue involves: Blurry particle images; Dark or low-contrast images; Debris, streaking, or bubbles in image fields; Repeated flow cell or imaging quality flags; Excessive manual review flags; Poor focus or inconsistent particle capture; Results not matching visual review expectations; Error occurring after a reagent, rinse, or waste change. Expected outcome: The issue is confirmed as image quality or flow cell related, not a barcode, LIS, rack handling, or specimen identification problem."
+    },
+    {
+      "title": "Check for Active Specimen or Sample Handling Issues",
+      "instructions": "Confirm that the specimen tubes are properly mixed, not overfilled or underfilled, and are free of excessive sediment, clots, caps, labels, or debris that may interfere with aspiration. Poorly prepared urine specimens can contribute to flow cell contamination, bubbles, or inconsistent image capture. Expected outcome: The analyzer is not being blamed for a specimen preparation issue."
+    },
+    {
+      "title": "Inspect the Sample Area Externally",
+      "instructions": "Look for spilled urine, dried residue, debris, damaged racks, misaligned tubes, or anything obstructing the sample path. Do not perform deep disassembly. Expected outcome: No obvious external contamination or obstruction is affecting specimen handling."
+    },
+    {
+      "title": "Verify Reagent, Rinse, and Wash Supplies",
+      "instructions": "Check that required fluids are present, connected correctly, not expired if applicable, and not visibly contaminated. Confirm caps, pickups, and external tubing connections are secure and not kinked or pinched. Expected outcome: The analyzer has the required fluids to rinse and maintain image quality."
+    },
+    {
+      "title": "Check Waste Level and Drain Path",
+      "instructions": "Confirm the waste container is not full and that waste tubing is not kinked, elevated improperly, disconnected, or restricted. Poor waste flow can contribute to fluid handling problems and may affect the flow cell or imaging path. Expected outcome: Waste can drain normally without backing up or interfering with fluid movement."
+    },
+    {
+      "title": "Look for Air Bubbles or Flow Irregularities",
+      "instructions": "If visible through user-accessible tubing or fluid lines, check for air gaps, bubbles, or inconsistent fluid movement. Do not disconnect internal tubing unless permitted by facility procedure and service documentation. Expected outcome: Fluid movement appears stable and continuous."
+    },
+    {
+      "title": "Confirm Covers and Access Panels Are Properly Closed",
+      "instructions": "Verify that all user-accessible covers, doors, and panels are fully closed and latched. Some analyzers may pause operation, interrupt movement, or prevent fluid routines when covers are not fully seated. Expected outcome: The analyzer is allowed to operate normally without cover or interlock-related interruptions."
+    },
+    {
+      "title": "Run the Appropriate User-Level Cleaning or Rinse Routine",
+      "instructions": "Have trained laboratory staff or Clinical Engineering initiate the approved analyzer cleaning, rinse, or maintenance cycle available from the normal operator interface. Do not bypass prompts or perform undocumented internal cleaning. Expected outcome: Debris, bubbles, or residue in the fluid path may clear if the issue is contamination-related."
+    },
+    {
+      "title": "Recheck Image Quality After Cleaning",
+      "instructions": "After the cleaning or rinse routine completes, process appropriate QC or non-patient verification material according to laboratory policy. Review whether the images appear clear, properly focused, and free from excessive debris or artifacts. Expected outcome: If images return to normal and QC or verification passes, document the issue and return the device to service per facility policy. If the issue is resolved, stop troubleshooting."
+    },
+    {
+      "title": "Confirm the Fault Is Not Isolated to One Specimen",
+      "instructions": "Ask staff whether the problem occurred on multiple specimens, one rack, one specimen type, or only after a specific sample. A single abnormal urine specimen may create debris, sediment, or artifacts that do not represent analyzer failure. Expected outcome: The issue is narrowed to specimen-related or analyzer-related behavior."
+    },
+    {
+      "title": "Check Recent Maintenance or Supply Changes",
+      "instructions": "Ask whether reagents, rinse solution, waste container, tubing connections, filters, or other user-replaceable supplies were recently changed. Incorrect installation or disturbed tubing can create flow or image quality problems. Expected outcome: Any recent change is reviewed before assuming internal imaging failure."
+    },
+    {
+      "title": "Review Error Logs and On-Screen Messages",
+      "instructions": "Record any flow cell, camera, image quality, focus, fluidics, rinse, aspiration, or analyzer status messages. Do not clear logs before documenting the complaint. Expected outcome: The service record includes useful fault history for escalation."
+    },
+    {
+      "title": "Power Cycle Only When Safe and Appropriate",
+      "instructions": "If the analyzer is idle, no specimens are in process, and the lab agrees, perform a controlled shutdown and restart according to site procedure. Do not power cycle during active specimen processing. Expected outcome: Temporary software or initialization faults may clear. Persistent imaging or flow cell faults remain documented."
+    },
+    {
+      "title": "Perform Final Verification Before Return to Service",
+      "instructions": "If the fault clears, confirm with laboratory staff that required QC, background checks, or verification testing passes before the device is used for patient specimens. Expected outcome: The analyzer is only returned to service after acceptable image quality and lab-approved verification."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported repeated DxU 850 Iris flow cell/image quality faults with blurry particle images and excessive review flags during urine microscopy testing.",
+      "Cause": "Verified fluids and waste were connected correctly, no external tubing kinks were found, and user-level cleaning was performed, but poor image quality persisted during verification.",
+      "Resolution": "Removed the DxU 850 Iris from service, labeled it Out of Service, documented observed image quality behavior and error messages, and escalated for vendor/bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Whether patient specimens were affected",
+    "Whether results were held, repeated, or manually reviewed",
+    "Exact on-screen flow cell or image quality message",
+    "Whether issue affected one specimen or multiple specimens",
+    "Image appearance: blurry, dark, streaked, bubbles, debris, low contrast",
+    "Reagent, rinse, and wash supply status",
+    "Waste container level and drain tubing condition",
+    "Any recent reagent, waste, tubing, or maintenance changes",
+    "Whether cleaning/rinse routine was performed",
+    "QC or verification result after cleaning",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 850 Iris Urine Analyzer - Rack Transport or Load/Unload Fault",
+  "description": "Troubleshooting rack loading, unloading, transport, rack detection, sampler movement, or rack handling faults on the DxU 850 Iris.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 850 Iris",
+  "url": "guides/beckman-coulter-dxu-850-iris-rack-transport-or-load-unload-fault.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 850 Iris is not actively processing patient specimens before touching the rack transport, sampler, load area, or unload area. If urine testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: No patient specimen is interrupted, lost, or reported from a device with an unresolved rack transport fault."
+    },
+    {
+      "title": "Stop Additional Rack Loading",
+      "instructions": "Ask staff not to load additional racks until the transport fault is understood. Confirm whether any specimens were in process when the fault occurred and whether those specimens require repeat testing per laboratory policy. Expected outcome: Incomplete or questionable urine results are not released."
+    },
+    {
+      "title": "Confirm the Exact Complaint",
+      "instructions": "Ask staff what they observed. Check whether the issue involves: Rack not advancing; Rack stuck in the load area; Rack stuck in the unload area; Repeated rack load error; Rack not detected; Transport mechanism moving partially, then stopping; Alarm after a specific rack or sample position; Intermittent load or unload failure. Expected outcome: The issue is narrowed to rack loading, unloading, detection, positioning, or movement."
+    },
+    {
+      "title": "Check for Obvious Obstruction",
+      "instructions": "With the analyzer idle and safe to access, inspect the rack load/unload path for misplaced sample cups, rack fragments, caps, labels, paper, dried urine residue, or other debris. Remove only user-accessible obstructions without forcing any mechanism. Expected outcome: If an obstruction is found and removed, clear the fault and verify normal rack movement. If resolved, stop."
+    },
+    {
+      "title": "Verify the Correct Rack Type and Rack Condition",
+      "instructions": "Inspect the rack involved in the fault. Look for cracks, bent sections, missing identifiers, warped plastic, damaged rack feet, or labels interfering with movement. Compare with a known-good DxU/Iris-compatible rack if available. Expected outcome: A damaged or incorrect rack is removed from use. If a known-good rack transports normally, the analyzer is not the primary fault source."
+    },
+    {
+      "title": "Check Sample Tube or Cup Placement",
+      "instructions": "Confirm specimen containers are seated correctly in the rack and are not tilted, overfilled, leaking, capped improperly, or protruding in a way that contacts the transport path. Expected outcome: Rack movement is not blocked by improper sample placement."
+    },
+    {
+      "title": "Inspect the Load and Unload Areas for Full or Misaligned Racks",
+      "instructions": "Verify the unload area is not full and that racks are not stacked, angled, or positioned incorrectly. Confirm the load area has the rack seated properly and not partially inserted. Expected outcome: Rack flow is not being prevented by a full unload lane or misloaded rack."
+    },
+    {
+      "title": "Check Covers, Doors, and Interlocks",
+      "instructions": "Confirm all analyzer covers, access panels, and safety doors are fully closed. A cover or interlock condition may prevent rack motion even if the rack path appears clear. Expected outcome: The analyzer allows rack movement once all covers and interlocks are properly engaged."
+    },
+    {
+      "title": "Review On-Screen Error or Status Messages",
+      "instructions": "Record the exact rack, sampler, transport, or load/unload message shown on the DxU 850 Iris system. Do not rely only on staff description if the message is still available. Expected outcome: The work order captures the actual reported fault and not a generalized “jam” description."
+    },
+    {
+      "title": "Check for Repeated Fault at the Same Position",
+      "instructions": "Ask staff whether the fault occurs with one rack, one rack slot, one side of the loader, or all racks. Run only facility-approved non-patient verification material or a known-good empty rack if appropriate and allowed by local procedure. Expected outcome: A single bad rack or loading position is separated from a broader transport issue."
+    },
+    {
+      "title": "Confirm Power Stability",
+      "instructions": "Check that the analyzer is plugged into the correct outlet and that the power cord is secure. Avoid repeated power cycling unless the analyzer is idle and specimen/result integrity has been addressed. Expected outcome: The transport fault is not being caused by unstable power or an interrupted startup state."
+    },
+    {
+      "title": "Restart Only When Safe",
+      "instructions": "If the rack path is clear, specimens are accounted for, and staff confirms testing can pause, perform a controlled restart using the site-approved shutdown/startup process. Expected outcome: Temporary control or positioning faults may clear. If the fault returns, continue troubleshooting."
+    },
+    {
+      "title": "Check for Recent Changes",
+      "instructions": "Ask whether the issue started after cleaning, rack replacement, software restart, power loss, reagent/service activity, LIS downtime, or a spill. Expected outcome: The fault is linked to a recent event when applicable, helping guide repair escalation."
+    },
+    {
+      "title": "Observe for Abnormal Movement or Sound",
+      "instructions": "During safe idle operation, observe whether the rack transport hesitates, clicks, grinds, fails to home, moves unevenly, or stops before reaching the next position. Do not force the rack handler or manually drive mechanisms. Expected outcome: Abnormal mechanical behavior is identified without causing additional damage."
+    },
+    {
+      "title": "Document Final Device Status",
+      "instructions": "If the analyzer successfully loads and unloads multiple known-good racks without fault, return it to service according to site policy. If the fault repeats, remove the device from service. Expected outcome: The analyzer is either verified operational or appropriately escalated."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the Beckman Coulter DxU 850 Iris stopped during rack loading and displayed a rack transport/load fault.",
+      "Cause": "Found a damaged sample rack with a cracked lower edge causing intermittent binding in the load path.",
+      "Resolution": "Removed damaged rack from use, cleared the load path, verified normal transport with known-good racks, and returned analyzer to service."
+    }
+  },
+  "helpfulDetails": [
+    "Exact rack transport or load/unload message displayed",
+    "Whether the fault occurred during loading, unloading, or active sampling",
+    "Rack number or rack position involved, if known",
+    "Whether patient specimens were in process",
+    "Whether affected specimens were repeated or held",
+    "Condition of the rack used during the fault",
+    "Load and unload area status",
+    "Cover or interlock status",
+    "Any obstruction, spill, residue, or debris found",
+    "Abnormal movement, grinding, clicking, or hesitation",
+    "Whether a known-good rack was tested",
+    "Whether restart cleared the fault",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 850 Iris Urine Analyzer - Particle Recognition / Review Flag Issue",
+  "description": "Troubleshooting excessive review flags, particle recognition concerns, image review issues, or questionable urine microscopy classification.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 850 Iris",
+  "url": "guides/beckman-coulter-dxu-850-iris-particle-recognition-review-flag-issue.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 850 Iris is not actively processing patient specimens before troubleshooting image review, particle recognition, or classification concerns. If urine microscopy testing must continue, have laboratory staff use another validated analyzer or follow the approved manual review process. Expected outcome: Questionable urine microscopy results are not released without proper review."
+    },
+    {
+      "title": "Stop Reporting Questionable Results",
+      "instructions": "Ask laboratory staff whether patient results were affected by excessive review flags or unusual particle classification. Confirm whether results were held, manually reviewed, repeated, or verified according to laboratory policy. Expected outcome: Potentially misclassified results are controlled before release."
+    },
+    {
+      "title": "Confirm the Exact Recognition Issue",
+      "instructions": "Ask staff what they are seeing. Check whether the issue involves: Excessive review flags; Increased manual review workload; RBC, WBC, epithelial cell, cast, crystal, yeast, bacteria, mucus, or artifact misclassification; Unusual particle counts; Poor correlation with manual microscopy; Repeated abnormal flags on normal specimens; Abnormal images shown during review; Issue limited to one specimen type, one rack, or all samples. Expected outcome: The issue is defined as recognition, image quality, sample quality, operator review, or system-wide performance."
+    },
+    {
+      "title": "Verify Sample and Specimen Quality",
+      "instructions": "Confirm the specimens are properly mixed, not excessively old, not visibly contaminated, and not outside laboratory acceptance criteria. Urine sediment can settle quickly, and poor mixing may cause inconsistent particle concentration. Expected outcome: Recognition concerns are not caused by specimen handling or settling."
+    },
+    {
+      "title": "Check for Pattern by Sample Type",
+      "instructions": "Ask whether the review flags occur mainly with turbid urine, gross hematuria, heavy mucus, crystals, debris, or highly concentrated specimens. Some urine specimens naturally generate more review flags because particles overlap, clump, or obscure image fields. Expected outcome: Staff can distinguish true analyzer concern from specimen-driven review workload."
+    },
+    {
+      "title": "Review Recent Reagent, Diluent, Cleaner, and Consumable Changes",
+      "instructions": "Confirm whether any fluids, consumables, controls, or sample containers were recently changed. Check for expired material, incorrect material, wrong lot in use, or improper storage. Expected outcome: Consumable-related causes are ruled out before assuming analyzer failure."
+    },
+    {
+      "title": "Inspect the Sample Area for External Contamination",
+      "instructions": "With the analyzer idle and safe to access, visually inspect user-accessible sample areas for spilled urine, debris, dried residue, or rack contamination. Do not perform internal disassembly. Expected outcome: External contamination that could affect sampling or image quality is identified and corrected if accessible."
+    },
+    {
+      "title": "Check Rack and Tube Presentation",
+      "instructions": "Verify that racks are loaded correctly, tubes are seated properly, and sample volume appears adequate. Poor tube position or insufficient sample volume can affect aspiration and downstream image quality. Expected outcome: Specimens are presented consistently to the analyzer."
+    },
+    {
+      "title": "Check for Related Aspiration or Flow Errors",
+      "instructions": "Review recent analyzer messages or staff reports for aspiration errors, low flow, clogging, carryover concerns, or flow cell warnings. Particle recognition problems may be secondary to poor sample flow or debris in the sample path. Expected outcome: A possible fluidic or aspiration issue is identified if present."
+    },
+    {
+      "title": "Review Image Quality During Manual Review",
+      "instructions": "Ask the operator to show examples of flagged images, if available. Look for: Blurry images; Dark or low-contrast images; Streaks; Bubbles; Debris; Excess background material; Inconsistent focus; Unusual image artifacts. Expected outcome: The issue is narrowed to particle recognition logic, poor image quality, or sample debris."
+    },
+    {
+      "title": "Confirm QC and Background Checks Are Acceptable",
+      "instructions": "Ask laboratory staff whether current QC, background, or daily checks passed according to their procedure. Do not override QC failure or advise patient testing if quality checks are unresolved. Expected outcome: The analyzer is not used for patient reporting unless quality checks support use."
+    },
+    {
+      "title": "Check for Recent Software, Database, or Review Rule Changes",
+      "instructions": "Ask whether review rules, auto-verification settings, operator review criteria, middleware rules, or software settings were recently changed. Increased review flags may be caused by workflow or rule changes rather than analyzer hardware failure. Expected outcome: External configuration or LIS/middleware-related causes are considered."
+    },
+    {
+      "title": "Compare to Manual Microscopy or Alternate Method",
+      "instructions": "Have laboratory staff compare affected specimens using the approved manual microscopy or alternate validated process. Clinical Engineering should not interpret patient results, but should document whether staff confirmed a correlation problem. Expected outcome: Staff determine whether the issue affects clinical result accuracy."
+    },
+    {
+      "title": "Restart Only When Safe",
+      "instructions": "If the analyzer and workstation are idle, perform a controlled restart according to site procedure. Do not restart while specimens are processing or results are pending transmission. Expected outcome: Temporary software or processing issues clear without affecting patient results."
+    },
+    {
+      "title": "Run an Approved Check or Control After Troubleshooting",
+      "instructions": "Have laboratory staff perform the appropriate QC, control, background, or verification process before returning the analyzer to normal patient use. Expected outcome: Analyzer performance is verified according to laboratory policy before release."
+    },
+    {
+      "title": "Stop if Recognition Remains Questionable",
+      "instructions": "If particle recognition remains abnormal, review flags are excessive without explanation, images appear poor, or results do not correlate with manual review, stop troubleshooting. Expected outcome: The issue is escalated before inaccurate microscopy results are released."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory reported excessive review flags and questionable particle classification on the Beckman Coulter DxU 850 Iris urine analyzer.",
+      "Cause": "Verified analyzer was producing repeated review flags; sample presentation, rack loading, consumables, and visible external contamination checks did not identify an external cause.",
+      "Resolution": "Removed analyzer from service, labeled Out of Service, advised lab to use approved alternate testing process, and escalated unit for vendor/bench evaluation."
+    }
+  },
+  "helpfulDetails": [
+    "Whether QC or background checks passed",
+    "Specific review flags observed",
+    "Particle types being misclassified",
+    "Whether issue affected all samples or only certain specimen types",
+    "Example specimen conditions such as turbid, bloody, crystal-heavy, or mucus-heavy urine",
+    "Whether images appeared blurry, dark, streaked, or artifact-heavy",
+    "Rack and tube condition",
+    "Sample volume and mixing status",
+    "Any recent consumable, software, LIS, or review rule changes",
+    "Whether manual microscopy correlation was acceptable",
+    "Final device status"
+  ]
+},
+  {
+  "title": "Beckman Coulter DxU 850 Iris Urine Analyzer - Workstation / Middleware / LIS Communication Failure",
+  "description": "Troubleshooting DxU 850 Iris workstation, middleware, LIS, host connection, result upload, or worklist communication failures.",
+  "assetType": "Urine Analyzer",
+  "manufacturer": "Beckman Coulter",
+  "model": "DxU 850 Iris",
+  "url": "guides/beckman-coulter-dxu-850-iris-workstation-middleware-lis-communication-failure.html",
+  "dateAdded": "2026-06-26",
+  "steps": [
+    {
+      "title": "Ensure Patient Safety First",
+      "instructions": "Confirm the DxU 850 Iris is not actively processing patient specimens before restarting the analyzer, workstation, network equipment, or middleware connection. If testing must continue, have laboratory staff use another validated analyzer or follow the approved downtime process. Expected outcome: Patient testing and result reporting are protected during communication troubleshooting."
+    },
+    {
+      "title": "Confirm the Exact Communication Complaint",
+      "instructions": "Ask laboratory staff what is failing. Check whether the issue involves: Results not reaching the LIS; Results stuck on the workstation; Worklist not downloading; Host connection error; Middleware rejection; Database or workstation delay; Analyzer communicating locally but not externally; Intermittent result transmission. Expected outcome: The issue is narrowed to analyzer-to-workstation, workstation-to-middleware, or middleware-to-LIS communication."
+    },
+    {
+      "title": "Protect Result Integrity",
+      "instructions": "Confirm whether patient results are stored locally on the analyzer or workstation. Ask staff if any results were manually entered, repeated, or released during the communication outage. Expected outcome: Results are not lost, duplicated, mismatched, or released under the wrong patient record."
+    },
+    {
+      "title": "Check for a Facility-Wide LIS or Network Issue",
+      "instructions": "Ask if other laboratory analyzers are also failing to transmit results or receive orders. If multiple instruments are affected, contact LIS, IT, or middleware support before assuming DxU 850 Iris failure. Expected outcome: A broader network or LIS outage is identified or ruled out."
+    },
+    {
+      "title": "Verify Workstation Power and Status",
+      "instructions": "Confirm the DxU 850 Iris workstation or connected computer is powered on, responsive, and not frozen. Check monitor display, keyboard/mouse response, login status, and any visible error messages. Expected outcome: The workstation is available to receive, process, and transmit analyzer data."
+    },
+    {
+      "title": "Check Analyzer and Workstation Connection Cables",
+      "instructions": "Inspect the communication cable between the analyzer and workstation, if applicable. Confirm cables are fully seated, undamaged, and connected to the correct ports. Expected outcome: Physical communication connections are secure."
+    },
+    {
+      "title": "Check Network Cabling and Link Lights",
+      "instructions": "Inspect the Ethernet connection from the workstation to the wall jack, network switch, or designated network port. Look for link/activity lights at the network port when visible. Expected outcome: The workstation has a physical network connection."
+    },
+    {
+      "title": "Confirm the Correct Network Drop Is Being Used",
+      "instructions": "Verify the workstation is plugged into the approved laboratory network jack for the DxU 850 Iris system. Do not move the system to a different network port unless approved by IT or LIS. Expected outcome: The system remains connected to the validated network path."
+    },
+    {
+      "title": "Restart Only When Safe and Approved",
+      "instructions": "If no specimens are running and staff approve, restart the workstation application first. If the application restart does not restore communication, restart the workstation according to local procedure. Avoid power-cycling the analyzer during active testing. Expected outcome: Temporary software or session communication faults are cleared."
+    },
+    {
+      "title": "Confirm Host or Middleware Status on the Workstation",
+      "instructions": "Check whether the workstation shows host communication as online, offline, pending, disabled, or in error. Review visible connection indicators, message queues, or pending transmission lists if user-accessible. Expected outcome: The communication status is identified without changing validated configuration."
+    },
+    {
+      "title": "Check for Results Waiting to Transmit",
+      "instructions": "Ask lab staff to confirm whether results are queued, held, rejected, or pending release. Do not delete, clear, or resend result batches unless following approved lab/LIS procedure. Expected outcome: Pending results are preserved and handled through the correct workflow."
+    },
+    {
+      "title": "Confirm Patient and Specimen ID Workflow",
+      "instructions": "Verify that failed transmissions are not caused by missing specimen IDs, barcode errors, operator ID problems, order mismatch, or unverified results. Expected outcome: The issue is confirmed as communication-related rather than a specimen identification or workflow problem."
+    },
+    {
+      "title": "Verify Middleware or LIS Acceptance",
+      "instructions": "Ask LIS or middleware support whether messages from the DxU 850 Iris are being received, rejected, delayed, or blocked. Common external causes may include interface downtime, rejected message format, inactive connection, changed host settings, or middleware queue issues. Expected outcome: The failure point is identified beyond the analyzer."
+    },
+    {
+      "title": "Check Recent Changes",
+      "instructions": "Ask whether there were recent changes to: LIS or middleware configuration; Network switch or wall jack; Workstation replacement; Windows updates; IP address assignment; Firewall rules; Instrument interface settings; Analyzer software updates. Expected outcome: A recent change is identified as a possible cause."
+    },
+    {
+      "title": "Perform a Controlled Test Transmission if Appropriate",
+      "instructions": "With laboratory and LIS approval, send a known test result, QC result, or approved interface test message if available. Confirm whether it appears at the workstation, middleware, and LIS. Expected outcome: The communication path is verified step by step."
+    },
+    {
+      "title": "Do Not Make Unapproved Configuration Changes",
+      "instructions": "Avoid changing IP addresses, host settings, ports, interface protocols, or LIS destination settings unless directed by Beckman Coulter, LIS, IT, or approved site documentation. Expected outcome: The validated interface configuration is protected."
+    },
+    {
+      "title": "If Communication Is Restored",
+      "instructions": "Confirm with laboratory staff that pending results transmitted successfully and no duplicate results were created. Document the corrective action and return the device to normal use if all testing and reporting functions are verified. Expected outcome: The DxU 850 Iris is safely returned to service."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported that DxU 850 Iris urine results were not transmitting from the workstation to the LIS.",
+      "Cause": "Workstation and analyzer were operational, but the network cable at the workstation had no active link light and was found loose at the wall jack.",
+      "Resolution": "Reseated the network cable, confirmed link activity returned, verified pending urine results transmitted with lab and LIS review, and returned the system to service."
+    }
+  },
+  "helpfulDetails": [
+    "Analyzer and workstation power status",
+    "Whether patient specimens were actively processing",
+    "Whether results were stored locally or queued",
+    "Exact communication error or host status shown",
+    "Workstation response or application status",
+    "Network cable condition and link lights",
+    "Wall jack or switch port used",
+    "Whether other lab instruments were affected",
+    "Middleware or LIS queue/rejection status",
+    "Any recent IT, LIS, software, or workstation changes",
+    "Test transmission result",
+    "Whether pending results were reconciled",
+    "Final device status"
+  ]
 }
 ]
