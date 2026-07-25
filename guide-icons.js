@@ -58,3 +58,15 @@
     container.style.display = 'none';
   };
 })();
+
+// Guide pages already share this file, so it is the single low-maintenance
+// entry point for site-wide footer enhancements.
+(() => {
+  if (document.querySelector('script[data-social-links]')) return;
+
+  const socialScript = document.createElement('script');
+  socialScript.src = new URL('social-links.js', document.currentScript.src).href;
+  socialScript.defer = true;
+  socialScript.dataset.socialLinks = '';
+  document.head.appendChild(socialScript);
+})();
