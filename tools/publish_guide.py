@@ -154,6 +154,7 @@ def markdown_inline(value: str) -> str:
 
 
 def markdown_blocks(value: str) -> str:
+    value = re.sub(r"<!--.*?-->", "", value, flags=re.S)
     blocks, paragraph, items = [], [], []
     def flush() -> None:
         nonlocal paragraph, items
@@ -188,6 +189,16 @@ def render_html(plan: Plan, template: str) -> str:
     head = template[:template.index('<section class="hero">')]
     tail = template[template.index('\n<section style="padding:40px; text-align:center;"', template.index("</main>")):]
     head = re.sub(r"<title>.*?</title>", f"<title>{html.escape(str(meta['title']))}</title>", head, count=1)
+    description_tag = f'<meta name="description" content="{html.escape(str(meta["description"]), quote=True)}">'
+    head, replacements = re.subn(
+        r"""<meta\b(?=[^>]*\bname\s*=\s*["']description["'])[^>]*>""",
+        description_tag,
+        head,
+        count=1,
+        flags=re.I,
+    )
+    if not replacements:
+        head = head.replace("</head>", description_tag + "\n</head>", 1)
     head = re.sub(r'<link rel="canonical" href="[^"]+"\s*/>', f'<link rel="canonical" href="{canonical}" />', head, count=1)
     body = [f'<section class="hero">\n  <h2>{html.escape(str(meta["manufacturer"]))} {html.escape(str(meta["model"]))}</h2>\n  <p>{html.escape(str(meta["issueTitle"]))}</p>\n</section>', '<main style="max-width:900px; margin:40px auto; padding:0 20px;">']
     for label, key in (("Asset Type", "assetType"), ("Manufacturer", "manufacturer"), ("Model", "model")): body += [f"<h3>{label}</h3>", f"<p>{html.escape(str(meta[key]))}</p>"]
@@ -281,7 +292,7 @@ def validate_outputs(plan: Plan, root: Path) -> None:
     for wording in [plan.meta["title"], plan.meta["description"], *plan.meta["ccr"].values(), *plan.meta["helpfulDetails"], *[s["title"] for s in plan.steps]]:
         if html.escape(str(wording), quote=False) not in page and str(wording) not in plan.outputs[plan.target_shard].decode(): raise TransactionError(f"rendered output omitted supplied wording: {wording}")
     for supplied in [value for name, value in plan.sections.items() if name != SECTIONS[1]] + [s["body"] for s in plan.steps]:
-        for line in supplied.splitlines():
+        for line in re.sub(r"<!--.*?-->", "", supplied, flags=re.S).splitlines():
             wording = re.sub(r"^[-*]\s+", "", line.strip())
             wording = re.sub(r"\*\*(.*?)\*\*|\*(.*?)\*", lambda m: m.group(1) or m.group(2), wording)
             if wording and wording not in visible: raise TransactionError(f"rendered HTML omitted supplied wording: {wording}")

@@ -49,7 +49,7 @@ The UTF-8 Markdown input uses YAML front matter and the seven sections specified
 
 With `taxonomyMode: reuse`, asset, manufacturer, and model names must exactly match existing canonical names. Normalized matches block publication rather than being silently selected. With `taxonomyMode: create-missing`, every missing record must be explicitly included as `newAsset`, `newManufacturer`, or `newModel` and contain the complete top-level and nested registry schema. A new model must link the resolved canonical manufacturer and asset type. A new manufacturer shard is permitted only with a validated `newManufacturer` record.
 
-Markdown-to-HTML conversion is mechanical: headings, paragraphs, emphasis, and lists are rendered and HTML-special characters are escaped. Supplied technical, safety, escalation, expected-outcome, return-to-service, CCR, helpful-detail, and section wording is checked against the rendered page. Step instructions in discovery JSON differ only by documented whitespace/Markdown flattening.
+Markdown-to-HTML conversion is mechanical: headings, paragraphs, emphasis, and lists are rendered and HTML-special characters are escaped. Markdown HTML comments are treated as template-only instructions and omitted. The page title and meta description are always generated from the input front matter rather than retained from the canonical HTML template. Supplied technical, safety, escalation, expected-outcome, return-to-service, CCR, helpful-detail, and section wording is checked against the rendered page. Step instructions in discovery JSON differ only by documented whitespace/Markdown flattening.
 
 ## Tests
 

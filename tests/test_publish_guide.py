@@ -2,6 +2,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -46,11 +47,11 @@ class PublisherTests(unittest.TestCase):
         self.assertTrue(any("duplicate resolution" in error for error in plan.errors))
 
     def test_rejects_duplicate_yaml_key(self):
-        original = self.fixture("valid-guide.md").read_text()
+        original = self.fixture("valid-guide.md").read_text(encoding="utf-8")
         broken = original.replace("schemaVersion: 1", "schemaVersion: 1\nschemaVersion: 1")
         path = self.fixture("temporary-invalid.md")
         try:
-            path.write_text(broken)
+            path.write_text(broken, encoding="utf-8")
             with self.assertRaises(InputError):
                 parse_input(path)
         finally:
@@ -61,8 +62,8 @@ class PublisherTests(unittest.TestCase):
         root = Path(temporary.name)
         (root / "data").mkdir()
         (root / "guides").mkdir()
-        template = (ROOT / "guides/fresenius-kabi-agilia-air-in-line-alarm-or-air-detector-false-alarm.html").read_text()
-        (root / "guides/acme-alpha-existing.html").write_text(template)
+        template = (ROOT / "guides/fresenius-kabi-agilia-air-in-line-alarm-or-air-detector-false-alarm.html").read_text(encoding="utf-8")
+        (root / "guides/acme-alpha-existing.html").write_text(template, encoding="utf-8")
         asset = [{"type": "asset", "name": "Infusion Pump", "slug": "infusion-pump"}]
         manufacturer = [{"type": "manufacturer", "name": "Acme", "slug": "acme"}]
         model = [{"type": "model", "name": "Alpha", "slug": "alpha", "profile": {"manufacturer": "Acme", "assetType": "Infusion Pump"}}]
@@ -75,11 +76,11 @@ class PublisherTests(unittest.TestCase):
             "data/guides-acme.json": [guide],
         }
         for name, value in files.items():
-            (root / name).write_text(json.dumps(value, indent=2) + "\n")
-        (root / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://jaketroubleshoots.com/guides/acme-alpha-existing.html</loc></url></urlset>\n')
-        (root / "unrelated.txt").write_text("do not change\n")
+            (root / name).write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+        (root / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://jaketroubleshoots.com/guides/acme-alpha-existing.html</loc></url></urlset>\n', encoding="utf-8")
+        (root / "unrelated.txt").write_text("do not change\n", encoding="utf-8")
         source = self.new_manufacturer_input() if new_manufacturer else self.normal_input()
-        (root / "input.md").write_text(source)
+        (root / "input.md").write_text(source, encoding="utf-8")
         subprocess.run(["git", "init", "-q"], cwd=root, check=True)
         subprocess.run(["git", "config", "user.email", "tests@example.invalid"], cwd=root, check=True)
         subprocess.run(["git", "config", "user.name", "Publisher Tests"], cwd=root, check=True)
@@ -130,10 +131,12 @@ Transfer therapy before testing.
 ## Work Order Documentation (CCR Method)
 
 Use the supplied wording.
+<!-- CCR examples come from front matter. -->
 
 ## Helpful Details to Include (If Known)
 
 Use the supplied label.
+<!-- Helpful details come from front matter. -->
 
 ## Final Thought
 
@@ -222,12 +225,21 @@ newModel:
             code, output, error = self.run_main(root, "--write", "--confirm-plan", plan.digest)
             self.assertEqual((code, error), (0, ""))
             report = json.loads(output)
-            page = (root / "guides/acme-alpha-error-e42.html").read_text()
+            page = (root / "guides/acme-alpha-error-e42.html").read_text(encoding="utf-8")
+            description_match = re.search(r'<meta name="description" content="([^"]*)">', page)
+            self.assertIsNotNone(description_match)
+            self.assertEqual(description_match.group(1), plan.meta["description"])
+            self.assertNotIn("Turn Assist and Continuous Lateral Rotation", page)
+            self.assertNotIn("&lt;!--", page)
+            self.assertNotIn("CCR examples come from front matter.", page)
+            self.assertNotIn("Helpful details come from front matter.", page)
             self.assertIn("Preserve O₂ at 5 L/min and Error E42 exactly.", page)
             self.assertIn("Removed from service; return only after the E42 test passes.", page)
+            self.assertIn("Remove from patient use; do not bypass Error E42.", page)
+            self.assertIn("Escalate to authorized personnel. Return to service only after all tests pass.", page)
             self.assertIn("Related Guides", page)
-            self.assertEqual(len(json.loads((root / "data/guides-acme.json").read_text())), 2)
-            self.assertEqual((root / "sitemap.xml").read_text().count("guides/acme-alpha-error-e42.html"), 1)
+            self.assertEqual(len(json.loads((root / "data/guides-acme.json").read_text(encoding="utf-8"))), 2)
+            self.assertEqual((root / "sitemap.xml").read_text(encoding="utf-8").count("guides/acme-alpha-error-e42.html"), 1)
             self.assertEqual((root / "unrelated.txt").read_bytes(), before)
             self.assertEqual(report["taxonomyDecisions"]["manufacturer"], "reused")
 
@@ -239,7 +251,7 @@ newModel:
             code, _, _ = self.run_main(root, "--write", "--confirm-plan", plan.digest)
             self.assertEqual(code, 0)
             self.assertTrue((root / "data/guides-newco.json").is_file())
-            self.assertEqual(json.loads((root / "data/guides.json").read_text()).count("data/guides-newco.json"), 1)
+            self.assertEqual(json.loads((root / "data/guides.json").read_text(encoding="utf-8")).count("data/guides-newco.json"), 1)
 
     def test_simulated_failure_rolls_back_every_destination(self):
         temporary, root = self.make_repository()
@@ -259,12 +271,12 @@ newModel:
             plan = self.planned(root)
             code, _, error = self.run_main(root, "--write", "--confirm-plan", "wrong")
             self.assertEqual(code, 2); self.assertIn("incorrect or stale", error)
-            (root / "unrelated.txt").write_text("dirty\n")
+            (root / "unrelated.txt").write_text("dirty\n", encoding="utf-8")
             code, _, error = self.run_main(root, "--write", "--confirm-plan", plan.digest)
             self.assertEqual(code, 2); self.assertIn("clean Git worktree", error)
             subprocess.run(["git", "checkout", "--", "unrelated.txt"], cwd=root, check=True)
-            catalog = json.loads((root / "data/hub-asset.json").read_text()); catalog[0]["note"] = "changed"
-            (root / "data/hub-asset.json").write_text(json.dumps(catalog))
+            catalog = json.loads((root / "data/hub-asset.json").read_text(encoding="utf-8")); catalog[0]["note"] = "changed"
+            (root / "data/hub-asset.json").write_text(json.dumps(catalog), encoding="utf-8")
             code, _, error = self.run_main(root, "--write", "--confirm-plan", plan.digest)
             self.assertEqual(code, 2); self.assertIn("incorrect or stale", error)
 
