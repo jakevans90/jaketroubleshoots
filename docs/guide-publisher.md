@@ -1,6 +1,61 @@
-# Single-guide publisher
+# Transactional guide publishers
 
 `tools/publish_guide.py` plans and, after explicit confirmation, transactionally publishes one reviewed troubleshooting guide. The workflow and input contract in [`guide-publishing-workflow.md`](guide-publishing-workflow.md) are authoritative.
+
+`tools/publish_guides.py` applies the same contract to every `.md` file in one
+directory. It parses and validates the complete batch before planning writes,
+reports each guide and the batch as a whole, and blocks every guide if any input
+has an error, warning, noncanonical taxonomy value, stale digest, or duplicate.
+
+## Batch preparation and dry run
+
+Put only explicitly approved Markdown inputs in a batch directory, then run:
+
+```sh
+python tools/publish_guides.py incoming-guides/stryker-procuity/
+```
+
+Dry run is the default and changes no publishing files. Review every per-guide
+result, taxonomy decision, duplicate result, proposed file, and the single
+SHA-256 batch digest. Inputs are processed in deterministic filename order.
+Guides targeting one manufacturer are combined into one shard update; taxonomy
+records and shard registrations are added once; and the sitemap is updated once
+with all guide URLs.
+
+## Batch confirmed write
+
+From a clean worktree, repeat the command with the reviewed complete digest:
+
+```sh
+python tools/publish_guides.py incoming-guides/stryker-procuity/ \
+  --write \
+  --confirm-plan 0123456789abcdef...
+```
+
+The publisher reconstructs the entire plan, so edits to any input, taxonomy
+catalog, registered guide shard, template, or sitemap invalidate the digest.
+It renders all outputs in a repository-local temporary directory, validates the
+complete planned state, and then replaces destinations as one transaction.
+
+## Batch review and rollback
+
+After a successful write, review the JSON transaction report and Git diff. The
+report lists every guide, created and modified files, before/after hashes, the
+confirmed digest, and all sitemap additions:
+
+```sh
+git diff --check
+git diff -- guides/ data/ sitemap.xml
+```
+
+If any replacement or post-write validation fails, every created guide and
+every shard, taxonomy, manifest, and sitemap change is restored automatically.
+Unrelated files are never included in the transaction. To test rollback safely,
+use the isolated automated fixtures rather than the real guide library:
+
+```sh
+python -m unittest tests.test_publish_guides.BatchPublisherTests.test_complete_rollback_after_mid_transaction_failure -v
+```
 
 ## Dry run (default)
 
