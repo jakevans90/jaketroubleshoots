@@ -171,6 +171,14 @@ def markdown_blocks(value: str) -> str:
     flush(); return "\n\n".join(blocks)
 
 
+def without_ccr_label(value: str) -> str:
+    label = "CCR = Complaint, Cause, Resolution"
+    return "\n".join(
+        line for line in value.splitlines()
+        if line.strip() not in {label, f"**{label}**"}
+    ).strip()
+
+
 def flatten(value: str) -> str:
     plain = re.sub(r"^[-*]\s+", "", value, flags=re.M); plain = re.sub(r"\*\*(.*?)\*\*|\*(.*?)\*", lambda m: m.group(1) or m.group(2), plain)
     return " ".join(plain.split())
@@ -205,7 +213,7 @@ def render_html(plan: Plan, template: str) -> str:
     body += [f"<h2>{SECTIONS[0]}</h2>", markdown_blocks(plan.sections[SECTIONS[0]]), f"<h2>{SECTIONS[1]}</h2>"]
     for step in plan.steps: body += [f'<h4>{step["number"]}. {html.escape(step["title"])}</h4>', markdown_blocks(step["body"])]
     for name in SECTIONS[2:4]: body += [f"<h2>{name}</h2>", markdown_blocks(plan.sections[name])]
-    body += [f"<h2>{SECTIONS[4]}</h2>", markdown_blocks(plan.sections[SECTIONS[4]]), "<p><strong>CCR = Complaint, Cause, Resolution</strong></p>"]
+    body += [f"<h2>{SECTIONS[4]}</h2>", markdown_blocks(without_ccr_label(plan.sections[SECTIONS[4]])), "<p><strong>CCR = Complaint, Cause, Resolution</strong></p>"]
     for label, key, explanation in (("Complaint", "complaint", "What was reported by the clinical staff."), ("Cause", "cause", "What was observed during troubleshooting."), ("Resolution", "resolution", "What action was taken.")):
         body += [f"<h4>{label}</h4>", f"<p>{explanation}</p>", f'<p><em>Example:</em><br>"{html.escape(str(meta["ccr"][key]))}"</p>']
     body += [f"<h2>{SECTIONS[5]}</h2>", markdown_blocks(plan.sections[SECTIONS[5]]), "<ul>\n" + "\n".join(f"  <li>{html.escape(str(x))}</li>" for x in meta["helpfulDetails"]) + "\n</ul>", f"<h2>{SECTIONS[6]}</h2>", markdown_blocks(plan.sections[SECTIONS[6]]), "</main>"]

@@ -131,6 +131,7 @@ Transfer therapy before testing.
 ## Work Order Documentation (CCR Method)
 
 Use the supplied wording.
+CCR = Complaint, Cause, Resolution
 <!-- CCR examples come from front matter. -->
 
 ## Helpful Details to Include (If Known)
@@ -237,6 +238,11 @@ newModel:
             self.assertIn("Removed from service; return only after the E42 test passes.", page)
             self.assertIn("Remove from patient use; do not bypass Error E42.", page)
             self.assertIn("Escalate to authorized personnel. Return to service only after all tests pass.", page)
+            self.assertEqual(page.count("CCR = Complaint, Cause, Resolution"), 1)
+            self.assertIn("<p><strong>CCR = Complaint, Cause, Resolution</strong></p>", page)
+            self.assertNotIn("<p>CCR = Complaint, Cause, Resolution</p>", page)
+            for value in plan.meta["ccr"].values():
+                self.assertIn(f'"{value}"', page)
             self.assertIn("Related Guides", page)
             self.assertEqual(len(json.loads((root / "data/guides-acme.json").read_text(encoding="utf-8"))), 2)
             self.assertEqual((root / "sitemap.xml").read_text(encoding="utf-8").count("guides/acme-alpha-error-e42.html"), 1)
