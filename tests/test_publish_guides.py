@@ -81,6 +81,28 @@ class BatchPublisherTests(unittest.TestCase):
                     "Removed from service; return only after the E42 test passes.",
                     page,
                 )
+                self.assertEqual(page.count("CCR = Complaint, Cause, Resolution"), 1)
+                self.assertIn(
+                    "<p><strong>CCR = Complaint, Cause, Resolution</strong></p>",
+                    page,
+                )
+                self.assertNotIn("<p>CCR = Complaint, Cause, Resolution</p>", page)
+                self.assertIn(
+                    f'"Staff reported {issue} during O₂ delivery."',
+                    page,
+                )
+                self.assertIn(
+                    '"The approved test found flow below 5 L/min."',
+                    page,
+                )
+                self.assertIn(
+                    '"Removed from service; return only after the E42 test passes."',
+                    page,
+                )
+                self.assertIn(
+                    "Escalate to authorized personnel. Return to service only after all tests pass.",
+                    page,
+                )
             self.assertEqual((root / "unrelated.txt").read_bytes(), before)
 
     def test_one_invalid_input_blocks_all_ten(self):
