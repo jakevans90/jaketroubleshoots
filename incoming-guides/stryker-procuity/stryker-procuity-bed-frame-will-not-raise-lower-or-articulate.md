@@ -28,6 +28,8 @@ helpfulDetails:
   - "Final return-to-service status"
 ---
 
+## What This Guide Helps With
+
 Troubleshooting loss of bed height or articulation caused by power, lockouts, controls, connections, accessories, obstructions, or a service-level movement-system fault.
 
 ## Step-by-Step Troubleshooting
@@ -303,6 +305,8 @@ Move the patient to another verified bed before troubleshooting any movement fai
 CCR = Complaint, Cause, Resolution
 
 ## Helpful Details to Include (If Known)
+
+<!-- rendered from front matter -->
 
 ## Final Thought
 

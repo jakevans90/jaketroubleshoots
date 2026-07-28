@@ -28,6 +28,8 @@ helpfulDetails:
   - "Final return-to-service status"
 ---
 
+## What This Guide Helps With
+
 Troubleshooting a persistent brake warning, incorrect brake-status indication, incomplete brake engagement, caster movement, or an externally verifiable brake sensing concern.
 
 ## Step-by-Step Troubleshooting
@@ -321,6 +323,8 @@ Always verify that the bed physically resists movement after brake engagement; a
 CCR = Complaint, Cause, Resolution
 
 ## Helpful Details to Include (If Known)
+
+<!-- rendered from front matter -->
 
 ## Final Thought
 

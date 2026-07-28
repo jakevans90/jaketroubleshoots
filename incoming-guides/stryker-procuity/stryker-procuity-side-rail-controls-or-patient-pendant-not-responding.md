@@ -28,6 +28,8 @@ helpfulDetails:
   - "Final device status"
 ---
 
+## What This Guide Helps With
+
 Troubleshooting unresponsive side rail or pendant controls caused by lockouts, power, loose connections, cable damage, contamination, or a localized control-interface fault.
 
 ## Step-by-Step Troubleshooting
@@ -317,6 +319,8 @@ When patient controls are unavailable, ensure staff provide an alternate method 
 CCR = Complaint, Cause, Resolution
 
 ## Helpful Details to Include (If Known)
+
+<!-- rendered from front matter -->
 
 ## Final Thought
 
