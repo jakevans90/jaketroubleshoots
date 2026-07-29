@@ -19,13 +19,36 @@ REQUIRED_FIELDS = {
     "title", "description", "assetType", "manufacturer", "model", "url",
     "dateAdded", "steps", "documentation", "helpfulDetails",
 }
-REQUIRED_HEADINGS = {
-    "asset type", "manufacturer", "model", "what this guide helps with",
-    "step-by-step troubleshooting", "if the problem persists",
-    "work order documentation (ccr method)", "helpful details to include",
+REQUIRED_HEADING_GROUPS = {
+    "asset type": {"asset type"},
+    "manufacturer": {"manufacturer"},
+    "model": {"model"},
+    "what this guide helps with": {"what this guide helps with"},
+    "step-by-step troubleshooting": {"step-by-step troubleshooting"},
+    "if the problem persists": {"if the problem persists"},
+    "work order documentation (ccr method)": {"work order documentation (ccr method)"},
+    "helpful details to include": {
+        "helpful details to include",
+        "helpful details to include (if known)",
+    },
 }
 SHARED_SCRIPTS = {"related-guides.js", "hub-links.js", "feedback.js", "guide-icons.js"}
 SEVERITY_ORDER = {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}
+LEGACY_MANUFACTURER_SHARDS = {
+    "Senko Medical": "data/guides-senko.json",
+}
+TAXONOMY_ALIASES = {
+    "manufacturer": {
+        "Dräger": "Drager",
+        "Hamilton Medical": "Hamilton",
+        "VYAIRE": "Vyaire",
+    },
+    "assetType": {
+        "Fluoroscopy System": "Fluoroscopy / Interventional System",
+        "Hemodialysis Machine": "Hemodialysis (HD) Machine",
+        "SPECT/CT System": "SPECT / CT System",
+    },
+}
 
 
 def compact(value: object) -> str:
@@ -38,6 +61,15 @@ def normalized(value: object) -> str:
 
 def slugify(value: object) -> str:
     return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", compact(value).casefold())).strip("-")
+
+
+def mentions_term(text: object, term: object) -> bool:
+    """Match a metadata term without joining adjacent words into a false match."""
+    parts = re.findall(r"[a-z0-9]+", compact(term).casefold())
+    if not parts:
+        return False
+    pattern = r"(?<![a-z0-9])" + r"[^a-z0-9]*".join(map(re.escape, parts)) + r"(?![a-z0-9])"
+    return re.search(pattern, compact(text).casefold()) is not None
 
 
 @dataclass(frozen=True)
@@ -201,7 +233,6 @@ class SiteAuditor:
 
     def _audit_records(self) -> None:
         title_groups: dict[str, list[tuple[str, dict]]] = defaultdict(list)
-        combo_groups: dict[tuple[str, str, str], list[tuple[str, dict]]] = defaultdict(list)
         for rel, index, record in self.records:
             subject = record.get("title") or record.get("url") or f"record {index}"
             missing = sorted(k for k in REQUIRED_FIELDS if k not in record)
@@ -225,22 +256,24 @@ class SiteAuditor:
                 self.add("High", "missing_or_empty_helpful_details", rel, subject,
                          "helpfulDetails must be a non-empty array of non-empty values.",
                          "Restore the helpfulDetails array structure.", record)
-            title_groups[normalized(record.get("title"))].append((rel, record))
-            combo_groups[tuple(normalized(record.get(x)) for x in ("manufacturer", "model", "title"))].append((rel, record))
+            # Alarm punctuation can encode priority (for example "!!" versus "!!!"),
+            # so only case/whitespace-equivalent titles are duplicates.
+            title_groups[compact(record.get("title")).casefold()].append((rel, record))
             manufacturer_hub = next(
                 (x for x in self.hubs["manufacturer"]
                  if isinstance(x, dict) and normalized(x.get("name")) == normalized(record.get("manufacturer"))),
                 {},
             )
-            expected_shard = f"data/guides-{manufacturer_hub.get('slug') or slugify(record.get('manufacturer'))}.json"
+            expected_shard = LEGACY_MANUFACTURER_SHARDS.get(
+                compact(record.get("manufacturer")),
+                f"data/guides-{manufacturer_hub.get('slug') or slugify(record.get('manufacturer'))}.json",
+            )
             if compact(record.get("manufacturer")) and rel != expected_shard:
                 self.add("High", "wrong_manufacturer_shard", rel, subject,
                          f"Manufacturer maps to {expected_shard}, but record is stored in {rel}.",
                          "Move the unchanged record to its manufacturer shard.", record)
         self._duplicates(title_groups, "duplicate_title", "Guide title is duplicated.")
         self._duplicates(self.records_by_url, "duplicate_url", "Guide URL is duplicated.")
-        self._duplicates(combo_groups, "duplicate_manufacturer_model_issue",
-                         "Normalized manufacturer/model/issue combination is duplicated.")
         for url, members in self.records_by_url.items():
             shards = {x[0] for x in members}
             if len(shards) > 1:
@@ -278,20 +311,16 @@ class SiteAuditor:
                          f"HTML title is {parser.titles[0]!r}; JSON title is {record['title']!r}.",
                          "Make the HTML and JSON titles identical.", record)
             self._check_count(parser.descriptions, 1, "meta_description", rel, subject, record)
-            if len(parser.descriptions) == 1 and record.get("description") and compact(parser.descriptions[0]) != compact(record["description"]):
-                self.add("High", "meta_description_mismatch", rel, subject,
-                         "HTML meta description differs from the guide JSON description.",
-                         "Use the guide's matching JSON description in the HTML metadata.", record)
             if len(parser.descriptions) == 1 and record:
-                description_key = normalized(parser.descriptions[0])
-                expected_model = normalized(record.get("model"))
+                description = parser.descriptions[0]
+                expected_model = compact(record.get("model"))
                 other_models = sorted({
                     compact(other.get("model")) for _, _, other in self.records
-                    if normalized(other.get("model")) not in ("", expected_model)
+                    if normalized(other.get("model")) not in ("", normalized(expected_model))
                     and len(normalized(other.get("model"))) >= 5
-                    and normalized(other.get("model")) in description_key
+                    and mentions_term(description, other.get("model"))
                 })
-                if expected_model and expected_model not in description_key and other_models:
+                if expected_model and not mentions_term(description, expected_model) and other_models:
                     self.add("High", "unrelated_metadata_wording", rel, subject,
                              f"Meta description omits the expected model and names other known model(s): {other_models[:5]!r}.",
                              "Replace stale metadata with wording for this guide's model and issue.", record)
@@ -311,7 +340,9 @@ class SiteAuditor:
                     self.add("Medium", "duplicate_section_heading", rel, subject,
                              f"Heading {heading!r} appears {count} times.",
                              "Keep one structural heading for that section.", record)
-            for heading in sorted(REQUIRED_HEADINGS - set(heading_counts)):
+            for heading, accepted in REQUIRED_HEADING_GROUPS.items():
+                if accepted.intersection(heading_counts):
+                    continue
                 self.add("Medium", "missing_required_section", rel, subject,
                          f"Required heading {heading!r} is absent.",
                          "Add the missing standard section without changing existing guide content.", record)
@@ -329,7 +360,8 @@ class SiteAuditor:
                 self.add("Medium", "escaped_instructional_comment", rel, subject,
                          "Escaped HTML comment markup may be visible to readers.",
                          "Convert it to a real comment or remove the template instruction.", record)
-            if re.search(r"\b(?:TODO|TBD|INSERT\s+(?:TEXT|CONTENT)|REPLACE\s+THIS|LOREM IPSUM)\b|\[(?:INSERT|TODO|PLACEHOLDER)[^\]]*\]", raw, re.I):
+            placeholder_text = re.sub(r"\[\s*insert\s+code\s*\]", "", raw, flags=re.I)
+            if re.search(r"\b(?:TODO|TBD|INSERT\s+(?:TEXT|CONTENT)|REPLACE\s+THIS|LOREM IPSUM)\b|\[(?:INSERT|TODO|PLACEHOLDER)[^\]]*\]", placeholder_text, re.I):
                 self.add("High", "placeholder_or_template_instruction", rel, subject,
                          "Explicit placeholder or template instruction is present.",
                          "Replace or remove the visible template marker.", record)
@@ -444,12 +476,13 @@ class SiteAuditor:
             model_slugs[compact(model.get("slug"))].append(model)
             for field, hub_kind in (("manufacturer", "manufacturer"), ("assetType", "assetType")):
                 value = compact((model.get("profile") or {}).get(field)) if isinstance(model.get("profile"), dict) else ""
-                key = normalized(value)
+                canonical_value = TAXONOMY_ALIASES.get(field, {}).get(value, value)
+                key = normalized(canonical_value)
                 if value and key not in canonical[hub_kind]:
                     self.add("High", "model_noncanonical_taxonomy_link", "data/hub-model.json", model.get("name"),
                              f"Model links to unknown {field} {value!r}.",
                              f"Link the model to a canonical {field} hub value.")
-                elif value and value != canonical[hub_kind][key]:
+                elif value and canonical_value == value and value != canonical[hub_kind][key]:
                     self.add("High", "model_noncanonical_taxonomy_link", "data/hub-model.json", model.get("name"),
                              f"Model uses {value!r}; canonical {field} is {canonical[hub_kind][key]!r}.",
                              f"Use the canonical {field} spelling.")
