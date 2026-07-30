@@ -22,7 +22,8 @@ CONFIG = Path(__file__).with_name("guide_enhancement_config.json")
 BEGIN = "<!-- GUIDE-ENHANCEMENTS:BEGIN -->"
 END = "<!-- GUIDE-ENHANCEMENTS:END -->"
 SAFETY = re.compile(r"\b(patient|clinical use|trained personnel|out of service|remove.*service|backup (?:unit|device)|safety)\b", re.I)
-GENERIC = {"guide","device","equipment","problem","issue","check","verify","medical","system","failure","troubleshooting"}
+GENERIC = {"guide","device","equipment","problem","issue","check","verify","medical","system",
+  "alarm","error","failed","failure","internal","output","troubleshooting"}
 SUBSYSTEMS = {
     "network": ("network","ethernet","wifi","wi-fi","vlan","gateway","central station","communication"),
     "power": ("power","battery","ac ","voltage","supply","charging"),
