@@ -33,7 +33,8 @@ class EngineTests(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory(); self.root=Path(self.tmp.name)
         for folder in ("data","guides","tools","preventive-maintenance","biomed-basics","scripts","tests"): (self.root/folder).mkdir()
         records=[record("acme-alpha-network"),record("acme-alpha-display",title="Display freezes after startup"),
-                 record("acme-alpha-pm","Alpha Family",title="Network communication")]
+                 record("acme-alpha-pm","Alpha Family",title="Network communication"),
+                 record("acme-beta-cardiac-output","Beta",title="Cardiac output calculation error")]
         (self.root/"data/guides.json").write_text('["data/guides-acme.json"]',encoding="utf-8")
         (self.root/"data/guides-acme.json").write_text(json.dumps(records),encoding="utf-8")
         for r in records: (self.root/r["url"]).write_text(HTML.replace("Network drops",r["title"]),encoding="utf-8")
@@ -52,7 +53,7 @@ class EngineTests(unittest.TestCase):
     def test_profile_and_symptom_differentiation(self):
         p=self.plan().proposals[0].profile
         self.assertEqual(p.exactModel,"Alpha"); self.assertEqual(p.primarySubsystem,"network")
-        self.assertTrue(any("patient association" in x for x in p.distinctSymptoms))
+        self.assertFalse(any(x.lower().startswith("confirm ") for x in p.distinctSymptoms))
     def test_failure_pattern_is_inference_labeled(self):
         self.assertIn("may suggest",infer_pattern("Failure occurs after startup."))
     def test_exact_model_context_and_link_limits(self):
@@ -74,6 +75,11 @@ class EngineTests(unittest.TestCase):
         plan=self.plan(); validate_plan(plan,self.root)
         slugs=[x["slug"] for values in plan.proposals[0].relationships.values() for x in values]
         self.assertNotIn("acme-alpha-network",slugs); self.assertEqual(len(slugs),len(set(slugs)))
+        self.assertNotIn("acme-beta-cardiac-output",slugs)
+    def test_generated_sections_reject_flattened_or_imperative_observations(self):
+        proposal=self.plan().proposals[0]
+        self.assertTrue(all(len(x)<=240 for x in proposal.enhancements["verification"]))
+        self.assertFalse(any(x.lower().startswith("confirm ") for x in proposal.enhancements["observedSymptoms"]))
     def test_manual_and_locked_content_preserved(self):
         existing={"startHere":[{"text":"Manual","source":"manual","locked":True}]}
         merged=merge_preserved(existing,{"startHere":["Generated"]})

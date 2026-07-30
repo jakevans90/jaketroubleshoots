@@ -137,11 +137,17 @@ def extract_profile(ref: GuideRef, refs: list[GuideRef], root: Path) -> Profile:
     codes=sorted(set(extract_codes(text)),key=str.casefold)
     subs=[name for name,terms in SUBSYSTEMS.items() if any(norm(t) in low for t in terms)]
     steps=[str(x.get("instructions","")) for x in ref.record.get("steps",[]) if isinstance(x,dict)]
-    observations=[s for s in sentences(" ".join(steps)) if re.search(r"\b(intermitt|only|during|after|when|repeated|returns?|freeze|drop|not recognized|fails?)\b",s,re.I)]
+    observations=[s for s in sentences(" ".join(steps))
+      if len(s)<=240
+      and re.search(r"\b(intermitt|only|during|after|when|repeated|returns?|freeze|drop|not recognized|fails?)\b",s,re.I)
+      and not re.match(r"^(confirm|check|verify|listen|observe|restart|power cycle)\b",s,re.I)]
     checks=[s for s in sentences(" ".join(steps)) if re.search(r"\b(check|inspect|verify|swap|reseat|observe|confirm|test)\b",s,re.I)]
-    escalate=[s for s in sentences(ref.visible) if re.search(r"\b(escalat|remove.*service|send for repair|advanced|qualified)\b",s,re.I)]
+    escalate=[str(x.get("instructions","")) for x in ref.record.get("steps",[])
+      if isinstance(x,dict) and re.search(r"\b(escalat|remove.*service|send for repair|advanced|qualified)\b",
+        str(x.get("title",""))+" "+str(x.get("instructions","")),re.I) and len(str(x.get("instructions","")))<=240]
     clinical=[s for s in sentences(ref.visible) if SAFETY.search(s)]
-    verify=[s for s in sentences(ref.visible) if re.search(r"\b(confirm|verify|reproduc|functional test|return to service|stable)\b",s,re.I)]
+    verify=[s for s in sentences(" ".join(steps))
+      if len(s)<=240 and re.search(r"\b(confirm|verify|reproduc|functional test|return to service|stable)\b",s,re.I)]
     model=str(ref.record["model"]); family=re.sub(r"\b(?:series|[a-z]?\d{2,4})\b.*$","",model,flags=re.I).strip() or model
     p=Profile(str(ref.record.get("assetType","")),str(ref.record["manufacturer"]),model,family,
       (subs[0] if subs else "general"),norm(title),[norm(x) for x in codes],subs[0] if subs else "general",subs[1:],
@@ -194,6 +200,8 @@ def relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], root: P
         if score>=cfg["minimumLinkScore"]: ranked.append((score,slug(candidate.record),candidate,reasons))
     for score,_,candidate,reasons in sorted(ranked,key=lambda x:(-x[0],x[1])):
         key="sameModel" if norm(candidate.record["model"])==norm(profile.exactModel) else "relatedTroubleshooting"
+        if key=="relatedTroubleshooting" and not any(x in reasons for x in ("error-code family","issue terminology")):
+            continue
         if len(groups[key])<cfg["limits"][key]:
             groups[key].append({"slug":slug(candidate.record),"score":score,"reasons":reasons,"source":"analyzer","locked":False})
     catalogs=(("preventiveMaintenance","preventive-maintenance",cfg["weights"]["preventiveMaintenance"]),
