@@ -202,10 +202,17 @@ def relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], root: P
         ranked_local=[]
         for s,path,text in local_catalog(root,folder):
             if s in existing: continue
-            overlap=tokens(profile.exactModel+" "+profile.primarySubsystem+" "+profile.normalizedIssueTitle)&tokens(text+" "+s)
-            if (norm(profile.exactModel) in norm(text) or
-                (profile.primarySubsystem != "general" and norm(profile.primarySubsystem) in norm(text)) or
-                len(overlap)>=2):
+            catalog_text=norm(text+" "+s)
+            overlap=tokens(profile.exactModel+" "+profile.primarySubsystem+" "+profile.normalizedIssueTitle)&tokens(catalog_text)
+            exact_model=norm(profile.exactModel) in catalog_text
+            same_manufacturer=norm(profile.manufacturer) in catalog_text
+            if key=="preventiveMaintenance":
+                eligible=exact_model and same_manufacturer
+            else:
+                eligible=(exact_model or
+                    (profile.primarySubsystem != "general" and norm(profile.primarySubsystem) in catalog_text) or
+                    len(overlap)>=2)
+            if eligible:
                 ranked_local.append((base+len(overlap),s,path,sorted(overlap)))
         for score,s,path,why in sorted(ranked_local,key=lambda x:(-x[0],x[1]))[:cfg["limits"][key]]:
             groups[key].append({"slug":s,"score":score,"reasons":["repository content overlap: "+", ".join(why)],"source":"analyzer","locked":False})

@@ -38,6 +38,7 @@ class EngineTests(unittest.TestCase):
         (self.root/"data/guides-acme.json").write_text(json.dumps(records),encoding="utf-8")
         for r in records: (self.root/r["url"]).write_text(HTML.replace("Network drops",r["title"]),encoding="utf-8")
         (self.root/"preventive-maintenance/acme-alpha-preventive-maintenance.html").write_text("<p>Acme Alpha network functional test</p>",encoding="utf-8")
+        (self.root/"preventive-maintenance/unrelated-network-preventive-maintenance.html").write_text("<p>OtherCo Beta network functional test</p>",encoding="utf-8")
         (self.root/"biomed-basics/basic-networking.html").write_text("<p>Network Ethernet communication basics</p>",encoding="utf-8")
         shutil.copy(ROOT/"tools/guide_enhancement_config.json",self.root/"tools/guide_enhancement_config.json")
         subprocess.run(["git","init"],cwd=self.root,check=True,capture_output=True)
@@ -65,6 +66,10 @@ class EngineTests(unittest.TestCase):
     def test_pm_and_biomed_links(self):
         rel=self.plan().proposals[0].relationships
         self.assertTrue(rel["preventiveMaintenance"]); self.assertTrue(rel["networkIntegration"])
+        self.assertEqual(
+            [x["slug"] for x in rel["preventiveMaintenance"]],
+            ["acme-alpha-preventive-maintenance"],
+        )
     def test_no_self_or_duplicate_links_and_targets_exist(self):
         plan=self.plan(); validate_plan(plan,self.root)
         slugs=[x["slug"] for values in plan.proposals[0].relationships.values() for x in values]
