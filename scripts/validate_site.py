@@ -47,7 +47,7 @@ def load_records(errors):
         except Exception as e: errors.append(f"{rel} invalid JSON: {e}"); continue
         if not isinstance(data,list): errors.append(f"{rel} is not a list"); continue
         for i,r in enumerate(data): records.append((rel,i,r))
-    unlisted=sorted(str(p.relative_to(ROOT)) for p in data_files() if str(p.relative_to(ROOT)) not in set(listed))
+    unlisted=sorted(p.relative_to(ROOT).as_posix() for p in data_files() if p.relative_to(ROOT).as_posix() not in set(listed))
     for u in unlisted: errors.append(f"Guide data file not listed in data/guides.json: {u}")
     return records
 
@@ -102,7 +102,7 @@ def validate_links(errors):
 def validate_sitemap(records, errors, warnings):
     ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
     locs={e.text for e in ET.parse(ROOT/'sitemap.xml').findall('.//s:loc',ns)}
-    expected={BASE_URL+'/'+str(p.relative_to(ROOT)).replace('index.html','').rstrip('/') for p in html_files()}
+    expected={BASE_URL+'/'+p.relative_to(ROOT).as_posix().replace('index.html','').rstrip('/') for p in html_files()}
     expected.discard(BASE_URL)
     expected.add(BASE_URL + "/")
     guide_expected={BASE_URL+'/'+r['url'][:-5] for _,_,r in records if isinstance(r,dict) and 'url' in r}
