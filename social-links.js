@@ -16,6 +16,13 @@
       name: 'Bluesky',
       url: 'https://bsky.app/profile/jaketroubleshoots.bsky.social',
       icon: 'bluesky.svg'
+    },
+    {
+      name: 'LinkedIn',
+      url: 'https://linkedin.com/company/jake-troubleshoots',
+      icon: 'linkedin.svg',
+      ariaLabel: 'Jake Troubleshoots on LinkedIn',
+      rel: 'me noopener noreferrer'
     }
   ]);
 
@@ -38,13 +45,14 @@
     const links = document.createElement('div');
     links.className = 'footer-social__links';
 
-    SOCIAL_LINKS.forEach(({ name, url, icon }) => {
+    SOCIAL_LINKS.forEach(({ name, url, icon, ariaLabel, rel }) => {
       const link = document.createElement('a');
       link.className = 'footer-social__link';
       link.href = url;
       link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+      link.rel = rel || 'noopener noreferrer';
       link.title = `Follow JakeTroubleshoots on ${name}`;
+      if (ariaLabel) link.setAttribute('aria-label', ariaLabel);
 
       const image = document.createElement('img');
       image.className = 'footer-social__icon';
