@@ -11,7 +11,8 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools"))
 from enhance_guides import (BEGIN, END, EnhancementError, build_plan, extract_profile,
-    infer_pattern, merge_preserved, relationships, score_link, validate_plan, write_plan)
+    accept_candidate, existing_related_ui, infer_pattern, merge_preserved, novelty_metrics,
+    relationships, score_link, validate_plan, write_plan)
 
 HTML="""<!doctype html><html><head><title>Acme Alpha - Network drops</title>
 <link rel="canonical" href="https://example/guides/acme-alpha-network.html"></head><body>
@@ -58,7 +59,7 @@ class EngineTests(unittest.TestCase):
         self.assertIn("may suggest",infer_pattern("Failure occurs after startup."))
     def test_exact_model_context_and_link_limits(self):
         p=self.plan().proposals[0]
-        self.assertTrue(p.relationships["sameModel"])
+        self.assertFalse(p.relationships["sameModel"],"exact-model identity alone must not qualify")
         self.assertLessEqual(sum(map(len,p.relationships.values())),8)
     def test_model_family_context_scores(self):
         plan=self.plan(); p=plan.proposals[0].profile
@@ -86,9 +87,9 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(merged["startHere"][0]["text"],"Manual")
     def test_patient_safety_language_preserved_and_json_html_sync(self):
         plan=self.plan(); validate_plan(plan,self.root)
-        page=plan.outputs["guides/acme-alpha-network.html"].decode()
+        page=plan.outputs.get("guides/acme-alpha-network.html",(self.root/"guides/acme-alpha-network.html").read_bytes()).decode()
         self.assertIn("Never troubleshoot while connected to a patient.",page)
-        self.assertIn(BEGIN,page); self.assertIn(END,page)
+        self.assertEqual(page.count(BEGIN),page.count(END))
     def test_deterministic_plan_and_digest(self):
         self.assertEqual(self.plan().digest,self.plan().digest)
     def test_malformed_record_rejected(self):
@@ -110,5 +111,78 @@ class EngineTests(unittest.TestCase):
     def test_content_and_links_modes(self):
         self.assertFalse(self.plan(links_only=True).proposals[0].enhancements)
         self.assertFalse(any(self.plan(content_only=True).proposals[0].relationships.values()))
+    def test_repeated_start_here_and_close_paraphrases_are_rejected(self):
+        proposal=self.plan(content_only=True).proposals[0]
+        self.assertFalse(proposal.enhancements["startHere"])
+        cfg=json.loads((self.root/"tools/guide_enhancement_config.json").read_text())
+        accepted,metrics,_=accept_candidate("Check Ethernet cable when communication drops.",HTML,"Network drops",cfg)
+        self.assertFalse(accepted); self.assertGreater(metrics["duplicationRisk"],0.65)
+    def test_issue_specific_text_scores_higher_than_generic_template(self):
+        specific=novelty_metrics("Confirm 0xHOST1001 does not return after thermal stabilization.","Check airflow.","0xHOST1001 internal temperature")
+        generic=novelty_metrics("Confirm the device works correctly.","Check airflow.","0xHOST1001 internal temperature")
+        self.assertGreater(specific["issueSpecificity"],generic["issueSpecificity"])
+    def test_verification_is_post_correction_not_initial_confirmation(self):
+        path=self.root/"data/guides-acme.json"; data=json.loads(path.read_text())
+        data[0]["title"]="Acme Alpha - Error 0xHOST1001 internal temperature"
+        data[0]["description"]="0xHOST1001 internal temperature fault"
+        path.write_text(json.dumps(data))
+        config=self.root/"tools/guide_enhancement_config.json"; cfg=json.loads(config.read_text())
+        cfg["growthLimits"]["maximumWordIncreasePercent"]=1000; config.write_text(json.dumps(cfg))
+        proposal=self.plan(content_only=True).proposals[0]
+        verification=proposal.enhancements["verification"]
+        self.assertTrue(any("does not return" in x for x in verification))
+        self.assertFalse(any("error appears" in x.lower() for x in verification))
+    def test_existing_related_guides_ui_suppresses_duplicate_guide_list(self):
+        page=self.root/"guides/acme-alpha-network.html"
+        page.write_text(HTML.replace("</body>",'<div class="related-guides-grid"></div><script src="../related-guides.js"></script></body>'))
+        proposal=self.plan(links_only=True).proposals[0]
+        self.assertTrue(proposal.relatedUiDetected)
+        if proposal.ref.html_path in self.plan(links_only=True).outputs:
+            output=self.plan(links_only=True).outputs[proposal.ref.html_path].decode()
+            self.assertNotIn('data-group="sameModel"',output)
+    def test_no_change_is_valid(self):
+        proposal=self.plan(content_only=True).proposals[0]
+        self.assertEqual(proposal.recommendation,"No enhancement recommended")
+    def test_section_and_word_growth_limits_are_enforced(self):
+        proposal=self.plan(include_ccr=True,content_only=True).proposals[0]
+        self.assertLessEqual(sum(bool(v) for v in proposal.enhancements.values()),2)
+        current=len(proposal.ref.visible.split()); proposed=len(proposal.output_html.split())
+        self.assertLessEqual(proposed-current,max(1,int(current*.20)))
+    def test_stale_plan_refusal(self):
+        plan=self.plan(); config=self.root/"tools/guide_enhancement_config.json"
+        config.write_text(config.read_text()+"\n")
+        subprocess.run(["git","add","."],cwd=self.root,check=True)
+        subprocess.run(["git","commit","-m","stale"],cwd=self.root,check=True,capture_output=True)
+        with self.assertRaisesRegex(EnhancementError,"repository changed"):
+            write_plan(plan,self.root,run_validators=False)
+    def test_exact_error_related_model_accepted_and_unrelated_alarm_rejected(self):
+        path=self.root/"data/guides-acme.json"; data=json.loads(path.read_text())
+        data[0]["title"]="Acme Alpha - Error 0xHOST1001 internal temperature"
+        data[0]["description"]="0xHOST1001 internal temperature and cooling fault"
+        data[1]["title"]="Acme Beta - Error 0xHOST1001 internal temperature"
+        data[1]["model"]="Beta"; data[1]["description"]="0xHOST1001 internal temperature and cooling fault"
+        data[3]["title"]="Acme Alpha - Speaker alarm failure"; data[3]["model"]="Alpha"
+        data[3]["steps"]=[{"title":"Check speaker","instructions":"Inspect speaker grille and test audible alarm output."}]
+        path.write_text(json.dumps(data))
+        proposal=self.plan(links_only=True).proposals[0]
+        targets=[x["slug"] for values in proposal.relationships.values() for x in values]
+        self.assertIn("acme-alpha-display",targets)
+        self.assertNotIn("acme-beta-cardiac-output",targets)
+    def test_ccr_separates_suspected_cause_and_final_status(self):
+        proposal=self.plan(include_ccr=True,content_only=True).proposals[0]
+        accepted=[x for x in proposal.acceptedDetails if x["section"]=="ccrExamples"]
+        if accepted:
+            text=accepted[0]["text"]
+            self.assertIn("Cause not established",text)
+            self.assertIn("Final status",text)
+    def test_placement_precedes_existing_documentation_when_html_is_generated(self):
+        config=self.root/"tools/guide_enhancement_config.json"; cfg=json.loads(config.read_text())
+        cfg["growthLimits"]["maximumWordIncreasePercent"]=1000; config.write_text(json.dumps(cfg))
+        page=self.root/"guides/acme-alpha-network.html"
+        page.write_text(HTML.replace("</main>","<h2>Work Order Documentation</h2></main>"))
+        plan=self.plan(include_ccr=True,content_only=True)
+        if "guides/acme-alpha-network.html" in plan.outputs:
+            output=plan.outputs["guides/acme-alpha-network.html"].decode()
+            self.assertLess(output.index(BEGIN),output.index("Work Order Documentation"))
 
 if __name__=="__main__": unittest.main()

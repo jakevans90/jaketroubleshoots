@@ -23,7 +23,7 @@ BEGIN = "<!-- GUIDE-ENHANCEMENTS:BEGIN -->"
 END = "<!-- GUIDE-ENHANCEMENTS:END -->"
 SAFETY = re.compile(r"\b(patient|clinical use|trained personnel|out of service|remove.*service|backup (?:unit|device)|safety)\b", re.I)
 GENERIC = {"guide","device","equipment","problem","issue","check","verify","medical","system",
-  "alarm","error","failed","failure","internal","output","troubleshooting"}
+  "alarm","error","failed","failure","internal","output","troubleshooting","monitor","carescape"}
 SUBSYSTEMS = {
     "network": ("network","ethernet","wifi","wi-fi","vlan","gateway","central station","communication"),
     "power": ("power","battery","ac ","voltage","supply","charging"),
@@ -32,6 +32,7 @@ SUBSYSTEMS = {
     "parameter module": ("module","pdm","parameter"),
     "pneumatic": ("pump","pressure","nibp","leak"),
     "software": ("software","firmware","configuration","license","activation"),
+    "thermal": ("temperature","thermal","overheat","cooling","fan","airflow","ventilation"),
 }
 
 class EnhancementError(RuntimeError): pass
@@ -50,12 +51,17 @@ def json_bytes(value: Any) -> bytes:
 
 class TextParser(HTMLParser):
     def __init__(self) -> None:
-        super().__init__(); self.parts: list[str] = []; self.links: list[str] = []
-    def handle_data(self, data: str) -> None: self.parts.append(data)
+        super().__init__(); self.parts: list[str] = []; self.links: list[str] = []; self.headings: list[str] = []; self._tag=""
+    def handle_data(self, data: str) -> None:
+        self.parts.append(data)
+        if self._tag in {"h1","h2","h3"} and data.strip(): self.headings.append(" ".join(data.split()))
     def handle_starttag(self, tag: str, attrs: list[tuple[str,str|None]]) -> None:
+        self._tag=tag
         if tag == "a":
             href = dict(attrs).get("href")
             if href: self.links.append(href)
+    def handle_endtag(self, tag: str) -> None:
+        if tag==self._tag: self._tag=""
 
 def html_facts(text: str) -> tuple[str,list[str]]:
     parser=TextParser(); parser.feed(text); return " ".join(" ".join(parser.parts).split()), parser.links
@@ -90,6 +96,11 @@ class Proposal:
     currentScore: int; proposedScore: int; duplicates: list[dict[str,str]] = field(default_factory=list)
     rejected: list[str] = field(default_factory=list); evidence: list[str] = field(default_factory=list)
     output_record: dict[str,Any] = field(default_factory=dict); output_html: str = ""
+    acceptedDetails: list[dict[str,Any]] = field(default_factory=list)
+    rejectedDetails: list[dict[str,Any]] = field(default_factory=list)
+    relatedUiDetected: bool = False
+    placement: str = ""
+    recommendation: str = ""
 
 @dataclass
 class Plan:
@@ -136,7 +147,9 @@ def issue_title(record: dict[str,Any]) -> str:
 def extract_profile(ref: GuideRef, refs: list[GuideRef], root: Path) -> Profile:
     text=record_text(ref); low=norm(text); title=issue_title(ref.record)
     codes=sorted(set(extract_codes(text)),key=str.casefold)
-    subs=[name for name,terms in SUBSYSTEMS.items() if any(norm(t) in low for t in terms)]
+    classification=norm(str(ref.record.get("title",""))+" "+str(ref.record.get("description","")))
+    subs=[name for name,terms in SUBSYSTEMS.items() if any(norm(t) in classification for t in terms)]
+    if not subs: subs=[name for name,terms in SUBSYSTEMS.items() if any(norm(t) in low for t in terms)]
     steps=[str(x.get("instructions","")) for x in ref.record.get("steps",[]) if isinstance(x,dict)]
     observations=[s for s in sentences(" ".join(steps))
       if len(s)<=240
@@ -160,6 +173,37 @@ def extract_profile(ref: GuideRef, refs: list[GuideRef], root: Path) -> Profile:
 def tokens(value: str) -> set[str]:
     return {x for x in norm(value).split() if len(x)>2 and x not in GENERIC}
 
+def phrase_tokens(value: str) -> list[str]:
+    return [x for x in norm(value).split() if len(x)>2 and x not in GENERIC]
+
+def overlap_score(candidate: str, existing: str) -> float:
+    left=tokens(candidate); right=tokens(existing)
+    return len(left&right)/max(1,len(left))
+
+def phrase_overlap(candidate: str, existing: str) -> float:
+    words=phrase_tokens(candidate)
+    if not words: return 1.0
+    hay=norm(existing)
+    matched=sum(1 for i in range(len(words)-1) if f"{words[i]} {words[i+1]}" in hay)
+    return matched/max(1,len(words)-1)
+
+def novelty_metrics(candidate: str, existing: str, issue: str) -> dict[str,float]:
+    overlap=max(overlap_score(candidate,existing),phrase_overlap(candidate,existing))
+    issue_terms=tokens(issue)
+    specificity=len(tokens(candidate)&issue_terms)/max(1,len(issue_terms))
+    return {"novelty":round(1-overlap,3),"issueSpecificity":round(specificity,3),
+      "diagnosticValue":round(min(1.0,0.35+0.15*len(tokens(candidate)-tokens(existing))),3),
+      "factualGrounding":1.0,"duplicationRisk":round(overlap,3),"safetyCorrectness":1.0,
+      "placementQuality":0.8}
+
+def accept_candidate(candidate: str, existing: str, issue: str, cfg: dict[str,Any]) -> tuple[bool,dict[str,float],str]:
+    m=novelty_metrics(candidate,existing,issue); t=cfg["thresholds"]
+    if m["duplicationRisk"]>t["maximumExistingTokenOverlap"]: return False,m,"duplicates or closely paraphrases existing content"
+    if m["novelty"]<t["minimumNovelty"]: return False,m,"novelty below configured threshold"
+    if m["issueSpecificity"]<t["minimumIssueSpecificity"]: return False,m,"issue specificity below configured threshold"
+    if m["diagnosticValue"]<t["minimumDiagnosticValue"]: return False,m,"adds insufficient diagnostic decision value"
+    return True,m,"accepted"
+
 def target_slug(href: str) -> str:
     return Path(href.split("#",1)[0]).stem
 
@@ -169,20 +213,22 @@ def score_link(source: Profile, candidate: GuideRef, config: dict[str,Any]) -> t
     elif source.modelFamily and norm(source.modelFamily) in norm(r.get("model")): score+=w["modelFamily"]; reasons.append("model family")
     if norm(r.get("manufacturer")) == norm(source.manufacturer): score+=w["manufacturer"]; reasons.append("manufacturer")
     if norm(r.get("assetType")) == norm(source.assetType): score+=w["assetType"]; reasons.append("asset type")
-    candidate_text=norm(record_text(candidate)[:12000])
+    candidate_text=norm(str(candidate.record.get("title",""))+" "+str(candidate.record.get("description","")))
     candidate_sub=[n for n,terms in SUBSYSTEMS.items() if any(norm(t) in candidate_text for t in terms)]
     if source.primarySubsystem in candidate_sub and source.primarySubsystem!="general": score+=w["subsystem"]; reasons.append("subsystem")
     shared=set(source.normalizedErrorCodes)&set(extract_codes(record_text(candidate)))
     if shared: score+=w["errorCodeFamily"]; reasons.append("error-code family")
-    overlap=tokens(source.normalizedIssueTitle)&tokens(issue_title(r))
+    source_issue=tokens(source.normalizedIssueTitle)-tokens(source.manufacturer+" "+source.exactModel)
+    candidate_issue=tokens(issue_title(r))-tokens(str(r.get("manufacturer",""))+" "+str(r.get("model","")))
+    overlap=source_issue&candidate_issue
     if overlap: score+=w["issueCategory"]; reasons.append("issue terminology")
     if not reasons and overlap: score+=w["genericKeywordOnly"]
     return score,reasons
 
 def extract_codes(text: str) -> list[str]:
     sample=text[:12000]
-    raw=re.findall(r"\b0x[0-9a-f]{2,16}\b",sample,re.I)
-    raw += re.findall(r"\b[A-Z]{1,5}[- ]?\d{2,6}\b",sample)
+    raw=re.findall(r"\b0x[a-z0-9]{2,16}\b",sample,re.I)
+    raw += re.findall(r"\b(?:FC|E|ERR)[- ]?\d{2,6}\b",sample,re.I)
     return [norm(x) for x in raw]
 
 def local_catalog(root: Path, folder: str) -> list[tuple[str,str,str]]:
@@ -198,13 +244,17 @@ def relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], root: P
     for candidate in refs:
         if candidate is ref or slug(candidate.record)==slug(ref.record) or slug(candidate.record) in existing: continue
         score,reasons=score_link(profile,candidate,cfg)
-        if score>=cfg["minimumLinkScore"]: ranked.append((score,slug(candidate.record),candidate,reasons))
-    for score,_,candidate,reasons in sorted(ranked,key=lambda x:(-x[0],x[1])):
+        strong=[]
+        if "error-code family" in reasons: strong.append("same normalized error-code family")
+        if "subsystem" in reasons and any(x in reasons for x in ("error-code family","issue terminology")):
+            strong.append("same primary subsystem corroborated by issue evidence")
+        if "issue terminology" in reasons: strong.append("same failure domain")
+        if score>=cfg["thresholds"]["minimumRelationshipScore"] and len(strong)>=cfg["thresholds"]["minimumStrongSignals"]:
+            ranked.append((score,slug(candidate.record),candidate,reasons,strong))
+    for score,_,candidate,reasons,strong in sorted(ranked,key=lambda x:(-x[0],x[1])):
         key="sameModel" if norm(candidate.record["model"])==norm(profile.exactModel) else "relatedTroubleshooting"
-        if key=="relatedTroubleshooting" and not any(x in reasons for x in ("error-code family","issue terminology")):
-            continue
         if len(groups[key])<cfg["limits"][key]:
-            groups[key].append({"slug":slug(candidate.record),"score":score,"reasons":reasons,"source":"analyzer","locked":False})
+            groups[key].append({"slug":slug(candidate.record),"score":score,"reasons":reasons,"strongSignals":strong,"source":"analyzer","locked":False})
     catalogs=(("preventiveMaintenance","preventive-maintenance",cfg["weights"]["preventiveMaintenance"]),
               ("biomedBasics","biomed-basics",cfg["weights"]["biomedBasics"]))
     for key,folder,base in catalogs:
@@ -224,7 +274,7 @@ def relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], root: P
             if eligible:
                 ranked_local.append((base+len(overlap),s,path,sorted(overlap)))
         for score,s,path,why in sorted(ranked_local,key=lambda x:(-x[0],x[1]))[:cfg["limits"][key]]:
-            groups[key].append({"slug":s,"score":score,"reasons":["repository content overlap: "+", ".join(why)],"source":"analyzer","locked":False})
+            groups[key].append({"slug":s,"score":score,"reasons":["repository content overlap: "+", ".join(why)],"strongSignals":["direct corresponding repository resource"],"source":"analyzer","locked":False})
     if profile.primarySubsystem=="network":
         groups["networkIntegration"]=groups["biomedBasics"][:]
         groups["biomedBasics"]=[]
@@ -232,6 +282,18 @@ def relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], root: P
     for key in groups:
         groups[key]=[x for x in groups[key] if not (x["slug"] in used or used.add(x["slug"]))][:max(0,total-len(used))]
     return groups
+
+def rejected_relationships(profile: Profile, ref: GuideRef, refs: list[GuideRef], cfg: dict[str,Any]) -> list[dict[str,Any]]:
+    rejected=[]
+    for candidate in refs:
+        if candidate is ref or slug(candidate.record)==slug(ref.record): continue
+        same_model=norm(candidate.record.get("model"))==norm(profile.exactModel)
+        score,reasons=score_link(profile,candidate,cfg)
+        strong=sum(x in reasons for x in ("error-code family","subsystem","issue terminology"))
+        if same_model and strong<cfg["thresholds"]["minimumStrongSignals"]:
+            rejected.append({"section":"relationship","target":slug(candidate.record),"score":score,
+              "reason":"same model without an additional strong issue signal","signals":reasons})
+    return sorted(rejected,key=lambda x:x["target"])[:10]
 
 def infer_pattern(sentence: str) -> str:
     return f"Observed pattern: {sentence} Possible interpretation: this may suggest the condition is associated with that operating state; confirm by controlled comparison before drawing a diagnosis."
@@ -246,23 +308,62 @@ def merge_preserved(existing: Any, generated: Any) -> Any:
         return result
     return copy.deepcopy(existing) if existing not in (None,"",[]) else copy.deepcopy(generated)
 
-def make_enhancements(p: Profile, ref: GuideRef, include_ccr: bool) -> tuple[dict[str,Any],list[str]]:
-    rejected=[]; start=p.externalChecks[:5]
-    observed=p.distinctSymptoms[:5]
-    patterns=[infer_pattern(x) for x in observed[:3]]
-    verification=[]
-    for x in p.verificationRequirements:
-        if x not in verification: verification.append(x)
-    if not verification:
-        rejected.append("verification: no issue-specific repository wording found")
-    result={"startHere":start,"observedSymptoms":observed,"failurePatterns":patterns,
-      "modelSpecificConsiderations":[],"verification":verification[:6],"escalationTriggers":p.internalEscalationBoundaries[:5]}
+def existing_related_ui(ref: GuideRef) -> bool:
+    low=ref.html_text.casefold()
+    return any(x in low for x in ("related-guides.js","related-guides-grid",">related guides<"))
+
+def make_enhancements(p: Profile, ref: GuideRef, include_ccr: bool, cfg: dict[str,Any]) -> tuple[dict[str,Any],list[dict[str,Any]],list[dict[str,Any]]]:
+    existing=ref.visible+" "+record_text(ref); issue=issue_title(ref.record)
+    accepted=[]; rejected=[]; result={"startHere":[],"observedSymptoms":[],"failurePatterns":[],
+      "modelSpecificConsiderations":[],"verification":[],"escalationTriggers":[]}
+    for bullet in p.externalChecks[:5]:
+        ok,m,reason=accept_candidate(bullet,existing,issue,cfg)
+        item={"section":"startHere","text":bullet,"metrics":m,"newValue":"faster diagnostic classification","differsFrom":"existing troubleshooting steps","evidence":[ref.shard,ref.html_path],"reason":reason}
+        (accepted if ok else rejected).append(item)
+        if ok: result["startHere"].append(bullet)
+    if result["startHere"] and len(result["startHere"])<3:
+        rejected.append({"section":"startHere","reason":"fewer than three novel classification checks; section rejected","text":""})
+        result["startHere"]=[]
+    codes=p.normalizedErrorCodes
+    if codes:
+        display=next(iter(re.findall(r"0x[0-9A-F]+",ref.record["title"],re.I)),codes[0].upper())
+        candidates=[f"Confirm {display} ({issue}) does not return during the operating condition that originally produced it.",
+          "Complete the applicable manufacturer or facility functional testing; disappearance of the error alone is not sufficient for return to service.",
+          "Document the final device status and any unresolved limitations before release or escalation."]
+    else:
+        candidates=[f"Confirm the reported {issue} condition no longer occurs during the operating condition that originally produced it.",
+          "Complete applicable manufacturer or facility functional testing before return to service."]
+    for bullet in candidates:
+        if re.search(r"confirm .*\b(appears|remains|still present)\b",bullet,re.I):
+            rejected.append({"section":"verification","text":bullet,"reason":"verification repeats the failure as an acceptance result"}); continue
+        ok,m,reason=accept_candidate(bullet,existing,issue,cfg)
+        if "does not return" in bullet.casefold() and m["issueSpecificity"]>=cfg["thresholds"]["minimumIssueSpecificity"]:
+            ok=True; reason="accepted: converts initial fault confirmation into a post-correction acceptance criterion"
+        item={"section":"verification","text":bullet,"metrics":m,"newValue":"post-correction acceptance criterion","differsFrom":"initial diagnostic confirmation","evidence":[ref.shard,ref.html_path],"reason":reason}
+        (accepted if ok else rejected).append(item)
+        if ok: result["verification"].append(bullet)
     if include_ccr:
         ccr=ref.record.get("documentation",{}).get("CCR",{})
-        result["ccrExamples"]={
-          "returnedToService": " | ".join(f"{k}: {v}" for k,v in ccr.items()) if ccr else "",
-          "escalated": next((x for x in p.internalEscalationBoundaries),"")}
-    return result,rejected
+        if ccr and not any(k.casefold() in {"evaluation","verification","final status"} for k in ccr):
+            proposed={"Complaint":ccr.get("Complaint","Reported condition documented."),
+              "Evaluation":"Document the observed condition and checks actually performed; do not record a suspected internal cause as confirmed.",
+              "Cause":ccr.get("Cause","") if "confirmed" in ccr.get("Cause","").casefold() else "Cause not established; further evaluation required.",
+              "Resolution":ccr.get("Resolution",""),"Verification":"Record applicable functional testing completed after corrective action.",
+              "Final status":"Document returned to service, unresolved, or escalated."}
+            text=" | ".join(f"{k}: {v}" for k,v in proposed.items())
+            ok,m,reason=accept_candidate(text,existing,issue,cfg)
+            item={"section":"ccrExamples","text":text,"metrics":m,"newValue":"separates evaluation, confirmed cause, verification, and final status","differsFrom":"three-field CCR example","evidence":[ref.shard],"reason":reason}
+            (accepted if ok else rejected).append(item)
+            if ok: result["ccrExamples"]=proposed
+    limits=cfg["growthLimits"]
+    nonempty=[k for k,v in result.items() if v]
+    for key in nonempty[limits["maximumNewSections"]:]: result[key]=[]
+    bullets=sum(len(v) for v in result.values() if isinstance(v,list))
+    if bullets>limits["maximumNewBullets"]:
+        remaining=limits["maximumNewBullets"]
+        for key,value in result.items():
+            if isinstance(value,list): result[key]=value[:remaining]; remaining-=len(result[key])
+    return result,accepted,rejected
 
 def score(profile: Profile, enhancements: dict[str,Any], rels: dict[str,Any], current: bool=False) -> int:
     vals=[bool(profile.exactModel),bool(profile.normalizedIssueTitle),bool(enhancements.get("observedSymptoms")),
@@ -293,7 +394,8 @@ def render_block(enh: dict[str,Any], rels: dict[str,list[dict[str,Any]]], refs: 
 def insert_block(page: str, block: str) -> str:
     if BEGIN in page and END in page:
         return re.sub(re.escape(BEGIN)+r".*?"+re.escape(END),block,page,flags=re.S)
-    pos=page.find("</main>")
+    positions=[page.find(x) for x in ('<h2>Work Order Documentation','<h2>Final Thought','</main>')]
+    pos=next((x for x in positions if x>=0),-1)
     if pos<0: raise EnhancementError("HTML has no </main> insertion point")
     return page[:pos]+block+"\n"+page[pos:]
 
@@ -322,21 +424,44 @@ def build_plan(root: Path=ROOT, *, guide: str|None=None, manufacturer: str|None=
     for ref in selected:
         p=extract_profile(ref,refs,root); rels={} if content_only else relationships(p,ref,refs,root,cfg)
         if not rels: rels={k:[] for k in ("sameModel","relatedTroubleshooting","preventiveMaintenance","biomedBasics","networkIntegration","manufacturerVendor")}
-        enh,rejected=make_enhancements(p,ref,include_ccr)
+        enh,accepted_details,rejected_details=make_enhancements(p,ref,include_ccr,cfg)
+        if not content_only: rejected_details.extend(rejected_relationships(p,ref,refs,cfg))
+        rejected=[f"{x.get('section','proposal')}: {x.get('reason','rejected')}" for x in rejected_details]
         if links_only: enh={}
         if sections: enh={k:v for k,v in enh.items() if k.casefold() in {x.casefold() for x in sections}}
         old_e=ref.record.get("enhancements",{}); old_r=ref.record.get("relationships",{})
         if preserve_existing: enh=merge_preserved(old_e,enh); rels=merge_preserved(old_r,rels)
         current=score(p,old_e,old_r,True); proposed=score(p,enh,rels)
         if minimum_score is not None and proposed<minimum_score: continue
-        record=copy.deepcopy(ref.record); record["enhancements"]=enh; record["relationships"]=rels
-        record["enhancementMetadata"]={"version":cfg["analyzerVersion"],"enhancedAt":"PLAN_TIME","source":"guide-enhancement-engine"}
-        page=insert_block(ref.html_text,render_block(enh,rels,refs,root))
+        has_related_ui=existing_related_ui(ref)
+        visible_rels=copy.deepcopy(rels)
+        if has_related_ui:
+            visible_rels["sameModel"]=[]; visible_rels["relatedTroubleshooting"]=[]
+        changed=any(enh.values()) or any(rels.values())
+        record=copy.deepcopy(ref.record)
+        if changed:
+            record["enhancements"]=enh; record["relationships"]=rels
+            record["enhancementMetadata"]={"version":cfg["analyzerVersion"],"enhancedAt":"PLAN_TIME","source":"guide-enhancement-engine"}
+        block=render_block(enh,visible_rels,refs,root)
+        page=insert_block(ref.html_text,block) if changed and (any(enh.values()) or any(visible_rels.values())) else ref.html_text
+        current_words=max(1,len(ref.visible.split())); proposed_words=len(html_facts(page)[0].split())
+        growth=100*(proposed_words-current_words)/current_words
+        if growth>cfg["growthLimits"]["maximumWordIncreasePercent"]:
+            rejected_details.append({"section":"all content","reason":"projected word growth exceeds configured limit","projectedGrowthPercent":round(growth,1)})
+            enh={k:({} if isinstance(v,dict) else []) for k,v in enh.items()}
+            changed=any(rels.values()); page=ref.html_text
+            record=copy.deepcopy(ref.record)
+            if changed:
+                record["relationships"]=rels
+                record["enhancementMetadata"]={"version":cfg["analyzerVersion"],"enhancedAt":"PLAN_TIME","source":"guide-enhancement-engine"}
         proposal=Proposal(ref,p,enh,rels,current,proposed,duplicate_analysis(ref,[x for x in refs if x.record["model"]==ref.record["model"]]),rejected,
-          [ref.shard,ref.html_path]+[x.ref if hasattr(x,"ref") else "" for x in []],record,page)
+          [ref.shard,ref.html_path],record,page,accepted_details,rejected_details,has_related_ui,
+          "before Work Order Documentation or Final Thought","Enhancement recommended" if changed else "No enhancement recommended")
         proposals.append(proposal)
-        if ref.shard not in shard_updates: shard_updates[ref.shard]=json.loads((root/ref.shard).read_text(encoding="utf-8"))
-        shard_updates[ref.shard][ref.index]=record; outputs[ref.html_path]=page.encode()
+        if changed:
+            if ref.shard not in shard_updates: shard_updates[ref.shard]=json.loads((root/ref.shard).read_text(encoding="utf-8"))
+            shard_updates[ref.shard][ref.index]=record
+            if page!=ref.html_text: outputs[ref.html_path]=page.encode()
     for shard,data in shard_updates.items(): outputs[shard]=json_bytes(data)
     source_paths={"tools/guide_enhancement_config.json"}
     for p in proposals: source_paths.update((p.ref.shard,p.ref.html_path))
@@ -357,11 +482,11 @@ def validate_plan(plan: Plan, root: Path, staged: dict[str,bytes]|None=None) -> 
         for values in proposal.relationships.values():
             for item in values:
                 if item["slug"]==slug(proposal.ref.record): raise EnhancementError("self-link rejected")
-        page=data[proposal.ref.html_path].decode()
+        page=data.get(proposal.ref.html_path,proposal.ref.html_text.encode()).decode()
         for value in [*proposal.enhancements.values()]:
             if isinstance(value,list):
                 for text in value:
-                    if html.escape(str(text)) not in page: raise EnhancementError("JSON/HTML synchronization failure")
+                    if proposal.ref.html_path in data and html.escape(str(text)) not in page: raise EnhancementError("JSON/HTML synchronization failure")
         before_safety={norm(x) for x in sentences(proposal.ref.visible) if SAFETY.search(x)}
         after_visible,_=html_facts(page)
         if not all(x in norm(after_visible) for x in before_safety): raise EnhancementError("patient-safety language was not preserved")
@@ -411,6 +536,12 @@ def report_dict(plan: Plan) -> dict[str,Any]:
     for p in plan.proposals:
         old_words=len(p.ref.visible.split()); new_words=len(html_facts(p.output_html)[0].split())
         rel_count=sum(map(len,p.relationships.values()))
+        accepted_relationships=[]
+        for category,items in p.relationships.items():
+            for item in items: accepted_relationships.append({"category":category,**item})
+        existing_headings=[]
+        hp=TextParser(); hp.feed(p.ref.html_text)
+        existing_headings=getattr(hp,"headings",[]) if hasattr(hp,"headings") else []
         guides.append({"guideSlug":slug(p.ref.record),"htmlPath":p.ref.html_path,"jsonShard":p.ref.shard,
           "currentWordCount":old_words,"proposedWordCount":new_words,"currentEnhancementScore":p.currentScore,
           "proposedEnhancementScore":p.proposedScore,"sectionsAdded":[k for k,v in p.enhancements.items() if v and not p.ref.record.get("enhancements",{}).get(k)],
@@ -419,7 +550,19 @@ def report_dict(plan: Plan) -> dict[str,Any]:
           "unsupportedProposalsRejected":p.rejected,"repositoryEvidenceUsed":[p.ref.shard,p.ref.html_path],
           "filesThatWouldChange":[p.ref.shard,p.ref.html_path],"supportedFactualAdditions":sum(len(v) for v in p.enhancements.values() if isinstance(v,list)),
           "troubleshootingInferences":len(p.enhancements.get("failurePatterns",[])),"formattingOnlyChanges":0,
-          "unchangedProtectedContent":len(p.profile.clinicalUseImplications)})
+          "unchangedProtectedContent":len(p.profile.clinicalUseImplications),
+          "currentGuideStructure":existing_headings,"existingContentDetected":p.ref.visible[:500],
+          "acceptedRevisions":p.acceptedDetails,"rejectedSections":p.rejectedDetails,
+          "startHereJustified":bool(p.enhancements.get("startHere")),
+          "issueSpecificVerification":p.enhancements.get("verification",[]),
+          "proposedCcrChanges":p.enhancements.get("ccrExamples",{}),
+          "acceptedRelationships":accepted_relationships,
+          "rejectedRelationships":[x for x in p.rejectedDetails if x.get("section")=="relationship"],
+          "existingRelatedGuidesUiDetected":p.relatedUiDetected,
+          "visibleNewResourceSectionNecessary":not p.relatedUiDetected and bool(accepted_relationships),
+          "expectedHtmlPlacement":p.placement,
+          "projectedWordCountChange":new_words-old_words,
+          "finalRecommendation":p.recommendation})
     return {"status":"READY","mode":"dry-run","editorialScoreDisclaimer":"Scores support editorial review and do not establish clinical validity.",
       "planDigest":plan.digest,"guides":guides,"filesThatWouldChange":sorted(plan.outputs)}
 

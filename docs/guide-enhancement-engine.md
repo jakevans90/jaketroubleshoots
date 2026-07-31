@@ -1,61 +1,82 @@
 # Guide Enhancement Engine
 
-`tools/enhance_guides.py` audits existing troubleshooting guides and builds
-grounded, reviewable enhancement proposals. It does not browse the web and does
-not modify published content unless a reviewed plan is confirmed.
+`tools/enhance_guides.py` is a conservative editorial analyzer for existing
+troubleshooting guides. Version 2 does not treat a populated template as an
+enhancement. It accepts a proposal only when it adds novel, issue-specific,
+grounded decision value and stays within configured growth limits.
 
-## Safe workflow
+## Review workflow
 
-Dry-run one guide, manufacturer, or model family:
+Dry-run one guide first:
 
 ```sh
-python tools/enhance_guides.py --guide ge-b650-network-instability
-python tools/enhance_guides.py --manufacturer "GE Healthcare" --max-guides 5
-python tools/enhance_guides.py --model "CARESCAPE B650" --max-guides 5 --include-ccr
+python tools/enhance_guides.py \
+  --guide ge-b650-error-0xhost1001-internal-temperature-out-of-specification \
+  --include-ccr
 ```
 
-The JSON report includes word counts, editorial scores, proposed sections,
-duplication findings, rejected unsupported proposals, evidence, affected files,
-and a SHA-256 plan digest. Scores are editorial signals, not claims of clinical
-validity. Use `--report-path reports/proposal.json` for a machine-readable copy.
+Dry-run is the default. `No enhancement recommended` is a successful result.
+The report identifies existing structure and content, accepted revisions,
+duplicate proposals, rejection reasons, novelty and issue-specificity metrics,
+relationship strong signals, projected word growth, Related Guides UI
+detection, proposed placement, and the deterministic plan digest.
 
-A write requires both flags and an exactly matching digest:
+A later write still requires both flags and an exact digest:
 
 ```sh
-python tools/enhance_guides.py --guide ge-b650-network-instability \
+python tools/enhance_guides.py --guide <slug> \
   --write --confirm-plan <reviewed-digest>
 ```
 
-Writes are refused on a dirty worktree. The engine re-hashes every source,
-stages output, validates JSON, HTML markers, link targets, safety-language
-preservation, and JSON/HTML synchronization, then runs site validation, the
-test suite, Python compilation, and `git diff --check`. Any failure restores
-every changed file.
+Writes require a clean worktree, reject stale plans, stage deterministic output,
+preserve patient-safety text, validate JSON/HTML synchronization and link
+targets, run the full project validator and tests, and roll back on failure.
 
-## Grounding and schema
+## Acceptance rules
 
-Generated statements are extracted from the selected guide and other repository
-records. Failure-pattern text is always labeled with non-definitive language.
-Unsupported verification text is rejected instead of invented.
+Before accepting text, the analyzer normalizes punctuation, capitalization,
+whitespace, and common generic terms. It measures token and phrase overlap
+against the current guide. Direct duplicates, close paraphrases, title or
+complaint restatements, and reorganized troubleshooting steps are rejected.
 
-Existing guide fields are unchanged. Optional `enhancements`, `relationships`,
-and `enhancementMetadata` objects are added. Existing manual content is merged
-first; manual and locked values are never removed. Relationships store canonical
-slugs, score, reasons, source, and lock state.
+Each accepted proposal records:
 
-HTML is inserted between `GUIDE-ENHANCEMENTS:BEGIN` and
-`GUIDE-ENHANCEMENTS:END` markers immediately before `</main>`. Re-running the
-engine replaces only that block, preserving page metadata, navigation,
-analytics, scripts, CSS hooks, accessibility behavior, and safety wording.
+- new decision-making value;
+- the existing content it differs from;
+- repository evidence;
+- novelty and issue-specificity scores;
+- diagnostic value, grounding, duplication risk, safety correctness, and
+  placement quality.
 
-Weights, minimum relationship score, and per-category/total link limits are in
-`tools/guide_enhancement_config.json`.
+Start Here requires at least three novel classification checks. Verification
+must describe successful post-correction testing; it cannot confirm that the
+fault remains. Error disappearance alone is explicitly insufficient for return
+to service. CCR changes distinguish Complaint, Evaluation, established Cause,
+Resolution, Verification, and Final status, without promoting suspected causes
+to facts.
 
-## Current limitations
+## Relationships and existing UI
 
-The repository’s guide JSON has no explicit symptom, subsystem, approval, or
-source-provenance fields. The analyzer therefore uses conservative text
-classification and reports its evidence. It will not infer manufacturer
-approval, menu paths, versions, serial applicability, or internal repair steps.
-Contextual in-paragraph link insertion is reported as zero in this first
-implementation; only the stable Related Resources block is generated.
+Exact-model identity is not a strong signal. A troubleshooting relationship
+also needs an error-code, subsystem, symptom, or failure-domain signal and must
+meet the configured score and strong-signal thresholds. Corresponding PM and
+Basics resources are matched separately. Self-links, duplicate targets, weak
+same-model links, and missing targets are rejected.
+
+When a page already contains `related-guides.js`, `related-guides-grid`, or a
+Related Guides section, the engine does not append another generic list of
+troubleshooting guides. It keeps structured relationships for review and may
+show only exceptional non-guide resources when justified.
+
+## Placement and limits
+
+The engine prefers revising or inserting near an existing relevant area. Its
+stable marker is placed before Work Order Documentation or Final Thought when a
+safe structured edit is available; it is not appended after Final Thought by
+default. Configuration limits maximum word growth, new sections, new bullets,
+relationships, novelty, duplication, issue specificity, and relationship
+strength.
+
+Repository records still lack explicit provenance, symptom, subsystem, and
+approval fields. Consequently, the analyzer remains conservative and can
+legitimately recommend no change.
