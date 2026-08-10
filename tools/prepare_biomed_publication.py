@@ -223,6 +223,24 @@ def landing_card(title: str, slug: str, description: str, category: str, badge: 
 '''
 
 
+def remove_published_planned_topics(landing: str, published_titles: set[str]) -> str:
+    section_pattern = re.compile(
+        r'(<section class="content-box">\s*<h3>Planned Topics</h3>.*?<ul>)(.*?)(</ul>)',
+        re.S,
+    )
+    match = section_pattern.search(landing)
+    if not match:
+        raise SystemExit("Planned Topics section not found")
+    normalized_titles = {slugify(title) for title in published_titles}
+    cleaned_items = re.sub(
+        r'\s*<li>(.*?)</li>',
+        lambda item: "" if slugify(html.unescape(re.sub(r"<[^>]+>", "", item.group(1)))) in normalized_titles else item.group(0),
+        match.group(2),
+        flags=re.S,
+    )
+    return landing[:match.start()] + match.group(1) + cleaned_items + match.group(3) + landing[match.end():]
+
+
 def atomic_write(path: Path, data: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     handle, temporary = tempfile.mkstemp(dir=path.parent, prefix=path.name + ".", suffix=".tmp")
@@ -273,6 +291,7 @@ def main() -> int:
     )
     if count != 1:
         raise SystemExit("landing-page guides-grid insertion point not found")
+    landing = remove_published_planned_topics(landing, set(titles.values()))
     outputs[ROOT / "biomed-basics.html"] = landing
     sitemap_path = ROOT / "sitemap.xml"
     canonical = f"{SITE_URL}/{article_href}"
