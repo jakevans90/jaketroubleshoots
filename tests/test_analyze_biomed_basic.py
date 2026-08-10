@@ -109,7 +109,12 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertIn("Do I have enough confidence in this device to put it back on a patient?", page)
         self.assertIn("A practical guide to recognizing safety concerns", page)
         self.assertIn('href="#the-simple-version"', page)
-        self.assertEqual((ROOT / "biomed-basics.html").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
+        hero = re.search(r'<section class="hero">(.*?)</section>', landing, re.S).group(1)
+        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+        self.assertNotIn(f"biomed-basics/{slug}.html", hero)
+        self.assertIn(f"biomed-basics/{slug}.html", grid)
         self.assertEqual((ROOT / "sitemap.xml").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
 
 

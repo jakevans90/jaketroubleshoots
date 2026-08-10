@@ -240,11 +240,21 @@ def main() -> int:
             continue
         outputs[path] = replace_related(path.read_text(encoding="utf-8"), related_section(slug, titles))
     landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
-    marker = "  </div>\n</section>"
-    if marker not in landing:
-        raise SystemExit("landing-page card insertion point not found")
     article_href = f"biomed-basics/{article.slug}.html"
-    outputs[ROOT / "biomed-basics.html"] = landing if article_href in landing else landing.replace(marker, landing_card(article.title, article.slug, description) + "\n" + marker, 1)
+    existing_card = re.compile(
+        rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card">.*?</a>',
+        re.S,
+    )
+    landing = existing_card.sub("", landing)
+    grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
+    landing, count = grid.subn(
+        lambda match: match.group(1) + landing_card(article.title, article.slug, description) + match.group(2),
+        landing,
+        count=1,
+    )
+    if count != 1:
+        raise SystemExit("landing-page guides-grid insertion point not found")
+    outputs[ROOT / "biomed-basics.html"] = landing
     sitemap_path = ROOT / "sitemap.xml"
     canonical = f"{SITE_URL}/{article_href}"
     sitemap = sitemap_path.read_text(encoding="utf-8")
