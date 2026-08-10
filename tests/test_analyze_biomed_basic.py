@@ -117,6 +117,19 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertIn(f"biomed-basics/{slug}.html", grid)
         self.assertEqual((ROOT / "sitemap.xml").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
 
+    def test_vendor_article_is_registered_in_grid_and_preserves_key_copy(self):
+        slug = "how-to-think-before-calling-a-vendor"
+        page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
+        self.assertIn("What is the device supposed to be doing?", page)
+        self.assertIn("A practical troubleshooting mindset for biomeds", page)
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
+        hero = re.search(r'<section class="hero">(.*?)</section>', landing, re.S).group(1)
+        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+        self.assertNotIn(f"biomed-basics/{slug}.html", hero)
+        self.assertIn(f"biomed-basics/{slug}.html", grid)
+        self.assertEqual((ROOT / "sitemap.xml").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

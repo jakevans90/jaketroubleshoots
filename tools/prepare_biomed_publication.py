@@ -16,16 +16,32 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "electrical-safety-testing-medical-equipment": ["when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "biomed-bmet-clinical-engineering-htm"],
-    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics", "biomed-bmet-clinical-engineering-htm"],
-    "biomed-work-order-notes-ccr-method": ["when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "basic-networking-for-medical-equipment"],
+    "electrical-safety-testing-medical-equipment": ["when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
+    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
+    "biomed-work-order-notes-ccr-method": ["when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
     "medical-equipment-battery-basics": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names", "when-to-remove-medical-equipment-from-service"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names", "when-to-remove-medical-equipment-from-service"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
-    "when-to-remove-medical-equipment-from-service": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "hospital-emrs-and-medical-device-integration"],
+    "when-to-remove-medical-equipment-from-service": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
+    "how-to-think-before-calling-a-vendor": ["when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "medical-equipment-battery-basics"],
+}
+
+ARTICLE_CONFIG = {
+    "when-to-remove-medical-equipment-from-service": {
+        "description": "A practical guide to deciding when medical equipment should be removed from clinical service and what must be verified before it is returned.",
+        "category": "Safety & Risk",
+        "badge": "Core Concept",
+        "cardNote": "Removal and return-to-service decisions",
+    },
+    "how-to-think-before-calling-a-vendor": {
+        "description": "A practical guide to gathering evidence, narrowing symptoms, and preparing for a productive medical-equipment vendor support call.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Vendor escalation and support-call basics",
+    },
 }
 
 
@@ -194,14 +210,14 @@ def replace_related(source: str, replacement: str) -> str:
     return updated
 
 
-def landing_card(title: str, slug: str, description: str) -> str:
+def landing_card(title: str, slug: str, description: str, category: str, badge: str, card_note: str) -> str:
     return f'''
     <a href="biomed-basics/{slug}.html" class="guide-card basics-card">
       <div class="card-content">
         <h3>{html.escape(title)}</h3>
         <p>{html.escape(description)}</p>
-        <div class="badges"><span class="badge asset">Safety &amp; Risk</span><span class="badge model">Core Concept</span></div>
-        <p class="date">Removal and return-to-service decisions</p>
+        <div class="badges"><span class="badge asset">{html.escape(category)}</span><span class="badge model">{html.escape(badge)}</span></div>
+        <p class="date">{html.escape(card_note)}</p>
       </div>
     </a>
 '''
@@ -227,7 +243,10 @@ def main() -> int:
     args = parser.parse_args()
     article = parse_input(args.input)
     subtitle, original_description, sections = split_article(article.body)
-    description = "A practical guide to deciding when medical equipment should be removed from clinical service and what must be verified before it is returned."
+    config = ARTICLE_CONFIG.get(article.slug)
+    if not config:
+        raise SystemExit(f"missing reviewed ARTICLE_CONFIG for {article.slug}")
+    description = config["description"]
     titles = title_map(ROOT, article.title)
     if set(titles) != set(RELATED):
         raise SystemExit(f"relationship map mismatch: missing={set(titles)-set(RELATED)}, extra={set(RELATED)-set(titles)}")
@@ -248,7 +267,7 @@ def main() -> int:
     landing = existing_card.sub("", landing)
     grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
     landing, count = grid.subn(
-        lambda match: match.group(1) + landing_card(article.title, article.slug, description) + match.group(2),
+        lambda match: match.group(1) + landing_card(article.title, article.slug, description, config["category"], config["badge"], config["cardNote"]) + match.group(2),
         landing,
         count=1,
     )
