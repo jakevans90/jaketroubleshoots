@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from analyze_biomed_basic import InputError, build_report, main, parse_input  # noqa: E402
-from prepare_biomed_publication import RELATED  # noqa: E402
+from prepare_biomed_publication import RELATED, biomed_group, remove_published_planned_topics  # noqa: E402
 
 
 class BiomedBasicAnalyzerTests(unittest.TestCase):
@@ -133,11 +133,50 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_published_articles_are_removed_from_planned_topics(self):
         landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
         planned = re.search(
-            r'<h3>Planned Topics</h3>.*?<ul>(.*?)</ul>', landing, re.S
+            r'<section class="content-box planned-topics-section">(.*?)</section>\s*</div>\s*</section>', landing, re.S
         ).group(1)
         self.assertNotIn("When to remove medical equipment from service", planned)
         self.assertNotIn("How to think before calling a vendor", planned)
-        self.assertIn("What HL7 means in plain English", planned)
+        self.assertNotIn("What HL7 means in plain English", planned)
+        self.assertNotIn("Nurse call integration basics", planned)
+        self.assertIn("Alarm troubleshooting basics", planned)
+        self.assertIn("<strong>102</strong>", planned)
+
+    def test_planned_topic_removal_works_across_cards_and_updates_count(self):
+        landing = '''<section class="content-box planned-topics-section">
+          <div class="planned-topic-count" aria-label="2 planned articles"><strong>2</strong></div>
+          <h3>Planned Topics</h3>
+          <div class="planned-topics-grid">
+            <section><ul><li>First Topic</li></ul></section>
+            <section><ul><li>Second Topic</li></ul></section>
+          </div>
+        </section>'''
+        cleaned = remove_published_planned_topics(landing, {"Second Topic"})
+        self.assertIn("First Topic", cleaned)
+        self.assertNotIn("Second Topic", cleaned)
+        self.assertIn('aria-label="1 planned articles"', cleaned)
+        self.assertIn("<strong>1</strong>", cleaned)
+
+    def test_new_article_categories_map_to_landing_page_groups(self):
+        self.assertEqual(biomed_group("Integration"), "connected-systems")
+        self.assertEqual(biomed_group("Electrical Safety"), "start-here")
+        self.assertEqual(biomed_group("Safety & Risk"), "troubleshooting-safety")
+        self.assertEqual(biomed_group("Documentation"), "everyday-skills")
+
+    def test_integration_batch_is_registered_once_and_preserves_key_copy(self):
+        expected = {
+            "what-hl7-means-in-plain-english": "HL7 Is Not the Network",
+            "nurse-call-integration-basics": "The Device Is Often Just Providing a Signal",
+        }
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        for slug, preserved_copy in expected.items():
+            page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
+            self.assertIn(preserved_copy, page)
+            self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
+            self.assertIn(f"biomed-basics/{slug}.html", grid)
+            self.assertEqual(sitemap.count(f"biomed-basics/{slug}.html"), 1)
 
 
 if __name__ == "__main__":

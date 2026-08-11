@@ -1562,6 +1562,111 @@ footer a:hover {
   text-align: center;
 }
 
+/* =========================
+   Biomed Basics article roadmap
+   ========================= */
+
+.planned-topics-section {
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.planned-topics-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.planned-topics-heading h3 {
+  margin: 2px 0 8px;
+}
+
+.planned-topics-heading p:not(.section-kicker) {
+  margin: 0;
+  max-width: 680px;
+}
+
+.planned-topic-count {
+  flex: 0 0 auto;
+  min-width: 132px;
+  padding: 14px 18px;
+  border: 1px solid rgba(143, 255, 0, 0.45);
+  border-radius: 14px;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+
+.planned-topic-count strong,
+.planned-topic-count span {
+  display: block;
+}
+
+.planned-topic-count strong {
+  color: var(--accent);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.planned-topic-count span {
+  margin-top: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.planned-topics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.planned-topic-card {
+  padding: 22px;
+  border: 1px solid var(--border-soft);
+  border-top: 4px solid var(--accent);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.planned-topic-card h4 {
+  margin: 0 0 14px;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.planned-topic-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.planned-topic-card li {
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+
+.planned-topic-card li:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .planned-topics-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .planned-topic-count {
+    min-width: 0;
+  }
+
+  .planned-topics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Contact email button */
 .content-box .email-box {
   display: inline-block;
@@ -2140,6 +2245,148 @@ footer p:nth-last-child(2) {
   font-weight: bold;
 }
 
+/* =========================
+   Biomed Basics page layout
+   ========================= */
+
+.biomed-intro {
+  position: relative;
+  max-width: 900px;
+  padding: clamp(24px, 4vw, 38px);
+  overflow: hidden;
+}
+
+.biomed-intro::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--lime), var(--pink));
+  content: "";
+}
+
+.biomed-article-library .section-header {
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.biomed-article-library .guides-grid {
+  align-items: stretch;
+}
+
+.article-category-heading {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border-left: 5px solid var(--lime);
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(90deg, #111 0%, #202020 100%);
+  color: #fff;
+}
+
+.article-category-heading:first-child {
+  margin-top: 0;
+}
+
+.article-category-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-category-heading span {
+  color: var(--lime);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.article-category-heading h3,
+.article-category-heading p {
+  margin: 0;
+}
+
+.article-category-heading h3 {
+  color: #fff;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.article-category-heading p {
+  max-width: 520px;
+  color: #d9d9d9;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.article-category-heading[data-group-heading="start-here"] { order: 0; }
+.guide-card[data-biomed-group="start-here"] { order: 1; }
+.article-category-heading[data-group-heading="everyday-skills"] { order: 10; }
+.guide-card[data-biomed-group="everyday-skills"] { order: 11; }
+.article-category-heading[data-group-heading="connected-systems"] { order: 20; }
+.guide-card[data-biomed-group="connected-systems"] { order: 21; }
+.article-category-heading[data-group-heading="career-communication"] { order: 30; }
+.guide-card[data-biomed-group="career-communication"] { order: 31; }
+.article-category-heading[data-group-heading="troubleshooting-safety"] { order: 40; }
+.guide-card[data-biomed-group="troubleshooting-safety"] { order: 41; }
+
+.biomed-article-library .guide-card.basics-card {
+  min-height: 285px;
+}
+
+.biomed-article-library .guide-card.basics-card .card-content {
+  padding: 24px;
+}
+
+.biomed-article-library .guide-card[data-biomed-group="start-here"] .card-content {
+  border-top: 4px solid var(--lime);
+}
+
+.biomed-library-links {
+  padding: clamp(24px, 4vw, 36px);
+  background: linear-gradient(135deg, rgba(143, 255, 0, 0.08), rgba(255, 43, 214, 0.06));
+}
+
+.biomed-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.biomed-footer-grid .content-box {
+  height: 100%;
+  margin: 0;
+}
+
+.biomed-note-section {
+  border-top: 4px solid var(--pink);
+}
+
+@media (max-width: 760px) {
+  .article-category-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .article-category-heading p {
+    text-align: left;
+  }
+
+  .biomed-article-library .guide-card.basics-card {
+    min-height: 0;
+  }
+
+  .biomed-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Organized guide sections: prevent short model groups from stretching */
 .search-results-section .guides-grid,
 .recent-guides-section #guides-organized .guides-grid {
@@ -2359,4 +2606,400 @@ footer p:nth-last-child(2) {
     hue-rotate(31deg)
     brightness(105%);
   opacity: 1;
+}
+
+/* =========================
+   Homepage information hierarchy
+   ========================= */
+
+.hero.hero-photo {
+  min-height: 560px;
+  padding: clamp(58px, 8vw, 92px) 20px;
+}
+
+.hero.hero-photo .hero-inner {
+  max-width: 900px;
+}
+
+.hero.hero-photo h2 {
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: clamp(2.15rem, 5vw, 4.15rem);
+  line-height: 1.02;
+}
+
+.hero.hero-photo #home-search-form {
+  max-width: 760px;
+  margin-top: 28px;
+}
+
+.hero.hero-photo #home-search-input {
+  min-height: 56px;
+  padding-right: 18px;
+  padding-left: 18px;
+  font-size: 1rem;
+}
+
+.hero.hero-photo #home-search-form button {
+  min-width: 160px;
+}
+
+.hero.hero-photo .hero-buttons {
+  margin-top: 16px;
+}
+
+.home-paths-section {
+  padding: clamp(54px, 7vw, 82px) 20px;
+  background: #f6f6f6;
+}
+
+.home-paths-section .section-header {
+  max-width: 720px;
+  margin: 0 auto 32px;
+}
+
+.home-paths-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.home-path-card {
+  position: relative;
+  display: flex;
+  min-height: 300px;
+  padding: 30px;
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.home-path-card::after {
+  position: absolute;
+  right: -40px;
+  bottom: -55px;
+  width: 150px;
+  height: 150px;
+  border: 22px solid rgba(143, 255, 0, 0.12);
+  border-radius: 50%;
+  content: "";
+}
+
+.home-path-card:hover {
+  border-color: rgba(143, 255, 0, 0.75);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
+}
+
+.home-path-primary {
+  border-top: 1px solid var(--border-soft);
+}
+
+.home-path-number {
+  color: #777;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.home-path-label {
+  align-self: flex-start;
+  margin-top: 22px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #111;
+  color: var(--lime);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-path-card h3 {
+  margin: 16px 0 10px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.home-path-card p {
+  margin: 0 0 24px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.home-path-link {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.home-stats-bar {
+  padding-top: 22px;
+  padding-bottom: 18px;
+}
+
+.troubleshooting-section {
+  padding-top: clamp(58px, 7vw, 88px);
+}
+
+.equipment-browse-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.equipment-browse-card {
+  display: flex;
+  min-height: 190px;
+  padding: 26px;
+  flex-direction: column;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.equipment-browse-card:hover {
+  border-color: var(--pink);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.equipment-browse-label {
+  color: #777;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.equipment-browse-card strong {
+  margin: 8px 0 16px;
+  font-size: 1.35rem;
+}
+
+.equipment-browse-card > span:last-child {
+  margin-top: auto;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.homepage-section-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.homepage-section-actions .text-link {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.pm-aem-main-card {
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: clamp(26px, 4vw, 42px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.resource-card,
+.biomed-basics-panel,
+.quiz-panel {
+  border-radius: 16px;
+}
+
+.featured-guides-section .guide-card,
+.recent-guides-section .guide-card,
+.pm-aem-section .guide-card {
+  min-height: 330px;
+}
+
+@media (max-width: 820px) {
+  .home-paths-grid,
+  .equipment-browse-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-path-card,
+  .equipment-browse-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero.hero-photo {
+    min-height: 0;
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .hero.hero-photo #home-search-form button {
+    width: 100%;
+  }
+
+  .home-paths-section,
+  .homepage-section {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+/* Homepage follow-up: centered pathways and richer Biomed Basics feature */
+.home-paths-section .section-header {
+  text-align: center;
+}
+
+.home-paths-section .section-header p {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.home-basics-feature {
+  min-height: 0;
+  padding: 34px;
+  align-items: stretch;
+  justify-content: flex-start;
+  border-top: 1px solid var(--border-soft);
+  text-align: left;
+}
+
+.home-basics-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.home-basics-heading .section-kicker {
+  margin: 0 0 8px;
+}
+
+.home-basics-heading h3 {
+  margin: 0;
+  font-size: 1.55rem;
+  line-height: 1.2;
+}
+
+.home-basics-status {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #111;
+  color: var(--lime);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.home-basics-feature > p {
+  max-width: none;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.home-basics-themes {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.home-basics-themes span {
+  padding: 6px 10px;
+  border: 1px solid rgba(143, 255, 0, 0.55);
+  border-radius: 999px;
+  background: rgba(143, 255, 0, 0.08);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.home-basics-articles {
+  display: grid;
+  gap: 0;
+  margin-bottom: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.home-basics-articles > p {
+  max-width: none;
+  margin: 18px 0 8px;
+  color: #777;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.home-basics-articles a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-basics-articles a:hover {
+  color: #557f00;
+}
+
+.home-basics-articles a span {
+  color: var(--pink);
+}
+
+.home-basics-feature .learning-button {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+@media (max-width: 600px) {
+  .home-basics-feature {
+    padding: 26px 22px;
+  }
+
+  .home-basics-heading {
+    flex-direction: column;
+  }
+}
+
+.home-stats-inner a.home-stat {
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.home-stats-inner a.home-stat:hover {
+  background: rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 0 0 1px rgba(143, 255, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.home-stats-inner a.home-stat:focus-visible {
+  outline: 3px solid var(--lime);
+  outline-offset: 3px;
 }
