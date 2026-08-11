@@ -251,20 +251,33 @@ def landing_card(title: str, slug: str, description: str, category: str, badge: 
 
 def remove_published_planned_topics(landing: str, published_titles: set[str]) -> str:
     section_pattern = re.compile(
-        r'(<section class="content-box">\s*<h3>Planned Topics</h3>.*?<ul>)(.*?)(</ul>)',
+        r'(<section class="content-box planned-topics-section">.*?<h3>Planned Topics</h3>.*?)(</section>\s*</div>\s*</section>)',
         re.S,
     )
     match = section_pattern.search(landing)
     if not match:
         raise SystemExit("Planned Topics section not found")
     normalized_titles = {slugify(title) for title in published_titles}
-    cleaned_items = re.sub(
+    cleaned_section = re.sub(
         r'\s*<li>(.*?)</li>',
         lambda item: "" if slugify(html.unescape(re.sub(r"<[^>]+>", "", item.group(1)))) in normalized_titles else item.group(0),
-        match.group(2),
+        match.group(1),
         flags=re.S,
     )
-    return landing[:match.start()] + match.group(1) + cleaned_items + match.group(3) + landing[match.end():]
+    remaining_count = len(re.findall(r'<li>.*?</li>', cleaned_section, re.S))
+    cleaned_section = re.sub(
+        r'(<div class="planned-topic-count"[^>]*>\s*<strong>)\d+(</strong>)',
+        rf'\g<1>{remaining_count}\2',
+        cleaned_section,
+        count=1,
+    )
+    cleaned_section = re.sub(
+        r'(aria-label=")\d+( planned articles")',
+        rf'\g<1>{remaining_count}\2',
+        cleaned_section,
+        count=1,
+    )
+    return landing[:match.start()] + cleaned_section + match.group(2) + landing[match.end():]
 
 
 def atomic_write(path: Path, data: str) -> None:
