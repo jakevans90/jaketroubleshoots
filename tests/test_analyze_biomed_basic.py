@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from analyze_biomed_basic import InputError, build_report, main, parse_input  # noqa: E402
-from prepare_biomed_publication import RELATED, remove_published_planned_topics  # noqa: E402
+from prepare_biomed_publication import RELATED, biomed_group, remove_published_planned_topics  # noqa: E402
 
 
 class BiomedBasicAnalyzerTests(unittest.TestCase):
@@ -156,6 +156,12 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Second Topic", cleaned)
         self.assertIn('aria-label="1 planned articles"', cleaned)
         self.assertIn("<strong>1</strong>", cleaned)
+
+    def test_new_article_categories_map_to_landing_page_groups(self):
+        self.assertEqual(biomed_group("Integration"), "connected-systems")
+        self.assertEqual(biomed_group("Electrical Safety"), "start-here")
+        self.assertEqual(biomed_group("Safety & Risk"), "troubleshooting-safety")
+        self.assertEqual(biomed_group("Documentation"), "everyday-skills")
 
     def test_integration_batch_is_registered_once_and_preserves_key_copy(self):
         expected = {

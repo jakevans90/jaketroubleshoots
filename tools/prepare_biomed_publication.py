@@ -236,9 +236,23 @@ def replace_related(source: str, replacement: str) -> str:
     return updated
 
 
+def biomed_group(category: str) -> str:
+    normalized = category.casefold()
+    if any(word in normalized for word in ("network", "integration", "imaging", "dicom")):
+        return "connected-systems"
+    if any(word in normalized for word in ("career", "communication", "terminology")):
+        return "career-communication"
+    if any(word in normalized for word in ("testing", "electrical")):
+        return "start-here"
+    if any(word in normalized for word in ("troubleshoot", "safety", "risk")):
+        return "troubleshooting-safety"
+    return "everyday-skills"
+
+
 def landing_card(title: str, slug: str, description: str, category: str, badge: str, card_note: str) -> str:
+    group = biomed_group(category)
     return f'''
-    <a href="biomed-basics/{slug}.html" class="guide-card basics-card">
+    <a href="biomed-basics/{slug}.html" class="guide-card basics-card" data-biomed-group="{group}">
       <div class="card-content">
         <h3>{html.escape(title)}</h3>
         <p>{html.escape(description)}</p>
@@ -326,7 +340,7 @@ def main() -> int:
     for article in articles:
         article_href = f"biomed-basics/{article.slug}.html"
         existing_card = re.compile(
-            rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card">.*?</a>',
+            rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card"[^>]*>.*?</a>',
             re.S,
         )
         landing = existing_card.sub("", landing)

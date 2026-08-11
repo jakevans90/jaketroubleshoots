@@ -2245,6 +2245,148 @@ footer p:nth-last-child(2) {
   font-weight: bold;
 }
 
+/* =========================
+   Biomed Basics page layout
+   ========================= */
+
+.biomed-intro {
+  position: relative;
+  max-width: 900px;
+  padding: clamp(24px, 4vw, 38px);
+  overflow: hidden;
+}
+
+.biomed-intro::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--lime), var(--pink));
+  content: "";
+}
+
+.biomed-article-library .section-header {
+  max-width: 780px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.biomed-article-library .guides-grid {
+  align-items: stretch;
+}
+
+.article-category-heading {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border-left: 5px solid var(--lime);
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(90deg, #111 0%, #202020 100%);
+  color: #fff;
+}
+
+.article-category-heading:first-child {
+  margin-top: 0;
+}
+
+.article-category-heading > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-category-heading span {
+  color: var(--lime);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.article-category-heading h3,
+.article-category-heading p {
+  margin: 0;
+}
+
+.article-category-heading h3 {
+  color: #fff;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.article-category-heading p {
+  max-width: 520px;
+  color: #d9d9d9;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.article-category-heading[data-group-heading="start-here"] { order: 0; }
+.guide-card[data-biomed-group="start-here"] { order: 1; }
+.article-category-heading[data-group-heading="everyday-skills"] { order: 10; }
+.guide-card[data-biomed-group="everyday-skills"] { order: 11; }
+.article-category-heading[data-group-heading="connected-systems"] { order: 20; }
+.guide-card[data-biomed-group="connected-systems"] { order: 21; }
+.article-category-heading[data-group-heading="career-communication"] { order: 30; }
+.guide-card[data-biomed-group="career-communication"] { order: 31; }
+.article-category-heading[data-group-heading="troubleshooting-safety"] { order: 40; }
+.guide-card[data-biomed-group="troubleshooting-safety"] { order: 41; }
+
+.biomed-article-library .guide-card.basics-card {
+  min-height: 285px;
+}
+
+.biomed-article-library .guide-card.basics-card .card-content {
+  padding: 24px;
+}
+
+.biomed-article-library .guide-card[data-biomed-group="start-here"] .card-content {
+  border-top: 4px solid var(--lime);
+}
+
+.biomed-library-links {
+  padding: clamp(24px, 4vw, 36px);
+  background: linear-gradient(135deg, rgba(143, 255, 0, 0.08), rgba(255, 43, 214, 0.06));
+}
+
+.biomed-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.biomed-footer-grid .content-box {
+  height: 100%;
+  margin: 0;
+}
+
+.biomed-note-section {
+  border-top: 4px solid var(--pink);
+}
+
+@media (max-width: 760px) {
+  .article-category-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .article-category-heading p {
+    text-align: left;
+  }
+
+  .biomed-article-library .guide-card.basics-card {
+    min-height: 0;
+  }
+
+  .biomed-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Organized guide sections: prevent short model groups from stretching */
 .search-results-section .guides-grid,
 .recent-guides-section #guides-organized .guides-grid {
