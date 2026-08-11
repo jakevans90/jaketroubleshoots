@@ -137,7 +137,24 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         ).group(1)
         self.assertNotIn("When to remove medical equipment from service", planned)
         self.assertNotIn("How to think before calling a vendor", planned)
-        self.assertIn("What HL7 means in plain English", planned)
+        self.assertNotIn("What HL7 means in plain English", planned)
+        self.assertNotIn("Nurse call integration basics", planned)
+        self.assertIn("Alarm troubleshooting basics", planned)
+
+    def test_integration_batch_is_registered_once_and_preserves_key_copy(self):
+        expected = {
+            "what-hl7-means-in-plain-english": "HL7 Is Not the Network",
+            "nurse-call-integration-basics": "The Device Is Often Just Providing a Signal",
+        }
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        for slug, preserved_copy in expected.items():
+            page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
+            self.assertIn(preserved_copy, page)
+            self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
+            self.assertIn(f"biomed-basics/{slug}.html", grid)
+            self.assertEqual(sitemap.count(f"biomed-basics/{slug}.html"), 1)
 
 
 if __name__ == "__main__":

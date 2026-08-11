@@ -20,13 +20,15 @@ RELATED = {
     "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
     "biomed-work-order-notes-ccr-method": ["when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
     "medical-equipment-battery-basics": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment"],
-    "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names", "when-to-remove-medical-equipment-from-service"],
-    "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names"],
-    "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names", "when-to-remove-medical-equipment-from-service"],
+    "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
+    "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
+    "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
     "when-to-remove-medical-equipment-from-service": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
     "how-to-think-before-calling-a-vendor": ["when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "medical-equipment-battery-basics"],
+    "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
+    "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -41,6 +43,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Concept",
         "cardNote": "Vendor escalation and support-call basics",
+    },
+    "what-hl7-means-in-plain-english": {
+        "description": "A practical introduction to HL7 messages, ADT and ORU workflows, interface engines, acknowledgements, and medical-device data exchange.",
+        "category": "Integration",
+        "badge": "Core Concept",
+        "cardNote": "Device data and messaging basics",
+    },
+    "nurse-call-integration-basics": {
+        "description": "A practical introduction to nurse call interfaces, contact closures, alarm signals, cables, room connections, and common failure patterns.",
+        "category": "Integration",
+        "badge": "Core Concept",
+        "cardNote": "Alarm and nurse call interface basics",
     },
 }
 
@@ -193,13 +207,25 @@ def page_html(title: str, subtitle: str, description: str, hero_intro: str, sect
 '''
 
 
-def title_map(root: Path, new_title: str) -> dict[str, str]:
-    titles = {slugify(new_title): new_title}
+def title_map(root: Path, new_titles: list[str]) -> dict[str, str]:
+    titles = {slugify(title): title for title in new_titles}
     for path in (root / "biomed-basics").glob("*.html"):
         source = path.read_text(encoding="utf-8")
         match = re.search(r"<h2\b[^>]*>(.*?)</h2>", source, re.I | re.S)
         titles[path.stem] = re.sub(r"<[^>]+>", "", match.group(1)).strip() if match else path.stem.replace("-", " ").title()
     return titles
+
+
+def parse_batch(path: Path) -> list:
+    source = path.read_text(encoding="utf-8")
+    chunks = re.split(r"\n\s*---\s*\n(?=#\s+)", source)
+    articles = []
+    with tempfile.TemporaryDirectory() as directory:
+        for index, chunk in enumerate(chunks, 1):
+            temporary = Path(directory) / f"article-{index}.md"
+            temporary.write_text(chunk.strip() + "\n", encoding="utf-8")
+            articles.append(parse_input(temporary))
+    return articles
 
 
 def replace_related(source: str, replacement: str) -> str:
@@ -259,56 +285,67 @@ def main() -> int:
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--confirm-plan")
     args = parser.parse_args()
-    article = parse_input(args.input)
-    subtitle, original_description, sections = split_article(article.body)
-    config = ARTICLE_CONFIG.get(article.slug)
-    if not config:
-        raise SystemExit(f"missing reviewed ARTICLE_CONFIG for {article.slug}")
-    description = config["description"]
-    titles = title_map(ROOT, article.title)
+    articles = parse_batch(args.input)
+    if len({article.slug for article in articles}) != len(articles):
+        raise SystemExit("batch contains duplicate article slugs")
+    configs = {}
+    for article in articles:
+        config = ARTICLE_CONFIG.get(article.slug)
+        if not config:
+            raise SystemExit(f"missing reviewed ARTICLE_CONFIG for {article.slug}")
+        configs[article.slug] = config
+    titles = title_map(ROOT, [article.title for article in articles])
     if set(titles) != set(RELATED):
         raise SystemExit(f"relationship map mismatch: missing={set(titles)-set(RELATED)}, extra={set(RELATED)-set(titles)}")
     outputs: dict[Path, str] = {}
-    target = ROOT / "biomed-basics" / f"{article.slug}.html"
-    outputs[target] = page_html(article.title, subtitle, description, original_description, sections, titles)
+    targets = {}
+    for article in articles:
+        subtitle, original_description, sections = split_article(article.body)
+        target = ROOT / "biomed-basics" / f"{article.slug}.html"
+        targets[article.slug] = target
+        outputs[target] = page_html(article.title, subtitle, configs[article.slug]["description"], original_description, sections, titles)
     for slug in RELATED:
         path = ROOT / "biomed-basics" / f"{slug}.html"
-        if path == target:
+        if slug in targets:
             continue
         outputs[path] = replace_related(path.read_text(encoding="utf-8"), related_section(slug, titles))
     landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
-    article_href = f"biomed-basics/{article.slug}.html"
-    existing_card = re.compile(
-        rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card">.*?</a>',
-        re.S,
-    )
-    landing = existing_card.sub("", landing)
-    grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
-    landing, count = grid.subn(
-        lambda match: match.group(1) + landing_card(article.title, article.slug, description, config["category"], config["badge"], config["cardNote"]) + match.group(2),
-        landing,
-        count=1,
-    )
-    if count != 1:
-        raise SystemExit("landing-page guides-grid insertion point not found")
+    for article in articles:
+        article_href = f"biomed-basics/{article.slug}.html"
+        existing_card = re.compile(
+            rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card">.*?</a>',
+            re.S,
+        )
+        landing = existing_card.sub("", landing)
+        grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
+        config = configs[article.slug]
+        landing, count = grid.subn(
+            lambda match: match.group(1) + landing_card(article.title, article.slug, config["description"], config["category"], config["badge"], config["cardNote"]) + match.group(2),
+            landing,
+            count=1,
+        )
+        if count != 1:
+            raise SystemExit("landing-page guides-grid insertion point not found")
     landing = remove_published_planned_topics(landing, set(titles.values()))
     outputs[ROOT / "biomed-basics.html"] = landing
     sitemap_path = ROOT / "sitemap.xml"
-    canonical = f"{SITE_URL}/{article_href}"
     sitemap = sitemap_path.read_text(encoding="utf-8")
-    if sitemap.count(canonical) == 0:
-        next_entry = f"<url>\n<loc>{SITE_URL}/biomed-basics.html</loc>\n</url>"
-        compact_entry = f"<url><loc>{SITE_URL}/biomed-basics.html</loc></url>"
-        if next_entry in sitemap:
-            addition = f"<url>\n<loc>{canonical}</loc>\n</url>\n"
-            sitemap = sitemap.replace(next_entry, addition + next_entry, 1)
-        elif compact_entry in sitemap:
-            addition = f"<url><loc>{canonical}</loc></url>"
-            sitemap = sitemap.replace(compact_entry, compact_entry + addition, 1)
-        else:
-            raise SystemExit("expected Biomed Basics sitemap insertion point not found")
-    elif sitemap.count(canonical) != 1:
-        raise SystemExit("new article canonical appears more than once in sitemap")
+    for article in articles:
+        article_href = f"biomed-basics/{article.slug}.html"
+        canonical = f"{SITE_URL}/{article_href}"
+        if sitemap.count(canonical) == 0:
+            next_entry = f"<url>\n<loc>{SITE_URL}/biomed-basics.html</loc>\n</url>"
+            compact_entry = f"<url><loc>{SITE_URL}/biomed-basics.html</loc></url>"
+            if next_entry in sitemap:
+                addition = f"<url>\n<loc>{canonical}</loc>\n</url>\n"
+                sitemap = sitemap.replace(next_entry, addition + next_entry, 1)
+            elif compact_entry in sitemap:
+                addition = f"<url><loc>{canonical}</loc></url>"
+                sitemap = sitemap.replace(compact_entry, compact_entry + addition, 1)
+            else:
+                raise SystemExit("expected Biomed Basics sitemap insertion point not found")
+        elif sitemap.count(canonical) != 1:
+            raise SystemExit("new article canonical appears more than once in sitemap")
     outputs[sitemap_path] = sitemap
     digest_input = "".join(
         f"{path.relative_to(ROOT).as_posix()}\0{data}\0"
