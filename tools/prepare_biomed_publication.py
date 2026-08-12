@@ -16,10 +16,10 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "electrical-safety-testing-medical-equipment": ["how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-read-a-medical-equipment-service-manual"],
+    "electrical-safety-testing-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
     "functional-testing-vs-calibration-vs-verification": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
     "biomed-work-order-notes-ccr-method": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-read-a-medical-equipment-service-manual", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "how-to-think-before-calling-a-vendor"],
-    "medical-equipment-battery-basics": ["how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
+    "medical-equipment-battery-basics": ["fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "electrical-safety-testing-medical-equipment"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
@@ -31,8 +31,10 @@ RELATED = {
     "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
     "how-to-read-a-medical-equipment-service-manual": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
-    "how-to-use-a-multimeter-in-biomed": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-read-a-medical-equipment-service-manual", "what-known-good-actually-means"],
+    "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means"],
     "what-known-good-actually-means": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
+    "fuses-breakers-and-power-supplies-in-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics"],
 }
 
 ARTICLE_CONFIG = {
@@ -83,6 +85,19 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Concept",
         "cardNote": "Reliable substitution testing",
+    },
+    "fuses-breakers-and-power-supplies-in-medical-equipment": {
+        "description": "A practical introduction to fuses, circuit breakers, power supplies, and the common power-path failures found in medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Power protection and supply basics",
+        "plannedTitles": ["Fuses, Breakers, and Power Supplies"],
+    },
+    "voltage-current-resistance-and-continuity-in-plain-english": {
+        "description": "A plain-English introduction to voltage, current, resistance, and continuity for medical-equipment troubleshooting.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Essential electrical concepts",
     },
 }
 
@@ -381,7 +396,10 @@ def main() -> int:
         )
         if count != 1:
             raise SystemExit("landing-page guides-grid insertion point not found")
-    landing = remove_published_planned_topics(landing, set(titles.values()))
+    published_titles = set(titles.values())
+    for config in configs.values():
+        published_titles.update(config.get("plannedTitles", []))
+    landing = remove_published_planned_topics(landing, published_titles)
     outputs[ROOT / "biomed-basics.html"] = landing
     sitemap_path = ROOT / "sitemap.xml"
     sitemap = sitemap_path.read_text(encoding="utf-8")
