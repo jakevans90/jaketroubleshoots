@@ -16,21 +16,23 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "electrical-safety-testing-medical-equipment": ["when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method"],
+    "electrical-safety-testing-medical-equipment": ["how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-read-a-medical-equipment-service-manual"],
+    "functional-testing-vs-calibration-vs-verification": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
     "biomed-work-order-notes-ccr-method": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-read-a-medical-equipment-service-manual", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "how-to-think-before-calling-a-vendor"],
-    "medical-equipment-battery-basics": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment"],
+    "medical-equipment-battery-basics": ["how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
     "when-to-remove-medical-equipment-from-service": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "how-to-think-before-calling-a-vendor"],
-    "how-to-think-before-calling-a-vendor": ["how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification"],
+    "how-to-think-before-calling-a-vendor": ["what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
-    "how-to-read-a-medical-equipment-service-manual": ["how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
-    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["how-to-think-before-calling-a-vendor", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics"],
+    "how-to-read-a-medical-equipment-service-manual": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
+    "how-to-use-a-multimeter-in-biomed": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-read-a-medical-equipment-service-manual", "what-known-good-actually-means"],
+    "what-known-good-actually-means": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
 }
 
 ARTICLE_CONFIG = {
@@ -69,6 +71,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Complaint reproduction and bench testing",
+    },
+    "how-to-use-a-multimeter-in-biomed": {
+        "description": "A practical introduction to measuring voltage, resistance, and continuity safely while troubleshooting medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Multimeter safety and measurement basics",
+    },
+    "what-known-good-actually-means": {
+        "description": "A practical guide to validating known-good parts, accessories, test equipment, and comparison devices before relying on substitution testing.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Reliable substitution testing",
     },
 }
 

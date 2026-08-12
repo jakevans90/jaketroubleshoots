@@ -141,13 +141,17 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Nurse call integration basics", planned)
         self.assertNotIn("How to Read a Medical Equipment Service Manual", planned)
         self.assertNotIn("How to Reproduce a Clinical Complaint on the Bench", planned)
+        self.assertNotIn("How to Use a Multimeter in Biomed", planned)
+        self.assertNotIn("What “Known-Good” Actually Means", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>100</strong>", planned)
+        self.assertIn("<strong>98</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
             "how-to-read-a-medical-equipment-service-manual": "Theory of Operation",
             "how-to-reproduce-a-clinical-complaint-on-the-bench": "The bench is not the clinical environment",
+            "how-to-use-a-multimeter-in-biomed": "Do Not Measure Resistance on a Powered Circuit",
+            "what-known-good-actually-means": "Known-good status should come from evidence",
         }
         landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
