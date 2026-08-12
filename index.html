@@ -415,17 +415,18 @@ function buildStatsLine(allGuides, allPmProcedures = [], allBiomedArticles = [])
   const manufacturers = new Set(allGuides.map(g => g.manufacturer).filter(Boolean));
   const assetTypes = new Set(allGuides.map(g => g.assetType).filter(Boolean));
 
-  const guideText = `${totalGuides} troubleshooting guides covering ${models.size} models across ${assetTypes.size} equipment types from ${manufacturers.size} manufacturers`;
+  const formatCount = count => count.toLocaleString('en-US');
+  const guideText = `${formatCount(totalGuides)} troubleshooting guides covering ${formatCount(models.size)} models, ${formatCount(assetTypes.size)} equipment types, and ${formatCount(manufacturers.size)} manufacturers`;
 
   if (!totalPm) {
     return `${guideText}.`;
   }
 
   const biomedText = allBiomedArticles.length
-    ? ` and ${allBiomedArticles.length} Biomed Basics article${allBiomedArticles.length !== 1 ? 's' : ''}`
+    ? ` and ${formatCount(allBiomedArticles.length)} Biomed Basics article${allBiomedArticles.length !== 1 ? 's' : ''}`
     : '';
 
-  return `${guideText} — plus ${totalPm} preventive maintenance procedure${totalPm !== 1 ? 's' : ''}${biomedText} and growing.`;
+  return `${guideText}—plus ${formatCount(totalPm)} preventive maintenance procedure${totalPm !== 1 ? 's' : ''}${biomedText}. And growing.`;
 }
 
 function getGridColumnCount(container) {
