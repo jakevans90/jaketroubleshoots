@@ -139,8 +139,28 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to think before calling a vendor", planned)
         self.assertNotIn("What HL7 means in plain English", planned)
         self.assertNotIn("Nurse call integration basics", planned)
+        self.assertNotIn("How to Read a Medical Equipment Service Manual", planned)
+        self.assertNotIn("How to Reproduce a Clinical Complaint on the Bench", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>102</strong>", planned)
+        self.assertIn("<strong>100</strong>", planned)
+
+    def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
+        expected = {
+            "how-to-read-a-medical-equipment-service-manual": "Theory of Operation",
+            "how-to-reproduce-a-clinical-complaint-on-the-bench": "The bench is not the clinical environment",
+        }
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        hero = re.search(r'<section class="hero">(.*?)</section>', landing, re.S).group(1)
+        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+
+        for slug, key_copy in expected.items():
+            page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
+            self.assertIn(key_copy, page)
+            self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
+            self.assertNotIn(f"biomed-basics/{slug}.html", hero)
+            self.assertIn(f"biomed-basics/{slug}.html", grid)
+            self.assertEqual(sitemap.count(f"biomed-basics/{slug}.html"), 1)
 
     def test_planned_topic_removal_works_across_cards_and_updates_count(self):
         landing = '''<section class="content-box planned-topics-section">

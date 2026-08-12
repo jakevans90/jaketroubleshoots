@@ -17,18 +17,20 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
     "electrical-safety-testing-medical-equipment": ["when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
-    "biomed-work-order-notes-ccr-method": ["when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
+    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method"],
+    "biomed-work-order-notes-ccr-method": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-read-a-medical-equipment-service-manual", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "how-to-think-before-calling-a-vendor"],
     "medical-equipment-battery-basics": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
-    "when-to-remove-medical-equipment-from-service": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "how-to-think-before-calling-a-vendor": ["when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "medical-equipment-battery-basics"],
+    "when-to-remove-medical-equipment-from-service": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "how-to-think-before-calling-a-vendor"],
+    "how-to-think-before-calling-a-vendor": ["how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
+    "how-to-read-a-medical-equipment-service-manual": ["how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["how-to-think-before-calling-a-vendor", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics"],
 }
 
 ARTICLE_CONFIG = {
@@ -55,6 +57,18 @@ ARTICLE_CONFIG = {
         "category": "Integration",
         "badge": "Core Concept",
         "cardNote": "Alarm and nurse call interface basics",
+    },
+    "how-to-read-a-medical-equipment-service-manual": {
+        "description": "A practical guide to finding troubleshooting steps, warnings, diagrams, specifications, service modes, parts, and verification procedures in medical-equipment manuals.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Service documentation and manual navigation",
+    },
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": {
+        "description": "A practical guide to recreating clinical failure conditions, isolating intermittent problems, using original accessories, and documenting meaningful bench testing.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Complaint reproduction and bench testing",
     },
 }
 
@@ -308,11 +322,11 @@ def atomic_write(path: Path, data: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("input", type=Path)
+    parser.add_argument("inputs", type=Path, nargs="+")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--confirm-plan")
     args = parser.parse_args()
-    articles = parse_batch(args.input)
+    articles = [article for input_path in args.inputs for article in parse_batch(input_path)]
     if len({article.slug for article in articles}) != len(articles):
         raise SystemExit("batch contains duplicate article slugs")
     configs = {}
