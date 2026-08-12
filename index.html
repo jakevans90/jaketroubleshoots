@@ -96,6 +96,11 @@
       <strong id="stat-pms">0</strong>
       <span>PM Procedures</span>
     </a>
+
+    <a href="biomed-basics.html" class="home-stat">
+      <strong id="stat-biomed">0</strong>
+      <span>Biomed Articles</span>
+    </a>
   </div>
 
   <p id="stats-line" class="home-stats-line"></p>
@@ -305,6 +310,20 @@
   </div>
 </section>
 
+<section class="homepage-section featured-biomed-section">
+  <div class="section-header">
+    <p class="section-kicker">Featured Biomed Basics</p>
+    <h3>Build Skills That Transfer Between Devices</h3>
+    <p>Three practical starting points selected from the growing Biomed Basics article library.</p>
+  </div>
+
+  <div id="featured-biomed-grid" class="guides-grid"></div>
+
+  <div class="homepage-section-actions">
+    <a href="biomed-basics.html" class="hero-button">Explore All Biomed Basics</a>
+  </div>
+</section>
+
 <section id="featured-guides" class="homepage-section featured-guides-section">
   <div class="section-header">
     <p class="section-kicker">Selected Guides</p>
@@ -388,7 +407,7 @@ function getIconPath(assetType) {
   return assetHub?.icon || '';
 }
 
-function buildStatsLine(allGuides, allPmProcedures = []) {
+function buildStatsLine(allGuides, allPmProcedures = [], allBiomedArticles = []) {
   const totalGuides = allGuides.length;
   const totalPm = allPmProcedures.length;
 
@@ -402,7 +421,11 @@ function buildStatsLine(allGuides, allPmProcedures = []) {
     return `${guideText}.`;
   }
 
-  return `${guideText} — plus ${totalPm} preventive maintenance procedure${totalPm !== 1 ? 's' : ''} and growing.`;
+  const biomedText = allBiomedArticles.length
+    ? ` and ${allBiomedArticles.length} Biomed Basics article${allBiomedArticles.length !== 1 ? 's' : ''}`
+    : '';
+
+  return `${guideText} — plus ${totalPm} preventive maintenance procedure${totalPm !== 1 ? 's' : ''}${biomedText} and growing.`;
 }
 
 function getGridColumnCount(container) {
@@ -493,6 +516,31 @@ function renderPmPreviewCards(containerId, procedures) {
   });
 }
 
+function renderFeaturedBiomedArticles(articles) {
+  const container = document.getElementById('featured-biomed-grid');
+  if (!container) return;
+
+  const featured = [...articles]
+    .filter(article => article.featured === true)
+    .sort((a, b) => (a.featuredOrder || 999) - (b.featuredOrder || 999))
+    .slice(0, 3);
+
+  container.innerHTML = '';
+  featured.forEach(article => {
+    const card = document.createElement('a');
+    card.className = 'guide-card basics-card';
+    card.href = article.url;
+    card.innerHTML = `
+      <div class="card-content">
+        <h3>${article.title}</h3>
+        <p>${article.description}</p>
+        <div class="badges"><span class="badge asset">${article.category}</span><span class="badge model">${article.badge}</span></div>
+        <p class="date">${article.cardNote}</p>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
 // Override renderGuides globally so guide cards can show asset icons
 const originalRenderGuides = window.renderGuides;
 
@@ -539,9 +587,10 @@ window.renderGuides = function(containerId, guides) {
 Promise.all([
   fetchGuides(),
   fetch('data/hub-asset.json').then(r => r.json()),
-  fetch('data/preventive-maintenance.json').then(r => r.json()).catch(() => [])
+  fetch('data/preventive-maintenance.json').then(r => r.json()).catch(() => []),
+  fetch('data/biomed-basics.json').then(r => r.json()).catch(() => [])
 ])
-.then(([allGuides, assetHubData, allPmProcedures]) => {
+.then(([allGuides, assetHubData, allPmProcedures, allBiomedArticles]) => {
   assetHubDataGlobal = assetHubData;
 
   const totalGuides = allGuides.length;
@@ -552,7 +601,7 @@ Promise.all([
 
   const statsLine = document.getElementById('stats-line');
   if (statsLine) {
-    statsLine.textContent = buildStatsLine(allGuides, allPmProcedures);
+    statsLine.textContent = buildStatsLine(allGuides, allPmProcedures, allBiomedArticles);
   }
 
   // Animated counters instead of instant assignment
@@ -561,12 +610,14 @@ Promise.all([
   const statAssetTypes = document.getElementById('stat-asset-types');
   const statManufacturers = document.getElementById('stat-manufacturers');
   const statPms = document.getElementById('stat-pms');
+  const statBiomed = document.getElementById('stat-biomed');
 
   if (statGuides) animateCount(statGuides, totalGuides);
   if (statModels) animateCount(statModels, models.size);
   if (statAssetTypes) animateCount(statAssetTypes, assetTypes.size);
   if (statManufacturers) animateCount(statManufacturers, manufacturers.size);
   if (statPms) animateCount(statPms, totalPm);
+  if (statBiomed) animateCount(statBiomed, allBiomedArticles.length);
 
   const featuredUrls = [
     'guides/siemens-somatom-series-patient-table-will-not-move.html',
@@ -592,6 +643,7 @@ Promise.all([
 
   const recentPmProcedures = getRecentPmProcedures(allPmProcedures, 3);
   renderPmPreviewCards('pm-preview-grid', recentPmProcedures);
+  renderFeaturedBiomedArticles(allBiomedArticles);
 
   let resizeTimer;
   window.addEventListener('resize', () => {

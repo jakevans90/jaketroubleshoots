@@ -1838,7 +1838,7 @@ footer a:hover {
   max-width: var(--content-width);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
   align-items: center;
 }
@@ -1937,7 +1937,7 @@ footer a:hover {
   }
 
   .home-stat:last-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
     border-bottom: none;
   }
 
@@ -2915,8 +2915,37 @@ footer p:nth-last-child(2) {
 
 .featured-guides-section .guide-card,
 .recent-guides-section .guide-card,
-.pm-aem-section .guide-card {
+.pm-aem-section .guide-card,
+.featured-biomed-section .guide-card {
   min-height: 330px;
+}
+
+.featured-biomed-section {
+  background: linear-gradient(180deg, rgba(143, 255, 0, 0.045), rgba(255, 255, 255, 0));
+}
+
+.featured-biomed-section .guides-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .home-stats-inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-stat:nth-child(3) {
+    border-right: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-stats-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured-biomed-section .guides-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 820px) {

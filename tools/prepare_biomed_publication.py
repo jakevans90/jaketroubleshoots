@@ -293,8 +293,8 @@ def biomed_group(category: str) -> str:
     return "everyday-skills"
 
 
-def catalog_entry(title: str, slug: str, config: dict[str, str]) -> dict[str, str]:
-    return {
+def catalog_entry(title: str, slug: str, config: dict[str, str], existing: dict | None = None) -> dict:
+    entry = {
         "title": title,
         "slug": slug,
         "url": f"biomed-basics/{slug}.html",
@@ -304,6 +304,10 @@ def catalog_entry(title: str, slug: str, config: dict[str, str]) -> dict[str, st
         "badge": config["badge"],
         "cardNote": config["cardNote"],
     }
+    for key in ("featured", "featuredOrder"):
+        if existing and key in existing:
+            entry[key] = existing[key]
+    return entry
 
 
 def remove_published_planned_topics(landing: str, published_titles: set[str]) -> str:
@@ -387,7 +391,9 @@ def main() -> int:
     if len(catalog_by_slug) != len(catalog):
         raise SystemExit("data/biomed-basics.json contains an invalid or duplicate slug")
     for article in articles:
-        catalog_by_slug[article.slug] = catalog_entry(article.title, article.slug, configs[article.slug])
+        catalog_by_slug[article.slug] = catalog_entry(
+            article.title, article.slug, configs[article.slug], catalog_by_slug.get(article.slug)
+        )
     catalog = sorted(catalog_by_slug.values(), key=lambda item: (item["group"], item["title"].casefold()))
     outputs[catalog_path] = json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
 
