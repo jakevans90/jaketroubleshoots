@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Relays and Contact Closures in Plain English | Jake Troubleshoots</title>
+  <meta name="description" content="A practical introduction to relays, dry contacts, normally open and normally closed circuits, and their use in alarms, nurse call, and equipment control.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/relays-and-contact-closures-in-plain-english.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>Relays and Contact Closures in Plain English</h2>
+  <p>How simple switches and relay outputs control nurse call, alarms, motors, and other medical equipment functions</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Relays show up everywhere in medical equipment.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a relay is</li>
+      <li>Coil and contacts</li>
+      <li>Normally open and normally closed</li>
+      <li>COM, NO, and NC</li>
+      <li>Contact closure</li>
+      <li>Why relays are useful</li>
+      <li>How to test relay contacts</li>
+      <li>How relays fail</li>
+      <li>Intermittent relay problems</li>
+      <li>Nurse call examples</li>
+      <li>Motor and valve examples</li>
+      <li>Why hearing a click does not prove the relay is good</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A relay has two main sides.</p>
+    <p>One side controls the relay.</p>
+    <p>The other side switches another circuit.</p>
+    <p>Think:</p>
+    <p><strong>Small electrical signal in</strong></p>
+    <p>↓</p>
+    <p><strong>Switch changes position</strong></p>
+    <p>↓</p>
+    <p><strong>Another circuit turns on, turns off, opens, or closes</strong></p>
+    <p>That lets one part of a device control another part without directly connecting the two circuits.</p>
+  </section>
+
+  <section class="content-box" id="think-of-a-relay-like-a-light-switch">
+    <h3>Think of a Relay Like a Light Switch</h3>
+    <p>A normal wall switch is controlled by your hand.</p>
+    <p>A relay is controlled electrically.</p>
+    <p>When the relay receives the correct control signal, an internal mechanism changes the position of its contacts.</p>
+    <p>Those contacts can then:</p>
+    <ul>
+      <li>Complete a circuit</li>
+      <li>Break a circuit</li>
+      <li>Switch between two paths</li>
+    </ul>
+    <p>That is why relays are so useful.</p>
+  </section>
+
+  <section class="content-box" id="the-coil">
+    <h3>The Coil</h3>
+    <p>Many electromechanical relays contain a coil.</p>
+    <p>When voltage is applied to the coil, it creates a magnetic field.</p>
+    <p>That magnetic field moves the internal switch.</p>
+    <p>You may hear the relay:</p>
+    <blockquote><p>Click.</p></blockquote>
+    <p>When coil power is removed, the relay returns to its normal position.</p>
+  </section>
+
+  <section class="content-box" id="contacts">
+    <h3>Contacts</h3>
+    <p>The contacts are the switching side of the relay.</p>
+    <p>Common labels include:</p>
+    <ul>
+      <li>COM</li>
+      <li>NO</li>
+      <li>NC</li>
+    </ul>
+    <p>These labels are important.</p>
+  </section>
+
+  <section class="content-box" id="com">
+    <h3>COM</h3>
+    <p>COM means:</p>
+    <p><strong>Common</strong></p>
+    <p>This is the contact that switches between the other positions.</p>
+  </section>
+
+  <section class="content-box" id="no">
+    <h3>NO</h3>
+    <p>NO means:</p>
+    <p><strong>Normally Open</strong></p>
+    <p>“Normally” means the relay is not energized.</p>
+    <p>With the relay inactive:</p>
+    <p>COM and NO are not connected.</p>
+    <p>When the relay activates:</p>
+    <p>COM and NO connect.</p>
+    <p>So the circuit goes from:</p>
+    <p><strong>Open</strong></p>
+    <p>to:</p>
+    <p><strong>Closed</strong></p>
+  </section>
+
+  <section class="content-box" id="nc">
+    <h3>NC</h3>
+    <p>NC means:</p>
+    <p><strong>Normally Closed</strong></p>
+    <p>With the relay inactive:</p>
+    <p>COM and NC are connected.</p>
+    <p>When the relay activates:</p>
+    <p>That connection opens.</p>
+    <p>So the circuit goes from:</p>
+    <p><strong>Closed</strong></p>
+    <p>to:</p>
+    <p><strong>Open</strong></p>
+  </section>
+
+  <section class="content-box" id="what-normal-actually-means">
+    <h3>What “Normal” Actually Means</h3>
+    <p>This causes confusion.</p>
+    <p>Normal does not mean:</p>
+    <blockquote><p>Normal clinical operation.</p></blockquote>
+    <p>It generally means:</p>
+    <p><strong>The relay coil is not energized.</strong></p>
+    <p>That distinction matters.</p>
+    <p>A device may intentionally energize a relay during normal operation and release it during an alarm.</p>
+    <p>Always check the manufacturer's design.</p>
+  </section>
+
+  <section class="content-box" id="contact-closure">
+    <h3>Contact Closure</h3>
+    <p>You will hear this term constantly.</p>
+    <p>A contact closure simply means two electrical contacts become connected.</p>
+    <p>For example:</p>
+    <p>A ventilator goes into high-priority alarm.</p>
+    <p>Its nurse call relay closes COM to NO.</p>
+    <p>The nurse call system detects that closed circuit.</p>
+    <p>Then the nurse call system generates a notification.</p>
+    <p>The ventilator may not be sending any complicated data.</p>
+    <p>It may simply be:</p>
+    <p><strong>closing a switch.</strong></p>
+  </section>
+
+  <section class="content-box" id="dry-contact">
+    <h3>Dry Contact</h3>
+    <p>You may hear the term:</p>
+    <p><strong>dry contact</strong></p>
+    <p>This usually means the relay contact itself does not provide the external circuit's operating voltage.</p>
+    <p>It simply opens or closes a path.</p>
+    <p>The receiving system provides whatever electrical signal is needed.</p>
+    <p>This is common in alarm interfaces.</p>
+  </section>
+
+  <section class="content-box" id="why-relays-are-useful">
+    <h3>Why Relays Are Useful</h3>
+    <p>Relays can provide electrical separation between circuits.</p>
+    <p>For example:</p>
+    <p>A medical device has its own internal electronics.</p>
+    <p>A nurse call system has its own electrical system.</p>
+    <p>The device can use relay contacts to signal nurse call without directly connecting the two systems' internal power supplies.</p>
+    <p>That can simplify interfacing and provide isolation.</p>
+  </section>
+
+  <section class="content-box" id="relay-outputs-are-everywhere">
+    <h3>Relay Outputs Are Everywhere</h3>
+    <p>Examples include:</p>
+    <ul>
+      <li>Nurse call</li>
+      <li>Remote alarm</li>
+      <li>Equipment ready signals</li>
+      <li>Motor controls</li>
+      <li>Solenoid controls</li>
+      <li>Door interlocks</li>
+      <li>Heater controls</li>
+      <li>Compressor switching</li>
+      <li>Pump controls</li>
+    </ul>
+    <p>The exact design varies, but the logic is often similar.</p>
+  </section>
+
+  <section class="content-box" id="testing-a-relay-contact">
+    <h3>Testing a Relay Contact</h3>
+    <p>Suppose the manual says:</p>
+    <p>Normal:</p>
+    <p>COM to NO = open.</p>
+    <p>Alarm:</p>
+    <p>COM to NO = closed.</p>
+    <p>With the device in the appropriate safe test condition, you can use a multimeter to verify whether that change occurs.</p>
+    <h4>Normal state</h4>
+    <p>Measure continuity:</p>
+    <p>COM to NO.</p>
+    <p>Expected:</p>
+    <p>Open.</p>
+    <h4>Alarm state</h4>
+    <p>Generate the appropriate alarm.</p>
+    <p>Measure again.</p>
+    <p>Expected:</p>
+    <p>Continuity.</p>
+    <p>If the contact never changes, the relay circuit deserves investigation.</p>
+  </section>
+
+  <section class="content-box" id="test-the-contact-not-just-the-sound">
+    <h3>Test the Contact, Not Just the Sound</h3>
+    <p>A common mistake is:</p>
+    <blockquote><p>I heard the relay click, so the relay is good.</p></blockquote>
+    <p>Not necessarily.</p>
+    <p>The coil may activate and physically move.</p>
+    <p>But the contacts may still be:</p>
+    <ul>
+      <li>Burned</li>
+      <li>Corroded</li>
+      <li>Worn</li>
+      <li>High resistance</li>
+      <li>Mechanically damaged</li>
+    </ul>
+    <p>A click proves movement occurred.</p>
+    <p>It does not prove the electrical contact is good.</p>
+  </section>
+
+  <section class="content-box" id="high-resistance-relay-contacts">
+    <h3>High-Resistance Relay Contacts</h3>
+    <p>Relay contacts can degrade.</p>
+    <p>Instead of a good closed contact measuring nearly zero resistance, it may measure much higher.</p>
+    <p>The circuit may:</p>
+    <ul>
+      <li>Work intermittently</li>
+      <li>Fail under load</li>
+      <li>Heat up</li>
+      <li>Drop voltage</li>
+    </ul>
+    <p>Continuity mode might still beep.</p>
+    <p>Actual resistance may tell you more.</p>
+  </section>
+
+  <section class="content-box" id="relay-contacts-can-weld-closed">
+    <h3>Relay Contacts Can Weld Closed</h3>
+    <p>If excessive current passes through contacts, they can sometimes weld together.</p>
+    <p>Then the relay may remain electrically closed even after the control signal disappears.</p>
+    <p>Symptoms may include:</p>
+    <ul>
+      <li>Motor will not stop</li>
+      <li>Alarm output remains active</li>
+      <li>Heater stays on</li>
+      <li>Valve remains energized</li>
+    </ul>
+    <p>This can become a serious safety problem depending on the circuit.</p>
+  </section>
+
+  <section class="content-box" id="relay-contacts-can-fail-open">
+    <h3>Relay Contacts Can Fail Open</h3>
+    <p>The opposite can happen.</p>
+    <p>The coil clicks.</p>
+    <p>The device appears to command the relay.</p>
+    <p>But the contacts never complete the circuit.</p>
+    <p>Possible symptom:</p>
+    <p>Ventilator alarms locally.</p>
+    <p>Nurse call never activates.</p>
+    <p>If the output relay is supposed to close during alarm but remains open, you have narrowed the failure.</p>
+  </section>
+
+  <section class="content-box" id="the-coil-can-fail">
+    <h3>The Coil Can Fail</h3>
+    <p>The coil itself may fail.</p>
+    <p>Possible signs:</p>
+    <ul>
+      <li>No click</li>
+      <li>No contact change</li>
+      <li>Correct control voltage present</li>
+      <li>Relay never activates</li>
+    </ul>
+    <p>If manufacturer documentation allows, measuring coil resistance may help identify an open coil.</p>
+  </section>
+
+  <section class="content-box" id="no-control-voltage">
+    <h3>No Control Voltage</h3>
+    <p>The relay may be perfectly good.</p>
+    <p>If the coil never receives the control signal, it cannot activate.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Driver transistor</li>
+      <li>Control board</li>
+      <li>Software condition</li>
+      <li>Broken wiring</li>
+      <li>Failed connector</li>
+      <li>Safety interlock</li>
+    </ul>
+    <p>Again:</p>
+    <p>Do not replace the relay until you know whether it is being told to activate.</p>
+  </section>
+
+  <section class="content-box" id="relay-driver-circuits">
+    <h3>Relay Driver Circuits</h3>
+    <p>A microprocessor usually cannot directly drive a large relay coil.</p>
+    <p>There may be an intermediate driver circuit.</p>
+    <p>A simplified path:</p>
+    <p><strong>Processor</strong></p>
+    <p>↓</p>
+    <p><strong>Driver transistor</strong></p>
+    <p>↓</p>
+    <p><strong>Relay coil</strong></p>
+    <p>↓</p>
+    <p><strong>Relay contacts</strong></p>
+    <p>If the processor commands the output but the driver fails, the relay never moves.</p>
+    <p>Understanding the signal path helps avoid replacing the wrong component.</p>
+  </section>
+
+  <section class="content-box" id="relays-and-nurse-call">
+    <h3>Relays and Nurse Call</h3>
+    <p>This is probably one of the most common biomed examples.</p>
+    <p>Device generates alarm.</p>
+    <p>Internal software decides the alarm should trigger external notification.</p>
+    <p>Relay changes state.</p>
+    <p>Nurse call cable carries that contact state.</p>
+    <p>Wall system detects it.</p>
+    <p>If nurse call fails, isolate:</p>
+    <ol>
+      <li>Did the medical device alarm?</li>
+      <li>Did the relay output change?</li>
+      <li>Is the cable good?</li>
+      <li>Did the wall system detect the signal?</li>
+    </ol>
+    <p>That is much better than immediately blaming the nurse call jack.</p>
+  </section>
+
+  <section class="content-box" id="normally-open-vs-normally-closed-nurse-call">
+    <h3>Normally Open vs Normally Closed Nurse Call</h3>
+    <p>The receiving system may expect either behavior.</p>
+    <h4>Normally Open</h4>
+    <p>Normal:</p>
+    <p>Circuit open.</p>
+    <p>Alarm:</p>
+    <p>Circuit closes.</p>
+    <h4>Normally Closed</h4>
+    <p>Normal:</p>
+    <p>Circuit closed.</p>
+    <p>Alarm:</p>
+    <p>Circuit opens.</p>
+    <p>If the device and nurse call system are configured differently, you may get:</p>
+    <ul>
+      <li>No alarm</li>
+      <li>Constant alarm</li>
+      <li>Reversed behavior</li>
+    </ul>
+    <p>Configuration matters.</p>
+  </section>
+
+  <section class="content-box" id="fail-safe-design">
+    <h3>Fail-Safe Design</h3>
+    <p>Sometimes normally closed circuits are used because a broken cable creates the same electrical condition as an alarm or fault.</p>
+    <p>For example:</p>
+    <p>Normal:</p>
+    <p>Circuit closed.</p>
+    <p>Cable breaks:</p>
+    <p>Circuit opens.</p>
+    <p>System notices.</p>
+    <p>That can make failures more visible.</p>
+    <p>But do not assume every NC circuit is automatically supervised or fail-safe.</p>
+    <p>The receiving system has to be designed to recognize that condition.</p>
+  </section>
+
+  <section class="content-box" id="relays-and-motors">
+    <h3>Relays and Motors</h3>
+    <p>A device may use a relay to switch power to:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Compressor</li>
+      <li>Fan</li>
+      <li>Motor</li>
+    </ul>
+    <p>Suppose a compressor never starts.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Compressor failure</li>
+      <li>No incoming power</li>
+      <li>Relay contact failure</li>
+      <li>Relay coil failure</li>
+      <li>No control signal</li>
+    </ul>
+    <p>Do not immediately replace the compressor.</p>
+    <p>Find out whether power is actually being switched to it.</p>
+  </section>
+
+  <section class="content-box" id="relays-and-solenoids">
+    <h3>Relays and Solenoids</h3>
+    <p>Solenoid valves are also commonly controlled by relays or similar switching devices.</p>
+    <p>Example:</p>
+    <p>Control system commands valve open.</p>
+    <p>Relay activates.</p>
+    <p>Voltage reaches solenoid.</p>
+    <p>Valve moves.</p>
+    <p>If the valve does not move, determine where the sequence stops.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-relays-vs-solid-state-switching">
+    <h3>Mechanical Relays vs Solid-State Switching</h3>
+    <p>Not every relay-like output uses a mechanical clicking relay.</p>
+    <p>Some systems use:</p>
+    <ul>
+      <li>Solid-state relays</li>
+      <li>Transistors</li>
+      <li>MOSFETs</li>
+      <li>Optocouplers</li>
+    </ul>
+    <p>There may be no click.</p>
+    <p>The troubleshooting principle is still similar:</p>
+    <p><strong>Did the control signal produce the expected output change?</strong></p>
+  </section>
+
+  <section class="content-box" id="intermittent-relay-problems">
+    <h3>Intermittent Relay Problems</h3>
+    <p>Relays can fail intermittently.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Worn contacts</li>
+      <li>Heat</li>
+      <li>Vibration</li>
+      <li>Loose solder joint</li>
+      <li>Weak coil</li>
+      <li>Damaged connector</li>
+    </ul>
+    <p>A device may work when cold and fail later.</p>
+    <p>Or work when stationary and fail during movement.</p>
+    <p>If the complaint is intermittent, reproduce the relevant conditions.</p>
+  </section>
+
+  <section class="content-box" id="burned-relay-contacts">
+    <h3>Burned Relay Contacts</h3>
+    <p>Switching current causes small electrical arcs at relay contacts.</p>
+    <p>Over time, this can damage them.</p>
+    <p>Signs may include:</p>
+    <ul>
+      <li>Discoloration</li>
+      <li>Pitting</li>
+      <li>High resistance</li>
+      <li>Intermittent contact</li>
+    </ul>
+    <p>Relays switching motors and inductive loads can experience significant stress.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nurse-call-does-not-activate">
+    <h3>Real-World Example: Nurse Call Does Not Activate</h3>
+    <p>Patient monitor generates high-priority alarm normally.</p>
+    <p>Speaker works.</p>
+    <p>Visual alarm works.</p>
+    <p>Measure relay output:</p>
+    <p>Normal:</p>
+    <p>COM to NO = open.</p>
+    <p>Alarm:</p>
+    <p>COM to NO = still open.</p>
+    <p>The problem is now much more specific.</p>
+    <p>The device is detecting the alarm correctly.</p>
+    <p>The external relay output is not changing state.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nurse-call-stays-active">
+    <h3>Real-World Example: Nurse Call Stays Active</h3>
+    <p>Alarm clears locally.</p>
+    <p>Nurse call remains active.</p>
+    <p>Measure relay:</p>
+    <p>COM to NO remains closed after alarm clears.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Welded relay contact</li>
+      <li>Output control failure</li>
+      <li>Configuration</li>
+      <li>Nurse call system latching behavior</li>
+    </ul>
+    <p>Now test which side retains the signal.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-compressor-does-not-run">
+    <h3>Real-World Example: Compressor Does Not Run</h3>
+    <p>Device commands compressor.</p>
+    <p>Relay clicks.</p>
+    <p>Voltage measured before relay:</p>
+    <p>24 VDC.</p>
+    <p>Voltage after relay while activated:</p>
+    <p>0 VDC.</p>
+    <p>That strongly suggests the relay contacts are not passing power.</p>
+    <p>Hearing the click was not enough.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-relay-never-clicks">
+    <h3>Real-World Example: Relay Never Clicks</h3>
+    <p>Device should activate valve.</p>
+    <p>Relay remains silent.</p>
+    <p>Measure coil command:</p>
+    <p>No voltage.</p>
+    <p>Now the relay itself may not be the problem.</p>
+    <p>Look upstream toward the control circuit.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Assuming Click Means Good</h4>
+    <p>Verify the contacts.</p>
+    <h4>Replacing Relay Without Checking Control Signal</h4>
+    <p>It may never be receiving the command.</p>
+    <h4>Confusing NO and NC</h4>
+    <p>Read the diagram.</p>
+    <h4>Assuming Contact Closure Supplies Voltage</h4>
+    <p>A dry contact may only act as a switch.</p>
+    <h4>Testing Only Continuity</h4>
+    <p>High resistance may matter.</p>
+    <h4>Ignoring Configuration</h4>
+    <p>Software may determine relay behavior.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a relay-controlled function, ask:</p>
+    <p><strong>Should the relay be active right now?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the relay receiving the command?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the relay physically change state?</strong></p>
+    <p>Then:</p>
+    <p><strong>Do the contacts electrically change state?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the downstream device respond?</strong></p>
+    <p>That breaks the problem into clear steps.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If you hear:</p>
+    <blockquote><p>Click.</p></blockquote>
+    <p>You proved:</p>
+    <p><strong>Something mechanically moved.</strong></p>
+    <p>If you measure:</p>
+    <p>COM to NO changes from open to 0.2 Ω.</p>
+    <p>You proved:</p>
+    <p><strong>The contact electrically closed under those conditions.</strong></p>
+    <p>Those are different levels of evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Relays are not complicated once you stop thinking of them as mysterious electrical components.</p>
+    <p>They are switches.</p>
+    <p>Something tells the relay to change state.</p>
+    <p>The contacts open or close.</p>
+    <p>That change controls something else.</p>
+    <p>When troubleshooting, follow the sequence.</p>
+    <p>Control signal.</p>
+    <p>Relay.</p>
+    <p>Contacts.</p>
+    <p>Load.</p>
+    <p>Do not jump straight to the component at the end of the chain.</p>
+    <p>Sometimes the ventilator is fine and the nurse call relay is bad.</p>
+    <p>Sometimes the relay is fine and the cable is bad.</p>
+    <p>Sometimes the relay never received a command at all.</p>
+    <p>Find where the expected state stops changing.</p>
+    <p>That is the troubleshooting path.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Relay circuits may switch hazardous voltages, currents, motors, heaters, alarm outputs, and other safety-critical functions. Follow manufacturer service procedures, facility safety requirements, approved test methods, and your authorized service scope. Do not bypass interlocks, alarms, or protective relay functions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="nurse-call-integration-basics.html">Nurse Call Integration Basics</a></li>
+      <li><a href="voltage-current-resistance-and-continuity-in-plain-english.html">Voltage, Current, Resistance, and Continuity in Plain English</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+      <li><a href="fuses-breakers-and-power-supplies-in-medical-equipment.html">Fuses, Breakers, and Power Supplies in Medical Equipment</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

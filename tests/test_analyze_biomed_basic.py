@@ -141,8 +141,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("What “Known-Good” Actually Means", planned)
         self.assertNotIn("Fuses, Breakers, and Power Supplies", planned)
         self.assertNotIn("Voltage, Current, Resistance, and Continuity in Plain English", planned)
+        self.assertNotIn("Sensors and Transducers Basics", planned)
+        self.assertNotIn("Relays and Contact Closures in Plain English", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>96</strong>", planned)
+        self.assertIn("<strong>94</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -152,6 +154,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "what-known-good-actually-means": "Known-good status should come from evidence",
             "fuses-breakers-and-power-supplies-in-medical-equipment": "A Blown Fuse Is Usually a Symptom",
             "voltage-current-resistance-and-continuity-in-plain-english": "Voltage is electrical potential difference",
+            "sensors-and-transducers-basics": "A sensor detects something physical",
+            "relays-and-contact-closures-in-plain-english": "A relay is controlled electrically",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -165,7 +169,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 20)
+        self.assertEqual(len(catalog), 22)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:

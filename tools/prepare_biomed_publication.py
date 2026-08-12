@@ -29,13 +29,15 @@ RELATED = {
     "when-to-remove-medical-equipment-from-service": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "how-to-think-before-calling-a-vendor"],
     "how-to-think-before-calling-a-vendor": ["what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
-    "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
+    "nurse-call-integration-basics": ["relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method"],
     "how-to-read-a-medical-equipment-service-manual": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
-    "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means"],
+    "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
-    "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics"],
+    "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
+    "sensors-and-transducers-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
+    "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -99,6 +101,18 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Core Concept",
         "cardNote": "Essential electrical concepts",
+    },
+    "sensors-and-transducers-basics": {
+        "description": "A practical introduction to how medical devices convert pressure, flow, temperature, light, force, and other physical conditions into usable signals.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Sensor signals and measurement basics",
+    },
+    "relays-and-contact-closures-in-plain-english": {
+        "description": "A practical introduction to relays, dry contacts, normally open and normally closed circuits, and their use in alarms, nurse call, and equipment control.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Relay and contact-closure basics",
     },
 }
 
