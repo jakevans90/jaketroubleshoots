@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import json
 import os
 import re
 import tempfile
@@ -292,18 +293,17 @@ def biomed_group(category: str) -> str:
     return "everyday-skills"
 
 
-def landing_card(title: str, slug: str, description: str, category: str, badge: str, card_note: str) -> str:
-    group = biomed_group(category)
-    return f'''
-    <a href="biomed-basics/{slug}.html" class="guide-card basics-card" data-biomed-group="{group}">
-      <div class="card-content">
-        <h3>{html.escape(title)}</h3>
-        <p>{html.escape(description)}</p>
-        <div class="badges"><span class="badge asset">{html.escape(category)}</span><span class="badge model">{html.escape(badge)}</span></div>
-        <p class="date">{html.escape(card_note)}</p>
-      </div>
-    </a>
-'''
+def catalog_entry(title: str, slug: str, config: dict[str, str]) -> dict[str, str]:
+    return {
+        "title": title,
+        "slug": slug,
+        "url": f"biomed-basics/{slug}.html",
+        "description": config["description"],
+        "category": config["category"],
+        "group": biomed_group(config["category"]),
+        "badge": config["badge"],
+        "cardNote": config["cardNote"],
+    }
 
 
 def remove_published_planned_topics(landing: str, published_titles: set[str]) -> str:
@@ -379,23 +379,19 @@ def main() -> int:
         if slug in targets:
             continue
         outputs[path] = replace_related(path.read_text(encoding="utf-8"), related_section(slug, titles))
-    landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+    catalog_path = ROOT / "data" / "biomed-basics.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    if not isinstance(catalog, list):
+        raise SystemExit("data/biomed-basics.json must contain a list")
+    catalog_by_slug = {item.get("slug"): item for item in catalog if isinstance(item, dict)}
+    if len(catalog_by_slug) != len(catalog):
+        raise SystemExit("data/biomed-basics.json contains an invalid or duplicate slug")
     for article in articles:
-        article_href = f"biomed-basics/{article.slug}.html"
-        existing_card = re.compile(
-            rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card"[^>]*>.*?</a>',
-            re.S,
-        )
-        landing = existing_card.sub("", landing)
-        grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
-        config = configs[article.slug]
-        landing, count = grid.subn(
-            lambda match: match.group(1) + landing_card(article.title, article.slug, config["description"], config["category"], config["badge"], config["cardNote"]) + match.group(2),
-            landing,
-            count=1,
-        )
-        if count != 1:
-            raise SystemExit("landing-page guides-grid insertion point not found")
+        catalog_by_slug[article.slug] = catalog_entry(article.title, article.slug, configs[article.slug])
+    catalog = sorted(catalog_by_slug.values(), key=lambda item: (item["group"], item["title"].casefold()))
+    outputs[catalog_path] = json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
+
+    landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
     published_titles = set(titles.values())
     for config in configs.values():
         published_titles.update(config.get("plannedTitles", []))
