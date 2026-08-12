@@ -143,8 +143,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Voltage, Current, Resistance, and Continuity in Plain English", planned)
         self.assertNotIn("Sensors and Transducers Basics", planned)
         self.assertNotIn("Relays and Contact Closures in Plain English", planned)
+        self.assertNotIn("Preserving Device Logs After a Serious Event", planned)
+        self.assertNotIn("What to Do When a Medical Device Is Involved in an Incident", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>94</strong>", planned)
+        self.assertIn("<strong>92</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -156,6 +158,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "voltage-current-resistance-and-continuity-in-plain-english": "Voltage is electrical potential difference",
             "sensors-and-transducers-basics": "A sensor detects something physical",
             "relays-and-contact-closures-in-plain-english": "A relay is controlled electrically",
+            "preserving-device-logs-after-a-serious-event": "Do Not “Test It a Few Times” First",
+            "what-to-do-when-a-medical-device-is-involved-in-an-incident": "This Is Not a Normal Work Order",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -169,7 +173,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 22)
+        self.assertEqual(len(catalog), 24)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:

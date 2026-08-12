@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Preserving Device Logs After a Serious Event | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to protecting device logs, alarm histories, configurations, timestamps, and other electronic evidence after a serious clinical event.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/preserving-device-logs-after-a-serious-event.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>Preserving Device Logs After a Serious Event</h2>
+  <p>Why the information inside a medical device may be just as important as the device itself</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Modern medical equipment remembers things.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What device logs are</li>
+      <li>Why logs matter after an incident</li>
+      <li>Different types of logs</li>
+      <li>Volatile versus stored information</li>
+      <li>Why rebooting matters</li>
+      <li>Why timestamps matter</li>
+      <li>Device clock offsets</li>
+      <li>Log rollover</li>
+      <li>Preserving screenshots</li>
+      <li>Exporting logs</li>
+      <li>Proprietary manufacturer logs</li>
+      <li>Network and server logs</li>
+      <li>Documenting the extraction process</li>
+      <li>Avoiding accidental changes</li>
+      <li>What logs can and cannot prove</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>After a serious event:</p>
+    <p><strong>Do not assume the logs will stay there forever.</strong></p>
+    <p>Before changing the device:</p>
+    <ol>
+      <li>Follow your facility's incident process.</li>
+      <li>Identify what information the device stores.</li>
+      <li>Preserve what is currently visible.</li>
+      <li>Avoid unnecessary rebooting, resetting, or updating.</li>
+      <li>Record the device's displayed time.</li>
+      <li>Export logs using the approved method.</li>
+      <li>Keep the original files unchanged.</li>
+      <li>Document how and when they were obtained.</li>
+    </ol>
+    <p>The goal is to preserve the best available record of the device's behavior.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-device-log">
+    <h3>What Is a Device Log?</h3>
+    <p>A log is a record created by the equipment.</p>
+    <p>Different manufacturers use different names.</p>
+    <p>You may see:</p>
+    <ul>
+      <li>Event log</li>
+      <li>Error log</li>
+      <li>Alarm history</li>
+      <li>System log</li>
+      <li>Service log</li>
+      <li>Diagnostic log</li>
+      <li>Audit trail</li>
+      <li>Therapy record</li>
+      <li>Trend log</li>
+    </ul>
+    <p>These may contain very different information.</p>
+    <p>Do not assume:</p>
+    <blockquote><p>I downloaded the log.</p></blockquote>
+    <p>means you collected everything.</p>
+  </section>
+
+  <section class="content-box" id="alarm-logs">
+    <h3>Alarm Logs</h3>
+    <p>Alarm logs may show:</p>
+    <ul>
+      <li>Alarm name</li>
+      <li>Priority</li>
+      <li>Start time</li>
+      <li>Clear time</li>
+      <li>Parameter value</li>
+      <li>Alarm limit</li>
+    </ul>
+    <p>For example:</p>
+    <p>14:31:12 — High Airway Pressure</p>
+    <p>14:31:18 — Alarm cleared</p>
+    <p>That can help reconstruct the clinical event.</p>
+  </section>
+
+  <section class="content-box" id="error-logs">
+    <h3>Error Logs</h3>
+    <p>Error logs usually focus more on internal equipment problems.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Battery communication failure</li>
+      <li>Internal processor reset</li>
+      <li>Flow sensor calibration failure</li>
+      <li>Watchdog reset</li>
+      <li>Power supply fault</li>
+      <li>Module communication error</li>
+    </ul>
+    <p>These may be more useful to a technician than the normal alarm history.</p>
+  </section>
+
+  <section class="content-box" id="event-logs">
+    <h3>Event Logs</h3>
+    <p>Event logs may include a broader range of activity.</p>
+    <p>For example:</p>
+    <ul>
+      <li>Powered on</li>
+      <li>AC removed</li>
+      <li>Battery connected</li>
+      <li>Parameter changed</li>
+      <li>Module inserted</li>
+      <li>Network connection lost</li>
+      <li>Alarm silence pressed</li>
+      <li>Device shut down</li>
+    </ul>
+    <p>Event logs can sometimes provide an approximate sequence of what happened.</p>
+  </section>
+
+  <section class="content-box" id="therapy-records">
+    <h3>Therapy Records</h3>
+    <p>Some devices store information about therapy delivered.</p>
+    <p>Depending on the device, that might include:</p>
+    <ul>
+      <li>Defibrillator shocks</li>
+      <li>Infusion programming</li>
+      <li>Ventilator settings</li>
+      <li>Therapy start and stop times</li>
+      <li>Delivered energy</li>
+      <li>Delivered volume</li>
+    </ul>
+    <p>These records can be particularly important after an event.</p>
+    <p>Handle them according to facility procedure.</p>
+  </section>
+
+  <section class="content-box" id="audit-trails">
+    <h3>Audit Trails</h3>
+    <p>Some systems record user or configuration actions.</p>
+    <p>An audit trail may show:</p>
+    <ul>
+      <li>Setting changed</li>
+      <li>Profile selected</li>
+      <li>Alarm limit modified</li>
+      <li>Configuration updated</li>
+      <li>User logged in</li>
+    </ul>
+    <p>Do not assume every medical device has a complete audit trail.</p>
+    <p>But when one exists, it can help explain changes.</p>
+  </section>
+
+  <section class="content-box" id="service-logs">
+    <h3>Service Logs</h3>
+    <p>Service logs may contain information not shown to clinical users.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Internal fault codes</li>
+      <li>Voltage information</li>
+      <li>Boot errors</li>
+      <li>Sensor calibration failures</li>
+      <li>Communication errors</li>
+      <li>Processor resets</li>
+    </ul>
+    <p>Access may require:</p>
+    <ul>
+      <li>Service mode</li>
+      <li>Service software</li>
+      <li>Manufacturer support</li>
+    </ul>
+    <p>Do not enter service mode or run an extraction procedure after a serious incident until you understand whether doing so changes stored information.</p>
+  </section>
+
+  <section class="content-box" id="logs-can-be-volatile">
+    <h3>Logs Can Be Volatile</h3>
+    <p>Some information exists only temporarily.</p>
+    <p>It may disappear when:</p>
+    <ul>
+      <li>Device shuts down</li>
+      <li>Battery is removed</li>
+      <li>Device reboots</li>
+      <li>Memory loses power</li>
+      <li>Software restarts</li>
+    </ul>
+    <p>This is volatile information.</p>
+    <p>If the device is displaying a meaningful message after an incident, document it before doing anything that might clear it.</p>
+  </section>
+
+  <section class="content-box" id="other-logs-are-stored">
+    <h3>Other Logs Are Stored</h3>
+    <p>Many devices store logs in nonvolatile memory.</p>
+    <p>That means they remain after power is removed.</p>
+    <p>But even stored logs may eventually be:</p>
+    <ul>
+      <li>Overwritten</li>
+      <li>Rolled over</li>
+      <li>Cleared</li>
+      <li>Reset</li>
+      <li>Lost during repair</li>
+    </ul>
+    <p>Do not assume stored means permanent.</p>
+  </section>
+
+  <section class="content-box" id="log-rollover">
+    <h3>Log Rollover</h3>
+    <p>Devices have limited storage.</p>
+    <p>Imagine an event log stores the most recent:</p>
+    <p>1,000 events.</p>
+    <p>When event 1,001 occurs, the oldest entry may disappear.</p>
+    <p>Now imagine repeatedly rebooting a device.</p>
+    <p>Each reboot generates:</p>
+    <ul>
+      <li>Startup event</li>
+      <li>Self-test event</li>
+      <li>Network event</li>
+      <li>Alarm event</li>
+    </ul>
+    <p>You may be creating new entries that push older ones out.</p>
+    <p>This is another reason to minimize unnecessary interaction before log preservation.</p>
+  </section>
+
+  <section class="content-box" id="do-not-test-it-a-few-times-first">
+    <h3>Do Not “Test It a Few Times” First</h3>
+    <p>Suppose a ventilator had a serious fault at:</p>
+    <p>10:14.</p>
+    <p>You immediately run five pre-use checks.</p>
+    <p>Now the log contains dozens of new events.</p>
+    <p>You have added noise to the timeline.</p>
+    <p>Worse, you may have overwritten older entries.</p>
+    <p>Preserve first.</p>
+    <p>Test later.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-changes-the-timeline">
+    <h3>Rebooting Changes the Timeline</h3>
+    <p>A reboot may create new entries such as:</p>
+    <ul>
+      <li>Shutdown</li>
+      <li>Boot</li>
+      <li>Self-test</li>
+      <li>Module initialization</li>
+      <li>Network reconnect</li>
+    </ul>
+    <p>That can make the log more difficult to interpret.</p>
+    <p>If you need to reboot the device, document when and why.</p>
+    <p>Then investigators can distinguish:</p>
+    <p><strong>clinical event</strong></p>
+    <p>from:</p>
+    <p><strong>biomed testing event.</strong></p>
+  </section>
+
+  <section class="content-box" id="record-the-device-clock">
+    <h3>Record the Device Clock</h3>
+    <p>Before exporting anything, record:</p>
+    <p><strong>What time does the device think it is?</strong></p>
+    <p>Compare it with an accurate reference clock.</p>
+    <p>Example:</p>
+    <p>Actual time:</p>
+    <p>15:20:00</p>
+    <p>Device displays:</p>
+    <p>15:13:42</p>
+    <p>The device is approximately:</p>
+    <p>6 minutes 18 seconds slow.</p>
+    <p>That information may be extremely important.</p>
+  </section>
+
+  <section class="content-box" id="do-not-correct-the-clock-yet">
+    <h3>Do Not Correct the Clock Yet</h3>
+    <p>If you change the clock before documenting the offset, you can make later log correlation much harder.</p>
+    <p>First record:</p>
+    <ul>
+      <li>Device displayed time</li>
+      <li>Reference time</li>
+      <li>Approximate offset</li>
+    </ul>
+    <p>Then follow the approved process.</p>
+  </section>
+
+  <section class="content-box" id="why-clock-offset-matters">
+    <h3>Why Clock Offset Matters</h3>
+    <p>Imagine these records:</p>
+    <p>Nurse documentation:</p>
+    <p>14:52</p>
+    <p>Central monitor:</p>
+    <p>14:51</p>
+    <p>Infusion pump:</p>
+    <p>14:44</p>
+    <p>At first, the pump seems unrelated.</p>
+    <p>But if you discover the pump clock was seven minutes slow, those events may line up.</p>
+    <p>Time correlation can completely change your interpretation.</p>
+  </section>
+
+  <section class="content-box" id="time-zones-matter">
+    <h3>Time Zones Matter</h3>
+    <p>Connected systems may store timestamps using:</p>
+    <ul>
+      <li>Local time</li>
+      <li>UTC</li>
+      <li>Server time</li>
+      <li>Device time</li>
+    </ul>
+    <p>Daylight-saving changes may also complicate things.</p>
+    <p>Do not assume all timestamps use the same clock.</p>
+    <p>Document what you know.</p>
+  </section>
+
+  <section class="content-box" id="screenshot-what-is-visible">
+    <h3>Screenshot What Is Visible</h3>
+    <p>Before navigating away from an important screen, preserve it according to facility policy.</p>
+    <p>Useful information may include:</p>
+    <ul>
+      <li>Error</li>
+      <li>Alarm</li>
+      <li>Therapy settings</li>
+      <li>Battery level</li>
+      <li>Time</li>
+      <li>Mode</li>
+      <li>Patient connection state</li>
+    </ul>
+    <p>Once you leave the screen, you may not be able to return to it.</p>
+  </section>
+
+  <section class="content-box" id="avoid-patient-information-problems">
+    <h3>Avoid Patient Information Problems</h3>
+    <p>Logs may contain protected health information.</p>
+    <p>Treat them accordingly.</p>
+    <p>Follow facility rules for:</p>
+    <ul>
+      <li>Storage</li>
+      <li>Transfer</li>
+      <li>Email</li>
+      <li>USB devices</li>
+      <li>Screenshots</li>
+      <li>Manufacturer sharing</li>
+    </ul>
+    <p>Do not copy logs containing patient information onto random personal storage.</p>
+  </section>
+
+  <section class="content-box" id="use-the-manufacturer-approved-export-method">
+    <h3>Use the Manufacturer-Approved Export Method</h3>
+    <p>Depending on the device, logs may be exported using:</p>
+    <ul>
+      <li>USB drive</li>
+      <li>SD card</li>
+      <li>Network</li>
+      <li>Service laptop</li>
+      <li>Service software</li>
+      <li>Manufacturer support tool</li>
+    </ul>
+    <p>Use the documented method.</p>
+    <p>Do not improvise by removing internal storage or manipulating files unless that is part of an authorized procedure.</p>
+  </section>
+
+  <section class="content-box" id="use-approved-storage-media">
+    <h3>Use Approved Storage Media</h3>
+    <p>Hospitals may restrict removable media for cybersecurity reasons.</p>
+    <p>Follow your organization's policy.</p>
+    <p>Do not plug a random personal USB drive into clinical equipment.</p>
+  </section>
+
+  <section class="content-box" id="preserve-the-original-export">
+    <h3>Preserve the Original Export</h3>
+    <p>When logs are exported, preserve the original files.</p>
+    <p>Do not immediately:</p>
+    <ul>
+      <li>Edit them</li>
+      <li>Rename internal files unnecessarily</li>
+      <li>Open and resave them</li>
+      <li>Convert them</li>
+      <li>Delete files you think are irrelevant</li>
+    </ul>
+    <p>If analysis requires manipulation, work from a copy when appropriate.</p>
+    <p>Keep the original extraction intact.</p>
+  </section>
+
+  <section class="content-box" id="record-the-file-information">
+    <h3>Record the File Information</h3>
+    <p>Useful documentation may include:</p>
+    <ul>
+      <li>File name</li>
+      <li>File size</li>
+      <li>Export date</li>
+      <li>Export time</li>
+      <li>Device serial number</li>
+      <li>Method used</li>
+      <li>Person performing export</li>
+    </ul>
+    <p>For more formal investigations, your organization may have additional requirements.</p>
+    <p>Follow them.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-the-filename-date-is-the-event-date">
+    <h3>Do Not Assume the Filename Date Is the Event Date</h3>
+    <p>A file called:</p>
+    <blockquote><p>log_2026-08-12</p></blockquote>
+    <p>might mean:</p>
+    <ul>
+      <li>Log created August 12</li>
+      <li>Log exported August 12</li>
+      <li>Device clock thought it was August 12</li>
+    </ul>
+    <p>Those are not always the same thing.</p>
+    <p>Open and interpret the content carefully.</p>
+  </section>
+
+  <section class="content-box" id="proprietary-logs">
+    <h3>Proprietary Logs</h3>
+    <p>Some manufacturers store diagnostic data in formats that biomeds cannot easily read.</p>
+    <p>That is okay.</p>
+    <p>Do not modify the file trying to make it readable.</p>
+    <p>Preserve the original export.</p>
+    <p>Manufacturer technical support may have tools to interpret it.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-remote-analysis">
+    <h3>Manufacturer Remote Analysis</h3>
+    <p>Some manufacturers may ask you to:</p>
+    <ul>
+      <li>Upload logs</li>
+      <li>Send a support bundle</li>
+      <li>Connect a service laptop</li>
+      <li>Provide a case number</li>
+    </ul>
+    <p>Before sending anything, follow your facility's:</p>
+    <ul>
+      <li>Incident process</li>
+      <li>Cybersecurity policy</li>
+      <li>Privacy rules</li>
+      <li>Manufacturer communication process</li>
+    </ul>
+    <p>Logs may contain sensitive information.</p>
+  </section>
+
+  <section class="content-box" id="the-device-is-only-one-source">
+    <h3>The Device Is Only One Source</h3>
+    <p>Medical-device logs are often only part of the picture.</p>
+    <p>Other systems may also contain useful records.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Central monitoring</li>
+      <li>EMR</li>
+      <li>Nurse call</li>
+      <li>Integration server</li>
+      <li>Device gateway</li>
+      <li>Wi-Fi controller</li>
+      <li>Network switch</li>
+      <li>Authentication server</li>
+      <li>Medical gas monitoring</li>
+      <li>UPS</li>
+      <li>Other connected devices</li>
+    </ul>
+    <p>A serious event may require correlating multiple systems.</p>
+  </section>
+
+  <section class="content-box" id="network-logs">
+    <h3>Network Logs</h3>
+    <p>Suppose a patient monitor reportedly disappeared from central monitoring.</p>
+    <p>The device log says:</p>
+    <p>14:12 — Network disconnected.</p>
+    <p>Network infrastructure may also show:</p>
+    <ul>
+      <li>Access point association</li>
+      <li>Roaming event</li>
+      <li>Authentication failure</li>
+      <li>Link loss</li>
+    </ul>
+    <p>Those separate records can help determine where communication stopped.</p>
+  </section>
+
+  <section class="content-box" id="integration-logs">
+    <h3>Integration Logs</h3>
+    <p>Suppose vital signs did not reach the EMR.</p>
+    <p>The bedside device may show everything correctly.</p>
+    <p>The integration platform may show:</p>
+    <ul>
+      <li>Data received</li>
+      <li>Patient association</li>
+      <li>Message generated</li>
+      <li>Message rejected</li>
+    </ul>
+    <p>That helps identify where the failure occurred.</p>
+  </section>
+
+  <section class="content-box" id="central-station-logs">
+    <h3>Central Station Logs</h3>
+    <p>A bedside monitor may have alarmed.</p>
+    <p>Did central monitoring receive the alarm?</p>
+    <p>Central logs may help answer that.</p>
+    <p>Again, device behavior and system behavior are different questions.</p>
+  </section>
+
+  <section class="content-box" id="preserve-logs-early">
+    <h3>Preserve Logs Early</h3>
+    <p>Some systems retain data for:</p>
+    <ul>
+      <li>Days</li>
+      <li>Weeks</li>
+      <li>Limited number of events</li>
+    </ul>
+    <p>Others may overwrite continuously.</p>
+    <p>If an incident is serious, involve the appropriate system owners early.</p>
+    <p>Do not assume the data will still be available a month later.</p>
+  </section>
+
+  <section class="content-box" id="document-when-you-begin-testing">
+    <h3>Document When You Begin Testing</h3>
+    <p>After logs are preserved, record when normal technical testing begins.</p>
+    <p>Example:</p>
+    <blockquote><p>Original device logs exported at 11:42 before functional testing. Bench testing initiated at 12:05.</p></blockquote>
+    <p>Now later entries can be separated from the original event.</p>
+  </section>
+
+  <section class="content-box" id="your-testing-will-create-logs">
+    <h3>Your Testing Will Create Logs</h3>
+    <p>This is unavoidable.</p>
+    <p>Functional testing may generate:</p>
+    <ul>
+      <li>Alarms</li>
+      <li>Reboots</li>
+      <li>Sensor errors</li>
+      <li>Network disconnects</li>
+      <li>Calibration events</li>
+    </ul>
+    <p>That is fine once the original information has been preserved.</p>
+    <p>Just document the boundary between:</p>
+    <p><strong>event-related data</strong></p>
+    <p>and:</p>
+    <p><strong>technician-generated test data.</strong></p>
+  </section>
+
+  <section class="content-box" id="do-not-clear-logs-when-you-are-done">
+    <h3>Do Not Clear Logs When You Are Done</h3>
+    <p>Even after downloading them, do not automatically clear the device.</p>
+    <p>The investigation may require:</p>
+    <ul>
+      <li>Additional review</li>
+      <li>Manufacturer evaluation</li>
+      <li>Repeat extraction</li>
+      <li>Comparison with another system</li>
+    </ul>
+    <p>Wait until the appropriate process says clearing or returning the device to service is acceptable.</p>
+  </section>
+
+  <section class="content-box" id="logs-are-evidence-not-absolute-truth">
+    <h3>Logs Are Evidence, Not Absolute Truth</h3>
+    <p>This is important.</p>
+    <p>A log tells you what the device recorded.</p>
+    <p>That is not necessarily everything that happened.</p>
+    <p>A device may fail in a way that prevents it from recording the failure.</p>
+    <p>For example:</p>
+    <p>A complete sudden loss of power may leave no final entry saying:</p>
+    <blockquote><p>Power suddenly disappeared.</p></blockquote>
+    <p>The absence of a fault code does not automatically prove the device never failed.</p>
+  </section>
+
+  <section class="content-box" id="logs-require-interpretation">
+    <h3>Logs Require Interpretation</h3>
+    <p>Suppose the device records:</p>
+    <blockquote><p>Sensor Disconnect.</p></blockquote>
+    <p>That tells you what the device detected.</p>
+    <p>Possible causes could include:</p>
+    <ul>
+      <li>Sensor removed</li>
+      <li>Cable failure</li>
+      <li>Connector failure</li>
+      <li>Sensor electronics failure</li>
+      <li>Internal communication problem</li>
+    </ul>
+    <p>The log gives you a clue.</p>
+    <p>You still need troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="error-code-does-not-equal-cause">
+    <h3>Error Code Does Not Equal Cause</h3>
+    <p>The same rule from normal troubleshooting applies.</p>
+    <p>A log entry may describe:</p>
+    <p><strong>the condition detected</strong></p>
+    <p>not:</p>
+    <p><strong>the component that failed.</strong></p>
+    <p>Do not overinterpret it.</p>
+  </section>
+
+  <section class="content-box" id="logs-and-clinical-documentation-may-disagree">
+    <h3>Logs and Clinical Documentation May Disagree</h3>
+    <p>That can happen.</p>
+    <p>Maybe:</p>
+    <ul>
+      <li>Device clock is wrong</li>
+      <li>Staff estimate is approximate</li>
+      <li>Event was documented later</li>
+      <li>Different systems use different clocks</li>
+    </ul>
+    <p>Do not immediately decide one source is wrong.</p>
+    <p>Understand the time references first.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-monitor-unexpectedly-reboots">
+    <h3>Real-World Example: Monitor Unexpectedly Reboots</h3>
+    <p>Clinical staff report:</p>
+    <blockquote><p>Monitor went black at approximately 14:30.</p></blockquote>
+    <p>Before testing:</p>
+    <p>Record device time.</p>
+    <p>Export event log.</p>
+    <p>Log shows:</p>
+    <p>14:23:12 — AC disconnected.</p>
+    <p>14:23:12 — Battery communication fault.</p>
+    <p>14:23:15 — System startup.</p>
+    <p>Device clock is approximately seven minutes slow.</p>
+    <p>Now those events align closely with the reported time.</p>
+    <p>That does not automatically prove root cause.</p>
+    <p>But it gives you a much stronger troubleshooting direction.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator-alarm-event">
+    <h3>Real-World Example: Ventilator Alarm Event</h3>
+    <p>Ventilator involved in reported loss of ventilation.</p>
+    <p>Logs show:</p>
+    <p>10:02:11 — Low minute volume.</p>
+    <p>10:02:15 — Patient disconnect.</p>
+    <p>10:02:16 — High-priority alarm.</p>
+    <p>10:02:40 — Circuit restored.</p>
+    <p>Those events can help reconstruct what the ventilator detected and when.</p>
+    <p>You still need to evaluate:</p>
+    <ul>
+      <li>Circuit</li>
+      <li>Sensors</li>
+      <li>Ventilator</li>
+      <li>Clinical circumstances</li>
+    </ul>
+    <p>But the timeline is valuable.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-defibrillator">
+    <h3>Real-World Example: Defibrillator</h3>
+    <p>Defibrillator allegedly failed to deliver therapy.</p>
+    <p>Event record may show:</p>
+    <ul>
+      <li>Rhythm</li>
+      <li>Charge command</li>
+      <li>Selected energy</li>
+      <li>Charge completion</li>
+      <li>Shock delivery</li>
+      <li>Impedance</li>
+      <li>Error</li>
+    </ul>
+    <p>That data can be much more useful than simply firing the unit into an analyzer afterward.</p>
+    <p>Preserve it before testing.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-infusion-pump">
+    <h3>Real-World Example: Infusion Pump</h3>
+    <p>Possible over-infusion event.</p>
+    <p>Pump logs may contain:</p>
+    <ul>
+      <li>Programmed rate</li>
+      <li>Start time</li>
+      <li>Stop time</li>
+      <li>Alarm</li>
+      <li>User interaction</li>
+      <li>Drug-library selection</li>
+    </ul>
+    <p>Before resetting or reprogramming the pump, preserve that information.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Rebooting Before Looking at Logs</h4>
+    <p>You may change or lose information.</p>
+    <h4>Running Tests First</h4>
+    <p>Preserve the original event before creating new events.</p>
+    <h4>Correcting the Device Clock</h4>
+    <p>Document the offset first.</p>
+    <h4>Clearing Logs After Export</h4>
+    <p>Keep them until the investigation process allows otherwise.</p>
+    <h4>Using Personal USB Drives</h4>
+    <p>Follow cybersecurity and privacy policy.</p>
+    <h4>Editing the Original Export</h4>
+    <p>Preserve the source files.</p>
+    <h4>Assuming No Error Code Means No Failure</h4>
+    <p>Logs have limits.</p>
+    <h4>Treating an Error Code as a Root Cause</h4>
+    <p>It may only describe a symptom.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-sequence">
+    <h3>A Useful Sequence</h3>
+    <p>After a serious event, think:</p>
+    <p><strong>Observe</strong></p>
+    <p>What is currently displayed?</p>
+    <p>↓</p>
+    <p><strong>Record</strong></p>
+    <p>Time, settings, alarms, configuration.</p>
+    <p>↓</p>
+    <p><strong>Preserve</strong></p>
+    <p>Export logs using the approved method.</p>
+    <p>↓</p>
+    <p><strong>Protect</strong></p>
+    <p>Keep the original files intact.</p>
+    <p>↓</p>
+    <p><strong>Correlate</strong></p>
+    <p>Compare with other systems and timelines.</p>
+    <p>↓</p>
+    <p><strong>Test</strong></p>
+    <p>Begin technical troubleshooting after evidence is secured.</p>
+    <p>That order matters.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose the log shows:</p>
+    <blockquote><p>Battery Communication Lost.</p></blockquote>
+    <p>You proved:</p>
+    <p><strong>The device recorded a battery communication loss at that timestamp.</strong></p>
+    <p>You did not automatically prove:</p>
+    <ul>
+      <li>Battery itself failed</li>
+      <li>Battery caused the clinical event</li>
+      <li>Device electronics were good</li>
+      <li>User did anything wrong</li>
+    </ul>
+    <p>Logs are evidence.</p>
+    <p>Interpret them carefully.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Modern medical devices can tell you a lot about what happened.</p>
+    <p>But only if the information survives long enough for you to read it.</p>
+    <p>After a serious event, do not rush into normal troubleshooting.</p>
+    <p>Before rebooting.</p>
+    <p>Before recalibrating.</p>
+    <p>Before replacing parts.</p>
+    <p>Before updating software.</p>
+    <p>Ask:</p>
+    <p><strong>What information is inside this device right now that I may not be able to get back?</strong></p>
+    <p>Preserve that first.</p>
+    <p>Record the clock.</p>
+    <p>Capture the current screen.</p>
+    <p>Export the logs.</p>
+    <p>Protect the original files.</p>
+    <p>Document what you did.</p>
+    <p>Then troubleshoot.</p>
+    <p>Sometimes a failed component gives you the answer.</p>
+    <p>Other times, the answer is sitting quietly in an event log waiting for someone to look at it.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview. Log preservation following a serious medical-device event should follow your healthcare organization's incident-response, privacy, cybersecurity, risk-management, legal, regulatory-reporting, and evidence-handling procedures. Do not access, export, alter, transmit, or disclose patient-associated or proprietary data outside your authorized scope.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="what-to-do-when-a-medical-device-is-involved-in-an-incident.html">What to Do When a Medical Device Is Involved in an Incident</a></li>
+      <li><a href="when-to-remove-medical-equipment-from-service.html">When to Remove Medical Equipment From Service</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">How to Write Better Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="how-to-reproduce-a-clinical-complaint-on-the-bench.html">How to Reproduce a Clinical Complaint on the Bench</a></li>
+      <li><a href="how-to-read-a-medical-equipment-service-manual.html">How to Read a Medical Equipment Service Manual</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
