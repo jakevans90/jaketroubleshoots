@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import json
 import os
 import re
 import tempfile
@@ -16,19 +17,29 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "electrical-safety-testing-medical-equipment": ["when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "functional-testing-vs-calibration-vs-verification": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "biomed-work-order-notes-ccr-method", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
-    "biomed-work-order-notes-ccr-method": ["when-to-remove-medical-equipment-from-service", "biomed-translation-problems-medical-equipment-names", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "how-to-think-before-calling-a-vendor"],
-    "medical-equipment-battery-basics": ["when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment"],
+    "electrical-safety-testing-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
+    "functional-testing-vs-calibration-vs-verification": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "biomed-work-order-notes-ccr-method": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
+    "medical-equipment-battery-basics": ["fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "electrical-safety-testing-medical-equipment"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
-    "when-to-remove-medical-equipment-from-service": ["electrical-safety-testing-medical-equipment", "functional-testing-vs-calibration-vs-verification", "medical-equipment-battery-basics", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "how-to-think-before-calling-a-vendor": ["when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment", "medical-equipment-battery-basics"],
+    "when-to-remove-medical-equipment-from-service": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment"],
+    "how-to-think-before-calling-a-vendor": ["what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
-    "nurse-call-integration-basics": ["what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
+    "nurse-call-integration-basics": ["relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method"],
+    "how-to-read-a-medical-equipment-service-manual": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method"],
+    "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
+    "what-known-good-actually-means": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
+    "fuses-breakers-and-power-supplies-in-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
+    "sensors-and-transducers-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
+    "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
+    "preserving-device-logs-after-a-serious-event": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-read-a-medical-equipment-service-manual"],
+    "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
 }
 
 ARTICLE_CONFIG = {
@@ -55,6 +66,67 @@ ARTICLE_CONFIG = {
         "category": "Integration",
         "badge": "Core Concept",
         "cardNote": "Alarm and nurse call interface basics",
+    },
+    "how-to-read-a-medical-equipment-service-manual": {
+        "description": "A practical guide to finding troubleshooting steps, warnings, diagrams, specifications, service modes, parts, and verification procedures in medical-equipment manuals.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Service documentation and manual navigation",
+    },
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": {
+        "description": "A practical guide to recreating clinical failure conditions, isolating intermittent problems, using original accessories, and documenting meaningful bench testing.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Complaint reproduction and bench testing",
+    },
+    "how-to-use-a-multimeter-in-biomed": {
+        "description": "A practical introduction to measuring voltage, resistance, and continuity safely while troubleshooting medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Multimeter safety and measurement basics",
+    },
+    "what-known-good-actually-means": {
+        "description": "A practical guide to validating known-good parts, accessories, test equipment, and comparison devices before relying on substitution testing.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Reliable substitution testing",
+    },
+    "fuses-breakers-and-power-supplies-in-medical-equipment": {
+        "description": "A practical introduction to fuses, circuit breakers, power supplies, and the common power-path failures found in medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Power protection and supply basics",
+        "plannedTitles": ["Fuses, Breakers, and Power Supplies"],
+    },
+    "voltage-current-resistance-and-continuity-in-plain-english": {
+        "description": "A plain-English introduction to voltage, current, resistance, and continuity for medical-equipment troubleshooting.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Essential electrical concepts",
+    },
+    "sensors-and-transducers-basics": {
+        "description": "A practical introduction to how medical devices convert pressure, flow, temperature, light, force, and other physical conditions into usable signals.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Sensor signals and measurement basics",
+    },
+    "relays-and-contact-closures-in-plain-english": {
+        "description": "A practical introduction to relays, dry contacts, normally open and normally closed circuits, and their use in alarms, nurse call, and equipment control.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Relay and contact-closure basics",
+    },
+    "preserving-device-logs-after-a-serious-event": {
+        "description": "A practical guide to protecting device logs, alarm histories, configurations, timestamps, and other electronic evidence after a serious clinical event.",
+        "category": "Safety & Risk",
+        "badge": "Incident Response",
+        "cardNote": "Electronic evidence preservation",
+    },
+    "what-to-do-when-a-medical-device-is-involved-in-an-incident": {
+        "description": "A practical guide for biomeds when medical equipment may have been involved in patient harm, injury, or another serious clinical event.",
+        "category": "Safety & Risk",
+        "badge": "Incident Response",
+        "cardNote": "Device incident handling basics",
     },
 }
 
@@ -249,18 +321,21 @@ def biomed_group(category: str) -> str:
     return "everyday-skills"
 
 
-def landing_card(title: str, slug: str, description: str, category: str, badge: str, card_note: str) -> str:
-    group = biomed_group(category)
-    return f'''
-    <a href="biomed-basics/{slug}.html" class="guide-card basics-card" data-biomed-group="{group}">
-      <div class="card-content">
-        <h3>{html.escape(title)}</h3>
-        <p>{html.escape(description)}</p>
-        <div class="badges"><span class="badge asset">{html.escape(category)}</span><span class="badge model">{html.escape(badge)}</span></div>
-        <p class="date">{html.escape(card_note)}</p>
-      </div>
-    </a>
-'''
+def catalog_entry(title: str, slug: str, config: dict[str, str], existing: dict | None = None) -> dict:
+    entry = {
+        "title": title,
+        "slug": slug,
+        "url": f"biomed-basics/{slug}.html",
+        "description": config["description"],
+        "category": config["category"],
+        "group": biomed_group(config["category"]),
+        "badge": config["badge"],
+        "cardNote": config["cardNote"],
+    }
+    for key in ("featured", "featuredOrder"):
+        if existing and key in existing:
+            entry[key] = existing[key]
+    return entry
 
 
 def remove_published_planned_topics(landing: str, published_titles: set[str]) -> str:
@@ -308,11 +383,11 @@ def atomic_write(path: Path, data: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("input", type=Path)
+    parser.add_argument("inputs", type=Path, nargs="+")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--confirm-plan")
     args = parser.parse_args()
-    articles = parse_batch(args.input)
+    articles = [article for input_path in args.inputs for article in parse_batch(input_path)]
     if len({article.slug for article in articles}) != len(articles):
         raise SystemExit("batch contains duplicate article slugs")
     configs = {}
@@ -336,24 +411,25 @@ def main() -> int:
         if slug in targets:
             continue
         outputs[path] = replace_related(path.read_text(encoding="utf-8"), related_section(slug, titles))
-    landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+    catalog_path = ROOT / "data" / "biomed-basics.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    if not isinstance(catalog, list):
+        raise SystemExit("data/biomed-basics.json must contain a list")
+    catalog_by_slug = {item.get("slug"): item for item in catalog if isinstance(item, dict)}
+    if len(catalog_by_slug) != len(catalog):
+        raise SystemExit("data/biomed-basics.json contains an invalid or duplicate slug")
     for article in articles:
-        article_href = f"biomed-basics/{article.slug}.html"
-        existing_card = re.compile(
-            rf'\s*<a href="{re.escape(article_href)}" class="guide-card basics-card"[^>]*>.*?</a>',
-            re.S,
+        catalog_by_slug[article.slug] = catalog_entry(
+            article.title, article.slug, configs[article.slug], catalog_by_slug.get(article.slug)
         )
-        landing = existing_card.sub("", landing)
-        grid = re.compile(r'(<div class="guides-grid">.*?)(\s*</div>\s*</section>)', re.S)
-        config = configs[article.slug]
-        landing, count = grid.subn(
-            lambda match: match.group(1) + landing_card(article.title, article.slug, config["description"], config["category"], config["badge"], config["cardNote"]) + match.group(2),
-            landing,
-            count=1,
-        )
-        if count != 1:
-            raise SystemExit("landing-page guides-grid insertion point not found")
-    landing = remove_published_planned_topics(landing, set(titles.values()))
+    catalog = sorted(catalog_by_slug.values(), key=lambda item: (item["group"], item["title"].casefold()))
+    outputs[catalog_path] = json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
+
+    landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+    published_titles = set(titles.values())
+    for config in configs.values():
+        published_titles.update(config.get("plannedTitles", []))
+    landing = remove_published_planned_topics(landing, published_titles)
     outputs[ROOT / "biomed-basics.html"] = landing
     sitemap_path = ROOT / "sitemap.xml"
     sitemap = sitemap_path.read_text(encoding="utf-8")

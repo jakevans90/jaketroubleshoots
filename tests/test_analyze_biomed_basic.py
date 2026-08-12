@@ -1,5 +1,6 @@
 import contextlib
 import io
+import json
 import re
 import sys
 import tempfile
@@ -13,6 +14,9 @@ from prepare_biomed_publication import RELATED, biomed_group, remove_published_p
 
 
 class BiomedBasicAnalyzerTests(unittest.TestCase):
+    def biomed_catalog(self):
+        return json.loads((ROOT / "data" / "biomed-basics.json").read_text(encoding="utf-8"))
+
     def write_input(self, directory: Path, title="Ground Fault Basics", slug="") -> Path:
         slug_line = f"slug: \"{slug}\"\n" if slug else ""
         path = directory / "article.md"
@@ -109,12 +113,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertIn("Do I have enough confidence in this device to put it back on a patient?", page)
         self.assertIn("A practical guide to recognizing safety concerns", page)
         self.assertIn('href="#the-simple-version"', page)
-        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
-        self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
-        hero = re.search(r'<section class="hero">(.*?)</section>', landing, re.S).group(1)
-        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
-        self.assertNotIn(f"biomed-basics/{slug}.html", hero)
-        self.assertIn(f"biomed-basics/{slug}.html", grid)
+        matches = [item for item in self.biomed_catalog() if item["slug"] == slug]
+        self.assertEqual(len(matches), 1)
         self.assertEqual((ROOT / "sitemap.xml").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
 
     def test_vendor_article_is_registered_in_grid_and_preserves_key_copy(self):
@@ -122,12 +122,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
         self.assertIn("What is the device supposed to be doing?", page)
         self.assertIn("A practical troubleshooting mindset for biomeds", page)
-        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
-        self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
-        hero = re.search(r'<section class="hero">(.*?)</section>', landing, re.S).group(1)
-        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
-        self.assertNotIn(f"biomed-basics/{slug}.html", hero)
-        self.assertIn(f"biomed-basics/{slug}.html", grid)
+        matches = [item for item in self.biomed_catalog() if item["slug"] == slug]
+        self.assertEqual(len(matches), 1)
         self.assertEqual((ROOT / "sitemap.xml").read_text(encoding="utf-8").count(f"biomed-basics/{slug}.html"), 1)
 
     def test_published_articles_are_removed_from_planned_topics(self):
@@ -139,8 +135,58 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to think before calling a vendor", planned)
         self.assertNotIn("What HL7 means in plain English", planned)
         self.assertNotIn("Nurse call integration basics", planned)
+        self.assertNotIn("How to Read a Medical Equipment Service Manual", planned)
+        self.assertNotIn("How to Reproduce a Clinical Complaint on the Bench", planned)
+        self.assertNotIn("How to Use a Multimeter in Biomed", planned)
+        self.assertNotIn("What “Known-Good” Actually Means", planned)
+        self.assertNotIn("Fuses, Breakers, and Power Supplies", planned)
+        self.assertNotIn("Voltage, Current, Resistance, and Continuity in Plain English", planned)
+        self.assertNotIn("Sensors and Transducers Basics", planned)
+        self.assertNotIn("Relays and Contact Closures in Plain English", planned)
+        self.assertNotIn("Preserving Device Logs After a Serious Event", planned)
+        self.assertNotIn("What to Do When a Medical Device Is Involved in an Incident", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>102</strong>", planned)
+        self.assertIn("<strong>92</strong>", planned)
+
+    def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
+        expected = {
+            "how-to-read-a-medical-equipment-service-manual": "Theory of Operation",
+            "how-to-reproduce-a-clinical-complaint-on-the-bench": "The bench is not the clinical environment",
+            "how-to-use-a-multimeter-in-biomed": "Do Not Measure Resistance on a Powered Circuit",
+            "what-known-good-actually-means": "Known-good status should come from evidence",
+            "fuses-breakers-and-power-supplies-in-medical-equipment": "A Blown Fuse Is Usually a Symptom",
+            "voltage-current-resistance-and-continuity-in-plain-english": "Voltage is electrical potential difference",
+            "sensors-and-transducers-basics": "A sensor detects something physical",
+            "relays-and-contact-closures-in-plain-english": "A relay is controlled electrically",
+            "preserving-device-logs-after-a-serious-event": "Do Not “Test It a Few Times” First",
+            "what-to-do-when-a-medical-device-is-involved-in-an-incident": "This Is Not a Normal Work Order",
+        }
+        catalog = self.biomed_catalog()
+        sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+
+        for slug, key_copy in expected.items():
+            page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
+            self.assertIn(key_copy, page)
+            self.assertEqual(sum(item["slug"] == slug for item in catalog), 1)
+            self.assertEqual(sitemap.count(f"biomed-basics/{slug}.html"), 1)
+
+    def test_biomed_catalog_is_complete_and_landing_loads_it(self):
+        catalog = self.biomed_catalog()
+        slugs = [item["slug"] for item in catalog]
+        self.assertEqual(len(catalog), 24)
+        self.assertEqual(len(slugs), len(set(slugs)))
+        self.assertEqual(set(slugs), set(RELATED))
+        for item in catalog:
+            self.assertEqual(item["url"], f'biomed-basics/{item["slug"]}.html')
+            self.assertTrue((ROOT / item["url"]).is_file())
+            self.assertIn(item["group"], {
+                "start-here", "everyday-skills", "connected-systems",
+                "career-communication", "troubleshooting-safety",
+            })
+        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
+        self.assertIn("fetch('data/biomed-basics.json')", landing)
+        self.assertIn('id="biomed-article-groups"', landing)
+        self.assertNotIn('class="guide-card basics-card" data-biomed-group=', landing.split("<script>", 1)[0])
 
     def test_planned_topic_removal_works_across_cards_and_updates_count(self):
         landing = '''<section class="content-box planned-topics-section">
@@ -168,14 +214,12 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "what-hl7-means-in-plain-english": "HL7 Is Not the Network",
             "nurse-call-integration-basics": "The Device Is Often Just Providing a Signal",
         }
-        landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
-        grid = re.search(r'<div class="guides-grid">(.*?)</div>\s*</section>', landing, re.S).group(1)
+        catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
         for slug, preserved_copy in expected.items():
             page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
             self.assertIn(preserved_copy, page)
-            self.assertEqual(landing.count(f"biomed-basics/{slug}.html"), 1)
-            self.assertIn(f"biomed-basics/{slug}.html", grid)
+            self.assertEqual(sum(item["slug"] == slug for item in catalog), 1)
             self.assertEqual(sitemap.count(f"biomed-basics/{slug}.html"), 1)
 
 
