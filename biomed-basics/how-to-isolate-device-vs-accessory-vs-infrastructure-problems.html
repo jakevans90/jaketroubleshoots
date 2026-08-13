@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Isolate Device vs Accessory vs Infrastructure Problems | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to determining whether a medical-equipment failure belongs to the device, an attached accessory, or the hospital infrastructure around it.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-isolate-device-vs-accessory-vs-infrastructure-problems.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How to Isolate Device vs Accessory vs Infrastructure Problems</h2>
+  <p>How to figure out whether the failure is in the medical device, something attached to it, or the hospital system around it</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device does not operate in isolation.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Device problems</li>
+      <li>Accessory problems</li>
+      <li>Infrastructure problems</li>
+      <li>Why symptoms can look identical</li>
+      <li>How to use known-good swaps</li>
+      <li>How to compare rooms and devices</li>
+      <li>How to isolate network and power problems</li>
+      <li>How to troubleshoot nurse call and gas supply issues</li>
+      <li>How to look for common points of failure</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think in three buckets:</p>
+    <h4>Device</h4>
+    <p>The main medical equipment itself.</p>
+    <h4>Accessory</h4>
+    <p>Something attached to the device.</p>
+    <h4>Infrastructure</h4>
+    <p>Something in the hospital environment that the device depends on.</p>
+    <p>Your goal is to determine which bucket contains the failure.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-function-that-failed">
+    <h3>Start With the Function That Failed</h3>
+    <p>Do not begin with:</p>
+    <blockquote><p>Which board is bad?</p></blockquote>
+    <p>Begin with:</p>
+    <blockquote><p>What function is not working?</p></blockquote>
+    <p>Examples:</p>
+    <ul>
+      <li>SpO2 not reading</li>
+      <li>No AC power</li>
+      <li>No network connection</li>
+      <li>Nurse call not activating</li>
+      <li>O2 supply alarm</li>
+      <li>Device not charging</li>
+    </ul>
+    <p>Then trace what that function depends on.</p>
+  </section>
+
+  <section class="content-box" id="example-spo2-not-reading">
+    <h3>Example: SpO2 Not Reading</h3>
+    <p>The path might be:</p>
+    <p><strong>Patient / Simulator</strong></p>
+    <p>↓</p>
+    <p><strong>SpO2 Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Extension Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Monitor Connector</strong></p>
+    <p>↓</p>
+    <p><strong>SpO2 Module</strong></p>
+    <p>↓</p>
+    <p><strong>Main Device</strong></p>
+    <p>Possible problem areas include both accessory and device.</p>
+    <p>A known-good sensor can help isolate them.</p>
+  </section>
+
+  <section class="content-box" id="example-monitor-not-at-central-station">
+    <h3>Example: Monitor Not at Central Station</h3>
+    <p>The path might be:</p>
+    <p><strong>Monitor</strong></p>
+    <p>↓</p>
+    <p><strong>Network Cable / Wi-Fi</strong></p>
+    <p>↓</p>
+    <p><strong>Wall Jack / Access Point</strong></p>
+    <p>↓</p>
+    <p><strong>Network Infrastructure</strong></p>
+    <p>↓</p>
+    <p><strong>Central Monitoring Server</strong></p>
+    <p>↓</p>
+    <p><strong>Central Station</strong></p>
+    <p>The monitor may be fine even though the clinical workflow is broken.</p>
+  </section>
+
+  <section class="content-box" id="device-problems">
+    <h3>Device Problems</h3>
+    <p>A device-side failure may include:</p>
+    <ul>
+      <li>Main board</li>
+      <li>Power supply</li>
+      <li>Internal connector</li>
+      <li>Sensor input</li>
+      <li>Software</li>
+      <li>Internal communication</li>
+      <li>Charging system</li>
+    </ul>
+    <p>You usually suspect the device more strongly when:</p>
+    <ul>
+      <li>Multiple known-good accessories fail on it</li>
+      <li>The same accessory works normally on another device</li>
+      <li>The failure follows the device between locations</li>
+      <li>Internal diagnostics point to the same subsystem</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="accessory-problems">
+    <h3>Accessory Problems</h3>
+    <p>Accessory problems may include:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Sensor</li>
+      <li>Probe</li>
+      <li>Battery</li>
+      <li>Hose</li>
+      <li>Module</li>
+      <li>Dock</li>
+      <li>Power adapter</li>
+    </ul>
+    <p>You suspect the accessory when:</p>
+    <ul>
+      <li>Failure follows it to another device</li>
+      <li>Known-good accessory fixes the symptom</li>
+      <li>Physical damage is visible</li>
+      <li>Movement reproduces the failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="infrastructure-problems">
+    <h3>Infrastructure Problems</h3>
+    <p>Infrastructure includes systems outside the device.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>AC outlet</li>
+      <li>Network switch</li>
+      <li>VLAN</li>
+      <li>Wi-Fi access point</li>
+      <li>Server</li>
+      <li>Nurse call system</li>
+      <li>Medical gas supply</li>
+      <li>Central monitoring</li>
+      <li>EMR integration</li>
+    </ul>
+    <p>You suspect infrastructure when:</p>
+    <ul>
+      <li>Multiple devices fail in the same location</li>
+      <li>One device works elsewhere</li>
+      <li>Known-good devices fail in the same room</li>
+      <li>The failure affects an entire unit or group</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="look-for-the-common-point">
+    <h3>Look for the Common Point</h3>
+    <p>This is one of the most powerful troubleshooting ideas.</p>
+    <p>If one device fails:</p>
+    <p>Maybe the device.</p>
+    <p>If ten devices fail at the same time:</p>
+    <p>Look for what they share.</p>
+    <p>Possible shared points:</p>
+    <ul>
+      <li>Network switch</li>
+      <li>Server</li>
+      <li>VLAN</li>
+      <li>Power circuit</li>
+      <li>Gas supply</li>
+      <li>Software update</li>
+    </ul>
+    <p>Multiple simultaneous device failures are possible.</p>
+    <p>A common infrastructure failure is often more likely.</p>
+  </section>
+
+  <section class="content-box" id="use-a-known-good-device">
+    <h3>Use a Known-Good Device</h3>
+    <p>Suppose a monitor will not connect to central monitoring in Room 12.</p>
+    <p>Move a known-good monitor into Room 12.</p>
+    <h4>Known-good monitor also fails</h4>
+    <p>Look at:</p>
+    <ul>
+      <li>Network jack</li>
+      <li>Cable</li>
+      <li>Room configuration</li>
+      <li>Infrastructure</li>
+    </ul>
+    <h4>Known-good monitor works</h4>
+    <p>The original monitor becomes more suspect.</p>
+  </section>
+
+  <section class="content-box" id="move-the-suspect-device">
+    <h3>Move the Suspect Device</h3>
+    <p>Now take the original monitor to a known-good room.</p>
+    <h4>Original monitor works there</h4>
+    <p>The problem likely stays with the location.</p>
+    <h4>Original monitor still fails</h4>
+    <p>The problem likely follows the device.</p>
+    <p>This is excellent isolation.</p>
+  </section>
+
+  <section class="content-box" id="cross-testing">
+    <h3>Cross-Testing</h3>
+    <p>A simple matrix helps.</p>
+    <h4>Suspect Device + Suspect Location = Fail</h4>
+    <p>Not enough information.</p>
+    <h4>Known-Good Device + Suspect Location = Fail</h4>
+    <p>Location/infrastructure becomes likely.</p>
+    <h4>Suspect Device + Known-Good Location = Fail</h4>
+    <p>Device becomes likely.</p>
+    <h4>Suspect Device + Known-Good Location = Pass</h4>
+    <p>Infrastructure becomes likely.</p>
+    <p>The same concept works with accessories.</p>
+  </section>
+
+  <section class="content-box" id="power-example">
+    <h3>Power Example</h3>
+    <p>Device will not run on AC.</p>
+    <p>First ask:</p>
+    <p>Does the outlet work?</p>
+    <p>Use a known-good device or approved outlet test.</p>
+    <p>Then:</p>
+    <p>Does the power cord work?</p>
+    <p>Then:</p>
+    <p>Does AC reach the device inlet?</p>
+    <p>Only after that should you focus internally.</p>
+    <p>Do not replace the power supply before proving the building is actually giving you power.</p>
+  </section>
+
+  <section class="content-box" id="network-example">
+    <h3>Network Example</h3>
+    <p>Monitor has no network connection.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Link light</li>
+      <li>Cable</li>
+      <li>Wall jack</li>
+      <li>IP settings</li>
+      <li>Known-good location</li>
+      <li>Known-good device</li>
+    </ul>
+    <p>If multiple devices on the same switch lose communication, do not open all of them.</p>
+    <p>Look upstream.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-example">
+    <h3>Wi-Fi Example</h3>
+    <p>Device disconnects only in one hallway.</p>
+    <p>The device works normally elsewhere.</p>
+    <p>That pattern points toward:</p>
+    <ul>
+      <li>Coverage</li>
+      <li>Roaming</li>
+      <li>Interference</li>
+      <li>Access point</li>
+      <li>Configuration</li>
+    </ul>
+    <p>The problem may not be the Wi-Fi card.</p>
+    <p>Location matters.</p>
+  </section>
+
+  <section class="content-box" id="nurse-call-example">
+    <h3>Nurse Call Example</h3>
+    <p>Ventilator alarms locally.</p>
+    <p>Nurse call does not activate.</p>
+    <p>Possible path:</p>
+    <p><strong>Ventilator Alarm</strong></p>
+    <p>↓</p>
+    <p><strong>Nurse Call Relay</strong></p>
+    <p>↓</p>
+    <p><strong>Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Wall Jack</strong></p>
+    <p>↓</p>
+    <p><strong>Nurse Call System</strong></p>
+    <p>Test the relay output.</p>
+    <p>Try known-good cable.</p>
+    <p>Try another room if appropriate.</p>
+    <p>Find where the signal stops.</p>
+  </section>
+
+  <section class="content-box" id="medical-gas-example">
+    <h3>Medical Gas Example</h3>
+    <p>Ventilator reports:</p>
+    <blockquote><p>O2 Supply Pressure Low.</p></blockquote>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Ventilator sensor</li>
+      <li>Gas hose</li>
+      <li>Wall outlet</li>
+      <li>Central gas supply</li>
+    </ul>
+    <p>Measure or verify the supply according to approved procedures.</p>
+    <p>If several devices on the unit report low O2 simultaneously, infrastructure becomes highly suspect.</p>
+  </section>
+
+  <section class="content-box" id="charging-example">
+    <h3>Charging Example</h3>
+    <p>Device will not charge in its dock.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Device battery</li>
+      <li>Device charging circuit</li>
+      <li>Dock</li>
+      <li>Dock power supply</li>
+      <li>Outlet</li>
+    </ul>
+    <p>Try:</p>
+    <ul>
+      <li>Same device in another dock</li>
+      <li>Known-good device in suspect dock</li>
+    </ul>
+    <p>This quickly isolates the failure.</p>
+  </section>
+
+  <section class="content-box" id="emr-integration-example">
+    <h3>EMR Integration Example</h3>
+    <p>Monitor displays vital signs correctly but nothing reaches the chart.</p>
+    <p>Possible layers:</p>
+    <ul>
+      <li>Device</li>
+      <li>Network</li>
+      <li>Integration gateway</li>
+      <li>Interface server</li>
+      <li>EMR</li>
+    </ul>
+    <p>If the device is visible to the integration system, the problem may already be beyond the device.</p>
+    <p>Find the last system where the data is known to be correct.</p>
+  </section>
+
+  <section class="content-box" id="the-last-known-good-point">
+    <h3>The Last Known-Good Point</h3>
+    <p>This is one of the best troubleshooting questions.</p>
+    <p>Ask:</p>
+    <p><strong>Where is the last point in the path where I know the function works correctly?</strong></p>
+    <p>Example:</p>
+    <p>Monitor displays correct data.</p>
+    <p>Integration gateway sees correct data.</p>
+    <p>EMR does not.</p>
+    <p>The problem is likely downstream from the gateway.</p>
+    <p>You have already cleared a large part of the path.</p>
+  </section>
+
+  <section class="content-box" id="work-from-both-ends">
+    <h3>Work From Both Ends</h3>
+    <p>Sometimes it is useful to test from both directions.</p>
+    <p>Example:</p>
+    <p>No network.</p>
+    <p>From device side:</p>
+    <p>No link.</p>
+    <p>From switch side:</p>
+    <p>Port shows disconnected.</p>
+    <p>Now focus on:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Wall jack</li>
+      <li>Physical path</li>
+    </ul>
+    <p>You narrowed the middle.</p>
+  </section>
+
+  <section class="content-box" id="do-not-let-department-ownership-decide-the-diagnosis">
+    <h3>Do Not Let Department Ownership Decide the Diagnosis</h3>
+    <p>Avoid:</p>
+    <blockquote><p>It's a network problem, so call IT.</p></blockquote>
+    <p>until you have evidence.</p>
+    <p>Likewise:</p>
+    <blockquote><p>It's medical equipment, so Biomed owns it.</p></blockquote>
+    <p>The system does not care who owns which piece.</p>
+    <p>Follow the failure path first.</p>
+    <p>Then escalate to the correct team.</p>
+  </section>
+
+  <section class="content-box" id="infrastructure-can-be-intermittent-too">
+    <h3>Infrastructure Can Be Intermittent Too</h3>
+    <p>Infrastructure failures are not always total.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Loose wall jack</li>
+      <li>Weak Wi-Fi area</li>
+      <li>Failing switch port</li>
+      <li>Intermittent outlet</li>
+      <li>Fluctuating gas pressure</li>
+      <li>Server service restarting</li>
+    </ul>
+    <p>If the problem only occurs in one location, that is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="environmental-patterns">
+    <h3>Environmental Patterns</h3>
+    <p>Ask:</p>
+    <p>Does the failure happen:</p>
+    <ul>
+      <li>Only in one room?</li>
+      <li>Only on one unit?</li>
+      <li>Only during transport?</li>
+      <li>Only near imaging equipment?</li>
+      <li>Only when plugged into one outlet?</li>
+      <li>Only during certain shifts?</li>
+    </ul>
+    <p>Patterns can point outside the device.</p>
+  </section>
+
+  <section class="content-box" id="do-not-ignore-setup">
+    <h3>Do Not Ignore Setup</h3>
+    <p>A problem may not fit neatly into device, accessory, or infrastructure.</p>
+    <p>It may be setup.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Wrong cable</li>
+      <li>Wrong sensor</li>
+      <li>Incorrect network configuration</li>
+      <li>Mis-seated cassette</li>
+      <li>Wrong gas hose</li>
+      <li>Incorrect patient association</li>
+    </ul>
+    <p>Setup errors can mimic hardware failures.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-spo2-missing">
+    <h3>Real-World Example: SpO2 Missing</h3>
+    <p>Suspect monitor:</p>
+    <p>No SpO2.</p>
+    <p>Known-good sensor:</p>
+    <p>Still no SpO2.</p>
+    <p>Original sensor works on another monitor.</p>
+    <p>Failure stays with monitor.</p>
+    <p>Now inspect:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Module</li>
+      <li>Internal electronics</li>
+    </ul>
+    <p>You ruled out the accessory.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-monitor-offline">
+    <h3>Real-World Example: Monitor Offline</h3>
+    <p>Monitor in Room 8:</p>
+    <p>No central connection.</p>
+    <p>Same monitor moved to Room 9:</p>
+    <p>Connects normally.</p>
+    <p>Known-good monitor in Room 8:</p>
+    <p>Fails.</p>
+    <p>Problem stays with Room 8.</p>
+    <p>Investigate infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator-o2-alarm">
+    <h3>Real-World Example: Ventilator O2 Alarm</h3>
+    <p>One ventilator:</p>
+    <p>Low O2 supply.</p>
+    <p>Known-good hose:</p>
+    <p>Same alarm.</p>
+    <p>Another ventilator on same wall outlet:</p>
+    <p>Same alarm.</p>
+    <p>Both work on another O2 outlet.</p>
+    <p>The devices are probably fine.</p>
+    <p>Look at gas infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-dock-not-charging">
+    <h3>Real-World Example: Dock Not Charging</h3>
+    <p>Device A in Dock 1:</p>
+    <p>No charge.</p>
+    <p>Device A in Dock 2:</p>
+    <p>Charges.</p>
+    <p>Device B in Dock 1:</p>
+    <p>No charge.</p>
+    <p>Failure follows Dock 1.</p>
+    <p>The dock is the likely problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nurse-call-failure">
+    <h3>Real-World Example: Nurse Call Failure</h3>
+    <p>Bed nurse call fails in Room 14.</p>
+    <p>Same bed works in Room 15.</p>
+    <p>Known-good bed also fails in Room 14.</p>
+    <p>Failure stays with room infrastructure.</p>
+    <p>Do not replace the bed's control board.</p>
+  </section>
+
+  <section class="content-box" id="multiple-failures-can-share-one-cause">
+    <h3>Multiple Failures Can Share One Cause</h3>
+    <p>Suppose a patient monitor loses:</p>
+    <ul>
+      <li>Central monitoring</li>
+      <li>EMR integration</li>
+      <li>Remote alarm</li>
+    </ul>
+    <p>at the same time.</p>
+    <p>These may all depend on one network connection.</p>
+    <p>Do not troubleshoot each symptom as a separate failure until you understand the common path.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Assuming the Box Is Broken</h4>
+    <p>Look at the whole system.</p>
+    <h4>Replacing Accessories Without Cross-Testing</h4>
+    <p>Make the failure follow something.</p>
+    <h4>Blaming Infrastructure Without Testing the Device</h4>
+    <p>Prove your side.</p>
+    <h4>Ignoring Location Patterns</h4>
+    <p>Room-specific failures are clues.</p>
+    <h4>Troubleshooting Departments Instead of Signals</h4>
+    <p>Follow the path.</p>
+    <h4>Changing Several Variables at Once</h4>
+    <p>You lose isolation.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For any failure, ask:</p>
+    <p><strong>What does this function depend on?</strong></p>
+    <p>Then divide that path into:</p>
+    <ul>
+      <li>Device</li>
+      <li>Accessory</li>
+      <li>Infrastructure</li>
+    </ul>
+    <p>Then ask:</p>
+    <p><strong>What can I swap or move to determine which side the failure follows?</strong></p>
+    <p>That is often the fastest route to the answer.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>If I move this exact device and accessory to a known-good environment, does the problem follow them?</strong></p>
+    <p>If yes:</p>
+    <p>Focus on device/accessory.</p>
+    <p>If no:</p>
+    <p>Focus on infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose the monitor works in another room.</p>
+    <p>You proved:</p>
+    <p><strong>The monitor can perform that function in a known-good environment.</strong></p>
+    <p>You did not automatically prove:</p>
+    <p><strong>The original room has a bad wall jack.</strong></p>
+    <p>There may still be:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Switch port</li>
+      <li>Configuration</li>
+      <li>Infrastructure</li>
+    </ul>
+    <p>Keep narrowing.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Modern medical equipment is part of a system.</p>
+    <p>The failure may be:</p>
+    <p>Inside the device.</p>
+    <p>Attached to the device.</p>
+    <p>Or somewhere completely outside the device.</p>
+    <p>Do not let the location of the symptom decide the diagnosis.</p>
+    <p>A monitor showing:</p>
+    <blockquote><p>Network disconnected</p></blockquote>
+    <p>does not automatically have a bad network card.</p>
+    <p>A ventilator showing:</p>
+    <blockquote><p>O2 supply low</p></blockquote>
+    <p>does not automatically have a bad pressure sensor.</p>
+    <p>A bed with failed nurse call does not automatically have a bad bed control board.</p>
+    <p>Trace the path.</p>
+    <p>Swap known-good accessories.</p>
+    <p>Move the device.</p>
+    <p>Try another location.</p>
+    <p>Look for common failures.</p>
+    <p>Find the last known-good point.</p>
+    <p>Then focus your troubleshooting where the evidence points.</p>
+    <p>The faster you can determine:</p>
+    <p><strong>device, accessory, or infrastructure</strong></p>
+    <p>the faster you can stop troubleshooting the wrong thing.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Connected medical equipment may depend on facility electrical systems, medical gas systems, networks, servers, nurse call platforms, accessories, and other infrastructure. Follow current manufacturer documentation, facility procedures, safety requirements, cybersecurity policies, and your authorized service scope when testing or isolating these systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="environmental-causes-of-medical-equipment-failures.html">Environmental Causes of Medical Equipment Failures</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="hospital-emrs-and-medical-device-integration.html">Hospital EMRs and Medical Device Integration</a></li>
+      <li><a href="nurse-call-integration-basics.html">Nurse Call Integration Basics</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -145,8 +145,19 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Relays and Contact Closures in Plain English", planned)
         self.assertNotIn("Preserving Device Logs After a Serious Event", planned)
         self.assertNotIn("What to Do When a Medical Device Is Involved in an Incident", planned)
-        self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>92</strong>", planned)
+        self.assertNotIn("How to Avoid Confirmation Bias While Troubleshooting", planned)
+        self.assertNotIn("When to Trust the Device's Internal Self-Test", planned)
+        self.assertNotIn("Why Changing One Thing at a Time Matters", planned)
+        self.assertNotIn("Ground, Neutral, and Hot in Medical Equipment", planned)
+        self.assertNotIn("Error Codes: What They Tell You and What They Don't", planned)
+        self.assertNotIn("What “Unable to Duplicate” Should Actually Mean", planned)
+        self.assertNotIn("Connectors, Pins, and Strain Relief", planned)
+        self.assertNotIn("How to Troubleshoot a Device That Will Not Power On", planned)
+        self.assertNotIn("Alarm troubleshooting basics", planned)
+        self.assertNotIn("Software, Firmware, and Configuration: What's the Difference?", planned)
+        self.assertNotIn("Medical Device Logs: What to Look For", planned)
+        self.assertNotIn("How to Prove a Repair Before Return to Service", planned)
+        self.assertIn("<strong>80</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -160,6 +171,21 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "relays-and-contact-closures-in-plain-english": "A relay is controlled electrically",
             "preserving-device-logs-after-a-serious-event": "Do Not “Test It a Few Times” First",
             "what-to-do-when-a-medical-device-is-involved-in-an-incident": "This Is Not a Normal Work Order",
+            "how-to-avoid-confirmation-bias-while-troubleshooting": "A Hypothesis Is Not a Diagnosis",
+            "when-to-trust-the-device-s-internal-self-test": "What exactly just passed?",
+            "why-changing-one-thing-at-a-time-matters": "Troubleshooting Is an Experiment",
+            "ground-neutral-and-hot-in-medical-equipment": "Ground Is Not a Backup Neutral",
+            "error-codes-what-they-tell-you-and-what-they-don-t": "Error Condition vs Root Cause",
+            "what-unable-to-duplicate-should-actually-mean": "“Powers On” Is Not a Reproduction Attempt",
+            "medical-equipment-cables-and-connectors-inspection-and-isolation": "Failure Follows the Cable",
+            "how-to-troubleshoot-medical-device-accessories": "Does the problem follow the accessory",
+            "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": "The Last Known-Good Point",
+            "medical-equipment-power-troubleshooting-outlet-to-internal-supply": "Where does the power stop?",
+            "medical-device-alarm-troubleshooting-fundamentals": "Alarm Condition vs Alarm-System Failure",
+            "environmental-causes-of-medical-equipment-failures": "Environment Can Expose an Internal Fault",
+            "software-firmware-and-configuration-problems-in-medical-equipment": "Reboot Is a Result, Not Always a Repair",
+            "how-to-read-and-use-medical-device-event-logs": "Logs Show What the Device Saw",
+            "how-to-verify-a-repair-before-returning-equipment-to-service": "Repair Is Not Verification",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -173,7 +199,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 24)
+        self.assertEqual(len(catalog), 39)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:

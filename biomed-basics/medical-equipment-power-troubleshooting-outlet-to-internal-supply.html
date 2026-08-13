@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Equipment Power Troubleshooting: Outlet to Internal Supply | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to tracing no-power, charging, shutdown, and AC-input problems from the outlet through the internal medical-device power system.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/medical-equipment-power-troubleshooting-outlet-to-internal-supply.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>Medical Equipment Power Troubleshooting: Outlet to Internal Supply</h2>
+  <p>A practical way to trace a no-power, charging, shutdown, or AC-input problem from the wall to the electronics</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">When a medical device will not power on, it is tempting to jump straight inside.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Starting at the outlet</li>
+      <li>Power cords and adapters</li>
+      <li>Power inlets</li>
+      <li>Fuses and breakers</li>
+      <li>AC versus battery operation</li>
+      <li>Internal power supplies</li>
+      <li>DC voltage rails</li>
+      <li>Charging systems</li>
+      <li>Power switching</li>
+      <li>Voltage under load</li>
+      <li>Intermittent power problems</li>
+      <li>Reboots and random shutdowns</li>
+      <li>How to isolate the failed part of the power path</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of the power path like this:</p>
+    <p><strong>Wall Outlet</strong></p>
+    <p>↓</p>
+    <p><strong>Power Cord / Adapter</strong></p>
+    <p>↓</p>
+    <p><strong>Device Power Inlet</strong></p>
+    <p>↓</p>
+    <p><strong>Fuse / Protection</strong></p>
+    <p>↓</p>
+    <p><strong>Internal Power Supply</strong></p>
+    <p>↓</p>
+    <p><strong>DC Power Rails</strong></p>
+    <p>↓</p>
+    <p><strong>Battery / Charging / Power Management</strong></p>
+    <p>↓</p>
+    <p><strong>Boards, Motors, Display, and Other Loads</strong></p>
+    <p>If the device is dead, do not guess.</p>
+    <p>Follow the power.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-symptom">
+    <h3>Start With the Symptom</h3>
+    <p>Power problems do not all look the same.</p>
+    <p>Be specific.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Completely dead</li>
+      <li>Works on battery but not AC</li>
+      <li>Works on AC but not battery</li>
+      <li>Battery will not charge</li>
+      <li>Shuts off when unplugged</li>
+      <li>Randomly switches to battery</li>
+      <li>Reboots under load</li>
+      <li>Powers on but shuts down during startup</li>
+      <li>Charging indicator appears but battery never charges</li>
+    </ul>
+    <p>Each symptom points toward a different part of the path.</p>
+  </section>
+
+  <section class="content-box" id="completely-dead">
+    <h3>Completely Dead</h3>
+    <p>If the device shows:</p>
+    <ul>
+      <li>No LEDs</li>
+      <li>No charging indicator</li>
+      <li>No screen</li>
+      <li>No fan</li>
+      <li>No response</li>
+    </ul>
+    <p>start at the beginning.</p>
+    <p>Do not immediately order a main board.</p>
+    <p>Ask:</p>
+    <p><strong>Does power even reach the device?</strong></p>
+  </section>
+
+  <section class="content-box" id="verify-the-outlet">
+    <h3>Verify the Outlet</h3>
+    <p>Check the power source using your facility-approved method.</p>
+    <p>Possible methods include:</p>
+    <ul>
+      <li>Known-good equipment</li>
+      <li>Approved outlet tester</li>
+      <li>Appropriate meter testing by trained personnel</li>
+    </ul>
+    <p>If the outlet does not provide power, opening the medical device will not help.</p>
+  </section>
+
+  <section class="content-box" id="look-for-a-common-failure">
+    <h3>Look for a Common Failure</h3>
+    <p>If multiple devices suddenly lose AC power in the same area, consider:</p>
+    <ul>
+      <li>Outlet circuit</li>
+      <li>Power strip</li>
+      <li>Breaker</li>
+      <li>Facility electrical problem</li>
+    </ul>
+    <p>Several medical devices rarely develop identical internal power failures at exactly the same moment.</p>
+    <p>Look for the shared source.</p>
+  </section>
+
+  <section class="content-box" id="power-strips">
+    <h3>Power Strips</h3>
+    <p>If the equipment is connected through an approved power strip, verify:</p>
+    <ul>
+      <li>Strip is powered</li>
+      <li>Breaker is not tripped</li>
+      <li>Cord is connected</li>
+      <li>Individual outlet is functional</li>
+    </ul>
+    <p>Do not assume the wall receptacle is the only external source.</p>
+  </section>
+
+  <section class="content-box" id="inspect-the-power-cord">
+    <h3>Inspect the Power Cord</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>Cuts</li>
+      <li>Cracks</li>
+      <li>Burn marks</li>
+      <li>Missing ground pin</li>
+      <li>Loose plug</li>
+      <li>Damaged strain relief</li>
+      <li>Heat damage</li>
+      <li>Loose IEC connector</li>
+    </ul>
+    <p>Then use a known-good approved cord when appropriate.</p>
+    <p>A bad power cord can produce:</p>
+    <ul>
+      <li>Complete no power</li>
+      <li>Intermittent AC</li>
+      <li>Charging problems</li>
+      <li>Device switching to battery</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="flex-the-cord-when-the-complaint-is-intermittent">
+    <h3>Flex the Cord When the Complaint Is Intermittent</h3>
+    <p>If the device loses AC when moved:</p>
+    <p>Run it normally.</p>
+    <p>Carefully move the cord near:</p>
+    <ul>
+      <li>Plug</li>
+      <li>Strain relief</li>
+      <li>Device inlet</li>
+    </ul>
+    <p>Watch the AC indicator.</p>
+    <p>If AC drops every time the cable moves, you have converted the problem into something repeatable.</p>
+  </section>
+
+  <section class="content-box" id="external-power-adapters">
+    <h3>External Power Adapters</h3>
+    <p>Some devices use external AC/DC adapters.</p>
+    <p>That adapter is part of the power system.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Correct adapter</li>
+      <li>Correct voltage</li>
+      <li>Correct polarity</li>
+      <li>Correct connector</li>
+      <li>Adequate current rating</li>
+      <li>Cable condition</li>
+    </ul>
+    <p>If permitted, measure the adapter output.</p>
+    <p>Example:</p>
+    <p>Label:</p>
+    <p>24 VDC.</p>
+    <p>Measured:</p>
+    <p>0 VDC.</p>
+    <p>That is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-substitute-random-adapters">
+    <h3>Do Not Substitute Random Adapters</h3>
+    <p>A plug fitting does not prove compatibility.</p>
+    <p>An adapter may have the wrong:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Polarity</li>
+      <li>Current capability</li>
+      <li>Grounding</li>
+      <li>Connector wiring</li>
+    </ul>
+    <p>Use manufacturer-approved or facility-approved equipment.</p>
+  </section>
+
+  <section class="content-box" id="inspect-the-device-power-inlet">
+    <h3>Inspect the Device Power Inlet</h3>
+    <p>If the cord is good, inspect where it enters the equipment.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Loose inlet</li>
+      <li>Burned contacts</li>
+      <li>Melted plastic</li>
+      <li>Cracks</li>
+      <li>Movement</li>
+      <li>Corrosion</li>
+    </ul>
+    <p>A damaged inlet can create intermittent power even when the cord itself is good.</p>
+  </section>
+
+  <section class="content-box" id="loose-inlet-example">
+    <h3>Loose Inlet Example</h3>
+    <p>Device works normally.</p>
+    <p>Move the connector slightly.</p>
+    <p>AC indicator disappears.</p>
+    <p>Battery takes over.</p>
+    <p>Move it back.</p>
+    <p>AC returns.</p>
+    <p>That points strongly toward:</p>
+    <ul>
+      <li>Inlet</li>
+      <li>Internal inlet wiring</li>
+      <li>Connector termination</li>
+    </ul>
+    <p>not the battery.</p>
+  </section>
+
+  <section class="content-box" id="power-switches">
+    <h3>Power Switches</h3>
+    <p>Some devices use a traditional mains switch.</p>
+    <p>Others use an electronic power button.</p>
+    <p>A modern power button may simply send a low-voltage signal to the power-management system.</p>
+    <p>That means:</p>
+    <blockquote><p>Power button does nothing</p></blockquote>
+    <p>could be caused by:</p>
+    <ul>
+      <li>Button</li>
+      <li>Switch board</li>
+      <li>Standby supply</li>
+      <li>Power-management circuit</li>
+      <li>Main board</li>
+    </ul>
+    <p>Understand the design before replacing the switch.</p>
+  </section>
+
+  <section class="content-box" id="fuses">
+    <h3>Fuses</h3>
+    <p>Fuses protect circuits from excessive current.</p>
+    <p>If a device is dead, checking the appropriate fuse may be part of the troubleshooting process.</p>
+    <p>With equipment properly de-energized, test the fuse according to manufacturer procedure.</p>
+    <p>A good fuse generally has low resistance.</p>
+    <p>An open fuse does not.</p>
+  </section>
+
+  <section class="content-box" id="a-blown-fuse-is-a-clue">
+    <h3>A Blown Fuse Is a Clue</h3>
+    <p>Do not stop at:</p>
+    <blockquote><p>Fuse blown.</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>Why did it blow?</strong></p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Failed power supply</li>
+      <li>Shorted component</li>
+      <li>Motor fault</li>
+      <li>Wiring damage</li>
+      <li>Surge</li>
+    </ul>
+    <p>If the replacement fuse immediately opens again, stop replacing fuses.</p>
+    <p>Find the excessive current.</p>
+  </section>
+
+  <section class="content-box" id="use-the-correct-fuse">
+    <h3>Use the Correct Fuse</h3>
+    <p>Match manufacturer requirements for:</p>
+    <ul>
+      <li>Current rating</li>
+      <li>Voltage rating</li>
+      <li>Fast-blow versus time-delay</li>
+      <li>Physical type</li>
+    </ul>
+    <p>Never install a larger fuse because:</p>
+    <blockquote><p>The correct one keeps blowing.</p></blockquote>
+    <p>That defeats the protective design.</p>
+  </section>
+
+  <section class="content-box" id="breakers-and-resettable-protection">
+    <h3>Breakers and Resettable Protection</h3>
+    <p>Some devices have:</p>
+    <ul>
+      <li>Circuit breakers</li>
+      <li>Thermal protectors</li>
+      <li>Resettable fuses</li>
+    </ul>
+    <p>If one trips, determine why.</p>
+    <p>Repeated resetting without diagnosis is not a repair.</p>
+  </section>
+
+  <section class="content-box" id="works-on-battery-but-not-ac">
+    <h3>Works on Battery but Not AC</h3>
+    <p>This is a very useful symptom.</p>
+    <p>If the device works correctly from battery, you already know:</p>
+    <ul>
+      <li>Main processor can run</li>
+      <li>Display can run</li>
+      <li>Major system electronics are functioning</li>
+    </ul>
+    <p>Focus more heavily on the AC path:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Cord</li>
+      <li>Inlet</li>
+      <li>Fuse</li>
+      <li>AC power supply</li>
+      <li>AC detection</li>
+    </ul>
+    <p>That is a much narrower problem.</p>
+  </section>
+
+  <section class="content-box" id="works-on-ac-but-not-battery">
+    <h3>Works on AC but Not Battery</h3>
+    <p>Now the power path changes.</p>
+    <p>Consider:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Battery contacts</li>
+      <li>Battery cable</li>
+      <li>Battery communication</li>
+      <li>Battery fuse</li>
+      <li>Power-management circuit</li>
+    </ul>
+    <p>The main AC supply may be completely fine.</p>
+  </section>
+
+  <section class="content-box" id="shuts-off-immediately-when-unplugged">
+    <h3>Shuts Off Immediately When Unplugged</h3>
+    <p>If the device works on AC and dies the instant AC is removed, ask:</p>
+    <ul>
+      <li>Is battery installed?</li>
+      <li>Is battery recognized?</li>
+      <li>Is battery charged?</li>
+      <li>Do battery contacts make connection?</li>
+      <li>Does the battery produce expected voltage?</li>
+      <li>Does the device transfer to battery?</li>
+    </ul>
+    <p>Do not start by replacing the main power supply.</p>
+  </section>
+
+  <section class="content-box" id="power-source-transition">
+    <h3>Power Source Transition</h3>
+    <p>Some devices fail specifically when switching between power sources.</p>
+    <p>Test:</p>
+    <p><strong>AC → Battery</strong></p>
+    <p>and:</p>
+    <p><strong>Battery → AC</strong></p>
+    <p>A device may function normally on each power source independently but reboot during the transition.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Weak battery</li>
+      <li>Power-management board</li>
+      <li>Switching circuit</li>
+      <li>Loose connection</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-percentage-is-not-battery-health">
+    <h3>Battery Percentage Is Not Battery Health</h3>
+    <p>A display showing:</p>
+    <p>100%</p>
+    <p>does not prove the battery can support the load.</p>
+    <p>It may still have poor capacity.</p>
+    <p>For runtime complaints, use:</p>
+    <ul>
+      <li>Runtime testing</li>
+      <li>Battery analyzer</li>
+      <li>Manufacturer battery test</li>
+    </ul>
+    <p>Voltage and percentage are only parts of the picture.</p>
+  </section>
+
+  <section class="content-box" id="charging-problems">
+    <h3>Charging Problems</h3>
+    <p>A device can power normally from AC and still fail to charge.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Charging circuit</li>
+      <li>Power supply</li>
+      <li>Contacts</li>
+      <li>Battery communication</li>
+      <li>Temperature condition</li>
+      <li>Software</li>
+    </ul>
+    <p>Use a known-good battery to separate:</p>
+    <p><strong>battery problem</strong></p>
+    <p>from:</p>
+    <p><strong>charger problem.</strong></p>
+  </section>
+
+  <section class="content-box" id="known-good-battery-test">
+    <h3>Known-Good Battery Test</h3>
+    <p>Original battery:</p>
+    <p>Does not charge.</p>
+    <p>Known-good battery:</p>
+    <p>Charges normally.</p>
+    <p>Original battery:</p>
+    <p>Also fails in another device.</p>
+    <p>Strong evidence for battery failure.</p>
+    <p>Now reverse it.</p>
+    <p>Original battery:</p>
+    <p>Does not charge.</p>
+    <p>Known-good battery:</p>
+    <p>Also does not charge.</p>
+    <p>Both batteries charge in another device.</p>
+    <p>The charging problem stays with the device.</p>
+  </section>
+
+  <section class="content-box" id="internal-power-supply">
+    <h3>Internal Power Supply</h3>
+    <p>Once you have proven AC reaches the internal power supply, determine whether the supply produces the expected output.</p>
+    <p>A service manual may specify:</p>
+    <p>Input:</p>
+    <p>120 VAC.</p>
+    <p>Output:</p>
+    <p>24 VDC.</p>
+    <p>If input is correct and output is:</p>
+    <p>0 VDC</p>
+    <p>the supply becomes highly suspect.</p>
+  </section>
+
+  <section class="content-box" id="follow-manufacturer-test-points">
+    <h3>Follow Manufacturer Test Points</h3>
+    <p>Do not randomly probe energized boards.</p>
+    <p>Use:</p>
+    <ul>
+      <li>Approved test points</li>
+      <li>Specified reference</li>
+      <li>Proper meter</li>
+      <li>Appropriate safety precautions</li>
+    </ul>
+    <p>Internal power supplies may expose technicians to hazardous voltage and stored energy.</p>
+  </section>
+
+  <section class="content-box" id="multiple-voltage-rails">
+    <h3>Multiple Voltage Rails</h3>
+    <p>A power supply may generate several outputs.</p>
+    <p>For example:</p>
+    <ul>
+      <li>24 VDC</li>
+      <li>12 VDC</li>
+      <li>5 VDC</li>
+      <li>3.3 VDC</li>
+    </ul>
+    <p>A partial failure can create strange symptoms.</p>
+    <p>Example:</p>
+    <p>24 V rail works.</p>
+    <p>Fans and motors run.</p>
+    <p>5 V rail fails.</p>
+    <p>Processor does not boot.</p>
+    <p>The device may appear:</p>
+    <blockquote><p>Half alive.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="follow-the-rails">
+    <h3>Follow the Rails</h3>
+    <p>If one subsystem works and another does not, ask whether they use different supply rails.</p>
+    <p>The service manual or schematic may show the distribution.</p>
+    <p>This can help isolate partial power failures.</p>
+  </section>
+
+  <section class="content-box" id="power-supply-good-at-idle-bad-under-load">
+    <h3>Power Supply Good at Idle, Bad Under Load</h3>
+    <p>One of the most important power troubleshooting concepts is:</p>
+    <p><strong>Voltage under load.</strong></p>
+    <p>A supply may measure:</p>
+    <p>24.2 VDC</p>
+    <p>with the device idle.</p>
+    <p>Then the motor starts.</p>
+    <p>Voltage drops to:</p>
+    <p>14 VDC.</p>
+    <p>The power supply may be weak.</p>
+    <p>Or the load may be drawing too much current.</p>
+    <p>Either way, you found an important relationship.</p>
+  </section>
+
+  <section class="content-box" id="watch-the-voltage-during-the-failure">
+    <h3>Watch the Voltage During the Failure</h3>
+    <p>If the device reboots when:</p>
+    <ul>
+      <li>Printer activates</li>
+      <li>Pump runs</li>
+      <li>Defibrillator charges</li>
+      <li>Motor starts</li>
+    </ul>
+    <p>measure the appropriate rail during that event.</p>
+    <p>A voltage collapse can point toward:</p>
+    <ul>
+      <li>Weak power supply</li>
+      <li>Bad battery</li>
+      <li>Excessive load</li>
+      <li>High-resistance connection</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-resistance-connections">
+    <h3>High-Resistance Connections</h3>
+    <p>A loose or corroded connection may show normal voltage with little load.</p>
+    <p>Once current increases:</p>
+    <p>Voltage drops.</p>
+    <p>The connection may also heat.</p>
+    <p>Inspect:</p>
+    <ul>
+      <li>Connectors</li>
+      <li>Harnesses</li>
+      <li>Battery contacts</li>
+      <li>Power inlet</li>
+      <li>Ground connections</li>
+    </ul>
+    <p>especially when the problem appears under load.</p>
+  </section>
+
+  <section class="content-box" id="voltage-at-supply-vs-voltage-at-board">
+    <h3>Voltage at Supply vs Voltage at Board</h3>
+    <p>Suppose power supply output is:</p>
+    <p>24 VDC.</p>
+    <p>At the board:</p>
+    <p>18 VDC.</p>
+    <p>The supply may be good.</p>
+    <p>Something between the supply and board is dropping:</p>
+    <p>6 volts.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Cable</li>
+      <li>Fuse holder</li>
+      <li>Corrosion</li>
+    </ul>
+    <p>Follow the path.</p>
+  </section>
+
+  <section class="content-box" id="standby-power">
+    <h3>Standby Power</h3>
+    <p>Some modern devices maintain a small standby supply even when “off.”</p>
+    <p>This allows:</p>
+    <ul>
+      <li>Power button detection</li>
+      <li>Battery charging</li>
+      <li>Clock operation</li>
+      <li>Network wake functions</li>
+    </ul>
+    <p>If standby power is missing, the device may appear completely dead even though the main supply itself is not being commanded on.</p>
+    <p>This is where the service manual becomes important.</p>
+  </section>
+
+  <section class="content-box" id="power-on-sequence">
+    <h3>Power-On Sequence</h3>
+    <p>Complex devices may power systems in a specific order.</p>
+    <p>Example:</p>
+    <ol>
+      <li>Standby supply present.</li>
+      <li>Power button pressed.</li>
+      <li>Main supply enabled.</li>
+      <li>DC rails stabilize.</li>
+      <li>Processor boots.</li>
+      <li>Display starts.</li>
+    </ol>
+    <p>If the sequence stops at step three, the problem may be different from a completely dead power supply.</p>
+  </section>
+
+  <section class="content-box" id="device-powers-on-but-will-not-start">
+    <h3>Device Powers On but Will Not Start</h3>
+    <p>If:</p>
+    <ul>
+      <li>Fans run</li>
+      <li>LEDs illuminate</li>
+      <li>Screen flashes</li>
+    </ul>
+    <p>but the software never starts, do not call it simply:</p>
+    <blockquote><p>No power.</p></blockquote>
+    <p>Power is present.</p>
+    <p>The problem may involve:</p>
+    <ul>
+      <li>Missing voltage rail</li>
+      <li>Main board</li>
+      <li>Memory</li>
+      <li>Software</li>
+      <li>Peripheral dragging down the system</li>
+    </ul>
+    <p>Describe the symptom accurately.</p>
+  </section>
+
+  <section class="content-box" id="reboots">
+    <h3>Reboots</h3>
+    <p>A reboot can look like a software problem.</p>
+    <p>Sometimes it is.</p>
+    <p>Sometimes it is power.</p>
+    <p>Watch for:</p>
+    <ul>
+      <li>Voltage dip</li>
+      <li>Battery transition</li>
+      <li>Motor start</li>
+      <li>Loose cable</li>
+      <li>Power rail error</li>
+    </ul>
+    <p>If power disappears even briefly, the processor may restart.</p>
+  </section>
+
+  <section class="content-box" id="event-logs">
+    <h3>Event Logs</h3>
+    <p>Logs may help identify:</p>
+    <ul>
+      <li>AC removed</li>
+      <li>Battery disconnected</li>
+      <li>Power rail low</li>
+      <li>Unexpected reset</li>
+      <li>Charging fault</li>
+    </ul>
+    <p>For intermittent power problems, log history can be extremely useful.</p>
+  </section>
+
+  <section class="content-box" id="heat-related-power-failure">
+    <h3>Heat-Related Power Failure</h3>
+    <p>Power supplies can shut down when overheated.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Failed fan</li>
+      <li>Blocked filter</li>
+      <li>Dust</li>
+      <li>High room temperature</li>
+    </ul>
+    <p>Symptom:</p>
+    <p>Device works when cold.</p>
+    <p>Fails after an hour.</p>
+    <p>Works again after cooling.</p>
+    <p>Do not overlook thermal protection.</p>
+  </section>
+
+  <section class="content-box" id="burning-smell-or-heat-damage">
+    <h3>Burning Smell or Heat Damage</h3>
+    <p>If you observe:</p>
+    <ul>
+      <li>Burning odor</li>
+      <li>Melted connector</li>
+      <li>Discolored wiring</li>
+      <li>Smoke</li>
+      <li>Arcing</li>
+    </ul>
+    <p>remove equipment from service and follow the appropriate safety procedure.</p>
+    <p>Do not repeatedly power it to:</p>
+    <blockquote><p>See if it does it again.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="stored-energy">
+    <h3>Stored Energy</h3>
+    <p>Internal power supplies can contain capacitors that remain charged after unplugging.</p>
+    <p>Follow manufacturer warnings and required discharge times.</p>
+    <p>Unplugged does not always mean:</p>
+    <p><strong>electrically safe inside.</strong></p>
+  </section>
+
+  <section class="content-box" id="real-world-example-completely-dead-monitor">
+    <h3>Real-World Example: Completely Dead Monitor</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Will not power on.</p></blockquote>
+    <p>Outlet:</p>
+    <p>Good.</p>
+    <p>Known-good cord:</p>
+    <p>No change.</p>
+    <p>Battery:</p>
+    <p>Known-good battery also no response.</p>
+    <p>AC reaches internal supply.</p>
+    <p>Supply output:</p>
+    <p>0 VDC.</p>
+    <p>Now the internal power supply is strongly implicated.</p>
+    <p>You reached that conclusion by following the path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-monitor-randomly-switches-to-battery">
+    <h3>Real-World Example: Monitor Randomly Switches to Battery</h3>
+    <p>Complaint:</p>
+    <blockquote><p>AC keeps dropping.</p></blockquote>
+    <p>Outlet:</p>
+    <p>Good.</p>
+    <p>Known-good cord:</p>
+    <p>Same symptom.</p>
+    <p>Flex device inlet:</p>
+    <p>AC disconnects.</p>
+    <p>Inspection:</p>
+    <p>Loose inlet connection.</p>
+    <p>No reason to replace battery or charging board.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-device-reboots-when-pump-starts">
+    <h3>Real-World Example: Device Reboots When Pump Starts</h3>
+    <p>Idle supply:</p>
+    <p>24.1 VDC.</p>
+    <p>Pump starts:</p>
+    <p>Voltage falls to 15 VDC.</p>
+    <p>Device resets.</p>
+    <p>Possible next steps:</p>
+    <ul>
+      <li>Check pump current/load</li>
+      <li>Check supply under load</li>
+      <li>Inspect high-current connections</li>
+    </ul>
+    <p>You now have evidence that the reboot is associated with power collapse.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-will-not-charge">
+    <h3>Real-World Example: Battery Will Not Charge</h3>
+    <p>Original battery:</p>
+    <p>No charge.</p>
+    <p>Known-good battery:</p>
+    <p>No charge.</p>
+    <p>Both batteries charge correctly in another unit.</p>
+    <p>Power supply output:</p>
+    <p>Normal.</p>
+    <p>Charging-system diagnostics:</p>
+    <p>Fail.</p>
+    <p>The fault stays with the device's charging path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-works-on-battery-only">
+    <h3>Real-World Example: Works on Battery Only</h3>
+    <p>Device works perfectly on battery.</p>
+    <p>No AC indication.</p>
+    <p>Outlet and cord good.</p>
+    <p>Fuse good.</p>
+    <p>AC reaches supply.</p>
+    <p>DC supply output absent.</p>
+    <p>The symptom narrows the repair toward the AC power-conversion section.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Opening the Device Before Checking the Outlet</h4>
+    <p>Start outside.</p>
+    <h4>Assuming “No Power” Means Power Supply</h4>
+    <p>Trace the whole path.</p>
+    <h4>Assuming Battery Percentage Means Battery Health</h4>
+    <p>Test capacity when appropriate.</p>
+    <h4>Replacing a Fuse Without Finding the Cause</h4>
+    <p>The fuse may be the symptom.</p>
+    <h4>Measuring Only Unloaded Voltage</h4>
+    <p>Watch behavior under load.</p>
+    <h4>Ignoring Connectors</h4>
+    <p>High resistance can create voltage drop.</p>
+    <h4>Calling Every Reboot a Software Problem</h4>
+    <p>Power interruptions can reboot processors too.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Work through:</p>
+    <p><strong>Source</strong></p>
+    <p>Is the correct AC power available?</p>
+    <p>↓</p>
+    <p><strong>External Path</strong></p>
+    <p>Cord or adapter good?</p>
+    <p>↓</p>
+    <p><strong>Input</strong></p>
+    <p>Does power enter the device?</p>
+    <p>↓</p>
+    <p><strong>Protection</strong></p>
+    <p>Fuse or breaker intact?</p>
+    <p>↓</p>
+    <p><strong>Conversion</strong></p>
+    <p>Does the power supply produce the correct outputs?</p>
+    <p>↓</p>
+    <p><strong>Distribution</strong></p>
+    <p>Do those outputs reach the required boards?</p>
+    <p>↓</p>
+    <p><strong>Load</strong></p>
+    <p>Does voltage remain correct during operation?</p>
+    <p>Find the point where expected power disappears or becomes unstable.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What still works?</strong></p>
+    <p>If the device works on battery:</p>
+    <p>That tells you something.</p>
+    <p>If the display works but motor does not:</p>
+    <p>That tells you something.</p>
+    <p>If all functions fail simultaneously:</p>
+    <p>That tells you something.</p>
+    <p>A partial success can help identify which part of the power path is still healthy.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the power supply measures:</p>
+    <p>24.0 VDC</p>
+    <p>you proved:</p>
+    <p><strong>24 volts was present at that output under those conditions.</strong></p>
+    <p>You did not automatically prove:</p>
+    <ul>
+      <li>It stays at 24 V under load</li>
+      <li>Every output rail works</li>
+      <li>Battery charging works</li>
+      <li>Downstream wiring is good</li>
+    </ul>
+    <p>Each measurement answers one question.</p>
+    <p>Use the answer to choose the next one.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Power troubleshooting is much easier when you stop thinking:</p>
+    <blockquote><p>Dead device. Which board?</p></blockquote>
+    <p>and start thinking:</p>
+    <p><strong>Where does the power stop?</strong></p>
+    <p>Begin at the source.</p>
+    <p>Verify the outlet.</p>
+    <p>Check the cord.</p>
+    <p>Inspect the inlet.</p>
+    <p>Check protective components.</p>
+    <p>Measure the internal supply.</p>
+    <p>Follow the DC rails.</p>
+    <p>Watch them under load.</p>
+    <p>Then investigate the battery and power-management path.</p>
+    <p>Do not skip ahead.</p>
+    <p>A device that will not power on can have a very complicated internal design.</p>
+    <p>But electricity still has to travel through a path.</p>
+    <p>Find the last place where the power is correct.</p>
+    <p>Then take one step farther.</p>
+    <p>That is usually where the troubleshooting gets interesting.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Power troubleshooting may expose technicians to mains voltage, high current, batteries, stored electrical energy, and safety-critical isolation circuits. Follow current manufacturer service documentation, facility electrical-safety procedures, appropriate test-equipment ratings, and your authorized service scope. Do not perform energized internal measurements unless trained and permitted to do so.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="fuses-breakers-and-power-supplies-in-medical-equipment.html">Fuses, Breakers, and Power Supplies in Medical Equipment</a></li>
+      <li><a href="ground-neutral-and-hot-in-medical-equipment.html">Ground, Neutral, and Hot in Medical Equipment</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="how-to-isolate-device-vs-accessory-vs-infrastructure-problems.html">How to Isolate Device vs Accessory vs Infrastructure Problems</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
