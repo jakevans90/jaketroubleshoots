@@ -32,8 +32,8 @@ RELATED = {
     "nurse-call-integration-basics": ["relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method"],
     "how-to-read-a-medical-equipment-service-manual": ["error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "what-known-good-actually-means"],
-    "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
-    "what-known-good-actually-means": ["why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
+    "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
+    "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "sensors-and-transducers-basics": ["when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means"],
@@ -46,6 +46,7 @@ RELATED = {
     "ground-neutral-and-hot-in-medical-equipment": ["electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
+    "medical-equipment-cables-and-connectors-inspection-and-isolation": ["what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters", "ground-neutral-and-hot-in-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -169,6 +170,13 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Intermittent-fault testing and documentation",
+    },
+    "medical-equipment-cables-and-connectors-inspection-and-isolation": {
+        "description": "A practical guide to inspecting and isolating cable, connector, strain-relief, and pin failures before replacing expensive medical-device components.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Cable and connector fault isolation",
+        "plannedTitles": ["Connectors, Pins, and Strain Relief"],
     },
 }
 
