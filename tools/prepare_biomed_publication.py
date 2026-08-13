@@ -17,7 +17,7 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "electrical-safety-testing-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
+    "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
     "functional-testing-vs-calibration-vs-verification": ["when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment"],
     "biomed-work-order-notes-ccr-method": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
     "medical-equipment-battery-basics": ["fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "electrical-safety-testing-medical-equipment"],
@@ -34,7 +34,7 @@ RELATED = {
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "what-known-good-actually-means"],
     "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
-    "fuses-breakers-and-power-supplies-in-medical-equipment": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "fuses-breakers-and-power-supplies-in-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "sensors-and-transducers-basics": ["when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "what-known-good-actually-means"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
@@ -43,6 +43,7 @@ RELATED = {
     "how-to-avoid-confirmation-bias-while-troubleshooting": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
     "when-to-trust-the-device-s-internal-self-test": ["functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-avoid-confirmation-bias-while-troubleshooting"],
     "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
+    "ground-neutral-and-hot-in-medical-equipment": ["electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -148,6 +149,12 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Controlled troubleshooting and isolation",
+    },
+    "ground-neutral-and-hot-in-medical-equipment": {
+        "description": "A practical explanation of hot, neutral, and protective ground conductors in AC-powered medical equipment and why their roles must remain distinct.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "AC conductors and protective grounding",
     },
 }
 

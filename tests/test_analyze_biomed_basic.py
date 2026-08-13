@@ -148,8 +148,9 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to Avoid Confirmation Bias While Troubleshooting", planned)
         self.assertNotIn("When to Trust the Device's Internal Self-Test", planned)
         self.assertNotIn("Why Changing One Thing at a Time Matters", planned)
+        self.assertNotIn("Ground, Neutral, and Hot in Medical Equipment", planned)
         self.assertIn("Alarm troubleshooting basics", planned)
-        self.assertIn("<strong>89</strong>", planned)
+        self.assertIn("<strong>88</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -166,6 +167,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-to-avoid-confirmation-bias-while-troubleshooting": "A Hypothesis Is Not a Diagnosis",
             "when-to-trust-the-device-s-internal-self-test": "What exactly just passed?",
             "why-changing-one-thing-at-a-time-matters": "Troubleshooting Is an Experiment",
+            "ground-neutral-and-hot-in-medical-equipment": "Ground Is Not a Backup Neutral",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -179,7 +181,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 27)
+        self.assertEqual(len(catalog), 28)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
