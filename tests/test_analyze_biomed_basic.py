@@ -179,6 +179,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": "The Last Known-Good Point",
             "medical-equipment-power-troubleshooting-outlet-to-internal-supply": "Where does the power stop?",
             "medical-device-alarm-troubleshooting-fundamentals": "Alarm Condition vs Alarm-System Failure",
+            "environmental-causes-of-medical-equipment-failures": "Environment Can Expose an Internal Fault",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -192,7 +193,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 35)
+        self.assertEqual(len(catalog), 36)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
