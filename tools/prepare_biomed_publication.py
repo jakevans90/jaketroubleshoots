@@ -30,7 +30,7 @@ RELATED = {
     "how-to-think-before-calling-a-vendor": ["how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["medical-device-alarm-troubleshooting-fundamentals", "relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
-    "how-to-read-a-medical-equipment-service-manual": ["error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
+    "how-to-read-a-medical-equipment-service-manual": ["software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["environmental-causes-of-medical-equipment-failures", "what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means"],
     "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
@@ -44,7 +44,7 @@ RELATED = {
     "when-to-trust-the-device-s-internal-self-test": ["error-codes-what-they-tell-you-and-what-they-don-t", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
     "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
     "ground-neutral-and-hot-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment"],
-    "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
+    "error-codes-what-they-tell-you-and-what-they-don-t": ["software-firmware-and-configuration-problems-in-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters"],
     "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
@@ -52,6 +52,7 @@ RELATED = {
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "medical-device-alarm-troubleshooting-fundamentals": ["sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
+    "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
 }
 
 ARTICLE_CONFIG = {
@@ -214,6 +215,13 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Concept",
         "cardNote": "Environmental and location-based failure patterns",
+    },
+    "software-firmware-and-configuration-problems-in-medical-equipment": {
+        "description": "A practical guide to recognizing software, firmware, version, and configuration problems that can make healthy medical-device hardware appear defective.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Software layers and configuration isolation",
+        "plannedTitles": ["Software, Firmware, and Configuration: What's the Difference?"],
     },
 }
 
