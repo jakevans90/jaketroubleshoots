@@ -21,7 +21,7 @@ RELATED = {
     "functional-testing-vs-calibration-vs-verification": ["when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment"],
     "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-battery-basics": ["fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "electrical-safety-testing-medical-equipment"],
-    "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
+    "basic-networking-for-medical-equipment": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
     "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
@@ -47,7 +47,8 @@ RELATED = {
     "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters"],
-    "how-to-troubleshoot-medical-device-accessories": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench", "why-changing-one-thing-at-a-time-matters"],
+    "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "nurse-call-integration-basics", "why-changing-one-thing-at-a-time-matters"],
 }
 
 ARTICLE_CONFIG = {
@@ -184,6 +185,12 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Accessory and host-device fault isolation",
+    },
+    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": {
+        "description": "A practical guide to determining whether a medical-equipment failure belongs to the device, an attached accessory, or the hospital infrastructure around it.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Device, accessory, and infrastructure isolation",
     },
 }
 
