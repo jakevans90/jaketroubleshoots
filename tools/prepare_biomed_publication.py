@@ -34,7 +34,7 @@ RELATED = {
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "what-known-good-actually-means"],
     "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
-    "fuses-breakers-and-power-supplies-in-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment"],
+    "fuses-breakers-and-power-supplies-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "sensors-and-transducers-basics": ["how-to-troubleshoot-medical-device-accessories", "when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
@@ -43,12 +43,13 @@ RELATED = {
     "how-to-avoid-confirmation-bias-while-troubleshooting": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
     "when-to-trust-the-device-s-internal-self-test": ["error-codes-what-they-tell-you-and-what-they-don-t", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
     "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "ground-neutral-and-hot-in-medical-equipment": ["electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service"],
+    "ground-neutral-and-hot-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment"],
     "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters"],
     "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "nurse-call-integration-basics", "why-changing-one-thing-at-a-time-matters"],
+    "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
 }
 
 ARTICLE_CONFIG = {
@@ -191,6 +192,13 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Device, accessory, and infrastructure isolation",
+    },
+    "medical-equipment-power-troubleshooting-outlet-to-internal-supply": {
+        "description": "A practical guide to tracing no-power, charging, shutdown, and AC-input problems from the outlet through the internal medical-device power system.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "End-to-end power-path troubleshooting",
+        "plannedTitles": ["How to Troubleshoot a Device That Will Not Power On"],
     },
 }
 
