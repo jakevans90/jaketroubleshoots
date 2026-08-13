@@ -174,6 +174,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "error-codes-what-they-tell-you-and-what-they-don-t": "Error Condition vs Root Cause",
             "what-unable-to-duplicate-should-actually-mean": "“Powers On” Is Not a Reproduction Attempt",
             "medical-equipment-cables-and-connectors-inspection-and-isolation": "Failure Follows the Cable",
+            "how-to-troubleshoot-medical-device-accessories": "Does the problem follow the accessory",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -187,7 +188,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 31)
+        self.assertEqual(len(catalog), 32)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
