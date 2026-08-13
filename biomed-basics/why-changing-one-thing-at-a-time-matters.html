@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Why Changing One Thing at a Time Matters | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to controlling variables, preserving diagnostic evidence, and learning what actually fixed a medical-equipment problem.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/why-changing-one-thing-at-a-time-matters.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>Why Changing One Thing at a Time Matters</h2>
+  <p>How controlled troubleshooting helps you actually learn what fixed the problem</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One of the easiest ways to make troubleshooting confusing is to change too many things at once.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Why changing one variable at a time matters</li>
+      <li>How multiple simultaneous changes destroy diagnostic information</li>
+      <li>When controlled troubleshooting is most useful</li>
+      <li>How to isolate components</li>
+      <li>How to use known-good swaps correctly</li>
+      <li>Why before-and-after testing matters</li>
+      <li>When changing multiple things at once may still be reasonable</li>
+      <li>How to document what changed</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>If you change one thing and the problem changes, that tells you something.</p>
+    <p>If you change five things and the problem changes, you do not know which one mattered.</p>
+    <p>That is the whole idea.</p>
+    <p>Troubleshooting works best when each test answers a specific question.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-is-an-experiment">
+    <h3>Troubleshooting Is an Experiment</h3>
+    <p>Think of each troubleshooting step as a small experiment.</p>
+    <p>You start with:</p>
+    <p><strong>Problem present.</strong></p>
+    <p>Then you change one variable.</p>
+    <p>Then you observe what happens.</p>
+    <p>If the problem disappears, that variable becomes important.</p>
+    <p>If nothing changes, you move on.</p>
+    <p>That creates useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="example-monitor-will-not-charge">
+    <h3>Example: Monitor Will Not Charge</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Battery contacts</li>
+      <li>Power supply</li>
+      <li>Charger circuit</li>
+      <li>Software</li>
+    </ul>
+    <p>Poor approach:</p>
+    <p>Replace battery, clean contacts, update software, and replace power supply.</p>
+    <p>Monitor charges.</p>
+    <p>What fixed it?</p>
+    <p>No idea.</p>
+    <p>Better approach:</p>
+    <p>Install known-good battery.</p>
+    <p>Still no charge.</p>
+    <p>Now battery becomes less likely.</p>
+    <p>Clean and inspect contacts.</p>
+    <p>Still no charge.</p>
+    <p>Measure power supply output.</p>
+    <p>Out of specification.</p>
+    <p>Now you have a much stronger diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="multiple-changes-hide-the-cause">
+    <h3>Multiple Changes Hide the Cause</h3>
+    <p>Suppose a ventilator fails flow calibration.</p>
+    <p>You:</p>
+    <ul>
+      <li>Replace flow sensor</li>
+      <li>Clean the circuit</li>
+      <li>Reseat the sensor cable</li>
+      <li>Run software update</li>
+    </ul>
+    <p>Calibration passes.</p>
+    <p>You might say:</p>
+    <blockquote><p>The new sensor fixed it.</p></blockquote>
+    <p>But did it?</p>
+    <p>Maybe the old sensor was fine and the connector was loose.</p>
+    <p>Maybe the software reset cleared the problem.</p>
+    <p>Maybe cleaning the flow path fixed it.</p>
+    <p>Because everything changed at once, you cannot know.</p>
+  </section>
+
+  <section class="content-box" id="why-this-matters-beyond-curiosity">
+    <h3>Why This Matters Beyond Curiosity</h3>
+    <p>Knowing what actually fixed the problem matters because it helps with:</p>
+    <ul>
+      <li>Repeat failures</li>
+      <li>Future troubleshooting</li>
+      <li>Parts costs</li>
+      <li>Documentation</li>
+      <li>Trend analysis</li>
+      <li>Root cause investigation</li>
+      <li>Staff training</li>
+    </ul>
+    <p>If the same problem comes back next month, good evidence from the first repair can save a lot of time.</p>
+  </section>
+
+  <section class="content-box" id="known-good-swaps-work-best-one-at-a-time">
+    <h3>Known-Good Swaps Work Best One at a Time</h3>
+    <p>Known-good substitution is powerful because it isolates a single component.</p>
+    <p>Example:</p>
+    <p>Original cable:</p>
+    <p>Failure.</p>
+    <p>Known-good cable:</p>
+    <p>Works.</p>
+    <p>That tells you something.</p>
+    <p>Now imagine you also changed:</p>
+    <ul>
+      <li>Monitor</li>
+      <li>Sensor</li>
+      <li>Software profile</li>
+    </ul>
+    <p>at the same time.</p>
+    <p>The cable swap is no longer meaningful.</p>
+    <p>The value of known-good testing comes from controlling everything else.</p>
+  </section>
+
+  <section class="content-box" id="before-and-after-matters">
+    <h3>Before-and-After Matters</h3>
+    <p>Try to reproduce the problem before making the change.</p>
+    <p>Then repeat the same test afterward.</p>
+    <p>That gives you:</p>
+    <p><strong>Before: Fail</strong></p>
+    <p><strong>Change one thing</strong></p>
+    <p><strong>After: Pass</strong></p>
+    <p>That is strong evidence.</p>
+    <p>If you cannot reproduce the original failure, proving the repair becomes harder.</p>
+  </section>
+
+  <section class="content-box" id="example-intermittent-ecg-dropout">
+    <h3>Example: Intermittent ECG Dropout</h3>
+    <p>Complaint:</p>
+    <blockquote><p>ECG drops when the cart moves.</p></blockquote>
+    <p>You reproduce it.</p>
+    <p>Flex trunk cable.</p>
+    <p>Waveform disappears.</p>
+    <p>Now replace the cable.</p>
+    <p>Repeat exact movement.</p>
+    <p>Waveform remains stable.</p>
+    <p>That is a clean troubleshooting result.</p>
+  </section>
+
+  <section class="content-box" id="change-the-most-informative-variable-first">
+    <h3>Change the Most Informative Variable First</h3>
+    <p>Changing one thing at a time does not mean you must move slowly.</p>
+    <p>Choose the test that gives you the most useful information.</p>
+    <p>If a device has a questionable external sensor, swapping a known-good sensor may eliminate several possibilities immediately.</p>
+    <p>A good test should divide the problem space.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-easy-variables">
+    <h3>Start With the Easy Variables</h3>
+    <p>Common easy variables include:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Battery</li>
+      <li>Sensor</li>
+      <li>Power cord</li>
+      <li>Module</li>
+      <li>Accessory</li>
+      <li>Configuration</li>
+    </ul>
+    <p>These are often faster to test than opening the device.</p>
+  </section>
+
+  <section class="content-box" id="do-not-replace-an-expensive-board-as-your-first-variable">
+    <h3>Do Not Replace an Expensive Board as Your First “Variable”</h3>
+    <p>If simpler possibilities remain, test them first.</p>
+    <p>Example:</p>
+    <p>SpO2 unavailable.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Extension cable</li>
+      <li>Connector</li>
+      <li>Module</li>
+      <li>Main board</li>
+    </ul>
+    <p>Start outside.</p>
+    <p>A $100 sensor is a much better diagnostic variable than a $4,000 main board.</p>
+  </section>
+
+  <section class="content-box" id="software-changes-count-as-variables-too">
+    <h3>Software Changes Count as Variables Too</h3>
+    <p>Technicians sometimes forget this.</p>
+    <p>If you:</p>
+    <ul>
+      <li>Update software</li>
+      <li>Change configuration</li>
+      <li>Reset defaults</li>
+      <li>Reload profile</li>
+    </ul>
+    <p>you changed the system.</p>
+    <p>Those changes can affect symptoms.</p>
+    <p>Document them like you would a hardware replacement.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-is-also-a-variable">
+    <h3>Rebooting Is Also a Variable</h3>
+    <p>Power cycling may clear:</p>
+    <ul>
+      <li>Temporary software state</li>
+      <li>Communication errors</li>
+      <li>Memory condition</li>
+      <li>Locked process</li>
+    </ul>
+    <p>If the problem disappears after reboot, that is useful information.</p>
+    <p>Do not pretend nothing changed.</p>
+    <p>You changed the software state.</p>
+  </section>
+
+  <section class="content-box" id="reseating-connectors-is-a-variable">
+    <h3>Reseating Connectors Is a Variable</h3>
+    <p>This is a big one.</p>
+    <p>You open a device.</p>
+    <p>Disconnect and reconnect every harness.</p>
+    <p>Put it back together.</p>
+    <p>Problem disappears.</p>
+    <p>You may say:</p>
+    <blockquote><p>Could not duplicate after inspection.</p></blockquote>
+    <p>But in reality, you changed multiple connections.</p>
+    <p>One may have been loose.</p>
+    <p>That information is now lost.</p>
+    <p>Whenever practical, inspect and test suspicious connections deliberately rather than reseating everything immediately.</p>
+  </section>
+
+  <section class="content-box" id="cleaning-is-a-variable">
+    <h3>Cleaning Is a Variable</h3>
+    <p>Cleaning a flow sensor, optical sensor, connector, or contact can absolutely fix a problem.</p>
+    <p>Document it.</p>
+    <p>Example:</p>
+    <blockquote><p>Flow sensor contaminated. Cleaned per manufacturer procedure. Calibration subsequently passed.</p></blockquote>
+    <p>That is better than:</p>
+    <blockquote><p>Tested okay.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="calibration-is-a-variable">
+    <h3>Calibration Is a Variable</h3>
+    <p>If you calibrate a device before confirming the original failure, you may erase evidence of drift.</p>
+    <p>Example:</p>
+    <p>NIBP reads consistently 15 mmHg high.</p>
+    <p>You immediately calibrate it.</p>
+    <p>Now it reads correctly.</p>
+    <p>You fixed the issue, but you lost the opportunity to characterize the original error.</p>
+    <p>Sometimes that may not matter.</p>
+    <p>Other times it could.</p>
+  </section>
+
+  <section class="content-box" id="testing-order-matters">
+    <h3>Testing Order Matters</h3>
+    <p>A useful sequence is:</p>
+    <ol>
+      <li>Reproduce the problem.</li>
+      <li>Record the baseline.</li>
+      <li>Change one variable.</li>
+      <li>Repeat the same test.</li>
+      <li>Record the result.</li>
+      <li>Decide the next step.</li>
+    </ol>
+    <p>That structure keeps your evidence clean.</p>
+  </section>
+
+  <section class="content-box" id="not-every-change-needs-a-full-work-order-essay">
+    <h3>Not Every Change Needs a Full Work Order Essay</h3>
+    <p>You do not have to document every tiny action.</p>
+    <p>But record changes that affect the diagnosis.</p>
+    <p>Example:</p>
+    <blockquote><p>Reproduced intermittent shutdown on battery. Installed known-good battery; failure remained. Inspected battery contacts and found loose negative terminal. Secured connection and repeated runtime/movement test with no shutdown.</p></blockquote>
+    <p>That tells a clear story.</p>
+  </section>
+
+  <section class="content-box" id="when-multiple-changes-are-reasonable">
+    <h3>When Multiple Changes Are Reasonable</h3>
+    <p>There are exceptions.</p>
+    <p>Sometimes the priority is not perfect diagnosis.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Emergency restoration</li>
+      <li>Manufacturer-directed repair kit</li>
+      <li>Scheduled overhaul</li>
+      <li>Known service bulletin requiring several parts</li>
+      <li>Contamination cleanup</li>
+      <li>Device being rebuilt during depot repair</li>
+    </ul>
+    <p>If the manufacturer says:</p>
+    <blockquote><p>Replace these three components together.</p></blockquote>
+    <p>do that.</p>
+    <p>The rule is not absolute.</p>
+    <p>It is a troubleshooting principle.</p>
+  </section>
+
+  <section class="content-box" id="repair-kits">
+    <h3>Repair Kits</h3>
+    <p>Manufacturers may sell an assembly or kit containing several components.</p>
+    <p>Replacing the whole kit may be appropriate.</p>
+    <p>You may never know which individual part was bad.</p>
+    <p>That is okay if the manufacturer designed the repair that way.</p>
+    <p>Document:</p>
+    <blockquote><p>Replaced manufacturer service kit per procedure.</p></blockquote>
+    <p>Do not pretend you isolated one component if you did not.</p>
+  </section>
+
+  <section class="content-box" id="safety-can-override-diagnostic-purity">
+    <h3>Safety Can Override Diagnostic Purity</h3>
+    <p>Suppose you find:</p>
+    <ul>
+      <li>Burned connector</li>
+      <li>Damaged wire</li>
+      <li>Melted power inlet</li>
+    </ul>
+    <p>You may replace several damaged components together.</p>
+    <p>That is appropriate.</p>
+    <p>Do not keep unsafe hardware installed just so you can run a prettier experiment.</p>
+    <p>Safety comes first.</p>
+  </section>
+
+  <section class="content-box" id="time-can-matter">
+    <h3>Time Can Matter</h3>
+    <p>Some equipment is critical to operations.</p>
+    <p>You may need to restore service efficiently.</p>
+    <p>There is a balance between:</p>
+    <p><strong>Perfect root-cause isolation</strong></p>
+    <p>and:</p>
+    <p><strong>Reasonable, evidence-based repair.</strong></p>
+    <p>The goal is not to turn every work order into a science project.</p>
+    <p>The goal is to avoid unnecessary uncertainty when it can easily be prevented.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-complaint">
+    <h3>Real-World Example: Battery Complaint</h3>
+    <p>Device shuts off after 20 minutes.</p>
+    <p>You simultaneously:</p>
+    <ul>
+      <li>Replace battery</li>
+      <li>Replace charger</li>
+      <li>Update software</li>
+    </ul>
+    <p>Problem resolved.</p>
+    <p>Now you cannot tell whether:</p>
+    <ul>
+      <li>Battery was weak</li>
+      <li>Charger undercharged it</li>
+      <li>Software misreported state</li>
+    </ul>
+    <p>Better:</p>
+    <p>Test original battery capacity first.</p>
+    <p>That one measurement might answer the entire question.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-sensor-not-recognized">
+    <h3>Real-World Example: Sensor Not Recognized</h3>
+    <p>Device says:</p>
+    <blockquote><p>Sensor Not Recognized.</p></blockquote>
+    <p>You replace sensor and cable together.</p>
+    <p>Works.</p>
+    <p>Which was bad?</p>
+    <p>Unknown.</p>
+    <p>Better:</p>
+    <p>Known-good sensor with original cable.</p>
+    <p>Then:</p>
+    <p>Original sensor with known-good cable.</p>
+    <p>Now the failure can follow one component.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network-failure">
+    <h3>Real-World Example: Network Failure</h3>
+    <p>Monitor will not connect.</p>
+    <p>You:</p>
+    <ul>
+      <li>Change IP</li>
+      <li>Move VLAN</li>
+      <li>Replace cable</li>
+      <li>Reboot switch port</li>
+    </ul>
+    <p>Now it connects.</p>
+    <p>You have no idea what was wrong.</p>
+    <p>Better:</p>
+    <p>Check link.</p>
+    <p>Check IP.</p>
+    <p>Check gateway.</p>
+    <p>Test cable.</p>
+    <p>Verify VLAN.</p>
+    <p>One variable at a time.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator-calibration-failure">
+    <h3>Real-World Example: Ventilator Calibration Failure</h3>
+    <p>Flow calibration fails.</p>
+    <p>You first:</p>
+    <p>Clean sensor.</p>
+    <p>Retest.</p>
+    <p>Still fails.</p>
+    <p>Install known-good sensor.</p>
+    <p>Retest.</p>
+    <p>Still fails.</p>
+    <p>Inspect connector.</p>
+    <p>Bent pin found.</p>
+    <p>Now you know the problem was not contamination or the sensor.</p>
+    <p>The evidence narrowed the path.</p>
+  </section>
+
+  <section class="content-box" id="avoid-the-shotgun-approach">
+    <h3>Avoid the “Shotgun” Approach</h3>
+    <p>Shotgun troubleshooting means changing many things hoping one works.</p>
+    <p>It can be tempting when:</p>
+    <ul>
+      <li>You are frustrated</li>
+      <li>Equipment is old</li>
+      <li>Failure is intermittent</li>
+      <li>Parts are easy to swap</li>
+    </ul>
+    <p>But it usually teaches you less.</p>
+    <p>You may also introduce new problems.</p>
+  </section>
+
+  <section class="content-box" id="every-change-can-create-another-failure">
+    <h3>Every Change Can Create Another Failure</h3>
+    <p>When you open a device and change components, you can accidentally create:</p>
+    <ul>
+      <li>Loose connector</li>
+      <li>Pinched wire</li>
+      <li>Missing screw</li>
+      <li>Wrong setting</li>
+      <li>Calibration issue</li>
+      <li>Software mismatch</li>
+    </ul>
+    <p>The fewer unnecessary changes you make, the lower that risk.</p>
+  </section>
+
+  <section class="content-box" id="baseline-before-change">
+    <h3>Baseline Before Change</h3>
+    <p>Whenever possible, record the state before touching it.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Pressure</li>
+      <li>Error code</li>
+      <li>Battery runtime</li>
+      <li>Software version</li>
+      <li>Network settings</li>
+      <li>Alarm threshold</li>
+    </ul>
+    <p>Then you know what actually changed.</p>
+  </section>
+
+  <section class="content-box" id="keep-a-mental-control-group">
+    <h3>Keep a Mental Control Group</h3>
+    <p>In an experiment, a control stays unchanged.</p>
+    <p>In troubleshooting, your baseline plays that role.</p>
+    <p>If:</p>
+    <p>Original condition = failure.</p>
+    <p>One change = pass.</p>
+    <p>You have a meaningful comparison.</p>
+    <p>Without a baseline, a passing result may not mean much.</p>
+  </section>
+
+  <section class="content-box" id="this-helps-with-repeat-failures">
+    <h3>This Helps With Repeat Failures</h3>
+    <p>Suppose the device comes back six months later.</p>
+    <p>Work order says:</p>
+    <blockquote><p>Replaced battery, cable, and power supply last time.</p></blockquote>
+    <p>Not very useful.</p>
+    <p>Compare:</p>
+    <blockquote><p>Original battery failed capacity at 38% of rated runtime. Known-good battery resolved shutdown. Replaced battery.</p></blockquote>
+    <p>Now the next technician knows exactly what happened.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Replacing Several Parts at Once</h4>
+    <p>You lose isolation.</p>
+    <h4>Resetting Everything Before Testing</h4>
+    <p>You destroy the baseline.</p>
+    <h4>Reseating Every Connector Immediately</h4>
+    <p>You may accidentally fix the problem without knowing why.</p>
+    <h4>Updating Software During Hardware Diagnosis</h4>
+    <p>Now there are multiple variables.</p>
+    <h4>Failing to Reproduce the Original Problem</h4>
+    <p>You cannot compare before and after.</p>
+    <h4>Assuming the Last Change Fixed It</h4>
+    <p>The actual cause may have been an earlier change.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-question-before-every-step">
+    <h3>A Useful Question Before Every Step</h3>
+    <p>Ask:</p>
+    <p><strong>What question will this change answer?</strong></p>
+    <p>If you cannot explain what you expect to learn, consider whether the step is useful.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Before changing something, ask:</p>
+    <p><strong>If the device starts working afterward, will I know why?</strong></p>
+    <p>If the answer is:</p>
+    <blockquote><p>No, because I am changing five things.</p></blockquote>
+    <p>you may want to slow down.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>You replace a battery and the device works.</p>
+    <p>What did you prove?</p>
+    <p>Maybe:</p>
+    <p><strong>Device worked with the replacement battery.</strong></p>
+    <p>To prove the original battery caused the failure, stronger evidence might include:</p>
+    <ul>
+      <li>Original battery reproduces failure</li>
+      <li>Known-good battery eliminates failure</li>
+      <li>Original battery fails capacity testing</li>
+    </ul>
+    <p>Now the diagnosis is much stronger.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Good troubleshooting is not about making the largest number of changes.</p>
+    <p>It is about making the most informative change.</p>
+    <p>Start with the symptom.</p>
+    <p>Establish a baseline.</p>
+    <p>Change one thing.</p>
+    <p>Repeat the test.</p>
+    <p>See what changed.</p>
+    <p>Then decide what comes next.</p>
+    <p>There will be times when changing multiple components is appropriate.</p>
+    <p>But when you are trying to understand a failure, control your variables whenever you can.</p>
+    <p>Because:</p>
+    <p><strong>The device working again is good.</strong></p>
+    <p>But knowing <strong>why</strong> it works again is even better.</p>
+    <p>That knowledge is what makes the next repair faster.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>This page is an educational overview of troubleshooting methodology. Follow manufacturer service procedures, required repair kits, facility policies, safety requirements, and your authorized service scope. Safety-related repairs and manufacturer-defined multi-component procedures may appropriately require multiple changes at the same time.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="what-known-good-actually-means.html">What “Known-Good” Actually Means</a></li>
+      <li><a href="how-to-reproduce-a-clinical-complaint-on-the-bench.html">How to Reproduce a Clinical Complaint on the Bench</a></li>
+      <li><a href="how-to-avoid-confirmation-bias-while-troubleshooting.html">How to Avoid Confirmation Bias While Troubleshooting</a></li>
+      <li><a href="biomed-work-order-notes-ccr-method.html">How to Write Better Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="how-to-think-before-calling-a-vendor.html">How to Think Before Calling a Vendor</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
