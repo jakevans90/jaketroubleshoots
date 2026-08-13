@@ -29,14 +29,14 @@ RELATED = {
     "when-to-remove-medical-equipment-from-service": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification", "electrical-safety-testing-medical-equipment"],
     "how-to-think-before-calling-a-vendor": ["how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
-    "nurse-call-integration-basics": ["relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method"],
+    "nurse-call-integration-basics": ["medical-device-alarm-troubleshooting-fundamentals", "relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
     "how-to-read-a-medical-equipment-service-manual": ["error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "what-known-good-actually-means"],
     "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
-    "sensors-and-transducers-basics": ["how-to-troubleshoot-medical-device-accessories", "when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification"],
+    "sensors-and-transducers-basics": ["medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-read-a-medical-equipment-service-manual"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -50,6 +50,7 @@ RELATED = {
     "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "nurse-call-integration-basics", "why-changing-one-thing-at-a-time-matters"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
+    "medical-device-alarm-troubleshooting-fundamentals": ["sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
 }
 
 ARTICLE_CONFIG = {
@@ -199,6 +200,13 @@ ARTICLE_CONFIG = {
         "badge": "Core Skill",
         "cardNote": "End-to-end power-path troubleshooting",
         "plannedTitles": ["How to Troubleshoot a Device That Will Not Power On"],
+    },
+    "medical-device-alarm-troubleshooting-fundamentals": {
+        "description": "A practical guide to separating alarm conditions, measurement errors, alarm-logic problems, and failed audible, visual, or remote notifications.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Alarm detection and notification testing",
+        "plannedTitles": ["Alarm troubleshooting basics"],
     },
 }
 
