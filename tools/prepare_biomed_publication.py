@@ -19,7 +19,7 @@ RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
     "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
     "functional-testing-vs-calibration-vs-verification": ["when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "when-to-remove-medical-equipment-from-service", "electrical-safety-testing-medical-equipment"],
-    "biomed-work-order-notes-ccr-method": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service", "functional-testing-vs-calibration-vs-verification"],
+    "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-battery-basics": ["fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "electrical-safety-testing-medical-equipment"],
     "basic-networking-for-medical-equipment": ["hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
@@ -31,7 +31,7 @@ RELATED = {
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "biomed-work-order-notes-ccr-method"],
     "how-to-read-a-medical-equipment-service-manual": ["error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
-    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "what-known-good-actually-means"],
+    "how-to-reproduce-a-clinical-complaint-on-the-bench": ["what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "what-known-good-actually-means"],
     "how-to-use-a-multimeter-in-biomed": ["voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics", "electrical-safety-testing-medical-equipment"],
@@ -45,6 +45,7 @@ RELATED = {
     "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
     "ground-neutral-and-hot-in-medical-equipment": ["electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "when-to-remove-medical-equipment-from-service"],
     "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
+    "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -162,6 +163,12 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Core Skill",
         "cardNote": "Error-code interpretation and diagnosis",
+    },
+    "what-unable-to-duplicate-should-actually-mean": {
+        "description": "A practical guide to investigating, testing, and documenting intermittent medical-equipment complaints that cannot be reproduced on the bench.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Intermittent-fault testing and documentation",
     },
 }
 
