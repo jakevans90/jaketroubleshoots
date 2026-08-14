@@ -70,3 +70,16 @@
   socialScript.dataset.socialLinks = '';
   document.head.appendChild(socialScript);
 })();
+
+// PM procedure pages use the same shared entry point to load their
+// exact-model troubleshooting guide grid.
+(() => {
+  if (!window.location.pathname.includes('/preventive-maintenance/')) return;
+  if (document.querySelector('script[data-pm-related-guides]')) return;
+
+  const relatedScript = document.createElement('script');
+  relatedScript.src = new URL('pm-related-guides.js', document.currentScript.src).href;
+  relatedScript.defer = true;
+  relatedScript.dataset.pmRelatedGuides = '';
+  document.head.appendChild(relatedScript);
+})();

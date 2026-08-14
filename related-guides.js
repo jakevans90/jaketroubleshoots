@@ -1,4 +1,80 @@
 // related-guides.js
+function renderModelSpecificPm(currentGuide, pmProcedures, assetHubData) {
+  const exactPm = pmProcedures.find(pm =>
+    pm.manufacturer === currentGuide.manufacturer &&
+    pm.model === currentGuide.model
+  );
+
+  if (!exactPm) return;
+
+  const guideMain = document.querySelector("main");
+  if (!guideMain) return;
+
+  const problemPersistsHeading = Array.from(guideMain.querySelectorAll("h2"))
+    .find(heading => heading.textContent.trim() === "If the Problem Persists");
+
+  if (!problemPersistsHeading) return;
+
+  const section = document.createElement("section");
+  section.className = "model-specific-pm-section";
+  section.setAttribute("aria-labelledby", "model-specific-pm-title");
+
+  const heading = document.createElement("h2");
+  heading.id = "model-specific-pm-title";
+  heading.textContent = "Want to do a proper checkout after this fix?";
+
+  const blurb = document.createElement("p");
+  blurb.className = "model-specific-pm-blurb";
+  blurb.textContent =
+    `Use the verified preventive maintenance procedure below for the exact ${exactPm.manufacturer} ${exactPm.model} model. Follow facility policy when deciding whether a full PM is required after the repair.`;
+
+  const grid = document.createElement("div");
+  grid.className = "guides-grid model-specific-pm-grid";
+
+  const assetHub = assetHubData.find(asset =>
+    asset.name === exactPm.assetType
+  );
+  const iconPath = assetHub?.icon || "";
+
+  const card = document.createElement("a");
+  card.href = "/" + exactPm.url.replace(/^\//, "");
+  card.className = "guide-card pm-card";
+  card.innerHTML = `
+    <div class="card-content">
+      ${iconPath ? `
+        <img
+          src="/${iconPath.replace(/^\//, "")}"
+          alt="${exactPm.assetType} icon"
+          class="guide-card-icon"
+          onerror="this.style.display='none'"
+        >
+      ` : ""}
+
+      <span class="pm-card-label">PM Procedure</span>
+
+      <h3>${exactPm.title}</h3>
+
+      <div class="badges">
+        <span class="badge asset">${exactPm.assetType}</span>
+        <span class="badge manufacturer">${exactPm.manufacturer}</span>
+        <span class="badge model">${exactPm.model}</span>
+      </div>
+
+      <p>${exactPm.description}</p>
+
+      <p class="pm-interval"><strong>Interval:</strong> ${exactPm.interval}</p>
+
+      <p class="pm-safety"><strong>Electrical Safety:</strong> ${exactPm.requiresElectricalSafety ? "Included" : "Not specified"}</p>
+
+      <p class="date">Added: ${exactPm.dateAdded}</p>
+    </div>
+  `;
+
+  grid.appendChild(card);
+  section.append(heading, blurb, grid);
+  problemPersistsHeading.before(section);
+}
+
 function loadRelatedGuides() {
   const container = document.getElementById("related-guides-grid");
   if (!container) {
@@ -30,9 +106,12 @@ function loadRelatedGuides() {
         }
         return fileList;
       }),
-    fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json())
+    fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json()),
+    fetch("/data/preventive-maintenance.json?v=" + Date.now())
+      .then(res => res.ok ? res.json() : [])
+      .catch(() => [])
   ])
-    .then(([allGuides, assetHubData]) => {
+    .then(([allGuides, assetHubData, pmProcedures]) => {
       const currentGuide = allGuides.find(g => {
         const guideFile = g.url.split("/").pop().replace(".html", "");
         return (
@@ -48,6 +127,12 @@ function loadRelatedGuides() {
         console.warn("Guide not found in JSON:", currentPage, "|", currentPath);
         return;
       }
+
+      renderModelSpecificPm(
+        currentGuide,
+        Array.isArray(pmProcedures) ? pmProcedures : [],
+        assetHubData
+      );
 
       const related = allGuides.filter(g =>
         g.model === currentGuide.model &&

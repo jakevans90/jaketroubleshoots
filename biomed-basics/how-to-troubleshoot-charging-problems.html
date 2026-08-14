@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Troubleshoot Charging Problems | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to isolating charging failures among the battery, contacts, adapter, dock, power supply, software, and medical-device power-management circuitry.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-troubleshoot-charging-problems.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How to Troubleshoot Charging Problems</h2>
+  <p>A practical way to determine whether the problem is the battery, charger, power source, contacts, dock, or device charging circuit</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Charging problems are common in medical equipment.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>How charging systems work</li>
+      <li>Battery versus charger failures</li>
+      <li>AC power and charging</li>
+      <li>External power adapters</li>
+      <li>Charging docks and cradles</li>
+      <li>Battery contacts</li>
+      <li>Smart battery communication</li>
+      <li>Charging indicators</li>
+      <li>Battery voltage and state of charge</li>
+      <li>Battery temperature</li>
+      <li>Intermittent charging</li>
+      <li>Known-good battery testing</li>
+      <li>Known-good charger and dock testing</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of the charging path like this:</p>
+    <p><strong>AC Power</strong></p>
+    <p>↓</p>
+    <p><strong>Power Cord / Adapter</strong></p>
+    <p>↓</p>
+    <p><strong>Device or Dock</strong></p>
+    <p>↓</p>
+    <p><strong>Charging Circuit</strong></p>
+    <p>↓</p>
+    <p><strong>Battery Contacts / Connector</strong></p>
+    <p>↓</p>
+    <p><strong>Battery</strong></p>
+    <p>If the battery is not charging, find where that path stops working.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-exact-symptom">
+    <h3>Start With the Exact Symptom</h3>
+    <p>Do not troubleshoot:</p>
+    <blockquote><p>Battery issue.</p></blockquote>
+    <p>Be specific.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Battery not recognized</li>
+      <li>Battery recognized but not charging</li>
+      <li>Charge percentage never increases</li>
+      <li>Device charges only when powered off</li>
+      <li>Device charges in one dock but not another</li>
+      <li>Charge indicator turns on and off</li>
+      <li>Battery charges normally but runtime is short</li>
+    </ul>
+    <p>These are different problems.</p>
+  </section>
+
+  <section class="content-box" id="battery-not-charging-vs-short-runtime">
+    <h3>Battery Not Charging vs Short Runtime</h3>
+    <p>This distinction matters.</p>
+    <h4>Not Charging</h4>
+    <p>The battery does not gain energy correctly.</p>
+    <h4>Short Runtime</h4>
+    <p>The battery charges but cannot store or deliver enough energy.</p>
+    <p>A weak battery can charge normally and still have poor runtime.</p>
+    <p>Do not confuse capacity with charging.</p>
+  </section>
+
+  <section class="content-box" id="first-verify-ac-power">
+    <h3>First Verify AC Power</h3>
+    <p>Charging usually depends on an external power source.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Power strip</li>
+      <li>Power cord</li>
+      <li>Adapter</li>
+      <li>Device AC indication</li>
+    </ul>
+    <p>If AC is missing, the charger may never receive power.</p>
+    <p>Start outside the device.</p>
+  </section>
+
+  <section class="content-box" id="works-on-ac-but-does-not-charge">
+    <h3>Works on AC but Does Not Charge</h3>
+    <p>This is useful.</p>
+    <p>If the device runs normally from AC, you know at least part of the external power path works.</p>
+    <p>Now focus more heavily on:</p>
+    <ul>
+      <li>Charger</li>
+      <li>Battery</li>
+      <li>Battery contacts</li>
+      <li>Battery communication</li>
+      <li>Charging control</li>
+    </ul>
+    <p>But do not assume the entire power supply is good.</p>
+    <p>Some supplies have separate charging outputs.</p>
+  </section>
+
+  <section class="content-box" id="charging-indicator">
+    <h3>Charging Indicator</h3>
+    <p>A charging icon or LED is useful.</p>
+    <p>But understand what it proves.</p>
+    <p>It may indicate:</p>
+    <ul>
+      <li>Charger enabled</li>
+      <li>AC present</li>
+      <li>Battery detected</li>
+    </ul>
+    <p>It does not necessarily prove the battery is actually accepting charge.</p>
+  </section>
+
+  <section class="content-box" id="charging-does-not-mean-charging-successfully">
+    <h3>“Charging” Does Not Mean Charging Successfully</h3>
+    <p>Example:</p>
+    <p>Device displays:</p>
+    <blockquote><p>Charging.</p></blockquote>
+    <p>Battery stays at 25% for four hours.</p>
+    <p>Something is wrong.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Battery unable to accept charge</li>
+      <li>Charge current too low</li>
+      <li>Charger fault</li>
+      <li>Battery temperature restriction</li>
+      <li>Communication problem</li>
+    </ul>
+    <p>Observe the actual battery behavior.</p>
+  </section>
+
+  <section class="content-box" id="battery-recognition">
+    <h3>Battery Recognition</h3>
+    <p>Many modern medical devices use smart batteries.</p>
+    <p>The device may communicate with the battery electronically.</p>
+    <p>That communication can provide:</p>
+    <ul>
+      <li>Battery ID</li>
+      <li>Temperature</li>
+      <li>Charge level</li>
+      <li>Cycle count</li>
+      <li>Health information</li>
+    </ul>
+    <p>If communication fails, the device may refuse to charge even if the battery still has voltage.</p>
+  </section>
+
+  <section class="content-box" id="battery-not-recognized">
+    <h3>Battery Not Recognized</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Dirty contacts</li>
+      <li>Bent contact</li>
+      <li>Internal connector</li>
+      <li>Communication circuit</li>
+      <li>Incompatible battery</li>
+    </ul>
+    <p>Do not automatically replace the battery.</p>
+  </section>
+
+  <section class="content-box" id="inspect-the-battery">
+    <h3>Inspect the Battery</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>Cracks</li>
+      <li>Swelling</li>
+      <li>Heat damage</li>
+      <li>Corrosion</li>
+      <li>Fluid contamination</li>
+      <li>Damaged contacts</li>
+    </ul>
+    <p>A swollen battery should be handled according to facility and manufacturer battery-safety procedures.</p>
+    <p>Do not continue normal charging attempts on a visibly damaged lithium-ion battery.</p>
+  </section>
+
+  <section class="content-box" id="inspect-the-contacts">
+    <h3>Inspect the Contacts</h3>
+    <p>Charging depends on reliable electrical contact.</p>
+    <p>Inspect:</p>
+    <ul>
+      <li>Battery terminals</li>
+      <li>Spring contacts</li>
+      <li>Dock contacts</li>
+      <li>Connector pins</li>
+    </ul>
+    <p>Look for:</p>
+    <ul>
+      <li>Dirt</li>
+      <li>Corrosion</li>
+      <li>Bent contacts</li>
+      <li>Pushed-back pins</li>
+      <li>Weak spring tension</li>
+    </ul>
+    <p>A device can detect a battery intermittently because of contact problems.</p>
+  </section>
+
+  <section class="content-box" id="movement-can-reveal-contact-problems">
+    <h3>Movement Can Reveal Contact Problems</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Battery charges sometimes.</p></blockquote>
+    <p>While monitoring charging status, carefully move the battery within normal mechanical play.</p>
+    <p>If charging repeatedly starts and stops, inspect:</p>
+    <ul>
+      <li>Battery latch</li>
+      <li>Contacts</li>
+      <li>Connector</li>
+      <li>Mechanical fit</li>
+    </ul>
+    <p>The battery cells may be fine.</p>
+  </section>
+
+  <section class="content-box" id="known-good-battery-test">
+    <h3>Known-Good Battery Test</h3>
+    <p>This is one of the strongest charging tests.</p>
+    <p>Original battery:</p>
+    <p>Does not charge.</p>
+    <p>Known-good compatible battery:</p>
+    <p>Charges normally.</p>
+    <p>Original battery in another known-good device:</p>
+    <p>Does not charge.</p>
+    <p>The failure follows the battery.</p>
+    <p>Strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-the-device">
+    <h3>Failure Stays With the Device</h3>
+    <p>Original battery:</p>
+    <p>No charge.</p>
+    <p>Known-good battery:</p>
+    <p>Also no charge.</p>
+    <p>Both batteries charge normally in another device.</p>
+    <p>Now the problem stays with the device.</p>
+    <p>Focus on:</p>
+    <ul>
+      <li>Charging circuit</li>
+      <li>Contacts</li>
+      <li>Power supply</li>
+      <li>Battery communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-voltage">
+    <h3>Battery Voltage</h3>
+    <p>Battery voltage can provide useful information.</p>
+    <p>But voltage alone does not tell you everything.</p>
+    <p>A battery may have acceptable voltage and still have:</p>
+    <ul>
+      <li>Poor capacity</li>
+      <li>High internal resistance</li>
+      <li>Communication failure</li>
+      <li>Cell imbalance</li>
+    </ul>
+    <p>Use manufacturer-defined battery tests when available.</p>
+  </section>
+
+  <section class="content-box" id="completely-discharged-batteries">
+    <h3>Completely Discharged Batteries</h3>
+    <p>Some lithium-ion battery packs contain protection circuitry.</p>
+    <p>If voltage falls too low, the battery may:</p>
+    <ul>
+      <li>Enter protection</li>
+      <li>Refuse normal operation</li>
+      <li>Require a specific recovery process</li>
+    </ul>
+    <p>Do not try improvised charging methods.</p>
+    <p>Follow manufacturer guidance.</p>
+  </section>
+
+  <section class="content-box" id="charging-current">
+    <h3>Charging Current</h3>
+    <p>Some service procedures allow measurement or diagnostic viewing of charging current.</p>
+    <p>If the battery is detected but charge current remains near zero, investigate why the charger is not delivering current.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Charger fault</li>
+      <li>Temperature restriction</li>
+      <li>Battery protection state</li>
+      <li>Software control</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-temperature">
+    <h3>Battery Temperature</h3>
+    <p>Lithium-ion batteries are often charged only within an acceptable temperature range.</p>
+    <p>If the battery is:</p>
+    <ul>
+      <li>Too hot</li>
+      <li>Too cold</li>
+    </ul>
+    <p>the device may intentionally stop charging.</p>
+    <p>That is not necessarily a charger failure.</p>
+  </section>
+
+  <section class="content-box" id="temperature-sensor-failure">
+    <h3>Temperature Sensor Failure</h3>
+    <p>Smart batteries may contain temperature sensors.</p>
+    <p>If the sensor reports an unrealistic value, charging may be disabled.</p>
+    <p>Example:</p>
+    <p>Battery physically room temperature.</p>
+    <p>Device reports:</p>
+    <blockquote><p>Battery Temperature High.</p></blockquote>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery sensor</li>
+      <li>Battery electronics</li>
+      <li>Communication problem</li>
+    </ul>
+    <p>The charger may be protecting the battery correctly based on bad information.</p>
+  </section>
+
+  <section class="content-box" id="charging-docks">
+    <h3>Charging Docks</h3>
+    <p>Many portable devices charge through:</p>
+    <ul>
+      <li>Docks</li>
+      <li>Cradles</li>
+      <li>Charging stations</li>
+    </ul>
+    <p>That creates another component to isolate.</p>
+    <p>Test:</p>
+    <p><strong>Suspect device in known-good dock</strong></p>
+    <p>and:</p>
+    <p><strong>Known-good device in suspect dock.</strong></p>
+  </section>
+
+  <section class="content-box" id="dock-example">
+    <h3>Dock Example</h3>
+    <p>Device A in Dock 1:</p>
+    <p>Does not charge.</p>
+    <p>Device A in Dock 2:</p>
+    <p>Charges.</p>
+    <p>Device B in Dock 1:</p>
+    <p>Does not charge.</p>
+    <p>The problem follows Dock 1.</p>
+    <p>Do not replace both batteries.</p>
+  </section>
+
+  <section class="content-box" id="dock-power-supply">
+    <h3>Dock Power Supply</h3>
+    <p>Some docks use external power adapters.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Correct adapter</li>
+      <li>Output</li>
+      <li>Cable</li>
+      <li>Connector</li>
+    </ul>
+    <p>The dock may be fine but not receiving proper power.</p>
+  </section>
+
+  <section class="content-box" id="dock-contacts">
+    <h3>Dock Contacts</h3>
+    <p>Dock contacts experience repeated connection cycles.</p>
+    <p>Inspect for:</p>
+    <ul>
+      <li>Wear</li>
+      <li>Dirt</li>
+      <li>Corrosion</li>
+      <li>Bent contacts</li>
+      <li>Loss of spring tension</li>
+    </ul>
+    <p>If charging requires pushing the device sideways, the mechanical interface deserves attention.</p>
+  </section>
+
+  <section class="content-box" id="external-chargers">
+    <h3>External Chargers</h3>
+    <p>Some batteries are charged outside the medical device.</p>
+    <p>If a battery fails to charge externally, cross-test:</p>
+    <ul>
+      <li>Battery in another charger</li>
+      <li>Known-good battery in suspect charger</li>
+    </ul>
+    <p>Again, make the failure follow something.</p>
+  </section>
+
+  <section class="content-box" id="ac-adapter-problems">
+    <h3>AC Adapter Problems</h3>
+    <p>Portable devices may use external AC/DC adapters.</p>
+    <p>The adapter can power the device but still behave poorly under charging load.</p>
+    <p>Measure or verify according to manufacturer procedure.</p>
+    <p>A supply may show correct voltage unloaded and collapse when charging begins.</p>
+  </section>
+
+  <section class="content-box" id="charging-under-load">
+    <h3>Charging Under Load</h3>
+    <p>Charging behavior may differ when the device is:</p>
+    <ul>
+      <li>Off</li>
+      <li>Idle</li>
+      <li>Fully operating</li>
+    </ul>
+    <p>If the charger barely supports the device load, there may be little power left for the battery.</p>
+    <p>Example:</p>
+    <p>Battery charges when device is off.</p>
+    <p>Stops charging during heavy operation.</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Power adapter capacity</li>
+      <li>Power supply</li>
+      <li>Charging circuit</li>
+      <li>Excessive device load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-percentage">
+    <h3>Battery Percentage</h3>
+    <p>Displayed battery percentage is an estimate.</p>
+    <p>It may depend on:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Coulomb counting</li>
+      <li>Battery electronics</li>
+      <li>Calibration</li>
+    </ul>
+    <p>A stuck battery percentage does not always mean no energy is entering the battery.</p>
+    <p>Compare:</p>
+    <ul>
+      <li>Charge time</li>
+      <li>Battery voltage</li>
+      <li>Runtime</li>
+      <li>Diagnostic values</li>
+    </ul>
+    <p>according to manufacturer procedures.</p>
+  </section>
+
+  <section class="content-box" id="battery-gauge-calibration">
+    <h3>Battery Gauge Calibration</h3>
+    <p>Some smart batteries require learning or calibration procedures.</p>
+    <p>A battery may have reasonable capacity but report charge level incorrectly.</p>
+    <p>Do not perform calibration unless the manufacturer specifies it.</p>
+  </section>
+
+  <section class="content-box" id="charging-time">
+    <h3>Charging Time</h3>
+    <p>Know what is reasonable.</p>
+    <p>A large battery may take hours to charge.</p>
+    <p>If the battery went from:</p>
+    <p>20% to 30%</p>
+    <p>in ten minutes, that may be normal.</p>
+    <p>Compare charging behavior with specifications.</p>
+  </section>
+
+  <section class="content-box" id="charge-cycle-stops-early">
+    <h3>Charge Cycle Stops Early</h3>
+    <p>If charging consistently stops at:</p>
+    <ul>
+      <li>50%</li>
+      <li>70%</li>
+      <li>80%</li>
+    </ul>
+    <p>possible causes include:</p>
+    <ul>
+      <li>Battery health</li>
+      <li>Cell imbalance</li>
+      <li>Temperature</li>
+      <li>Battery management electronics</li>
+      <li>Software settings</li>
+    </ul>
+    <p>Use diagnostic data when available.</p>
+  </section>
+
+  <section class="content-box" id="multiple-batteries">
+    <h3>Multiple Batteries</h3>
+    <p>Some devices contain more than one battery.</p>
+    <p>A device may show:</p>
+    <blockquote><p>Battery fault.</p></blockquote>
+    <p>while one pack charges normally and the other does not.</p>
+    <p>Identify which battery or channel is failing.</p>
+  </section>
+
+  <section class="content-box" id="internal-battery-connections">
+    <h3>Internal Battery Connections</h3>
+    <p>Internal batteries may connect through:</p>
+    <ul>
+      <li>Harness</li>
+      <li>Fuse</li>
+      <li>Board connector</li>
+    </ul>
+    <p>If the battery itself tests good but the device does not detect it, inspect the connection path.</p>
+    <p>Follow manufacturer service procedures before opening the equipment.</p>
+  </section>
+
+  <section class="content-box" id="charging-circuit">
+    <h3>Charging Circuit</h3>
+    <p>A charging circuit regulates current and voltage to the battery.</p>
+    <p>Possible failures include:</p>
+    <ul>
+      <li>Charger IC</li>
+      <li>Power board</li>
+      <li>Fuse</li>
+      <li>Current-sense component</li>
+      <li>Control circuit</li>
+    </ul>
+    <p>Do not replace the charging board until simpler external causes are ruled out.</p>
+  </section>
+
+  <section class="content-box" id="separate-battery-input-from-charger-output">
+    <h3>Separate Battery Input From Charger Output</h3>
+    <p>A useful question is:</p>
+    <p><strong>Does the charger actually deliver the expected charging voltage or current to the battery connection?</strong></p>
+    <p>If manufacturer documentation provides test points, this can help separate:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Charger</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-bypass-battery-protection">
+    <h3>Do Not Bypass Battery Protection</h3>
+    <p>Never bypass:</p>
+    <ul>
+      <li>Temperature sensing</li>
+      <li>Battery management</li>
+      <li>Protection circuitry</li>
+    </ul>
+    <p>to force a battery to charge.</p>
+    <p>Those protections exist for safety.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-charging">
+    <h3>Intermittent Charging</h3>
+    <p>Intermittent charging may depend on:</p>
+    <ul>
+      <li>Contact position</li>
+      <li>Cable movement</li>
+      <li>Temperature</li>
+      <li>Dock alignment</li>
+      <li>Loose connector</li>
+    </ul>
+    <p>Try to reproduce the transition.</p>
+    <p>Watch:</p>
+    <ul>
+      <li>Charging icon</li>
+      <li>Battery diagnostic</li>
+      <li>Voltage</li>
+      <li>AC indicator</li>
+    </ul>
+    <p>while gently manipulating the suspected connection.</p>
+  </section>
+
+  <section class="content-box" id="event-logs">
+    <h3>Event Logs</h3>
+    <p>Some devices log:</p>
+    <ul>
+      <li>Battery removed</li>
+      <li>Battery communication lost</li>
+      <li>Charger fault</li>
+      <li>Charge temperature high</li>
+    </ul>
+    <p>These entries can be valuable for intermittent complaints.</p>
+  </section>
+
+  <section class="content-box" id="example-log-sequence">
+    <h3>Example Log Sequence</h3>
+    <p>13:02 — AC Connected 13:02 — Battery Detected 13:03 — Battery Communication Lost 13:03 — Charging Stopped</p>
+    <p>That points toward the battery communication/contact path.</p>
+  </section>
+
+  <section class="content-box" id="battery-health">
+    <h3>Battery Health</h3>
+    <p>A device may charge a degraded battery correctly.</p>
+    <p>The battery simply cannot hold much energy.</p>
+    <p>That is a <strong>battery health</strong> problem, not necessarily a charging problem.</p>
+    <p>Test capacity when short runtime is the complaint.</p>
+  </section>
+
+  <section class="content-box" id="battery-analyzer">
+    <h3>Battery Analyzer</h3>
+    <p>A battery analyzer may help evaluate:</p>
+    <ul>
+      <li>Capacity</li>
+      <li>Voltage</li>
+      <li>Internal resistance</li>
+    </ul>
+    <p>depending on battery type and manufacturer requirements.</p>
+    <p>Use appropriate approved methods.</p>
+  </section>
+
+  <section class="content-box" id="runtime-test">
+    <h3>Runtime Test</h3>
+    <p>Sometimes the most meaningful battery test is actual runtime under a defined load.</p>
+    <p>Example:</p>
+    <p>Battery charges to full.</p>
+    <p>Device runs only 12 minutes.</p>
+    <p>Manufacturer requires substantially longer runtime.</p>
+    <p>The charging system may be fine.</p>
+    <p>The battery has poor capacity.</p>
+  </section>
+
+  <section class="content-box" id="charging-after-battery-replacement">
+    <h3>Charging After Battery Replacement</h3>
+    <p>After installing a replacement battery, verify:</p>
+    <ul>
+      <li>Battery recognized</li>
+      <li>Charging starts</li>
+      <li>Charge status changes</li>
+      <li>Device operates on battery</li>
+      <li>Required runtime or battery test passes</li>
+    </ul>
+    <p>Do not stop at:</p>
+    <blockquote><p>New battery installed.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="board-replacement">
+    <h3>Board Replacement</h3>
+    <p>If replacing a charging or power board, verify the entire path.</p>
+    <p>Check:</p>
+    <ul>
+      <li>AC operation</li>
+      <li>Charging</li>
+      <li>Battery detection</li>
+      <li>Power transitions</li>
+      <li>Required safety tests</li>
+    </ul>
+    <p>The new board may affect more than charging.</p>
+  </section>
+
+  <section class="content-box" id="software-and-firmware">
+    <h3>Software and Firmware</h3>
+    <p>Charging behavior may be controlled partly by software.</p>
+    <p>Possible issues include:</p>
+    <ul>
+      <li>Battery firmware compatibility</li>
+      <li>Software bugs</li>
+      <li>Incorrect battery data</li>
+      <li>Charging algorithm errors</li>
+    </ul>
+    <p>Check software history if hardware testing does not explain the symptom.</p>
+  </section>
+
+  <section class="content-box" id="replacement-battery-compatibility">
+    <h3>Replacement Battery Compatibility</h3>
+    <p>A battery may physically fit but be:</p>
+    <ul>
+      <li>Wrong revision</li>
+      <li>Unsupported</li>
+      <li>Incorrect chemistry</li>
+      <li>Incompatible firmware</li>
+    </ul>
+    <p>Use approved compatible replacements.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-not-charging">
+    <h3>Real-World Example: Battery Not Charging</h3>
+    <p>Original battery:</p>
+    <p>No charge.</p>
+    <p>Known-good battery:</p>
+    <p>Charges.</p>
+    <p>Original battery in another device:</p>
+    <p>Still no charge.</p>
+    <p>Failure follows battery.</p>
+    <p>Replace battery and verify charge/runtime.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-two-batteries-will-not-charge">
+    <h3>Real-World Example: Two Batteries Will Not Charge</h3>
+    <p>Original battery:</p>
+    <p>No charge.</p>
+    <p>Known-good battery:</p>
+    <p>No charge.</p>
+    <p>Both charge in another device.</p>
+    <p>Device charger diagnostic:</p>
+    <p>Fault.</p>
+    <p>Now focus on the charging system.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-charges-only-in-one-dock">
+    <h3>Real-World Example: Charges Only in One Dock</h3>
+    <p>Device charges in Dock A.</p>
+    <p>Fails in Dock B.</p>
+    <p>Known-good device also fails in Dock B.</p>
+    <p>Failure follows dock.</p>
+    <p>Inspect:</p>
+    <ul>
+      <li>Power supply</li>
+      <li>Contacts</li>
+      <li>Dock electronics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-charging-cuts-in-and-out">
+    <h3>Real-World Example: Charging Cuts In and Out</h3>
+    <p>Device charging.</p>
+    <p>Move battery slightly.</p>
+    <p>Charging stops.</p>
+    <p>Move back.</p>
+    <p>Charging returns.</p>
+    <p>Inspection:</p>
+    <p>Worn battery latch allows poor contact.</p>
+    <p>Battery cells are not the root cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-says-too-hot">
+    <h3>Real-World Example: Battery Says Too Hot</h3>
+    <p>Battery physically normal.</p>
+    <p>Known-good battery charges normally.</p>
+    <p>Original battery repeatedly reports excessive temperature on two devices.</p>
+    <p>Failure follows battery temperature sensing.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-full-battery-short-runtime">
+    <h3>Real-World Example: Full Battery, Short Runtime</h3>
+    <p>Battery reaches:</p>
+    <p>100%.</p>
+    <p>Charging terminates normally.</p>
+    <p>Runtime test:</p>
+    <p>15 minutes.</p>
+    <p>Known-good battery:</p>
+    <p>90 minutes.</p>
+    <p>The charger works.</p>
+    <p>Battery capacity is poor.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Calling Every Charging Complaint a Bad Battery</h4>
+    <p>Isolate battery from charger.</p>
+    <h4>Assuming a Charging Icon Means Current Is Flowing</h4>
+    <p>Verify actual behavior.</p>
+    <h4>Ignoring Battery Contacts</h4>
+    <p>Mechanical connection matters.</p>
+    <h4>Replacing the Charger Without Trying a Known-Good Battery</h4>
+    <p>Cross-test first.</p>
+    <h4>Confusing Capacity With Charging</h4>
+    <p>Short runtime does not always mean charger failure.</p>
+    <h4>Ignoring Docks and Adapters</h4>
+    <p>They are part of the charging path.</p>
+    <h4>Judging Battery Health Only by Voltage</h4>
+    <p>Capacity and internal resistance matter too.</p>
+    <h4>Forcing a Damaged Lithium-Ion Battery to Charge</h4>
+    <p>Follow battery-safety procedures.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Ask:</p>
+    <p><strong>Is AC power present?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the charger recognize the battery?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is charging current or energy actually reaching it?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the battery accept and store that energy?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can the battery power the device afterward?</strong></p>
+    <p>That separates the charging path into logical pieces.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Does the problem follow the battery, or stay with the charger/device?</strong></p>
+    <p>That simple comparison resolves a lot of charging repairs.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a known-good battery charges in the device, you proved:</p>
+    <p><strong>The device successfully charged that compatible battery under the conditions tested.</strong></p>
+    <p>You did not automatically prove:</p>
+    <p><strong>The original battery is bad.</strong></p>
+    <p>Cross-test it if practical.</p>
+    <p>If the original battery also fails in another known-good system, your diagnosis becomes much stronger.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Charging problems become easier when you stop treating the battery and charger as one thing.</p>
+    <p>They are separate parts of a system.</p>
+    <p>Power has to reach the charger.</p>
+    <p>The charger has to detect the battery.</p>
+    <p>The battery and device may need to communicate.</p>
+    <p>Charging current has to reach the cells.</p>
+    <p>Then the battery has to actually store that energy.</p>
+    <p>So when someone says:</p>
+    <blockquote><p>It won't charge.</p></blockquote>
+    <p>do not immediately order a battery.</p>
+    <p>Check the source.</p>
+    <p>Inspect the contacts.</p>
+    <p>Try a known-good battery.</p>
+    <p>Cross-test the charger or dock.</p>
+    <p>Look at temperature and communication.</p>
+    <p>Verify actual runtime.</p>
+    <p>Find whether the failure follows the battery or stays with the equipment.</p>
+    <p>That is usually the fastest way to identify what is really wrong.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Medical device batteries and charging systems may involve lithium-ion cells, high-current charging circuits, battery-management electronics, and manufacturer-specific safety protections. Use only compatible approved batteries and chargers, follow current manufacturer service documentation and facility battery-safety procedures, and do not bypass protective circuitry or attempt unauthorized battery repair.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+      <li><a href="medical-equipment-power-troubleshooting-outlet-to-internal-supply.html">Medical Equipment Power Troubleshooting: Outlet to Internal Supply</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
