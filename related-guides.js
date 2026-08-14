@@ -1,5 +1,5 @@
 // related-guides.js
-function renderModelSpecificPm(currentGuide, pmProcedures) {
+function renderModelSpecificPm(currentGuide, pmProcedures, assetHubData) {
   const exactPm = pmProcedures.find(pm =>
     pm.manufacturer === currentGuide.manufacturer &&
     pm.model === currentGuide.model
@@ -15,35 +15,64 @@ function renderModelSpecificPm(currentGuide, pmProcedures) {
 
   if (!problemPersistsHeading) return;
 
-  const card = document.createElement("section");
-  card.className = "model-specific-pm-card";
-  card.setAttribute("aria-labelledby", "model-specific-pm-title");
-
-  const label = document.createElement("p");
-  label.className = "model-specific-pm-label";
-  label.textContent = "MODEL-SPECIFIC CHECKOUT";
+  const section = document.createElement("section");
+  section.className = "model-specific-pm-section";
+  section.setAttribute("aria-labelledby", "model-specific-pm-title");
 
   const heading = document.createElement("h2");
   heading.id = "model-specific-pm-title";
-  heading.textContent = "Want to perform a proper checkout after this fix?";
+  heading.textContent = "Want to do a proper checkout after this fix?";
 
-  const description = document.createElement("p");
-  description.textContent =
-    `A preventive maintenance procedure is available for the exact ${exactPm.manufacturer} ${exactPm.model} model.`;
+  const blurb = document.createElement("p");
+  blurb.className = "model-specific-pm-blurb";
+  blurb.textContent =
+    `Use the verified preventive maintenance procedure below for the exact ${exactPm.manufacturer} ${exactPm.model} model. Follow facility policy when deciding whether a full PM is required after the repair.`;
 
-  const details = document.createElement("p");
-  details.className = "model-specific-pm-details";
-  details.textContent = exactPm.interval
-    ? `Listed interval: ${exactPm.interval}`
-    : "Follow the verified model-specific procedure and your facility policy.";
+  const grid = document.createElement("div");
+  grid.className = "guides-grid model-specific-pm-grid";
 
-  const link = document.createElement("a");
-  link.className = "model-specific-pm-link";
-  link.href = "/" + exactPm.url.replace(/^\//, "");
-  link.textContent = "Open the model-specific PM procedure";
+  const assetHub = assetHubData.find(asset =>
+    asset.name === exactPm.assetType
+  );
+  const iconPath = assetHub?.icon || "";
 
-  card.append(label, heading, description, details, link);
-  problemPersistsHeading.before(card);
+  const card = document.createElement("a");
+  card.href = "/" + exactPm.url.replace(/^\//, "");
+  card.className = "guide-card pm-card";
+  card.innerHTML = `
+    <div class="card-content">
+      ${iconPath ? `
+        <img
+          src="/${iconPath.replace(/^\//, "")}"
+          alt="${exactPm.assetType} icon"
+          class="guide-card-icon"
+          onerror="this.style.display='none'"
+        >
+      ` : ""}
+
+      <span class="pm-card-label">PM Procedure</span>
+
+      <h3>${exactPm.title}</h3>
+
+      <div class="badges">
+        <span class="badge asset">${exactPm.assetType}</span>
+        <span class="badge manufacturer">${exactPm.manufacturer}</span>
+        <span class="badge model">${exactPm.model}</span>
+      </div>
+
+      <p>${exactPm.description}</p>
+
+      <p class="pm-interval"><strong>Interval:</strong> ${exactPm.interval}</p>
+
+      <p class="pm-safety"><strong>Electrical Safety:</strong> ${exactPm.requiresElectricalSafety ? "Included" : "Not specified"}</p>
+
+      <p class="date">Added: ${exactPm.dateAdded}</p>
+    </div>
+  `;
+
+  grid.appendChild(card);
+  section.append(heading, blurb, grid);
+  problemPersistsHeading.before(section);
 }
 
 function loadRelatedGuides() {
@@ -101,7 +130,8 @@ function loadRelatedGuides() {
 
       renderModelSpecificPm(
         currentGuide,
-        Array.isArray(pmProcedures) ? pmProcedures : []
+        Array.isArray(pmProcedures) ? pmProcedures : [],
+        assetHubData
       );
 
       const related = allGuides.filter(g =>
