@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Troubleshoot Communication Failures | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to finding where communication stops between a medical device, accessory, physical link, network, server, application, or connected system.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-troubleshoot-communication-failures.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How to Troubleshoot Communication Failures</h2>
+  <p>A practical way to find where communication stops between a medical device, accessory, network, server, or connected system</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Communication failures are some of the easiest problems to overcomplicate.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What communication actually means</li>
+      <li>Physical connections</li>
+      <li>Device-to-accessory communication</li>
+      <li>Serial communication</li>
+      <li>USB</li>
+      <li>Ethernet</li>
+      <li>Wi-Fi</li>
+      <li>Network configuration</li>
+      <li>Servers and applications</li>
+      <li>Central monitoring</li>
+      <li>EMR integration</li>
+      <li>Communication logs</li>
+      <li>Known-good substitution</li>
+      <li>How to find the last known-good point</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of communication like a chain.</p>
+    <p><strong>Source</strong></p>
+    <p>↓</p>
+    <p><strong>Cable / Wireless Link</strong></p>
+    <p>↓</p>
+    <p><strong>Device Interface</strong></p>
+    <p>↓</p>
+    <p><strong>Network or Communication Path</strong></p>
+    <p>↓</p>
+    <p><strong>Destination</strong></p>
+    <p>If information does not reach the destination, determine:</p>
+    <p><strong>How far did it get?</strong></p>
+    <p>That is the core of communication troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-exact-failure">
+    <h3>Start With the Exact Failure</h3>
+    <p>Do not troubleshoot:</p>
+    <blockquote><p>Communication problem.</p></blockquote>
+    <p>Be specific.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Module not recognized</li>
+      <li>No Ethernet link</li>
+      <li>Device cannot reach server</li>
+      <li>Monitor missing from central</li>
+      <li>ECG not reaching MUSE</li>
+      <li>Data not reaching EMR</li>
+      <li>USB device not detected</li>
+    </ul>
+    <p>Each failure occurs at a different point in the path.</p>
+  </section>
+
+  <section class="content-box" id="what-is-supposed-to-communicate-with-what">
+    <h3>What Is Supposed to Communicate With What?</h3>
+    <p>Before troubleshooting, define the endpoints.</p>
+    <p>Examples:</p>
+    <p><strong>SpO2 Module → Patient Monitor</strong></p>
+    <p><strong>Patient Monitor → Central Station</strong></p>
+    <p><strong>ECG Cart → MUSE</strong></p>
+    <p><strong>Monitor → Integration Server → EMR</strong></p>
+    <p><strong>Bed → Nurse Call</strong></p>
+    <p>Different paths require different tests.</p>
+  </section>
+
+  <section class="content-box" id="draw-the-path">
+    <h3>Draw the Path</h3>
+    <p>It does not need to be a fancy diagram.</p>
+    <p>Example:</p>
+    <p><strong>Monitor</strong></p>
+    <p>↓</p>
+    <p><strong>Ethernet Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Wall Jack</strong></p>
+    <p>↓</p>
+    <p><strong>Switch</strong></p>
+    <p>↓</p>
+    <p><strong>Network</strong></p>
+    <p>↓</p>
+    <p><strong>Central Monitoring Server</strong></p>
+    <p>↓</p>
+    <p><strong>Central Station</strong></p>
+    <p>Now you have places to test.</p>
+  </section>
+
+  <section class="content-box" id="start-at-the-simplest-layer">
+    <h3>Start at the Simplest Layer</h3>
+    <p>Communication often begins with something physical.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Cable connected</li>
+      <li>Connector seated</li>
+      <li>Pins intact</li>
+      <li>Port undamaged</li>
+      <li>Correct cable</li>
+      <li>Power present</li>
+    </ul>
+    <p>Do not begin with firewall rules when the Ethernet cable is unplugged.</p>
+  </section>
+
+  <section class="content-box" id="device-to-accessory-communication">
+    <h3>Device-to-Accessory Communication</h3>
+    <p>Not all communication uses a network.</p>
+    <p>A device may communicate directly with:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Module</li>
+      <li>Battery</li>
+      <li>Dock</li>
+      <li>Remote control</li>
+    </ul>
+    <p>If the accessory is:</p>
+    <blockquote><p>Not Recognized</p></blockquote>
+    <p>consider:</p>
+    <ul>
+      <li>Accessory compatibility</li>
+      <li>Cable</li>
+      <li>Connector</li>
+      <li>Contacts</li>
+      <li>Accessory electronics</li>
+      <li>Host interface</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="known-good-accessory-test">
+    <h3>Known-Good Accessory Test</h3>
+    <p>Suspect module:</p>
+    <p>Not recognized.</p>
+    <p>Known-good module:</p>
+    <p>Works.</p>
+    <p>Suspect module on another device:</p>
+    <p>Still not recognized.</p>
+    <p>The failure follows the module.</p>
+    <p>That is strong isolation.</p>
+  </section>
+
+  <section class="content-box" id="if-multiple-accessories-fail">
+    <h3>If Multiple Accessories Fail</h3>
+    <p>Suppose three known-good modules all fail in one device.</p>
+    <p>Those same modules work in another device.</p>
+    <p>The problem likely stays with:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Backplane</li>
+      <li>Host interface</li>
+      <li>Power</li>
+    </ul>
+    <p>Do not replace all three modules.</p>
+  </section>
+
+  <section class="content-box" id="physical-link-first">
+    <h3>Physical Link First</h3>
+    <p>For wired network communication, check whether a physical link exists.</p>
+    <p>Ethernet ports often have link/activity indicators.</p>
+    <p>If there is no link:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Wall jack</li>
+      <li>Port</li>
+      <li>Switch port</li>
+      <li>Device interface</li>
+    </ul>
+    <p>Do not start troubleshooting DNS.</p>
+  </section>
+
+  <section class="content-box" id="link-light-does-not-mean-everything-works">
+    <h3>Link Light Does Not Mean Everything Works</h3>
+    <p>A link light generally proves:</p>
+    <p><strong>The physical Ethernet connection negotiated at some level.</strong></p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Correct IP address</li>
+      <li>Server reachable</li>
+      <li>Required port open</li>
+      <li>Application working</li>
+    </ul>
+    <p>It only clears one part of the path.</p>
+  </section>
+
+  <section class="content-box" id="cable-swap">
+    <h3>Cable Swap</h3>
+    <p>If communication is wired, try a known-good compatible cable.</p>
+    <p>If the problem disappears, cross-test the original cable when practical.</p>
+    <p>Make the failure follow something.</p>
+  </section>
+
+  <section class="content-box" id="location-swap">
+    <h3>Location Swap</h3>
+    <p>If a networked device fails in one room, move it to a known-good location.</p>
+    <p>Then place a known-good device in the suspect location.</p>
+    <p>This helps separate:</p>
+    <ul>
+      <li>Device</li>
+      <li>Room infrastructure</li>
+    </ul>
+    <p>Example:</p>
+    <p>Device A fails in Room 5.</p>
+    <p>Device A works in Room 6.</p>
+    <p>Device B also fails in Room 5.</p>
+    <p>That strongly points toward Room 5 infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="ip-address">
+    <h3>IP Address</h3>
+    <p>Once physical link is good, check network configuration.</p>
+    <p>A typical networked medical device may need:</p>
+    <ul>
+      <li>IP address</li>
+      <li>Subnet mask</li>
+      <li>Default gateway</li>
+      <li>DNS</li>
+    </ul>
+    <p>One incorrect setting may prevent communication.</p>
+  </section>
+
+  <section class="content-box" id="duplicate-ip-address">
+    <h3>Duplicate IP Address</h3>
+    <p>Two devices using the same IP can create strange intermittent communication problems.</p>
+    <p>Symptoms may include:</p>
+    <ul>
+      <li>Device appears/disappears</li>
+      <li>Connection drops</li>
+      <li>Wrong device responds</li>
+      <li>Server communication becomes unstable</li>
+    </ul>
+    <p>If the problem began after device replacement or configuration changes, consider duplicate addressing.</p>
+  </section>
+
+  <section class="content-box" id="subnet">
+    <h3>Subnet</h3>
+    <p>The subnet helps determine which addresses are considered local.</p>
+    <p>A wrong subnet mask can allow some communication while breaking other paths.</p>
+    <p>Do not assume:</p>
+    <blockquote><p>It has an IP address.</p></blockquote>
+    <p>means network configuration is correct.</p>
+  </section>
+
+  <section class="content-box" id="default-gateway">
+    <h3>Default Gateway</h3>
+    <p>The gateway allows the device to reach destinations outside its local network.</p>
+    <p>A device may communicate locally but fail to reach a remote server if the gateway is wrong.</p>
+  </section>
+
+  <section class="content-box" id="dns">
+    <h3>DNS</h3>
+    <p>DNS translates names into IP addresses.</p>
+    <p>A device may be configured to connect to:</p>
+    <blockquote><p>server.hospital.local</p></blockquote>
+    <p>instead of a numeric IP.</p>
+    <p>If DNS fails, the network itself may still be healthy.</p>
+  </section>
+
+  <section class="content-box" id="ping">
+    <h3>Ping</h3>
+    <p>Ping can be useful.</p>
+    <p>But it is often misunderstood.</p>
+    <p>If a device can ping a server, you have proven some level of IP communication.</p>
+    <p>You have <strong>not</strong> proven the actual application works.</p>
+    <p>A device can ping and still fail because of:</p>
+    <ul>
+      <li>Closed port</li>
+      <li>Firewall</li>
+      <li>Wrong service</li>
+      <li>Certificate</li>
+      <li>Application failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cannot-ping-does-not-automatically-mean-network-failure">
+    <h3>Cannot Ping Does Not Automatically Mean Network Failure</h3>
+    <p>Some systems intentionally block ping.</p>
+    <p>Do not use ping as the only network test.</p>
+    <p>Know what the system is expected to support.</p>
+  </section>
+
+  <section class="content-box" id="ports">
+    <h3>Ports</h3>
+    <p>Applications often communicate through specific network ports.</p>
+    <p>Example:</p>
+    <p>The device can reach the server IP.</p>
+    <p>But the required application port is blocked.</p>
+    <p>Result:</p>
+    <p>Network appears alive.</p>
+    <p>Application does not work.</p>
+    <p>That is why:</p>
+    <blockquote><p>It pings.</p></blockquote>
+    <p>does not end troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="firewalls">
+    <h3>Firewalls</h3>
+    <p>Firewalls may allow some traffic and block other traffic.</p>
+    <p>If communication stops after:</p>
+    <ul>
+      <li>Network change</li>
+      <li>Server replacement</li>
+      <li>Firewall change</li>
+    </ul>
+    <p>check whether the required communication path is permitted.</p>
+    <p>Coordinate with IT when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi">
+    <h3>Wi-Fi</h3>
+    <p>Wireless communication adds another layer.</p>
+    <p>Possible problems include:</p>
+    <ul>
+      <li>Weak signal</li>
+      <li>Roaming</li>
+      <li>Authentication</li>
+      <li>Configuration</li>
+      <li>Access point</li>
+      <li>Interference</li>
+    </ul>
+    <p>Location becomes especially important.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-location-pattern">
+    <h3>Wi-Fi Location Pattern</h3>
+    <p>Device works in ICU rooms.</p>
+    <p>Drops in hallway.</p>
+    <p>Known-good device behaves the same way.</p>
+    <p>That points toward:</p>
+    <ul>
+      <li>Coverage</li>
+      <li>Roaming</li>
+      <li>RF environment</li>
+    </ul>
+    <p>not necessarily a bad Wi-Fi radio.</p>
+  </section>
+
+  <section class="content-box" id="authentication">
+    <h3>Authentication</h3>
+    <p>Wireless devices may require:</p>
+    <ul>
+      <li>Credentials</li>
+      <li>Certificates</li>
+      <li>Enterprise authentication</li>
+    </ul>
+    <p>A device can see the wireless network and still fail to join it.</p>
+    <p>That is different from weak signal.</p>
+  </section>
+
+  <section class="content-box" id="serial-communication">
+    <h3>Serial Communication</h3>
+    <p>Older and specialized medical equipment may use serial communication such as RS-232.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Correct cable</li>
+      <li>Pinout</li>
+      <li>Port</li>
+      <li>Baud rate</li>
+      <li>Data bits</li>
+      <li>Parity</li>
+      <li>Stop bits</li>
+    </ul>
+    <p>Both sides must generally agree on the communication settings.</p>
+  </section>
+
+  <section class="content-box" id="serial-example">
+    <h3>Serial Example</h3>
+    <p>Device and server physically connected.</p>
+    <p>No data received.</p>
+    <p>Device:</p>
+    <p>9600 baud.</p>
+    <p>Interface:</p>
+    <p>115200 baud.</p>
+    <p>Hardware may be completely fine.</p>
+    <p>The configuration does not match.</p>
+  </section>
+
+  <section class="content-box" id="usb-communication">
+    <h3>USB Communication</h3>
+    <p>USB problems may involve:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Port</li>
+      <li>Device recognition</li>
+      <li>Driver</li>
+      <li>Compatibility</li>
+      <li>Power</li>
+    </ul>
+    <p>Try:</p>
+    <ul>
+      <li>Known-good cable</li>
+      <li>Known-good port</li>
+      <li>Known-good compatible accessory</li>
+    </ul>
+    <p>Do not assume a physically intact USB connector means the device is recognized correctly.</p>
+  </section>
+
+  <section class="content-box" id="usb-power-vs-usb-data">
+    <h3>USB Power vs USB Data</h3>
+    <p>A USB accessory may receive power but still fail to communicate.</p>
+    <p>That means:</p>
+    <blockquote><p>The light comes on.</p></blockquote>
+    <p>does not prove the data path works.</p>
+  </section>
+
+  <section class="content-box" id="network-interface-vs-application">
+    <h3>Network Interface vs Application</h3>
+    <p>A device may show:</p>
+    <blockquote><p>Network Connected</p></blockquote>
+    <p>while the clinical workflow still fails.</p>
+    <p>Example:</p>
+    <p>Monitor has Ethernet link.</p>
+    <p>IP configuration correct.</p>
+    <p>But central station does not display it.</p>
+    <p>Now the failure is likely farther downstream.</p>
+  </section>
+
+  <section class="content-box" id="find-the-last-known-good-point">
+    <h3>Find the Last Known-Good Point</h3>
+    <p>This is one of the best methods for any communication problem.</p>
+    <p>Example:</p>
+    <p>Monitor displays patient data correctly.</p>
+    <p>Gateway receives the data.</p>
+    <p>Interface engine receives the message.</p>
+    <p>EMR does not display it.</p>
+    <p>The problem is somewhere after the interface engine.</p>
+    <p>Do not troubleshoot the bedside monitor anymore.</p>
+  </section>
+
+  <section class="content-box" id="work-forward-from-the-source">
+    <h3>Work Forward From the Source</h3>
+    <p>Ask:</p>
+    <p>Does the source generate the expected information?</p>
+    <p>Example:</p>
+    <p>ECG cart has an ECG stored locally.</p>
+    <p>Good.</p>
+    <p>Next:</p>
+    <p>Did it enter the transmission queue?</p>
+    <p>Good.</p>
+    <p>Next:</p>
+    <p>Did it leave the cart?</p>
+    <p>Continue forward.</p>
+  </section>
+
+  <section class="content-box" id="work-backward-from-the-destination">
+    <h3>Work Backward From the Destination</h3>
+    <p>You can also start from the receiving side.</p>
+    <p>Example:</p>
+    <p>Central station has no monitor.</p>
+    <p>Does the server see the device?</p>
+    <p>No.</p>
+    <p>Does the network see the device?</p>
+    <p>Yes.</p>
+    <p>Now you narrowed the failure between device network communication and server registration.</p>
+  </section>
+
+  <section class="content-box" id="central-monitoring">
+    <h3>Central Monitoring</h3>
+    <p>A bedside monitor missing from central could involve:</p>
+    <ul>
+      <li>Monitor</li>
+      <li>Network</li>
+      <li>Server</li>
+      <li>Central station</li>
+      <li>Bed assignment</li>
+      <li>Configuration</li>
+    </ul>
+    <p>First verify the monitor itself is functioning locally.</p>
+    <p>Then trace communication outward.</p>
+  </section>
+
+  <section class="content-box" id="monitor-works-locally">
+    <h3>Monitor Works Locally</h3>
+    <p>If the bedside monitor:</p>
+    <ul>
+      <li>Displays waveforms</li>
+      <li>Measures correctly</li>
+      <li>Alarms locally</li>
+    </ul>
+    <p>but central monitoring is missing, the patient-monitoring hardware may be fine.</p>
+    <p>Focus on communication.</p>
+  </section>
+
+  <section class="content-box" id="patient-association">
+    <h3>Patient Association</h3>
+    <p>Some systems require:</p>
+    <ul>
+      <li>Bed assignment</li>
+      <li>Patient association</li>
+      <li>Unit mapping</li>
+    </ul>
+    <p>The network connection can be perfect while data appears in the wrong location or not where staff expect it.</p>
+    <p>That is a configuration/workflow failure.</p>
+  </section>
+
+  <section class="content-box" id="emr-integration">
+    <h3>EMR Integration</h3>
+    <p>Medical device data often travels through several systems.</p>
+    <p>Example:</p>
+    <p><strong>Monitor</strong></p>
+    <p>↓</p>
+    <p><strong>Gateway</strong></p>
+    <p>↓</p>
+    <p><strong>Integration Server</strong></p>
+    <p>↓</p>
+    <p><strong>Interface Engine</strong></p>
+    <p>↓</p>
+    <p><strong>EMR</strong></p>
+    <p>Do not call the whole thing:</p>
+    <blockquote><p>An EMR problem.</p></blockquote>
+    <p>Find where the data stops.</p>
+  </section>
+
+  <section class="content-box" id="device-data-present-locally">
+    <h3>Device Data Present Locally</h3>
+    <p>Suppose blood pressure appears correctly on the monitor.</p>
+    <p>That proves the measurement exists at the source.</p>
+    <p>Next ask:</p>
+    <p>Does the gateway receive it?</p>
+    <p>If yes, move downstream.</p>
+  </section>
+
+  <section class="content-box" id="message-queues">
+    <h3>Message Queues</h3>
+    <p>Some systems queue data when communication is unavailable.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>ECG carts</li>
+      <li>Integration appliances</li>
+    </ul>
+    <p>A growing queue can tell you:</p>
+    <p>The source is creating data.</p>
+    <p>But transmission is failing.</p>
+    <p>That is useful isolation.</p>
+  </section>
+
+  <section class="content-box" id="muse-example">
+    <h3>MUSE Example</h3>
+    <p>ECG acquired successfully.</p>
+    <p>Stored locally.</p>
+    <p>Transmission queue shows pending ECGs.</p>
+    <p>Network link good.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>MUSE destination</li>
+      <li>Network path</li>
+      <li>Authentication</li>
+      <li>Server availability</li>
+    </ul>
+    <p>Do not troubleshoot ECG acquisition.</p>
+  </section>
+
+  <section class="content-box" id="nurse-call-communication">
+    <h3>Nurse Call Communication</h3>
+    <p>Not every communication system sends digital packets.</p>
+    <p>Nurse call may use:</p>
+    <ul>
+      <li>Relay contact</li>
+      <li>Cable</li>
+      <li>Room interface</li>
+    </ul>
+    <p>The same isolation principle still works.</p>
+    <p>Find where the signal stops.</p>
+  </section>
+
+  <section class="content-box" id="communication-logs">
+    <h3>Communication Logs</h3>
+    <p>Logs may show:</p>
+    <ul>
+      <li>Link lost</li>
+      <li>Server timeout</li>
+      <li>Authentication failure</li>
+      <li>Connection refused</li>
+      <li>Module communication lost</li>
+      <li>Retry attempts</li>
+    </ul>
+    <p>These are valuable clues.</p>
+  </section>
+
+  <section class="content-box" id="exact-error-matters">
+    <h3>Exact Error Matters</h3>
+    <p>Write down:</p>
+    <ul>
+      <li>Exact message</li>
+      <li>Code</li>
+      <li>Time</li>
+    </ul>
+    <p>Example:</p>
+    <blockquote><p>Server Connection Timeout</p></blockquote>
+    <p>is different from:</p>
+    <blockquote><p>Network Cable Disconnected.</p></blockquote>
+    <p>The first suggests the physical link may still exist.</p>
+    <p>The second points lower in the communication path.</p>
+  </section>
+
+  <section class="content-box" id="timeout">
+    <h3>Timeout</h3>
+    <p>A timeout generally means the device expected a response and did not receive one in time.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Destination unavailable</li>
+      <li>Network path</li>
+      <li>Firewall</li>
+      <li>Application</li>
+      <li>Incorrect address</li>
+    </ul>
+    <p>Do not automatically replace the device interface.</p>
+  </section>
+
+  <section class="content-box" id="connection-refused">
+    <h3>Connection Refused</h3>
+    <p>This can suggest the destination responded but the requested service was unavailable or rejected.</p>
+    <p>That is different from:</p>
+    <blockquote><p>No network.</p></blockquote>
+    <p>Again, exact errors matter.</p>
+  </section>
+
+  <section class="content-box" id="authentication-failure">
+    <h3>Authentication Failure</h3>
+    <p>If the log says:</p>
+    <blockquote><p>Authentication Failed</p></blockquote>
+    <p>communication may already be reaching the destination.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Credentials</li>
+      <li>Certificate</li>
+      <li>Registration</li>
+      <li>Security configuration</li>
+    </ul>
+    <p>That is much farther along the path than a bad Ethernet cable.</p>
+  </section>
+
+  <section class="content-box" id="certificates">
+    <h3>Certificates</h3>
+    <p>Secure communication may depend on certificates.</p>
+    <p>Problems may involve:</p>
+    <ul>
+      <li>Expired certificate</li>
+      <li>Incorrect certificate</li>
+      <li>Device time</li>
+      <li>Trust configuration</li>
+    </ul>
+    <p>The network can be perfectly healthy while secure application communication fails.</p>
+  </section>
+
+  <section class="content-box" id="date-and-time">
+    <h3>Date and Time</h3>
+    <p>Incorrect device time can affect secure communication and log interpretation.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Date</li>
+      <li>Time</li>
+      <li>Time zone</li>
+    </ul>
+    <p>when certificates or event correlation are involved.</p>
+  </section>
+
+  <section class="content-box" id="software-version">
+    <h3>Software Version</h3>
+    <p>Communication compatibility may depend on software or firmware.</p>
+    <p>A new module or server may require a specific version.</p>
+    <p>If communication stopped after an upgrade, check compatibility.</p>
+  </section>
+
+  <section class="content-box" id="restarting">
+    <h3>Restarting</h3>
+    <p>A reboot may temporarily restore communication.</p>
+    <p>That can be useful evidence.</p>
+    <p>But it is not necessarily the repair.</p>
+    <p>If a device repeatedly loses communication until rebooted, investigate:</p>
+    <ul>
+      <li>Software</li>
+      <li>Memory</li>
+      <li>Network service</li>
+      <li>Interface hardware</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="server-problems">
+    <h3>Server Problems</h3>
+    <p>If many devices simultaneously lose the same connection, look upstream.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Central server down</li>
+      <li>Integration service stopped</li>
+      <li>Interface engine unavailable</li>
+    </ul>
+    <p>One hundred devices probably did not develop bad network boards at once.</p>
+  </section>
+
+  <section class="content-box" id="common-point-thinking">
+    <h3>Common-Point Thinking</h3>
+    <p>Ask:</p>
+    <p><strong>What do all the failing devices share?</strong></p>
+    <p>Possibilities:</p>
+    <ul>
+      <li>Server</li>
+      <li>Switch</li>
+      <li>VLAN</li>
+      <li>Access point</li>
+      <li>Software version</li>
+      <li>Gateway</li>
+    </ul>
+    <p>This is especially powerful in large systems.</p>
+  </section>
+
+  <section class="content-box" id="one-device-vs-many-devices">
+    <h3>One Device vs Many Devices</h3>
+    <p>One device fails:</p>
+    <p>Device-specific problem becomes more likely.</p>
+    <p>One entire unit fails:</p>
+    <p>Look for shared infrastructure.</p>
+    <p>Whole hospital fails:</p>
+    <p>Look much farther upstream.</p>
+    <p>The scale of the failure is a clue.</p>
+  </section>
+
+  <section class="content-box" id="compare-with-known-good-equipment">
+    <h3>Compare With Known-Good Equipment</h3>
+    <p>If Device A fails:</p>
+    <p>Try known-good Device B in the same setup.</p>
+    <p>Then try Device A in a known-good setup.</p>
+    <p>This is one of the fastest ways to separate:</p>
+    <ul>
+      <li>Device</li>
+      <li>Accessory</li>
+      <li>Infrastructure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-change-everything-at-once">
+    <h3>Do Not Change Everything at Once</h3>
+    <p>Avoid simultaneously:</p>
+    <ul>
+      <li>Replacing cable</li>
+      <li>Changing IP</li>
+      <li>Rebooting server</li>
+      <li>Updating software</li>
+    </ul>
+    <p>If communication returns, you will not know why.</p>
+    <p>Change one variable when practical.</p>
+  </section>
+
+  <section class="content-box" id="document-network-settings-before-changing-them">
+    <h3>Document Network Settings Before Changing Them</h3>
+    <p>Record:</p>
+    <ul>
+      <li>IP</li>
+      <li>Subnet</li>
+      <li>Gateway</li>
+      <li>Server address</li>
+    </ul>
+    <p>before editing configuration.</p>
+    <p>Otherwise you may lose the original evidence.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-monitor-missing-from-central">
+    <h3>Real-World Example: Monitor Missing From Central</h3>
+    <p>Monitor locally:</p>
+    <p>Normal.</p>
+    <p>Ethernet link:</p>
+    <p>Good.</p>
+    <p>Known-good cable:</p>
+    <p>No change.</p>
+    <p>Monitor works at another network jack.</p>
+    <p>Known-good monitor fails at original jack.</p>
+    <p>Failure stays with room infrastructure.</p>
+    <p>No reason to replace the monitor network board.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-device-can-ping-but-application-fails">
+    <h3>Real-World Example: Device Can Ping but Application Fails</h3>
+    <p>Device:</p>
+    <p>Pings server.</p>
+    <p>Application:</p>
+    <p>Cannot connect.</p>
+    <p>Logs:</p>
+    <p>Connection refused on required service.</p>
+    <p>Now investigate the application/service/port instead of physical networking.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-module-not-recognized">
+    <h3>Real-World Example: Module Not Recognized</h3>
+    <p>Original module:</p>
+    <p>Not recognized.</p>
+    <p>Known-good module:</p>
+    <p>Also not recognized.</p>
+    <p>Both modules work in another device.</p>
+    <p>Failure stays with host device.</p>
+    <p>Focus on:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Backplane</li>
+      <li>Host communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-ecg-not-reaching-muse">
+    <h3>Real-World Example: ECG Not Reaching MUSE</h3>
+    <p>ECG acquired.</p>
+    <p>Stored locally.</p>
+    <p>Queue shows unsent exams.</p>
+    <p>Network link present.</p>
+    <p>Another cart on same network transmits normally.</p>
+    <p>Now focus on:</p>
+    <ul>
+      <li>Cart configuration</li>
+      <li>Destination</li>
+      <li>Software</li>
+      <li>Device registration</li>
+    </ul>
+    <p>The acquisition system is working.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wi-fi-drops-in-hallway">
+    <h3>Real-World Example: Wi-Fi Drops in Hallway</h3>
+    <p>Monitor works in patient rooms.</p>
+    <p>Disconnects repeatedly in one corridor.</p>
+    <p>Known-good monitor does same thing.</p>
+    <p>Pattern follows the location.</p>
+    <p>Investigate wireless coverage or roaming.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-data-missing-from-emr">
+    <h3>Real-World Example: Data Missing From EMR</h3>
+    <p>Monitor displays measurement.</p>
+    <p>Integration gateway receives it.</p>
+    <p>Interface engine shows message sent successfully.</p>
+    <p>EMR does not display it.</p>
+    <p>Do not keep troubleshooting the bedside monitor.</p>
+    <p>You have already proven the data traveled through several layers.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Blaming the Network Immediately</h4>
+    <p>Check the physical path and device first.</p>
+    <h4>Replacing Communication Hardware Because “It Won't Connect”</h4>
+    <p>Prove where communication stops.</p>
+    <h4>Assuming a Link Light Means Everything Works</h4>
+    <p>It only proves part of the path.</p>
+    <h4>Assuming Ping Proves the Application Works</h4>
+    <p>It does not.</p>
+    <h4>Ignoring Configuration</h4>
+    <p>Communication depends heavily on settings.</p>
+    <h4>Troubleshooting the Device After Data Already Left It</h4>
+    <p>Move downstream.</p>
+    <h4>Changing Several Network Settings at Once</h4>
+    <p>Preserve isolation.</p>
+    <h4>Blaming Another Department Without Evidence</h4>
+    <p>Find the failure boundary first.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Ask:</p>
+    <p><strong>Who is sending?</strong></p>
+    <p>Then:</p>
+    <p><strong>Who is receiving?</strong></p>
+    <p>Then:</p>
+    <p><strong>What path connects them?</strong></p>
+    <p>Then:</p>
+    <p><strong>What is the last point where communication is known to work?</strong></p>
+    <p>Then:</p>
+    <p><strong>What is the next point where it fails?</strong></p>
+    <p>The fault is usually somewhere between those last two answers.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a physical connection problem, a network path problem, or an application/configuration problem?</strong></p>
+    <p>Those categories can dramatically narrow the search.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If an Ethernet link light is on, you proved:</p>
+    <p><strong>The physical Ethernet link is active under those conditions.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>The IP settings are correct</li>
+      <li>Server is reachable</li>
+      <li>Required port is open</li>
+      <li>Application is working</li>
+    </ul>
+    <p>If data appears correctly at the integration server, you proved much more:</p>
+    <p><strong>The device successfully transmitted the data to that point.</strong></p>
+    <p>Keep moving through the path until you find where it stops.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Communication failures become confusing when you treat the entire system as one giant black box.</p>
+    <p>Break it apart.</p>
+    <p>Source.</p>
+    <p>Cable.</p>
+    <p>Port.</p>
+    <p>Network.</p>
+    <p>Server.</p>
+    <p>Application.</p>
+    <p>Destination.</p>
+    <p>Then ask:</p>
+    <p><strong>Where was the last place communication definitely worked?</strong></p>
+    <p>Do not troubleshoot downstream systems before proving the source.</p>
+    <p>Do not replace device hardware after proving the data already left the device.</p>
+    <p>Do not blame the network because the screen says:</p>
+    <blockquote><p>Communication Error.</p></blockquote>
+    <p>Follow the path.</p>
+    <p>Test one section at a time.</p>
+    <p>Use known-good devices and locations.</p>
+    <p>Check the logs.</p>
+    <p>Compare configuration.</p>
+    <p>Find where the signal stops.</p>
+    <p>Once you identify that boundary, even a complicated communication failure becomes much easier to understand.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Medical device communication may involve clinical networks, cybersecurity controls, servers, integration platforms, and other systems outside normal biomed service scope. Follow current manufacturer documentation, facility cybersecurity and change-control procedures, approved network practices, and coordinate with IT, clinical informatics, or other responsible teams when troubleshooting extends beyond the medical device.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-isolate-device-vs-accessory-vs-infrastructure-problems.html">How to Isolate Device vs Accessory vs Infrastructure Problems</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="hospital-emrs-and-medical-device-integration.html">Hospital EMRs and Medical Device Integration</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
