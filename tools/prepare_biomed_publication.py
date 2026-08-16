@@ -16,7 +16,7 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 
 RELATED = {
-    "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
+    "biomed-bmet-clinical-engineering-htm": ["how-to-become-a-biomedical-equipment-technician", "biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification"],
     "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
     "functional-testing-vs-calibration-vs-verification": ["pass-fail-limits-and-why-the-test-point-matters", "tolerance-vs-accuracy", "how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test"],
     "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
@@ -24,7 +24,7 @@ RELATED = {
     "basic-networking-for-medical-equipment": ["how-patient-monitors-communicate-with-central-stations", "how-to-troubleshoot-communication-failures", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-hl7-means-in-plain-english"],
     "hospital-emrs-and-medical-device-integration": ["how-patient-monitors-communicate-with-central-stations", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
-    "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
+    "biomed-resume-basics": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
     "when-to-remove-medical-equipment-from-service": ["how-to-verify-a-repair-before-returning-equipment-to-service", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "how-to-think-before-calling-a-vendor": ["how-experienced-biomeds-think-through-a-new-problem", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
@@ -93,6 +93,7 @@ RELATED = {
     "how-mainstream-co2-monitoring-works": ["how-sidestream-co2-monitoring-works", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "how-an-anesthesia-machine-breathing-system-works", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-medical-gas-sampling-systems-work": ["how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-to-troubleshoot-medical-device-accessories"],
     "how-an-anesthesia-machine-performs-a-leak-test": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-medical-equipment-measures-pressure", "how-medical-gas-sampling-systems-work", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-to-become-a-biomedical-equipment-technician": ["biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
 }
 
 ARTICLE_CONFIG = {
@@ -505,6 +506,12 @@ ARTICLE_CONFIG = {
         "badge": "Anesthesia",
         "cardNote": "Anesthesia leak-test boundaries and isolation",
     },
+    "how-to-become-a-biomedical-equipment-technician": {
+        "description": "A practical, plain-English guide to entering the biomed profession, building useful technical knowledge, and developing a career working on medical equipment.",
+        "category": "Career",
+        "badge": "Career Guide",
+        "cardNote": "Education, skills, and entry-level career paths",
+    },
 }
 
 
@@ -668,6 +675,13 @@ def title_map(root: Path, new_titles: list[str]) -> dict[str, str]:
 
 def parse_batch(path: Path) -> list:
     source = path.read_text(encoding="utf-8")
+    source_lines = source.splitlines()
+    reviewed_start = next(
+        (index for index, line in enumerate(source_lines) if slugify(line.strip()) in ARTICLE_CONFIG),
+        None,
+    )
+    if reviewed_start is not None:
+        source = "\n".join(source_lines[reviewed_start:])
     chunks = re.split(r"\n\s*---\s*\n(?=#\s+)", source)
     articles = []
     with tempfile.TemporaryDirectory() as directory:

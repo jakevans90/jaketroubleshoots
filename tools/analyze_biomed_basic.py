@@ -118,7 +118,7 @@ def parse_plain_markdown(path: Path, source: str) -> Article:
             following = lines[index + 1].strip() if index + 1 < len(lines) else ""
             words = line.split()
             if list_mode:
-                if len(words) <= 7 and not line.endswith((".", "?", "!", ":")):
+                if len(words) <= 7 and not line.endswith((".", ":")):
                     converted.append(f"- {line}")
                     continue
                 list_mode = False

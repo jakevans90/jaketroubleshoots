@@ -195,9 +195,12 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How Mainstream CO2 Monitoring Works", planned)
         self.assertNotIn("How Medical Gas Sampling Systems Work", planned)
         self.assertNotIn("How an Anesthesia Machine Performs a Leak Test", planned)
+        self.assertNotIn("How to Become a Biomedical Equipment Technician", planned)
         self.assertIn("How an Anesthesia Vaporizer Works", planned)
         self.assertIn("How Temperature Probes and Thermistors Work", planned)
-        self.assertIn("<strong>77</strong>", planned)
+        self.assertIn("What Degree Do You Need to Become a Biomed?", planned)
+        self.assertIn("How to Read an OEM Training Certificate and Know What It Actually Qualifies You to Do", planned)
+        self.assertIn("<strong>107</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -264,6 +267,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-mainstream-co2-monitoring-works": "The Adapter Is Part of the Measurement System",
             "how-medical-gas-sampling-systems-work": "Pump Running Does Not Prove Sample Flow",
             "how-an-anesthesia-machine-performs-a-leak-test": "Know the Test Boundary",
+            "how-to-become-a-biomedical-equipment-technician": "Troubleshooting Is the Core Skill",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -277,7 +281,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 77)
+        self.assertEqual(len(catalog), 78)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
