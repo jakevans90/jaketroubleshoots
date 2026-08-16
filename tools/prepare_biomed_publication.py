@@ -71,7 +71,7 @@ RELATED = {
     "how-nibp-works-in-a-patient-monitor": ["how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-pressure", "how-sidestream-co2-monitoring-works", "how-spo2-measurement-works", "sensors-and-transducers-basics"],
     "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
     "how-ecg-acquisition-works": ["how-ecg-lead-off-detection-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics"],
-    "how-sidestream-co2-monitoring-works": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-nibp-works-in-a-patient-monitor", "how-spo2-measurement-works", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
+    "how-sidestream-co2-monitoring-works": ["how-mainstream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
     "how-ventilator-flow-sensors-work": ["how-a-ventilator-measures-tidal-volume", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-ventilator-pressure-sensors-work": ["how-peep-is-generated-and-controlled", "how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-medical-equipment-measures-pressure": ["how-infusion-pump-occlusion-detection-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow"],
@@ -90,6 +90,7 @@ RELATED = {
     "how-parameter-modules-communicate-with-host-monitors": ["how-patient-monitors-communicate-with-central-stations", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment", "how-ecg-acquisition-works"],
     "how-patient-monitors-communicate-with-central-stations": ["basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "hospital-emrs-and-medical-device-integration", "how-parameter-modules-communicate-with-host-monitors", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-ecg-lead-off-detection-works": ["how-ecg-acquisition-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-mainstream-co2-monitoring-works": ["how-sidestream-co2-monitoring-works", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "how-an-anesthesia-machine-breathing-system-works", "medical-device-alarm-troubleshooting-fundamentals"],
 }
 
 ARTICLE_CONFIG = {
@@ -483,6 +484,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Patient Monitoring",
         "cardNote": "The ECG electrode and lead-off detection path",
+    },
+    "how-mainstream-co2-monitoring-works": {
+        "description": "A practical explanation of how mainstream capnography measures CO2 at the airway and how adapters, optics, moisture, alignment, and sensor recognition affect readings.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The mainstream capnography optical path",
     },
 }
 
