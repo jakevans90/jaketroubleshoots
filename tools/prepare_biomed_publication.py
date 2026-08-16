@@ -36,7 +36,7 @@ RELATED = {
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
-    "sensors-and-transducers-basics": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work"],
+    "sensors-and-transducers-basics": ["how-infusion-pump-occlusion-detection-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -50,7 +50,7 @@ RELATED = {
     "how-to-troubleshoot-medical-device-accessories": ["how-sidestream-co2-monitoring-works", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-anesthesia-waste-gas-scavenging-works", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
-    "medical-device-alarm-troubleshooting-fundamentals": ["how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-pressure-sensors-work", "how-ventilator-flow-sensors-work"],
+    "medical-device-alarm-troubleshooting-fundamentals": ["how-infusion-pump-occlusion-detection-works", "how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-pressure-sensors-work"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
     "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
@@ -74,7 +74,7 @@ RELATED = {
     "how-sidestream-co2-monitoring-works": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-nibp-works-in-a-patient-monitor", "how-spo2-measurement-works", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
     "how-ventilator-flow-sensors-work": ["how-a-ventilator-measures-tidal-volume", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-ventilator-pressure-sensors-work": ["how-peep-is-generated-and-controlled", "how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
-    "how-medical-equipment-measures-pressure": ["how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work"],
+    "how-medical-equipment-measures-pressure": ["how-infusion-pump-occlusion-detection-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow"],
     "how-medical-equipment-measures-flow": ["how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure"],
     "how-invasive-blood-pressure-monitoring-works": ["how-medical-equipment-measures-pressure", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": ["how-an-anesthesia-machine-breathing-system-works", "sensors-and-transducers-basics", "how-sidestream-co2-monitoring-works", "how-medical-equipment-measures-flow", "medical-device-alarm-troubleshooting-fundamentals"],
@@ -82,6 +82,7 @@ RELATED = {
     "how-anesthesia-waste-gas-scavenging-works": ["how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-a-ventilator-measures-tidal-volume": ["how-peep-is-generated-and-controlled", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-peep-is-generated-and-controlled": ["how-ventilator-pressure-sensors-work", "how-a-ventilator-measures-tidal-volume", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-infusion-pump-occlusion-detection-works": ["how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -427,6 +428,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Ventilation",
         "cardNote": "The end-expiratory pressure control loop",
+    },
+    "how-infusion-pump-occlusion-detection-works": {
+        "description": "A practical explanation of how infusion pumps detect rising pressure or force and decide when to stop delivery and generate an occlusion alarm.",
+        "category": "How It Works",
+        "badge": "Infusion",
+        "cardNote": "The infusion pressure and occlusion-alarm path",
     },
 }
 
