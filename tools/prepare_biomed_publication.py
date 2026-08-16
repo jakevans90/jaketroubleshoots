@@ -46,7 +46,7 @@ RELATED = {
     "ground-neutral-and-hot-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "error-codes-what-they-tell-you-and-what-they-don-t": ["the-difference-between-a-symptom-cause-and-root-cause", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
-    "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-defibrillators-charge-and-deliver-energy", "how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics"],
+    "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-smart-batteries-communicate-with-medical-equipment", "how-defibrillators-charge-and-deliver-energy", "how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed"],
     "how-to-troubleshoot-medical-device-accessories": ["how-infusion-pumps-measure-or-control-flow", "how-sidestream-co2-monitoring-works", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-anesthesia-waste-gas-scavenging-works", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
@@ -55,7 +55,7 @@ RELATED = {
     "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
     "how-to-verify-a-repair-before-returning-equipment-to-service": ["how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "the-troubleshooting-process-observe-isolate-test-verify", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
-    "how-to-troubleshoot-communication-failures": ["analog-vs-digital-signals", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "how-to-read-and-use-medical-device-event-logs"],
+    "how-to-troubleshoot-communication-failures": ["how-smart-batteries-communicate-with-medical-equipment", "analog-vs-digital-signals", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "basic-networking-for-medical-equipment", "how-to-read-and-use-medical-device-event-logs"],
     "how-to-troubleshoot-charging-problems": ["how-medical-device-batteries-charge-and-communicate", "how-defibrillators-charge-and-deliver-energy", "medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-battery-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
     "the-troubleshooting-process-observe-isolate-test-verify": ["how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "why-changing-one-thing-at-a-time-matters"],
     "the-difference-between-a-symptom-cause-and-root-cause": ["the-troubleshooting-process-observe-isolate-test-verify", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-avoid-confirmation-bias-while-troubleshooting", "why-changing-one-thing-at-a-time-matters", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
@@ -63,7 +63,7 @@ RELATED = {
     "how-to-read-a-troubleshooting-flowchart": ["how-to-read-a-medical-equipment-service-manual", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-trust-the-device-s-internal-self-test"],
     "ac-vs-dc-power-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "ground-neutral-and-hot-in-medical-equipment", "fuses-breakers-and-power-supplies-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
     "analog-vs-digital-signals": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
-    "medical-device-batteries-runtime-capacity-and-state-of-health": ["how-medical-device-batteries-charge-and-communicate", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "medical-device-batteries-runtime-capacity-and-state-of-health": ["how-smart-batteries-communicate-with-medical-equipment", "how-medical-device-batteries-charge-and-communicate", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means"],
     "how-to-read-device-specifications": ["how-nibp-works-in-a-patient-monitor", "how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification"],
     "tolerance-vs-accuracy": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
     "how-to-compare-your-test-result-to-manufacturer-specification": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
@@ -85,7 +85,8 @@ RELATED = {
     "how-infusion-pump-occlusion-detection-works": ["how-infusion-pumps-measure-or-control-flow", "how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories"],
     "how-infusion-pumps-measure-or-control-flow": ["how-infusion-pump-occlusion-detection-works", "how-medical-equipment-measures-flow", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-troubleshoot-medical-device-accessories", "how-to-read-device-specifications"],
     "how-defibrillators-charge-and-deliver-energy": ["voltage-current-resistance-and-continuity-in-plain-english", "fuses-breakers-and-power-supplies-in-medical-equipment", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-charging-problems", "how-to-verify-a-repair-before-returning-equipment-to-service"],
-    "how-medical-device-batteries-charge-and-communicate": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
+    "how-medical-device-batteries-charge-and-communicate": ["how-smart-batteries-communicate-with-medical-equipment", "medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-smart-batteries-communicate-with-medical-equipment": ["how-medical-device-batteries-charge-and-communicate", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -455,6 +456,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Power & Batteries",
         "cardNote": "The smart-battery charging and communication path",
+    },
+    "how-smart-batteries-communicate-with-medical-equipment": {
+        "description": "A practical explanation of how smart batteries report charge, temperature, capacity, faults, and identification data to medical equipment.",
+        "category": "How It Works",
+        "badge": "Power & Batteries",
+        "cardNote": "The smart-battery data and host-interface path",
     },
 }
 
