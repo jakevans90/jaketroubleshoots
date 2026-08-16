@@ -3746,3 +3746,81 @@ footer p:nth-last-child(2) {
     padding: 23px 20px;
   }
 }
+
+/* =========================
+   Sitewide Collection Grid
+   Three cards on desktop, two on tablet, one on mobile.
+   Short rows stay centered instead of stretching cards.
+   ========================= */
+html body .guides-grid,
+html body.pm-library-page #pm-organized .guides-grid,
+html body .search-results-section .guides-grid,
+html body .recent-guides-section #guides-organized .guides-grid,
+html body .biomed-article-group .guides-grid {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-right: auto;
+  margin-left: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  justify-content: center;
+}
+
+html body .guides-grid:has(> .guide-card:only-child),
+html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
+html body .search-results-section .guides-grid:has(> .guide-card:only-child) {
+  grid-template-columns: minmax(0, 360px);
+}
+
+html body .guides-grid:has(> .guide-card:nth-child(2):last-child),
+html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:nth-child(2):last-child),
+html body .search-results-section .guides-grid:has(> .guide-card:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 360px));
+}
+
+/* Exact-model PM recommendations are contextual features, not collection results. */
+html body .model-specific-pm-grid,
+html body .model-specific-pm-grid:has(> .guide-card:only-child) {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Hub PM rows retain their useful full-width treatment for one or two matches. */
+html body #pm-grid:has(> .pm-card:only-child) {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
+  max-width: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  html body .guides-grid,
+  html body.pm-library-page #pm-organized .guides-grid,
+  html body .search-results-section .guides-grid,
+  html body .recent-guides-section #guides-organized .guides-grid,
+  html body .biomed-article-group .guides-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html body .guides-grid:has(> .guide-card:only-child),
+  html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
+  html body .search-results-section .guides-grid:has(> .guide-card:only-child),
+  html body .model-specific-pm-grid,
+  html body #pm-grid:has(> .pm-card:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  html body .guides-grid,
+  html body.pm-library-page #pm-organized .guides-grid,
+  html body .search-results-section .guides-grid,
+  html body .recent-guides-section #guides-organized .guides-grid,
+  html body .biomed-article-group .guides-grid,
+  html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
