@@ -169,7 +169,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to Read Device Specifications", planned)
         self.assertNotIn("Tolerance vs Accuracy", planned)
         self.assertNotIn("How to Compare Your Test Result to Manufacturer Specification", planned)
-        self.assertIn("<strong>68</strong>", planned)
+        self.assertNotIn("Pass/Fail Limits and Why the Test Point Matters", planned)
+        self.assertIn("<strong>67</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -210,6 +211,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-to-read-device-specifications": "Range Is Not Accuracy",
             "tolerance-vs-accuracy": "Tolerance Creates the Pass/Fail Window",
             "how-to-compare-your-test-result-to-manufacturer-specification": "Apply the Limit Before Looking at the Result",
+            "pass-fail-limits-and-why-the-test-point-matters": "Multiple Points Reveal Error Patterns",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -223,7 +225,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 51)
+        self.assertEqual(len(catalog), 52)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:

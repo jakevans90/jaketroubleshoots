@@ -18,7 +18,7 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
     "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
-    "functional-testing-vs-calibration-vs-verification": ["tolerance-vs-accuracy", "how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means"],
+    "functional-testing-vs-calibration-vs-verification": ["pass-fail-limits-and-why-the-test-point-matters", "tolerance-vs-accuracy", "how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test"],
     "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-battery-basics": ["medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "basic-networking-for-medical-equipment": ["how-to-troubleshoot-communication-failures", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english"],
@@ -65,8 +65,9 @@ RELATED = {
     "analog-vs-digital-signals": ["sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "medical-device-batteries-runtime-capacity-and-state-of-health": ["medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-to-read-device-specifications": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-read-a-troubleshooting-flowchart"],
-    "tolerance-vs-accuracy": ["how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed", "voltage-current-resistance-and-continuity-in-plain-english"],
-    "how-to-compare-your-test-result-to-manufacturer-specification": ["how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-use-a-multimeter-in-biomed"],
+    "tolerance-vs-accuracy": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
+    "how-to-compare-your-test-result-to-manufacturer-specification": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "pass-fail-limits-and-why-the-test-point-matters": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -322,6 +323,12 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Core Skill",
         "cardNote": "From measured result to pass/fail decision",
+    },
+    "pass-fail-limits-and-why-the-test-point-matters": {
+        "description": "A practical guide to test-point-specific limits, multi-point testing, range-dependent errors, operating conditions, and defensible pass/fail decisions.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Test points, limits, and range behavior",
     },
 }
 
