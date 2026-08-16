@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Read Device Specifications | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to interpreting medical-device accuracy, tolerance, range, resolution, units, test conditions, and pass/fail specifications.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-read-device-specifications.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How to Read Device Specifications</h2>
+  <p>How to turn manufacturer numbers into useful troubleshooting and verification limits</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical device specifications are everywhere.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a device specification is</li>
+      <li>Accuracy</li>
+      <li>Tolerance</li>
+      <li>Range</li>
+      <li>Resolution</li>
+      <li>Repeatability</li>
+      <li>Environmental specifications</li>
+      <li>Battery/runtime specifications</li>
+      <li>Alarm specifications</li>
+      <li>Test conditions</li>
+      <li>Typical versus guaranteed values</li>
+      <li>Why units matter</li>
+      <li>Why the exact test point matters</li>
+      <li>How to compare a measurement to a specification</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Before using a specification, ask:</p>
+    <p><strong>What function is being specified?</strong></p>
+    <p><strong>Under what conditions?</strong></p>
+    <p><strong>What units are used?</strong></p>
+    <p><strong>What limit actually determines pass or fail?</strong></p>
+    <p>The number only makes sense when all four are understood.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-specification">
+    <h3>What Is a Specification?</h3>
+    <p>A specification describes how the manufacturer says the device should perform.</p>
+    <p>Examples:</p>
+    <blockquote><p>NIBP pressure accuracy: ±3 mmHg.</p></blockquote>
+    <blockquote><p>Defibrillator energy accuracy: ±15%.</p></blockquote>
+    <blockquote><p>Battery runtime: minimum 60 minutes.</p></blockquote>
+    <p>Specifications give you a reference.</p>
+    <p>Without one, a measurement is just a number.</p>
+  </section>
+
+  <section class="content-box" id="specifications-answer-what-should-happen">
+    <h3>Specifications Answer “What Should Happen?”</h3>
+    <p>Troubleshooting often compares:</p>
+    <p><strong>Expected</strong></p>
+    <p>versus:</p>
+    <p><strong>Actual.</strong></p>
+    <p>Example:</p>
+    <p>Expected power supply output:</p>
+    <p>24 VDC ±5%.</p>
+    <p>Measured:</p>
+    <p>23.8 VDC.</p>
+    <p>Now you have a meaningful comparison.</p>
+  </section>
+
+  <section class="content-box" id="read-the-entire-specification">
+    <h3>Read the Entire Specification</h3>
+    <p>Do not grab only the bold number.</p>
+    <p>A specification may say:</p>
+    <blockquote><p>Accuracy ±2% between 20°C and 30°C using manufacturer-approved sensor after calibration.</p></blockquote>
+    <p>Every part matters.</p>
+    <p>You need to know:</p>
+    <ul>
+      <li>Measurement range</li>
+      <li>Temperature</li>
+      <li>Accessory</li>
+      <li>Setup</li>
+      <li>Calibration state</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="conditions-can-change-the-limit">
+    <h3>Conditions Can Change the Limit</h3>
+    <p>A device may meet one accuracy specification in normal range and a different one near extremes.</p>
+    <p>Example:</p>
+    <p>Flow accuracy:</p>
+    <p>±3% from 1 to 20 L/min.</p>
+    <p>Different accuracy below:</p>
+    <p>1 L/min.</p>
+    <p>Do not automatically apply one limit everywhere.</p>
+  </section>
+
+  <section class="content-box" id="units-matter">
+    <h3>Units Matter</h3>
+    <p>Always verify units.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>mmHg</li>
+      <li>cmH2O</li>
+      <li>kPa</li>
+      <li>mL</li>
+      <li>L/min</li>
+      <li>°C</li>
+      <li>°F</li>
+      <li>Joules</li>
+      <li>Volts</li>
+      <li>Ohms</li>
+    </ul>
+    <p>A correct number in the wrong unit is still wrong.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure analyzer:</p>
+    <p>100 cmH2O.</p>
+    <p>Device specification:</p>
+    <p>100 mmHg.</p>
+    <p>Those are not the same pressure.</p>
+    <p>Make sure both values use the same unit before comparing them.</p>
+  </section>
+
+  <section class="content-box" id="range">
+    <h3>Range</h3>
+    <p>Range describes the span over which a device or function is designed to operate or measure.</p>
+    <p>Example:</p>
+    <p>Temperature measurement range:</p>
+    <p>25°C to 45°C.</p>
+    <p>That means the device is intended to measure within that range.</p>
+    <p>It does not automatically tell you the accuracy.</p>
+  </section>
+
+  <section class="content-box" id="range-is-not-accuracy">
+    <h3>Range Is Not Accuracy</h3>
+    <p>Suppose:</p>
+    <p>Measurement range:</p>
+    <p>0 to 300 mmHg.</p>
+    <p>Accuracy:</p>
+    <p>±3 mmHg.</p>
+    <p>Those are completely different specifications.</p>
+    <p>Range tells you:</p>
+    <p><strong>Where it can measure.</strong></p>
+    <p>Accuracy tells you:</p>
+    <p><strong>How close the result should be.</strong></p>
+  </section>
+
+  <section class="content-box" id="accuracy">
+    <h3>Accuracy</h3>
+    <p>Accuracy describes how close a measured value should be to the actual or reference value.</p>
+    <p>Example:</p>
+    <p>Specification:</p>
+    <p>±2 mmHg.</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Acceptable device result may be:</p>
+    <p>98 to 102 mmHg.</p>
+    <p>That is a basic tolerance window around the reference.</p>
+  </section>
+
+  <section class="content-box" id="percent-accuracy">
+    <h3>Percent Accuracy</h3>
+    <p>Some specifications use percentages.</p>
+    <p>Example:</p>
+    <p>±5%.</p>
+    <p>Reference:</p>
+    <p>200 J.</p>
+    <p>Five percent of 200 J is:</p>
+    <p>10 J.</p>
+    <p>So the acceptable range may be:</p>
+    <p>190 to 210 J.</p>
+    <p>Always confirm the manufacturer defines the specification that way.</p>
+  </section>
+
+  <section class="content-box" id="fixed-plus-percentage-specifications">
+    <h3>Fixed Plus Percentage Specifications</h3>
+    <p>Some specifications are more complicated.</p>
+    <p>Example:</p>
+    <p>±2% of reading + 1 digit.</p>
+    <p>Now you have more than one term.</p>
+    <p>Follow the exact formula in the manual.</p>
+    <p>Do not simplify it incorrectly.</p>
+  </section>
+
+  <section class="content-box" id="tolerance">
+    <h3>Tolerance</h3>
+    <p>Tolerance is the acceptable amount of variation.</p>
+    <p>Example:</p>
+    <p>Expected output:</p>
+    <p>10 VDC.</p>
+    <p>Tolerance:</p>
+    <p>±0.5 V.</p>
+    <p>Acceptable range:</p>
+    <p>9.5 to 10.5 V.</p>
+    <p>Tolerance defines the pass/fail boundaries.</p>
+  </section>
+
+  <section class="content-box" id="accuracy-and-tolerance-are-related-but-not-identical">
+    <h3>Accuracy and Tolerance Are Related but Not Identical</h3>
+    <p>Accuracy describes measurement performance.</p>
+    <p>Tolerance describes an allowed variation or limit.</p>
+    <p>In everyday troubleshooting, you may use both terms closely.</p>
+    <p>But when the manufacturer gives exact wording, use their definition.</p>
+  </section>
+
+  <section class="content-box" id="resolution">
+    <h3>Resolution</h3>
+    <p>Resolution describes the smallest change the device can display or distinguish.</p>
+    <p>Example:</p>
+    <p>Temperature display:</p>
+    <p>37.1°C</p>
+    <p>37.2°C</p>
+    <p>37.3°C</p>
+    <p>Resolution may be:</p>
+    <p>0.1°C.</p>
+  </section>
+
+  <section class="content-box" id="resolution-is-not-accuracy">
+    <h3>Resolution Is Not Accuracy</h3>
+    <p>A device that displays:</p>
+    <p>37.123°C</p>
+    <p>is not automatically more accurate than one displaying:</p>
+    <p>37.1°C.</p>
+    <p>More decimal places do not guarantee a better measurement.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Display resolution:</p>
+    <p>0.1 mmHg.</p>
+    <p>Accuracy specification:</p>
+    <p>±3 mmHg.</p>
+    <p>The device may display very fine increments while still having a wider allowed error.</p>
+  </section>
+
+  <section class="content-box" id="repeatability">
+    <h3>Repeatability</h3>
+    <p>Repeatability describes how consistently the device produces the same result under the same conditions.</p>
+    <p>Example:</p>
+    <p>Apply the same 100 mmHg pressure five times.</p>
+    <p>Results:</p>
+    <p>100.1 100.0 100.2 100.1 100.0</p>
+    <p>Very repeatable.</p>
+    <p>But if the actual reference is:</p>
+    <p>110 mmHg</p>
+    <p>then the device is consistently wrong.</p>
+    <p>Repeatability and accuracy are different.</p>
+  </section>
+
+  <section class="content-box" id="precision">
+    <h3>Precision</h3>
+    <p>You may also see the term:</p>
+    <p><strong>Precision.</strong></p>
+    <p>Precision generally describes how closely repeated measurements agree with each other.</p>
+    <p>A system can be:</p>
+    <p>Precise but inaccurate.</p>
+    <p>Accurate on average but poorly repeatable.</p>
+    <p>The exact terminology depends on the manufacturer and measurement field.</p>
+  </section>
+
+  <section class="content-box" id="operating-specifications">
+    <h3>Operating Specifications</h3>
+    <p>Not all specifications are measurement accuracy.</p>
+    <p>Manufacturers may define:</p>
+    <ul>
+      <li>Input voltage</li>
+      <li>Power consumption</li>
+      <li>Operating temperature</li>
+      <li>Humidity</li>
+      <li>Altitude</li>
+      <li>Storage temperature</li>
+    </ul>
+    <p>These can explain environmental failures.</p>
+  </section>
+
+  <section class="content-box" id="example-operating-temperature">
+    <h3>Example: Operating Temperature</h3>
+    <p>Specification:</p>
+    <p>10°C to 40°C.</p>
+    <p>Device repeatedly fails in a location at:</p>
+    <p>45°C.</p>
+    <p>Now environmental conditions matter.</p>
+    <p>You cannot necessarily judge the device under conditions outside its specified operating range.</p>
+  </section>
+
+  <section class="content-box" id="storage-specifications">
+    <h3>Storage Specifications</h3>
+    <p>Storage limits may be wider than operating limits.</p>
+    <p>Example:</p>
+    <p>Operating:</p>
+    <p>10°C to 40°C.</p>
+    <p>Storage:</p>
+    <p>-20°C to 60°C.</p>
+    <p>That does not mean the device can safely operate at -20°C.</p>
+    <p>Read the correct category.</p>
+  </section>
+
+  <section class="content-box" id="power-specifications">
+    <h3>Power Specifications</h3>
+    <p>A device may specify:</p>
+    <p>Input:</p>
+    <p>100–240 VAC</p>
+    <p>50/60 Hz.</p>
+    <p>This tells you what AC source it is designed to accept.</p>
+    <p>It does not tell you the internal DC rails.</p>
+  </section>
+
+  <section class="content-box" id="current-and-power-ratings">
+    <h3>Current and Power Ratings</h3>
+    <p>You may see:</p>
+    <p>2 A maximum.</p>
+    <p>or:</p>
+    <p>120 W maximum.</p>
+    <p>These describe electrical demand or rating.</p>
+    <p>Do not confuse a maximum rating with normal operating current.</p>
+  </section>
+
+  <section class="content-box" id="battery-runtime-specifications">
+    <h3>Battery Runtime Specifications</h3>
+    <p>Battery runtime is especially dependent on test conditions.</p>
+    <p>A manufacturer may specify:</p>
+    <blockquote><p>120 minutes under typical operation with a new fully charged battery.</p></blockquote>
+    <p>That does not necessarily mean every battery should always deliver exactly two hours under every workload.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Battery age</li>
+      <li>Device mode</li>
+      <li>Display brightness</li>
+      <li>Modules</li>
+      <li>Test conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="minimum-vs-typical">
+    <h3>Minimum vs Typical</h3>
+    <p>This distinction matters.</p>
+    <p>Specification:</p>
+    <blockquote><p>Typical runtime: 4 hours.</p></blockquote>
+    <p>That is different from:</p>
+    <blockquote><p>Minimum runtime: 4 hours.</p></blockquote>
+    <p>Typical values may not be hard pass/fail limits.</p>
+  </section>
+
+  <section class="content-box" id="typical-specifications">
+    <h3>Typical Specifications</h3>
+    <p>Words like:</p>
+    <ul>
+      <li>Typical</li>
+      <li>Nominal</li>
+      <li>Approximately</li>
+    </ul>
+    <p>usually deserve attention.</p>
+    <p>They may indicate expected behavior rather than guaranteed tolerance.</p>
+    <p>Do not create your own pass/fail criterion from a typical value unless your procedure allows it.</p>
+  </section>
+
+  <section class="content-box" id="minimum-specifications">
+    <h3>Minimum Specifications</h3>
+    <p>Example:</p>
+    <p>Battery runtime:</p>
+    <p>Minimum 60 minutes.</p>
+    <p>Measured:</p>
+    <p>58 minutes.</p>
+    <p>That may be a clear fail if the procedure uses that minimum.</p>
+  </section>
+
+  <section class="content-box" id="maximum-specifications">
+    <h3>Maximum Specifications</h3>
+    <p>Example:</p>
+    <p>Leak rate:</p>
+    <p>Maximum 100 mL/min.</p>
+    <p>Measured:</p>
+    <p>125 mL/min.</p>
+    <p>Fail.</p>
+    <p>The direction of the specification matters.</p>
+  </section>
+
+  <section class="content-box" id="nominal-values">
+    <h3>Nominal Values</h3>
+    <p>Nominal means a named or approximate design value.</p>
+    <p>Example:</p>
+    <p>12 V battery.</p>
+    <p>Actual fully charged voltage may be higher than:</p>
+    <p>12.0 V.</p>
+    <p>Do not use nominal values as exact pass/fail limits unless instructed.</p>
+  </section>
+
+  <section class="content-box" id="test-conditions-matter">
+    <h3>Test Conditions Matter</h3>
+    <p>A specification may depend on:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Pressure</li>
+      <li>Humidity</li>
+      <li>Load</li>
+      <li>Patient mode</li>
+      <li>Accessory</li>
+      <li>Operating mode</li>
+    </ul>
+    <p>Read the notes around the table.</p>
+  </section>
+
+  <section class="content-box" id="example-ventilator-accuracy">
+    <h3>Example: Ventilator Accuracy</h3>
+    <p>Tidal volume specification may apply only under:</p>
+    <ul>
+      <li>Specific gas conditions</li>
+      <li>Certain flow range</li>
+      <li>Defined circuit</li>
+      <li>Standard temperature/pressure correction</li>
+    </ul>
+    <p>Using the wrong setup can create a false failure.</p>
+  </section>
+
+  <section class="content-box" id="test-point-matters">
+    <h3>Test Point Matters</h3>
+    <p>A specification may apply at one specific point.</p>
+    <p>Example:</p>
+    <p>Power supply output:</p>
+    <p>24 VDC ±5% at connector J3.</p>
+    <p>You measure:</p>
+    <p>22 V at a distant board.</p>
+    <p>That does not automatically prove the supply violates specification.</p>
+    <p>There may be voltage drop between those points.</p>
+    <p>Use the specified test location.</p>
+  </section>
+
+  <section class="content-box" id="input-vs-output-specifications">
+    <h3>Input vs Output Specifications</h3>
+    <p>Do not mix them.</p>
+    <p>Example:</p>
+    <p>Infusion pump programmed:</p>
+    <p>100 mL/hr.</p>
+    <p>Analyzer measures:</p>
+    <p>97 mL/hr.</p>
+    <p>You need the delivery accuracy specification.</p>
+    <p>Not the display resolution specification.</p>
+  </section>
+
+  <section class="content-box" id="alarm-specifications">
+    <h3>Alarm Specifications</h3>
+    <p>Alarm behavior may have specifications for:</p>
+    <ul>
+      <li>Threshold</li>
+      <li>Delay</li>
+      <li>Volume</li>
+      <li>Priority</li>
+    </ul>
+    <p>If testing an alarm, use the relevant alarm requirement.</p>
+    <p>Do not simply decide:</p>
+    <blockquote><p>It sounded close enough.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="alarm-delay-example">
+    <h3>Alarm Delay Example</h3>
+    <p>Manufacturer states:</p>
+    <p>Alarm activates within 10 seconds after threshold condition.</p>
+    <p>Measured:</p>
+    <p>6 seconds.</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>22 seconds.</p>
+    <p>May fail.</p>
+    <p>You need the expected timing before making the judgment.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-specifications">
+    <h3>Mechanical Specifications</h3>
+    <p>Mechanical equipment may specify:</p>
+    <ul>
+      <li>Maximum load</li>
+      <li>Travel distance</li>
+      <li>Position accuracy</li>
+      <li>Speed</li>
+      <li>Brake force</li>
+    </ul>
+    <p>Example:</p>
+    <p>Table longitudinal travel:</p>
+    <p>230 mm ±10 mm.</p>
+    <p>Use the actual specification for that movement.</p>
+  </section>
+
+  <section class="content-box" id="load-specifications">
+    <h3>Load Specifications</h3>
+    <p>A device may behave differently at different loads.</p>
+    <p>Example:</p>
+    <p>Power supply:</p>
+    <p>24 VDC ±5% at rated load.</p>
+    <p>If you measure it completely unloaded, you may not be testing the same condition.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-test-procedures-matter">
+    <h3>Manufacturer Test Procedures Matter</h3>
+    <p>A specification and a test procedure often belong together.</p>
+    <p>The specification tells you:</p>
+    <p><strong>What limit applies.</strong></p>
+    <p>The procedure tells you:</p>
+    <p><strong>How to measure it.</strong></p>
+    <p>Do not separate them casually.</p>
+  </section>
+
+  <section class="content-box" id="do-not-invent-your-own-test-setup">
+    <h3>Do Not Invent Your Own Test Setup</h3>
+    <p>If the manufacturer says:</p>
+    <ul>
+      <li>Use 500 mL test volume</li>
+      <li>Run for 60 minutes</li>
+      <li>Use specified test lung</li>
+    </ul>
+    <p>then changing those conditions may invalidate the comparison.</p>
+  </section>
+
+  <section class="content-box" id="test-equipment-accuracy-matters">
+    <h3>Test Equipment Accuracy Matters</h3>
+    <p>Suppose device tolerance is:</p>
+    <p>±1%.</p>
+    <p>Your analyzer uncertainty is:</p>
+    <p>±5%.</p>
+    <p>That analyzer may not be appropriate for proving the device meets specification.</p>
+    <p>Your reference needs to be capable of supporting the measurement.</p>
+  </section>
+
+  <section class="content-box" id="specification-vs-test-equipment-resolution">
+    <h3>Specification vs Test Equipment Resolution</h3>
+    <p>Example:</p>
+    <p>Required measurement:</p>
+    <p>10.00 V ±0.01 V.</p>
+    <p>Meter only displays:</p>
+    <p>10.0 V.</p>
+    <p>You may not have enough resolution to determine pass/fail reliably.</p>
+  </section>
+
+  <section class="content-box" id="compare-like-with-like">
+    <h3>Compare Like With Like</h3>
+    <p>Before comparing values, confirm:</p>
+    <ul>
+      <li>Same unit</li>
+      <li>Same test point</li>
+      <li>Same operating condition</li>
+      <li>Same correction method</li>
+      <li>Same measurement type</li>
+    </ul>
+    <p>Then apply the limit.</p>
+  </section>
+
+  <section class="content-box" id="example-simple-fixed-tolerance">
+    <h3>Example: Simple Fixed Tolerance</h3>
+    <p>Specification:</p>
+    <p>100 ±5 mmHg.</p>
+    <p>Acceptable range:</p>
+    <p>95 to 105 mmHg.</p>
+    <p>Measured:</p>
+    <p>103 mmHg.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="example-percentage-tolerance">
+    <h3>Example: Percentage Tolerance</h3>
+    <p>Specification:</p>
+    <p>±10%.</p>
+    <p>Set value:</p>
+    <p>50 mL.</p>
+    <p>Ten percent:</p>
+    <p>5 mL.</p>
+    <p>Acceptable:</p>
+    <p>45 to 55 mL.</p>
+    <p>Measured:</p>
+    <p>43 mL.</p>
+    <p>Fail.</p>
+  </section>
+
+  <section class="content-box" id="example-maximum-limit">
+    <h3>Example: Maximum Limit</h3>
+    <p>Leak:</p>
+    <p>Maximum 50 mL/min.</p>
+    <p>Measured:</p>
+    <p>48 mL/min.</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>51 mL/min.</p>
+    <p>Fail.</p>
+    <p>No plus/minus calculation needed.</p>
+  </section>
+
+  <section class="content-box" id="borderline-results">
+    <h3>Borderline Results</h3>
+    <p>Suppose limit is:</p>
+    <p>95 to 105.</p>
+    <p>Measurement:</p>
+    <p>105.0.</p>
+    <p>If the specification says inclusive, that may pass.</p>
+    <p>Measurement:</p>
+    <p>105.1.</p>
+    <p>That may fail.</p>
+    <p>Do not move the limit because the result is close.</p>
+  </section>
+
+  <section class="content-box" id="close-enough-is-not-a-specification">
+    <h3>“Close Enough” Is Not a Specification</h3>
+    <p>Avoid:</p>
+    <blockquote><p>It's only a little outside.</p></blockquote>
+    <p>If the required limit is:</p>
+    <p>±3 mmHg</p>
+    <p>and the result is:</p>
+    <p>+5 mmHg,</p>
+    <p>it is outside the specification.</p>
+    <p>Then follow the appropriate service procedure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-round-too-early">
+    <h3>Do Not Round Too Early</h3>
+    <p>Suppose actual measurement:</p>
+    <p>105.46.</p>
+    <p>Limit:</p>
+    <p>105.4.</p>
+    <p>Rounding to:</p>
+    <p>105</p>
+    <p>could incorrectly make it pass.</p>
+    <p>Keep enough precision until the comparison is complete.</p>
+  </section>
+
+  <section class="content-box" id="but-do-not-report-fake-precision">
+    <h3>But Do Not Report Fake Precision</h3>
+    <p>If your analyzer only measures to:</p>
+    <p>0.1</p>
+    <p>do not report:</p>
+    <p>100.037.</p>
+    <p>Use the precision supported by the test equipment.</p>
+  </section>
+
+  <section class="content-box" id="specification-tables">
+    <h3>Specification Tables</h3>
+    <p>Manufacturer tables may include several columns.</p>
+    <p>Example:</p>
+    <p>| Parameter | Range | Accuracy | Resolution | |---|---|---|---| | Pressure | 0–300 mmHg | ±3 mmHg | 1 mmHg |</p>
+    <p>Read across the correct row.</p>
+    <p>Do not confuse one column for another.</p>
+  </section>
+
+  <section class="content-box" id="footnotes-matter">
+    <h3>Footnotes Matter</h3>
+    <p>The table may say:</p>
+    <blockquote><p>*Accuracy applies above 50 mmHg.</p></blockquote>
+    <p>Below that, another specification may apply.</p>
+    <p>Always read footnotes.</p>
+  </section>
+
+  <section class="content-box" id="software-version-can-affect-specifications">
+    <h3>Software Version Can Affect Specifications</h3>
+    <p>Some performance characteristics or test methods may change with:</p>
+    <ul>
+      <li>Software version</li>
+      <li>Hardware revision</li>
+    </ul>
+    <p>Use documentation applicable to the device you are servicing.</p>
+  </section>
+
+  <section class="content-box" id="accessories-can-affect-specifications">
+    <h3>Accessories Can Affect Specifications</h3>
+    <p>A measurement specification may require:</p>
+    <ul>
+      <li>Approved sensor</li>
+      <li>Correct cable</li>
+      <li>Specific cuff</li>
+      <li>Correct circuit</li>
+    </ul>
+    <p>An incompatible accessory can make the device appear out of specification.</p>
+  </section>
+
+  <section class="content-box" id="example-nibp">
+    <h3>Example: NIBP</h3>
+    <p>Monitor fails accuracy test.</p>
+    <p>Before replacing NIBP board, verify:</p>
+    <ul>
+      <li>Analyzer setup</li>
+      <li>Hose</li>
+      <li>Connections</li>
+      <li>Correct test mode</li>
+    </ul>
+    <p>A leak in the test setup can create a false failure.</p>
+  </section>
+
+  <section class="content-box" id="example-defibrillator-energy">
+    <h3>Example: Defibrillator Energy</h3>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Measured:</p>
+    <p>196 J.</p>
+    <p>If specification is:</p>
+    <p>±15%,</p>
+    <p>the result is comfortably within tolerance.</p>
+    <p>Do not adjust equipment because the analyzer did not read exactly:</p>
+    <p>200.0 J.</p>
+  </section>
+
+  <section class="content-box" id="example-temperature">
+    <h3>Example: Temperature</h3>
+    <p>Reference:</p>
+    <p>37.0°C.</p>
+    <p>Device:</p>
+    <p>37.3°C.</p>
+    <p>Specification:</p>
+    <p>±0.2°C.</p>
+    <p>Fail.</p>
+    <p>Display resolution:</p>
+    <p>0.1°C.</p>
+    <p>The device can display fine increments and still be outside accuracy requirements.</p>
+  </section>
+
+  <section class="content-box" id="example-battery-runtime">
+    <h3>Example: Battery Runtime</h3>
+    <p>Requirement:</p>
+    <p>Minimum 60 minutes.</p>
+    <p>Actual:</p>
+    <p>63 minutes.</p>
+    <p>Pass under that test.</p>
+    <p>A result of:</p>
+    <p>59 minutes</p>
+    <p>is not:</p>
+    <blockquote><p>basically an hour.</p></blockquote>
+    <p>If 60 is the defined minimum, 59 is below it.</p>
+  </section>
+
+  <section class="content-box" id="example-ventilator-volume">
+    <h3>Example: Ventilator Volume</h3>
+    <p>Set:</p>
+    <p>500 mL.</p>
+    <p>Measured:</p>
+    <p>485 mL.</p>
+    <p>If allowed error is:</p>
+    <p>±10%,</p>
+    <p>acceptable range:</p>
+    <p>450 to 550 mL.</p>
+    <p>Pass.</p>
+    <p>Knowing the specification prevents unnecessary adjustment.</p>
+  </section>
+
+  <section class="content-box" id="specifications-help-prevent-over-repair">
+    <h3>Specifications Help Prevent Over-Repair</h3>
+    <p>Without limits, a technician may chase tiny differences.</p>
+    <p>Example:</p>
+    <p>Set:</p>
+    <p>100.</p>
+    <p>Measured:</p>
+    <p>99.</p>
+    <p>If tolerance is:</p>
+    <p>±5,</p>
+    <p>the device is already performing correctly.</p>
+    <p>Do not calibrate equipment simply because the values are not identical.</p>
+  </section>
+
+  <section class="content-box" id="specifications-also-prevent-under-repair">
+    <h3>Specifications Also Prevent Under-Repair</h3>
+    <p>The opposite problem:</p>
+    <blockquote><p>It looks close enough.</p></blockquote>
+    <p>If it is outside the required limit, it fails.</p>
+    <p>Specifications keep judgment objective.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-with-specifications">
+    <h3>Troubleshooting With Specifications</h3>
+    <p>Suppose a power rail should be:</p>
+    <p>5 VDC ±5%.</p>
+    <p>Acceptable:</p>
+    <p>4.75 to 5.25 V.</p>
+    <p>Measured:</p>
+    <p>4.1 V.</p>
+    <p>That gives you strong evidence of a power problem.</p>
+  </section>
+
+  <section class="content-box" id="verification-with-specifications">
+    <h3>Verification With Specifications</h3>
+    <p>After repair:</p>
+    <p>Measured:</p>
+    <p>5.02 V.</p>
+    <p>Within range.</p>
+    <p>Now you have objective evidence supporting the repair.</p>
+  </section>
+
+  <section class="content-box" id="specifications-are-not-diagnoses">
+    <h3>Specifications Are Not Diagnoses</h3>
+    <p>A failed specification tells you:</p>
+    <p><strong>Performance is outside the acceptable limit.</strong></p>
+    <p>It does not automatically tell you why.</p>
+    <p>Example:</p>
+    <p>Pressure accuracy fails.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Calibration</li>
+      <li>Leak</li>
+      <li>Electronics</li>
+    </ul>
+    <p>The failed test becomes the symptom you troubleshoot.</p>
+  </section>
+
+  <section class="content-box" id="do-not-adjust-first">
+    <h3>Do Not Adjust First</h3>
+    <p>If something fails specification, do not immediately calibrate.</p>
+    <p>First ask:</p>
+    <p><strong>Why is it out of specification?</strong></p>
+    <p>If a hose is leaking, calibration is not the right repair.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-power-supply">
+    <h3>Real-World Example: Power Supply</h3>
+    <p>Specification:</p>
+    <p>24 VDC ±5%.</p>
+    <p>Measured:</p>
+    <p>22.1 V.</p>
+    <p>Acceptable minimum:</p>
+    <p>22.8 V.</p>
+    <p>Fail.</p>
+    <p>Now investigate power supply or excessive load.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-infusion-pump">
+    <h3>Real-World Example: Infusion Pump</h3>
+    <p>Set:</p>
+    <p>100 mL/hr.</p>
+    <p>Analyzer:</p>
+    <p>96 mL/hr.</p>
+    <p>Manufacturer tolerance:</p>
+    <p>±5%.</p>
+    <p>Acceptable:</p>
+    <p>95 to 105 mL/hr.</p>
+    <p>Pass.</p>
+    <p>No adjustment needed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure">
+    <h3>Real-World Example: Pressure</h3>
+    <p>Reference:</p>
+    <p>200 mmHg.</p>
+    <p>Device:</p>
+    <p>194 mmHg.</p>
+    <p>Specification:</p>
+    <p>±3 mmHg.</p>
+    <p>Fail.</p>
+    <p>You now investigate the measurement path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery">
+    <h3>Real-World Example: Battery</h3>
+    <p>Runtime specification:</p>
+    <p>Minimum 90 minutes under defined test conditions.</p>
+    <p>Result:</p>
+    <p>45 minutes.</p>
+    <p>Battery charges to 100%.</p>
+    <p>The battery still fails the runtime requirement.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="confusing-range-with-accuracy">
+    <h3>Confusing Range With Accuracy</h3>
+    <p>They are different.</p>
+  </section>
+
+  <section class="content-box" id="confusing-resolution-with-accuracy">
+    <h3>Confusing Resolution With Accuracy</h3>
+    <p>More digits do not mean more correct.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-units">
+    <h3>Ignoring Units</h3>
+    <p>Convert first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-test-conditions">
+    <h3>Ignoring Test Conditions</h3>
+    <p>The specification may not apply.</p>
+  </section>
+
+  <section class="content-box" id="using-a-typical-value-as-a-hard-limit">
+    <h3>Using a Typical Value as a Hard Limit</h3>
+    <p>Read the wording.</p>
+  </section>
+
+  <section class="content-box" id="testing-at-the-wrong-point">
+    <h3>Testing at the Wrong Point</h3>
+    <p>Use the specified location.</p>
+  </section>
+
+  <section class="content-box" id="rounding-a-failing-result-into-a-pass">
+    <h3>Rounding a Failing Result Into a Pass</h3>
+    <p>Keep appropriate precision.</p>
+  </section>
+
+  <section class="content-box" id="chasing-perfect-numbers">
+    <h3>Chasing Perfect Numbers</h3>
+    <p>Within specification is usually the goal.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-specification-checklist">
+    <h3>A Useful Specification Checklist</h3>
+    <p>Before comparing a result, ask:</p>
+    <p><strong>What parameter am I testing?</strong></p>
+    <p><strong>What is the specified range?</strong></p>
+    <p><strong>What is the allowed error?</strong></p>
+    <p><strong>What units apply?</strong></p>
+    <p><strong>What test conditions are required?</strong></p>
+    <p><strong>Is this a minimum, maximum, typical, or tolerance?</strong></p>
+    <p><strong>Is my test equipment appropriate?</strong></p>
+    <p>Then compare.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Am I using the specification the manufacturer actually intended for this exact test?</strong></p>
+    <p>That can prevent a lot of false failures.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose a ventilator delivers:</p>
+    <p>500 mL</p>
+    <p>when set to:</p>
+    <p>500 mL.</p>
+    <p>You proved:</p>
+    <p><strong>The analyzer measured 500 mL under that test condition.</strong></p>
+    <p>You still need the specification to decide whether that result is acceptable.</p>
+    <p>Now suppose it delivers:</p>
+    <p>480 mL</p>
+    <p>and the allowed tolerance is:</p>
+    <p>±10%.</p>
+    <p>You proved:</p>
+    <p><strong>The measured output is within the manufacturer's allowed performance range at that test point.</strong></p>
+    <p>That is a meaningful verification.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Specifications turn:</p>
+    <blockquote><p>Looks good.</p></blockquote>
+    <p>into:</p>
+    <blockquote><p>Meets the required limit.</p></blockquote>
+    <p>They tell you what the manufacturer expects from the equipment.</p>
+    <p>But the number alone is not enough.</p>
+    <p>You need to know:</p>
+    <ul>
+      <li>What it applies to</li>
+      <li>Where it is measured</li>
+      <li>Under what conditions</li>
+      <li>Which units are used</li>
+      <li>What the actual pass/fail limit is</li>
+    </ul>
+    <p>Read the whole specification.</p>
+    <p>Read the footnotes.</p>
+    <p>Use the correct test setup.</p>
+    <p>Compare objectively.</p>
+    <p>And remember:</p>
+    <p>A specification tells you whether performance is acceptable.</p>
+    <p>It does not automatically tell you what part is bad.</p>
+    <p>That part still requires troubleshooting.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Device specifications, test methods, tolerances, environmental limits, and acceptance criteria vary by manufacturer, model, hardware revision, and software version. Use current manufacturer documentation and approved test equipment and procedures when making service, calibration, or return-to-service decisions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-read-a-medical-equipment-service-manual.html">How to Read a Medical Equipment Service Manual</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+      <li><a href="how-to-read-a-troubleshooting-flowchart.html">How to Read a Troubleshooting Flowchart</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
