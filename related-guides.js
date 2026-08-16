@@ -7,7 +7,7 @@ function normalizeLearningKey(value) {
     .replace(/^-+|-+$/g, "");
 }
 
-function findConfiguredArticleSlugs(currentGuide, learningMap) {
+function findConfiguredArticleSlugs(currentGuide, learningMap, assetHubData) {
   const guideSlug = currentGuide.url
     .split("/")
     .pop()
@@ -16,7 +16,11 @@ function findConfiguredArticleSlugs(currentGuide, learningMap) {
     .map(normalizeLearningKey)
     .join("--");
   const manufacturerKey = normalizeLearningKey(currentGuide.manufacturer);
-  const assetTypeKey = normalizeLearningKey(currentGuide.assetType);
+  const normalizedAssetType = normalizeLearningKey(currentGuide.assetType);
+  const assetRecord = assetHubData.find(asset =>
+    asset.name === currentGuide.assetType || asset.slug === normalizedAssetType
+  );
+  const assetTypeKey = assetRecord?.slug || normalizedAssetType;
 
   const lookups = [
     [learningMap.issueOverrides, guideSlug],
@@ -27,7 +31,16 @@ function findConfiguredArticleSlugs(currentGuide, learningMap) {
 
   for (const [mapping, key] of lookups) {
     if (mapping && Object.prototype.hasOwnProperty.call(mapping, key)) {
-      return Array.isArray(mapping[key]) ? mapping[key] : [];
+      const configuredValue = mapping[key];
+      if (Array.isArray(configuredValue)) return configuredValue;
+      if (
+        typeof configuredValue === "string" &&
+        learningMap.articleSets &&
+        Array.isArray(learningMap.articleSets[configuredValue])
+      ) {
+        return learningMap.articleSets[configuredValue];
+      }
+      return [];
     }
   }
 
@@ -49,8 +62,12 @@ function createLearningArticleLink(article) {
   return link;
 }
 
-function renderUnderstandBeforeTroubleshoot(currentGuide, learningMap, articles) {
-  const configuredSlugs = findConfiguredArticleSlugs(currentGuide, learningMap);
+function renderUnderstandBeforeTroubleshoot(currentGuide, learningMap, articles, assetHubData) {
+  const configuredSlugs = findConfiguredArticleSlugs(
+    currentGuide,
+    learningMap,
+    assetHubData
+  );
   if (!configuredSlugs.length) return;
 
   const articlesBySlug = new Map(
@@ -236,7 +253,8 @@ function loadRelatedGuides() {
       renderUnderstandBeforeTroubleshoot(
         currentGuide,
         learningMap && typeof learningMap === "object" ? learningMap : {},
-        Array.isArray(biomedArticles) ? biomedArticles : []
+        Array.isArray(biomedArticles) ? biomedArticles : [],
+        assetHubData
       );
 
       const related = allGuides.filter(g =>
