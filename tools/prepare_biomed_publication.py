@@ -30,9 +30,9 @@ RELATED = {
     "how-to-think-before-calling-a-vendor": ["how-experienced-biomeds-think-through-a-new-problem", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["medical-device-alarm-troubleshooting-fundamentals", "relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
-    "how-to-read-a-medical-equipment-service-manual": ["how-experienced-biomeds-think-through-a-new-problem", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor"],
+    "how-to-read-a-medical-equipment-service-manual": ["how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["environmental-causes-of-medical-equipment-failures", "what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means"],
-    "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
+    "how-to-use-a-multimeter-in-biomed": ["how-to-read-a-troubleshooting-flowchart", "medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
@@ -57,9 +57,10 @@ RELATED = {
     "how-to-verify-a-repair-before-returning-equipment-to-service": ["the-troubleshooting-process-observe-isolate-test-verify", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service", "when-to-trust-the-device-s-internal-self-test", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-to-troubleshoot-communication-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment"],
     "how-to-troubleshoot-charging-problems": ["medical-equipment-battery-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
-    "the-troubleshooting-process-observe-isolate-test-verify": ["how-experienced-biomeds-think-through-a-new-problem", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "why-changing-one-thing-at-a-time-matters", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "the-troubleshooting-process-observe-isolate-test-verify": ["how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "why-changing-one-thing-at-a-time-matters"],
     "the-difference-between-a-symptom-cause-and-root-cause": ["the-troubleshooting-process-observe-isolate-test-verify", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-avoid-confirmation-bias-while-troubleshooting", "why-changing-one-thing-at-a-time-matters", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-experienced-biomeds-think-through-a-new-problem": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-read-a-medical-equipment-service-manual", "what-known-good-actually-means", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-think-before-calling-a-vendor"],
+    "how-to-read-a-troubleshooting-flowchart": ["how-to-read-a-medical-equipment-service-manual", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-trust-the-device-s-internal-self-test"],
 }
 
 ARTICLE_CONFIG = {
@@ -273,6 +274,12 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Start Here",
         "cardNote": "A practical mindset for unfamiliar problems",
+    },
+    "how-to-read-a-troubleshooting-flowchart": {
+        "description": "A practical guide to following troubleshooting trees, evaluating decision points, respecting test conditions, and understanding what each branch proves.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Flowchart decisions and test logic",
     },
 }
 
