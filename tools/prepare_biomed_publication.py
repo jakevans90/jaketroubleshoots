@@ -95,6 +95,7 @@ RELATED = {
     "how-medical-gas-sampling-systems-work": ["how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-to-troubleshoot-medical-device-accessories"],
     "how-an-anesthesia-machine-performs-a-leak-test": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-medical-equipment-measures-pressure", "how-medical-gas-sampling-systems-work", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-to-become-a-biomedical-equipment-technician": ["biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "what-degree-do-you-need-to-become-a-biomed": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -512,6 +513,12 @@ ARTICLE_CONFIG = {
         "category": "Career",
         "badge": "Career Guide",
         "cardNote": "Education, skills, and entry-level career paths",
+    },
+    "what-degree-do-you-need-to-become-a-biomed": {
+        "description": "A practical guide to BMET degrees, electronics programs, military training, certificates, and other educational paths into the biomed profession.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "Degrees, training, and entry paths for future biomeds",
     },
 }
 
