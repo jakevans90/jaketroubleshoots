@@ -378,7 +378,7 @@ function renderPmPreviewCards(containerId, procedures) {
 
         <p class="pm-safety"><strong>Electrical Safety:</strong> ${pm.requiresElectricalSafety ? 'Included' : 'Not specified'}</p>
 
-        <p class="date">Added: ${pm.dateAdded}</p>
+        <p class="date"><em>Last Revision: ${pm.lastRevision || pm.dateAdded}</em></p>
       </div>
     `;
 
@@ -391,8 +391,8 @@ function renderFeaturedBiomedArticles(articles) {
   if (!container) return;
 
   const featured = [...articles]
-    .filter(article => article.featured === true)
-    .sort((a, b) => (a.featuredOrder || 999) - (b.featuredOrder || 999))
+    .filter(article => article.lastRevision)
+    .sort((a, b) => new Date(b.lastRevision) - new Date(a.lastRevision) || a.title.localeCompare(b.title))
     .slice(0, 3);
 
   container.innerHTML = '';
@@ -405,7 +405,8 @@ function renderFeaturedBiomedArticles(articles) {
         <h3>${article.title}</h3>
         <p>${article.description}</p>
         <div class="badges"><span class="badge asset">${article.category}</span><span class="badge model">${article.badge}</span></div>
-        <p class="date">${article.cardNote}</p>
+        <p class="basics-card-note">${article.cardNote}</p>
+        <p class="date"><em>Last Revision: ${article.lastRevision}</em></p>
       </div>`;
     container.appendChild(card);
   });

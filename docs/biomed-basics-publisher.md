@@ -8,7 +8,7 @@ Run the sample dry run:
 python tools/analyze_biomed_basic.py incoming-biomed-basics/new-article.md
 ```
 
-The preferred input uses a small YAML-style front matter block. `title` is required. `slug` is optional and otherwise derived from the title. `description`, `category`, `badge`, and `cardNote` capture the metadata used by current article pages and landing-page cards. The remainder is the reviewed article Markdown. A raw pasted draft with a leading `# Title` is also accepted for analysis; its slug and first prose paragraph are inferred, and missing card metadata is reported for later review.
+The preferred input uses a small YAML-style front matter block. `title` is required. `slug` is optional and otherwise derived from the title. `description`, `category`, `badge`, `cardNote`, and `lastRevision` capture the metadata used by current article pages and landing-page cards. Use `YYYY-MM-DD` for `lastRevision`. The remainder is the reviewed article Markdown. A raw pasted draft with a leading `# Title` is also accepted for analysis; its slug and first prose paragraph are inferred, and missing card metadata is reported for later review.
 
 The report identifies the proposed flat HTML path (`biomed-basics/<slug>.html`), the card update to `biomed-basics.html`, and the canonical sitemap entry. It also checks exact title/slug conflicts and ranks existing articles with shared topic words as candidate inbound and outbound links. Those links are suggestions for editorial review; this version does not edit them.
 

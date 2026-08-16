@@ -339,7 +339,8 @@ function createBiomedCard(article) {
         <h3>${escapeBiomedText(article.title)}</h3>
         <p>${escapeBiomedText(article.description)}</p>
         <div class="badges"><span class="badge asset">${escapeBiomedText(article.category)}</span><span class="badge model">${escapeBiomedText(article.badge)}</span></div>
-        <p class="date">${escapeBiomedText(article.cardNote)}</p>
+        <p class="basics-card-note">${escapeBiomedText(article.cardNote)}</p>
+        <p class="date"><em>Last Revision: ${escapeBiomedText(article.lastRevision)}</em></p>
       </div>
     </a>`;
 }
@@ -349,7 +350,7 @@ function renderBiomedArticles() {
   const count = document.getElementById('biomed-article-count');
   const query = (document.getElementById('biomed-search')?.value || '').trim().toLowerCase();
   const filtered = allBiomedArticles.filter(article =>
-    [article.title, article.description, article.category, article.badge, article.cardNote]
+    [article.title, article.description, article.category, article.badge, article.cardNote, article.lastRevision]
       .join(' ').toLowerCase().includes(query)
   );
 

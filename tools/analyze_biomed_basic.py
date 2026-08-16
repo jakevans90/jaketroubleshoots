@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://jaketroubleshoots.com"
 REQUIRED_FIELDS = {"title"}
-ALLOWED_FIELDS = {"title", "slug", "description", "category", "badge", "cardNote"}
+ALLOWED_FIELDS = {"title", "slug", "description", "category", "badge", "cardNote", "lastRevision"}
 STOP_WORDS = {
     "about", "after", "also", "and", "appear", "are", "basics", "before", "biomed",
     "biomedical", "biomeds", "can", "current", "equipment", "exactly", "english", "for", "from", "how", "into", "its",
