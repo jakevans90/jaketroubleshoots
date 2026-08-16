@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Sidestream CO2 Monitoring Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how sampling lines, water traps, pumps, infrared measurement, zeroing, and software produce EtCO2 values and capnograms.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-sidestream-co2-monitoring-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How Sidestream CO2 Monitoring Works</h2>
+  <p>How a capnography module pulls a gas sample through the sampling line, measures carbon dioxide, and turns it into an EtCO2 value and capnogram</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Sidestream CO2 monitoring is common across:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What sidestream CO2 means</li>
+      <li>What EtCO2 measures</li>
+      <li>The capnogram</li>
+      <li>Gas sampling</li>
+      <li>Sampling lines</li>
+      <li>Water traps</li>
+      <li>Filters</li>
+      <li>Sampling pumps</li>
+      <li>Infrared CO2 measurement</li>
+      <li>Zeroing</li>
+      <li>Occlusion detection</li>
+      <li>Leaks</li>
+      <li>Moisture</li>
+      <li>Flow problems</li>
+      <li>Response time</li>
+      <li>Simulator and test-gas testing</li>
+      <li>Common failure patterns</li>
+      <li>How to think through sidestream CO2 troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A sidestream CO2 system generally works like this:</p>
+    <p><strong>Patient exhales</strong></p>
+    <p>↓</p>
+    <p><strong>Sampling line pulls a small gas sample</strong></p>
+    <p>↓</p>
+    <p><strong>Sample travels through tubing and moisture protection</strong></p>
+    <p>↓</p>
+    <p><strong>Internal pump maintains sample flow</strong></p>
+    <p>↓</p>
+    <p><strong>Gas enters the CO2 measurement chamber</strong></p>
+    <p>↓</p>
+    <p><strong>Infrared light passes through the sample</strong></p>
+    <p>↓</p>
+    <p><strong>CO2 absorbs part of the infrared light</strong></p>
+    <p>↓</p>
+    <p><strong>Detector measures the change</strong></p>
+    <p>↓</p>
+    <p><strong>Monitor calculates CO2 concentration</strong></p>
+    <p>↓</p>
+    <p><strong>Software displays the capnogram and EtCO2</strong></p>
+    <p>That means there are really two major systems to troubleshoot:</p>
+    <p><strong>Gas delivery to the sensor</strong></p>
+    <p>and:</p>
+    <p><strong>CO2 measurement itself.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-co2-monitoring">
+    <h3>What Is CO2 Monitoring?</h3>
+    <p>Capnography measures carbon dioxide in respiratory gas over time.</p>
+    <p>The monitor can display:</p>
+    <ul>
+      <li>CO2 waveform</li>
+      <li>Respiratory rate</li>
+      <li>End-tidal CO2</li>
+    </ul>
+    <p>The waveform is called a:</p>
+    <p><strong>Capnogram.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-etco2">
+    <h3>What Is EtCO2?</h3>
+    <p>EtCO2 means:</p>
+    <p><strong>End-Tidal Carbon Dioxide.</strong></p>
+    <p>It represents the measured CO2 concentration or partial pressure near the end of exhalation.</p>
+    <p>It is commonly displayed in:</p>
+    <ul>
+      <li>mmHg</li>
+      <li>kPa</li>
+      <li>Percentage</li>
+    </ul>
+    <p>depending on device configuration.</p>
+  </section>
+
+  <section class="content-box" id="the-capnogram">
+    <h3>The Capnogram</h3>
+    <p>The capnogram shows CO2 concentration over the respiratory cycle.</p>
+    <p>A typical waveform includes:</p>
+    <ul>
+      <li>Inspiratory baseline</li>
+      <li>Expiratory upstroke</li>
+      <li>Alveolar plateau</li>
+      <li>End-tidal point</li>
+      <li>Inspiratory downstroke</li>
+    </ul>
+    <p>The shape itself contains useful information.</p>
+    <p>For a biomed, waveform shape can also help distinguish:</p>
+    <p><strong>No gas sample</strong></p>
+    <p>from:</p>
+    <p><strong>Bad measurement</strong></p>
+    <p>from:</p>
+    <p><strong>Actual respiratory pattern.</strong></p>
+  </section>
+
+  <section class="content-box" id="sidestream-vs-mainstream-co2">
+    <h3>Sidestream vs Mainstream CO2</h3>
+    <p>There are two common approaches.</p>
+    <h4>Sidestream</h4>
+    <p>Gas is physically pulled away from the airway through tubing and measured elsewhere.</p>
+    <h4>Mainstream</h4>
+    <p>The CO2 sensor measures gas directly at the airway adapter.</p>
+    <p>This article focuses on sidestream.</p>
+  </section>
+
+  <section class="content-box" id="the-sampling-line">
+    <h3>The Sampling Line</h3>
+    <p>The sampling line is one of the most important parts of the system.</p>
+    <p>It carries respiratory gas from the patient interface to the CO2 analyzer.</p>
+    <p>Possible problems include:</p>
+    <ul>
+      <li>Kink</li>
+      <li>Occlusion</li>
+      <li>Crack</li>
+      <li>Loose connection</li>
+      <li>Fluid contamination</li>
+    </ul>
+    <p>Because the line is external and frequently handled, it should be one of the first things checked.</p>
+  </section>
+
+  <section class="content-box" id="small-tubing-means-small-problems-matter">
+    <h3>Small Tubing Means Small Problems Matter</h3>
+    <p>Sidestream sampling lines have relatively small internal passages.</p>
+    <p>That means a small amount of:</p>
+    <ul>
+      <li>Water</li>
+      <li>Mucus</li>
+      <li>Debris</li>
+    </ul>
+    <p>can significantly restrict flow.</p>
+    <p>A line can look normal externally and still be blocked internally.</p>
+  </section>
+
+  <section class="content-box" id="sampling-flow">
+    <h3>Sampling Flow</h3>
+    <p>The system pulls gas at a controlled flow rate.</p>
+    <p>The exact rate depends on the manufacturer and technology.</p>
+    <p>The sample flow needs to be sufficient to:</p>
+    <ul>
+      <li>Continuously bring fresh gas to the sensor</li>
+      <li>Maintain predictable response time</li>
+      <li>Support accurate measurement</li>
+    </ul>
+    <p>Too little flow can cause:</p>
+    <ul>
+      <li>Delayed waveform</li>
+      <li>No waveform</li>
+      <li>Occlusion alarms</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-sampling-pump">
+    <h3>The Sampling Pump</h3>
+    <p>A small internal pump typically creates the negative pressure needed to pull the sample through the line.</p>
+    <p>The pump may run continuously while CO2 monitoring is active.</p>
+  </section>
+
+  <section class="content-box" id="pump-running-does-not-mean-flow-is-good">
+    <h3>Pump Running Does Not Mean Flow Is Good</h3>
+    <p>You may hear the pump.</p>
+    <p>That proves:</p>
+    <p><strong>The pump motor appears to be operating.</strong></p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Correct flow exists</li>
+      <li>Sampling line is open</li>
+      <li>Pump is strong enough</li>
+      <li>Gas reaches the sensor</li>
+    </ul>
+    <p>Always separate pump operation from actual sample flow.</p>
+  </section>
+
+  <section class="content-box" id="weak-sampling-pump">
+    <h3>Weak Sampling Pump</h3>
+    <p>A worn pump may still run but produce insufficient flow.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Slow response</li>
+      <li>Intermittent CO2</li>
+      <li>Occlusion errors</li>
+      <li>Failure with longer sampling lines</li>
+    </ul>
+    <p>Use the manufacturer's flow or pressure test when available.</p>
+  </section>
+
+  <section class="content-box" id="water-trap">
+    <h3>Water Trap</h3>
+    <p>Many sidestream systems include a water trap.</p>
+    <p>Respiratory gas contains moisture.</p>
+    <p>The water trap helps prevent that moisture from entering the internal gas-analysis system.</p>
+  </section>
+
+  <section class="content-box" id="why-moisture-matters">
+    <h3>Why Moisture Matters</h3>
+    <p>Condensation can:</p>
+    <ul>
+      <li>Block the sampling path</li>
+      <li>Damage components</li>
+      <li>Contaminate the measurement chamber</li>
+    </ul>
+    <p>The water trap is not just an accessory.</p>
+    <p>It is part of the protective sampling system.</p>
+  </section>
+
+  <section class="content-box" id="water-trap-full">
+    <h3>Water Trap Full</h3>
+    <p>A full or saturated water trap may cause:</p>
+    <ul>
+      <li>Occlusion</li>
+      <li>Reduced sample flow</li>
+      <li>No CO2 waveform</li>
+    </ul>
+    <p>Replace or service it according to manufacturer instructions.</p>
+  </section>
+
+  <section class="content-box" id="water-trap-recognition">
+    <h3>Water Trap Recognition</h3>
+    <p>Some systems detect whether the water trap is installed correctly.</p>
+    <p>If the device reports:</p>
+    <blockquote><p>Water Trap Missing</p></blockquote>
+    <p>the problem may involve:</p>
+    <ul>
+      <li>Trap</li>
+      <li>Seating</li>
+      <li>Sensor/switch</li>
+      <li>Connector</li>
+    </ul>
+    <p>Do not assume the CO2 measurement sensor itself has failed.</p>
+  </section>
+
+  <section class="content-box" id="filters">
+    <h3>Filters</h3>
+    <p>The sampling system may include filters to protect internal components.</p>
+    <p>A contaminated filter can restrict flow.</p>
+    <p>This can produce symptoms similar to:</p>
+    <ul>
+      <li>Weak pump</li>
+      <li>Blocked line</li>
+    </ul>
+    <p>Again, think about the entire gas path.</p>
+  </section>
+
+  <section class="content-box" id="internal-tubing">
+    <h3>Internal Tubing</h3>
+    <p>After the external sampling line, gas may travel through internal tubing.</p>
+    <p>Possible failures include:</p>
+    <ul>
+      <li>Crack</li>
+      <li>Disconnection</li>
+      <li>Pinch</li>
+      <li>Contamination</li>
+    </ul>
+    <p>If known-good external accessories do not solve the problem, move inward.</p>
+  </section>
+
+  <section class="content-box" id="leaks">
+    <h3>Leaks</h3>
+    <p>Sidestream systems rely on controlled gas flow.</p>
+    <p>A leak can allow room air into the sample.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Cracked sampling line</li>
+      <li>Loose connector</li>
+      <li>Damaged water trap</li>
+      <li>Internal tubing leak</li>
+    </ul>
+    <p>A leak can dilute the sample.</p>
+  </section>
+
+  <section class="content-box" id="leak-example">
+    <h3>Leak Example</h3>
+    <p>Known test gas:</p>
+    <p>5% CO2.</p>
+    <p>Monitor consistently reads much lower.</p>
+    <p>If room air is entering through a leak, the sample reaching the sensor may contain less CO2 than expected.</p>
+    <p>Before calibrating the sensor, check the gas path.</p>
+  </section>
+
+  <section class="content-box" id="occlusion">
+    <h3>Occlusion</h3>
+    <p>An occlusion restricts sample flow.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Kinked sampling line</li>
+      <li>Water</li>
+      <li>Mucus</li>
+      <li>Blocked filter</li>
+      <li>Pinched internal tubing</li>
+    </ul>
+    <p>The device may detect abnormal pressure or flow and display an occlusion message.</p>
+  </section>
+
+  <section class="content-box" id="co2-occlusion-is-a-symptom">
+    <h3>“CO2 Occlusion” Is a Symptom</h3>
+    <p>It tells you:</p>
+    <p><strong>The system believes the sampling path is restricted.</strong></p>
+    <p>It does not tell you where.</p>
+    <p>Start at the patient end and work inward.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-sampling-line">
+    <h3>Start With the Sampling Line</h3>
+    <p>If the device reports an occlusion:</p>
+    <p>Remove or replace the external sampling line according to the manufacturer procedure.</p>
+    <p>If the alarm clears:</p>
+    <p>The restriction was likely external.</p>
+    <p>If it remains:</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Water trap</li>
+      <li>Filter</li>
+      <li>Internal path</li>
+      <li>Pump</li>
+      <li>Occlusion sensing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="infrared-measurement">
+    <h3>Infrared Measurement</h3>
+    <p>Once the gas reaches the measurement chamber, CO2 is commonly measured using infrared absorption.</p>
+    <p>Carbon dioxide absorbs infrared light at characteristic wavelengths.</p>
+    <p>The analyzer uses this property to estimate how much CO2 is present.</p>
+  </section>
+
+  <section class="content-box" id="the-basic-optical-path">
+    <h3>The Basic Optical Path</h3>
+    <p>Inside the analyzer:</p>
+    <p><strong>Infrared source</strong></p>
+    <p>↓</p>
+    <p><strong>Gas sample</strong></p>
+    <p>↓</p>
+    <p><strong>Optical detector</strong></p>
+    <p>The device compares how much light reaches the detector.</p>
+    <p>More CO2 changes the amount of infrared energy transmitted through the sample.</p>
+  </section>
+
+  <section class="content-box" id="why-this-works">
+    <h3>Why This Works</h3>
+    <p>Different gases interact with infrared light differently.</p>
+    <p>The analyzer is designed to detect absorption associated with CO2.</p>
+    <p>The exact optical design and compensation algorithms vary by manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="optical-chamber-contamination">
+    <h3>Optical Chamber Contamination</h3>
+    <p>If contamination reaches the measurement chamber, it can interfere with optical measurement.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Zeroing failure</li>
+      <li>Incorrect readings</li>
+      <li>Calibration failure</li>
+    </ul>
+    <p>Do not open or clean optical components unless manufacturer procedures specifically allow it.</p>
+  </section>
+
+  <section class="content-box" id="zeroing">
+    <h3>Zeroing</h3>
+    <p>CO2 analyzers need a reference for:</p>
+    <p><strong>zero CO2.</strong></p>
+    <p>Depending on the system, zeroing may occur:</p>
+    <ul>
+      <li>Automatically</li>
+      <li>During startup</li>
+      <li>Periodically</li>
+      <li>Through a service procedure</li>
+    </ul>
+    <p>The analyzer needs to know what the optical signal looks like without CO2 present.</p>
+  </section>
+
+  <section class="content-box" id="room-air-and-zeroing">
+    <h3>Room Air and Zeroing</h3>
+    <p>Room air contains a small amount of CO2.</p>
+    <p>Some systems account for this automatically.</p>
+    <p>Others use specific zeroing methods.</p>
+    <p>Follow manufacturer instructions rather than assuming:</p>
+    <blockquote><p>Expose it to room air and press zero.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="zeroing-failure">
+    <h3>Zeroing Failure</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Contaminated gas path</li>
+      <li>CO2 still present during zero</li>
+      <li>Optical problem</li>
+      <li>Pump/flow problem</li>
+      <li>Sensor fault</li>
+    </ul>
+    <p>A zero failure does not automatically mean the sensor must be replaced.</p>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>Calibration</h3>
+    <p>Some CO2 systems require calibration using:</p>
+    <ul>
+      <li>Known calibration gas</li>
+      <li>Specific concentration</li>
+      <li>Defined procedure</li>
+    </ul>
+    <p>Calibration adjusts the relationship between the optical measurement and known CO2 concentration.</p>
+  </section>
+
+  <section class="content-box" id="do-not-calibrate-around-a-pneumatic-problem">
+    <h3>Do Not Calibrate Around a Pneumatic Problem</h3>
+    <p>Suppose:</p>
+    <p>Known 5% CO2 gas.</p>
+    <p>Monitor reads:</p>
+    <p>3%.</p>
+    <p>Before calibration, verify:</p>
+    <ul>
+      <li>No leaks</li>
+      <li>Correct gas</li>
+      <li>Correct flow</li>
+      <li>Sampling path intact</li>
+    </ul>
+    <p>If room air is leaking into the sample, calibration is not the repair.</p>
+  </section>
+
+  <section class="content-box" id="test-gas">
+    <h3>Test Gas</h3>
+    <p>Known-concentration test gas can provide a controlled reference.</p>
+    <p>Example:</p>
+    <p>5% CO2.</p>
+    <p>The monitor should display a value within the applicable manufacturer tolerance.</p>
+    <p>Use the specified gas and regulator setup.</p>
+  </section>
+
+  <section class="content-box" id="gas-concentration-vs-partial-pressure">
+    <h3>Gas Concentration vs Partial Pressure</h3>
+    <p>CO2 may be expressed as:</p>
+    <ul>
+      <li>Percentage</li>
+      <li>mmHg</li>
+      <li>kPa</li>
+    </ul>
+    <p>These are related but not interchangeable without considering pressure and conversion.</p>
+    <p>Use the same units required by the test procedure.</p>
+  </section>
+
+  <section class="content-box" id="atmospheric-pressure">
+    <h3>Atmospheric Pressure</h3>
+    <p>Some CO2 measurements are affected by barometric pressure.</p>
+    <p>Systems may include compensation for:</p>
+    <ul>
+      <li>Altitude</li>
+      <li>Atmospheric pressure</li>
+    </ul>
+    <p>The exact behavior varies.</p>
+    <p>If accuracy problems occur after environmental or configuration changes, check the manufacturer's compensation requirements.</p>
+  </section>
+
+  <section class="content-box" id="response-time">
+    <h3>Response Time</h3>
+    <p>Sidestream systems have transport delay.</p>
+    <p>The gas must physically travel through the sampling line before reaching the sensor.</p>
+    <p>That creates a delay between:</p>
+    <p><strong>Breath at the patient</strong></p>
+    <p>and:</p>
+    <p><strong>Waveform at the monitor.</strong></p>
+  </section>
+
+  <section class="content-box" id="longer-sampling-line">
+    <h3>Longer Sampling Line</h3>
+    <p>A longer line may increase:</p>
+    <ul>
+      <li>Transport delay</li>
+      <li>Resistance</li>
+    </ul>
+    <p>Use approved sampling accessories.</p>
+    <p>Do not assume any small tubing is equivalent.</p>
+  </section>
+
+  <section class="content-box" id="response-too-slow">
+    <h3>Response Too Slow</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Restricted line</li>
+      <li>Weak pump</li>
+      <li>Incorrect tubing</li>
+      <li>Contaminated filter</li>
+    </ul>
+    <p>If the waveform is delayed or sluggish, think about sample flow.</p>
+  </section>
+
+  <section class="content-box" id="respiratory-rate">
+    <h3>Respiratory Rate</h3>
+    <p>The monitor can calculate respiratory rate from the repeating CO2 waveform.</p>
+    <p>If the capnogram is missing or distorted, the respiratory rate may also be wrong.</p>
+    <p>Do not troubleshoot the rate calculation before checking the waveform.</p>
+  </section>
+
+  <section class="content-box" id="no-capnogram">
+    <h3>No Capnogram</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>No respiratory gas reaching line</li>
+      <li>Disconnected line</li>
+      <li>Occlusion</li>
+      <li>Pump failure</li>
+      <li>Water trap problem</li>
+      <li>Sensor failure</li>
+    </ul>
+    <p>Ask:</p>
+    <p><strong>Is sample flow present?</strong></p>
+  </section>
+
+  <section class="content-box" id="flat-zero-co2">
+    <h3>Flat Zero CO2</h3>
+    <p>If the monitor displays:</p>
+    <p>0 mmHg</p>
+    <p>with a flat waveform, possible explanations include:</p>
+    <ul>
+      <li>Room air being sampled</li>
+      <li>Sampling line disconnected</li>
+      <li>No exhaled gas reaching system</li>
+      <li>Measurement failure</li>
+    </ul>
+    <p>Context matters.</p>
+  </section>
+
+  <section class="content-box" id="co2-reading-but-no-waveform">
+    <h3>CO2 Reading but No Waveform</h3>
+    <p>If a numerical value appears but the waveform is absent, consider:</p>
+    <ul>
+      <li>Display configuration</li>
+      <li>Processing</li>
+      <li>Waveform settings</li>
+    </ul>
+    <p>The measurement path may be functioning.</p>
+  </section>
+
+  <section class="content-box" id="waveform-but-wrong-value">
+    <h3>Waveform but Wrong Value</h3>
+    <p>If the capnogram shape is stable but the numerical CO2 value is incorrect on known test gas, investigate:</p>
+    <ul>
+      <li>Test setup</li>
+      <li>Leak</li>
+      <li>Calibration</li>
+      <li>Sensor accuracy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="intermittent-co2">
+    <h3>Intermittent CO2</h3>
+    <p>Intermittent problems commonly come from:</p>
+    <ul>
+      <li>Sampling line movement</li>
+      <li>Moisture</li>
+      <li>Loose water trap</li>
+      <li>Weak pump</li>
+      <li>Intermittent internal tubing</li>
+    </ul>
+    <p>Try to reproduce the condition.</p>
+  </section>
+
+  <section class="content-box" id="water-movement">
+    <h3>Water Movement</h3>
+    <p>A small amount of condensation can move within the sampling line.</p>
+    <p>That can create an intermittent restriction.</p>
+    <p>The device may alternate between:</p>
+    <ul>
+      <li>Normal</li>
+      <li>Occluded</li>
+      <li>Normal</li>
+    </ul>
+    <p>A line replacement may immediately isolate it.</p>
+  </section>
+
+  <section class="content-box" id="sampling-line-connection">
+    <h3>Sampling Line Connection</h3>
+    <p>Some connectors require proper seating to open an internal pneumatic path.</p>
+    <p>A line that looks connected may not be fully seated.</p>
+    <p>Inspect:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Latch</li>
+      <li>Seal</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="known-good-accessory-testing">
+    <h3>Known-Good Accessory Testing</h3>
+    <p>Original sampling line:</p>
+    <p>Occlusion.</p>
+    <p>Known-good line:</p>
+    <p>Normal.</p>
+    <p>Original line on another compatible system:</p>
+    <p>Occlusion.</p>
+    <p>Failure follows the line.</p>
+    <p>Strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-device">
+    <h3>Failure Stays With Device</h3>
+    <p>Original line:</p>
+    <p>Fails.</p>
+    <p>Known-good line:</p>
+    <p>Also fails.</p>
+    <p>Both lines work elsewhere.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Water trap</li>
+      <li>Internal path</li>
+      <li>Pump</li>
+      <li>Sensor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pump-vs-restriction">
+    <h3>Pump vs Restriction</h3>
+    <p>Suppose flow is low.</p>
+    <p>Possible explanations:</p>
+    <p><strong>Pump cannot pull strongly enough</strong></p>
+    <p>or:</p>
+    <p><strong>Something is restricting the path.</strong></p>
+    <p>One measurement alone may not distinguish them.</p>
+    <p>Follow the service procedure for:</p>
+    <ul>
+      <li>Vacuum</li>
+      <li>Flow</li>
+      <li>Occlusion testing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pump-vs-leak">
+    <h3>Pump vs Leak</h3>
+    <p>A pump may run normally but a leak prevents the correct sample from reaching the analyzer.</p>
+    <p>Again:</p>
+    <p><strong>Gas movement</strong></p>
+    <p>and:</p>
+    <p><strong>Gas integrity</strong></p>
+    <p>are different.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-confusion">
+    <h3>Mainstream Confusion</h3>
+    <p>If a device uses a mainstream CO2 sensor, much of the sampling-line troubleshooting does not apply.</p>
+    <p>Always identify the CO2 technology first.</p>
+  </section>
+
+  <section class="content-box" id="disposable-vs-reusable-accessories">
+    <h3>Disposable vs Reusable Accessories</h3>
+    <p>Some systems use:</p>
+    <ul>
+      <li>Disposable sampling lines</li>
+      <li>Reusable water traps</li>
+      <li>Specialized cannulas</li>
+    </ul>
+    <p>Compatibility matters.</p>
+    <p>Using the wrong accessory can affect:</p>
+    <ul>
+      <li>Flow</li>
+      <li>Moisture handling</li>
+      <li>Accuracy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="nasal-cannula-sampling">
+    <h3>Nasal Cannula Sampling</h3>
+    <p>A nasal CO2 cannula collects exhaled gas near the patient's nose.</p>
+    <p>If positioned poorly, it may sample excessive room air.</p>
+    <p>That can produce low or inconsistent EtCO2 without any monitor failure.</p>
+  </section>
+
+  <section class="content-box" id="oxygen-delivery-cannulas">
+    <h3>Oxygen Delivery Cannulas</h3>
+    <p>Some cannulas combine:</p>
+    <ul>
+      <li>CO2 sampling</li>
+      <li>Oxygen delivery</li>
+    </ul>
+    <p>Gas flow around the sampling site can affect the sample.</p>
+    <p>Use the accessory as designed.</p>
+  </section>
+
+  <section class="content-box" id="intubated-sampling">
+    <h3>Intubated Sampling</h3>
+    <p>For intubated patients, gas may be sampled through an airway adapter.</p>
+    <p>Check for:</p>
+    <ul>
+      <li>Moisture</li>
+      <li>Blockage</li>
+      <li>Connection</li>
+    </ul>
+    <p>The sample path still matters.</p>
+  </section>
+
+  <section class="content-box" id="capnogram-shape">
+    <h3>Capnogram Shape</h3>
+    <p>A capnogram can provide clues about:</p>
+    <ul>
+      <li>Sampling integrity</li>
+      <li>Respiratory pattern</li>
+      <li>Obstruction</li>
+    </ul>
+    <p>But clinical waveform interpretation is different from equipment troubleshooting.</p>
+    <p>Biomed testing should use controlled sources when determining whether the device itself is functioning.</p>
+  </section>
+
+  <section class="content-box" id="slow-upstroke">
+    <h3>Slow Upstroke</h3>
+    <p>A slow or distorted waveform can come from:</p>
+    <ul>
+      <li>Respiratory condition</li>
+      <li>Restricted sampling path</li>
+    </ul>
+    <p>On the bench, if a known-good simulator or gas source produces a distorted waveform, investigate the equipment.</p>
+  </section>
+
+  <section class="content-box" id="baseline-does-not-return-to-zero">
+    <h3>Baseline Does Not Return to Zero</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Rebreathing in clinical use</li>
+      <li>Contaminated sample</li>
+      <li>Measurement problem</li>
+    </ul>
+    <p>Again, controlled testing helps separate clinical physiology from equipment behavior.</p>
+  </section>
+
+  <section class="content-box" id="sample-gas-exhaust">
+    <h3>Sample Gas Exhaust</h3>
+    <p>After measurement, sampled gas must go somewhere.</p>
+    <p>Some systems exhaust it:</p>
+    <ul>
+      <li>To room</li>
+      <li>Into a scavenging connection</li>
+    </ul>
+    <p>depending on application.</p>
+    <p>On anesthesia equipment, sample-gas return and scavenging configuration may matter.</p>
+  </section>
+
+  <section class="content-box" id="anesthesia-applications">
+    <h3>Anesthesia Applications</h3>
+    <p>An anesthesia gas module may measure more than CO2.</p>
+    <p>It may also analyze:</p>
+    <ul>
+      <li>O2</li>
+      <li>N2O</li>
+      <li>Volatile anesthetic agents</li>
+    </ul>
+    <p>The gas sampling system becomes even more important because one blocked line can affect multiple measured gases.</p>
+  </section>
+
+  <section class="content-box" id="multiple-gas-values-missing">
+    <h3>Multiple Gas Values Missing</h3>
+    <p>If:</p>
+    <ul>
+      <li>CO2</li>
+      <li>Agent</li>
+      <li>N2O</li>
+    </ul>
+    <p>all disappear together, consider the shared sample path before assuming multiple sensors failed.</p>
+  </section>
+
+  <section class="content-box" id="shared-failure-points">
+    <h3>Shared Failure Points</h3>
+    <p>Shared components may include:</p>
+    <ul>
+      <li>Sampling line</li>
+      <li>Water trap</li>
+      <li>Pump</li>
+      <li>Internal pneumatic path</li>
+    </ul>
+    <p>One failure can remove several gas measurements.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-co2-occlusion">
+    <h3>Real-World Example: CO2 Occlusion</h3>
+    <p>Monitor reports:</p>
+    <blockquote><p>CO2 Occlusion.</p></blockquote>
+    <p>Sampling line replaced.</p>
+    <p>Alarm immediately clears.</p>
+    <p>Original line contains visible moisture.</p>
+    <p>The monitor was working correctly.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-capnogram">
+    <h3>Real-World Example: No Capnogram</h3>
+    <p>Known-good sampling line:</p>
+    <p>No waveform.</p>
+    <p>No sample flow detected.</p>
+    <p>Pump can be heard running.</p>
+    <p>Service flow test:</p>
+    <p>Below specification.</p>
+    <p>Pump motor runs but cannot provide adequate flow.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-co2-reading">
+    <h3>Real-World Example: Low CO2 Reading</h3>
+    <p>Known 5% test gas.</p>
+    <p>Monitor:</p>
+    <p>3%.</p>
+    <p>Sampling flow appears normal.</p>
+    <p>Inspect line:</p>
+    <p>Cracked near connector.</p>
+    <p>Room air enters the sample and dilutes the gas.</p>
+    <p>Replacing the line restores correct reading.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-zero-failure">
+    <h3>Real-World Example: Zero Failure</h3>
+    <p>Module repeatedly fails zero.</p>
+    <p>Known-good sampling line and water trap installed.</p>
+    <p>Gas path confirmed clear.</p>
+    <p>Zero procedure still fails.</p>
+    <p>Now investigate the measurement module according to manufacturer service documentation.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-intermittent-occlusion">
+    <h3>Real-World Example: Intermittent Occlusion</h3>
+    <p>System operates normally.</p>
+    <p>Sampling line moved.</p>
+    <p>Occlusion alarm appears.</p>
+    <p>Line repositioned.</p>
+    <p>Alarm clears.</p>
+    <p>Internal kink in disposable line.</p>
+    <p>Failure follows the accessory.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-multiple-gas-measurements-lost">
+    <h3>Real-World Example: Multiple Gas Measurements Lost</h3>
+    <p>Anesthesia gas module loses:</p>
+    <ul>
+      <li>CO2</li>
+      <li>Agent</li>
+      <li>N2O</li>
+    </ul>
+    <p>at the same time.</p>
+    <p>Instead of assuming three measurement channels failed, check the shared sampling system.</p>
+    <p>Blocked water trap prevents gas from reaching the analyzer.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="replacing-the-co2-module-before-checking-the-sampling-line">
+    <h3>Replacing the CO2 Module Before Checking the Sampling Line</h3>
+    <p>Start outside.</p>
+  </section>
+
+  <section class="content-box" id="assuming-pump-noise-means-sample-flow-is-good">
+    <h3>Assuming Pump Noise Means Sample Flow Is Good</h3>
+    <p>Measure or verify flow.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-around-a-leak">
+    <h3>Calibrating Around a Leak</h3>
+    <p>Fix the gas path first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-moisture">
+    <h3>Ignoring Moisture</h3>
+    <p>Small amounts can block small tubing.</p>
+  </section>
+
+  <section class="content-box" id="treating-an-occlusion-message-as-the-diagnosis">
+    <h3>Treating an Occlusion Message as the Diagnosis</h3>
+    <p>Find where the restriction is.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-the-water-trap">
+    <h3>Ignoring the Water Trap</h3>
+    <p>It is part of the sampling system.</p>
+  </section>
+
+  <section class="content-box" id="confusing-sidestream-and-mainstream-troubleshooting">
+    <h3>Confusing Sidestream and Mainstream Troubleshooting</h3>
+    <p>Identify the technology.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-respiratory-rate-before-fixing-the-capnogram">
+    <h3>Troubleshooting Respiratory Rate Before Fixing the Capnogram</h3>
+    <p>Rate depends on the waveform.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For sidestream CO2, ask:</p>
+    <p><strong>Is the sampling line connected and open?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is gas actually flowing through the system?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the sample reaching the sensor without leaks or dilution?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can the analyzer zero correctly?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does known CO2 test gas measure within specification?</strong></p>
+    <p>That separates the system into logical stages.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a gas-delivery problem or a gas-measurement problem?</strong></p>
+    <p>That distinction can save a lot of unnecessary parts replacement.</p>
+    <p>If the sample never reaches the sensor correctly, the sensor cannot give you a correct result.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the pump runs, you proved:</p>
+    <p><strong>The pump motor appears to operate.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Correct sample flow</li>
+      <li>No restriction</li>
+      <li>No leak</li>
+      <li>Gas reaches the sensor</li>
+    </ul>
+    <p>If known test gas reaches the module through the complete sampling path and the monitor measures it within specification, you have much stronger evidence that:</p>
+    <ul>
+      <li>Sampling path</li>
+      <li>Pump</li>
+      <li>Measurement system</li>
+    </ul>
+    <p>are functioning under that test condition.</p>
+    <p>Each test proves another layer.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Sidestream CO2 troubleshooting becomes much easier when you remember one thing:</p>
+    <p><strong>The gas has to physically reach the sensor.</strong></p>
+    <p>Before worrying about calibration or replacing a CO2 module, follow the gas.</p>
+    <p>Start at the patient connection.</p>
+    <p>Check the sampling line.</p>
+    <p>Check the water trap.</p>
+    <p>Check for moisture.</p>
+    <p>Check for restriction.</p>
+    <p>Verify sample flow.</p>
+    <p>Look for leaks.</p>
+    <p>Then evaluate the CO2 measurement itself.</p>
+    <p>The system is basically:</p>
+    <p><strong>Sample → Move → Measure → Calculate → Display.</strong></p>
+    <p>Find where that chain breaks, and the failure becomes much easier to isolate.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>CO2 sampling rates, water-trap designs, zeroing methods, calibration requirements, test-gas concentrations, atmospheric compensation, accessories, and acceptance limits vary by manufacturer and model. Follow current manufacturer service documentation, use approved sampling accessories and test equipment, and complete required verification before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-nibp-works-in-a-patient-monitor.html">How NIBP Works in a Patient Monitor</a></li>
+      <li><a href="how-spo2-measurement-works.html">How SpO2 Measurement Works</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
