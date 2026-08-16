@@ -18,7 +18,7 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 RELATED = {
     "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
     "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
-    "functional-testing-vs-calibration-vs-verification": ["how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed"],
+    "functional-testing-vs-calibration-vs-verification": ["tolerance-vs-accuracy", "how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means"],
     "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-battery-basics": ["medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "basic-networking-for-medical-equipment": ["how-to-troubleshoot-communication-failures", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english"],
@@ -32,7 +32,7 @@ RELATED = {
     "nurse-call-integration-basics": ["medical-device-alarm-troubleshooting-fundamentals", "relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
     "how-to-read-a-medical-equipment-service-manual": ["how-to-read-device-specifications", "how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["environmental-causes-of-medical-equipment-failures", "what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means"],
-    "how-to-use-a-multimeter-in-biomed": ["how-to-read-a-troubleshooting-flowchart", "medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "electrical-safety-testing-medical-equipment"],
+    "how-to-use-a-multimeter-in-biomed": ["tolerance-vs-accuracy", "how-to-read-a-troubleshooting-flowchart", "medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "electrical-safety-testing-medical-equipment"],
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
@@ -64,7 +64,8 @@ RELATED = {
     "ac-vs-dc-power-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "ground-neutral-and-hot-in-medical-equipment", "fuses-breakers-and-power-supplies-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
     "analog-vs-digital-signals": ["sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "medical-device-batteries-runtime-capacity-and-state-of-health": ["medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-verify-a-repair-before-returning-equipment-to-service"],
-    "how-to-read-device-specifications": ["how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-read-a-troubleshooting-flowchart", "how-to-use-a-multimeter-in-biomed"],
+    "how-to-read-device-specifications": ["tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-read-a-troubleshooting-flowchart"],
+    "tolerance-vs-accuracy": ["how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed", "how-to-verify-a-repair-before-returning-equipment-to-service", "voltage-current-resistance-and-continuity-in-plain-english"],
 }
 
 ARTICLE_CONFIG = {
@@ -308,6 +309,12 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Core Skill",
         "cardNote": "Specifications, conditions, and test limits",
+    },
+    "tolerance-vs-accuracy": {
+        "description": "A practical guide to distinguishing measurement accuracy from allowable tolerance and calculating defensible pass/fail limits for medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Accuracy, tolerance, and pass/fail math",
     },
 }
 
