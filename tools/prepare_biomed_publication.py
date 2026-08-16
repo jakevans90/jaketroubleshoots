@@ -36,7 +36,7 @@ RELATED = {
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
-    "sensors-and-transducers-basics": ["analog-vs-digital-signals", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
+    "sensors-and-transducers-basics": ["how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "voltage-current-resistance-and-continuity-in-plain-english"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -50,7 +50,7 @@ RELATED = {
     "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
-    "medical-device-alarm-troubleshooting-fundamentals": ["sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "medical-device-alarm-troubleshooting-fundamentals": ["how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
     "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
@@ -64,10 +64,11 @@ RELATED = {
     "ac-vs-dc-power-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "ground-neutral-and-hot-in-medical-equipment", "fuses-breakers-and-power-supplies-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
     "analog-vs-digital-signals": ["sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "medical-device-batteries-runtime-capacity-and-state-of-health": ["medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-verify-a-repair-before-returning-equipment-to-service"],
-    "how-to-read-device-specifications": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification", "how-to-read-a-troubleshooting-flowchart"],
+    "how-to-read-device-specifications": ["how-nibp-works-in-a-patient-monitor", "how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification"],
     "tolerance-vs-accuracy": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
     "how-to-compare-your-test-result-to-manufacturer-specification": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "pass-fail-limits-and-why-the-test-point-matters": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-nibp-works-in-a-patient-monitor": ["sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-read-device-specifications", "pass-fail-limits-and-why-the-test-point-matters", "how-to-troubleshoot-medical-device-accessories"],
 }
 
 ARTICLE_CONFIG = {
@@ -330,6 +331,12 @@ ARTICLE_CONFIG = {
         "badge": "Core Skill",
         "cardNote": "Test points, limits, and range behavior",
     },
+    "how-nibp-works-in-a-patient-monitor": {
+        "description": "A practical explanation of how cuffs, pumps, valves, pressure sensors, oscillations, and software work together during an NIBP measurement.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The NIBP pneumatic and measurement path",
+    },
 }
 
 
@@ -513,6 +520,8 @@ def replace_related(source: str, replacement: str) -> str:
 
 def biomed_group(category: str) -> str:
     normalized = category.casefold()
+    if "how it works" in normalized:
+        return "how-it-works"
     if any(word in normalized for word in ("network", "integration", "imaging", "dicom")):
         return "connected-systems"
     if any(word in normalized for word in ("career", "communication", "terminology")):

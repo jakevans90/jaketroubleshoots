@@ -170,7 +170,11 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Tolerance vs Accuracy", planned)
         self.assertNotIn("How to Compare Your Test Result to Manufacturer Specification", planned)
         self.assertNotIn("Pass/Fail Limits and Why the Test Point Matters", planned)
-        self.assertIn("<strong>67</strong>", planned)
+        self.assertNotIn("How NIBP Works in a Patient Monitor", planned)
+        self.assertIn("How SpO2 Measurement Works", planned)
+        self.assertIn("How an Anesthesia Vaporizer Works", planned)
+        self.assertIn("How Temperature Probes and Thermistors Work", planned)
+        self.assertIn("<strong>101</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -212,6 +216,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "tolerance-vs-accuracy": "Tolerance Creates the Pass/Fail Window",
             "how-to-compare-your-test-result-to-manufacturer-specification": "Apply the Limit Before Looking at the Result",
             "pass-fail-limits-and-why-the-test-point-matters": "Multiple Points Reveal Error Patterns",
+            "how-nibp-works-in-a-patient-monitor": "Oscillometric Measurement",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -225,7 +230,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 52)
+        self.assertEqual(len(catalog), 53)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
@@ -233,7 +238,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             self.assertTrue((ROOT / item["url"]).is_file())
             self.assertIn(item["group"], {
                 "start-here", "everyday-skills", "connected-systems",
-                "career-communication", "troubleshooting-safety",
+                "career-communication", "troubleshooting-safety", "how-it-works",
             })
         landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
         self.assertIn("fetch('data/biomed-basics.json')", landing)
@@ -256,6 +261,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertIn("<strong>1</strong>", cleaned)
 
     def test_new_article_categories_map_to_landing_page_groups(self):
+        self.assertEqual(biomed_group("How It Works"), "how-it-works")
         self.assertEqual(biomed_group("Integration"), "connected-systems")
         self.assertEqual(biomed_group("Electrical Safety"), "start-here")
         self.assertEqual(biomed_group("Safety & Risk"), "troubleshooting-safety")

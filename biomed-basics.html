@@ -51,11 +51,12 @@
   </p>
 
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">
-    Learn biomedical equipment terminology, electrical safety testing, functional testing, batteries, documentation, networking basics, EMRs, device integration, DICOM, PACS, resume basics, and practical troubleshooting concepts.
+    Learn biomedical equipment terminology, how common device systems work, electrical and functional testing, batteries, documentation, networking, integration, and practical troubleshooting concepts.
   </p>
 
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
     <a href="#start-here" class="hero-button">Start Here</a>
+    <a href="#how-it-works-articles" class="hero-button">How It Works</a>
     <a href="guides.html" class="hero-button">Troubleshooting Guides</a>
     <a href="preventive-maintenance.html" class="hero-button">PM Procedures</a>
     <a href="search.html" class="hero-button">Guide Search</a>
@@ -88,7 +89,7 @@
     <p class="section-kicker">Start Here</p>
     <h3>Biomed Basics Articles</h3>
     <p>
-      Practical explanations of the concepts that show up in troubleshooting, preventive maintenance, documentation, and day-to-day clinical engineering work.
+      Practical explanations of how medical equipment works and the concepts behind troubleshooting, preventive maintenance, documentation, and day-to-day clinical engineering work.
     </p>
   </div>
 
@@ -127,8 +128,8 @@
         <h3>Planned Topics</h3>
         <p>Explore the practical, plain-English articles currently planned for Biomed Basics.</p>
       </div>
-      <div class="planned-topic-count" aria-label="67 planned articles">
-        <strong>67</strong>
+      <div class="planned-topic-count" aria-label="101 planned articles">
+        <strong>101</strong>
         <span>topics planned</span>
       </div>
     </div>
@@ -146,6 +147,46 @@
       <section class="planned-topic-card">
         <h4>Electrical &amp; Electronics</h4>
         <ul>
+        </ul>
+      </section>
+
+      <section class="planned-topic-card">
+        <h4>How Medical Equipment Works</h4>
+        <ul>
+      <li>How SpO2 Measurement Works</li>
+      <li>How ECG Acquisition Works</li>
+      <li>How Sidestream CO2 Monitoring Works</li>
+      <li>How Ventilator Flow Sensors Work</li>
+      <li>How Ventilator Pressure Sensors Work</li>
+      <li>How Medical Equipment Measures Pressure</li>
+      <li>How Medical Equipment Measures Flow</li>
+      <li>How Invasive Blood Pressure Monitoring Works</li>
+      <li>How Oxygen Sensors Work in Ventilators and Anesthesia Machines</li>
+      <li>How an Anesthesia Machine Breathing System Works</li>
+      <li>How Anesthesia Waste Gas Scavenging Works</li>
+      <li>How a Ventilator Measures Tidal Volume</li>
+      <li>How PEEP Is Generated and Controlled</li>
+      <li>How Infusion Pump Occlusion Detection Works</li>
+      <li>How Infusion Pumps Measure or Control Flow</li>
+      <li>How Defibrillators Charge and Deliver Energy</li>
+      <li>How Medical Device Batteries Charge and Communicate</li>
+      <li>How Smart Batteries Communicate With Medical Equipment</li>
+      <li>How Parameter Modules Communicate With Host Monitors</li>
+      <li>How Patient Monitors Communicate With Central Stations</li>
+      <li>How ECG Lead-Off Detection Works</li>
+      <li>How Mainstream CO2 Monitoring Works</li>
+      <li>How Medical Gas Sampling Systems Work</li>
+      <li>How an Anesthesia Machine Performs a Leak Test</li>
+      <li>How an Anesthesia Vaporizer Works</li>
+      <li>How Electronic Flow Control Works in an Anesthesia Machine</li>
+      <li>How Syringe Pump Drive Systems Work</li>
+      <li>How Defibrillator Pacing Works</li>
+      <li>How Nurse Call Relay Outputs Work</li>
+      <li>How Touchscreens Work in Medical Equipment</li>
+      <li>How Medical Device Cooling Systems Work</li>
+      <li>How Device Self-Tests Detect Failures</li>
+      <li>How Optical Sensors Work in Medical Equipment</li>
+      <li>How Temperature Probes and Thermistors Work</li>
         </ul>
       </section>
 
@@ -300,10 +341,11 @@
 <script>
 const biomedGroups = [
   { id: 'start-here', number: '01', title: 'Start Here', description: 'Foundational concepts for understanding the field, testing, and service work.' },
-  { id: 'everyday-skills', number: '02', title: 'Everyday Biomed Skills', description: 'Documentation, batteries, and the practical skills used across the shop.' },
-  { id: 'connected-systems', number: '03', title: 'Connected Systems', description: 'Networking, EMRs, imaging, messaging, and clinical-system integration.' },
-  { id: 'career-communication', number: '04', title: 'Career & Communication', description: 'Explaining the work clearly—to employers, clinical staff, and other teams.' },
-  { id: 'troubleshooting-safety', number: '05', title: 'Troubleshooting & Safety', description: 'Making sound service decisions, gathering evidence, and managing risk.' }
+  { id: 'how-it-works', number: '02', title: 'How It Works', description: 'Plain-English system paths that connect components, signals, software, and clinical measurements.' },
+  { id: 'everyday-skills', number: '03', title: 'Everyday Biomed Skills', description: 'Documentation, batteries, and the practical skills used across the shop.' },
+  { id: 'connected-systems', number: '04', title: 'Connected Systems', description: 'Networking, EMRs, imaging, messaging, and clinical-system integration.' },
+  { id: 'career-communication', number: '05', title: 'Career & Communication', description: 'Explaining the work clearly—to employers, clinical staff, and other teams.' },
+  { id: 'troubleshooting-safety', number: '06', title: 'Troubleshooting & Safety', description: 'Making sound service decisions, gathering evidence, and managing risk.' }
 ];
 
 let allBiomedArticles = [];
@@ -341,7 +383,7 @@ function renderBiomedArticles() {
       .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true }));
     if (!articles.length) return '';
     return `
-      <section class="biomed-article-group" data-biomed-group-section="${group.id}">
+      <section class="biomed-article-group" id="${group.id}-articles" data-biomed-group-section="${group.id}">
         <div class="article-category-heading">
           <div><span>${group.number}</span><h3>${escapeBiomedText(group.title)}</h3><b>${articles.length}</b></div>
           <p>${escapeBiomedText(group.description)}</p>
