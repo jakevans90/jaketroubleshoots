@@ -1,4 +1,97 @@
 // related-guides.js
+function normalizeLearningKey(value) {
+  return (value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function findConfiguredArticleSlugs(currentGuide, learningMap) {
+  const guideSlug = currentGuide.url
+    .split("/")
+    .pop()
+    .replace(/\.html(?:\?.*)?$/, "");
+  const modelKey = [currentGuide.manufacturer, currentGuide.model]
+    .map(normalizeLearningKey)
+    .join("--");
+  const manufacturerKey = normalizeLearningKey(currentGuide.manufacturer);
+  const assetTypeKey = normalizeLearningKey(currentGuide.assetType);
+
+  const lookups = [
+    [learningMap.issueOverrides, guideSlug],
+    [learningMap.modelOverrides, modelKey],
+    [learningMap.manufacturerOverrides, manufacturerKey],
+    [learningMap.assetTypeDefaults, assetTypeKey]
+  ];
+
+  for (const [mapping, key] of lookups) {
+    if (mapping && Object.prototype.hasOwnProperty.call(mapping, key)) {
+      return Array.isArray(mapping[key]) ? mapping[key] : [];
+    }
+  }
+
+  return [];
+}
+
+function createLearningArticleLink(article) {
+  const link = document.createElement("a");
+  link.className = "understand-basics-link";
+  link.href = "/" + article.url.replace(/^\//, "");
+
+  const title = document.createElement("strong");
+  title.textContent = article.title;
+
+  const note = document.createElement("span");
+  note.textContent = article.cardNote || article.category || "Biomed Basics";
+
+  link.append(title, note);
+  return link;
+}
+
+function renderUnderstandBeforeTroubleshoot(currentGuide, learningMap, articles) {
+  const configuredSlugs = findConfiguredArticleSlugs(currentGuide, learningMap);
+  if (!configuredSlugs.length) return;
+
+  const articlesBySlug = new Map(
+    articles.map(article => [article.slug, article])
+  );
+  const matchedArticles = configuredSlugs
+    .map(slug => articlesBySlug.get(slug))
+    .filter(Boolean)
+    .slice(0, 5);
+
+  if (!matchedArticles.length) return;
+
+  const guideMain = document.querySelector("main");
+  if (!guideMain) return;
+
+  const helpsHeading = Array.from(guideMain.querySelectorAll("h2"))
+    .find(heading => heading.textContent.trim() === "What This Guide Helps With");
+  if (!helpsHeading) return;
+
+  const section = document.createElement("section");
+  section.className = "understand-before-troubleshoot";
+  section.setAttribute("aria-labelledby", "understand-before-troubleshoot-title");
+
+  const heading = document.createElement("h2");
+  heading.id = "understand-before-troubleshoot-title";
+  heading.textContent = "Understand Before You Troubleshoot";
+
+  const blurb = document.createElement("p");
+  blurb.textContent =
+    "Before troubleshooting this equipment, these Biomed Basics articles may provide helpful background:";
+
+  const links = document.createElement("div");
+  links.className = "understand-basics-links";
+  matchedArticles.forEach(article =>
+    links.appendChild(createLearningArticleLink(article))
+  );
+
+  section.append(heading, blurb, links);
+  helpsHeading.before(section);
+}
+
 function renderModelSpecificPm(currentGuide, pmProcedures, assetHubData) {
   const exactPm = pmProcedures.find(pm =>
     pm.manufacturer === currentGuide.manufacturer &&
@@ -109,9 +202,15 @@ function loadRelatedGuides() {
     fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json()),
     fetch("/data/preventive-maintenance.json?v=" + Date.now())
       .then(res => res.ok ? res.json() : [])
+      .catch(() => []),
+    fetch("/data/troubleshooting-learning-map.json?v=" + Date.now())
+      .then(res => res.ok ? res.json() : {})
+      .catch(() => ({})),
+    fetch("/data/biomed-basics.json?v=" + Date.now())
+      .then(res => res.ok ? res.json() : [])
       .catch(() => [])
   ])
-    .then(([allGuides, assetHubData, pmProcedures]) => {
+    .then(([allGuides, assetHubData, pmProcedures, learningMap, biomedArticles]) => {
       const currentGuide = allGuides.find(g => {
         const guideFile = g.url.split("/").pop().replace(".html", "");
         return (
@@ -132,6 +231,12 @@ function loadRelatedGuides() {
         currentGuide,
         Array.isArray(pmProcedures) ? pmProcedures : [],
         assetHubData
+      );
+
+      renderUnderstandBeforeTroubleshoot(
+        currentGuide,
+        learningMap && typeof learningMap === "object" ? learningMap : {},
+        Array.isArray(biomedArticles) ? biomedArticles : []
       );
 
       const related = allGuides.filter(g =>
