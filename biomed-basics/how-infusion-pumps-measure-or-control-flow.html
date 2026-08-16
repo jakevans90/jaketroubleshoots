@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Infusion Pumps Measure or Control Flow | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how infusion pumps turn motor movement into fluid delivery and why programmed rate can differ from measured output.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-infusion-pumps-measure-or-control-flow.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How Infusion Pumps Measure or Control Flow</h2>
+  <p>How infusion pumps turn motor movement into fluid delivery and why the programmed rate is not always the same as measured output</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">An infusion pump may be programmed to deliver:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Programmed rate versus actual flow</li>
+      <li>Volumetric infusion pumps</li>
+      <li>Peristaltic pumping mechanisms</li>
+      <li>Cassette-based systems</li>
+      <li>Syringe pumps</li>
+      <li>Motor and encoder control</li>
+      <li>Stepper motors</li>
+      <li>Plunger movement</li>
+      <li>Tubing geometry</li>
+      <li>Flow estimation</li>
+      <li>Infusion analyzers</li>
+      <li>Gravimetric testing</li>
+      <li>Flow-rate errors</li>
+      <li>Backpressure effects</li>
+      <li>Common failure patterns</li>
+      <li>How to think through infusion-flow troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A typical infusion pump works like this:</p>
+    <p><strong>User programs a flow rate</strong></p>
+    <p>↓</p>
+    <p><strong>Software calculates required pump movement</strong></p>
+    <p>↓</p>
+    <p><strong>Motor drives pumping mechanism</strong></p>
+    <p>↓</p>
+    <p><strong>Mechanism moves fluid through tubing or syringe</strong></p>
+    <p>↓</p>
+    <p><strong>Pump tracks motor/mechanism position</strong></p>
+    <p>↓</p>
+    <p><strong>Software assumes a corresponding delivered volume</strong></p>
+    <p>The important point is:</p>
+    <p><strong>The pump may know what it commanded and how far the mechanism moved, but it may not directly know exactly how much fluid actually reached the patient.</strong></p>
+    <p>That is why external flow verification matters.</p>
+  </section>
+
+  <section class="content-box" id="programmed-flow-vs-measured-flow">
+    <h3>Programmed Flow vs Measured Flow</h3>
+    <p>Suppose the pump is programmed:</p>
+    <p>100 mL/hr.</p>
+    <p>That number is the:</p>
+    <p><strong>Commanded delivery rate.</strong></p>
+    <p>It does not automatically prove actual delivery is:</p>
+    <p>100 mL/hr.</p>
+  </section>
+
+  <section class="content-box" id="why-external-verification-matters">
+    <h3>Why External Verification Matters</h3>
+    <p>During PM or troubleshooting, an infusion-device analyzer can measure the actual output independently.</p>
+    <p>Then you can compare:</p>
+    <p><strong>Programmed rate</strong></p>
+    <p>with:</p>
+    <p><strong>Measured rate.</strong></p>
+  </section>
+
+  <section class="content-box" id="volumetric-infusion-pumps">
+    <h3>Volumetric Infusion Pumps</h3>
+    <p>A volumetric pump typically moves fluid through flexible administration tubing.</p>
+    <p>Common pumping mechanisms include:</p>
+    <ul>
+      <li>Linear peristaltic</li>
+      <li>Rotary peristaltic</li>
+      <li>Cassette-based</li>
+    </ul>
+    <p>The exact design varies.</p>
+  </section>
+
+  <section class="content-box" id="peristaltic-pumping">
+    <h3>Peristaltic Pumping</h3>
+    <p>A peristaltic mechanism compresses flexible tubing in a sequence.</p>
+    <p>Imagine several fingers pressing along the tubing one after another.</p>
+    <p>As one section compresses and the next releases, fluid moves forward.</p>
+  </section>
+
+  <section class="content-box" id="linear-peristaltic-pump">
+    <h3>Linear Peristaltic Pump</h3>
+    <p>A linear peristaltic pump may have several pumping fingers arranged along a straight section of tubing.</p>
+    <p>They move in sequence.</p>
+    <p>This creates a traveling compression pattern.</p>
+  </section>
+
+  <section class="content-box" id="rotary-peristaltic-pump">
+    <h3>Rotary Peristaltic Pump</h3>
+    <p>A rotary design may use rollers rotating around a circular path.</p>
+    <p>The rollers compress the tubing and push fluid forward.</p>
+  </section>
+
+  <section class="content-box" id="the-tubing-is-part-of-the-pumping-system">
+    <h3>The Tubing Is Part of the Pumping System</h3>
+    <p>This is extremely important.</p>
+    <p>The administration set is not just:</p>
+    <blockquote><p>A hose carrying fluid.</p></blockquote>
+    <p>Its physical properties can affect delivered volume.</p>
+    <p>Those properties include:</p>
+    <ul>
+      <li>Internal diameter</li>
+      <li>Wall thickness</li>
+      <li>Elasticity</li>
+      <li>Material</li>
+    </ul>
+    <p>That is why pumps may require specific approved sets.</p>
+  </section>
+
+  <section class="content-box" id="wrong-tubing-can-change-flow">
+    <h3>Wrong Tubing Can Change Flow</h3>
+    <p>If the tubing geometry is different from what the pump expects, each pumping cycle may move a different amount of fluid.</p>
+    <p>The motor can operate perfectly while actual delivery is wrong.</p>
+  </section>
+
+  <section class="content-box" id="worn-tubing">
+    <h3>Worn Tubing</h3>
+    <p>Tubing may deform during extended pumping.</p>
+    <p>Depending on design, that may affect:</p>
+    <ul>
+      <li>Flow accuracy</li>
+      <li>Occlusion behavior</li>
+    </ul>
+    <p>Follow the manufacturer's set-change and testing requirements.</p>
+  </section>
+
+  <section class="content-box" id="cassette-based-pumps">
+    <h3>Cassette-Based Pumps</h3>
+    <p>Some pumps use a disposable cassette.</p>
+    <p>The cassette may contain:</p>
+    <ul>
+      <li>Fluid chambers</li>
+      <li>Valves</li>
+      <li>Pumping membranes</li>
+    </ul>
+    <p>The pump mechanically actuates the cassette.</p>
+  </section>
+
+  <section class="content-box" id="cassette-seating-matters">
+    <h3>Cassette Seating Matters</h3>
+    <p>If a cassette is not seated correctly:</p>
+    <ul>
+      <li>Chambers may not fill completely</li>
+      <li>Valves may not close</li>
+      <li>Flow may be inaccurate</li>
+    </ul>
+    <p>A mechanical loading problem can look like a calibration problem.</p>
+  </section>
+
+  <section class="content-box" id="syringe-pumps">
+    <h3>Syringe Pumps</h3>
+    <p>A syringe pump works differently.</p>
+    <p>Instead of squeezing tubing repeatedly, it pushes the syringe plunger forward.</p>
+    <p>The pump controls:</p>
+    <p><strong>Linear plunger movement.</strong></p>
+  </section>
+
+  <section class="content-box" id="syringe-geometry">
+    <h3>Syringe Geometry</h3>
+    <p>The amount of fluid delivered for a given plunger movement depends on the syringe barrel diameter.</p>
+    <p>A larger syringe requires more volume movement for the same plunger distance.</p>
+    <p>That is why syringe pumps need to know:</p>
+    <ul>
+      <li>Syringe size</li>
+      <li>Often syringe brand/type</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wrong-syringe-selection">
+    <h3>Wrong Syringe Selection</h3>
+    <p>If the pump is configured for the wrong syringe geometry:</p>
+    <p>Actual delivery may not match the programmed rate.</p>
+    <p>The mechanical movement may be exactly what the pump intended.</p>
+    <p>The geometry assumption is wrong.</p>
+  </section>
+
+  <section class="content-box" id="syringe-recognition">
+    <h3>Syringe Recognition</h3>
+    <p>Some pumps mechanically or electronically detect syringe size.</p>
+    <p>Others require user selection.</p>
+    <p>Possible recognition components include:</p>
+    <ul>
+      <li>Diameter sensor</li>
+      <li>Clamp position</li>
+      <li>Plunger detector</li>
+    </ul>
+    <p>A recognition error can affect delivery calculations.</p>
+  </section>
+
+  <section class="content-box" id="motor-control">
+    <h3>Motor Control</h3>
+    <p>Infusion pumps use motors to move the pumping mechanism.</p>
+    <p>Common motor types may include:</p>
+    <ul>
+      <li>Stepper motors</li>
+      <li>DC motors</li>
+    </ul>
+    <p>The exact design depends on the pump.</p>
+  </section>
+
+  <section class="content-box" id="stepper-motors">
+    <h3>Stepper Motors</h3>
+    <p>A stepper motor moves in defined increments.</p>
+    <p>The controller sends pulses.</p>
+    <p>Each pulse produces a small step.</p>
+    <p>By counting steps, the pump can track movement.</p>
+  </section>
+
+  <section class="content-box" id="why-step-counting-is-useful">
+    <h3>Why Step Counting Is Useful</h3>
+    <p>Suppose the manufacturer knows:</p>
+    <p>A certain number of motor steps</p>
+    <p>should move:</p>
+    <p>A certain volume.</p>
+    <p>The software can calculate flow from:</p>
+    <p><strong>Steps over time.</strong></p>
+  </section>
+
+  <section class="content-box" id="encoder-feedback">
+    <h3>Encoder Feedback</h3>
+    <p>Some pumps also use an encoder or position sensor.</p>
+    <p>This tells the controller whether the mechanism actually moved.</p>
+    <p>That adds feedback.</p>
+  </section>
+
+  <section class="content-box" id="commanded-movement-vs-actual-movement">
+    <h3>Commanded Movement vs Actual Movement</h3>
+    <p>Without feedback, the controller may command a motor step and assume it occurred.</p>
+    <p>With feedback, the system can verify movement more directly.</p>
+  </section>
+
+  <section class="content-box" id="motor-stall">
+    <h3>Motor Stall</h3>
+    <p>If the mechanism becomes blocked, the motor may:</p>
+    <ul>
+      <li>Stall</li>
+      <li>Miss steps</li>
+      <li>Draw more current</li>
+    </ul>
+    <p>Depending on design, the pump may detect this and alarm.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-wear">
+    <h3>Mechanical Wear</h3>
+    <p>Pump mechanisms experience wear.</p>
+    <p>Possible examples include:</p>
+    <ul>
+      <li>Worn gears</li>
+      <li>Bushings</li>
+      <li>Cam surfaces</li>
+      <li>Pumping fingers</li>
+    </ul>
+    <p>Mechanical wear can change actual tubing compression or movement.</p>
+  </section>
+
+  <section class="content-box" id="flow-calibration">
+    <h3>Flow Calibration</h3>
+    <p>Infusion-pump calibration adjusts the relationship between:</p>
+    <p><strong>Mechanical movement</strong></p>
+    <p>and:</p>
+    <p><strong>Expected delivered volume.</strong></p>
+    <p>The exact calibration procedure varies.</p>
+  </section>
+
+  <section class="content-box" id="do-not-calibrate-around-a-bad-set">
+    <h3>Do Not Calibrate Around a Bad Set</h3>
+    <p>If the administration tubing is:</p>
+    <ul>
+      <li>Wrong</li>
+      <li>Damaged</li>
+      <li>Improperly loaded</li>
+    </ul>
+    <p>calibration is not the repair.</p>
+    <p>Use the approved set first.</p>
+  </section>
+
+  <section class="content-box" id="do-not-calibrate-around-mechanical-damage">
+    <h3>Do Not Calibrate Around Mechanical Damage</h3>
+    <p>If a pumping finger is worn or broken, software adjustment should not be used to hide the problem.</p>
+    <p>Correct the physical failure.</p>
+  </section>
+
+  <section class="content-box" id="flow-is-often-pulsatile">
+    <h3>Flow Is Often Pulsatile</h3>
+    <p>Peristaltic pumps do not necessarily produce perfectly smooth continuous flow.</p>
+    <p>Flow may occur in small pulses as the mechanism cycles.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-averaging">
+    <h3>Analyzer Averaging</h3>
+    <p>An infusion analyzer may average those pulses over time.</p>
+    <p>That gives a useful rate such as:</p>
+    <p>100 mL/hr.</p>
+    <p>Short test periods may show more variation.</p>
+  </section>
+
+  <section class="content-box" id="stabilization-time">
+    <h3>Stabilization Time</h3>
+    <p>Some pumps need time before the measured average flow settles.</p>
+    <p>Follow the manufacturer or analyzer test procedure.</p>
+  </section>
+
+  <section class="content-box" id="startup-delay">
+    <h3>Startup Delay</h3>
+    <p>At very low flow rates, it may take time before fluid begins reaching the analyzer.</p>
+    <p>Possible reasons include:</p>
+    <ul>
+      <li>Mechanical take-up</li>
+      <li>Tubing compliance</li>
+      <li>Syringe plunger slack</li>
+    </ul>
+    <p>Do not judge low-flow accuracy from a very short test.</p>
+  </section>
+
+  <section class="content-box" id="syringe-pump-startup-delay">
+    <h3>Syringe Pump Startup Delay</h3>
+    <p>This can be especially important in syringe pumps.</p>
+    <p>Before fluid moves:</p>
+    <ul>
+      <li>Mechanical slack may need to be taken up</li>
+      <li>Plunger assembly may need to load</li>
+    </ul>
+    <p>A pump may require correct setup to minimize delay.</p>
+  </section>
+
+  <section class="content-box" id="backpressure">
+    <h3>Backpressure</h3>
+    <p>Infusion pumps deliver against some amount of downstream pressure.</p>
+    <p>As backpressure increases, the pump mechanism may behave differently.</p>
+    <p>A properly functioning pump should meet its performance requirements within the specified pressure range.</p>
+  </section>
+
+  <section class="content-box" id="backpressure-can-affect-flow">
+    <h3>Backpressure Can Affect Flow</h3>
+    <p>At higher downstream pressure:</p>
+    <ul>
+      <li>Tubing may expand</li>
+      <li>Syringe may deform</li>
+      <li>Mechanism load increases</li>
+    </ul>
+    <p>This can affect actual delivery.</p>
+  </section>
+
+  <section class="content-box" id="flow-test-conditions-matter">
+    <h3>Flow Test Conditions Matter</h3>
+    <p>When comparing flow accuracy, control:</p>
+    <ul>
+      <li>Tubing</li>
+      <li>Fluid</li>
+      <li>Height</li>
+      <li>Backpressure</li>
+      <li>Syringe</li>
+      <li>Temperature</li>
+    </ul>
+    <p>Use the approved setup.</p>
+  </section>
+
+  <section class="content-box" id="gravity">
+    <h3>Gravity</h3>
+    <p>Fluid height can affect pressure in the infusion line.</p>
+    <p>Example:</p>
+    <p>Bag positioned much higher than normal.</p>
+    <p>That creates additional hydrostatic pressure.</p>
+    <p>Pump design should account for expected conditions, but test setup still matters.</p>
+  </section>
+
+  <section class="content-box" id="free-flow">
+    <h3>Free Flow</h3>
+    <p>Some infusion systems must prevent uncontrolled gravity flow when the door is open or set is removed.</p>
+    <p>This is different from normal pump-controlled flow.</p>
+  </section>
+
+  <section class="content-box" id="anti-free-flow-mechanism">
+    <h3>Anti-Free-Flow Mechanism</h3>
+    <p>The administration set or pump may include:</p>
+    <ul>
+      <li>Clamp</li>
+      <li>Cassette valve</li>
+      <li>Automatic occluder</li>
+    </ul>
+    <p>to prevent free flow.</p>
+    <p>This is a safety system.</p>
+  </section>
+
+  <section class="content-box" id="flow-accuracy-test">
+    <h3>Flow Accuracy Test</h3>
+    <p>A common test is:</p>
+    <p>Program:</p>
+    <p>100 mL/hr.</p>
+    <p>Run into analyzer.</p>
+    <p>Measure actual average flow.</p>
+    <p>Compare to manufacturer tolerance.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Programmed:</p>
+    <p>100 mL/hr.</p>
+    <p>Analyzer:</p>
+    <p>98 mL/hr.</p>
+    <p>Specification:</p>
+    <p>±5%.</p>
+    <p>Acceptable:</p>
+    <p>95 to 105.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="low-flow-test">
+    <h3>Low Flow Test</h3>
+    <p>Program:</p>
+    <p>1 mL/hr.</p>
+    <p>Measured:</p>
+    <p>0.8 mL/hr.</p>
+    <p>That is:</p>
+    <p>20% low.</p>
+    <p>A tiny absolute difference can be significant at low rates.</p>
+  </section>
+
+  <section class="content-box" id="high-flow-test">
+    <h3>High Flow Test</h3>
+    <p>Program:</p>
+    <p>500 mL/hr.</p>
+    <p>Measured:</p>
+    <p>460.</p>
+    <p>If allowable error is:</p>
+    <p>±5%,</p>
+    <p>acceptable:</p>
+    <p>475 to 525.</p>
+    <p>Fail.</p>
+    <p>High-rate failures may reveal different mechanical problems.</p>
+  </section>
+
+  <section class="content-box" id="multi-point-testing">
+    <h3>Multi-Point Testing</h3>
+    <p>One passing rate does not prove the entire pump range.</p>
+    <p>Possible points include:</p>
+    <ul>
+      <li>Low</li>
+      <li>Normal</li>
+      <li>High</li>
+    </ul>
+    <p>A pump may be accurate at:</p>
+    <p>100 mL/hr</p>
+    <p>and inaccurate at:</p>
+    <p>1 mL/hr.</p>
+  </section>
+
+  <section class="content-box" id="flow-linearity-problems">
+    <h3>Flow-Linearity Problems</h3>
+    <p>Example:</p>
+    <p>Set → Measured</p>
+    <p>10 → 10</p>
+    <p>100 → 99</p>
+    <p>500 → 420</p>
+    <p>Error gets much worse at high rates.</p>
+    <p>That pattern may suggest:</p>
+    <ul>
+      <li>Mechanical limitation</li>
+      <li>Calibration nonlinearity</li>
+      <li>Set issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="consistent-percentage-error">
+    <h3>Consistent Percentage Error</h3>
+    <p>Set → Measured</p>
+    <p>50 → 45</p>
+    <p>100 → 90</p>
+    <p>200 → 180</p>
+    <p>The pump consistently delivers:</p>
+    <p>10% low.</p>
+    <p>That may point toward calibration or geometry error.</p>
+  </section>
+
+  <section class="content-box" id="constant-absolute-error">
+    <h3>Constant Absolute Error</h3>
+    <p>Set → Measured</p>
+    <p>10 → 8</p>
+    <p>100 → 98</p>
+    <p>500 → 498</p>
+    <p>The absolute error stays around:</p>
+    <p>2 mL/hr.</p>
+    <p>That pattern means something different from proportional error.</p>
+  </section>
+
+  <section class="content-box" id="delivery-volume">
+    <h3>Delivery Volume</h3>
+    <p>Some tests measure total delivered volume rather than instantaneous flow rate.</p>
+    <p>Example:</p>
+    <p>Run pump for:</p>
+    <p>30 minutes.</p>
+    <p>Expected volume:</p>
+    <p>50 mL.</p>
+    <p>Measured:</p>
+    <p>49 mL.</p>
+    <p>That can provide strong verification.</p>
+  </section>
+
+  <section class="content-box" id="flow-rate-vs-total-volume">
+    <h3>Flow Rate vs Total Volume</h3>
+    <p>A pump could have:</p>
+    <ul>
+      <li>Short-term pulsations</li>
+      <li>Accurate long-term volume</li>
+    </ul>
+    <p>Those are different characteristics.</p>
+    <p>Use the manufacturer requirement.</p>
+  </section>
+
+  <section class="content-box" id="gravimetric-testing">
+    <h3>Gravimetric Testing</h3>
+    <p>Another method is to weigh delivered fluid.</p>
+    <p>If fluid density is known, mass can be converted to volume.</p>
+    <p>Water is often convenient because its density is close to:</p>
+    <p>1 g/mL</p>
+    <p>under typical conditions.</p>
+    <p>But use the approved calculation and test procedure.</p>
+  </section>
+
+  <section class="content-box" id="why-gravimetric-testing-can-be-accurate">
+    <h3>Why Gravimetric Testing Can Be Accurate</h3>
+    <p>A good laboratory balance can measure mass precisely.</p>
+    <p>That avoids some limitations of flow sensors.</p>
+    <p>But you must account for:</p>
+    <ul>
+      <li>Evaporation</li>
+      <li>Fluid density</li>
+      <li>Test duration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="infusion-analyzer">
+    <h3>Infusion Analyzer</h3>
+    <p>An infusion-device analyzer may measure:</p>
+    <ul>
+      <li>Flow</li>
+      <li>Volume</li>
+      <li>Occlusion pressure</li>
+    </ul>
+    <p>It provides a controlled bench reference.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-setup">
+    <h3>Analyzer Setup</h3>
+    <p>Make sure:</p>
+    <ul>
+      <li>Channels are primed</li>
+      <li>No air is trapped</li>
+      <li>Correct tubing is used</li>
+      <li>Device is level as required</li>
+    </ul>
+    <p>A poor analyzer setup can create false failures.</p>
+  </section>
+
+  <section class="content-box" id="air-in-the-test-line">
+    <h3>Air in the Test Line</h3>
+    <p>Air compresses.</p>
+    <p>That can cause:</p>
+    <ul>
+      <li>Delayed flow</li>
+      <li>Unstable analyzer readings</li>
+    </ul>
+    <p>Prime correctly.</p>
+  </section>
+
+  <section class="content-box" id="bubbles-through-analyzer">
+    <h3>Bubbles Through Analyzer</h3>
+    <p>Depending on analyzer design, bubbles may interfere with its measurement.</p>
+    <p>Do not blame the pump until the test setup is clean.</p>
+  </section>
+
+  <section class="content-box" id="reservoir-height">
+    <h3>Reservoir Height</h3>
+    <p>Analyzer and source height can affect inlet and outlet pressure.</p>
+    <p>Follow the recommended setup.</p>
+  </section>
+
+  <section class="content-box" id="pump-door">
+    <h3>Pump Door</h3>
+    <p>The door often determines how precisely the tubing is compressed.</p>
+    <p>Possible problems include:</p>
+    <ul>
+      <li>Latch wear</li>
+      <li>Misalignment</li>
+      <li>Door not closing fully</li>
+    </ul>
+    <p>That can affect flow.</p>
+  </section>
+
+  <section class="content-box" id="pumping-fingers">
+    <h3>Pumping Fingers</h3>
+    <p>Inspect for:</p>
+    <ul>
+      <li>Wear</li>
+      <li>Damage</li>
+      <li>Contamination</li>
+    </ul>
+    <p>One damaged finger may produce poor pumping performance.</p>
+  </section>
+
+  <section class="content-box" id="occluders-and-valves">
+    <h3>Occluders and Valves</h3>
+    <p>Pump mechanisms may have separate components that:</p>
+    <ul>
+      <li>Open tubing</li>
+      <li>Close tubing</li>
+    </ul>
+    <p>at specific times.</p>
+    <p>If timing is wrong, fluid can:</p>
+    <ul>
+      <li>Backflow</li>
+      <li>Fail to advance correctly</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="timing-matters">
+    <h3>Timing Matters</h3>
+    <p>A peristaltic mechanism depends on coordinated movement.</p>
+    <p>If one component is out of phase, flow accuracy may suffer.</p>
+  </section>
+
+  <section class="content-box" id="geartrain">
+    <h3>Geartrain</h3>
+    <p>Motor movement may pass through:</p>
+    <ul>
+      <li>Gears</li>
+      <li>Belts</li>
+      <li>Lead screws</li>
+    </ul>
+    <p>Mechanical wear or slipping can affect output.</p>
+  </section>
+
+  <section class="content-box" id="encoder-failure">
+    <h3>Encoder Failure</h3>
+    <p>If an encoder gives incorrect position feedback, the controller may lose track of actual movement.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Flow error</li>
+      <li>Mechanism alarm</li>
+      <li>Unexpected stoppage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="motor-current-is-not-flow">
+    <h3>Motor Current Is Not Flow</h3>
+    <p>A pump may monitor motor current.</p>
+    <p>That can tell it something about:</p>
+    <ul>
+      <li>Load</li>
+      <li>Resistance</li>
+    </ul>
+    <p>But it does not directly prove fluid flow.</p>
+  </section>
+
+  <section class="content-box" id="screen-says-it-is-running">
+    <h3>Screen Says It Is Running</h3>
+    <p>A display showing:</p>
+    <blockquote><p>Infusing 100 mL/hr</p></blockquote>
+    <p>proves the pump is in an operating state with that programmed rate.</p>
+    <p>It does not prove actual fluid output.</p>
+  </section>
+
+  <section class="content-box" id="infusion-stopped-but-screen-looks-normal">
+    <h3>Infusion Stopped but Screen Looks Normal</h3>
+    <p>If the mechanism is moving but tubing is incorrectly loaded, actual flow may be low even though the display looks normal.</p>
+    <p>That is exactly why flow testing matters.</p>
+  </section>
+
+  <section class="content-box" id="drop-sensor-systems">
+    <h3>Drop Sensor Systems</h3>
+    <p>Some older or specialized pumps use drip sensors.</p>
+    <p>An optical sensor may count drops in a drip chamber.</p>
+    <p>This provides more direct feedback about fluid movement.</p>
+  </section>
+
+  <section class="content-box" id="drop-count-is-still-an-estimate-of-volume">
+    <h3>Drop Count Is Still an Estimate of Volume</h3>
+    <p>To convert drops to volume, the system needs a known:</p>
+    <p><strong>Drop factor.</strong></p>
+    <p>Example:</p>
+    <p>20 drops/mL.</p>
+    <p>Wrong set or wrong configuration changes the calculation.</p>
+  </section>
+
+  <section class="content-box" id="air-in-line-sensor">
+    <h3>Air-in-Line Sensor</h3>
+    <p>Air-in-line detection is separate from flow control.</p>
+    <p>A pump can have:</p>
+    <ul>
+      <li>Accurate flow</li>
+      <li>Failed air detector</li>
+    </ul>
+    <p>or vice versa.</p>
+    <p>Do not mix the systems.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-sensor">
+    <h3>Occlusion Sensor</h3>
+    <p>Occlusion detection is also separate.</p>
+    <p>A pump can pass flow accuracy while failing occlusion pressure.</p>
+    <p>Each function needs its own verification.</p>
+  </section>
+
+  <section class="content-box" id="battery-vs-ac-performance">
+    <h3>Battery vs AC Performance</h3>
+    <p>If flow accuracy changes only on battery, consider:</p>
+    <ul>
+      <li>Motor power</li>
+      <li>Battery voltage</li>
+      <li>Power electronics</li>
+    </ul>
+    <p>But verify the symptom with controlled testing.</p>
+  </section>
+
+  <section class="content-box" id="low-battery-could-affect-motor-control">
+    <h3>Low Battery Could Affect Motor Control</h3>
+    <p>A healthy design should regulate motor operation appropriately within specified battery conditions.</p>
+    <p>If it cannot, there may be:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Power</li>
+      <li>Motor-drive</li>
+    </ul>
+    <p>problem.</p>
+  </section>
+
+  <section class="content-box" id="temperature">
+    <h3>Temperature</h3>
+    <p>Tubing stiffness and syringe friction can change with temperature.</p>
+    <p>Use manufacturer-specified environmental conditions when testing.</p>
+  </section>
+
+  <section class="content-box" id="fluid-viscosity">
+    <h3>Fluid Viscosity</h3>
+    <p>A more viscous fluid creates greater resistance than water.</p>
+    <p>Routine verification often uses a specified test fluid.</p>
+    <p>Do not assume every clinical fluid behaves identically.</p>
+  </section>
+
+  <section class="content-box" id="calibration-coefficients">
+    <h3>Calibration Coefficients</h3>
+    <p>Some pumps store calibration values electronically.</p>
+    <p>These may adjust:</p>
+    <ul>
+      <li>Motor movement</li>
+      <li>Flow compensation</li>
+    </ul>
+    <p>Corrupted or incorrect values can affect delivery.</p>
+  </section>
+
+  <section class="content-box" id="software-and-configuration">
+    <h3>Software and Configuration</h3>
+    <p>Flow behavior can depend on:</p>
+    <ul>
+      <li>Pump software</li>
+      <li>Drug library</li>
+      <li>Mode</li>
+      <li>Bolus settings</li>
+    </ul>
+    <p>Make sure you are testing the intended operating mode.</p>
+  </section>
+
+  <section class="content-box" id="primary-vs-secondary-infusion">
+    <h3>Primary vs Secondary Infusion</h3>
+    <p>Some pumps support secondary or piggyback infusion.</p>
+    <p>Fluid path and pressure relationships can differ.</p>
+    <p>A primary-mode flow test may not prove secondary operation.</p>
+  </section>
+
+  <section class="content-box" id="bolus-delivery">
+    <h3>Bolus Delivery</h3>
+    <p>Bolus mode usually uses a higher temporary rate.</p>
+    <p>It should be verified separately when required.</p>
+  </section>
+
+  <section class="content-box" id="pca-pumps">
+    <h3>PCA Pumps</h3>
+    <p>PCA systems may deliver:</p>
+    <ul>
+      <li>Continuous basal rate</li>
+      <li>Patient-requested bolus</li>
+    </ul>
+    <p>These are separate delivery functions.</p>
+    <p>Again, verify the applicable mode.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pump-reads-100-but-delivers-80">
+    <h3>Real-World Example: Pump Reads 100 but Delivers 80</h3>
+    <p>Programmed:</p>
+    <p>100 mL/hr.</p>
+    <p>Analyzer:</p>
+    <p>80.</p>
+    <p>Known-good approved set:</p>
+    <p>Same result.</p>
+    <p>Mechanical inspection finds worn pumping mechanism.</p>
+    <p>Display and motor command were correct.</p>
+    <p>Actual fluid delivery was not.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-set-type-fails">
+    <h3>Real-World Example: One Set Type Fails</h3>
+    <p>Pump with approved Set A:</p>
+    <p>100 mL/hr → 99.</p>
+    <p>Unapproved tubing:</p>
+    <p>100 → 87.</p>
+    <p>The pump was designed around specific tubing geometry.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-syringe-pump-flow-low">
+    <h3>Real-World Example: Syringe Pump Flow Low</h3>
+    <p>Pump configured:</p>
+    <p>20 mL syringe.</p>
+    <p>Actual syringe installed:</p>
+    <p>50 mL.</p>
+    <p>Programmed rate:</p>
+    <p>5 mL/hr.</p>
+    <p>Measured flow incorrect.</p>
+    <p>Syringe selection/recognition error explains the mismatch.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-rate-failure">
+    <h3>Real-World Example: Low-Rate Failure</h3>
+    <p>1 mL/hr:</p>
+    <p>0.7 measured.</p>
+    <p>100 mL/hr:</p>
+    <p>99 measured.</p>
+    <p>Mechanism has excessive backlash affecting low-rate startup and delivery.</p>
+    <p>High-rate testing alone would miss it.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-analyzer-reading-unstable">
+    <h3>Real-World Example: Analyzer Reading Unstable</h3>
+    <p>Several pumps appear to fail.</p>
+    <p>Bubbles visible in analyzer channel.</p>
+    <p>Analyzer re-primed.</p>
+    <p>All pumps pass.</p>
+    <p>The test setup was the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-flow-good-but-occlusion-bad">
+    <h3>Real-World Example: Flow Good but Occlusion Bad</h3>
+    <p>Pump delivers every tested rate correctly.</p>
+    <p>Occlusion threshold is too high.</p>
+    <p>Flow control is good.</p>
+    <p>Pressure safety system is not.</p>
+    <p>Separate tests matter.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-the-programmed-rate-as-measured-flow">
+    <h3>Treating the Programmed Rate as Measured Flow</h3>
+    <p>It is a command.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-the-administration-set">
+    <h3>Ignoring the Administration Set</h3>
+    <p>Tubing is part of the pumping mechanism.</p>
+  </section>
+
+  <section class="content-box" id="testing-with-the-wrong-syringe">
+    <h3>Testing With the Wrong Syringe</h3>
+    <p>Geometry matters.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-before-checking-mechanics">
+    <h3>Calibrating Before Checking Mechanics</h3>
+    <p>Fix physical failures first.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-one-rate">
+    <h3>Testing Only One Rate</h3>
+    <p>Low and high rates expose different problems.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-analyzer-setup">
+    <h3>Ignoring Analyzer Setup</h3>
+    <p>Air and height can create false failures.</p>
+  </section>
+
+  <section class="content-box" id="assuming-flow-accuracy-proves-every-pump-function">
+    <h3>Assuming Flow Accuracy Proves Every Pump Function</h3>
+    <p>Occlusion and air detection are separate.</p>
+  </section>
+
+  <section class="content-box" id="comparing-short-term-pulsatile-flow-to-a-long-term-accuracy-specification">
+    <h3>Comparing Short-Term Pulsatile Flow to a Long-Term Accuracy Specification</h3>
+    <p>Use the correct test method.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For an infusion-flow problem, ask:</p>
+    <p><strong>What rate is programmed?</strong></p>
+    <p>Then:</p>
+    <p><strong>What rate is actually being delivered?</strong></p>
+    <p>Measure independently.</p>
+    <p>Then:</p>
+    <p><strong>Is the correct tubing or syringe installed?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the pumping mechanism moving correctly?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the error change with flow rate?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the problem follow the disposable set or stay with the pump?</strong></p>
+    <p>That separates:</p>
+    <ul>
+      <li>Configuration</li>
+      <li>Consumable</li>
+      <li>Mechanical drive</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Does the pump actually measure flow, or is it calculating expected flow from mechanical movement?</strong></p>
+    <p>That question changes how you interpret the display.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a pump screen says:</p>
+    <p>100 mL/hr,</p>
+    <p>you proved:</p>
+    <p><strong>The pump is programmed to deliver 100 mL/hr and believes it is operating at that rate.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>100 mL/hr is actually leaving the tubing.</strong></p>
+    <p>If an independent infusion analyzer measures output within the manufacturer specification over the required test period, you now have objective evidence of actual delivery performance.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Infusion pumps are precision mechanical systems.</p>
+    <p>In many designs, flow comes from:</p>
+    <p><strong>Motor movement → Pump mechanism → Tubing or syringe → Fluid movement.</strong></p>
+    <p>The pump controls the mechanism very carefully.</p>
+    <p>But the final fluid delivery also depends on:</p>
+    <ul>
+      <li>Tubing geometry</li>
+      <li>Syringe geometry</li>
+      <li>Mechanical condition</li>
+      <li>Backpressure</li>
+      <li>Loading</li>
+      <li>Calibration</li>
+    </ul>
+    <p>That is why the screen is not enough.</p>
+    <p>When troubleshooting flow, compare:</p>
+    <p><strong>Programmed rate</strong></p>
+    <p>to:</p>
+    <p><strong>Actual measured rate.</strong></p>
+    <p>Then figure out where the mismatch begins.</p>
+    <p>Do not troubleshoot only the number on the display.</p>
+    <p>Troubleshoot the physical mechanism that is supposed to make that number real.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Infusion-pump drive mechanisms, approved administration sets, syringe compatibility, flow-control algorithms, calibration methods, test durations, acceptance limits, and analyzer setups vary by manufacturer and model. Follow current manufacturer service documentation, use approved consumables and calibrated infusion-device analyzers, and complete required flow, volume, occlusion, alarm, and safety testing before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-infusion-pump-occlusion-detection-works.html">How Infusion Pump Occlusion Detection Works</a></li>
+      <li><a href="how-medical-equipment-measures-flow.html">How Medical Equipment Measures Flow</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="how-to-read-device-specifications.html">How to Read Device Specifications</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
