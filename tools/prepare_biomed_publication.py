@@ -73,14 +73,15 @@ RELATED = {
     "how-ecg-acquisition-works": ["how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-sidestream-co2-monitoring-works": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-nibp-works-in-a-patient-monitor", "how-spo2-measurement-works", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
     "how-ventilator-flow-sensors-work": ["how-a-ventilator-measures-tidal-volume", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
-    "how-ventilator-pressure-sensors-work": ["how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-ventilator-pressure-sensors-work": ["how-peep-is-generated-and-controlled", "how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-medical-equipment-measures-pressure": ["how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work"],
     "how-medical-equipment-measures-flow": ["how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure"],
     "how-invasive-blood-pressure-monitoring-works": ["how-medical-equipment-measures-pressure", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": ["how-an-anesthesia-machine-breathing-system-works", "sensors-and-transducers-basics", "how-sidestream-co2-monitoring-works", "how-medical-equipment-measures-flow", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-an-anesthesia-machine-breathing-system-works": ["how-anesthesia-waste-gas-scavenging-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-anesthesia-waste-gas-scavenging-works": ["how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
-    "how-a-ventilator-measures-tidal-volume": ["how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-a-ventilator-measures-tidal-volume": ["how-peep-is-generated-and-controlled", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-peep-is-generated-and-controlled": ["how-ventilator-pressure-sensors-work", "how-a-ventilator-measures-tidal-volume", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
 }
 
 ARTICLE_CONFIG = {
@@ -420,6 +421,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Ventilation",
         "cardNote": "The flow-to-tidal-volume calculation path",
+    },
+    "how-peep-is-generated-and-controlled": {
+        "description": "A practical explanation of how ventilators maintain positive pressure at end expiration and how valves, flow, sensors, leaks, and control loops affect PEEP.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The end-expiratory pressure control loop",
     },
 }
 
