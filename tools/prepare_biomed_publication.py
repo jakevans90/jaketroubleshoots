@@ -36,7 +36,7 @@ RELATED = {
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
-    "sensors-and-transducers-basics": ["how-sidestream-co2-monitoring-works", "how-ecg-acquisition-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals"],
+    "sensors-and-transducers-basics": ["how-ventilator-flow-sensors-work", "how-sidestream-co2-monitoring-works", "how-ecg-acquisition-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -50,7 +50,7 @@ RELATED = {
     "how-to-troubleshoot-medical-device-accessories": ["how-sidestream-co2-monitoring-works", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics"],
     "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
-    "medical-device-alarm-troubleshooting-fundamentals": ["how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics"],
+    "medical-device-alarm-troubleshooting-fundamentals": ["how-ventilator-flow-sensors-work", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
     "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
@@ -72,6 +72,7 @@ RELATED = {
     "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
     "how-ecg-acquisition-works": ["how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-sidestream-co2-monitoring-works": ["how-nibp-works-in-a-patient-monitor", "how-spo2-measurement-works", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-ventilator-flow-sensors-work": ["sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "medical-device-alarm-troubleshooting-fundamentals", "what-known-good-actually-means"],
 }
 
 ARTICLE_CONFIG = {
@@ -357,6 +358,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Gas Monitoring",
         "cardNote": "The sidestream capnography sampling path",
+    },
+    "how-ventilator-flow-sensors-work": {
+        "description": "A practical explanation of how ventilators measure gas movement and how flow-sensor problems affect tidal volume, alarms, triggering, leaks, and calibration.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The ventilator flow-measurement path",
     },
 }
 
