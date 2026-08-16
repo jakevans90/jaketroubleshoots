@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AC vs DC Power Basics | Jake Troubleshoots</title>
+  <meta name="description" content="A practical introduction to AC and DC power, conversion, polarity, voltage rails, adapters, batteries, and common medical-equipment power paths.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/ac-vs-dc-power-basics.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>AC vs DC Power Basics</h2>
+  <p>A practical explanation of the two types of electrical power you will see constantly in medical equipment</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical equipment runs on electricity.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What AC means</li>
+      <li>What DC means</li>
+      <li>Where each appears in medical equipment</li>
+      <li>Wall power</li>
+      <li>Batteries</li>
+      <li>External power adapters</li>
+      <li>Internal power supplies</li>
+      <li>AC-to-DC conversion</li>
+      <li>DC voltage rails</li>
+      <li>Polarity</li>
+      <li>Measuring AC and DC</li>
+      <li>Common power-failure patterns</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of it like this:</p>
+    <p><strong>AC</strong></p>
+    <p>Usually comes from the wall.</p>
+    <p>↓</p>
+    <p><strong>Power Supply</strong></p>
+    <p>Converts AC into usable internal power.</p>
+    <p>↓</p>
+    <p><strong>DC</strong></p>
+    <p>Runs most of the electronics inside the device.</p>
+    <p>A battery also supplies DC.</p>
+    <p>That basic path appears in a huge amount of medical equipment.</p>
+  </section>
+
+  <section class="content-box" id="what-is-ac">
+    <h3>What Is AC?</h3>
+    <p>AC stands for:</p>
+    <p><strong>Alternating Current.</strong></p>
+    <p>The electrical direction changes back and forth repeatedly.</p>
+    <p>Utility power supplied to buildings is AC.</p>
+    <p>In a typical U.S. hospital, a standard receptacle commonly supplies approximately:</p>
+    <p><strong>120 VAC at 60 Hz.</strong></p>
+    <p>The exact electrical system depends on the location and equipment.</p>
+  </section>
+
+  <section class="content-box" id="what-does-60-hz-mean">
+    <h3>What Does 60 Hz Mean?</h3>
+    <p>Hertz means cycles per second.</p>
+    <p>At 60 Hz, the AC waveform completes 60 cycles every second.</p>
+    <p>You generally do not need to visualize every cycle during routine troubleshooting.</p>
+    <p>The important point is that AC is not a steady one-direction voltage like a battery.</p>
+  </section>
+
+  <section class="content-box" id="where-biomeds-commonly-see-ac">
+    <h3>Where Biomeds Commonly See AC</h3>
+    <p>Examples include:</p>
+    <ul>
+      <li>Wall outlets</li>
+      <li>Power strips</li>
+      <li>Power cords</li>
+      <li>Device AC inlets</li>
+      <li>Internal mains wiring</li>
+      <li>Primary side of power supplies</li>
+    </ul>
+    <p>The farther you move inside the device, the more likely you are to encounter DC instead.</p>
+  </section>
+
+  <section class="content-box" id="what-is-dc">
+    <h3>What Is DC?</h3>
+    <p>DC stands for:</p>
+    <p><strong>Direct Current.</strong></p>
+    <p>Current flows in one general direction.</p>
+    <p>DC usually has a defined:</p>
+    <ul>
+      <li>Positive</li>
+      <li>Negative</li>
+    </ul>
+    <p>relationship.</p>
+    <p>Common DC sources include:</p>
+    <ul>
+      <li>Batteries</li>
+      <li>AC/DC power adapters</li>
+      <li>Internal power supplies</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="where-biomeds-commonly-see-dc">
+    <h3>Where Biomeds Commonly See DC</h3>
+    <p>Examples include:</p>
+    <ul>
+      <li>24 VDC power rails</li>
+      <li>12 VDC fan supplies</li>
+      <li>5 VDC logic circuits</li>
+      <li>3.3 VDC processors</li>
+      <li>Battery packs</li>
+      <li>Sensor power</li>
+      <li>Motor-control circuits</li>
+    </ul>
+    <p>Modern medical equipment may contain several DC voltages at the same time.</p>
+  </section>
+
+  <section class="content-box" id="ac-from-the-wall-dc-inside-the-device">
+    <h3>AC From the Wall, DC Inside the Device</h3>
+    <p>A very common power path is:</p>
+    <p><strong>Wall Outlet</strong></p>
+    <p>120 VAC</p>
+    <p>↓</p>
+    <p><strong>Power Cord</strong></p>
+    <p>↓</p>
+    <p><strong>Device Power Inlet</strong></p>
+    <p>↓</p>
+    <p><strong>Fuse / Protection</strong></p>
+    <p>↓</p>
+    <p><strong>AC/DC Power Supply</strong></p>
+    <p>↓</p>
+    <p><strong>24 VDC / 12 VDC / 5 VDC</strong></p>
+    <p>↓</p>
+    <p><strong>Internal Electronics</strong></p>
+    <p>This simple mental model is extremely useful.</p>
+  </section>
+
+  <section class="content-box" id="why-convert-ac-to-dc">
+    <h3>Why Convert AC to DC?</h3>
+    <p>Most modern electronics require stable DC voltages.</p>
+    <p>Processors do not normally run directly from wall AC.</p>
+    <p>Neither do many:</p>
+    <ul>
+      <li>Sensors</li>
+      <li>Communication boards</li>
+      <li>Displays</li>
+      <li>Memory devices</li>
+    </ul>
+    <p>The internal power supply converts the incoming AC into the DC voltages those systems need.</p>
+  </section>
+
+  <section class="content-box" id="external-power-adapters">
+    <h3>External Power Adapters</h3>
+    <p>Some equipment moves that conversion outside the device.</p>
+    <p>Example:</p>
+    <p>Wall outlet:</p>
+    <p>120 VAC.</p>
+    <p>External adapter output:</p>
+    <p>24 VDC.</p>
+    <p>Then only 24 VDC enters the medical device.</p>
+    <p>You may hear these called:</p>
+    <ul>
+      <li>Power adapter</li>
+      <li>AC adapter</li>
+      <li>Power brick</li>
+      <li>External power supply</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="read-the-adapter-label">
+    <h3>Read the Adapter Label</h3>
+    <p>The label may say something like:</p>
+    <p><strong>Input: 100–240 VAC, 50/60 Hz</strong></p>
+    <p><strong>Output: 24 VDC, 3.75 A</strong></p>
+    <p>That tells you a lot.</p>
+    <p>The adapter accepts AC.</p>
+    <p>It outputs DC.</p>
+  </section>
+
+  <section class="content-box" id="input-vs-output">
+    <h3>Input vs Output</h3>
+    <p>Do not confuse them.</p>
+    <p>If the adapter says:</p>
+    <p>Input:</p>
+    <p>120 VAC.</p>
+    <p>Output:</p>
+    <p>24 VDC.</p>
+    <p>You should not measure the device-side output using the meter's AC-voltage setting unless the manufacturer specifically tells you otherwise.</p>
+    <p>The output is DC.</p>
+  </section>
+
+  <section class="content-box" id="batteries-are-dc-sources">
+    <h3>Batteries Are DC Sources</h3>
+    <p>Medical device batteries supply DC.</p>
+    <p>Common battery types include:</p>
+    <ul>
+      <li>Lithium-ion</li>
+      <li>Nickel-metal hydride</li>
+      <li>Lead-acid</li>
+    </ul>
+    <p>A battery pack might provide:</p>
+    <ul>
+      <li>7.2 VDC</li>
+      <li>12 VDC</li>
+      <li>14.8 VDC</li>
+      <li>24 VDC</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="battery-voltage-changes">
+    <h3>Battery Voltage Changes</h3>
+    <p>Battery voltage is not always one exact number.</p>
+    <p>It changes with:</p>
+    <ul>
+      <li>State of charge</li>
+      <li>Load</li>
+      <li>Battery condition</li>
+      <li>Chemistry</li>
+    </ul>
+    <p>A battery labeled 12 V does not necessarily measure exactly 12.00 V.</p>
+    <p>Use manufacturer specifications when evaluating it.</p>
+  </section>
+
+  <section class="content-box" id="polarity">
+    <h3>Polarity</h3>
+    <p>DC circuits have polarity.</p>
+    <p>That means the positive and negative connections matter.</p>
+    <p>Example:</p>
+    <p>24 VDC supply.</p>
+    <p>One terminal:</p>
+    <p>Positive.</p>
+    <p>One terminal:</p>
+    <p>Negative.</p>
+    <p>Reversing polarity can damage equipment if the circuit is not protected.</p>
+  </section>
+
+  <section class="content-box" id="connector-polarity">
+    <h3>Connector Polarity</h3>
+    <p>External adapters may use connectors where:</p>
+    <ul>
+      <li>Center pin is positive</li>
+      <li>Outer barrel is negative</li>
+    </ul>
+    <p>or some other configuration.</p>
+    <p>Do not assume.</p>
+    <p>Check the device or adapter marking.</p>
+  </section>
+
+  <section class="content-box" id="same-voltage-does-not-mean-compatible">
+    <h3>Same Voltage Does Not Mean Compatible</h3>
+    <p>Two adapters may both say:</p>
+    <p>24 VDC.</p>
+    <p>But they may differ in:</p>
+    <ul>
+      <li>Polarity</li>
+      <li>Connector wiring</li>
+      <li>Current capability</li>
+      <li>Grounding</li>
+      <li>Approval</li>
+    </ul>
+    <p>Do not substitute random power supplies because the plug fits.</p>
+  </section>
+
+  <section class="content-box" id="measuring-ac-voltage">
+    <h3>Measuring AC Voltage</h3>
+    <p>When measuring AC, set the meter to the appropriate:</p>
+    <p><strong>AC voltage</strong></p>
+    <p>mode.</p>
+    <p>The symbol often looks like:</p>
+    <p><strong>V~</strong></p>
+    <p>The exact meter layout varies.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>You expect:</p>
+    <p>Approximately 120 VAC.</p>
+    <p>Meter reads:</p>
+    <p>0 VAC.</p>
+    <p>Now you know AC is missing at that point.</p>
+    <p>Then work backward or forward in the power path.</p>
+  </section>
+
+  <section class="content-box" id="measuring-dc-voltage">
+    <h3>Measuring DC Voltage</h3>
+    <p>For DC, use the meter's:</p>
+    <p><strong>DC voltage</strong></p>
+    <p>mode.</p>
+    <p>The symbol often looks like a solid line over a dashed line.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Power supply specification:</p>
+    <p>24 VDC.</p>
+    <p>Measured:</p>
+    <p>24.2 VDC.</p>
+    <p>That may be normal depending on tolerance.</p>
+    <p>Measured:</p>
+    <p>2.1 VDC.</p>
+    <p>Now something is clearly wrong.</p>
+  </section>
+
+  <section class="content-box" id="reference-matters">
+    <h3>Reference Matters</h3>
+    <p>Voltage is measured between two points.</p>
+    <p>For DC you may measure:</p>
+    <p>Positive output</p>
+    <p>relative to:</p>
+    <p>DC return / negative.</p>
+    <p>If you choose the wrong reference point, the measurement may be meaningless.</p>
+    <p>Use the manufacturer test point or circuit reference when available.</p>
+  </section>
+
+  <section class="content-box" id="meter-polarity-on-dc">
+    <h3>Meter Polarity on DC</h3>
+    <p>If you reverse meter leads on DC:</p>
+    <p>Red on negative.</p>
+    <p>Black on positive.</p>
+    <p>A digital meter may display:</p>
+    <p><strong>-24.0 V</strong></p>
+    <p>That usually means the polarity of your meter leads is reversed.</p>
+    <p>The magnitude may still be correct.</p>
+  </section>
+
+  <section class="content-box" id="ac-does-not-have-positive-and-negative-in-the-same-sense">
+    <h3>AC Does Not Have Positive and Negative in the Same Sense</h3>
+    <p>With AC, the polarity alternates.</p>
+    <p>For routine mains voltage measurements, you typically measure between points such as:</p>
+    <ul>
+      <li>Hot and neutral</li>
+      <li>Hot and ground</li>
+    </ul>
+    <p>according to safe approved procedures.</p>
+    <p>Do not treat AC wiring like a DC battery circuit.</p>
+  </section>
+
+  <section class="content-box" id="ac-frequency">
+    <h3>AC Frequency</h3>
+    <p>Some meters can measure frequency.</p>
+    <p>In a typical U.S. mains circuit you may see approximately:</p>
+    <p>60 Hz.</p>
+    <p>Frequency problems are much less common in normal hospital utility power than basic connection or voltage issues, but the concept matters.</p>
+  </section>
+
+  <section class="content-box" id="rms-voltage">
+    <h3>RMS Voltage</h3>
+    <p>When someone says:</p>
+    <p>120 VAC</p>
+    <p>they are typically referring to an RMS value.</p>
+    <p>You do not need to calculate RMS manually for ordinary troubleshooting with a proper multimeter.</p>
+    <p>The meter handles that measurement.</p>
+    <p>The practical takeaway is:</p>
+    <p><strong>120 VAC does not mean the waveform's instantaneous peak is only 120 volts.</strong></p>
+    <p>Treat mains power with appropriate respect.</p>
+  </section>
+
+  <section class="content-box" id="power-supplies">
+    <h3>Power Supplies</h3>
+    <p>The internal power supply is often where AC becomes DC.</p>
+    <p>Its job may include:</p>
+    <ul>
+      <li>Rectification</li>
+      <li>Regulation</li>
+      <li>Isolation</li>
+      <li>Filtering</li>
+    </ul>
+    <p>You do not need to understand every component to troubleshoot at the assembly level.</p>
+    <p>You need to know:</p>
+    <p><strong>What goes in?</strong></p>
+    <p>and:</p>
+    <p><strong>What should come out?</strong></p>
+  </section>
+
+  <section class="content-box" id="simple-power-supply-test">
+    <h3>Simple Power-Supply Test</h3>
+    <p>Expected input:</p>
+    <p>120 VAC.</p>
+    <p>Measured:</p>
+    <p>120 VAC.</p>
+    <p>Expected output:</p>
+    <p>24 VDC.</p>
+    <p>Measured:</p>
+    <p>0 VDC.</p>
+    <p>Now the power supply becomes highly suspect.</p>
+    <p>That is a much stronger diagnosis than:</p>
+    <blockquote><p>Device is dead, so probably power supply.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="multiple-dc-rails">
+    <h3>Multiple DC Rails</h3>
+    <p>A power supply may have several outputs.</p>
+    <p>Example:</p>
+    <p>24 VDC</p>
+    <p>for motors.</p>
+    <p>12 VDC</p>
+    <p>for fans.</p>
+    <p>5 VDC</p>
+    <p>for digital electronics.</p>
+    <p>3.3 VDC</p>
+    <p>for processors.</p>
+    <p>One rail can fail while others continue working.</p>
+  </section>
+
+  <section class="content-box" id="partial-power-failure">
+    <h3>Partial Power Failure</h3>
+    <p>Suppose:</p>
+    <p>Fans run.</p>
+    <p>Display backlight turns on.</p>
+    <p>Device never boots.</p>
+    <p>That may mean some DC rails are present while another required rail is missing.</p>
+    <p>The device is not completely without power.</p>
+  </section>
+
+  <section class="content-box" id="dc-to-dc-conversion">
+    <h3>DC-to-DC Conversion</h3>
+    <p>A device may convert DC again internally.</p>
+    <p>Example:</p>
+    <p>Power supply outputs:</p>
+    <p>24 VDC.</p>
+    <p>A board converts that to:</p>
+    <p>5 VDC.</p>
+    <p>Then another regulator produces:</p>
+    <p>3.3 VDC.</p>
+    <p>So even if the main 24 V supply is correct, a downstream regulator may fail.</p>
+  </section>
+
+  <section class="content-box" id="follow-the-power-path">
+    <h3>Follow the Power Path</h3>
+    <p>Think:</p>
+    <p>24 V present?</p>
+    <p>Yes.</p>
+    <p>5 V present?</p>
+    <p>Yes.</p>
+    <p>3.3 V present?</p>
+    <p>No.</p>
+    <p>Now you have narrowed the failure significantly.</p>
+  </section>
+
+  <section class="content-box" id="ac-and-battery-paths-may-be-different">
+    <h3>AC and Battery Paths May Be Different</h3>
+    <p>Many portable medical devices can operate from:</p>
+    <ul>
+      <li>AC</li>
+      <li>Battery</li>
+    </ul>
+    <p>These two power sources eventually feed the same equipment, but the paths are not identical.</p>
+    <p>That gives you useful troubleshooting information.</p>
+  </section>
+
+  <section class="content-box" id="works-on-battery-but-not-ac">
+    <h3>Works on Battery but Not AC</h3>
+    <p>If a device works normally on battery, that suggests much of the internal electronics are functional.</p>
+    <p>Focus more on:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Cord</li>
+      <li>AC inlet</li>
+      <li>Fuse</li>
+      <li>AC/DC supply</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="works-on-ac-but-not-battery">
+    <h3>Works on AC but Not Battery</h3>
+    <p>Now focus more on:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Battery contacts</li>
+      <li>Battery fuse</li>
+      <li>Battery communication</li>
+      <li>Power-management circuitry</li>
+    </ul>
+    <p>The symptom tells you which power path to investigate.</p>
+  </section>
+
+  <section class="content-box" id="ac-to-battery-transition">
+    <h3>AC-to-Battery Transition</h3>
+    <p>Portable medical equipment often switches automatically between AC and battery.</p>
+    <p>A device may operate correctly on:</p>
+    <ul>
+      <li>AC alone</li>
+      <li>Battery alone</li>
+    </ul>
+    <p>but reboot during the transition.</p>
+    <p>Test the transition if that matches the complaint.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor plugged in:</p>
+    <p>Normal.</p>
+    <p>Unplugged:</p>
+    <p>Immediate reboot.</p>
+    <p>Then continues normally on battery.</p>
+    <p>That may indicate:</p>
+    <ul>
+      <li>Weak battery</li>
+      <li>Switching circuit</li>
+      <li>Power-management problem</li>
+      <li>Connection problem</li>
+    </ul>
+    <p>The transition itself is the clue.</p>
+  </section>
+
+  <section class="content-box" id="charging-requires-both-ac-and-dc-concepts">
+    <h3>Charging Requires Both AC and DC Concepts</h3>
+    <p>A charging system usually begins with AC from the wall.</p>
+    <p>Then the power supply converts it to DC.</p>
+    <p>Then the charging circuit regulates that DC into the battery.</p>
+    <p>Example:</p>
+    <p>120 VAC</p>
+    <p>↓</p>
+    <p>24 VDC internal supply</p>
+    <p>↓</p>
+    <p>Battery charger</p>
+    <p>↓</p>
+    <p>14.8 V battery pack</p>
+    <p>A charging failure can occur anywhere along that path.</p>
+  </section>
+
+  <section class="content-box" id="voltage-is-not-the-same-as-current">
+    <h3>Voltage Is Not the Same as Current</h3>
+    <p>AC and DC describe how electricity behaves.</p>
+    <p>Voltage and current describe different properties.</p>
+    <p>Voltage is electrical potential.</p>
+    <p>Current is electrical flow.</p>
+    <p>A power adapter may say:</p>
+    <p>24 VDC, 5 A.</p>
+    <p>That does not mean it constantly pushes 5 amps into the device.</p>
+    <p>It means it is designed to provide up to that current under appropriate conditions.</p>
+  </section>
+
+  <section class="content-box" id="current-rating-on-an-adapter">
+    <h3>Current Rating on an Adapter</h3>
+    <p>Suppose the original adapter is:</p>
+    <p>24 VDC, 3 A.</p>
+    <p>A replacement adapter is:</p>
+    <p>24 VDC, 5 A.</p>
+    <p>From a purely electrical-current-capacity standpoint, a properly designed load only draws what it requires.</p>
+    <p>But medical-device compatibility depends on much more than those two numbers.</p>
+    <p>Use approved adapters.</p>
+  </section>
+
+  <section class="content-box" id="under-load-voltage">
+    <h3>Under-Load Voltage</h3>
+    <p>A supply may measure correctly with almost no load.</p>
+    <p>Example:</p>
+    <p>24.1 VDC idle.</p>
+    <p>Motor starts.</p>
+    <p>Voltage collapses to:</p>
+    <p>15 VDC.</p>
+    <p>That tells you the supply or load path is behaving differently under current demand.</p>
+  </section>
+
+  <section class="content-box" id="why-this-matters">
+    <h3>Why This Matters</h3>
+    <p>A weak power supply may look normal on a bench meter until the device actually works hard.</p>
+    <p>Always consider the conditions under which the failure occurs.</p>
+  </section>
+
+  <section class="content-box" id="ripple">
+    <h3>Ripple</h3>
+    <p>DC output should generally be relatively stable.</p>
+    <p>A failing power supply can develop excessive AC ripple on a DC rail.</p>
+    <p>This usually requires:</p>
+    <ul>
+      <li>Appropriate test method</li>
+      <li>Manufacturer specification</li>
+      <li>Sometimes an oscilloscope</li>
+    </ul>
+    <p>Do not diagnose ripple based only on guesswork.</p>
+    <p>For basic troubleshooting, start with the specified DC voltage.</p>
+  </section>
+
+  <section class="content-box" id="rectification">
+    <h3>Rectification</h3>
+    <p>Inside an AC/DC supply, AC is typically converted into one-direction electrical energy before being regulated into stable DC.</p>
+    <p>This process is called:</p>
+    <p><strong>Rectification.</strong></p>
+    <p>You usually do not need component-level knowledge unless servicing at that level.</p>
+    <p>But knowing the term helps when reading schematics or service manuals.</p>
+  </section>
+
+  <section class="content-box" id="regulation">
+    <h3>Regulation</h3>
+    <p>A regulated power supply tries to maintain a stable output.</p>
+    <p>Example:</p>
+    <p>24 VDC.</p>
+    <p>Even as conditions change within its design limits.</p>
+    <p>Poor regulation can cause:</p>
+    <ul>
+      <li>Voltage too high</li>
+      <li>Voltage too low</li>
+      <li>Voltage changing with load</li>
+    </ul>
+    <p>That can create strange device behavior.</p>
+  </section>
+
+  <section class="content-box" id="isolation">
+    <h3>Isolation</h3>
+    <p>Medical equipment power supplies may provide electrical isolation between mains power and patient/device circuitry.</p>
+    <p>This is a critical safety function.</p>
+    <p>Do not modify or substitute power supplies without approved procedures and compatible parts.</p>
+  </section>
+
+  <section class="content-box" id="ground-is-not-dc-negative-automatically">
+    <h3>Ground Is Not DC Negative Automatically</h3>
+    <p>This is an important concept.</p>
+    <p>A DC negative or signal common is not automatically the same thing as protective earth ground.</p>
+    <p>Depending on circuit design, they may:</p>
+    <ul>
+      <li>Be connected</li>
+      <li>Be isolated</li>
+      <li>Be connected only at certain points</li>
+    </ul>
+    <p>Do not assume they are interchangeable when measuring.</p>
+    <p>Use the documented reference.</p>
+  </section>
+
+  <section class="content-box" id="reading-a-schematic">
+    <h3>Reading a Schematic</h3>
+    <p>You may see labels such as:</p>
+    <ul>
+      <li>AC IN</li>
+      <li>+24V</li>
+      <li>+12V</li>
+      <li>+5V</li>
+      <li>GND</li>
+      <li>COM</li>
+    </ul>
+    <p>These labels help show how power is distributed.</p>
+    <p>Understanding AC versus DC makes schematics much easier to follow.</p>
+  </section>
+
+  <section class="content-box" id="transformer-basics">
+    <h3>Transformer Basics</h3>
+    <p>Traditional power supplies may use transformers to:</p>
+    <ul>
+      <li>Change AC voltage</li>
+      <li>Provide isolation</li>
+    </ul>
+    <p>Modern switching supplies may look different internally, but transformers are still common components in power conversion and isolation.</p>
+    <p>Again, the practical question is usually:</p>
+    <p><strong>Is the expected input and output present?</strong></p>
+  </section>
+
+  <section class="content-box" id="ac-motors-vs-dc-motors">
+    <h3>AC Motors vs DC Motors</h3>
+    <p>Medical equipment may contain both.</p>
+    <p>A motor's power type depends on design.</p>
+    <p>Do not assume every motor is DC because the electronics are.</p>
+    <p>Use manufacturer documentation before measuring or applying power.</p>
+  </section>
+
+  <section class="content-box" id="solenoids-and-valves">
+    <h3>Solenoids and Valves</h3>
+    <p>Many:</p>
+    <ul>
+      <li>Solenoids</li>
+      <li>Relays</li>
+      <li>Valves</li>
+    </ul>
+    <p>use DC internally.</p>
+    <p>Others may use AC.</p>
+    <p>Check the rated voltage.</p>
+    <p>Applying the wrong type can damage the component.</p>
+  </section>
+
+  <section class="content-box" id="fans">
+    <h3>Fans</h3>
+    <p>Cooling fans commonly operate from DC rails such as:</p>
+    <ul>
+      <li>5 VDC</li>
+      <li>12 VDC</li>
+      <li>24 VDC</li>
+    </ul>
+    <p>If the fan does not spin, check whether the correct DC voltage reaches it before replacing the fan.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-completely-dead-monitor">
+    <h3>Real-World Example: Completely Dead Monitor</h3>
+    <p>Complaint:</p>
+    <blockquote><p>No power.</p></blockquote>
+    <p>Outlet:</p>
+    <p>120 VAC present.</p>
+    <p>Cord:</p>
+    <p>Good.</p>
+    <p>AC reaches internal power supply.</p>
+    <p>Power supply output:</p>
+    <p>0 VDC.</p>
+    <p>Now you know the failure occurs at or around the AC-to-DC conversion stage.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-works-on-battery-only">
+    <h3>Real-World Example: Works on Battery Only</h3>
+    <p>Battery operation:</p>
+    <p>Normal.</p>
+    <p>AC connected:</p>
+    <p>No AC indication.</p>
+    <p>Outlet:</p>
+    <p>Good.</p>
+    <p>Cord:</p>
+    <p>Good.</p>
+    <p>AC reaches supply.</p>
+    <p>DC output absent.</p>
+    <p>The battery proves the downstream device electronics can operate.</p>
+    <p>The problem is in the AC path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-fan-not-running">
+    <h3>Real-World Example: Fan Not Running</h3>
+    <p>Device otherwise operates.</p>
+    <p>Fan rating:</p>
+    <p>12 VDC.</p>
+    <p>Measured across fan connector:</p>
+    <p>12.1 VDC.</p>
+    <p>Fan does not spin.</p>
+    <p>That strongly implicates the fan.</p>
+    <p>Now reverse it:</p>
+    <p>Measured:</p>
+    <p>0 VDC.</p>
+    <p>Do not replace the fan yet.</p>
+    <p>Find out why power is missing.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-device-reboots-under-load">
+    <h3>Real-World Example: Device Reboots Under Load</h3>
+    <p>DC rail at idle:</p>
+    <p>24.0 V.</p>
+    <p>Motor starts:</p>
+    <p>16.8 V.</p>
+    <p>Device reboots.</p>
+    <p>The problem appears when current demand increases.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Supply</li>
+      <li>Connections</li>
+      <li>Excessive load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-adapter">
+    <h3>Real-World Example: Wrong Adapter</h3>
+    <p>Device requires:</p>
+    <p>12 VDC, center-positive.</p>
+    <p>Incorrect adapter:</p>
+    <p>12 VDC, center-negative.</p>
+    <p>Same plug size.</p>
+    <p>Using it could damage the device.</p>
+    <p>Matching voltage alone is not enough.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="measuring-dc-on-the-ac-setting">
+    <h3>Measuring DC on the AC Setting</h3>
+    <p>Know what type of power you expect.</p>
+  </section>
+
+  <section class="content-box" id="measuring-ac-on-the-dc-setting">
+    <h3>Measuring AC on the DC Setting</h3>
+    <p>Same problem.</p>
+  </section>
+
+  <section class="content-box" id="assuming-every-internal-voltage-is-dc">
+    <h3>Assuming Every Internal Voltage Is DC</h3>
+    <p>Verify.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-polarity">
+    <h3>Ignoring Polarity</h3>
+    <p>DC polarity matters.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-correct-no-load-voltage-means-supply-is-good">
+    <h3>Assuming a Correct No-Load Voltage Means Supply Is Good</h3>
+    <p>Test under relevant operating conditions.</p>
+  </section>
+
+  <section class="content-box" id="replacing-internal-parts-before-verifying-input-power">
+    <h3>Replacing Internal Parts Before Verifying Input Power</h3>
+    <p>Start at the source.</p>
+  </section>
+
+  <section class="content-box" id="treating-dc-negative-as-protective-ground">
+    <h3>Treating DC Negative as Protective Ground</h3>
+    <p>Use the correct reference.</p>
+  </section>
+
+  <section class="content-box" id="using-any-adapter-that-fits">
+    <h3>Using Any Adapter That Fits</h3>
+    <p>Compatibility matters.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a power problem, ask:</p>
+    <p><strong>Is the source AC or DC?</strong></p>
+    <p>Then:</p>
+    <p><strong>What voltage should be present?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where is it converted?</strong></p>
+    <p>Then:</p>
+    <p><strong>What voltage should exist after conversion?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does that voltage remain correct under load?</strong></p>
+    <p>That gives you a logical path.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>At what point does the power change from correct to incorrect?</strong></p>
+    <p>Example:</p>
+    <p>Outlet:</p>
+    <p>120 VAC — correct.</p>
+    <p>Power-supply input:</p>
+    <p>120 VAC — correct.</p>
+    <p>Power-supply output:</p>
+    <p>0 VDC — incorrect.</p>
+    <p>You have found the boundary.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If you measure:</p>
+    <p>120 VAC</p>
+    <p>at the power-supply input, you proved:</p>
+    <p><strong>AC voltage was present at that input under the conditions tested.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Supply output is correct</li>
+      <li>DC rails are stable</li>
+      <li>Battery charges</li>
+      <li>Device works under load</li>
+    </ul>
+    <p>Each measurement answers one question.</p>
+    <p>Then move to the next point.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>AC and DC are basic concepts.</p>
+    <p>But they sit underneath a huge amount of medical equipment troubleshooting.</p>
+    <p>The wall usually gives you AC.</p>
+    <p>Batteries give you DC.</p>
+    <p>Power supplies convert AC into the DC voltages internal electronics need.</p>
+    <p>From there, different circuits may convert that DC again.</p>
+    <p>So when a device has a power problem, do not think of electricity as one mystery source.</p>
+    <p>Follow it.</p>
+    <p><strong>What comes in?</strong></p>
+    <p><strong>AC or DC?</strong></p>
+    <p><strong>What should the voltage be?</strong></p>
+    <p><strong>Where does it change?</strong></p>
+    <p><strong>What comes out?</strong></p>
+    <p>Understanding those few concepts makes power supplies, batteries, motors, charging circuits, and no-power failures much easier to reason through.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Electrical troubleshooting may involve hazardous mains voltage, high current, stored energy, batteries, and safety-critical isolation circuits. Follow current manufacturer service documentation, facility electrical-safety procedures, appropriate test-equipment ratings, and your authorized service scope. Do not perform energized internal measurements unless trained and permitted to do so.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="voltage-current-resistance-and-continuity-in-plain-english.html">Voltage, Current, Resistance, and Continuity in Plain English</a></li>
+      <li><a href="ground-neutral-and-hot-in-medical-equipment.html">Ground, Neutral, and Hot in Medical Equipment</a></li>
+      <li><a href="fuses-breakers-and-power-supplies-in-medical-equipment.html">Fuses, Breakers, and Power Supplies in Medical Equipment</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+      <li><a href="medical-equipment-power-troubleshooting-outlet-to-internal-supply.html">Medical Equipment Power Troubleshooting: Outlet to Internal Supply</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
