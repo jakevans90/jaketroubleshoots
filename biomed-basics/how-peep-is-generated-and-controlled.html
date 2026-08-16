@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How PEEP Is Generated and Controlled | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how ventilators maintain positive pressure at end expiration and how valves, flow, sensors, leaks, and control loops affect PEEP.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-peep-is-generated-and-controlled.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How PEEP Is Generated and Controlled</h2>
+  <p>How ventilators maintain positive pressure at the end of expiration and why valve, flow, pressure-sensor, and leak problems can all affect it</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">PEEP stands for:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What PEEP is</li>
+      <li>Why pressure remains at end expiration</li>
+      <li>Expiratory valves</li>
+      <li>Blower and turbine control</li>
+      <li>Flow-based PEEP systems</li>
+      <li>Pressure feedback</li>
+      <li>External PEEP valves</li>
+      <li>Intrinsic PEEP</li>
+      <li>Leaks</li>
+      <li>PEEP measurement</li>
+      <li>Zeroing and pressure-sensor errors</li>
+      <li>High and low PEEP</li>
+      <li>Ventilator analyzer testing</li>
+      <li>Common failure patterns</li>
+      <li>How to think through PEEP troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A ventilator generally creates PEEP by preventing airway pressure from falling completely back to atmospheric pressure during expiration.</p>
+    <p>Conceptually:</p>
+    <p><strong>Patient exhales</strong></p>
+    <p>↓</p>
+    <p><strong>Ventilator controls how easily gas can leave</strong></p>
+    <p>↓</p>
+    <p><strong>Expiratory pressure is prevented from falling below the target</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure sensor monitors the result</strong></p>
+    <p>↓</p>
+    <p><strong>Control system adjusts valve or flow to maintain PEEP</strong></p>
+    <p>The exact method varies by ventilator.</p>
+  </section>
+
+  <section class="content-box" id="what-is-peep">
+    <h3>What Is PEEP?</h3>
+    <p>PEEP is positive pressure maintained at the end of expiration.</p>
+    <p>Example:</p>
+    <p>PEEP set:</p>
+    <p>5 cmH2O.</p>
+    <p>At the end of expiration, airway pressure should remain near that target under the specified test conditions.</p>
+  </section>
+
+  <section class="content-box" id="peep-is-not-peak-pressure">
+    <h3>PEEP Is Not Peak Pressure</h3>
+    <p>This is important.</p>
+    <p>Peak airway pressure may be:</p>
+    <p>25 cmH2O.</p>
+    <p>PEEP may be:</p>
+    <p>5 cmH2O.</p>
+    <p>They describe different points in the respiratory cycle.</p>
+  </section>
+
+  <section class="content-box" id="peep-is-the-baseline">
+    <h3>PEEP Is the Baseline</h3>
+    <p>On a pressure-time waveform, PEEP is generally the pressure baseline between breaths.</p>
+    <p>Instead of returning to:</p>
+    <p>0 cmH2O,</p>
+    <p>the waveform may return to:</p>
+    <p>5 cmH2O.</p>
+  </section>
+
+  <section class="content-box" id="how-is-peep-created">
+    <h3>How Is PEEP Created?</h3>
+    <p>In simple terms:</p>
+    <p>The ventilator limits expiratory gas flow enough to maintain pressure in the circuit.</p>
+    <p>This may involve:</p>
+    <ul>
+      <li>Expiratory valve</li>
+      <li>Controlled bias flow</li>
+      <li>Blower/turbine pressure</li>
+      <li>Combination of these</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="expiratory-valve">
+    <h3>Expiratory Valve</h3>
+    <p>The expiratory valve is one of the most important PEEP-control components on many ventilators.</p>
+    <p>During expiration, gas leaves through this valve.</p>
+    <p>The ventilator controls how open or closed the valve is.</p>
+  </section>
+
+  <section class="content-box" id="valve-more-open">
+    <h3>Valve More Open</h3>
+    <p>Gas leaves more easily.</p>
+    <p>Pressure falls more.</p>
+  </section>
+
+  <section class="content-box" id="valve-more-closed">
+    <h3>Valve More Closed</h3>
+    <p>Gas leaves less freely.</p>
+    <p>Pressure remains higher.</p>
+    <p>That basic principle allows the ventilator to regulate PEEP.</p>
+  </section>
+
+  <section class="content-box" id="expiratory-valve-is-not-just-open-or-closed">
+    <h3>Expiratory Valve Is Not Just Open or Closed</h3>
+    <p>Many modern valves are continuously controlled.</p>
+    <p>The ventilator may adjust them dynamically based on:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Flow</li>
+      <li>Mode</li>
+    </ul>
+    <p>The valve may move many times during each breath.</p>
+  </section>
+
+  <section class="content-box" id="pressure-feedback">
+    <h3>Pressure Feedback</h3>
+    <p>The ventilator needs to know whether actual airway pressure matches the target.</p>
+    <p>A pressure sensor provides feedback.</p>
+    <p>Conceptually:</p>
+    <p><strong>Set PEEP</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure sensor measures actual pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Controller compares actual vs target</strong></p>
+    <p>↓</p>
+    <p><strong>Valve or blower adjusted</strong></p>
+    <p>This is a feedback loop.</p>
+  </section>
+
+  <section class="content-box" id="why-pressure-sensor-accuracy-matters">
+    <h3>Why Pressure-Sensor Accuracy Matters</h3>
+    <p>Suppose actual PEEP is:</p>
+    <p>5 cmH2O.</p>
+    <p>Sensor falsely reports:</p>
+    <p>10.</p>
+    <p>The ventilator may reduce pressure because it believes PEEP is too high.</p>
+    <p>Now the pressure-sensor error creates a real PEEP-control error.</p>
+  </section>
+
+  <section class="content-box" id="measurement-error-vs-control-error">
+    <h3>Measurement Error vs Control Error</h3>
+    <p>This distinction is critical.</p>
+    <p>A wrong PEEP display does not automatically mean actual PEEP is wrong.</p>
+    <p>You need an independent analyzer.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ventilator displays:</p>
+    <p>10 cmH2O.</p>
+    <p>Analyzer:</p>
+    <p>5.</p>
+    <p>Actual PEEP is correct.</p>
+    <p>Measurement is wrong.</p>
+    <p>Now:</p>
+    <p>Ventilator displays:</p>
+    <p>10.</p>
+    <p>Analyzer:</p>
+    <p>10.</p>
+    <p>Actual PEEP is truly high.</p>
+    <p>Look at control.</p>
+  </section>
+
+  <section class="content-box" id="blower-or-turbine-systems">
+    <h3>Blower or Turbine Systems</h3>
+    <p>Some ventilators use a blower or turbine.</p>
+    <p>The blower may maintain background circuit pressure as part of PEEP generation.</p>
+    <p>In these designs, PEEP may not depend solely on an expiratory valve.</p>
+  </section>
+
+  <section class="content-box" id="flow-based-peep">
+    <h3>Flow-Based PEEP</h3>
+    <p>Some systems use continuous or bias flow plus controlled exhaust resistance.</p>
+    <p>Pressure is maintained by the relationship between:</p>
+    <ul>
+      <li>Incoming flow</li>
+      <li>Outgoing flow</li>
+      <li>Circuit resistance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="bias-flow">
+    <h3>Bias Flow</h3>
+    <p>Bias flow is a small continuous gas flow through the circuit.</p>
+    <p>It may help with:</p>
+    <ul>
+      <li>Trigger detection</li>
+      <li>PEEP maintenance</li>
+    </ul>
+    <p>This is why some ventilators still show flow between breaths.</p>
+  </section>
+
+  <section class="content-box" id="external-peep-valve">
+    <h3>External PEEP Valve</h3>
+    <p>Some breathing systems use an external mechanical PEEP valve.</p>
+    <p>The valve provides resistance until pressure reaches a set level.</p>
+    <p>Once pressure exceeds that level, gas can escape.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-peep-valve">
+    <h3>Mechanical PEEP Valve</h3>
+    <p>A simple mechanical PEEP valve may use:</p>
+    <ul>
+      <li>Spring</li>
+      <li>Diaphragm</li>
+      <li>Adjustable resistance</li>
+    </ul>
+    <p>The exact mechanism varies.</p>
+  </section>
+
+  <section class="content-box" id="internal-vs-external-peep">
+    <h3>Internal vs External PEEP</h3>
+    <p>Know which system you are working on.</p>
+    <p>Some ventilators control PEEP internally.</p>
+    <p>Others may use accessories or circuit components.</p>
+    <p>Do not troubleshoot an internal valve when the actual PEEP source is external.</p>
+  </section>
+
+  <section class="content-box" id="peep-during-expiration">
+    <h3>PEEP During Expiration</h3>
+    <p>As the patient exhales:</p>
+    <p>Pressure falls.</p>
+    <p>The ventilator allows gas to leave.</p>
+    <p>When pressure approaches target PEEP, the control system reduces further pressure loss.</p>
+  </section>
+
+  <section class="content-box" id="why-peep-can-be-too-low">
+    <h3>Why PEEP Can Be Too Low</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Circuit leak</li>
+      <li>Expiratory valve too open</li>
+      <li>Weak blower/turbine</li>
+      <li>Pressure-sensor error</li>
+      <li>Internal leak</li>
+      <li>Incorrect configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-peep-can-be-too-high">
+    <h3>Why PEEP Can Be Too High</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Expiratory valve restricted</li>
+      <li>Valve not opening enough</li>
+      <li>Pressure-sensor error</li>
+      <li>Excessive bias flow</li>
+      <li>Circuit obstruction</li>
+      <li>Auto-PEEP</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="circuit-leak">
+    <h3>Circuit Leak</h3>
+    <p>A leak can make it difficult to maintain PEEP.</p>
+    <p>Gas escapes continuously.</p>
+    <p>The ventilator may compensate up to a point.</p>
+    <p>A large enough leak may cause PEEP to fall.</p>
+  </section>
+
+  <section class="content-box" id="leak-example">
+    <h3>Leak Example</h3>
+    <p>Set:</p>
+    <p>5 cmH2O.</p>
+    <p>Analyzer:</p>
+    <p>2.</p>
+    <p>Circuit leak test fails.</p>
+    <p>Fix leak.</p>
+    <p>PEEP returns to:</p>
+    <p>5.</p>
+    <p>The expiratory valve was fine.</p>
+  </section>
+
+  <section class="content-box" id="internal-leak">
+    <h3>Internal Leak</h3>
+    <p>If external circuit is known good and PEEP remains low, investigate internal gas paths according to manufacturer documentation.</p>
+  </section>
+
+  <section class="content-box" id="expiratory-valve-leak">
+    <h3>Expiratory Valve Leak</h3>
+    <p>If the expiratory valve does not seal sufficiently, gas may escape too easily.</p>
+    <p>Possible symptom:</p>
+    <p>PEEP consistently lower than set.</p>
+  </section>
+
+  <section class="content-box" id="expiratory-valve-restriction">
+    <h3>Expiratory Valve Restriction</h3>
+    <p>If the valve cannot open enough:</p>
+    <p>Gas may not leave easily.</p>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>High PEEP</li>
+      <li>High expiratory pressure</li>
+      <li>Incomplete exhalation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="valve-contamination">
+    <h3>Valve Contamination</h3>
+    <p>Moisture or contamination can affect valve movement.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Sticky valve</li>
+      <li>Slow response</li>
+      <li>Failed self-test</li>
+      <li>PEEP instability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="valve-membrane-or-diaphragm">
+    <h3>Valve Membrane or Diaphragm</h3>
+    <p>Some expiratory valve assemblies use:</p>
+    <ul>
+      <li>Membrane</li>
+      <li>Diaphragm</li>
+    </ul>
+    <p>Damage can cause:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Poor control</li>
+      <li>Calibration failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="valve-assembly-installation">
+    <h3>Valve Assembly Installation</h3>
+    <p>Incorrectly installed expiratory components may create:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Restriction</li>
+    </ul>
+    <p>Always confirm orientation and seating.</p>
+  </section>
+
+  <section class="content-box" id="expiratory-valve-calibration">
+    <h3>Expiratory Valve Calibration</h3>
+    <p>Some ventilators require calibration after:</p>
+    <ul>
+      <li>Valve replacement</li>
+      <li>Cleaning</li>
+      <li>Sensor change</li>
+    </ul>
+    <p>Follow manufacturer service procedures.</p>
+  </section>
+
+  <section class="content-box" id="peep-calibration-failure">
+    <h3>PEEP Calibration Failure</h3>
+    <p>A failed PEEP or expiratory-valve calibration may be caused by:</p>
+    <ul>
+      <li>Valve</li>
+      <li>Leak</li>
+      <li>Pressure sensor</li>
+      <li>Flow sensor</li>
+      <li>Incorrect circuit setup</li>
+    </ul>
+    <p>Do not treat calibration failure as automatic proof the valve is bad.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor">
+    <h3>Pressure Sensor</h3>
+    <p>The ventilator may use pressure sensing to control PEEP in real time.</p>
+    <p>If the sensor has:</p>
+    <ul>
+      <li>Offset</li>
+      <li>Drift</li>
+      <li>Damping</li>
+    </ul>
+    <p>PEEP regulation may be affected.</p>
+  </section>
+
+  <section class="content-box" id="pressure-zero-error">
+    <h3>Pressure Zero Error</h3>
+    <p>Actual airway pressure:</p>
+    <p>0.</p>
+    <p>Ventilator reads:</p>
+    <p>+5.</p>
+    <p>Now when set PEEP is:</p>
+    <p>5,</p>
+    <p>the controller may think it has already reached target.</p>
+    <p>Actual pressure could remain near:</p>
+    <p>0.</p>
+  </section>
+
+  <section class="content-box" id="verify-pressure-first">
+    <h3>Verify Pressure First</h3>
+    <p>Before replacing an expiratory valve for wrong PEEP:</p>
+    <p>Compare:</p>
+    <p><strong>Ventilator pressure</strong></p>
+    <p>with:</p>
+    <p><strong>External analyzer.</strong></p>
+    <p>That one test can save a lot of unnecessary work.</p>
+  </section>
+
+  <section class="content-box" id="flow-sensor-interaction">
+    <h3>Flow Sensor Interaction</h3>
+    <p>Flow sensors may help the ventilator determine:</p>
+    <ul>
+      <li>Expiratory flow</li>
+      <li>Leak</li>
+      <li>Triggering</li>
+    </ul>
+    <p>A bad flow signal can interfere indirectly with PEEP control.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Expiratory flow sensor falsely reports:</p>
+    <p>High leak.</p>
+    <p>Ventilator changes compensation behavior.</p>
+    <p>PEEP becomes unstable.</p>
+    <p>The apparent PEEP problem originates in flow measurement.</p>
+  </section>
+
+  <section class="content-box" id="closed-loop-control">
+    <h3>Closed-Loop Control</h3>
+    <p>Modern ventilators may constantly adjust multiple components.</p>
+    <p>That means:</p>
+    <p>PEEP problem</p>
+    <p>does not always equal:</p>
+    <p>PEEP valve problem.</p>
+    <p>Think in terms of the whole control loop.</p>
+  </section>
+
+  <section class="content-box" id="set-peep-vs-measured-peep">
+    <h3>Set PEEP vs Measured PEEP</h3>
+    <p>A screen may show both:</p>
+    <ul>
+      <li>Set PEEP</li>
+      <li>Measured PEEP</li>
+    </ul>
+    <p>Make sure you know which number you are reading.</p>
+  </section>
+
+  <section class="content-box" id="set-value">
+    <h3>Set Value</h3>
+    <p>Set:</p>
+    <p>5 cmH2O.</p>
+    <p>This means:</p>
+    <p><strong>Target PEEP is 5.</strong></p>
+  </section>
+
+  <section class="content-box" id="measured-value">
+    <h3>Measured Value</h3>
+    <p>Measured:</p>
+    <p>3 cmH2O.</p>
+    <p>This means the ventilator believes actual PEEP is:</p>
+    <p>3.</p>
+    <p>Now investigate why.</p>
+  </section>
+
+  <section class="content-box" id="external-analyzer">
+    <h3>External Analyzer</h3>
+    <p>The independent analyzer tells you what pressure is actually present at the test point.</p>
+    <p>That becomes the tie-breaker.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-placement-matters">
+    <h3>Analyzer Placement Matters</h3>
+    <p>PEEP may differ slightly at:</p>
+    <ul>
+      <li>Ventilator outlet</li>
+      <li>Patient wye</li>
+    </ul>
+    <p>depending on:</p>
+    <ul>
+      <li>Circuit resistance</li>
+      <li>Bias flow</li>
+    </ul>
+    <p>Use the manufacturer-specified test point.</p>
+  </section>
+
+  <section class="content-box" id="test-lung">
+    <h3>Test Lung</h3>
+    <p>A test lung provides a controlled load.</p>
+    <p>It helps you evaluate:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Volume</li>
+      <li>PEEP</li>
+    </ul>
+    <p>without involving a patient.</p>
+  </section>
+
+  <section class="content-box" id="test-lung-leak">
+    <h3>Test Lung Leak</h3>
+    <p>A leaking test lung can cause low PEEP.</p>
+    <p>Before opening the ventilator:</p>
+    <p>Verify the test setup.</p>
+  </section>
+
+  <section class="content-box" id="circuit-compliance">
+    <h3>Circuit Compliance</h3>
+    <p>Very compliant circuits may behave differently during pressure changes.</p>
+    <p>Use the approved circuit and test configuration.</p>
+  </section>
+
+  <section class="content-box" id="resistance">
+    <h3>Resistance</h3>
+    <p>Excess resistance in the expiratory path can cause pressure to remain elevated.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Filter</li>
+      <li>Kink</li>
+      <li>Valve restriction</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="expiratory-filter">
+    <h3>Expiratory Filter</h3>
+    <p>A clogged expiratory filter can increase resistance.</p>
+    <p>Possible effects:</p>
+    <ul>
+      <li>High PEEP</li>
+      <li>Incomplete exhalation</li>
+      <li>High pressure</li>
+    </ul>
+    <p>The ventilator may be functioning correctly in response to a blocked circuit.</p>
+  </section>
+
+  <section class="content-box" id="kinked-expiratory-limb">
+    <h3>Kinked Expiratory Limb</h3>
+    <p>A simple kink can create high expiratory pressure.</p>
+    <p>Always inspect external circuit before assuming internal failure.</p>
+  </section>
+
+  <section class="content-box" id="peep-and-compliance">
+    <h3>PEEP and Compliance</h3>
+    <p>PEEP pressure itself is controlled, but the volume remaining in the lung at end expiration depends on compliance.</p>
+    <p>That is a clinical/lung mechanics issue, not equipment calibration.</p>
+  </section>
+
+  <section class="content-box" id="peep-in-pressure-control-modes">
+    <h3>PEEP in Pressure-Control Modes</h3>
+    <p>PEEP remains the baseline pressure.</p>
+    <p>Inspiratory pressure may be specified:</p>
+    <p>Above PEEP</p>
+    <p>or:</p>
+    <p>As absolute airway pressure</p>
+    <p>depending on the ventilator.</p>
+    <p>Know the device's convention.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>PEEP:</p>
+    <p>5.</p>
+    <p>Pressure control:</p>
+    <p>15 above PEEP.</p>
+    <p>Peak target may be approximately:</p>
+    <p>20 cmH2O.</p>
+    <p>Another ventilator may describe settings differently.</p>
+    <p>Do not compare settings across devices without checking definitions.</p>
+  </section>
+
+  <section class="content-box" id="intrinsic-peep">
+    <h3>Intrinsic PEEP</h3>
+    <p>Not all end-expiratory pressure comes from the ventilator setting.</p>
+    <p>The patient or test lung may fail to fully exhale before the next breath.</p>
+    <p>This can trap pressure.</p>
+    <p>This is often called:</p>
+    <p><strong>Intrinsic PEEP</strong></p>
+    <p>or:</p>
+    <p><strong>Auto-PEEP.</strong></p>
+  </section>
+
+  <section class="content-box" id="auto-peep">
+    <h3>Auto-PEEP</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>High respiratory rate</li>
+      <li>Long inspiratory time</li>
+      <li>High airway resistance</li>
+      <li>Insufficient expiratory time</li>
+    </ul>
+    <p>The ventilator may be functioning correctly.</p>
+  </section>
+
+  <section class="content-box" id="why-auto-peep-matters-in-troubleshooting">
+    <h3>Why Auto-PEEP Matters in Troubleshooting</h3>
+    <p>Suppose:</p>
+    <p>Set PEEP:</p>
+    <p>5.</p>
+    <p>Analyzer baseline:</p>
+    <p>10.</p>
+    <p>Before replacing the expiratory valve, check whether:</p>
+    <ul>
+      <li>Exhalation completes</li>
+      <li>Respiratory rate is high</li>
+      <li>Test lung/circuit is restrictive</li>
+    </ul>
+    <p>The extra pressure may be dynamic gas trapping.</p>
+  </section>
+
+  <section class="content-box" id="increase-expiratory-time">
+    <h3>Increase Expiratory Time</h3>
+    <p>In a controlled bench setup, changing timing may help distinguish:</p>
+    <p><strong>True control problem</strong></p>
+    <p>from:</p>
+    <p><strong>Auto-PEEP due to incomplete exhalation.</strong></p>
+    <p>Follow approved test methods.</p>
+  </section>
+
+  <section class="content-box" id="pressure-waveform">
+    <h3>Pressure Waveform</h3>
+    <p>The waveform is very useful.</p>
+    <p>Look at end expiration.</p>
+    <p>Does pressure:</p>
+    <ul>
+      <li>Return cleanly to target?</li>
+      <li>Stay elevated?</li>
+      <li>Drift?</li>
+    </ul>
+    <p>That pattern can point toward different causes.</p>
+  </section>
+
+  <section class="content-box" id="flow-waveform">
+    <h3>Flow Waveform</h3>
+    <p>Expiratory flow should generally return toward baseline before the next breath in a properly configured passive test lung.</p>
+    <p>If expiratory flow is still present when the next breath begins, gas trapping may exist.</p>
+  </section>
+
+  <section class="content-box" id="peep-instability">
+    <h3>PEEP Instability</h3>
+    <p>If PEEP fluctuates:</p>
+    <p>4 7 5 9</p>
+    <p>consider:</p>
+    <ul>
+      <li>Valve sticking</li>
+      <li>Pressure signal noise</li>
+      <li>Leak changing</li>
+      <li>Flow-control problem</li>
+    </ul>
+    <p>Try to reproduce the pattern.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-valve-problem">
+    <h3>Intermittent Valve Problem</h3>
+    <p>A sticky expiratory valve may work normally most breaths and fail occasionally.</p>
+    <p>Watch:</p>
+    <ul>
+      <li>Pressure waveform</li>
+      <li>Flow waveform</li>
+    </ul>
+    <p>over many breaths.</p>
+  </section>
+
+  <section class="content-box" id="warm-up-effects">
+    <h3>Warm-Up Effects</h3>
+    <p>A component may behave differently after:</p>
+    <ul>
+      <li>Heating</li>
+      <li>Extended operation</li>
+    </ul>
+    <p>If complaint occurs after an hour, do not test only for five minutes.</p>
+  </section>
+
+  <section class="content-box" id="peep-alarm">
+    <h3>PEEP Alarm</h3>
+    <p>Some ventilators monitor whether measured PEEP differs too far from set value.</p>
+    <p>A PEEP alarm tells you:</p>
+    <p><strong>Measured pressure is outside expected range.</strong></p>
+    <p>It does not tell you why.</p>
+  </section>
+
+  <section class="content-box" id="low-peep-alarm">
+    <h3>Low PEEP Alarm</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Disconnect</li>
+      <li>Valve problem</li>
+      <li>Pressure-sensor error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-peep-alarm">
+    <h3>High PEEP Alarm</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Expiratory obstruction</li>
+      <li>Valve restriction</li>
+      <li>Auto-PEEP</li>
+      <li>Pressure measurement error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="alarm-can-be-correct">
+    <h3>Alarm Can Be Correct</h3>
+    <p>If analyzer confirms actual PEEP is high and alarm activates:</p>
+    <p>The alarm system may be working correctly.</p>
+    <p>Find why PEEP is high.</p>
+  </section>
+
+  <section class="content-box" id="false-alarm">
+    <h3>False Alarm</h3>
+    <p>Analyzer:</p>
+    <p>5.</p>
+    <p>Ventilator:</p>
+    <p>12.</p>
+    <p>High-PEEP alarm.</p>
+    <p>Measurement path is suspect.</p>
+  </section>
+
+  <section class="content-box" id="peep-and-disconnects">
+    <h3>PEEP and Disconnects</h3>
+    <p>A large circuit disconnect usually prevents PEEP maintenance.</p>
+    <p>Low PEEP may therefore be part of disconnect detection.</p>
+  </section>
+
+  <section class="content-box" id="peep-and-niv">
+    <h3>PEEP and NIV</h3>
+    <p>Noninvasive ventilation often has intentional leak.</p>
+    <p>The ventilator may use leak compensation to maintain pressure.</p>
+    <p>PEEP troubleshooting in NIV can be different from a sealed invasive circuit.</p>
+  </section>
+
+  <section class="content-box" id="leak-compensation">
+    <h3>Leak Compensation</h3>
+    <p>Modern ventilators may increase flow to compensate for leak.</p>
+    <p>If actual PEEP is maintained despite substantial leak, this may be normal operation.</p>
+  </section>
+
+  <section class="content-box" id="compensation-limit">
+    <h3>Compensation Limit</h3>
+    <p>Every system has limits.</p>
+    <p>Beyond a certain leak, PEEP may fall.</p>
+  </section>
+
+  <section class="content-box" id="mask-leak-is-not-device-failure">
+    <h3>Mask Leak Is Not Device Failure</h3>
+    <p>On NIV, low pressure may originate from interface leak.</p>
+    <p>Bench testing with a sealed test setup helps isolate the ventilator.</p>
+  </section>
+
+  <section class="content-box" id="anesthesia-ventilator-peep">
+    <h3>Anesthesia Ventilator PEEP</h3>
+    <p>Anesthesia machines may generate PEEP using:</p>
+    <ul>
+      <li>Electronic expiratory valve</li>
+      <li>Mechanical valve</li>
+      <li>Ventilator-specific mechanism</li>
+    </ul>
+    <p>Do not assume ICU ventilator architecture applies exactly.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-peep-valve-failure">
+    <h3>Mechanical PEEP Valve Failure</h3>
+    <p>If an external mechanical PEEP valve sticks or leaks, pressure may be:</p>
+    <ul>
+      <li>Too high</li>
+      <li>Too low</li>
+    </ul>
+    <p>Swap with known-good approved component when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-peep">
+    <h3>Real-World Example: Low PEEP</h3>
+    <p>Set:</p>
+    <p>5 cmH2O.</p>
+    <p>Ventilator:</p>
+    <p>2.</p>
+    <p>Analyzer:</p>
+    <p>2.</p>
+    <p>Circuit leak test:</p>
+    <p>Fails.</p>
+    <p>Loose expiratory-limb connection found.</p>
+    <p>PEEP returns to 5 after correction.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-false-low-peep">
+    <h3>Real-World Example: False Low PEEP</h3>
+    <p>Set:</p>
+    <p>5.</p>
+    <p>Ventilator:</p>
+    <p>2.</p>
+    <p>Analyzer:</p>
+    <p>5.</p>
+    <p>Pressure-sensor zero is incorrect.</p>
+    <p>Actual PEEP is fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-high-peep">
+    <h3>Real-World Example: High PEEP</h3>
+    <p>Set:</p>
+    <p>5.</p>
+    <p>Analyzer:</p>
+    <p>12.</p>
+    <p>Ventilator:</p>
+    <p>12.</p>
+    <p>Expiratory filter found obstructed.</p>
+    <p>Sensor and display were accurate.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-high-peep-only-at-fast-rate">
+    <h3>Real-World Example: High PEEP Only at Fast Rate</h3>
+    <p>Set:</p>
+    <p>5.</p>
+    <p>Slow rate:</p>
+    <p>Analyzer shows 5.</p>
+    <p>High respiratory rate:</p>
+    <p>Analyzer shows 10.</p>
+    <p>Expiratory flow does not return to baseline before next breath.</p>
+    <p>Auto-PEEP from insufficient expiratory time.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-peep-fluctuates">
+    <h3>Real-World Example: PEEP Fluctuates</h3>
+    <p>Set:</p>
+    <p>8.</p>
+    <p>Pressure varies from:</p>
+    <p>5 to 12.</p>
+    <p>External analyzer confirms fluctuation.</p>
+    <p>Expiratory valve movement found intermittent.</p>
+    <p>This is a real control problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-valve-replaced-but-problem-remains">
+    <h3>Real-World Example: Valve Replaced but Problem Remains</h3>
+    <p>Expiratory valve replaced.</p>
+    <p>PEEP still reads high.</p>
+    <p>Analyzer shows normal PEEP.</p>
+    <p>Original problem was pressure measurement, not valve control.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="replacing-the-expiratory-valve-before-measuring-actual-peep">
+    <h3>Replacing the Expiratory Valve Before Measuring Actual PEEP</h3>
+    <p>Use an independent analyzer.</p>
+  </section>
+
+  <section class="content-box" id="assuming-displayed-peep-is-actual-peep">
+    <h3>Assuming Displayed PEEP Is Actual PEEP</h3>
+    <p>Verify it.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-circuit-leaks">
+    <h3>Ignoring Circuit Leaks</h3>
+    <p>A leak can prevent PEEP maintenance.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-expiratory-restrictions">
+    <h3>Ignoring Expiratory Restrictions</h3>
+    <p>High PEEP may be caused downstream.</p>
+  </section>
+
+  <section class="content-box" id="confusing-auto-peep-with-ventilator-generated-peep">
+    <h3>Confusing Auto-PEEP With Ventilator-Generated PEEP</h3>
+    <p>Timing and resistance matter.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-pressure-sensor-errors">
+    <h3>Ignoring Pressure-Sensor Errors</h3>
+    <p>The sensor may be the source of the problem.</p>
+  </section>
+
+  <section class="content-box" id="assuming-peep-control-works-the-same-on-every-ventilator">
+    <h3>Assuming PEEP Control Works the Same on Every Ventilator</h3>
+    <p>Designs vary.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a PEEP problem, ask:</p>
+    <p><strong>What PEEP is set?</strong></p>
+    <p>Then:</p>
+    <p><strong>What does the ventilator measure?</strong></p>
+    <p>Then:</p>
+    <p><strong>What does an independent analyzer measure?</strong></p>
+    <p>If ventilator and analyzer agree:</p>
+    <p>PEEP is actually wrong.</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Expiratory valve</li>
+      <li>Flow</li>
+      <li>Obstruction</li>
+      <li>Auto-PEEP</li>
+    </ul>
+    <p>If they disagree:</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Pressure sensor</li>
+      <li>Sensing tubing</li>
+      <li>Calibration</li>
+    </ul>
+    <p>Then ask:</p>
+    <p><strong>Is the failure constant or mode/rate dependent?</strong></p>
+    <p>That can reveal dynamic problems.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a pressure-control problem, a pressure-measurement problem, or a breathing-circuit problem?</strong></p>
+    <p>Those are three different repair paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If PEEP is set to:</p>
+    <p>5 cmH2O,</p>
+    <p>you proved:</p>
+    <p><strong>The target is 5 cmH2O.</strong></p>
+    <p>If the ventilator displays:</p>
+    <p>5,</p>
+    <p>you proved:</p>
+    <p><strong>Its measurement system reports 5 cmH2O.</strong></p>
+    <p>You still have not independently proven actual airway pressure.</p>
+    <p>If a calibrated analyzer at the correct test point also measures approximately:</p>
+    <p>5 cmH2O</p>
+    <p>within specification, you now have strong evidence the ventilator is generating and measuring the intended PEEP under that test condition.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>PEEP is a controlled pressure baseline.</p>
+    <p>It is not usually created by one simple valve acting alone.</p>
+    <p>The ventilator may need:</p>
+    <ul>
+      <li>Accurate pressure sensing</li>
+      <li>Controlled expiratory resistance</li>
+      <li>Correct flow</li>
+      <li>Tight circuit</li>
+      <li>Working control software</li>
+    </ul>
+    <p>So when PEEP is wrong, do not jump straight to:</p>
+    <blockquote><p>Bad expiratory valve.</p></blockquote>
+    <p>Start with the most important comparison:</p>
+    <p><strong>What does the ventilator say?</strong></p>
+    <p>versus:</p>
+    <p><strong>What does the analyzer say?</strong></p>
+    <p>Then work through:</p>
+    <p><strong>Circuit → Expiratory Path → Valve/Flow Control → Pressure Sensor → Software.</strong></p>
+    <p>And remember to consider:</p>
+    <p><strong>Auto-PEEP.</strong></p>
+    <p>Sometimes the ventilator is doing exactly what it was told to do, but the system has not finished exhaling.</p>
+    <p>Once you separate:</p>
+    <p><strong>actual PEEP</strong></p>
+    <p>from:</p>
+    <p><strong>measured PEEP</strong></p>
+    <p>from:</p>
+    <p><strong>intrinsic PEEP,</strong></p>
+    <p>the problem becomes much easier to understand.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>PEEP-generation methods, expiratory-valve designs, pressure-feedback algorithms, leak compensation, calibration procedures, alarm limits, and test requirements vary by ventilator and anesthesia-machine manufacturer and model. Follow current manufacturer service documentation, use approved circuits and calibrated ventilator analyzers, and complete required performance and safety testing before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-ventilator-pressure-sensors-work.html">How Ventilator Pressure Sensors Work</a></li>
+      <li><a href="how-a-ventilator-measures-tidal-volume.html">How a Ventilator Measures Tidal Volume</a></li>
+      <li><a href="how-ventilator-flow-sensors-work.html">How Ventilator Flow Sensors Work</a></li>
+      <li><a href="how-medical-equipment-measures-pressure.html">How Medical Equipment Measures Pressure</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

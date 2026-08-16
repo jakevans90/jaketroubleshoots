@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How NIBP Works in a Patient Monitor | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how cuffs, pumps, valves, pressure sensors, oscillations, and software work together during an NIBP measurement.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-nibp-works-in-a-patient-monitor.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How NIBP Works in a Patient Monitor</h2>
+  <p>What the cuff, pump, valves, pressure sensor, and software are actually doing during a blood pressure measurement</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">NIBP stands for:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What NIBP measures</li>
+      <li>Oscillometric measurement</li>
+      <li>The pump</li>
+      <li>Inflation valves</li>
+      <li>Deflation valves</li>
+      <li>Pressure sensors</li>
+      <li>Cuffs and hoses</li>
+      <li>Leak detection</li>
+      <li>Overpressure protection</li>
+      <li>How systolic and diastolic values are calculated</li>
+      <li>Why movement causes failures</li>
+      <li>Why cuff size matters</li>
+      <li>Common NIBP failure patterns</li>
+      <li>How to think through NIBP troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A typical NIBP cycle looks like this:</p>
+    <p><strong>Pump inflates the cuff</strong></p>
+    <p>↓</p>
+    <p><strong>Cuff temporarily restricts arterial blood flow</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure sensor monitors cuff pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Small pressure oscillations appear as blood moves through the artery</strong></p>
+    <p>↓</p>
+    <p><strong>Monitor analyzes those oscillations</strong></p>
+    <p>↓</p>
+    <p><strong>Software calculates systolic, mean, and diastolic pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Valve releases the cuff pressure</strong></p>
+    <p>The monitor is measuring pressure changes in the cuff.</p>
+    <p>It is not directly measuring blood pressure with a sensor inside the artery.</p>
+  </section>
+
+  <section class="content-box" id="the-main-parts-of-an-nibp-system">
+    <h3>The Main Parts of an NIBP System</h3>
+    <p>A basic NIBP system usually includes:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Pressure sensor</li>
+      <li>Inflation path</li>
+      <li>Deflation valve</li>
+      <li>Safety or dump valve</li>
+      <li>Tubing</li>
+      <li>Cuff</li>
+      <li>Control electronics</li>
+      <li>Software</li>
+    </ul>
+    <p>A failure in any one of these can cause the measurement to fail.</p>
+  </section>
+
+  <section class="content-box" id="the-cuff">
+    <h3>The Cuff</h3>
+    <p>The cuff wraps around the patient's limb.</p>
+    <p>During measurement, the monitor fills the cuff with air.</p>
+    <p>The cuff applies pressure around the limb.</p>
+    <p>As cuff pressure changes, arterial blood flow creates small pressure pulsations.</p>
+    <p>Those pulsations are important.</p>
+    <p>They are what the monitor analyzes.</p>
+  </section>
+
+  <section class="content-box" id="the-hose">
+    <h3>The Hose</h3>
+    <p>The hose connects the cuff to the monitor.</p>
+    <p>It carries pneumatic pressure.</p>
+    <p>A hose problem can cause:</p>
+    <ul>
+      <li>Slow inflation</li>
+      <li>Failure to reach target pressure</li>
+      <li>Rapid pressure loss</li>
+      <li>Leak alarm</li>
+      <li>Measurement failure</li>
+    </ul>
+    <p>Common hose problems include:</p>
+    <ul>
+      <li>Cracks</li>
+      <li>Loose connector</li>
+      <li>Damaged O-ring</li>
+      <li>Kink</li>
+      <li>Pinched tubing</li>
+    </ul>
+    <p>Before replacing an internal pump or valve, inspect the hose.</p>
+  </section>
+
+  <section class="content-box" id="the-pump">
+    <h3>The Pump</h3>
+    <p>The pump creates the pressure used to inflate the cuff.</p>
+    <p>When the NIBP cycle starts, the device energizes the pump.</p>
+    <p>The cuff pressure begins rising.</p>
+    <p>The monitor watches that pressure while the pump runs.</p>
+  </section>
+
+  <section class="content-box" id="if-the-pump-does-not-run">
+    <h3>If the Pump Does Not Run</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Pump power</li>
+      <li>Driver circuit</li>
+      <li>Software command</li>
+      <li>Connector</li>
+    </ul>
+    <p>Do not automatically replace the pump because no inflation occurs.</p>
+    <p>First determine whether the pump is being commanded and powered.</p>
+  </section>
+
+  <section class="content-box" id="pump-runs-but-cuff-does-not-inflate">
+    <h3>Pump Runs but Cuff Does Not Inflate</h3>
+    <p>This is a very common troubleshooting pattern.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Hose disconnected</li>
+      <li>Large pneumatic leak</li>
+      <li>Open valve</li>
+      <li>Torn cuff</li>
+      <li>Pump weak</li>
+      <li>Internal tubing disconnected</li>
+    </ul>
+    <p>The sound of the pump proves only:</p>
+    <p><strong>The pump motor is running.</strong></p>
+    <p>It does not prove pressure is being created or retained.</p>
+  </section>
+
+  <section class="content-box" id="inflation-pressure">
+    <h3>Inflation Pressure</h3>
+    <p>The monitor usually inflates above the expected systolic pressure.</p>
+    <p>The exact algorithm varies by manufacturer.</p>
+    <p>The device needs enough cuff pressure to temporarily restrict arterial flow.</p>
+    <p>Then it begins analyzing pressure oscillations during controlled deflation.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor">
+    <h3>Pressure Sensor</h3>
+    <p>The pressure sensor measures the pressure inside the pneumatic system.</p>
+    <p>It tells the monitor:</p>
+    <ul>
+      <li>Current cuff pressure</li>
+      <li>Whether pressure is rising</li>
+      <li>Whether pressure is falling</li>
+      <li>Whether excessive pressure exists</li>
+    </ul>
+    <p>Without accurate pressure sensing, the NIBP system cannot make a reliable measurement.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-problems">
+    <h3>Pressure Sensor Problems</h3>
+    <p>A sensor problem may cause:</p>
+    <ul>
+      <li>Incorrect cuff pressure</li>
+      <li>Calibration failure</li>
+      <li>Overpressure error</li>
+      <li>Measurement too high or low</li>
+      <li>Failed self-test</li>
+    </ul>
+    <p>If the pump and pneumatic path are good but pressure measurement is wrong, investigate the sensing path.</p>
+  </section>
+
+  <section class="content-box" id="oscillometric-measurement">
+    <h3>Oscillometric Measurement</h3>
+    <p>Most automated patient monitors use an oscillometric method.</p>
+    <p>As the cuff slowly deflates, blood begins moving through the compressed artery.</p>
+    <p>That movement causes small pressure oscillations in the cuff.</p>
+    <p>The pressure sensor detects them.</p>
+    <p>The monitor analyzes the size and pattern of those oscillations.</p>
+  </section>
+
+  <section class="content-box" id="mean-arterial-pressure">
+    <h3>Mean Arterial Pressure</h3>
+    <p>The largest oscillations generally occur near mean arterial pressure.</p>
+    <p>The monitor identifies the oscillation envelope and uses its algorithm to estimate:</p>
+    <ul>
+      <li>Mean arterial pressure</li>
+      <li>Systolic pressure</li>
+      <li>Diastolic pressure</li>
+    </ul>
+    <p>The exact calculation is manufacturer-specific.</p>
+    <p>This is why two different monitor models may produce slightly different NIBP results on the same patient.</p>
+  </section>
+
+  <section class="content-box" id="systolic-and-diastolic-are-calculated">
+    <h3>Systolic and Diastolic Are Calculated</h3>
+    <p>This is important.</p>
+    <p>The monitor does not detect:</p>
+    <blockquote><p>Here is exactly systolic.</p></blockquote>
+    <p>and:</p>
+    <blockquote><p>Here is exactly diastolic.</p></blockquote>
+    <p>Instead, it analyzes the oscillation pattern and calculates those values.</p>
+    <p>That means the algorithm matters.</p>
+  </section>
+
+  <section class="content-box" id="controlled-deflation">
+    <h3>Controlled Deflation</h3>
+    <p>The monitor does not simply dump all cuff pressure immediately.</p>
+    <p>During measurement, it needs controlled deflation.</p>
+    <p>This is usually managed by one or more valves.</p>
+    <p>The rate of pressure release matters because the device needs enough data points to analyze the oscillations.</p>
+  </section>
+
+  <section class="content-box" id="deflation-valve">
+    <h3>Deflation Valve</h3>
+    <p>A deflation valve controls air leaving the cuff.</p>
+    <p>If the valve is:</p>
+    <ul>
+      <li>Stuck open</li>
+      <li>Leaking</li>
+      <li>Not sealing</li>
+    </ul>
+    <p>the cuff may not inflate.</p>
+    <p>If it is:</p>
+    <ul>
+      <li>Stuck closed</li>
+      <li>Restricted</li>
+    </ul>
+    <p>the cuff may remain inflated too long.</p>
+  </section>
+
+  <section class="content-box" id="dump-valve">
+    <h3>Dump Valve</h3>
+    <p>Many systems include a valve that can release pressure quickly.</p>
+    <p>This may be used for:</p>
+    <ul>
+      <li>End of measurement</li>
+      <li>Cancel</li>
+      <li>Fault condition</li>
+      <li>Safety release</li>
+    </ul>
+    <p>If the cuff remains pressurized after a measurement ends, this path becomes important.</p>
+  </section>
+
+  <section class="content-box" id="overpressure-protection">
+    <h3>Overpressure Protection</h3>
+    <p>NIBP systems include protection against excessive cuff pressure.</p>
+    <p>This may involve:</p>
+    <ul>
+      <li>Software limits</li>
+      <li>Pressure sensing</li>
+      <li>Independent hardware protection</li>
+      <li>Safety valve</li>
+    </ul>
+    <p>The exact design varies.</p>
+    <p>If the system detects excessive pressure, it may:</p>
+    <ul>
+      <li>Stop the pump</li>
+      <li>Open a dump valve</li>
+      <li>Generate an error</li>
+    </ul>
+    <p>Do not bypass overpressure protection during troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="leak-detection">
+    <h3>Leak Detection</h3>
+    <p>The monitor expects pressure to behave in a predictable way.</p>
+    <p>If the system cannot build or maintain pressure, the device may detect a leak.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Cuff</li>
+      <li>Hose</li>
+      <li>Connector</li>
+      <li>Internal tubing</li>
+      <li>Valve</li>
+      <li>Pump</li>
+    </ul>
+    <p>A leak error does not automatically mean an internal leak.</p>
+    <p>Start with the external pneumatic path.</p>
+  </section>
+
+  <section class="content-box" id="leak-testing">
+    <h3>Leak Testing</h3>
+    <p>Service procedures may use:</p>
+    <ul>
+      <li>Known pressure</li>
+      <li>Closed pneumatic circuit</li>
+      <li>Timed pressure decay</li>
+    </ul>
+    <p>to determine whether the system leaks beyond an acceptable amount.</p>
+    <p>Use the manufacturer's specified method and limits.</p>
+  </section>
+
+  <section class="content-box" id="cuff-size-matters">
+    <h3>Cuff Size Matters</h3>
+    <p>An incorrectly sized cuff can affect measurement quality.</p>
+    <p>A cuff that is too small or too large may produce inaccurate or unreliable results.</p>
+    <p>It can also make the monitor struggle to obtain a measurement.</p>
+    <p>Use the correct cuff for the test setup.</p>
+  </section>
+
+  <section class="content-box" id="cuff-placement-matters">
+    <h3>Cuff Placement Matters</h3>
+    <p>Poor placement can cause:</p>
+    <ul>
+      <li>Failed measurement</li>
+      <li>Inconsistent values</li>
+      <li>Excessive retries</li>
+    </ul>
+    <p>During bench testing, use an appropriate simulator or analyzer setup rather than relying on casual self-testing.</p>
+  </section>
+
+  <section class="content-box" id="movement-causes-problems">
+    <h3>Movement Causes Problems</h3>
+    <p>NIBP depends on detecting relatively small pressure oscillations.</p>
+    <p>Patient movement can create additional pressure changes that interfere with the signal.</p>
+    <p>Possible results include:</p>
+    <ul>
+      <li>Artifact</li>
+      <li>Measurement failure</li>
+      <li>Retry</li>
+      <li>Extended inflation</li>
+    </ul>
+    <p>This may be normal behavior rather than device failure.</p>
+  </section>
+
+  <section class="content-box" id="tremor-and-vibration">
+    <h3>Tremor and Vibration</h3>
+    <p>Movement does not have to come only from the patient.</p>
+    <p>Possible sources include:</p>
+    <ul>
+      <li>Bed movement</li>
+      <li>Transport</li>
+      <li>Loose tubing</li>
+    </ul>
+    <p>Anything that creates pressure disturbances may affect measurement.</p>
+  </section>
+
+  <section class="content-box" id="why-the-monitor-repeats-the-measurement">
+    <h3>Why the Monitor Repeats the Measurement</h3>
+    <p>Sometimes the device inflates, begins deflation, then inflates again.</p>
+    <p>This may happen because:</p>
+    <ul>
+      <li>Initial pressure was insufficient</li>
+      <li>Signal quality was poor</li>
+      <li>Motion occurred</li>
+      <li>Algorithm could not calculate a reliable result</li>
+    </ul>
+    <p>The retry itself is not necessarily a hardware failure.</p>
+  </section>
+
+  <section class="content-box" id="nibp-measurement-failure">
+    <h3>NIBP Measurement Failure</h3>
+    <p>If the device says:</p>
+    <blockquote><p>Measurement Failed</p></blockquote>
+    <p>that is a symptom.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Motion</li>
+      <li>Bad cuff</li>
+      <li>Hose</li>
+      <li>Weak pump</li>
+      <li>Valve problem</li>
+      <li>Pressure sensor problem</li>
+      <li>Algorithm unable to obtain usable oscillations</li>
+    </ul>
+    <p>Do not treat the message as the diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="the-pneumatic-path">
+    <h3>The Pneumatic Path</h3>
+    <p>A useful way to visualize NIBP is:</p>
+    <p><strong>Pump</strong></p>
+    <p>↓</p>
+    <p><strong>Internal Tubing</strong></p>
+    <p>↓</p>
+    <p><strong>Valves</strong></p>
+    <p>↓</p>
+    <p><strong>Device Connector</strong></p>
+    <p>↓</p>
+    <p><strong>Hose</strong></p>
+    <p>↓</p>
+    <p><strong>Cuff</strong></p>
+    <p>and back through the same pressure system to:</p>
+    <p><strong>Pressure Sensor</strong></p>
+    <p>Every connection matters.</p>
+  </section>
+
+  <section class="content-box" id="start-outside-the-device">
+    <h3>Start Outside the Device</h3>
+    <p>For NIBP problems, first inspect:</p>
+    <ul>
+      <li>Cuff</li>
+      <li>Hose</li>
+      <li>Connector</li>
+    </ul>
+    <p>These components are:</p>
+    <ul>
+      <li>Easy to damage</li>
+      <li>Frequently handled</li>
+      <li>Easy to swap</li>
+    </ul>
+    <p>A cracked hose can imitate an internal pneumatic failure perfectly.</p>
+  </section>
+
+  <section class="content-box" id="known-good-cuff-and-hose">
+    <h3>Known-Good Cuff and Hose</h3>
+    <p>This is one of the strongest first isolation tests.</p>
+    <p>Suspect cuff/hose:</p>
+    <p>Fails.</p>
+    <p>Known-good cuff/hose:</p>
+    <p>Works.</p>
+    <p>Suspect cuff/hose on another monitor:</p>
+    <p>Fails.</p>
+    <p>The problem follows the accessory.</p>
+    <p>No reason to open the monitor.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-monitor">
+    <h3>Failure Stays With Monitor</h3>
+    <p>Now:</p>
+    <p>Suspect cuff/hose:</p>
+    <p>Fails.</p>
+    <p>Known-good cuff/hose:</p>
+    <p>Also fails.</p>
+    <p>Both work on another monitor.</p>
+    <p>The problem stays with the device.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Internal tubing</li>
+      <li>Pump</li>
+      <li>Valve</li>
+      <li>Pressure sensor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pump-strength">
+    <h3>Pump Strength</h3>
+    <p>A pump may run but be too weak to create pressure fast enough.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Pump wear</li>
+      <li>Internal leak</li>
+      <li>Mechanical degradation</li>
+    </ul>
+    <p>The sound alone is not enough.</p>
+    <p>Use the specified pressure or inflation-time test when available.</p>
+  </section>
+
+  <section class="content-box" id="inflation-too-slow">
+    <h3>Inflation Too Slow</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Weak pump</li>
+      <li>Leak</li>
+      <li>Restricted tubing</li>
+      <li>Valve not sealing</li>
+    </ul>
+    <p>Ask:</p>
+    <p><strong>Is the pump weak, or is the pressure escaping?</strong></p>
+    <p>That distinction matters.</p>
+  </section>
+
+  <section class="content-box" id="pressure-rises-then-falls">
+    <h3>Pressure Rises Then Falls</h3>
+    <p>Suppose the pump inflates correctly.</p>
+    <p>Then pressure falls rapidly before controlled deflation should occur.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Valve not sealing</li>
+      <li>Hose/cuff problem</li>
+    </ul>
+    <p>This is different from a pump that cannot create pressure at all.</p>
+  </section>
+
+  <section class="content-box" id="cuff-never-deflates">
+    <h3>Cuff Never Deflates</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Deflation valve</li>
+      <li>Dump valve</li>
+      <li>Blocked hose</li>
+      <li>Control electronics</li>
+    </ul>
+    <p>This can become a safety issue.</p>
+    <p>Follow manufacturer procedures and remove the device from service until corrected.</p>
+  </section>
+
+  <section class="content-box" id="pressure-reading-wrong">
+    <h3>Pressure Reading Wrong</h3>
+    <p>If the monitor's internal pressure reading does not match a calibrated pressure analyzer, consider:</p>
+    <ul>
+      <li>Pressure sensor</li>
+      <li>Calibration</li>
+      <li>Pneumatic setup</li>
+      <li>Zero offset</li>
+    </ul>
+    <p>Do not immediately adjust calibration.</p>
+    <p>First make sure there is no leak or setup error.</p>
+  </section>
+
+  <section class="content-box" id="static-pressure-test-vs-actual-nibp-measurement">
+    <h3>Static Pressure Test vs Actual NIBP Measurement</h3>
+    <p>These are different tests.</p>
+    <p>A static pressure test evaluates:</p>
+    <p><strong>Can the NIBP pressure system measure applied pressure accurately?</strong></p>
+    <p>An actual NIBP simulation evaluates:</p>
+    <p><strong>Can the full system perform the blood-pressure measurement algorithm?</strong></p>
+    <p>Passing one does not automatically prove the other.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Static pressure:</p>
+    <p>Passes.</p>
+    <p>NIBP simulation:</p>
+    <p>Fails.</p>
+    <p>Now possible areas include:</p>
+    <ul>
+      <li>Oscillation detection</li>
+      <li>Algorithm</li>
+      <li>Dynamic pneumatic behavior</li>
+    </ul>
+    <p>The basic pressure sensor may still be accurate.</p>
+  </section>
+
+  <section class="content-box" id="nibp-simulator">
+    <h3>NIBP Simulator</h3>
+    <p>An NIBP simulator reproduces pressure oscillations that imitate a patient's arterial pulse during cuff deflation.</p>
+    <p>The monitor analyzes those oscillations as if they came from a patient.</p>
+    <p>This allows controlled testing of the NIBP measurement function.</p>
+  </section>
+
+  <section class="content-box" id="simulator-values-are-not-always-exact-across-brands">
+    <h3>Simulator Values Are Not Always Exact Across Brands</h3>
+    <p>Because NIBP algorithms differ, different monitors may not display exactly the same result from the same simulator profile.</p>
+    <p>Use the analyzer and manufacturer procedures correctly.</p>
+    <p>Do not invent your own acceptance limits.</p>
+  </section>
+
+  <section class="content-box" id="nibp-calibration">
+    <h3>NIBP Calibration</h3>
+    <p>Some systems allow pressure calibration.</p>
+    <p>Calibration adjusts the relationship between:</p>
+    <p><strong>Applied pressure</strong></p>
+    <p>and:</p>
+    <p><strong>Measured pressure.</strong></p>
+    <p>Do not calibrate simply because an NIBP simulation gives a slightly different value than expected.</p>
+    <p>Verify whether the static pressure system is actually out of specification first.</p>
+  </section>
+
+  <section class="content-box" id="zero-pressure">
+    <h3>Zero Pressure</h3>
+    <p>When the cuff system is open to atmosphere, the pressure sensor should have an appropriate zero reference.</p>
+    <p>If zero is incorrect, all later pressure measurements may be offset.</p>
+    <p>Some devices perform automatic zeroing.</p>
+    <p>Others may include a service procedure.</p>
+  </section>
+
+  <section class="content-box" id="offset-example">
+    <h3>Offset Example</h3>
+    <p>Actual pressure:</p>
+    <p>0 mmHg.</p>
+    <p>Device reads:</p>
+    <p>8 mmHg.</p>
+    <p>At:</p>
+    <p>100 mmHg</p>
+    <p>device reads:</p>
+    <p>108.</p>
+    <p>At:</p>
+    <p>200 mmHg</p>
+    <p>device reads:</p>
+    <p>208.</p>
+    <p>That looks like a pressure offset.</p>
+  </section>
+
+  <section class="content-box" id="flow-restriction">
+    <h3>Flow Restriction</h3>
+    <p>A kinked hose may not create a complete blockage.</p>
+    <p>It can restrict airflow.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Slow inflation</li>
+      <li>Slow deflation</li>
+      <li>Measurement errors</li>
+    </ul>
+    <p>Inspect tubing even when some air is still moving.</p>
+  </section>
+
+  <section class="content-box" id="internal-tubing">
+    <h3>Internal Tubing</h3>
+    <p>Inside the device, pneumatic tubing may become:</p>
+    <ul>
+      <li>Cracked</li>
+      <li>Loose</li>
+      <li>Pinched</li>
+      <li>Disconnected</li>
+    </ul>
+    <p>If external accessories are known good, inspect internal pneumatic connections according to the service manual.</p>
+  </section>
+
+  <section class="content-box" id="contamination">
+    <h3>Contamination</h3>
+    <p>Fluid or debris in the pneumatic path can affect:</p>
+    <ul>
+      <li>Valves</li>
+      <li>Pressure sensor</li>
+      <li>Tubing</li>
+    </ul>
+    <p>NIBP systems are not designed to have fluid entering the monitor pneumatic system.</p>
+    <p>If contamination occurs, follow manufacturer procedures.</p>
+  </section>
+
+  <section class="content-box" id="valve-failure">
+    <h3>Valve Failure</h3>
+    <p>A valve can fail:</p>
+    <ul>
+      <li>Electrically</li>
+      <li>Mechanically</li>
+      <li>Pneumatically</li>
+    </ul>
+    <p>The coil may energize while the valve itself fails to move or seal.</p>
+    <p>Do not assume a relay click or coil voltage proves the pneumatic valve works.</p>
+  </section>
+
+  <section class="content-box" id="valve-control">
+    <h3>Valve Control</h3>
+    <p>If a valve never energizes, possible causes include:</p>
+    <ul>
+      <li>Valve coil</li>
+      <li>Wiring</li>
+      <li>Driver circuit</li>
+      <li>Software command</li>
+    </ul>
+    <p>Test the electrical control separately from the pneumatic result.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-cuff-will-not-inflate">
+    <h3>Real-World Example: Cuff Will Not Inflate</h3>
+    <p>Pump:</p>
+    <p>Audibly runs.</p>
+    <p>Known-good cuff and hose:</p>
+    <p>Same problem.</p>
+    <p>Pressure barely rises.</p>
+    <p>Internal inspection:</p>
+    <p>Tubing disconnected from pump outlet.</p>
+    <p>The pump was running.</p>
+    <p>The pressure never reached the cuff.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-measurement-fails-with-one-cuff">
+    <h3>Real-World Example: Measurement Fails With One Cuff</h3>
+    <p>Original cuff:</p>
+    <p>Repeated measurement failure.</p>
+    <p>Known-good cuff:</p>
+    <p>Passes.</p>
+    <p>Original cuff:</p>
+    <p>Visible seam leak.</p>
+    <p>The monitor was fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure-drops-rapidly">
+    <h3>Real-World Example: Pressure Drops Rapidly</h3>
+    <p>Cuff inflates correctly.</p>
+    <p>Pump stops.</p>
+    <p>Pressure immediately falls.</p>
+    <p>Known-good external hose:</p>
+    <p>Same result.</p>
+    <p>Internal leak test fails.</p>
+    <p>Valve fails to seal.</p>
+    <p>Now the fault is inside the monitor.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nibp-reads-high">
+    <h3>Real-World Example: NIBP Reads High</h3>
+    <p>Static pressure test:</p>
+    <p>100 mmHg reference.</p>
+    <p>Monitor:</p>
+    <p>112 mmHg.</p>
+    <p>200 mmHg reference.</p>
+    <p>Monitor:</p>
+    <p>212 mmHg.</p>
+    <p>Consistent offset.</p>
+    <p>Investigate pressure calibration/sensing according to manufacturer procedure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pump-runs-too-long">
+    <h3>Real-World Example: Pump Runs Too Long</h3>
+    <p>Pump continues inflating.</p>
+    <p>Pressure sensor reading remains low.</p>
+    <p>Independent analyzer shows cuff pressure actually increasing normally.</p>
+    <p>The pump may not be the failure.</p>
+    <p>The monitor may not be sensing the pressure correctly.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-overpressure-error">
+    <h3>Real-World Example: Overpressure Error</h3>
+    <p>Cuff starts inflating.</p>
+    <p>Device abruptly dumps pressure and reports overpressure.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Pressure actually exceeded limit</li>
+      <li>Pressure sensor incorrect</li>
+      <li>Valve/control fault</li>
+    </ul>
+    <p>Verify pressure behavior before replacing parts.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="calling-every-nibp-failure-a-pump-problem">
+    <h3>Calling Every NIBP Failure a Pump Problem</h3>
+    <p>Check the entire pneumatic path.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-cuff-and-hose">
+    <h3>Ignoring Cuff and Hose</h3>
+    <p>Start externally.</p>
+  </section>
+
+  <section class="content-box" id="assuming-pump-noise-means-pump-pressure-is-good">
+    <h3>Assuming Pump Noise Means Pump Pressure Is Good</h3>
+    <p>Verify pressure.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-before-checking-for-leaks">
+    <h3>Calibrating Before Checking for Leaks</h3>
+    <p>A leak is not a calibration problem.</p>
+  </section>
+
+  <section class="content-box" id="treating-simulator-output-as-an-exact-universal-blood-pressure">
+    <h3>Treating Simulator Output as an Exact Universal Blood Pressure</h3>
+    <p>Algorithms differ.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-motion">
+    <h3>Ignoring Motion</h3>
+    <p>NIBP depends on detecting small oscillations.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-pressure-sensor-because-the-displayed-bp-is-wrong">
+    <h3>Replacing the Pressure Sensor Because the Displayed BP Is Wrong</h3>
+    <p>Verify static pressure accuracy first.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For an NIBP problem, ask:</p>
+    <p><strong>Can the system build pressure?</strong></p>
+    <p>If no:</p>
+    <p>Check:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Leak</li>
+      <li>Valve</li>
+      <li>Hose</li>
+      <li>Cuff</li>
+    </ul>
+    <p>Then:</p>
+    <p><strong>Can it hold and release pressure correctly?</strong></p>
+    <p>If no:</p>
+    <p>Check:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Valves</li>
+      <li>Pneumatic path</li>
+    </ul>
+    <p>Then:</p>
+    <p><strong>Does the pressure sensor measure accurately?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can the device detect oscillations and calculate a result?</strong></p>
+    <p>That separates the NIBP system into manageable pieces.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is the problem pneumatic, pressure-sensing, or measurement-algorithm related?</strong></p>
+    <p>Those are very different failure paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the cuff inflates, you proved:</p>
+    <p><strong>The system created enough pneumatic pressure to inflate the cuff under that condition.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Pressure is accurate</li>
+      <li>Valves work correctly</li>
+      <li>System is leak-free</li>
+      <li>Oscillations are detected</li>
+      <li>NIBP calculation is accurate</li>
+    </ul>
+    <p>If a static pressure test passes, you proved:</p>
+    <p><strong>The pressure-measurement system met specification at the tested points.</strong></p>
+    <p>You</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-invasive-blood-pressure-monitoring-works.html">How Invasive Blood Pressure Monitoring Works</a></li>
+      <li><a href="how-medical-equipment-measures-pressure.html">How Medical Equipment Measures Pressure</a></li>
+      <li><a href="how-sidestream-co2-monitoring-works.html">How Sidestream CO2 Monitoring Works</a></li>
+      <li><a href="how-spo2-measurement-works.html">How SpO2 Measurement Works</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

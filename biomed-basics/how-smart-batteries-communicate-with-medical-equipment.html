@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Smart Batteries Communicate With Medical Equipment | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how smart batteries report charge, temperature, capacity, faults, and identification data to medical equipment.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-smart-batteries-communicate-with-medical-equipment.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How Smart Batteries Communicate With Medical Equipment</h2>
+  <p>How a battery reports charge, temperature, capacity, faults, and identification data to the device using digital communication</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A modern medical-device battery may look like a simple removable pack.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What makes a battery “smart”</li>
+      <li>Battery-management systems</li>
+      <li>SMBus-style communication</li>
+      <li>Data and power contacts</li>
+      <li>Battery identification</li>
+      <li>State of charge</li>
+      <li>State of health</li>
+      <li>Capacity reporting</li>
+      <li>Temperature reporting</li>
+      <li>Fault reporting</li>
+      <li>Battery authentication</li>
+      <li>Communication failures</li>
+      <li>Host-device failures</li>
+      <li>Cross-testing</li>
+      <li>Common failure patterns</li>
+      <li>How to think through smart-battery problems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A smart battery may work like this:</p>
+    <p><strong>Battery cells provide power</strong></p>
+    <p>while separately:</p>
+    <p><strong>Battery-management electronics collect data</strong></p>
+    <p>↓</p>
+    <p><strong>Data is sent over a communication bus</strong></p>
+    <p>↓</p>
+    <p><strong>Host device reads the battery information</strong></p>
+    <p>↓</p>
+    <p><strong>Device displays:</strong></p>
+    <ul>
+      <li>Charge percentage</li>
+      <li>Runtime</li>
+      <li>Temperature</li>
+      <li>Battery condition</li>
+      <li>Charging status</li>
+    </ul>
+    <p>So the system has at least two important paths:</p>
+    <p><strong>Power path</strong></p>
+    <p>and:</p>
+    <p><strong>Communication path.</strong></p>
+    <p>One can fail while the other still works.</p>
+  </section>
+
+  <section class="content-box" id="what-makes-a-battery-smart">
+    <h3>What Makes a Battery “Smart”?</h3>
+    <p>A basic battery provides:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+    </ul>
+    <p>A smart battery can also report information about itself.</p>
+    <p>It may answer questions like:</p>
+    <ul>
+      <li>How full am I?</li>
+      <li>How hot am I?</li>
+      <li>How much capacity do I have left?</li>
+      <li>How many cycles have I completed?</li>
+      <li>Am I safe to charge?</li>
+      <li>What battery model am I?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-management-system">
+    <h3>Battery-Management System</h3>
+    <p>The electronics inside the pack are usually called the:</p>
+    <p><strong>Battery-Management System</strong>, or BMS.</p>
+    <p>The BMS may monitor:</p>
+    <ul>
+      <li>Individual cells</li>
+      <li>Pack voltage</li>
+      <li>Current</li>
+      <li>Temperature</li>
+      <li>Charge/discharge history</li>
+    </ul>
+    <p>It may also control protection switches.</p>
+  </section>
+
+  <section class="content-box" id="the-bms-is-the-battery-s-internal-computer">
+    <h3>The BMS Is the Battery&#x27;s Internal Computer</h3>
+    <p>A useful way to think about it is:</p>
+    <p>The cells store energy.</p>
+    <p>The BMS monitors and manages that energy.</p>
+    <p>The BMS may also be the part that communicates with the medical device.</p>
+  </section>
+
+  <section class="content-box" id="power-contacts">
+    <h3>Power Contacts</h3>
+    <p>The battery usually has larger contacts for:</p>
+    <ul>
+      <li>Positive</li>
+      <li>Negative</li>
+    </ul>
+    <p>These carry current to power the device and charge the battery.</p>
+  </section>
+
+  <section class="content-box" id="data-contacts">
+    <h3>Data Contacts</h3>
+    <p>Additional smaller contacts may be used for:</p>
+    <ul>
+      <li>Communication</li>
+      <li>Temperature sensing</li>
+      <li>Identification</li>
+      <li>Presence detection</li>
+    </ul>
+    <p>A battery connector with six pins may only use two for actual power.</p>
+  </section>
+
+  <section class="content-box" id="one-bad-contact-can-cause-a-strange-failure">
+    <h3>One Bad Contact Can Cause a Strange Failure</h3>
+    <p>Example:</p>
+    <p>Power contacts:</p>
+    <p>Good.</p>
+    <p>Data contact:</p>
+    <p>Bad.</p>
+    <p>The battery may:</p>
+    <ul>
+      <li>Power the device</li>
+      <li>Yet display “Unknown Battery”</li>
+      <li>Show 0%</li>
+      <li>Refuse to charge</li>
+    </ul>
+    <p>That can seem contradictory until you separate power from data.</p>
+  </section>
+
+  <section class="content-box" id="smbus">
+    <h3>SMBus</h3>
+    <p>A common smart-battery communication standard is based on:</p>
+    <p><strong>SMBus</strong>, or System Management Bus.</p>
+    <p>It is related to I²C-style digital communication.</p>
+    <p>The exact implementation depends on the manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="what-does-the-bus-carry">
+    <h3>What Does the Bus Carry?</h3>
+    <p>The host may request data such as:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Temperature</li>
+      <li>Remaining capacity</li>
+      <li>Full-charge capacity</li>
+      <li>Design capacity</li>
+      <li>Cycle count</li>
+      <li>Battery status</li>
+    </ul>
+    <p>The battery responds digitally.</p>
+  </section>
+
+  <section class="content-box" id="digital-communication-is-not-analog-voltage">
+    <h3>Digital Communication Is Not Analog Voltage</h3>
+    <p>This matters.</p>
+    <p>If you measure:</p>
+    <p>12 V</p>
+    <p>at the battery terminals, that tells you something about the power path.</p>
+    <p>It tells you almost nothing about whether digital communication is working.</p>
+  </section>
+
+  <section class="content-box" id="clock-and-data-lines">
+    <h3>Clock and Data Lines</h3>
+    <p>SMBus-style communication typically uses lines such as:</p>
+    <ul>
+      <li>Clock</li>
+      <li>Data</li>
+    </ul>
+    <p>These are low-voltage digital signals.</p>
+    <p>The host and battery exchange messages over them.</p>
+  </section>
+
+  <section class="content-box" id="communication-requires-good-electrical-contact">
+    <h3>Communication Requires Good Electrical Contact</h3>
+    <p>A tiny amount of:</p>
+    <ul>
+      <li>Corrosion</li>
+      <li>Contamination</li>
+      <li>Bent contact</li>
+      <li>Mechanical wear</li>
+    </ul>
+    <p>can interrupt communication.</p>
+    <p>The power terminals may still look perfect.</p>
+  </section>
+
+  <section class="content-box" id="battery-identification">
+    <h3>Battery Identification</h3>
+    <p>The host device may read battery identification information.</p>
+    <p>This can include:</p>
+    <ul>
+      <li>Manufacturer</li>
+      <li>Model</li>
+      <li>Chemistry</li>
+      <li>Serial number</li>
+    </ul>
+    <p>The device may use that information to determine compatibility.</p>
+  </section>
+
+  <section class="content-box" id="unsupported-battery">
+    <h3>Unsupported Battery</h3>
+    <p>A replacement battery may fit physically and provide voltage but still be rejected.</p>
+    <p>Possible reasons include:</p>
+    <ul>
+      <li>Wrong identification data</li>
+      <li>Unsupported firmware</li>
+      <li>Missing authentication</li>
+    </ul>
+    <p>That is why an aftermarket battery can sometimes create:</p>
+    <blockquote><p>Battery Not Supported</p></blockquote>
+    <p>even though the pack powers up.</p>
+  </section>
+
+  <section class="content-box" id="battery-authentication">
+    <h3>Battery Authentication</h3>
+    <p>Some manufacturers use authentication between:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Host device</li>
+    </ul>
+    <p>The host may verify that the pack is an approved type.</p>
+    <p>This can involve a digital challenge-response process.</p>
+  </section>
+
+  <section class="content-box" id="authentication-is-different-from-identification">
+    <h3>Authentication Is Different From Identification</h3>
+    <p>Identification asks:</p>
+    <blockquote><p>What battery are you?</p></blockquote>
+    <p>Authentication asks:</p>
+    <blockquote><p>Can I verify that you are an approved battery?</p></blockquote>
+    <p>A battery may identify itself but still fail authentication.</p>
+  </section>
+
+  <section class="content-box" id="state-of-charge">
+    <h3>State of Charge</h3>
+    <p>The battery may report:</p>
+    <p><strong>State of Charge</strong>, or SOC.</p>
+    <p>Example:</p>
+    <p>80%.</p>
+    <p>This is an estimate of how much usable charge remains right now.</p>
+  </section>
+
+  <section class="content-box" id="state-of-charge-is-calculated">
+    <h3>State of Charge Is Calculated</h3>
+    <p>The battery does not have a tiny fuel gauge floating inside it.</p>
+    <p>SOC is estimated using:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current history</li>
+      <li>Cell behavior</li>
+      <li>Algorithms</li>
+    </ul>
+    <p>That estimate can drift.</p>
+  </section>
+
+  <section class="content-box" id="remaining-capacity">
+    <h3>Remaining Capacity</h3>
+    <p>The battery may report remaining capacity in:</p>
+    <ul>
+      <li>mAh</li>
+      <li>Wh</li>
+    </ul>
+    <p>This represents how much charge or energy the BMS believes remains.</p>
+  </section>
+
+  <section class="content-box" id="full-charge-capacity">
+    <h3>Full-Charge Capacity</h3>
+    <p>Full-charge capacity estimates how much the battery can currently hold when fully charged.</p>
+    <p>Example:</p>
+    <p>Design capacity:</p>
+    <p>5000 mAh.</p>
+    <p>Full-charge capacity:</p>
+    <p>3000 mAh.</p>
+    <p>The battery may still charge to:</p>
+    <p>100%.</p>
+    <p>But 100% now represents about:</p>
+    <p>3000 mAh,</p>
+    <p>not the original 5000.</p>
+  </section>
+
+  <section class="content-box" id="state-of-health">
+    <h3>State of Health</h3>
+    <p>State of health generally describes how much performance remains compared with a new battery.</p>
+    <p>The exact calculation varies.</p>
+    <p>It may consider:</p>
+    <ul>
+      <li>Capacity loss</li>
+      <li>Resistance</li>
+      <li>Age</li>
+      <li>Cycle history</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cycle-count">
+    <h3>Cycle Count</h3>
+    <p>The battery may count charge/discharge cycles.</p>
+    <p>This is useful context.</p>
+    <p>But:</p>
+    <p>Cycle count alone does not prove failure.</p>
+    <p>A battery with a lower cycle count can still fail from age or heat.</p>
+  </section>
+
+  <section class="content-box" id="temperature-reporting">
+    <h3>Temperature Reporting</h3>
+    <p>A smart battery may report temperature digitally.</p>
+    <p>The host may use this to determine whether charging is safe.</p>
+  </section>
+
+  <section class="content-box" id="temperature-data-fault">
+    <h3>Temperature Data Fault</h3>
+    <p>Suppose actual battery temperature:</p>
+    <p>25°C.</p>
+    <p>Battery reports:</p>
+    <p>70°C.</p>
+    <p>Host may refuse charging.</p>
+    <p>The charger could be perfectly healthy.</p>
+    <p>The bad data is causing a correct safety response.</p>
+  </section>
+
+  <section class="content-box" id="current-reporting">
+    <h3>Current Reporting</h3>
+    <p>Some smart batteries can report:</p>
+    <ul>
+      <li>Charge current</li>
+      <li>Discharge current</li>
+    </ul>
+    <p>This helps the device calculate:</p>
+    <ul>
+      <li>Runtime</li>
+      <li>Charging status</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="positive-vs-negative-current">
+    <h3>Positive vs Negative Current</h3>
+    <p>Depending on convention:</p>
+    <p>Positive may mean:</p>
+    <p>Charging.</p>
+    <p>Negative may mean:</p>
+    <p>Discharging.</p>
+    <p>Do not assume sign convention without documentation.</p>
+  </section>
+
+  <section class="content-box" id="voltage-reporting">
+    <h3>Voltage Reporting</h3>
+    <p>The BMS may digitally report pack voltage.</p>
+    <p>Compare that against a multimeter when troubleshooting if approved.</p>
+  </section>
+
+  <section class="content-box" id="digital-voltage-vs-measured-voltage">
+    <h3>Digital Voltage vs Measured Voltage</h3>
+    <p>Battery reports:</p>
+    <p>11.0 V.</p>
+    <p>Meter:</p>
+    <p>12.4 V.</p>
+    <p>That disagreement suggests:</p>
+    <ul>
+      <li>BMS measurement issue</li>
+      <li>Communication/data problem</li>
+      <li>Calibration problem</li>
+    </ul>
+    <p>Not necessarily bad cells.</p>
+  </section>
+
+  <section class="content-box" id="battery-status-flags">
+    <h3>Battery Status Flags</h3>
+    <p>A smart battery may report flags such as:</p>
+    <ul>
+      <li>Charging</li>
+      <li>Fully charged</li>
+      <li>Discharging</li>
+      <li>Overtemperature</li>
+      <li>Permanent failure</li>
+      <li>Replace battery</li>
+    </ul>
+    <p>The host may translate these into user-facing messages.</p>
+  </section>
+
+  <section class="content-box" id="one-message-can-hide-several-flags">
+    <h3>One Message Can Hide Several Flags</h3>
+    <p>A screen message:</p>
+    <blockquote><p>Battery Error</p></blockquote>
+    <p>may represent many different underlying states.</p>
+    <p>Service software or logs may reveal the actual flag.</p>
+  </section>
+
+  <section class="content-box" id="error-logs">
+    <h3>Error Logs</h3>
+    <p>Some devices store:</p>
+    <ul>
+      <li>Battery communication failures</li>
+      <li>Temperature faults</li>
+      <li>Authentication failures</li>
+      <li>Charge faults</li>
+    </ul>
+    <p>These logs can be extremely useful for intermittent problems.</p>
+  </section>
+
+  <section class="content-box" id="communication-failure">
+    <h3>Communication Failure</h3>
+    <p>If the host cannot communicate with the battery, possible symptoms include:</p>
+    <ul>
+      <li>Unknown battery</li>
+      <li>0% charge</li>
+      <li>No runtime estimate</li>
+      <li>No charging</li>
+      <li>Battery icon with X</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="power-can-still-work">
+    <h3>Power Can Still Work</h3>
+    <p>This is one of the most important concepts.</p>
+    <p>A battery can:</p>
+    <p><strong>Power the device normally</strong></p>
+    <p>while:</p>
+    <p><strong>Communication fails.</strong></p>
+    <p>That strongly suggests the cells and main power contacts may still be functional.</p>
+  </section>
+
+  <section class="content-box" id="communication-can-work-while-power-fails">
+    <h3>Communication Can Work While Power Fails</h3>
+    <p>The reverse can happen too.</p>
+    <p>The host may identify the battery and display:</p>
+    <p>80%.</p>
+    <p>But when AC is removed:</p>
+    <p>Device immediately shuts down.</p>
+    <p>Now the data path works but the high-current discharge path may not.</p>
+  </section>
+
+  <section class="content-box" id="separate-power-and-data">
+    <h3>Separate Power and Data</h3>
+    <p>For a smart battery complaint, always ask:</p>
+    <h4>Power path</h4>
+    <p>Can the battery actually run the device?</p>
+    <h4>Data path</h4>
+    <p>Can the host read battery information?</p>
+    <p>Those questions save time.</p>
+  </section>
+
+  <section class="content-box" id="battery-presence-detection">
+    <h3>Battery Presence Detection</h3>
+    <p>Some devices use communication to determine whether the battery is installed.</p>
+    <p>Others use a dedicated presence pin.</p>
+    <p>If that signal fails:</p>
+    <blockquote><p>No Battery</p></blockquote>
+    <p>may appear even with normal pack voltage.</p>
+  </section>
+
+  <section class="content-box" id="charging-depends-on-communication">
+    <h3>Charging Depends on Communication</h3>
+    <p>In some designs, the charger will not begin until it receives valid battery information.</p>
+    <p>The battery may report:</p>
+    <ul>
+      <li>Safe temperature</li>
+      <li>Charge voltage</li>
+      <li>Maximum charge current</li>
+    </ul>
+    <p>If communication fails, charging may be inhibited.</p>
+  </section>
+
+  <section class="content-box" id="safety-by-design">
+    <h3>Safety by Design</h3>
+    <p>This is intentional.</p>
+    <p>Charging an unknown lithium-ion battery with incorrect settings could be unsafe.</p>
+    <p>So:</p>
+    <blockquote><p>Battery will not charge</p></blockquote>
+    <p>may actually be:</p>
+    <blockquote><p>Charger refuses to charge because battery data is unavailable.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="battery-requests">
+    <h3>Battery Requests</h3>
+    <p>Some systems allow the battery to communicate desired charging conditions.</p>
+    <p>This may include:</p>
+    <ul>
+      <li>Requested voltage</li>
+      <li>Requested current</li>
+    </ul>
+    <p>The charger follows those limits.</p>
+  </section>
+
+  <section class="content-box" id="battery-full-flag">
+    <h3>Battery Full Flag</h3>
+    <p>The BMS may determine when the battery is fully charged and report that state.</p>
+    <p>The host may then stop or reduce charging.</p>
+  </section>
+
+  <section class="content-box" id="false-full-battery">
+    <h3>False Full Battery</h3>
+    <p>If the gauge or capacity estimate is wrong, the battery may report:</p>
+    <blockquote><p>Fully Charged</p></blockquote>
+    <p>too early.</p>
+    <p>Possible symptom:</p>
+    <p>100% immediately after charging starts.</p>
+    <p>Runtime remains poor.</p>
+  </section>
+
+  <section class="content-box" id="learning-and-calibration">
+    <h3>Learning and Calibration</h3>
+    <p>Smart battery gauges sometimes need learning cycles.</p>
+    <p>This helps the BMS estimate:</p>
+    <ul>
+      <li>Full-charge capacity</li>
+      <li>Empty point</li>
+    </ul>
+    <p>The exact procedure varies.</p>
+  </section>
+
+  <section class="content-box" id="gauge-calibration-is-not-cell-repair">
+    <h3>Gauge Calibration Is Not Cell Repair</h3>
+    <p>If the battery has physically lost half its capacity, recalibrating the fuel gauge will not restore it.</p>
+    <p>It may only make the percentage display more accurate.</p>
+  </section>
+
+  <section class="content-box" id="eeprom-or-internal-memory">
+    <h3>EEPROM or Internal Memory</h3>
+    <p>The battery may store information in nonvolatile memory.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Serial number</li>
+      <li>Manufacture date</li>
+      <li>Cycle count</li>
+      <li>Calibration data</li>
+    </ul>
+    <p>Corrupted data may cause unusual behavior.</p>
+  </section>
+
+  <section class="content-box" id="firmware">
+    <h3>Firmware</h3>
+    <p>Some batteries contain firmware.</p>
+    <p>Host compatibility can therefore depend on:</p>
+    <ul>
+      <li>Battery firmware</li>
+      <li>Device firmware</li>
+    </ul>
+    <p>A newly revised battery may behave differently in older equipment.</p>
+  </section>
+
+  <section class="content-box" id="firmware-mismatch">
+    <h3>Firmware Mismatch</h3>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Battery unsupported</li>
+      <li>Charging disabled</li>
+      <li>Incorrect status</li>
+    </ul>
+    <p>Check manufacturer compatibility information.</p>
+  </section>
+
+  <section class="content-box" id="smart-battery-connector">
+    <h3>Smart-Battery Connector</h3>
+    <p>Inspect carefully.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Recessed spring contacts</li>
+      <li>Bent terminals</li>
+      <li>Corrosion</li>
+      <li>Contamination</li>
+      <li>Heat damage</li>
+    </ul>
+    <p>Small data contacts are especially vulnerable.</p>
+  </section>
+
+  <section class="content-box" id="spring-contacts">
+    <h3>Spring Contacts</h3>
+    <p>Some devices use pogo-pin or spring contacts.</p>
+    <p>A stuck contact may not reach the battery pad.</p>
+    <p>The pack may work intermittently depending on pressure or movement.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-movement">
+    <h3>Mechanical Movement</h3>
+    <p>If battery status appears and disappears when the battery is moved:</p>
+    <p>Suspect:</p>
+    <ul>
+      <li>Contact</li>
+      <li>Latch</li>
+      <li>Connector</li>
+    </ul>
+    <p>before software.</p>
+  </section>
+
+  <section class="content-box" id="battery-latch">
+    <h3>Battery Latch</h3>
+    <p>A loose latch can allow intermittent contact.</p>
+    <p>That may cause:</p>
+    <ul>
+      <li>Battery removed message</li>
+      <li>Power interruption</li>
+      <li>Communication dropouts</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="contact-cleaning">
+    <h3>Contact Cleaning</h3>
+    <p>Use only approved methods.</p>
+    <p>Do not aggressively abrade plated contacts unless manufacturer instructions allow it.</p>
+  </section>
+
+  <section class="content-box" id="known-good-battery-cross-test">
+    <h3>Known-Good Battery Cross-Test</h3>
+    <p>Original battery:</p>
+    <p>Powers device but displays unknown.</p>
+    <p>Known-good battery:</p>
+    <p>Works fully.</p>
+    <p>Original battery in another device:</p>
+    <p>Also displays unknown.</p>
+    <p>Failure follows the battery.</p>
+    <p>Likely BMS/data-path issue.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-device">
+    <h3>Failure Stays With Device</h3>
+    <p>Multiple known-good smart batteries:</p>
+    <p>Not recognized in Device A.</p>
+    <p>Same batteries:</p>
+    <p>Work in Device B.</p>
+    <p>Now suspect:</p>
+    <ul>
+      <li>Device connector</li>
+      <li>Communication interface</li>
+      <li>Host board</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-battery-bay-fails">
+    <h3>One Battery Bay Fails</h3>
+    <p>Battery works in:</p>
+    <p>Bay 1.</p>
+    <p>Fails in:</p>
+    <p>Bay 2.</p>
+    <p>Another battery does the same.</p>
+    <p>Failure stays with Bay 2.</p>
+    <p>That is strong isolation.</p>
+  </section>
+
+  <section class="content-box" id="communication-intermittent">
+    <h3>Communication Intermittent</h3>
+    <p>Device log shows:</p>
+    <p>Battery Communication Lost</p>
+    <p>multiple times.</p>
+    <p>Battery contacts inspected.</p>
+    <p>One spring pin sticks intermittently.</p>
+    <p>That is a classic hardware communication failure.</p>
+  </section>
+
+  <section class="content-box" id="bus-voltage">
+    <h3>Bus Voltage</h3>
+    <p>Service documentation may specify expected digital bus voltages.</p>
+    <p>If authorized, these can help determine whether:</p>
+    <ul>
+      <li>Host provides pull-up voltage</li>
+      <li>Bus is stuck low</li>
+      <li>Battery is responding</li>
+    </ul>
+    <p>Do not probe undocumented pins.</p>
+  </section>
+
+  <section class="content-box" id="stuck-low-bus">
+    <h3>Stuck-Low Bus</h3>
+    <p>A damaged battery or host interface can hold a communication line low.</p>
+    <p>That can prevent all communication.</p>
+  </section>
+
+  <section class="content-box" id="one-bad-battery-can-affect-shared-bus">
+    <h3>One Bad Battery Can Affect Shared Bus</h3>
+    <p>On some multi-battery systems, batteries may share communication resources.</p>
+    <p>A failed pack could potentially interfere with the bus.</p>
+    <p>If both batteries disappear only when one pack is installed, investigate that possibility using manufacturer documentation.</p>
+  </section>
+
+  <section class="content-box" id="battery-addressing">
+    <h3>Battery Addressing</h3>
+    <p>Multiple smart batteries may use:</p>
+    <ul>
+      <li>Separate buses</li>
+      <li>Different addresses</li>
+      <li>Multiplexer</li>
+    </ul>
+    <p>The host needs to distinguish them.</p>
+  </section>
+
+  <section class="content-box" id="battery-1-vs-battery-2">
+    <h3>Battery 1 vs Battery 2</h3>
+    <p>If only one battery consistently reports:</p>
+    <p>Unknown</p>
+    <p>while both bays work with other batteries, the fault follows the pack.</p>
+  </section>
+
+  <section class="content-box" id="runtime-estimate">
+    <h3>Runtime Estimate</h3>
+    <p>The host may calculate runtime using:</p>
+    <ul>
+      <li>Remaining capacity</li>
+      <li>Current load</li>
+    </ul>
+    <p>Example:</p>
+    <p>Remaining energy:</p>
+    <p>30 Wh.</p>
+    <p>Device load:</p>
+    <p>15 W.</p>
+    <p>Estimated runtime:</p>
+    <p>About two hours.</p>
+    <p>But real load may change.</p>
+    <p>Runtime is always an estimate.</p>
+  </section>
+
+  <section class="content-box" id="runtime-estimate-jumps">
+    <h3>Runtime Estimate Jumps</h3>
+    <p>If estimated runtime changes wildly while load is stable, consider:</p>
+    <ul>
+      <li>Capacity data</li>
+      <li>Communication instability</li>
+      <li>Gauge calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="device-load-data">
+    <h3>Device Load Data</h3>
+    <p>Some systems calculate runtime using battery-reported discharge current.</p>
+    <p>If that current measurement is wrong, runtime estimate will also be wrong.</p>
+  </section>
+
+  <section class="content-box" id="battery-icon-is-software-output">
+    <h3>Battery Icon Is Software Output</h3>
+    <p>The battery icon is the end of a long chain:</p>
+    <p><strong>Cells → BMS → Communication → Host Software → Display.</strong></p>
+    <p>Do not diagnose from the icon alone.</p>
+  </section>
+
+  <section class="content-box" id="no-battery-icon">
+    <h3>No Battery Icon</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery absent</li>
+      <li>Communication missing</li>
+      <li>Presence pin issue</li>
+      <li>Software</li>
+    </ul>
+    <p>Check whether battery voltage exists.</p>
+  </section>
+
+  <section class="content-box" id="battery-percentage-frozen">
+    <h3>Battery Percentage Frozen</h3>
+    <p>If percentage remains:</p>
+    <p>75%</p>
+    <p>for hours while battery discharges, possible causes include:</p>
+    <ul>
+      <li>Communication frozen</li>
+      <li>Gauge issue</li>
+      <li>Display/software issue</li>
+    </ul>
+    <p>Measure actual runtime and battery behavior.</p>
+  </section>
+
+  <section class="content-box" id="percentage-falls-normally-but-device-shuts-down-early">
+    <h3>Percentage Falls Normally but Device Shuts Down Early</h3>
+    <p>Now the gauge may be overestimating capacity or a weak cell may collapse under load.</p>
+    <p>Smart data is useful but not infallible.</p>
+  </section>
+
+  <section class="content-box" id="permanent-failure-flags">
+    <h3>Permanent Failure Flags</h3>
+    <p>Some BMS designs can set permanent failure flags after severe conditions.</p>
+    <p>The battery may then disable:</p>
+    <ul>
+      <li>Charge</li>
+      <li>Discharge</li>
+    </ul>
+    <p>even if cell voltage remains.</p>
+    <p>Do not attempt to reset or bypass safety flags unless the manufacturer provides an authorized procedure.</p>
+  </section>
+
+  <section class="content-box" id="protection-and-communication-are-different">
+    <h3>Protection and Communication Are Different</h3>
+    <p>The BMS may communicate perfectly while a protection MOSFET prevents discharge.</p>
+    <p>Again, separate:</p>
+    <ul>
+      <li>Data</li>
+      <li>Power</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="service-software">
+    <h3>Service Software</h3>
+    <p>Some manufacturers provide battery diagnostic information through:</p>
+    <ul>
+      <li>Service menu</li>
+      <li>Software utility</li>
+      <li>Diagnostic logs</li>
+    </ul>
+    <p>Use it.</p>
+    <p>It may expose much more than the user-facing battery icon.</p>
+  </section>
+
+  <section class="content-box" id="useful-battery-data-to-compare">
+    <h3>Useful Battery Data to Compare</h3>
+    <p>If available, look at:</p>
+    <ul>
+      <li>Pack voltage</li>
+      <li>Cell voltages</li>
+      <li>Temperature</li>
+      <li>Remaining capacity</li>
+      <li>Full-charge capacity</li>
+      <li>Cycle count</li>
+      <li>Charge current</li>
+      <li>Discharge current</li>
+      <li>Fault flags</li>
+    </ul>
+    <p>Patterns matter.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-powers-device-but-shows-0">
+    <h3>Real-World Example: Battery Powers Device but Shows 0%</h3>
+    <p>Device runs normally on battery.</p>
+    <p>Display:</p>
+    <p>0%.</p>
+    <p>Known-good battery:</p>
+    <p>Displays correctly.</p>
+    <p>Original battery:</p>
+    <p>Shows 0% in another device.</p>
+    <p>Likely BMS fuel-gauge or communication issue.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-not-supported">
+    <h3>Real-World Example: Battery Not Supported</h3>
+    <p>Replacement battery:</p>
+    <p>Correct voltage.</p>
+    <p>Physically fits.</p>
+    <p>Device reports:</p>
+    <p>Unsupported Battery.</p>
+    <p>OEM battery:</p>
+    <p>Works.</p>
+    <p>Identification/authentication mismatch likely.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-charging">
+    <h3>Real-World Example: No Charging</h3>
+    <p>Battery powers device.</p>
+    <p>Host identifies battery.</p>
+    <p>Temperature reported:</p>
+    <p>-40°C.</p>
+    <p>Actual battery:</p>
+    <p>Room temperature.</p>
+    <p>Charging is intentionally inhibited because the battery reports an impossible cold condition.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-device-problem">
+    <h3>Real-World Example: Device Problem</h3>
+    <p>Three known-good batteries all show:</p>
+    <p>Unknown Battery</p>
+    <p>in one monitor.</p>
+    <p>They work normally in another.</p>
+    <p>Battery connector data pin on first monitor is damaged.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-bay-only">
+    <h3>Real-World Example: One Bay Only</h3>
+    <p>Both batteries work in Bay A.</p>
+    <p>Neither communicates in Bay B.</p>
+    <p>Power works in Bay B.</p>
+    <p>Failure is in Bay B data path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-random-battery-disconnect">
+    <h3>Real-World Example: Random Battery Disconnect</h3>
+    <p>Battery status disappears when cart moves.</p>
+    <p>Device remains powered on AC.</p>
+    <p>Flexing battery latch reproduces problem.</p>
+    <p>Loose mechanical connection causes intermittent smart-battery contact.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-battery-voltage-proves-the-battery-is-fully-functional">
+    <h3>Assuming Battery Voltage Proves the Battery Is Fully Functional</h3>
+    <p>It says nothing about communication.</p>
+  </section>
+
+  <section class="content-box" id="assuming-unknown-battery-means-dead-cells">
+    <h3>Assuming “Unknown Battery” Means Dead Cells</h3>
+    <p>The data path may be the only problem.</p>
+  </section>
+
+  <section class="content-box" id="assuming-battery-percentage-comes-directly-from-voltage">
+    <h3>Assuming Battery Percentage Comes Directly From Voltage</h3>
+    <p>Smart gauges use more information.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-charger-for-a-communication-failure">
+    <h3>Replacing the Charger for a Communication Failure</h3>
+    <p>Charging may be intentionally inhibited.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-small-data-contacts">
+    <h3>Ignoring Small Data Contacts</h3>
+    <p>They are critical.</p>
+  </section>
+
+  <section class="content-box" id="treating-power-and-communication-as-the-same-circuit">
+    <h3>Treating Power and Communication as the Same Circuit</h3>
+    <p>They are separate functions.</p>
+  </section>
+
+  <section class="content-box" id="trying-to-bypass-authentication-or-protection">
+    <h3>Trying to Bypass Authentication or Protection</h3>
+    <p>Do not defeat battery safety systems.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a smart-battery problem, ask:</p>
+    <p><strong>Does the battery physically power the device?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the device recognize the battery?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it read plausible voltage, temperature, and capacity data?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does charging begin?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure follow the battery or stay with the device/bay?</strong></p>
+    <p>Then separate:</p>
+    <ul>
+      <li>Cell health</li>
+      <li>BMS</li>
+      <li>Power contacts</li>
+      <li>Data contacts</li>
+      <li>Host communication</li>
+      <li>Firmware/authentication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Which part is failing: energy storage, power delivery, or information exchange?</strong></p>
+    <p>That turns a vague:</p>
+    <blockquote><p>Battery problem</p></blockquote>
+    <p>into a much smaller troubleshooting problem.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device shows:</p>
+    <blockquote><p>Battery 75%</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The host received or calculated data indicating approximately 75% state of charge.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Battery actually has 75% of original capacity</li>
+      <li>Battery can support full device load</li>
+      <li>Communication will remain stable</li>
+    </ul>
+    <p>If the battery powers the device under load, communicates valid data, charges correctly, and passes an approved capacity/runtime test, you have verified several different layers of the smart-battery system.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A smart battery is really two devices in one:</p>
+    <p><strong>An energy-storage device</strong></p>
+    <p>and:</p>
+    <p><strong>A small digital management system.</strong></p>
+    <p>That is why battery failures can look so strange.</p>
+    <p>A battery can:</p>
+    <ul>
+      <li>Power the equipment</li>
+      <li>Yet be “not recognized”</li>
+    </ul>
+    <p>or:</p>
+    <ul>
+      <li>Communicate perfectly</li>
+      <li>Yet shut down under load.</li>
+    </ul>
+    <p>When troubleshooting, separate:</p>
+    <p><strong>Power</strong></p>
+    <p>from:</p>
+    <p><strong>Data.</strong></p>
+    <p>Check:</p>
+    <ul>
+      <li>Main terminals</li>
+      <li>Data contacts</li>
+      <li>Battery recognition</li>
+      <li>Reported temperature</li>
+      <li>Capacity</li>
+      <li>Fault flags</li>
+      <li>Cross-testing</li>
+    </ul>
+    <p>And remember:</p>
+    <p>The battery percentage on the screen is the final result of a communication chain.</p>
+    <p>It is useful information.</p>
+    <p>It is not direct proof of battery health.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Smart-battery communication protocols, data fields, authentication methods, BMS behavior, charging permissions, diagnostic tools, and host compatibility vary by manufacturer and battery pack. Follow current manufacturer service documentation, use approved batteries and charging systems, and do not bypass battery authentication, protection circuitry, or safety fault states.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-medical-device-batteries-charge-and-communicate.html">How Medical Device Batteries Charge and Communicate</a></li>
+      <li><a href="medical-device-batteries-runtime-capacity-and-state-of-health.html">Medical Device Batteries: Runtime, Capacity, and State of Health</a></li>
+      <li><a href="how-to-troubleshoot-communication-failures.html">How to Troubleshoot Communication Failures</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

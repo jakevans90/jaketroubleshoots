@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tolerance vs Accuracy | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to distinguishing measurement accuracy from allowable tolerance and calculating defensible pass/fail limits for medical equipment.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/tolerance-vs-accuracy.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>Tolerance vs Accuracy</h2>
+  <p>How to tell the difference between what a device measures and what the manufacturer allows</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Two words show up constantly in medical equipment testing:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What accuracy means</li>
+      <li>What tolerance means</li>
+      <li>Why they are different</li>
+      <li>How to calculate simple pass/fail ranges</li>
+      <li>Fixed tolerances</li>
+      <li>Percentage tolerances</li>
+      <li>Combined tolerances</li>
+      <li>Test equipment accuracy</li>
+      <li>Why resolution is different</li>
+      <li>Borderline results</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of it like this:</p>
+    <p><strong>Accuracy</strong></p>
+    <p>How close a measurement is to the true or reference value.</p>
+    <p><strong>Tolerance</strong></p>
+    <p>How much variation is allowed before the result is considered unacceptable.</p>
+    <p>Example:</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Allowed tolerance:</p>
+    <p>±3 mmHg.</p>
+    <p>Acceptable result:</p>
+    <p>97 to 103 mmHg.</p>
+    <p>Accuracy describes closeness.</p>
+    <p>Tolerance defines the allowed window.</p>
+  </section>
+
+  <section class="content-box" id="what-is-accuracy">
+    <h3>What Is Accuracy?</h3>
+    <p>Accuracy describes how close a measurement is to the correct reference value.</p>
+    <p>Example:</p>
+    <p>Pressure source:</p>
+    <p>100 mmHg.</p>
+    <p>Monitor reads:</p>
+    <p>101 mmHg.</p>
+    <p>The measurement error is:</p>
+    <p>+1 mmHg.</p>
+    <p>That is very close to the reference.</p>
+  </section>
+
+  <section class="content-box" id="measurement-error">
+    <h3>Measurement Error</h3>
+    <p>A simple way to think about error is:</p>
+    <p><strong>Measured Value - Reference Value = Error</strong></p>
+    <p>Example:</p>
+    <p>Measured:</p>
+    <p>98 mmHg.</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Error:</p>
+    <p>-2 mmHg.</p>
+    <p>The negative sign simply means the device reads low.</p>
+  </section>
+
+  <section class="content-box" id="absolute-error">
+    <h3>Absolute Error</h3>
+    <p>Sometimes you only care about the size of the error.</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Measured:</p>
+    <p>98 mmHg.</p>
+    <p>Absolute error:</p>
+    <p>2 mmHg.</p>
+    <p>Whether the device reads high or low may matter diagnostically, but the magnitude is often what determines pass/fail.</p>
+  </section>
+
+  <section class="content-box" id="what-is-tolerance">
+    <h3>What Is Tolerance?</h3>
+    <p>Tolerance defines how far a value is allowed to vary.</p>
+    <p>Example:</p>
+    <p>Target:</p>
+    <p>100 mmHg.</p>
+    <p>Tolerance:</p>
+    <p>±5 mmHg.</p>
+    <p>Acceptable range:</p>
+    <p>95 to 105 mmHg.</p>
+    <p>Anything inside that window meets the stated tolerance.</p>
+  </section>
+
+  <section class="content-box" id="tolerance-creates-the-pass-fail-window">
+    <h3>Tolerance Creates the Pass/Fail Window</h3>
+    <p>Suppose the requirement is:</p>
+    <p>100 ±3 mmHg.</p>
+    <p>Then:</p>
+    <p>Lower limit:</p>
+    <p>97 mmHg.</p>
+    <p>Upper limit:</p>
+    <p>103 mmHg.</p>
+    <p>Measured:</p>
+    <p>102 mmHg.</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>104 mmHg.</p>
+    <p>Fail.</p>
+    <p>That is a simple fixed tolerance.</p>
+  </section>
+
+  <section class="content-box" id="accuracy-is-a-performance-characteristic">
+    <h3>Accuracy Is a Performance Characteristic</h3>
+    <p>A manufacturer might specify:</p>
+    <blockquote><p>Pressure measurement accuracy ±3 mmHg.</p></blockquote>
+    <p>That tells you how close the device is expected to measure under defined conditions.</p>
+    <p>You then use that specification as an allowable limit during testing.</p>
+  </section>
+
+  <section class="content-box" id="tolerance-can-apply-to-more-than-measurement">
+    <h3>Tolerance Can Apply to More Than Measurement</h3>
+    <p>Tolerance is a broader concept.</p>
+    <p>You may see tolerance applied to:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Flow</li>
+      <li>Energy</li>
+      <li>Pressure</li>
+      <li>Mechanical travel</li>
+      <li>Timing</li>
+      <li>Frequency</li>
+    </ul>
+    <p>Example:</p>
+    <p>Power rail:</p>
+    <p>5.0 VDC ±5%.</p>
+    <p>That is a voltage tolerance.</p>
+  </section>
+
+  <section class="content-box" id="fixed-tolerance">
+    <h3>Fixed Tolerance</h3>
+    <p>A fixed tolerance uses the same allowable error across the stated range.</p>
+    <p>Example:</p>
+    <p>±2 mmHg.</p>
+    <p>At:</p>
+    <p>50 mmHg</p>
+    <p>acceptable:</p>
+    <p>48 to 52.</p>
+    <p>At:</p>
+    <p>200 mmHg</p>
+    <p>acceptable:</p>
+    <p>198 to 202.</p>
+    <p>The allowed absolute error remains:</p>
+    <p>2 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="percentage-tolerance">
+    <h3>Percentage Tolerance</h3>
+    <p>A percentage tolerance changes depending on the test value.</p>
+    <p>Example:</p>
+    <p>±5%.</p>
+    <p>At:</p>
+    <p>100 units</p>
+    <p>allowed error:</p>
+    <p>5 units.</p>
+    <p>Acceptable:</p>
+    <p>95 to 105.</p>
+    <p>At:</p>
+    <p>200 units</p>
+    <p>allowed error:</p>
+    <p>10 units.</p>
+    <p>Acceptable:</p>
+    <p>190 to 210.</p>
+    <p>The allowed error grows with the measurement.</p>
+  </section>
+
+  <section class="content-box" id="calculating-percentage-tolerance">
+    <h3>Calculating Percentage Tolerance</h3>
+    <p>Basic calculation:</p>
+    <p><strong>Reference × Percentage = Allowed Error</strong></p>
+    <p>Example:</p>
+    <p>Reference:</p>
+    <p>300 J.</p>
+    <p>Tolerance:</p>
+    <p>±10%.</p>
+    <p>300 × 0.10 = 30 J.</p>
+    <p>Acceptable range:</p>
+    <p>270 to 330 J.</p>
+  </section>
+
+  <section class="content-box" id="combined-specifications">
+    <h3>Combined Specifications</h3>
+    <p>Some specifications use more than one term.</p>
+    <p>Example:</p>
+    <p>±2% of reading ±1 unit.</p>
+    <p>Suppose reference is:</p>
+    <p>100.</p>
+    <p>Two percent:</p>
+    <p>2.</p>
+    <p>Plus:</p>
+    <p>1.</p>
+    <p>Total allowed error may be:</p>
+    <p>3 units.</p>
+    <p>Acceptable:</p>
+    <p>97 to 103.</p>
+    <p>Follow the manufacturer's exact wording and calculation method.</p>
+  </section>
+
+  <section class="content-box" id="percentage-of-reading-vs-percentage-of-full-scale">
+    <h3>Percentage of Reading vs Percentage of Full Scale</h3>
+    <p>These are not the same thing.</p>
+    <p>Example:</p>
+    <p>Device range:</p>
+    <p>0 to 300 mmHg.</p>
+    <p>Specification A:</p>
+    <p>±2% of reading.</p>
+    <p>At 100 mmHg:</p>
+    <p>±2 mmHg.</p>
+    <p>Specification B:</p>
+    <p>±2% of full scale.</p>
+    <p>Full scale:</p>
+    <p>300 mmHg.</p>
+    <p>Two percent:</p>
+    <p>6 mmHg.</p>
+    <p>At 100 mmHg, that would allow:</p>
+    <p>±6 mmHg.</p>
+    <p>Very different.</p>
+    <p>Read the specification carefully.</p>
+  </section>
+
+  <section class="content-box" id="nominal-value">
+    <h3>Nominal Value</h3>
+    <p>A nominal value is a named or approximate design value.</p>
+    <p>Example:</p>
+    <p>24 V power supply.</p>
+    <p>That does not necessarily mean:</p>
+    <p>24.000 V.</p>
+    <p>The actual acceptable range may be:</p>
+    <p>22.8 to 25.2 V.</p>
+    <p>You need the tolerance before deciding whether the measured value passes.</p>
+  </section>
+
+  <section class="content-box" id="accuracy-vs-precision">
+    <h3>Accuracy vs Precision</h3>
+    <p>These terms also get confused.</p>
+    <p>Accuracy:</p>
+    <p>How close you are to the correct value.</p>
+    <p>Precision:</p>
+    <p>How consistently repeated measurements agree.</p>
+    <p>Example:</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Measurements:</p>
+    <p>110.0 110.1 110.0 110.1</p>
+    <p>Very precise.</p>
+    <p>Not accurate.</p>
+    <p>The readings are consistent, but wrong.</p>
+  </section>
+
+  <section class="content-box" id="accuracy-vs-resolution">
+    <h3>Accuracy vs Resolution</h3>
+    <p>Resolution is the smallest increment the device displays or measures.</p>
+    <p>Example:</p>
+    <p>Device displays:</p>
+    <p>100.1 mmHg.</p>
+    <p>Resolution:</p>
+    <p>0.1 mmHg.</p>
+    <p>That does not mean the device is accurate to:</p>
+    <p>±0.1 mmHg.</p>
+    <p>Its actual accuracy specification might be:</p>
+    <p>±3 mmHg.</p>
+    <p>More decimal places do not automatically mean better accuracy.</p>
+  </section>
+
+  <section class="content-box" id="test-equipment-has-accuracy-too">
+    <h3>Test Equipment Has Accuracy Too</h3>
+    <p>This matters a lot.</p>
+    <p>Suppose you are testing a device that must be accurate to:</p>
+    <p>±1%.</p>
+    <p>Your analyzer is only accurate to:</p>
+    <p>±5%.</p>
+    <p>That is a problem.</p>
+    <p>The reference may not be good enough to prove the device meets its requirement.</p>
+  </section>
+
+  <section class="content-box" id="the-reference-is-not-perfect">
+    <h3>The Reference Is Not Perfect</h3>
+    <p>No measurement system is perfectly exact.</p>
+    <p>Your:</p>
+    <ul>
+      <li>Multimeter</li>
+      <li>Pressure analyzer</li>
+      <li>Defibrillator analyzer</li>
+      <li>Infusion analyzer</li>
+    </ul>
+    <p>also has specifications.</p>
+    <p>That means the test result has some measurement uncertainty.</p>
+  </section>
+
+  <section class="content-box" id="example-voltage-test">
+    <h3>Example: Voltage Test</h3>
+    <p>Device requirement:</p>
+    <p>5.00 V ±0.05 V.</p>
+    <p>Meter accuracy:</p>
+    <p>±0.10 V.</p>
+    <p>Your meter uncertainty is larger than the device's entire allowed error.</p>
+    <p>That may not be an appropriate instrument for that verification.</p>
+  </section>
+
+  <section class="content-box" id="better-test-equipment-gives-more-confidence">
+    <h3>Better Test Equipment Gives More Confidence</h3>
+    <p>If the device tolerance is tight, your test equipment should generally be substantially better than the thing you are trying to verify.</p>
+    <p>Exactly how much better depends on:</p>
+    <ul>
+      <li>Manufacturer requirements</li>
+      <li>Facility policy</li>
+      <li>Calibration system</li>
+      <li>Test method</li>
+    </ul>
+    <p>Do not invent your own ratio when a defined procedure exists.</p>
+  </section>
+
+  <section class="content-box" id="pass-fail-limits">
+    <h3>Pass/Fail Limits</h3>
+    <p>Tolerance becomes especially important at the limits.</p>
+    <p>Example:</p>
+    <p>Target:</p>
+    <p>100.</p>
+    <p>Tolerance:</p>
+    <p>±5.</p>
+    <p>Acceptable:</p>
+    <p>95 to 105.</p>
+    <p>Measured:</p>
+    <p>105.</p>
+    <p>If the limit is inclusive:</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>105.1.</p>
+    <p>Fail.</p>
+    <p>Do not casually stretch the boundary.</p>
+  </section>
+
+  <section class="content-box" id="borderline-results">
+    <h3>Borderline Results</h3>
+    <p>Borderline results deserve careful handling.</p>
+    <p>Suppose limit:</p>
+    <p>105.0.</p>
+    <p>Analyzer reports:</p>
+    <p>105.0.</p>
+    <p>That may technically meet the limit.</p>
+    <p>But also consider:</p>
+    <ul>
+      <li>Analyzer uncertainty</li>
+      <li>Measurement repeatability</li>
+      <li>Manufacturer procedure</li>
+    </ul>
+    <p>If the result is right on the edge, follow the defined process rather than guessing.</p>
+  </section>
+
+  <section class="content-box" id="do-not-round-a-failure-into-a-pass">
+    <h3>Do Not Round a Failure Into a Pass</h3>
+    <p>Example:</p>
+    <p>Actual result:</p>
+    <p>105.46.</p>
+    <p>Limit:</p>
+    <p>105.4.</p>
+    <p>If you round first:</p>
+    <p>105.</p>
+    <p>you may accidentally call it a pass.</p>
+    <p>Keep sufficient precision through the comparison.</p>
+  </section>
+
+  <section class="content-box" id="do-not-report-more-precision-than-you-measured">
+    <h3>Do Not Report More Precision Than You Measured</h3>
+    <p>If your analyzer resolution is:</p>
+    <p>0.1 mmHg,</p>
+    <p>do not document:</p>
+    <p>100.037 mmHg.</p>
+    <p>That implies precision your instrument did not provide.</p>
+  </section>
+
+  <section class="content-box" id="repeatability-helps-with-borderline-results">
+    <h3>Repeatability Helps With Borderline Results</h3>
+    <p>Suppose you test five times:</p>
+    <p>104.9 105.0 105.1 104.9 105.2</p>
+    <p>Now the behavior around the limit is clearer.</p>
+    <p>Repeated testing may be appropriate when permitted by the procedure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-average-away-a-failure-unless-allowed">
+    <h3>Do Not Average Away a Failure Unless Allowed</h3>
+    <p>If one measurement fails and another passes, do not automatically average them together.</p>
+    <p>Example:</p>
+    <p>99 101 108</p>
+    <p>Average:</p>
+    <p>102.7.</p>
+    <p>That does not necessarily mean pass.</p>
+    <p>Follow the manufacturer's test method.</p>
+  </section>
+
+  <section class="content-box" id="tolerance-can-change-across-the-range">
+    <h3>Tolerance Can Change Across the Range</h3>
+    <p>A device may have:</p>
+    <p>±2 units</p>
+    <p>in one range,</p>
+    <p>and:</p>
+    <p>±5%</p>
+    <p>in another.</p>
+    <p>Do not use one limit for every test point.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure specification:</p>
+    <p>0–50 mmHg:</p>
+    <p>±2 mmHg.</p>
+    <p>51–300 mmHg:</p>
+    <p>±3%.</p>
+    <p>At:</p>
+    <p>40 mmHg</p>
+    <p>use:</p>
+    <p>±2 mmHg.</p>
+    <p>At:</p>
+    <p>200 mmHg</p>
+    <p>use:</p>
+    <p>±6 mmHg.</p>
+    <p>Read the range-specific specification.</p>
+  </section>
+
+  <section class="content-box" id="environmental-conditions-can-affect-accuracy">
+    <h3>Environmental Conditions Can Affect Accuracy</h3>
+    <p>Accuracy may only be guaranteed within:</p>
+    <ul>
+      <li>Temperature range</li>
+      <li>Humidity range</li>
+      <li>Altitude</li>
+      <li>Supply voltage range</li>
+    </ul>
+    <p>A device outside those conditions may not meet the normal specification.</p>
+  </section>
+
+  <section class="content-box" id="warm-up-time">
+    <h3>Warm-Up Time</h3>
+    <p>Some test equipment or devices require warm-up before rated accuracy applies.</p>
+    <p>Example:</p>
+    <p>Analyzer specification valid after:</p>
+    <p>15 minutes.</p>
+    <p>If you test immediately after power-on, you may not be operating under the specified conditions.</p>
+  </section>
+
+  <section class="content-box" id="accessories-can-affect-accuracy">
+    <h3>Accessories Can Affect Accuracy</h3>
+    <p>Measurement accuracy may depend on:</p>
+    <ul>
+      <li>Correct sensor</li>
+      <li>Correct hose</li>
+      <li>Correct cuff</li>
+      <li>Approved cable</li>
+    </ul>
+    <p>A bad accessory can make a good device appear inaccurate.</p>
+  </section>
+
+  <section class="content-box" id="calibration-and-accuracy">
+    <h3>Calibration and Accuracy</h3>
+    <p>Calibration helps establish or correct the relationship between the device and a known reference.</p>
+    <p>But calibration should not automatically be the first response to every failed accuracy test.</p>
+    <p>Ask why it failed.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Sensor failure</li>
+      <li>Leak</li>
+      <li>Hardware issue</li>
+      <li>Wrong setup</li>
+    </ul>
+    <p>Calibration should not hide another fault.</p>
+  </section>
+
+  <section class="content-box" id="verification-vs-calibration">
+    <h3>Verification vs Calibration</h3>
+    <p>Verification asks:</p>
+    <p><strong>Does the device meet the required tolerance?</strong></p>
+    <p>Calibration adjusts the device when appropriate.</p>
+    <p>If the device already passes:</p>
+    <p>Do not calibrate just to make the number look prettier.</p>
+  </section>
+
+  <section class="content-box" id="example-pressure">
+    <h3>Example: Pressure</h3>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Device:</p>
+    <p>102 mmHg.</p>
+    <p>Specification:</p>
+    <p>±3 mmHg.</p>
+    <p>Pass.</p>
+    <p>Do not calibrate simply because it is not exactly:</p>
+    <p>100.</p>
+    <p>It already meets specification.</p>
+  </section>
+
+  <section class="content-box" id="over-adjustment-can-make-things-worse">
+    <h3>Over-Adjustment Can Make Things Worse</h3>
+    <p>Suppose you adjust a passing device at one test point.</p>
+    <p>You may improve that one point and worsen another.</p>
+    <p>Do not chase perfection when the device already meets the manufacturer's requirements.</p>
+  </section>
+
+  <section class="content-box" id="example-infusion-pump">
+    <h3>Example: Infusion Pump</h3>
+    <p>Set rate:</p>
+    <p>100 mL/hr.</p>
+    <p>Measured:</p>
+    <p>96 mL/hr.</p>
+    <p>Tolerance:</p>
+    <p>±5%.</p>
+    <p>Allowed:</p>
+    <p>95 to 105 mL/hr.</p>
+    <p>Pass.</p>
+    <p>The result is not exact.</p>
+    <p>It does not need to be.</p>
+  </section>
+
+  <section class="content-box" id="example-defibrillator">
+    <h3>Example: Defibrillator</h3>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Measured:</p>
+    <p>188 J.</p>
+    <p>Tolerance:</p>
+    <p>±15%.</p>
+    <p>Allowed range:</p>
+    <p>170 to 230 J.</p>
+    <p>Pass.</p>
+    <p>A technician who expects exactly:</p>
+    <p>200 J</p>
+    <p>may unnecessarily adjust or repair a perfectly acceptable device.</p>
+  </section>
+
+  <section class="content-box" id="example-temperature">
+    <h3>Example: Temperature</h3>
+    <p>Reference:</p>
+    <p>37.0°C.</p>
+    <p>Device:</p>
+    <p>37.4°C.</p>
+    <p>Specification:</p>
+    <p>±0.2°C.</p>
+    <p>Acceptable:</p>
+    <p>36.8 to 37.2°C.</p>
+    <p>Fail.</p>
+    <p>Even though:</p>
+    <p>37.4</p>
+    <p>looks close, it is outside the defined tolerance.</p>
+  </section>
+
+  <section class="content-box" id="example-power-rail">
+    <h3>Example: Power Rail</h3>
+    <p>Expected:</p>
+    <p>24 VDC.</p>
+    <p>Tolerance:</p>
+    <p>±5%.</p>
+    <p>Five percent:</p>
+    <p>1.2 V.</p>
+    <p>Acceptable:</p>
+    <p>22.8 to 25.2 V.</p>
+    <p>Measured:</p>
+    <p>23.5 V.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="example-battery-runtime">
+    <h3>Example: Battery Runtime</h3>
+    <p>Required:</p>
+    <p>Minimum 90 minutes.</p>
+    <p>Measured:</p>
+    <p>88 minutes.</p>
+    <p>That is below the tolerance or minimum requirement.</p>
+    <p>Do not write:</p>
+    <blockquote><p>Close enough.</p></blockquote>
+    <p>If 90 is the defined minimum, 88 fails.</p>
+  </section>
+
+  <section class="content-box" id="typical-is-not-the-same-as-tolerance">
+    <h3>Typical Is Not the Same as Tolerance</h3>
+    <p>Manufacturer may state:</p>
+    <blockquote><p>Typical runtime: 4 hours.</p></blockquote>
+    <p>That is different from:</p>
+    <blockquote><p>Minimum runtime: 4 hours.</p></blockquote>
+    <p>Typical values are not always intended as pass/fail limits.</p>
+    <p>Read the wording carefully.</p>
+  </section>
+
+  <section class="content-box" id="minimum-and-maximum-limits">
+    <h3>Minimum and Maximum Limits</h3>
+    <p>Sometimes there is no plus/minus tolerance.</p>
+    <p>Example:</p>
+    <p>Leak rate:</p>
+    <p>Maximum 50 mL/min.</p>
+    <p>Measured:</p>
+    <p>48.</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>55.</p>
+    <p>Fail.</p>
+    <p>Simple.</p>
+  </section>
+
+  <section class="content-box" id="calibration-sticker-tolerance">
+    <h3>Calibration Sticker Tolerance</h3>
+    <p>Do not assume the sticker on your analyzer tells you the device's tolerance.</p>
+    <p>The analyzer's calibration status tells you about the analyzer.</p>
+    <p>The medical device's service documentation tells you the medical-device acceptance limit.</p>
+    <p>Those are separate things.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-spec-vs-facility-limit">
+    <h3>Manufacturer Spec vs Facility Limit</h3>
+    <p>Your facility may have approved procedures or maintenance requirements that define acceptance limits.</p>
+    <p>Use the applicable approved requirement.</p>
+    <p>Do not choose whichever number gives the result you want.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-with-accuracy">
+    <h3>Troubleshooting With Accuracy</h3>
+    <p>A failed accuracy test can help isolate a problem.</p>
+    <p>Example:</p>
+    <p>Pressure sensor reads:</p>
+    <p>+10 mmHg high across multiple test points.</p>
+    <p>That may suggest:</p>
+    <ul>
+      <li>Offset</li>
+      <li>Calibration issue</li>
+      <li>Sensor problem</li>
+    </ul>
+    <p>The pattern matters.</p>
+  </section>
+
+  <section class="content-box" id="one-point-accuracy-failure">
+    <h3>One-Point Accuracy Failure</h3>
+    <p>If only one point fails, investigate whether:</p>
+    <ul>
+      <li>Test setup changed</li>
+      <li>Nonlinearity</li>
+      <li>Analyzer issue</li>
+    </ul>
+    <p>Do not immediately assume the entire measurement system is bad.</p>
+  </section>
+
+  <section class="content-box" id="multi-point-testing">
+    <h3>Multi-Point Testing</h3>
+    <p>Testing multiple points can show:</p>
+    <ul>
+      <li>Offset</li>
+      <li>Gain error</li>
+      <li>Nonlinear error</li>
+    </ul>
+    <p>Example:</p>
+    <p>Reference 50 → reads 55</p>
+    <p>Reference 100 → reads 110</p>
+    <p>Reference 200 → reads 220</p>
+    <p>The error scales with the reading.</p>
+    <p>That pattern can help troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="offset-pattern">
+    <h3>Offset Pattern</h3>
+    <p>Reference:</p>
+    <p>50 → reads 55</p>
+    <p>100 → reads 105</p>
+    <p>200 → reads 205</p>
+    <p>Constant +5 error.</p>
+    <p>That looks different from a proportional gain error.</p>
+  </section>
+
+  <section class="content-box" id="specifications-help-you-avoid-parts-cannon">
+    <h3>Specifications Help You Avoid Parts Cannon</h3>
+    <p>Without objective tolerances, a tech may think:</p>
+    <blockquote><p>This looks a little low.</p></blockquote>
+    <p>With a specification, you can say:</p>
+    <blockquote><p>It is within tolerance.</p></blockquote>
+    <p>No unnecessary repair.</p>
+  </section>
+
+  <section class="content-box" id="specifications-also-prevent-wishful-thinking">
+    <h3>Specifications Also Prevent Wishful Thinking</h3>
+    <p>The opposite:</p>
+    <blockquote><p>It is only slightly outside.</p></blockquote>
+    <p>If it fails, it fails.</p>
+    <p>Objective limits keep troubleshooting honest.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-accuracy-and-tolerance-as-the-same-word">
+    <h3>Treating Accuracy and Tolerance as the Same Word</h3>
+    <p>They are related but describe different things.</p>
+  </section>
+
+  <section class="content-box" id="assuming-more-decimal-places-means-more-accuracy">
+    <h3>Assuming More Decimal Places Means More Accuracy</h3>
+    <p>That is resolution.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-test-equipment-accuracy">
+    <h3>Ignoring Test Equipment Accuracy</h3>
+    <p>The reference matters too.</p>
+  </section>
+
+  <section class="content-box" id="using-the-wrong-percentage-basis">
+    <h3>Using the Wrong Percentage Basis</h3>
+    <p>Reading vs full-scale can be very different.</p>
+  </section>
+
+  <section class="content-box" id="rounding-before-comparing">
+    <h3>Rounding Before Comparing</h3>
+    <p>Keep enough precision.</p>
+  </section>
+
+  <section class="content-box" id="averaging-failed-results-without-procedure">
+    <h3>Averaging Failed Results Without Procedure</h3>
+    <p>Follow the defined test method.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-a-device-that-already-passes">
+    <h3>Calibrating a Device That Already Passes</h3>
+    <p>Within tolerance is acceptable.</p>
+  </section>
+
+  <section class="content-box" id="calling-an-out-of-spec-result-close-enough">
+    <h3>Calling an Out-of-Spec Result “Close Enough”</h3>
+    <p>Use the defined limit.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Ask:</p>
+    <p><strong>What is the reference value?</strong></p>
+    <p>Then:</p>
+    <p><strong>What tolerance applies?</strong></p>
+    <p>Then:</p>
+    <p><strong>What is the allowable range?</strong></p>
+    <p>Then:</p>
+    <p><strong>What did the device actually measure or deliver?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the test equipment accurate enough to support that decision?</strong></p>
+    <p>That gives you an objective pass/fail process.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Am I trying to prove the device is perfect, or that it meets the required specification?</strong></p>
+    <p>Those are not the same goal.</p>
+    <p>Medical equipment does not usually need to read exactly the reference value.</p>
+    <p>It needs to perform within its approved limits.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose:</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Device:</p>
+    <p>102 mmHg.</p>
+    <p>Tolerance:</p>
+    <p>±3 mmHg.</p>
+    <p>You proved:</p>
+    <p><strong>The device measurement was within the allowed tolerance at that test point under the conditions tested.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Every pressure point passes</li>
+      <li>Device will never drift</li>
+      <li>Analyzer has zero uncertainty</li>
+    </ul>
+    <p>Each test supports a specific conclusion.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Accuracy tells you how close the device is to the reference.</p>
+    <p>Tolerance tells you how far it is allowed to be from that reference.</p>
+    <p>That distinction is simple.</p>
+    <p>But it is extremely important when deciding:</p>
+    <ul>
+      <li>Pass</li>
+      <li>Fail</li>
+      <li>Adjust</li>
+      <li>Repair</li>
+      <li>Return to service</li>
+    </ul>
+    <p>Do not chase exact numbers when the device already meets specification.</p>
+    <p>Do not accept out-of-spec results because they look close.</p>
+    <p>And do not forget that the analyzer you are using has its own accuracy limits too.</p>
+    <p>Know the reference.</p>
+    <p>Know the tolerance.</p>
+    <p>Know your test equipment.</p>
+    <p>Then let the numbers make the decision.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Accuracy specifications, tolerances, measurement uncertainty, acceptance limits, and test-equipment requirements vary by manufacturer, model, procedure, and facility program. Use current manufacturer documentation, approved calibration and verification procedures, and appropriately maintained test equipment when making pass/fail decisions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="pass-fail-limits-and-why-the-test-point-matters.html">Pass/Fail Limits and Why the Test Point Matters</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+      <li><a href="how-to-read-device-specifications.html">How to Read Device Specifications</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

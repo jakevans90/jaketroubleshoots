@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pass/Fail Limits and Why the Test Point Matters | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to test-point-specific limits, multi-point testing, range-dependent errors, operating conditions, and defensible pass/fail decisions.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/pass-fail-limits-and-why-the-test-point-matters.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>Pass/Fail Limits and Why the Test Point Matters</h2>
+  <p>How the same device can pass at one value, fail at another, and why testing the right point matters</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device does not always perform the same way across its entire operating range.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a pass/fail limit is</li>
+      <li>What a test point is</li>
+      <li>Why manufacturers use multiple test points</li>
+      <li>Low, middle, and high-range testing</li>
+      <li>Fixed versus percentage tolerances</li>
+      <li>Why low values can be harder to measure</li>
+      <li>Why high values may expose different failures</li>
+      <li>Multi-point testing</li>
+      <li>Borderline results</li>
+      <li>Why you should not substitute your own test points</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of it like this:</p>
+    <p><strong>Test Point</strong></p>
+    <p>The exact value or operating condition you are testing.</p>
+    <p><strong>Pass/Fail Limit</strong></p>
+    <p>The acceptable result at that point.</p>
+    <p>Example:</p>
+    <p>Set:</p>
+    <p>100 mL/hr.</p>
+    <p>Acceptable:</p>
+    <p>95 to 105 mL/hr.</p>
+    <p>That tells you whether the pump passes <strong>at 100 mL/hr</strong>.</p>
+    <p>It does not automatically tell you whether it passes at:</p>
+    <p>1 mL/hr</p>
+    <p>or:</p>
+    <p>999 mL/hr.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-test-point">
+    <h3>What Is a Test Point?</h3>
+    <p>A test point is the specific value or condition where performance is checked.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>50 mmHg</li>
+      <li>100 mmHg</li>
+      <li>200 J</li>
+      <li>5 mL/hr</li>
+      <li>500 mL tidal volume</li>
+      <li>37°C</li>
+      <li>24 VDC</li>
+    </ul>
+    <p>The manufacturer may require several test points for one function.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-pass-fail-limit">
+    <h3>What Is a Pass/Fail Limit?</h3>
+    <p>The pass/fail limit defines the acceptable result.</p>
+    <p>Example:</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Allowed accuracy:</p>
+    <p>±3 mmHg.</p>
+    <p>Pass range:</p>
+    <p>97 to 103 mmHg.</p>
+    <p>If the device reads:</p>
+    <p>102 mmHg</p>
+    <p>pass.</p>
+    <p>If it reads:</p>
+    <p>105 mmHg</p>
+    <p>fail.</p>
+  </section>
+
+  <section class="content-box" id="why-test-at-more-than-one-point">
+    <h3>Why Test at More Than One Point?</h3>
+    <p>Because errors are not always constant.</p>
+    <p>A device may behave differently at:</p>
+    <ul>
+      <li>Low end</li>
+      <li>Middle</li>
+      <li>High end</li>
+    </ul>
+    <p>Multiple points help reveal patterns.</p>
+  </section>
+
+  <section class="content-box" id="example-pressure-channel">
+    <h3>Example: Pressure Channel</h3>
+    <p>Reference → Device</p>
+    <p>50 → 50 100 → 100 200 → 220</p>
+    <p>The channel looks perfect at the first two points.</p>
+    <p>It fails badly at the high end.</p>
+    <p>A one-point test would have missed the failure.</p>
+  </section>
+
+  <section class="content-box" id="low-end-testing">
+    <h3>Low-End Testing</h3>
+    <p>Low values can be especially challenging.</p>
+    <p>Example:</p>
+    <p>Infusion pump set to:</p>
+    <p>1 mL/hr.</p>
+    <p>A small absolute error becomes a large percentage of the total flow.</p>
+    <p>That may reveal problems that are invisible at:</p>
+    <p>100 mL/hr.</p>
+  </section>
+
+  <section class="content-box" id="low-flow-example">
+    <h3>Low-Flow Example</h3>
+    <p>Pump set:</p>
+    <p>1.0 mL/hr.</p>
+    <p>Measured:</p>
+    <p>0.8 mL/hr.</p>
+    <p>Difference:</p>
+    <p>0.2 mL/hr.</p>
+    <p>That sounds tiny.</p>
+    <p>But it is:</p>
+    <p>20% low.</p>
+    <p>At a low test point, small absolute differences can matter a lot.</p>
+  </section>
+
+  <section class="content-box" id="high-end-testing">
+    <h3>High-End Testing</h3>
+    <p>High test points challenge different things.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Pump motor speed</li>
+      <li>Pressure system range</li>
+      <li>Defibrillator charging</li>
+      <li>Ventilator flow capacity</li>
+      <li>Power supply load</li>
+    </ul>
+    <p>A device may perform normally in the middle and fail near maximum output.</p>
+  </section>
+
+  <section class="content-box" id="mid-range-testing">
+    <h3>Mid-Range Testing</h3>
+    <p>Mid-range points often provide a useful general accuracy check.</p>
+    <p>But they should not automatically replace low and high points when the manufacturer requires them.</p>
+  </section>
+
+  <section class="content-box" id="multiple-points-reveal-error-patterns">
+    <h3>Multiple Points Reveal Error Patterns</h3>
+    <p>Suppose a pressure channel gives:</p>
+    <p>Reference → Device</p>
+    <p>50 → 55 100 → 105 200 → 205</p>
+    <p>That is a consistent:</p>
+    <p>+5 mmHg</p>
+    <p>offset.</p>
+    <p>Now:</p>
+    <p>50 → 52 100 → 104 200 → 208</p>
+    <p>The error grows with the value.</p>
+    <p>That looks more like a gain or scaling issue.</p>
+    <p>The pattern across test points tells you more than one measurement.</p>
+  </section>
+
+  <section class="content-box" id="offset-error">
+    <h3>Offset Error</h3>
+    <p>An offset means the measurement is shifted by roughly the same amount.</p>
+    <p>Example:</p>
+    <p>Actual:</p>
+    <p>0.</p>
+    <p>Displayed:</p>
+    <p>+5.</p>
+    <p>Actual:</p>
+    <p>100.</p>
+    <p>Displayed:</p>
+    <p>105.</p>
+    <p>Actual:</p>
+    <p>200.</p>
+    <p>Displayed:</p>
+    <p>205.</p>
+    <p>The error stays near:</p>
+    <p>+5.</p>
+  </section>
+
+  <section class="content-box" id="gain-error">
+    <h3>Gain Error</h3>
+    <p>A gain error grows with the measurement.</p>
+    <p>Example:</p>
+    <p>Actual:</p>
+    <p>50.</p>
+    <p>Displayed:</p>
+    <p>55.</p>
+    <p>Actual:</p>
+    <p>100.</p>
+    <p>Displayed:</p>
+    <p>110.</p>
+    <p>Actual:</p>
+    <p>200.</p>
+    <p>Displayed:</p>
+    <p>220.</p>
+    <p>The device increasingly overreads as the input increases.</p>
+  </section>
+
+  <section class="content-box" id="nonlinear-error">
+    <h3>Nonlinear Error</h3>
+    <p>Sometimes the error does not follow a simple pattern.</p>
+    <p>Example:</p>
+    <p>50 → 50 100 → 101 200 → 225</p>
+    <p>That may suggest:</p>
+    <ul>
+      <li>Sensor nonlinearity</li>
+      <li>Electronics</li>
+      <li>Mechanical issue</li>
+    </ul>
+    <p>Multiple points reveal it.</p>
+  </section>
+
+  <section class="content-box" id="why-manufacturer-test-points-matter">
+    <h3>Why Manufacturer Test Points Matter</h3>
+    <p>The manufacturer may choose points because they:</p>
+    <ul>
+      <li>Cover the operating range</li>
+      <li>Challenge known weak areas</li>
+      <li>Verify linearity</li>
+      <li>Match calibration points</li>
+      <li>Test safety limits</li>
+    </ul>
+    <p>Do not assume you know better without a valid approved procedure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-substitute-convenient-values">
+    <h3>Do Not Substitute Convenient Values</h3>
+    <p>Suppose the procedure says:</p>
+    <p>Test at:</p>
+    <p>50, 100, and 200 mmHg.</p>
+    <p>You test:</p>
+    <p>100 mmHg only</p>
+    <p>because it is easy.</p>
+    <p>You have not completed the required test.</p>
+  </section>
+
+  <section class="content-box" id="do-not-replace-a-test-point-with-close-enough">
+    <h3>Do Not Replace a Test Point With “Close Enough”</h3>
+    <p>Required:</p>
+    <p>200 J.</p>
+    <p>You test:</p>
+    <p>150 J.</p>
+    <p>That may prove the defibrillator works at 150 J.</p>
+    <p>It does not prove it passes at 200 J.</p>
+  </section>
+
+  <section class="content-box" id="different-test-points-may-have-different-tolerances">
+    <h3>Different Test Points May Have Different Tolerances</h3>
+    <p>A manufacturer may specify:</p>
+    <p>Low range:</p>
+    <p>±2 units.</p>
+    <p>High range:</p>
+    <p>±5%.</p>
+    <p>Do not apply the same limit everywhere.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure range:</p>
+    <p>0–50 mmHg:</p>
+    <p>±2 mmHg.</p>
+    <p>Above 50 mmHg:</p>
+    <p>±3%.</p>
+    <p>At:</p>
+    <p>25 mmHg</p>
+    <p>acceptable:</p>
+    <p>23 to 27.</p>
+    <p>At:</p>
+    <p>200 mmHg</p>
+    <p>acceptable:</p>
+    <p>194 to 206.</p>
+    <p>The tolerance changes with the test point.</p>
+  </section>
+
+  <section class="content-box" id="percentage-tolerance-changes-the-absolute-limit">
+    <h3>Percentage Tolerance Changes the Absolute Limit</h3>
+    <p>Suppose tolerance:</p>
+    <p>±5%.</p>
+    <p>At:</p>
+    <p>10 mL/hr</p>
+    <p>allowed error:</p>
+    <p>0.5 mL/hr.</p>
+    <p>At:</p>
+    <p>100 mL/hr</p>
+    <p>allowed error:</p>
+    <p>5 mL/hr.</p>
+    <p>At:</p>
+    <p>500 mL/hr</p>
+    <p>allowed error:</p>
+    <p>25 mL/hr.</p>
+    <p>Same percentage.</p>
+    <p>Different absolute limits.</p>
+  </section>
+
+  <section class="content-box" id="maximum-limits">
+    <h3>Maximum Limits</h3>
+    <p>Some tests only care about an upper boundary.</p>
+    <p>Example:</p>
+    <p>Leak rate:</p>
+    <p>Maximum 100 mL/min.</p>
+    <p>Test result:</p>
+    <p>80.</p>
+    <p>Pass.</p>
+    <p>Result:</p>
+    <p>120.</p>
+    <p>Fail.</p>
+    <p>The exact test condition still matters.</p>
+  </section>
+
+  <section class="content-box" id="minimum-limits">
+    <h3>Minimum Limits</h3>
+    <p>Example:</p>
+    <p>Battery runtime:</p>
+    <p>Minimum 90 minutes.</p>
+    <p>Battery runs:</p>
+    <p>95 minutes.</p>
+    <p>Pass.</p>
+    <p>Battery runs:</p>
+    <p>88 minutes.</p>
+    <p>Fail.</p>
+    <p>Again, that only applies under the defined runtime conditions.</p>
+  </section>
+
+  <section class="content-box" id="threshold-testing">
+    <h3>Threshold Testing</h3>
+    <p>Some functions are tested to determine when a device responds.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Alarm threshold</li>
+      <li>Occlusion alarm</li>
+      <li>Pressure relief</li>
+      <li>Low battery warning</li>
+    </ul>
+    <p>The test point may be the point where behavior changes.</p>
+  </section>
+
+  <section class="content-box" id="alarm-example">
+    <h3>Alarm Example</h3>
+    <p>High-pressure alarm set:</p>
+    <p>40 cmH2O.</p>
+    <p>Manufacturer allows activation within:</p>
+    <p>±2 cmH2O.</p>
+    <p>Alarm activates at:</p>
+    <p>41.</p>
+    <p>Pass.</p>
+    <p>Activates at:</p>
+    <p>46.</p>
+    <p>Fail.</p>
+    <p>You are testing the threshold, not just whether an alarm eventually occurs.</p>
+  </section>
+
+  <section class="content-box" id="why-test-points-matter-for-alarms">
+    <h3>Why Test Points Matter for Alarms</h3>
+    <p>If you simply increase pressure until the alarm sounds, you prove:</p>
+    <p><strong>The alarm can activate.</strong></p>
+    <p>You do not prove:</p>
+    <p><strong>It activates at the correct threshold.</strong></p>
+    <p>That distinction matters.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-example">
+    <h3>Occlusion Example</h3>
+    <p>Infusion pump occlusion limit:</p>
+    <p>Specified range:</p>
+    <p>8 to 12 psi.</p>
+    <p>Measured activation:</p>
+    <p>9.5 psi.</p>
+    <p>Pass.</p>
+    <p>Measured:</p>
+    <p>15 psi.</p>
+    <p>Fail.</p>
+    <p>Again, the exact activation point matters.</p>
+  </section>
+
+  <section class="content-box" id="electrical-test-points">
+    <h3>Electrical Test Points</h3>
+    <p>“Test point” can also mean a physical measurement location.</p>
+    <p>Example:</p>
+    <p>Measure:</p>
+    <p>24 VDC at TP4.</p>
+    <p>That location matters because voltage may change throughout the circuit.</p>
+  </section>
+
+  <section class="content-box" id="physical-test-point-vs-performance-test-point">
+    <h3>Physical Test Point vs Performance Test Point</h3>
+    <p>There are two related meanings.</p>
+    <h4>Performance Test Point</h4>
+    <p>A value you apply or command.</p>
+    <p>Example:</p>
+    <p>100 mmHg.</p>
+    <h4>Electrical Test Point</h4>
+    <p>A physical location where you measure.</p>
+    <p>Example:</p>
+    <p>TP3 on power board.</p>
+    <p>Both matter because the result is only meaningful at the correct point.</p>
+  </section>
+
+  <section class="content-box" id="voltage-drop-example">
+    <h3>Voltage Drop Example</h3>
+    <p>Power supply output:</p>
+    <p>24.0 VDC.</p>
+    <p>At main board:</p>
+    <p>21.5 VDC.</p>
+    <p>If the specification applies at power-supply output, the supply may pass.</p>
+    <p>The downstream wiring may be the problem.</p>
+    <p>Where you measure matters.</p>
+  </section>
+
+  <section class="content-box" id="load-condition-matters-too">
+    <h3>Load Condition Matters Too</h3>
+    <p>A voltage specification may apply:</p>
+    <ul>
+      <li>At idle</li>
+      <li>Under rated load</li>
+      <li>During motor operation</li>
+    </ul>
+    <p>A supply may pass at idle and fail when load increases.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>24 V rail idle:</p>
+    <p>24.1 V.</p>
+    <p>Motor runs:</p>
+    <p>19.2 V.</p>
+    <p>If the specification requires:</p>
+    <p>22.8 to 25.2 V</p>
+    <p>under operating load, the device fails.</p>
+    <p>You had to test at the correct operating point.</p>
+  </section>
+
+  <section class="content-box" id="timing-can-be-a-test-point">
+    <h3>Timing Can Be a Test Point</h3>
+    <p>Some measurements must be made:</p>
+    <ul>
+      <li>During startup</li>
+      <li>During charging</li>
+      <li>During alarm condition</li>
+      <li>After warm-up</li>
+    </ul>
+    <p>A value measured at the wrong time may be meaningless.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Motor drive output:</p>
+    <p>0 V</p>
+    <p>while motor is stopped.</p>
+    <p>That may be normal.</p>
+    <p>You need to measure while the motor is commanded.</p>
+  </section>
+
+  <section class="content-box" id="test-point-and-device-mode">
+    <h3>Test Point and Device Mode</h3>
+    <p>Device mode can affect specifications.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Adult</li>
+      <li>Pediatric</li>
+      <li>Neonatal</li>
+      <li>Standby</li>
+      <li>Diagnostic mode</li>
+    </ul>
+    <p>Make sure you test in the mode required by the procedure.</p>
+  </section>
+
+  <section class="content-box" id="patient-simulators">
+    <h3>Patient Simulators</h3>
+    <p>A patient simulator may provide specific test values.</p>
+    <p>Example:</p>
+    <p>Heart rate:</p>
+    <p>60 bpm 120 bpm 180 bpm</p>
+    <p>Those are test points.</p>
+    <p>The monitor should respond appropriately at each one if required by the procedure.</p>
+  </section>
+
+  <section class="content-box" id="why-multiple-heart-rate-points-matter">
+    <h3>Why Multiple Heart-Rate Points Matter</h3>
+    <p>A monitor may read:</p>
+    <p>60 correctly</p>
+    <p>and:</p>
+    <p>180 incorrectly.</p>
+    <p>A single normal-rate test would miss the failure.</p>
+  </section>
+
+  <section class="content-box" id="defibrillator-energy-testing">
+    <h3>Defibrillator Energy Testing</h3>
+    <p>A procedure may require:</p>
+    <ul>
+      <li>Low energy</li>
+      <li>Mid energy</li>
+      <li>High energy</li>
+    </ul>
+    <p>because energy delivery can behave differently across the range.</p>
+    <p>Do not assume one successful shock proves all settings.</p>
+  </section>
+
+  <section class="content-box" id="infusion-pump-testing">
+    <h3>Infusion Pump Testing</h3>
+    <p>A pump may need testing at:</p>
+    <ul>
+      <li>Low flow</li>
+      <li>Normal flow</li>
+      <li>High flow</li>
+    </ul>
+    <p>because different mechanical or control behaviors may dominate.</p>
+  </section>
+
+  <section class="content-box" id="ventilator-testing">
+    <h3>Ventilator Testing</h3>
+    <p>A ventilator may require checks at multiple:</p>
+    <ul>
+      <li>Tidal volumes</li>
+      <li>Pressures</li>
+      <li>Flows</li>
+    </ul>
+    <p>because performance can vary across the operating range.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-testing">
+    <h3>Pressure Sensor Testing</h3>
+    <p>A pressure sensor may pass at zero and fail at high pressure.</p>
+    <p>That is why multi-point calibration and verification exist.</p>
+  </section>
+
+  <section class="content-box" id="temperature-testing">
+    <h3>Temperature Testing</h3>
+    <p>Temperature systems may need multiple test temperatures.</p>
+    <p>Example:</p>
+    <p>32°C 37°C 42°C</p>
+    <p>This can reveal:</p>
+    <ul>
+      <li>Offset</li>
+      <li>Nonlinearity</li>
+    </ul>
+    <p>A single 37°C check only proves one point.</p>
+  </section>
+
+  <section class="content-box" id="zero-is-also-a-test-point">
+    <h3>Zero Is Also a Test Point</h3>
+    <p>Zero can be extremely important.</p>
+    <p>Example:</p>
+    <p>Pressure input:</p>
+    <p>0 mmHg.</p>
+    <p>Device reads:</p>
+    <p>8 mmHg.</p>
+    <p>That offset will affect the entire range.</p>
+    <p>Do not ignore the zero condition when the procedure includes it.</p>
+  </section>
+
+  <section class="content-box" id="zeroing-before-testing">
+    <h3>Zeroing Before Testing</h3>
+    <p>Some devices require a zero or baseline procedure before measurement.</p>
+    <p>If you skip that step, all later test points may be wrong.</p>
+  </section>
+
+  <section class="content-box" id="calibration-points-vs-verification-points">
+    <h3>Calibration Points vs Verification Points</h3>
+    <p>Calibration points are used to adjust the system.</p>
+    <p>Verification points confirm performance.</p>
+    <p>They may not always be the same.</p>
+    <p>Follow the manufacturer sequence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-calibrate-only-the-failing-point-without-understanding-the-procedure">
+    <h3>Do Not Calibrate Only the Failing Point Without Understanding the Procedure</h3>
+    <p>Changing one calibration point may affect:</p>
+    <ul>
+      <li>Entire range</li>
+      <li>Other channels</li>
+      <li>Scaling</li>
+    </ul>
+    <p>Complete the full approved procedure.</p>
+  </section>
+
+  <section class="content-box" id="recheck-all-required-points-after-adjustment">
+    <h3>Recheck All Required Points After Adjustment</h3>
+    <p>If you calibrate at:</p>
+    <p>100 mmHg</p>
+    <p>do not stop because that point now passes.</p>
+    <p>Retest all required verification points.</p>
+  </section>
+
+  <section class="content-box" id="borderline-test-points">
+    <h3>Borderline Test Points</h3>
+    <p>Suppose pass limit:</p>
+    <p>95 to 105.</p>
+    <p>Measured:</p>
+    <p>105.0.</p>
+    <p>That may be within limit.</p>
+    <p>But repeated measurements:</p>
+    <p>104.9 105.2 105.1</p>
+    <p>show unstable performance around the boundary.</p>
+    <p>Follow the manufacturer's required method.</p>
+  </section>
+
+  <section class="content-box" id="repeatability-matters">
+    <h3>Repeatability Matters</h3>
+    <p>If repeated measurements vary widely, even if some pass, the device may have another problem.</p>
+    <p>Example:</p>
+    <p>100 93 106 99</p>
+    <p>That poor repeatability is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-choose-the-best-result">
+    <h3>Do Not Choose the Best Result</h3>
+    <p>If the first test fails and the fifth test passes, do not simply record the passing one.</p>
+    <p>Follow the defined test method.</p>
+  </section>
+
+  <section class="content-box" id="test-setup-is-part-of-the-test-point">
+    <h3>Test Setup Is Part of the Test Point</h3>
+    <p>The same commanded value can produce different results if:</p>
+    <ul>
+      <li>Hose length changes</li>
+      <li>Test lung changes</li>
+      <li>Cuff changes</li>
+      <li>Load changes</li>
+    </ul>
+    <p>The complete setup matters.</p>
+  </section>
+
+  <section class="content-box" id="example-ventilator">
+    <h3>Example: Ventilator</h3>
+    <p>Set:</p>
+    <p>500 mL.</p>
+    <p>Different test lung compliance:</p>
+    <p>Different measured behavior.</p>
+    <p>If the manufacturer defines a specific test setup, use it.</p>
+  </section>
+
+  <section class="content-box" id="example-nibp">
+    <h3>Example: NIBP</h3>
+    <p>Reference:</p>
+    <p>200 mmHg.</p>
+    <p>Leaking hose:</p>
+    <p>Device appears inaccurate.</p>
+    <p>Known-good hose:</p>
+    <p>Passes.</p>
+    <p>The failed test was caused by setup, not the monitor.</p>
+  </section>
+
+  <section class="content-box" id="environmental-conditions">
+    <h3>Environmental Conditions</h3>
+    <p>A test point may only be valid within defined:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Humidity</li>
+      <li>Altitude</li>
+    </ul>
+    <p>conditions.</p>
+    <p>Do not ignore the environment.</p>
+  </section>
+
+  <section class="content-box" id="test-equipment-range">
+    <h3>Test Equipment Range</h3>
+    <p>Your analyzer must also be appropriate for the test point.</p>
+    <p>If you are testing:</p>
+    <p>300 mmHg</p>
+    <p>but the analyzer is rated only to:</p>
+    <p>200 mmHg,</p>
+    <p>you cannot use it for that point.</p>
+  </section>
+
+  <section class="content-box" id="test-equipment-accuracy-can-change-across-its-range">
+    <h3>Test Equipment Accuracy Can Change Across Its Range</h3>
+    <p>An analyzer may have different performance at different points.</p>
+    <p>Read its specification too.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure analyzer accuracy:</p>
+    <p>Excellent from:</p>
+    <p>0–200 mmHg.</p>
+    <p>Reduced above:</p>
+    <p>200 mmHg.</p>
+    <p>That may affect whether it is suitable for a high-range device test.</p>
+  </section>
+
+  <section class="content-box" id="why-high-and-low-points-are-often-more-revealing">
+    <h3>Why High and Low Points Are Often More Revealing</h3>
+    <p>Middle-range operation is often the easiest operating condition.</p>
+    <p>Extremes can expose:</p>
+    <ul>
+      <li>Mechanical limits</li>
+      <li>Sensor nonlinearity</li>
+      <li>Power demand</li>
+      <li>Control-loop problems</li>
+    </ul>
+    <p>That is why manufacturers often choose them.</p>
+  </section>
+
+  <section class="content-box" id="do-not-create-a-pass-fail-limit-from-experience">
+    <h3>Do Not Create a Pass/Fail Limit From Experience</h3>
+    <p>Avoid:</p>
+    <blockquote><p>These usually read around 95, so that's fine.</p></blockquote>
+    <p>Use the defined requirement.</p>
+    <p>Experience can guide troubleshooting.</p>
+    <p>Specifications determine objective acceptance.</p>
+  </section>
+
+  <section class="content-box" id="do-not-move-the-goalposts-after-seeing-the-result">
+    <h3>Do Not Move the Goalposts After Seeing the Result</h3>
+    <p>If you calculated:</p>
+    <p>Pass:</p>
+    <p>95 to 105.</p>
+    <p>Then measure:</p>
+    <p>106.</p>
+    <p>Do not decide:</p>
+    <blockquote><p>106 is basically 105.</p></blockquote>
+    <p>The limit was known before the test.</p>
+    <p>Apply it consistently.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-infusion-pump">
+    <h3>Real-World Example: Infusion Pump</h3>
+    <p>Required points:</p>
+    <p>1 mL/hr 100 mL/hr 500 mL/hr</p>
+    <p>Results:</p>
+    <p>1 → 0.7 100 → 99 500 → 498</p>
+    <p>Two points look excellent.</p>
+    <p>Low flow fails.</p>
+    <p>Without the low-flow point, the problem would be missed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure-channel">
+    <h3>Real-World Example: Pressure Channel</h3>
+    <p>Test:</p>
+    <p>0 mmHg → displays 8</p>
+    <p>100 → 108</p>
+    <p>200 → 208</p>
+    <p>Consistent offset.</p>
+    <p>Zero point exposes the pattern immediately.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-defibrillator">
+    <h3>Real-World Example: Defibrillator</h3>
+    <p>Low energy:</p>
+    <p>Pass.</p>
+    <p>Mid energy:</p>
+    <p>Pass.</p>
+    <p>High energy:</p>
+    <p>Fails low.</p>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>Charging circuit</li>
+      <li>Capacitor</li>
+      <li>High-energy delivery path</li>
+    </ul>
+    <p>The high test point reveals a load-dependent failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator">
+    <h3>Real-World Example: Ventilator</h3>
+    <p>500 mL:</p>
+    <p>Pass.</p>
+    <p>100 mL:</p>
+    <p>Fail.</p>
+    <p>Low-volume delivery may reveal:</p>
+    <ul>
+      <li>Flow sensor</li>
+      <li>Valve control</li>
+      <li>Calibration</li>
+    </ul>
+    <p>One normal adult test point would not prove performance in the lower range.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-power-supply">
+    <h3>Real-World Example: Power Supply</h3>
+    <p>Idle:</p>
+    <p>24.2 V.</p>
+    <p>Under compressor load:</p>
+    <p>20.9 V.</p>
+    <p>The supply passes at one operating point and fails at another.</p>
+    <p>The load condition is the important test point.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="testing-only-one-convenient-point">
+    <h3>Testing Only One Convenient Point</h3>
+    <p>Use all required points.</p>
+  </section>
+
+  <section class="content-box" id="assuming-mid-range-performance-represents-the-whole-range">
+    <h3>Assuming Mid-Range Performance Represents the Whole Range</h3>
+    <p>It may not.</p>
+  </section>
+
+  <section class="content-box" id="applying-the-same-tolerance-everywhere">
+    <h3>Applying the Same Tolerance Everywhere</h3>
+    <p>Check range-specific limits.</p>
+  </section>
+
+  <section class="content-box" id="measuring-at-the-wrong-physical-location">
+    <h3>Measuring at the Wrong Physical Location</h3>
+    <p>Use the specified point.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-operating-mode">
+    <h3>Ignoring Operating Mode</h3>
+    <p>Conditions matter.</p>
+  </section>
+
+  <section class="content-box" id="choosing-the-best-repeated-result">
+    <h3>Choosing the Best Repeated Result</h3>
+    <p>Follow the required test method.</p>
+  </section>
+
+  <section class="content-box" id="testing-the-right-value-with-the-wrong-setup">
+    <h3>Testing the Right Value With the Wrong Setup</h3>
+    <p>The whole test condition matters.</p>
+  </section>
+
+  <section class="content-box" id="moving-the-pass-fail-limit-because-the-result-is-close">
+    <h3>Moving the Pass/Fail Limit Because the Result Is Close</h3>
+    <p>Apply limits consistently.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-test-point-framework">
+    <h3>A Useful Test-Point Framework</h3>
+    <p>For each test, identify:</p>
+    <p><strong>Test Point</strong></p>
+    <p>What value or condition am I applying?</p>
+    <p><strong>Expected Result</strong></p>
+    <p>What should the device do?</p>
+    <p><strong>Acceptance Limit</strong></p>
+    <p>What range passes?</p>
+    <p><strong>Actual Result</strong></p>
+    <p>What did I measure?</p>
+    <p><strong>Decision</strong></p>
+    <p>Pass or fail?</p>
+    <p>Then move to the next required point.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What part of the device's operating range have I actually challenged?</strong></p>
+    <p>If you only tested the middle, you may know very little about the edges.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose a pump delivers:</p>
+    <p>100 mL/hr</p>
+    <p>within tolerance.</p>
+    <p>You proved:</p>
+    <p><strong>The pump met the specified requirement at 100 mL/hr under the conditions tested.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Low flow passes</li>
+      <li>High flow passes</li>
+      <li>Bolus delivery passes</li>
+      <li>Occlusion threshold passes</li>
+    </ul>
+    <p>Each test point supports a specific conclusion.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A passing measurement only means something in context.</p>
+    <p>You need to know:</p>
+    <ul>
+      <li>What value you tested</li>
+      <li>Where you measured it</li>
+      <li>Under what conditions</li>
+      <li>What limit applied</li>
+    </ul>
+    <p>That is why test points matter.</p>
+    <p>A device can look perfect in the middle of its range and fail badly at the edges.</p>
+    <p>A power supply can look perfect at idle and collapse under load.</p>
+    <p>An alarm can activate but still activate at the wrong threshold.</p>
+    <p>So do not ask only:</p>
+    <blockquote><p>Did it pass?</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>What did it pass?</strong></p>
+    <p><strong>At what point?</strong></p>
+    <p><strong>Under what condition?</strong></p>
+    <p>When you understand that, your testing becomes much more meaningful.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Required test points, acceptance limits, operating conditions, measurement locations, and post-calibration verification procedures vary by manufacturer, model, hardware revision, and software version. Follow current manufacturer documentation, approved facility procedures, and appropriately maintained test equipment when making pass/fail or return-to-service decisions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+      <li><a href="tolerance-vs-accuracy.html">Tolerance vs Accuracy</a></li>
+      <li><a href="how-to-read-device-specifications.html">How to Read Device Specifications</a></li>
+      <li><a href="functional-testing-vs-calibration-vs-verification.html">Functional Testing vs Calibration vs Verification</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

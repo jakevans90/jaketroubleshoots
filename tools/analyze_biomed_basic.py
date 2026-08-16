@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://jaketroubleshoots.com"
 REQUIRED_FIELDS = {"title"}
-ALLOWED_FIELDS = {"title", "slug", "description", "category", "badge", "cardNote"}
+ALLOWED_FIELDS = {"title", "slug", "description", "category", "badge", "cardNote", "lastRevision"}
 STOP_WORDS = {
     "about", "after", "also", "and", "appear", "are", "basics", "before", "biomed",
     "biomedical", "biomeds", "can", "current", "equipment", "exactly", "english", "for", "from", "how", "into", "its",
@@ -100,7 +100,44 @@ def parse_plain_markdown(path: Path, source: str) -> Article:
     """Accept a pasted article with an H1 title and infer only planning metadata."""
     heading = re.match(r"\A\s*#\s+(.+?)\s*(?:\n|\Z)", source)
     if not heading:
-        raise InputError("input needs YAML-style front matter or a leading Markdown H1 title")
+        lines = [line.rstrip() for line in source.splitlines()]
+        while lines and not lines[0].strip():
+            lines.pop(0)
+        if len(lines) < 3 or not lines[0].strip() or not lines[1].strip():
+            raise InputError("input needs YAML-style front matter, a Markdown H1, or plain title and subtitle lines")
+        title = lines.pop(0).strip()
+        subtitle = lines.pop(0).strip()
+        converted = [f"## {subtitle}", ""]
+        list_mode = False
+        for index, raw in enumerate(lines):
+            line = raw.strip()
+            if not line:
+                converted.append("")
+                continue
+            previous = lines[index - 1].strip() if index else ""
+            following = lines[index + 1].strip() if index + 1 < len(lines) else ""
+            words = line.split()
+            if list_mode:
+                if len(words) <= 7 and not line.endswith((".", ":")):
+                    converted.append(f"- {line}")
+                    continue
+                list_mode = False
+            next_is_prose = len(following.split()) >= 7 or following.endswith((".", "?", "!", ":"))
+            looks_like_heading = (
+                len(words) <= 10
+                and not line.endswith((".", "!", ":", ","))
+                and not previous.endswith(":")
+                and next_is_prose
+                and line not in {"Pass", "Fail", "Strong evidence"}
+                and "↓" not in line
+                and "=" not in line
+            )
+            converted.extend(([f"# {line}", ""] if looks_like_heading else [line, ""]))
+            if line.endswith(":"):
+                list_mode = True
+        body = "\n".join(converted).strip()
+        description = re.sub(r"[*_`\[\]()]", "", subtitle).strip()
+        return Article(path, {}, body, title, slugify(title), description)
     title = heading.group(1).strip()
     body = source[heading.end():].strip()
     if not body:

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analog vs Digital Signals | Jake Troubleshoots</title>
+  <meta name="description" content="A practical introduction to analog and digital signals, conversion, noise, sampling, logic, and signal-path troubleshooting in medical equipment.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/analog-vs-digital-signals.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>Analog vs Digital Signals</h2>
+  <p>A practical explanation of how medical equipment senses, converts, transmits, and interprets information</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical equipment constantly moves information.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an analog signal is</li>
+      <li>What a digital signal is</li>
+      <li>Medical-device examples</li>
+      <li>Sensors and transducers</li>
+      <li>Analog-to-digital conversion</li>
+      <li>Digital communication</li>
+      <li>Noise and interference</li>
+      <li>Signal quality</li>
+      <li>Why continuity does not prove a signal is good</li>
+      <li>How analog and digital failures can look different</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of it like this:</p>
+    <p><strong>Analog</strong></p>
+    <p>A value changes continuously.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Pressure-sensor output</li>
+      <li>ECG waveform</li>
+    </ul>
+    <p><strong>Digital</strong></p>
+    <p>Information is represented in discrete states or encoded data.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Module communication</li>
+      <li>USB</li>
+      <li>Ethernet</li>
+      <li>Serial data</li>
+    </ul>
+    <p>Many medical devices convert analog signals into digital information internally.</p>
+  </section>
+
+  <section class="content-box" id="what-is-an-analog-signal">
+    <h3>What Is an Analog Signal?</h3>
+    <p>An analog signal changes continuously over a range.</p>
+    <p>It may represent:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Temperature</li>
+      <li>Flow</li>
+      <li>Voltage</li>
+      <li>Biological waveform</li>
+    </ul>
+    <p>Example:</p>
+    <p>A pressure transducer may output a voltage that changes as pressure changes.</p>
+    <p>Higher pressure:</p>
+    <p>Higher voltage.</p>
+    <p>Lower pressure:</p>
+    <p>Lower voltage.</p>
+    <p>The exact relationship depends on the design.</p>
+  </section>
+
+  <section class="content-box" id="analog-signals-can-have-many-values">
+    <h3>Analog Signals Can Have Many Values</h3>
+    <p>An analog signal is not just:</p>
+    <p>On or off.</p>
+    <p>It might be:</p>
+    <p>0.51 V</p>
+    <p>0.74 V</p>
+    <p>1.12 V</p>
+    <p>2.06 V</p>
+    <p>Every value can represent a different physical condition.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-digital-signal">
+    <h3>What Is a Digital Signal?</h3>
+    <p>A digital signal represents information using discrete states.</p>
+    <p>At the basic electrical level, that often means:</p>
+    <ul>
+      <li>Low</li>
+      <li>High</li>
+    </ul>
+    <p>or:</p>
+    <ul>
+      <li>0</li>
+      <li>1</li>
+    </ul>
+    <p>But digital communication usually combines many of those states into meaningful data.</p>
+    <p>Example:</p>
+    <p>A module may send:</p>
+    <blockquote><p>Temperature = 37.1°C</p></blockquote>
+    <p>as encoded digital information.</p>
+    <p>You are not measuring the temperature directly from one simple voltage level anymore.</p>
+  </section>
+
+  <section class="content-box" id="analog-example-pressure-sensor">
+    <h3>Analog Example: Pressure Sensor</h3>
+    <p>Imagine a pressure sensor.</p>
+    <p>Physical pressure changes.</p>
+    <p>Sensor output changes.</p>
+    <p>Example:</p>
+    <p>0 mmHg:</p>
+    <p>0.5 V.</p>
+    <p>100 mmHg:</p>
+    <p>2.5 V.</p>
+    <p>200 mmHg:</p>
+    <p>4.5 V.</p>
+    <p>That continuously changing voltage is analog.</p>
+    <p>The device then interprets it as pressure.</p>
+  </section>
+
+  <section class="content-box" id="digital-example-module-communication">
+    <h3>Digital Example: Module Communication</h3>
+    <p>A parameter module may measure pressure internally.</p>
+    <p>Then instead of sending an analog voltage to the host monitor, it sends a digital message.</p>
+    <p>The message may include:</p>
+    <ul>
+      <li>Pressure value</li>
+      <li>Status</li>
+      <li>Alarm state</li>
+      <li>Module identity</li>
+    </ul>
+    <p>The host monitor receives data, not just one varying voltage.</p>
+  </section>
+
+  <section class="content-box" id="many-devices-use-both">
+    <h3>Many Devices Use Both</h3>
+    <p>A common path looks like this:</p>
+    <p><strong>Physical Condition</strong></p>
+    <p>↓</p>
+    <p><strong>Analog Sensor Signal</strong></p>
+    <p>↓</p>
+    <p><strong>Analog-to-Digital Converter</strong></p>
+    <p>↓</p>
+    <p><strong>Digital Processing</strong></p>
+    <p>↓</p>
+    <p><strong>Display</strong></p>
+    <p>This is extremely common in medical equipment.</p>
+  </section>
+
+  <section class="content-box" id="example-ecg">
+    <h3>Example: ECG</h3>
+    <p>The patient's electrical activity is analog.</p>
+    <p>The monitor:</p>
+    <ul>
+      <li>Amplifies it</li>
+      <li>Filters it</li>
+      <li>Converts it to digital data</li>
+      <li>Processes it</li>
+      <li>Displays the waveform</li>
+    </ul>
+    <p>The signal may begin analog and become digital very early inside the device.</p>
+  </section>
+
+  <section class="content-box" id="sensors-often-start-analog">
+    <h3>Sensors Often Start Analog</h3>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Pressure sensors</li>
+      <li>Thermistors</li>
+      <li>Strain gauges</li>
+      <li>Flow sensors</li>
+    </ul>
+    <p>The physical condition changes an electrical property.</p>
+    <p>That change is then measured.</p>
+  </section>
+
+  <section class="content-box" id="but-some-sensors-are-already-digital">
+    <h3>But Some Sensors Are Already Digital</h3>
+    <p>Modern sensors may contain internal electronics.</p>
+    <p>Instead of outputting a simple analog voltage, they may communicate digitally.</p>
+    <p>Examples can include:</p>
+    <ul>
+      <li>Smart batteries</li>
+      <li>Digital temperature sensors</li>
+      <li>Intelligent modules</li>
+    </ul>
+    <p>That means you cannot always test them with a simple voltage measurement.</p>
+  </section>
+
+  <section class="content-box" id="analog-to-digital-conversion">
+    <h3>Analog-to-Digital Conversion</h3>
+    <p>An analog-to-digital converter is often abbreviated:</p>
+    <p><strong>ADC</strong></p>
+    <p>Its job is to take an analog electrical value and convert it into a digital number.</p>
+    <p>Example:</p>
+    <p>Sensor voltage:</p>
+    <p>2.50 V.</p>
+    <p>ADC converts that into a digital value.</p>
+    <p>Software then calculates:</p>
+    <p>100 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="why-adc-matters">
+    <h3>Why ADC Matters</h3>
+    <p>If the sensor voltage is correct but the displayed value is wrong, the problem may be farther downstream.</p>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>ADC</li>
+      <li>Calibration</li>
+      <li>Processing</li>
+      <li>Software</li>
+    </ul>
+    <p>This helps separate sensor failure from processing failure.</p>
+  </section>
+
+  <section class="content-box" id="digital-to-analog-conversion">
+    <h3>Digital-to-Analog Conversion</h3>
+    <p>The reverse also exists.</p>
+    <p>A digital-to-analog converter:</p>
+    <p><strong>DAC</strong></p>
+    <p>takes digital information and creates an analog output.</p>
+    <p>This can be used in control systems and signal generation.</p>
+    <p>You may encounter the term in schematics or service documentation.</p>
+  </section>
+
+  <section class="content-box" id="analog-signals-are-sensitive-to-noise">
+    <h3>Analog Signals Are Sensitive to Noise</h3>
+    <p>Because analog information is carried in a changing electrical value, unwanted electrical noise can distort it.</p>
+    <p>Possible noise sources include:</p>
+    <ul>
+      <li>Poor shielding</li>
+      <li>Loose ground</li>
+      <li>Damaged cable</li>
+      <li>Nearby electrical equipment</li>
+      <li>Bad electrode contact</li>
+    </ul>
+    <p>The device may still receive a signal.</p>
+    <p>It is just a bad signal.</p>
+  </section>
+
+  <section class="content-box" id="ecg-artifact-is-a-good-example">
+    <h3>ECG Artifact Is a Good Example</h3>
+    <p>ECG waveform may become:</p>
+    <ul>
+      <li>Noisy</li>
+      <li>Unstable</li>
+      <li>Distorted</li>
+    </ul>
+    <p>The cable may still have continuity.</p>
+    <p>The monitor may still detect the leads.</p>
+    <p>But the analog signal quality is poor.</p>
+    <p>That is different from complete communication loss.</p>
+  </section>
+
+  <section class="content-box" id="digital-signals-can-also-be-corrupted">
+    <h3>Digital Signals Can Also Be Corrupted</h3>
+    <p>Digital does not mean immune to problems.</p>
+    <p>Digital communication can fail because of:</p>
+    <ul>
+      <li>Bad cable</li>
+      <li>Noise</li>
+      <li>Wrong timing</li>
+      <li>Configuration mismatch</li>
+      <li>Packet loss</li>
+      <li>Connector damage</li>
+    </ul>
+    <p>The difference is that digital systems may detect corrupted information and reject it.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Instead of a slightly wrong waveform, you may get:</p>
+    <blockquote><p>Communication Lost.</p></blockquote>
+    <p>or:</p>
+    <blockquote><p>Module Not Recognized.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="analog-failure-can-be-gradual">
+    <h3>Analog Failure Can Be Gradual</h3>
+    <p>An analog problem may produce:</p>
+    <ul>
+      <li>Drift</li>
+      <li>Offset</li>
+      <li>Noise</li>
+      <li>Wrong scale</li>
+      <li>Unstable readings</li>
+    </ul>
+    <p>The signal may still exist.</p>
+    <p>It is simply inaccurate.</p>
+  </section>
+
+  <section class="content-box" id="digital-failure-is-often-more-all-or-nothing">
+    <h3>Digital Failure Is Often More All-or-Nothing</h3>
+    <p>Digital problems may appear as:</p>
+    <ul>
+      <li>Connected / disconnected</li>
+      <li>Recognized / not recognized</li>
+      <li>Communication good / failed</li>
+    </ul>
+    <p>Not always.</p>
+    <p>But digital failures often behave more discretely than analog measurement errors.</p>
+  </section>
+
+  <section class="content-box" id="analog-offset">
+    <h3>Analog Offset</h3>
+    <p>Suppose a pressure transducer should read:</p>
+    <p>0 mmHg.</p>
+    <p>But the device displays:</p>
+    <p>15 mmHg.</p>
+    <p>That may indicate an offset error.</p>
+    <p>The signal exists.</p>
+    <p>It is shifted.</p>
+  </section>
+
+  <section class="content-box" id="analog-gain-error">
+    <h3>Analog Gain Error</h3>
+    <p>Suppose:</p>
+    <p>Expected:</p>
+    <p>100 mmHg.</p>
+    <p>Displayed:</p>
+    <p>80 mmHg.</p>
+    <p>Expected:</p>
+    <p>200 mmHg.</p>
+    <p>Displayed:</p>
+    <p>160 mmHg.</p>
+    <p>The error increases proportionally.</p>
+    <p>That may indicate a gain or scaling problem.</p>
+  </section>
+
+  <section class="content-box" id="drift">
+    <h3>Drift</h3>
+    <p>A measurement may begin correct and slowly move over time.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Sensor aging</li>
+      <li>Electronics</li>
+    </ul>
+    <p>This is a classic analog-type failure pattern.</p>
+  </section>
+
+  <section class="content-box" id="digital-communication-errors">
+    <h3>Digital Communication Errors</h3>
+    <p>A digital system may report:</p>
+    <ul>
+      <li>CRC error</li>
+      <li>Timeout</li>
+      <li>Framing error</li>
+      <li>Communication lost</li>
+    </ul>
+    <p>These messages usually mean the device detected a problem moving or interpreting digital data.</p>
+    <p>They do not automatically identify which component failed.</p>
+  </section>
+
+  <section class="content-box" id="serial-communication">
+    <h3>Serial Communication</h3>
+    <p>RS-232 is a digital communication method.</p>
+    <p>Data is transmitted as a timed sequence of electrical states.</p>
+    <p>Settings such as:</p>
+    <ul>
+      <li>Baud rate</li>
+      <li>Parity</li>
+      <li>Data bits</li>
+      <li>Stop bits</li>
+    </ul>
+    <p>must match.</p>
+    <p>A perfectly good cable can still fail if the communication settings differ.</p>
+  </section>
+
+  <section class="content-box" id="usb">
+    <h3>USB</h3>
+    <p>USB is also digital.</p>
+    <p>It involves:</p>
+    <ul>
+      <li>Device detection</li>
+      <li>Data communication</li>
+      <li>Power</li>
+    </ul>
+    <p>An accessory may receive power but fail to exchange data.</p>
+    <p>The LED turning on does not prove communication works.</p>
+  </section>
+
+  <section class="content-box" id="ethernet">
+    <h3>Ethernet</h3>
+    <p>Ethernet carries digital network data.</p>
+    <p>A cable may have:</p>
+    <ul>
+      <li>Physical link</li>
+      <li>Good link light</li>
+    </ul>
+    <p>while application communication still fails.</p>
+    <p>Again, one successful layer does not prove the whole path.</p>
+  </section>
+
+  <section class="content-box" id="digital-identification">
+    <h3>Digital Identification</h3>
+    <p>Some accessories contain digital identification.</p>
+    <p>The device may read:</p>
+    <ul>
+      <li>Model</li>
+      <li>Serial number</li>
+      <li>Calibration data</li>
+      <li>Compatibility information</li>
+    </ul>
+    <p>If that digital identification fails, the accessory may show:</p>
+    <blockquote><p>Not Recognized.</p></blockquote>
+    <p>even if its sensing element is fine.</p>
+  </section>
+
+  <section class="content-box" id="smart-batteries">
+    <h3>Smart Batteries</h3>
+    <p>A smart battery may provide both:</p>
+    <ul>
+      <li>DC power</li>
+      <li>Digital battery data</li>
+    </ul>
+    <p>The device might receive battery voltage correctly but lose communication with the battery controller.</p>
+    <p>That can create:</p>
+    <ul>
+      <li>Battery not recognized</li>
+      <li>Charging disabled</li>
+      <li>Incorrect percentage</li>
+    </ul>
+    <p>Power and communication are separate paths.</p>
+  </section>
+
+  <section class="content-box" id="continuity-is-not-signal-quality">
+    <h3>Continuity Is Not Signal Quality</h3>
+    <p>This is important.</p>
+    <p>A cable may pass a continuity test and still fail in real operation.</p>
+    <p>Why?</p>
+    <p>Because continuity only tells you:</p>
+    <p><strong>A conductive path exists.</strong></p>
+    <p>It may not tell you:</p>
+    <ul>
+      <li>Shielding is good</li>
+      <li>Resistance is low enough</li>
+      <li>Signal integrity is acceptable</li>
+      <li>Digital timing survives</li>
+    </ul>
+    <p>A cable can be electrically connected but functionally bad.</p>
+  </section>
+
+  <section class="content-box" id="example-ecg-cable">
+    <h3>Example: ECG Cable</h3>
+    <p>Meter:</p>
+    <p>Continuity passes.</p>
+    <p>Clinical signal:</p>
+    <p>Heavy artifact.</p>
+    <p>Possible reason:</p>
+    <p>Shielding damaged.</p>
+    <p>The simple continuity test did not prove the cable could carry a clean analog signal.</p>
+  </section>
+
+  <section class="content-box" id="example-ethernet-cable">
+    <h3>Example: Ethernet Cable</h3>
+    <p>Individual conductors may appear continuous.</p>
+    <p>But the cable may still have poor high-speed performance because of:</p>
+    <ul>
+      <li>Pair damage</li>
+      <li>Termination issue</li>
+      <li>Excessive noise</li>
+    </ul>
+    <p>Digital communication has electrical requirements beyond basic continuity.</p>
+  </section>
+
+  <section class="content-box" id="sampling">
+    <h3>Sampling</h3>
+    <p>When an analog signal becomes digital, the system measures it repeatedly over time.</p>
+    <p>This is called:</p>
+    <p><strong>Sampling.</strong></p>
+    <p>The sampling rate determines how frequently the signal is measured.</p>
+    <p>You usually do not need to calculate this during routine service.</p>
+    <p>But it explains how an analog waveform becomes digital data.</p>
+  </section>
+
+  <section class="content-box" id="resolution">
+    <h3>Resolution</h3>
+    <p>An ADC has a finite number of digital steps.</p>
+    <p>More resolution means the device can distinguish smaller changes.</p>
+    <p>This matters in measurement-system design.</p>
+    <p>For basic troubleshooting, the key idea is:</p>
+    <p>A digital representation of an analog signal still depends on the analog input being correct.</p>
+  </section>
+
+  <section class="content-box" id="filtering">
+    <h3>Filtering</h3>
+    <p>Medical equipment often filters analog signals.</p>
+    <p>Filtering may remove:</p>
+    <ul>
+      <li>High-frequency noise</li>
+      <li>Power-line interference</li>
+      <li>Motion artifact</li>
+    </ul>
+    <p>But filtering can also affect what the waveform looks like.</p>
+    <p>Different filter settings may make the same physical signal appear different.</p>
+  </section>
+
+  <section class="content-box" id="ecg-filter-example">
+    <h3>ECG Filter Example</h3>
+    <p>Staff reports:</p>
+    <blockquote><p>ECG looks different on this monitor.</p></blockquote>
+    <p>Possible cause may be:</p>
+    <ul>
+      <li>Diagnostic filter</li>
+      <li>Monitor filter</li>
+      <li>Surgical filter</li>
+    </ul>
+    <p>before assuming hardware failure.</p>
+    <p>Configuration can affect signal processing.</p>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>Calibration</h3>
+    <p>Analog measurements often require calibration.</p>
+    <p>Calibration establishes the relationship between:</p>
+    <p><strong>Electrical signal</strong></p>
+    <p>and:</p>
+    <p><strong>Physical value.</strong></p>
+    <p>Example:</p>
+    <p>Voltage from pressure sensor</p>
+    <p>becomes:</p>
+    <p>mmHg.</p>
+    <p>If calibration is wrong, the electronics may work perfectly while the displayed value is inaccurate.</p>
+  </section>
+
+  <section class="content-box" id="digital-data-can-carry-status-along-with-value">
+    <h3>Digital Data Can Carry Status Along With Value</h3>
+    <p>A digital sensor may send more than:</p>
+    <p>37.0°C.</p>
+    <p>It might also send:</p>
+    <ul>
+      <li>Sensor valid</li>
+      <li>Sensor fault</li>
+      <li>Calibration status</li>
+      <li>Serial number</li>
+    </ul>
+    <p>This allows more detailed diagnostics than a simple analog voltage.</p>
+  </section>
+
+  <section class="content-box" id="analog-troubleshooting-mindset">
+    <h3>Analog Troubleshooting Mindset</h3>
+    <p>For an analog problem, ask:</p>
+    <ul>
+      <li>Is the physical input correct?</li>
+      <li>Is the sensor output changing correctly?</li>
+      <li>Is the signal noisy?</li>
+      <li>Is there offset or drift?</li>
+      <li>Is calibration correct?</li>
+    </ul>
+    <p>You are often evaluating signal quality and magnitude.</p>
+  </section>
+
+  <section class="content-box" id="digital-troubleshooting-mindset">
+    <h3>Digital Troubleshooting Mindset</h3>
+    <p>For a digital problem, ask:</p>
+    <ul>
+      <li>Is physical connection present?</li>
+      <li>Does the device recognize the other side?</li>
+      <li>Are communication settings correct?</li>
+      <li>Are errors logged?</li>
+      <li>Is data reaching the next system?</li>
+    </ul>
+    <p>You are often evaluating whether information moves successfully.</p>
+  </section>
+
+  <section class="content-box" id="where-does-the-signal-become-wrong">
+    <h3>Where Does the Signal Become Wrong?</h3>
+    <p>This is the key question for both.</p>
+    <p>Example:</p>
+    <p>Pressure source:</p>
+    <p>Correct.</p>
+    <p>Sensor analog output:</p>
+    <p>Correct.</p>
+    <p>ADC reading:</p>
+    <p>Wrong.</p>
+    <p>Now you know the failure appears between the analog sensor and digital processing.</p>
+  </section>
+
+  <section class="content-box" id="compare-raw-and-displayed-data">
+    <h3>Compare Raw and Displayed Data</h3>
+    <p>Some service modes expose:</p>
+    <ul>
+      <li>Raw sensor values</li>
+      <li>ADC counts</li>
+      <li>Digital diagnostic values</li>
+    </ul>
+    <p>These can be extremely useful.</p>
+    <p>If raw input is correct but the displayed result is wrong, you can move downstream.</p>
+  </section>
+
+  <section class="content-box" id="signal-ground-and-reference">
+    <h3>Signal Ground and Reference</h3>
+    <p>Analog signals usually depend on a reference.</p>
+    <p>If the reference is unstable, the measured signal may be unstable.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Loose ground</li>
+      <li>Broken common</li>
+      <li>Connector problem</li>
+    </ul>
+    <p>Do not automatically blame the sensor.</p>
+  </section>
+
+  <section class="content-box" id="differential-signals">
+    <h3>Differential Signals</h3>
+    <p>Some analog measurements use two signal lines and measure the difference between them.</p>
+    <p>This can help reject noise.</p>
+    <p>ECG and pressure sensing may use differential techniques.</p>
+    <p>You do not need to master the circuit design to understand that both signal paths can matter.</p>
+  </section>
+
+  <section class="content-box" id="digital-logic-levels">
+    <h3>Digital Logic Levels</h3>
+    <p>Digital circuits use voltage ranges to represent logic states.</p>
+    <p>For example, one range may represent:</p>
+    <p>Low.</p>
+    <p>Another:</p>
+    <p>High.</p>
+    <p>The exact voltages depend on the technology.</p>
+    <p>Do not assume all digital logic is 5 V.</p>
+    <p>Modern electronics commonly use lower logic voltages.</p>
+  </section>
+
+  <section class="content-box" id="oscilloscope-use">
+    <h3>Oscilloscope Use</h3>
+    <p>Some analog and digital problems cannot be fully diagnosed with a multimeter.</p>
+    <p>An oscilloscope can show:</p>
+    <ul>
+      <li>Waveform shape</li>
+      <li>Noise</li>
+      <li>Pulses</li>
+      <li>Timing</li>
+    </ul>
+    <p>But only use it when:</p>
+    <ul>
+      <li>Appropriate</li>
+      <li>Manufacturer-supported</li>
+      <li>You understand the expected signal</li>
+    </ul>
+    <p>Do not probe random digital buses without documentation.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure-reading-wrong">
+    <h3>Real-World Example: Pressure Reading Wrong</h3>
+    <p>Pressure analyzer:</p>
+    <p>100 mmHg.</p>
+    <p>Sensor output:</p>
+    <p>Within expected range.</p>
+    <p>Device displays:</p>
+    <p>40 mmHg.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>ADC</li>
+      <li>Processing</li>
+    </ul>
+    <p>The physical sensor may not be the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ecg-artifact">
+    <h3>Real-World Example: ECG Artifact</h3>
+    <p>Simulator:</p>
+    <p>Stable ECG.</p>
+    <p>Monitor:</p>
+    <p>Heavy noise.</p>
+    <p>Known-good trunk cable:</p>
+    <p>Signal becomes clean.</p>
+    <p>The analog path through the original cable was degraded.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-module-not-recognized">
+    <h3>Real-World Example: Module Not Recognized</h3>
+    <p>Module powers on.</p>
+    <p>Host reports:</p>
+    <blockquote><p>Communication Failed.</p></blockquote>
+    <p>Known-good module works.</p>
+    <p>Original module fails on another host.</p>
+    <p>The failure is in the digital communication/module path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-powers-device-but-is-not-recognized">
+    <h3>Real-World Example: Battery Powers Device but Is “Not Recognized”</h3>
+    <p>Battery voltage:</p>
+    <p>Normal.</p>
+    <p>Device runs from battery.</p>
+    <p>Battery percentage unavailable.</p>
+    <p>Charging disabled.</p>
+    <p>That suggests the power path works while smart-battery digital communication does not.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-usb-accessory-lights-up-but-does-not-work">
+    <h3>Real-World Example: USB Accessory Lights Up but Does Not Work</h3>
+    <p>Accessory LED:</p>
+    <p>On.</p>
+    <p>Device:</p>
+    <p>Accessory not detected.</p>
+    <p>USB power is present.</p>
+    <p>Digital communication is not.</p>
+    <p>Do not treat the LED as proof the full connection works.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-every-signal-like-simple-voltage">
+    <h3>Treating Every Signal Like Simple Voltage</h3>
+    <p>Some signals carry encoded data.</p>
+  </section>
+
+  <section class="content-box" id="assuming-digital-means-perfect-or-broken">
+    <h3>Assuming Digital Means Perfect or Broken</h3>
+    <p>Digital systems can still be intermittent.</p>
+  </section>
+
+  <section class="content-box" id="assuming-analog-noise-means-sensor-failure">
+    <h3>Assuming Analog Noise Means Sensor Failure</h3>
+    <p>Cable, shielding, grounding, and environment matter.</p>
+  </section>
+
+  <section class="content-box" id="assuming-continuity-means-cable-is-good">
+    <h3>Assuming Continuity Means Cable Is Good</h3>
+    <p>Signal quality may still be poor.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-calibration">
+    <h3>Ignoring Calibration</h3>
+    <p>Correct electronics can produce wrong displayed values if scaling is wrong.</p>
+  </section>
+
+  <section class="content-box" id="probing-digital-lines-without-knowing-the-circuit">
+    <h3>Probing Digital Lines Without Knowing the Circuit</h3>
+    <p>Use documentation and appropriate tools.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>First ask:</p>
+    <p><strong>Is this function mainly analog, digital, or a combination of both?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where does the physical condition become an electrical signal?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where does that signal become digital data?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where does the value first become incorrect or disappear?</strong></p>
+    <p>That helps you choose the right test.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Am I troubleshooting the measurement itself, or the communication of the measurement?</strong></p>
+    <p>Those can look similar.</p>
+    <p>Example:</p>
+    <p>SpO2 value wrong:</p>
+    <p>Measurement problem.</p>
+    <p>SpO2 module not recognized:</p>
+    <p>Communication problem.</p>
+    <p>Different path.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If you measure the correct analog sensor voltage, you proved:</p>
+    <p><strong>The expected voltage was present at that point under the tested condition.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>ADC is correct</li>
+      <li>Calibration is correct</li>
+      <li>Displayed value is correct</li>
+    </ul>
+    <p>If a digital module is recognized, you proved:</p>
+    <p><strong>Some level of communication and identification succeeded.</strong></p>
+    <p>You did not necessarily prove its measurements are accurate.</p>
+    <p>Keep moving through the signal path.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Analog and digital signals are everywhere in medical equipment.</p>
+    <p>The important difference is not just vocabulary.</p>
+    <p>It changes how you troubleshoot.</p>
+    <p>Analog problems often look like:</p>
+    <ul>
+      <li>Noise</li>
+      <li>Drift</li>
+      <li>Wrong value</li>
+      <li>Offset</li>
+    </ul>
+    <p>Digital problems often look like:</p>
+    <ul>
+      <li>Not recognized</li>
+      <li>Communication lost</li>
+      <li>Timeout</li>
+      <li>Missing data</li>
+    </ul>
+    <p>And many systems use both.</p>
+    <p>A sensor may produce an analog signal.</p>
+    <p>Electronics convert it to digital data.</p>
+    <p>Software processes it.</p>
+    <p>Then a network sends it somewhere else.</p>
+    <p>So when a measurement or communication path fails, ask:</p>
+    <p><strong>What kind of signal exists at this point?</strong></p>
+    <p><strong>What should it look like?</strong></p>
+    <p><strong>Where does it first become wrong?</strong></p>
+    <p>Once you understand the signal path, a complicated device becomes much easier to reason through.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Signal types, voltage levels, communication protocols, test points, and calibration procedures vary by manufacturer and design. Follow current service documentation, approved diagnostic methods, electrical-safety procedures, and your authorized service scope when measuring internal analog or digital signals.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-ecg-acquisition-works.html">How ECG Acquisition Works</a></li>
+      <li><a href="how-spo2-measurement-works.html">How SpO2 Measurement Works</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="voltage-current-resistance-and-continuity-in-plain-english.html">Voltage, Current, Resistance, and Continuity in Plain English</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

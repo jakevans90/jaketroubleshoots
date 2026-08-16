@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Defibrillators Charge and Deliver Energy | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how defibrillators store high voltage, shape and deliver a shock, and verify that delivered energy matches the selected value.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-defibrillators-charge-and-deliver-energy.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How Defibrillators Charge and Deliver Energy</h2>
+  <p>How a defibrillator stores high voltage, discharges it through the patient, and measures whether the delivered shock matches the selected energy</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A defibrillator may be set to:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What joules mean</li>
+      <li>Energy storage</li>
+      <li>High-voltage capacitors</li>
+      <li>Charging circuits</li>
+      <li>Biphasic and monophasic waveforms</li>
+      <li>Patient impedance</li>
+      <li>Defibrillation pads and paddles</li>
+      <li>Charge time</li>
+      <li>Synchronized cardioversion</li>
+      <li>Internal energy measurement</li>
+      <li>Defibrillator analyzer testing</li>
+      <li>Failed charge conditions</li>
+      <li>Low-energy and high-energy delivery errors</li>
+      <li>Common failure patterns</li>
+      <li>How to think through defibrillator troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A defibrillator generally works like this:</p>
+    <p><strong>User selects an energy level</strong></p>
+    <p>↓</p>
+    <p><strong>Charging circuit raises voltage</strong></p>
+    <p>↓</p>
+    <p><strong>High-voltage capacitor stores energy</strong></p>
+    <p>↓</p>
+    <p><strong>Device confirms charge is ready</strong></p>
+    <p>↓</p>
+    <p><strong>Shock switch connects stored energy to the output path</strong></p>
+    <p>↓</p>
+    <p><strong>Energy is discharged through pads or paddles</strong></p>
+    <p>↓</p>
+    <p><strong>Waveform and current are controlled</strong></p>
+    <p>↓</p>
+    <p><strong>Device measures and records the delivered shock</strong></p>
+    <p>That means the system has three major stages:</p>
+    <p><strong>Charge</strong></p>
+    <p><strong>Store</strong></p>
+    <p><strong>Deliver</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-a-joule">
+    <h3>What Is a Joule?</h3>
+    <p>A joule is a unit of energy.</p>
+    <p>When a defibrillator is set to:</p>
+    <p>200 J,</p>
+    <p>the goal is to deliver an electrical pulse with approximately that amount of energy, within the manufacturer's specified tolerance.</p>
+  </section>
+
+  <section class="content-box" id="energy-is-related-to-voltage-and-capacitance">
+    <h3>Energy Is Related to Voltage and Capacitance</h3>
+    <p>A capacitor stores electrical energy.</p>
+    <p>For a capacitor:</p>
+    <p><strong>Energy = 1/2 × C × V²</strong></p>
+    <p>where:</p>
+    <ul>
+      <li>C is capacitance</li>
+      <li>V is voltage</li>
+    </ul>
+    <p>The important practical idea is:</p>
+    <p>A higher capacitor voltage stores much more energy.</p>
+  </section>
+
+  <section class="content-box" id="why-high-voltage-is-needed">
+    <h3>Why High Voltage Is Needed</h3>
+    <p>The defibrillator has to push current through the resistance of the patient and electrode interface.</p>
+    <p>That requires high voltage.</p>
+    <p>Depending on design, internal capacitor voltages may be hundreds or thousands of volts.</p>
+  </section>
+
+  <section class="content-box" id="high-voltage-safety">
+    <h3>High-Voltage Safety</h3>
+    <p>Defibrillator high-voltage circuits can retain dangerous energy after power is removed.</p>
+    <p>Follow manufacturer discharge procedures and service precautions.</p>
+    <p>Do not assume a powered-off device is electrically safe.</p>
+  </section>
+
+  <section class="content-box" id="the-charging-circuit">
+    <h3>The Charging Circuit</h3>
+    <p>The charging circuit converts:</p>
+    <ul>
+      <li>Battery voltage</li>
+      <li>AC-derived DC</li>
+    </ul>
+    <p>into the high voltage needed to charge the capacitor.</p>
+    <p>Possible components include:</p>
+    <ul>
+      <li>Switching transistor</li>
+      <li>Transformer</li>
+      <li>Rectifier</li>
+      <li>Charge control circuit</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="charge-time">
+    <h3>Charge Time</h3>
+    <p>The device monitors how long it takes to reach the selected energy.</p>
+    <p>A healthy defibrillator should charge within its specified time.</p>
+    <p>Charge time may vary with:</p>
+    <ul>
+      <li>Selected energy</li>
+      <li>Battery condition</li>
+      <li>AC vs battery operation</li>
+      <li>Device temperature</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="slow-charge">
+    <h3>Slow Charge</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Weak battery</li>
+      <li>Charging circuit problem</li>
+      <li>High-voltage supply issue</li>
+      <li>Aging capacitor</li>
+      <li>Power supply problem</li>
+    </ul>
+    <p>Compare against manufacturer charge-time limits.</p>
+  </section>
+
+  <section class="content-box" id="charges-on-ac-but-not-battery">
+    <h3>Charges on AC but Not Battery</h3>
+    <p>If the device charges normally on AC but slowly or not at all on battery, look at:</p>
+    <ul>
+      <li>Battery condition</li>
+      <li>Battery connections</li>
+      <li>DC power path</li>
+    </ul>
+    <p>The high-voltage charging circuit itself may still be functional.</p>
+  </section>
+
+  <section class="content-box" id="charges-on-battery-but-not-ac">
+    <h3>Charges on Battery but Not AC</h3>
+    <p>Now consider:</p>
+    <ul>
+      <li>AC power supply</li>
+      <li>Charger/power conversion</li>
+      <li>Input path</li>
+    </ul>
+    <p>Again, compare operating modes.</p>
+  </section>
+
+  <section class="content-box" id="high-voltage-capacitor">
+    <h3>High-Voltage Capacitor</h3>
+    <p>The capacitor stores energy until the shock is delivered.</p>
+    <p>A failing capacitor may have:</p>
+    <ul>
+      <li>Reduced capacitance</li>
+      <li>Increased leakage</li>
+      <li>Internal degradation</li>
+    </ul>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Slow charging</li>
+      <li>Unable to hold charge</li>
+      <li>Low delivered energy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="capacitor-leakage">
+    <h3>Capacitor Leakage</h3>
+    <p>If the capacitor cannot hold charge well, the device may reach the target and then lose voltage.</p>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Charge-ready indication disappears</li>
+      <li>Energy falls before discharge</li>
+      <li>Self-test failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="charge-ready">
+    <h3>Charge Ready</h3>
+    <p>When the selected energy is reached, the device indicates that it is ready.</p>
+    <p>This may include:</p>
+    <ul>
+      <li>Tone</li>
+      <li>Light</li>
+      <li>Screen indication</li>
+    </ul>
+    <p>That tells you the charging system believes the target has been reached.</p>
+    <p>It does not independently prove the actual delivered energy is correct.</p>
+  </section>
+
+  <section class="content-box" id="energy-dump">
+    <h3>Energy Dump</h3>
+    <p>If a charged defibrillator is not used, it must safely dissipate the stored energy.</p>
+    <p>This may happen through:</p>
+    <ul>
+      <li>Internal dump resistor</li>
+      <li>Controlled discharge circuit</li>
+    </ul>
+    <p>Do not assume the charge simply disappears.</p>
+  </section>
+
+  <section class="content-box" id="shock-delivery">
+    <h3>Shock Delivery</h3>
+    <p>When the shock button is pressed, switching components connect the stored energy to the output.</p>
+    <p>The exact design may use:</p>
+    <ul>
+      <li>Relays</li>
+      <li>SCRs</li>
+      <li>IGBTs</li>
+      <li>Other high-voltage switches</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="output-path">
+    <h3>Output Path</h3>
+    <p>The shock path may include:</p>
+    <ul>
+      <li>Internal switching</li>
+      <li>Output connector</li>
+      <li>Therapy cable</li>
+      <li>Pads or paddles</li>
+      <li>Patient or analyzer load</li>
+    </ul>
+    <p>A failure anywhere in that path can reduce or prevent delivery.</p>
+  </section>
+
+  <section class="content-box" id="paddles">
+    <h3>Paddles</h3>
+    <p>Manual defibrillators may use external paddles.</p>
+    <p>Paddles provide:</p>
+    <ul>
+      <li>Conductive contact</li>
+      <li>Pressure</li>
+      <li>Shock control</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="adhesive-pads">
+    <h3>Adhesive Pads</h3>
+    <p>Modern systems commonly use multifunction adhesive pads.</p>
+    <p>These may support:</p>
+    <ul>
+      <li>Defibrillation</li>
+      <li>Cardioversion</li>
+      <li>Pacing</li>
+      <li>ECG sensing</li>
+    </ul>
+    <p>A pad or cable problem can affect several therapy functions.</p>
+  </section>
+
+  <section class="content-box" id="therapy-cable">
+    <h3>Therapy Cable</h3>
+    <p>The therapy cable carries high-energy pulses.</p>
+    <p>Inspect for:</p>
+    <ul>
+      <li>Cracks</li>
+      <li>Burn damage</li>
+      <li>Connector damage</li>
+      <li>Intermittent conductors</li>
+    </ul>
+    <p>Use only manufacturer-approved methods for testing high-voltage output cables.</p>
+  </section>
+
+  <section class="content-box" id="patient-impedance">
+    <h3>Patient Impedance</h3>
+    <p>The patient's body and electrode contact present electrical resistance or impedance.</p>
+    <p>The defibrillator may measure this before or during shock delivery.</p>
+  </section>
+
+  <section class="content-box" id="why-impedance-matters">
+    <h3>Why Impedance Matters</h3>
+    <p>A given voltage produces different current depending on impedance.</p>
+    <p>The device may adjust waveform characteristics to compensate.</p>
+    <p>This is especially common in biphasic defibrillators.</p>
+  </section>
+
+  <section class="content-box" id="poor-pad-contact">
+    <h3>Poor Pad Contact</h3>
+    <p>Poor contact can increase impedance.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Dried pads</li>
+      <li>Partial adhesion</li>
+      <li>Hair</li>
+      <li>Incorrect placement</li>
+    </ul>
+    <p>The defibrillator may:</p>
+    <ul>
+      <li>Refuse to shock</li>
+      <li>Display high-impedance warning</li>
+      <li>Adjust waveform</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="open-circuit">
+    <h3>Open Circuit</h3>
+    <p>If no load is connected, the device may detect:</p>
+    <ul>
+      <li>Pads off</li>
+      <li>Poor contact</li>
+      <li>Open circuit</li>
+    </ul>
+    <p>That is different from a charging failure.</p>
+  </section>
+
+  <section class="content-box" id="short-circuit">
+    <h3>Short Circuit</h3>
+    <p>Very low impedance may also trigger protection or change delivery behavior.</p>
+    <p>Use a proper defibrillator analyzer load.</p>
+    <p>Do not improvise the output load.</p>
+  </section>
+
+  <section class="content-box" id="monophasic-waveform">
+    <h3>Monophasic Waveform</h3>
+    <p>Older defibrillators may use monophasic waveforms.</p>
+    <p>Current flows primarily in one direction during the shock.</p>
+  </section>
+
+  <section class="content-box" id="biphasic-waveform">
+    <h3>Biphasic Waveform</h3>
+    <p>Modern defibrillators often use biphasic waveforms.</p>
+    <p>Current flows in one direction and then reverses.</p>
+    <p>This allows effective defibrillation at lower selected energies compared with many older monophasic designs.</p>
+  </section>
+
+  <section class="content-box" id="biphasic-waveform-control">
+    <h3>Biphasic Waveform Control</h3>
+    <p>The device may adjust:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Phase duration</li>
+      <li>Current</li>
+    </ul>
+    <p>based on measured impedance.</p>
+    <p>That means two shocks both set to:</p>
+    <p>200 J</p>
+    <p>may not have identical waveform shapes across different loads.</p>
+  </section>
+
+  <section class="content-box" id="energy-selection">
+    <h3>Energy Selection</h3>
+    <p>The selected energy is a target.</p>
+    <p>The device calculates how much capacitor voltage and waveform duration are needed.</p>
+  </section>
+
+  <section class="content-box" id="delivered-energy">
+    <h3>Delivered Energy</h3>
+    <p>The actual energy delivered depends on the waveform and current through the load.</p>
+    <p>The defibrillator may internally estimate or measure this.</p>
+  </section>
+
+  <section class="content-box" id="set-energy-vs-delivered-energy">
+    <h3>Set Energy vs Delivered Energy</h3>
+    <p>This distinction is important.</p>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Delivered:</p>
+    <p>194 J.</p>
+    <p>If the manufacturer's tolerance is:</p>
+    <p>±15%,</p>
+    <p>that may pass.</p>
+    <p>The device does not need to deliver exactly:</p>
+    <p>200.0 J.</p>
+  </section>
+
+  <section class="content-box" id="energy-accuracy">
+    <h3>Energy Accuracy</h3>
+    <p>A defibrillator analyzer measures actual delivered energy into a known load.</p>
+    <p>This gives you an independent reference.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Analyzer:</p>
+    <p>198 J.</p>
+    <p>Tolerance:</p>
+    <p>±15%.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="low-delivered-energy">
+    <h3>Low Delivered Energy</h3>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Analyzer:</p>
+    <p>140 J.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Capacitor problem</li>
+      <li>Charge-voltage error</li>
+      <li>Switching loss</li>
+      <li>Output-path resistance</li>
+      <li>Energy calibration issue</li>
+    </ul>
+    <p>Now isolate the stage.</p>
+  </section>
+
+  <section class="content-box" id="high-delivered-energy">
+    <h3>High Delivered Energy</h3>
+    <p>Set:</p>
+    <p>200 J.</p>
+    <p>Analyzer:</p>
+    <p>250 J.</p>
+    <p>That may be outside specification and can be safety-critical.</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Charge control</li>
+      <li>Voltage sensing</li>
+      <li>Calibration</li>
+      <li>Energy measurement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="low-energy-at-all-settings">
+    <h3>Low Energy at All Settings</h3>
+    <p>Example:</p>
+    <p>50 J → 35 J</p>
+    <p>100 J → 70 J</p>
+    <p>200 J → 140 J</p>
+    <p>A consistent proportional error may point toward:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Capacitor</li>
+      <li>Voltage-sensing issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="low-energy-only-at-high-settings">
+    <h3>Low Energy Only at High Settings</h3>
+    <p>Example:</p>
+    <p>50 J → 49 J</p>
+    <p>100 J → 99 J</p>
+    <p>200 J → 155 J</p>
+    <p>The failure may only appear when the charging system is stressed.</p>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>Capacitor</li>
+      <li>High-voltage supply</li>
+      <li>Battery under load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="charge-voltage">
+    <h3>Charge Voltage</h3>
+    <p>The selected energy corresponds to a target capacitor voltage.</p>
+    <p>If charge voltage is too low, delivered energy will usually be low.</p>
+  </section>
+
+  <section class="content-box" id="voltage-sensing">
+    <h3>Voltage Sensing</h3>
+    <p>The device needs to know when the capacitor reaches target voltage.</p>
+    <p>If the voltage-sensing circuit is wrong, the device may stop charging too early or too late.</p>
+  </section>
+
+  <section class="content-box" id="false-charge-complete">
+    <h3>False Charge Complete</h3>
+    <p>Suppose actual capacitor voltage is low but the sensing circuit reports:</p>
+    <p>Target reached.</p>
+    <p>The device indicates ready.</p>
+    <p>Shock energy will likely be low.</p>
+  </section>
+
+  <section class="content-box" id="overcharge-protection">
+    <h3>Overcharge Protection</h3>
+    <p>Defibrillators include protection against excessive capacitor voltage.</p>
+    <p>Do not defeat or bypass high-voltage safety systems during troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="defibrillator-analyzer">
+    <h3>Defibrillator Analyzer</h3>
+    <p>A defibrillator analyzer provides a controlled load and measures:</p>
+    <ul>
+      <li>Delivered energy</li>
+      <li>Peak voltage</li>
+      <li>Peak current</li>
+      <li>Waveform duration</li>
+    </ul>
+    <p>depending on model.</p>
+    <p>It may also simulate ECG for synchronized testing.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-load">
+    <h3>Analyzer Load</h3>
+    <p>Many analyzers use a standard resistive load, often around a typical reference value.</p>
+    <p>Use the load and procedure required by the manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="why-load-matters">
+    <h3>Why Load Matters</h3>
+    <p>Delivered waveform behavior can change with impedance.</p>
+    <p>Do not compare results taken at different loads without understanding the specification.</p>
+  </section>
+
+  <section class="content-box" id="multi-point-energy-testing">
+    <h3>Multi-Point Energy Testing</h3>
+    <p>Manufacturer testing may require several energy settings.</p>
+    <p>Example:</p>
+    <p>50 J 100 J 200 J</p>
+    <p>Why?</p>
+    <p>Because one passing shock does not prove the entire output range.</p>
+  </section>
+
+  <section class="content-box" id="repeat-shocks">
+    <h3>Repeat Shocks</h3>
+    <p>Some procedures require multiple shocks at one setting.</p>
+    <p>This checks:</p>
+    <ul>
+      <li>Repeatability</li>
+      <li>Charging</li>
+      <li>Energy consistency</li>
+    </ul>
+    <p>Follow the specified sequence.</p>
+  </section>
+
+  <section class="content-box" id="battery-stress">
+    <h3>Battery Stress</h3>
+    <p>Repeated high-energy shocks can place significant load on the battery.</p>
+    <p>A weak battery may allow:</p>
+    <ul>
+      <li>One good shock</li>
+      <li>Then slow charge</li>
+      <li>Then charge failure</li>
+    </ul>
+    <p>Test the battery-dependent performance when required.</p>
+  </section>
+
+  <section class="content-box" id="battery-voltage-sag">
+    <h3>Battery Voltage Sag</h3>
+    <p>The battery may show normal open-circuit voltage but collapse under high charging load.</p>
+    <p>That is another example where no-load voltage is not enough.</p>
+  </section>
+
+  <section class="content-box" id="synchronized-cardioversion">
+    <h3>Synchronized Cardioversion</h3>
+    <p>Synchronized cardioversion uses the same general energy-delivery hardware but times the shock to a detected ECG event.</p>
+    <p>The device waits for synchronization before discharging.</p>
+  </section>
+
+  <section class="content-box" id="sync-marker">
+    <h3>Sync Marker</h3>
+    <p>The monitor typically marks detected R waves.</p>
+    <p>The device then tries to deliver the shock at the appropriate synchronized point.</p>
+  </section>
+
+  <section class="content-box" id="sync-failure">
+    <h3>Sync Failure</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Bad ECG signal</li>
+      <li>Wrong lead</li>
+      <li>Poor R-wave detection</li>
+      <li>Sync circuit/software</li>
+    </ul>
+    <p>The charging system may be completely healthy.</p>
+  </section>
+
+  <section class="content-box" id="synchronized-shock-test">
+    <h3>Synchronized Shock Test</h3>
+    <p>A defibrillator analyzer can provide an ECG waveform and measure sync delay.</p>
+    <p>This tests:</p>
+    <ul>
+      <li>ECG detection</li>
+      <li>Timing</li>
+      <li>Energy delivery</li>
+    </ul>
+    <p>as a combined function.</p>
+  </section>
+
+  <section class="content-box" id="pacing-is-separate">
+    <h3>Pacing Is Separate</h3>
+    <p>Transcutaneous pacing may use the same pads and therapy cable.</p>
+    <p>But pacing uses a different electrical output mode.</p>
+    <p>A defibrillation pass does not prove pacing output is correct.</p>
+  </section>
+
+  <section class="content-box" id="self-test">
+    <h3>Self-Test</h3>
+    <p>Many defibrillators perform internal checks of:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Charging circuit</li>
+      <li>Therapy system</li>
+    </ul>
+    <p>A failed self-test is a useful clue.</p>
+    <p>It is not always a complete diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="internal-test-load">
+    <h3>Internal Test Load</h3>
+    <p>Some devices include an internal test load or test plug for energy verification.</p>
+    <p>This can help confirm output without an external analyzer.</p>
+    <p>Use the manufacturer procedure.</p>
+  </section>
+
+  <section class="content-box" id="external-analyzer-still-matters">
+    <h3>External Analyzer Still Matters</h3>
+    <p>Internal self-test proves what the defibrillator can test about itself.</p>
+    <p>An external analyzer provides independent verification.</p>
+  </section>
+
+  <section class="content-box" id="charge-button-works-but-shock-does-not">
+    <h3>Charge Button Works but Shock Does Not</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Shock button</li>
+      <li>Paddle switch</li>
+      <li>Therapy cable</li>
+      <li>Output relay/switch</li>
+      <li>Safety interlock</li>
+    </ul>
+    <p>Separate charge function from discharge function.</p>
+  </section>
+
+  <section class="content-box" id="no-charge-at-all">
+    <h3>No Charge at All</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Battery/power</li>
+      <li>Charge command</li>
+      <li>High-voltage supply</li>
+      <li>Capacitor</li>
+      <li>Control board</li>
+    </ul>
+    <p>Start with whether the device attempts to charge.</p>
+  </section>
+
+  <section class="content-box" id="charge-starts-then-stops">
+    <h3>Charge Starts Then Stops</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery voltage collapse</li>
+      <li>High-voltage fault</li>
+      <li>Capacitor leakage</li>
+      <li>Protection trip</li>
+    </ul>
+    <p>Watch:</p>
+    <ul>
+      <li>Error message</li>
+      <li>Battery voltage</li>
+      <li>Charge time</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="audible-whine">
+    <h3>Audible Whine</h3>
+    <p>Some defibrillators produce an audible charging sound.</p>
+    <p>That proves part of the converter is operating.</p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Target voltage reached</li>
+      <li>Capacitor healthy</li>
+      <li>Energy correct</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="shock-delivered-but-analyzer-reads-zero">
+    <h3>Shock Delivered but Analyzer Reads Zero</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Therapy cable not connected to analyzer correctly</li>
+      <li>Analyzer setup</li>
+      <li>Output relay failure</li>
+      <li>Pad connector issue</li>
+    </ul>
+    <p>Check the test setup before opening the device.</p>
+  </section>
+
+  <section class="content-box" id="pads-off-detection">
+    <h3>Pads-Off Detection</h3>
+    <p>If the device refuses to shock because it senses no pads:</p>
+    <p>The charging circuit may be fine.</p>
+    <p>The issue may be in:</p>
+    <ul>
+      <li>Impedance sensing</li>
+      <li>Therapy cable</li>
+      <li>Connector</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="paddle-contact-indicator">
+    <h3>Paddle Contact Indicator</h3>
+    <p>Some systems give feedback on paddle contact quality.</p>
+    <p>That may depend on measured impedance.</p>
+    <p>It is separate from energy accuracy.</p>
+  </section>
+
+  <section class="content-box" id="internal-discharge-path">
+    <h3>Internal Discharge Path</h3>
+    <p>If the user cancels a charged shock, stored energy needs to be safely dumped internally.</p>
+    <p>A faulty dump path can create:</p>
+    <ul>
+      <li>Charge retention</li>
+      <li>Error message</li>
+      <li>Safety concern</li>
+    </ul>
+    <p>Follow manufacturer safety procedures.</p>
+  </section>
+
+  <section class="content-box" id="energy-calibration">
+    <h3>Energy Calibration</h3>
+    <p>Some defibrillators have service adjustments or calibration routines for energy delivery.</p>
+    <p>Only calibrate after confirming:</p>
+    <ul>
+      <li>Analyzer setup</li>
+      <li>Battery/power condition</li>
+      <li>Output path</li>
+      <li>Capacitor health</li>
+    </ul>
+    <p>Do not calibrate around hardware degradation.</p>
+  </section>
+
+  <section class="content-box" id="capacitor-aging">
+    <h3>Capacitor Aging</h3>
+    <p>Capacitors can degrade with age.</p>
+    <p>Potential effects:</p>
+    <ul>
+      <li>Lower capacitance</li>
+      <li>Higher leakage</li>
+      <li>Reduced stored energy</li>
+    </ul>
+    <p>This can show up most clearly at higher energy settings.</p>
+  </section>
+
+  <section class="content-box" id="esr">
+    <h3>ESR</h3>
+    <p>Capacitors have internal resistance, often described as ESR.</p>
+    <p>Increased internal resistance can affect rapid discharge performance.</p>
+    <p>The exact diagnostic method depends on manufacturer documentation.</p>
+  </section>
+
+  <section class="content-box" id="output-switch-resistance">
+    <h3>Output Switch Resistance</h3>
+    <p>High-voltage switching components and relay contacts can introduce resistance.</p>
+    <p>If damaged or burned, some stored energy may be lost before reaching the load.</p>
+  </section>
+
+  <section class="content-box" id="connector-damage">
+    <h3>Connector Damage</h3>
+    <p>A damaged therapy connector can increase resistance or become intermittent.</p>
+    <p>Inspect for:</p>
+    <ul>
+      <li>Arcing marks</li>
+      <li>Burns</li>
+      <li>Bent contacts</li>
+      <li>Cracks</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-slow-charge-on-battery">
+    <h3>Real-World Example: Slow Charge on Battery</h3>
+    <p>200 J charge:</p>
+    <p>Normal on AC.</p>
+    <p>Very slow on battery.</p>
+    <p>Battery analyzer shows significant voltage collapse under load.</p>
+    <p>High-voltage charging circuit is functional.</p>
+    <p>Battery is weak.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-energy-at-high-setting">
+    <h3>Real-World Example: Low Energy at High Setting</h3>
+    <p>50 J:</p>
+    <p>49 J.</p>
+    <p>100 J:</p>
+    <p>97 J.</p>
+    <p>200 J:</p>
+    <p>150 J.</p>
+    <p>Battery and charge time normal.</p>
+    <p>Capacitor or high-energy discharge path becomes more suspicious.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-charge-ready-but-no-shock">
+    <h3>Real-World Example: Charge Ready but No Shock</h3>
+    <p>Device charges normally.</p>
+    <p>Shock button pressed.</p>
+    <p>No analyzer output.</p>
+    <p>Therapy cable replaced.</p>
+    <p>Normal shock returns.</p>
+    <p>Failure was in output path, not charging system.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-energy-display">
+    <h3>Real-World Example: Wrong Energy Display</h3>
+    <p>Analyzer:</p>
+    <p>200 J.</p>
+    <p>Device post-shock display:</p>
+    <p>160 J.</p>
+    <p>Actual delivery is correct.</p>
+    <p>Internal energy-measurement/reporting path is wrong.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pads-off">
+    <h3>Real-World Example: Pads Off</h3>
+    <p>Device charges but refuses to discharge.</p>
+    <p>Analyzer connected through correct therapy cable.</p>
+    <p>Pads-off message remains.</p>
+    <p>Known-good cable corrects issue.</p>
+    <p>Impedance-detection path was interrupted by the cable.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-sync-does-not-fire">
+    <h3>Real-World Example: Sync Does Not Fire</h3>
+    <p>Unsynchronized shock:</p>
+    <p>Normal.</p>
+    <p>Sync mode:</p>
+    <p>Device waits indefinitely.</p>
+    <p>Analyzer ECG visible but no sync markers.</p>
+    <p>Problem is ECG synchronization, not high-voltage output.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-set-energy-as-proof-of-delivered-energy">
+    <h3>Treating Set Energy as Proof of Delivered Energy</h3>
+    <p>Use an analyzer.</p>
+  </section>
+
+  <section class="content-box" id="assuming-charge-ready-means-energy-is-correct">
+    <h3>Assuming Charge-Ready Means Energy Is Correct</h3>
+    <p>It only means the device believes charging is complete.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-capacitor-before-checking-battery-and-charge-voltage">
+    <h3>Replacing the Capacitor Before Checking Battery and Charge Voltage</h3>
+    <p>Follow the power path.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-therapy-cable-and-pads">
+    <h3>Ignoring Therapy Cable and Pads</h3>
+    <p>They are part of the output path.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-one-energy-setting">
+    <h3>Testing Only One Energy Setting</h3>
+    <p>High-energy problems may be missed.</p>
+  </section>
+
+  <section class="content-box" id="confusing-sync-failure-with-defibrillation-failure">
+    <h3>Confusing Sync Failure With Defibrillation Failure</h3>
+    <p>Timing and energy delivery are different functions.</p>
+  </section>
+
+  <section class="content-box" id="assuming-audible-charging-noise-proves-the-hv-system-is-good">
+    <h3>Assuming Audible Charging Noise Proves the HV System Is Good</h3>
+    <p>Verify charge time and delivered energy.</p>
+  </section>
+
+  <section class="content-box" id="working-on-a-powered-off-defibrillator-without-discharging-the-hv-system">
+    <h3>Working on a Powered-Off Defibrillator Without Discharging the HV System</h3>
+    <p>Stored energy can remain dangerous.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a defibrillator problem, ask:</p>
+    <p><strong>Can it charge?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it reach the selected energy within the required time?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it hold that charge?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it discharge through a known-good therapy path?</strong></p>
+    <p>Then:</p>
+    <p><strong>What energy does an external analyzer measure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure change with energy setting or battery/AC operation?</strong></p>
+    <p>That separates:</p>
+    <ul>
+      <li>Power</li>
+      <li>Charging</li>
+      <li>Storage</li>
+      <li>Switching</li>
+      <li>Output</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a charge problem, an energy-storage problem, or an energy-delivery problem?</strong></p>
+    <p>Those are different repair paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device says:</p>
+    <blockquote><p>200 J Charged</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The defibrillator believes it reached the charge condition associated with 200 J.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>200 J will actually reach the patient.</strong></p>
+    <p>If a calibrated defibrillator analyzer measures the delivered shock within manufacturer specification at the required load, you have objective evidence that the complete energy-delivery path worked under that test condition.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A defibrillator is basically a controlled high-energy storage and discharge system.</p>
+    <p>The path is:</p>
+    <p><strong>Power → High-Voltage Charging → Capacitor → Switching → Therapy Cable → Pads/Load.</strong></p>
+    <p>When the device fails, figure out where that chain breaks.</p>
+    <p>Ask:</p>
+    <p><strong>Did it charge?</strong></p>
+    <p><strong>Did it store the energy?</strong></p>
+    <p><strong>Did it discharge?</strong></p>
+    <p><strong>How much energy actually reached the analyzer?</strong></p>
+    <p>Then compare different:</p>
+    <ul>
+      <li>Energy settings</li>
+      <li>Loads</li>
+      <li>AC vs battery operation</li>
+    </ul>
+    <p>And never forget:</p>
+    <p>The device's own display is not the final proof.</p>
+    <p>The analyzer is what tells you what actually came out.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Defibrillator charging circuits, capacitor voltages, waveform shapes, impedance-compensation methods, energy tolerances, synchronized-cardioversion requirements, and service procedures vary by manufacturer and model. High-voltage circuits can retain lethal energy after power is removed. Follow current manufacturer safety and discharge procedures, use approved therapy accessories and calibrated defibrillator analyzers, and complete all required functional, energy, synchronization, pacing, alarm, and electrical-safety testing before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="voltage-current-resistance-and-continuity-in-plain-english.html">Voltage, Current, Resistance, and Continuity in Plain English</a></li>
+      <li><a href="fuses-breakers-and-power-supplies-in-medical-equipment.html">Fuses, Breakers, and Power Supplies in Medical Equipment</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="how-to-troubleshoot-charging-problems.html">How to Troubleshoot Charging Problems</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

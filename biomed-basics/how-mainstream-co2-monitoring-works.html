@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Mainstream CO2 Monitoring Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how mainstream capnography measures CO2 at the airway and how adapters, optics, moisture, alignment, and sensor recognition affect readings.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-mainstream-co2-monitoring-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How Mainstream CO2 Monitoring Works</h2>
+  <p>How a mainstream capnography sensor measures CO2 directly at the airway and why adapter, sensor, optics, moisture, and alignment problems can affect the reading</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Mainstream CO2 monitoring measures carbon dioxide directly at the patient airway.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What mainstream CO2 monitoring is</li>
+      <li>How infrared absorption is used</li>
+      <li>Airway adapters</li>
+      <li>Sensor heads</li>
+      <li>Optical windows</li>
+      <li>Zeroing</li>
+      <li>Calibration</li>
+      <li>Moisture and secretions</li>
+      <li>Adapter alignment</li>
+      <li>Sensor heating</li>
+      <li>Recognition problems</li>
+      <li>Mainstream vs sidestream differences</li>
+      <li>Test gas</li>
+      <li>Capnogram troubleshooting</li>
+      <li>Common failure patterns</li>
+      <li>How to think through mainstream CO2 problems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic mainstream CO2 system works like this:</p>
+    <p><strong>Patient exhales through airway adapter</strong></p>
+    <p>↓</p>
+    <p><strong>Infrared light passes through the gas</strong></p>
+    <p>↓</p>
+    <p><strong>CO2 absorbs part of that infrared energy</strong></p>
+    <p>↓</p>
+    <p><strong>Sensor detects how much light remains</strong></p>
+    <p>↓</p>
+    <p><strong>Electronics calculate CO2 concentration</strong></p>
+    <p>↓</p>
+    <p><strong>Monitor displays capnogram and ETCO2</strong></p>
+    <p>The gas is measured right at the airway.</p>
+    <p>There is no long sampling line.</p>
+  </section>
+
+  <section class="content-box" id="what-is-mainstream-co2">
+    <h3>What Is Mainstream CO2?</h3>
+    <p>Mainstream CO2 places the gas-measurement sensor directly in the breathing circuit.</p>
+    <p>The sensor is usually attached to an airway adapter between:</p>
+    <ul>
+      <li>Patient airway</li>
+      <li>Breathing circuit</li>
+    </ul>
+    <p>or equivalent connection point.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-vs-sidestream">
+    <h3>Mainstream vs Sidestream</h3>
+    <p>The biggest difference is where the measurement occurs.</p>
+    <h4>Mainstream</h4>
+    <p>Gas passes directly through sensor adapter.</p>
+    <h4>Sidestream</h4>
+    <p>Gas is pulled through a sample line to a remote analyzer.</p>
+    <p>This changes the failure modes.</p>
+  </section>
+
+  <section class="content-box" id="no-sampling-pump">
+    <h3>No Sampling Pump</h3>
+    <p>A mainstream system typically does not need:</p>
+    <ul>
+      <li>Sampling pump</li>
+      <li>Long sample line</li>
+      <li>Water trap</li>
+    </ul>
+    <p>for the basic CO2 measurement path.</p>
+    <p>So if you are troubleshooting:</p>
+    <blockquote><p>No sample flow</p></blockquote>
+    <p>that is generally a sidestream problem, not a mainstream one.</p>
+  </section>
+
+  <section class="content-box" id="infrared-co2-measurement">
+    <h3>Infrared CO2 Measurement</h3>
+    <p>CO2 absorbs infrared light at specific wavelengths.</p>
+    <p>The sensor sends infrared energy through the gas in the airway adapter.</p>
+    <p>The amount absorbed changes with CO2 concentration.</p>
+  </section>
+
+  <section class="content-box" id="optical-measurement">
+    <h3>Optical Measurement</h3>
+    <p>Conceptually:</p>
+    <p><strong>More CO2</strong></p>
+    <p>↓</p>
+    <p><strong>More infrared absorption</strong></p>
+    <p>↓</p>
+    <p><strong>Less light reaches detector</strong></p>
+    <p>↓</p>
+    <p><strong>Calculated CO2 increases</strong></p>
+  </section>
+
+  <section class="content-box" id="airway-adapter">
+    <h3>Airway Adapter</h3>
+    <p>The airway adapter creates the optical chamber through which the gas passes.</p>
+    <p>It usually contains clear windows that allow the sensor to look across the gas path.</p>
+  </section>
+
+  <section class="content-box" id="the-adapter-is-part-of-the-measurement-system">
+    <h3>The Adapter Is Part of the Measurement System</h3>
+    <p>It is not just a plastic connector.</p>
+    <p>Its:</p>
+    <ul>
+      <li>Optical path length</li>
+      <li>Window clarity</li>
+      <li>Alignment</li>
+    </ul>
+    <p>can affect measurement.</p>
+  </section>
+
+  <section class="content-box" id="dirty-adapter">
+    <h3>Dirty Adapter</h3>
+    <p>Contamination on the optical windows may cause:</p>
+    <ul>
+      <li>No reading</li>
+      <li>Calibration error</li>
+      <li>Inaccurate CO2</li>
+      <li>Sensor fault</li>
+    </ul>
+    <p>Inspect the adapter before condemning the sensor.</p>
+  </section>
+
+  <section class="content-box" id="moisture">
+    <h3>Moisture</h3>
+    <p>Condensation can collect on the adapter windows.</p>
+    <p>That can interfere with infrared transmission.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Erratic waveform</li>
+      <li>Low reading</li>
+      <li>Sensor error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="secretions">
+    <h3>Secretions</h3>
+    <p>Patient secretions may contaminate the adapter.</p>
+    <p>This can partially block the optical path.</p>
+    <p>Replace or clean the adapter according to manufacturer instructions.</p>
+  </section>
+
+  <section class="content-box" id="adapter-type-matters">
+    <h3>Adapter Type Matters</h3>
+    <p>Some systems use:</p>
+    <ul>
+      <li>Adult adapters</li>
+      <li>Pediatric adapters</li>
+      <li>Neonatal adapters</li>
+    </ul>
+    <p>The internal geometry may differ.</p>
+    <p>Use the correct compatible adapter.</p>
+  </section>
+
+  <section class="content-box" id="sensor-head">
+    <h3>Sensor Head</h3>
+    <p>The sensor contains the optical and electronic components.</p>
+    <p>It may include:</p>
+    <ul>
+      <li>Infrared source</li>
+      <li>Detector</li>
+      <li>Processing electronics</li>
+      <li>Heater</li>
+      <li>Identification circuitry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sensor-cable">
+    <h3>Sensor Cable</h3>
+    <p>The sensor usually connects to the monitor through a cable.</p>
+    <p>The cable may carry:</p>
+    <ul>
+      <li>Power</li>
+      <li>Data</li>
+      <li>Sensor identification</li>
+    </ul>
+    <p>A cable problem can cause:</p>
+    <ul>
+      <li>Sensor not recognized</li>
+      <li>Intermittent reading</li>
+      <li>No CO2</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sensor-recognition">
+    <h3>Sensor Recognition</h3>
+    <p>Before measuring gas, the host monitor may need to identify the sensor.</p>
+    <p>If the screen says:</p>
+    <blockquote><p>CO2 Sensor Not Detected</p></blockquote>
+    <p>that is different from:</p>
+    <blockquote><p>No CO2 Detected.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="sensor-not-detected">
+    <h3>Sensor Not Detected</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Connector</li>
+      <li>Sensor electronics</li>
+      <li>Host interface</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sensor-detected-but-no-waveform">
+    <h3>Sensor Detected but No Waveform</h3>
+    <p>Now the communication layer is working.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Adapter</li>
+      <li>Gas path</li>
+      <li>Optics</li>
+      <li>Zero/calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="zeroing">
+    <h3>Zeroing</h3>
+    <p>Mainstream CO2 sensors often require a zero reference.</p>
+    <p>The sensor needs to know what:</p>
+    <p><strong>Zero CO2</strong></p>
+    <p>looks like optically.</p>
+  </section>
+
+  <section class="content-box" id="why-zeroing-matters">
+    <h3>Why Zeroing Matters</h3>
+    <p>If the optical baseline is wrong, all measurements may be offset.</p>
+    <p>Example:</p>
+    <p>Actual gas:</p>
+    <p>0%.</p>
+    <p>Sensor displays:</p>
+    <p>2%.</p>
+    <p>That suggests a zero or contamination problem.</p>
+  </section>
+
+  <section class="content-box" id="zero-adapter">
+    <h3>Zero Adapter</h3>
+    <p>Some systems use a special zero adapter or require the sensor to be exposed to room air in a defined way.</p>
+    <p>Follow the exact manufacturer method.</p>
+  </section>
+
+  <section class="content-box" id="do-not-zero-through-exhaled-gas">
+    <h3>Do Not Zero Through Exhaled Gas</h3>
+    <p>If CO2 remains in the optical chamber during zeroing, the baseline will be wrong.</p>
+  </section>
+
+  <section class="content-box" id="zero-failure">
+    <h3>Zero Failure</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Dirty windows</li>
+      <li>Moisture</li>
+      <li>Wrong adapter</li>
+      <li>Sensor fault</li>
+      <li>Improper zero procedure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>Calibration</h3>
+    <p>Some systems support calibration using known gas.</p>
+    <p>Others rely primarily on factory calibration plus zeroing.</p>
+    <p>The exact approach varies.</p>
+  </section>
+
+  <section class="content-box" id="zero-is-not-the-same-as-calibration">
+    <h3>Zero Is Not the Same as Calibration</h3>
+    <p>Zeroing establishes the baseline.</p>
+    <p>Calibration establishes the relationship between sensor signal and known concentration.</p>
+    <p>Do not treat them as identical.</p>
+  </section>
+
+  <section class="content-box" id="sensor-heating">
+    <h3>Sensor Heating</h3>
+    <p>Some mainstream sensors are heated.</p>
+    <p>Why?</p>
+    <p>To help reduce:</p>
+    <ul>
+      <li>Condensation</li>
+      <li>Optical fogging</li>
+    </ul>
+    <p>The sensor may feel warm during normal operation.</p>
+  </section>
+
+  <section class="content-box" id="warm-up-time">
+    <h3>Warm-Up Time</h3>
+    <p>A mainstream sensor may need time to:</p>
+    <ul>
+      <li>Reach temperature</li>
+      <li>Stabilize optics</li>
+    </ul>
+    <p>A brief startup delay may be normal.</p>
+  </section>
+
+  <section class="content-box" id="heater-failure">
+    <h3>Heater Failure</h3>
+    <p>If the heater fails:</p>
+    <ul>
+      <li>Condensation may increase</li>
+      <li>Sensor may fail self-test</li>
+      <li>Accuracy may degrade</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="added-airway-weight">
+    <h3>Added Airway Weight</h3>
+    <p>Mainstream sensors are physically attached near the patient airway.</p>
+    <p>That adds:</p>
+    <ul>
+      <li>Weight</li>
+      <li>Dead space</li>
+    </ul>
+    <p>This is why smaller adapters and sensors may be used for neonatal or pediatric applications.</p>
+  </section>
+
+  <section class="content-box" id="dead-space">
+    <h3>Dead Space</h3>
+    <p>The adapter adds some internal volume.</p>
+    <p>This is a clinical design consideration.</p>
+    <p>For biomed troubleshooting, make sure the correct adapter type is being used.</p>
+  </section>
+
+  <section class="content-box" id="capnogram">
+    <h3>Capnogram</h3>
+    <p>The waveform is called a:</p>
+    <p><strong>Capnogram.</strong></p>
+    <p>It shows CO2 concentration over time through the respiratory cycle.</p>
+  </section>
+
+  <section class="content-box" id="etco2">
+    <h3>ETCO2</h3>
+    <p>End-tidal CO2 is usually taken near the end of exhalation.</p>
+    <p>The monitor identifies the end-expiratory portion of the waveform and displays a numeric ETCO2 value.</p>
+  </section>
+
+  <section class="content-box" id="no-capnogram">
+    <h3>No Capnogram</h3>
+    <p>If the sensor is recognized but no waveform appears, ask:</p>
+    <ul>
+      <li>Is gas actually moving through adapter?</li>
+      <li>Is adapter installed correctly?</li>
+      <li>Are windows clear?</li>
+      <li>Was sensor zeroed?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="flat-zero">
+    <h3>Flat Zero</h3>
+    <p>A flat line near zero may mean:</p>
+    <ul>
+      <li>No exhaled CO2 reaching sensor</li>
+      <li>Sensor offset problem</li>
+      <li>Optical path issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-baseline">
+    <h3>High Baseline</h3>
+    <p>If inspiration does not return near baseline:</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Rebreathing</li>
+      <li>Contaminated adapter</li>
+      <li>Zero error</li>
+    </ul>
+    <p>The clinical breathing system may be the problem rather than the CO2 sensor.</p>
+  </section>
+
+  <section class="content-box" id="rebreathing-pattern">
+    <h3>Rebreathing Pattern</h3>
+    <p>A raised inspiratory baseline can reflect actual inspired CO2.</p>
+    <p>That could come from:</p>
+    <ul>
+      <li>Breathing circuit</li>
+      <li>CO2 absorber</li>
+      <li>Valve problem</li>
+    </ul>
+    <p>Do not automatically calibrate the sensor.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-response-time">
+    <h3>Mainstream Response Time</h3>
+    <p>Because the sensor is at the airway, mainstream systems generally have very little transport delay.</p>
+    <p>That is one advantage over sidestream sampling.</p>
+  </section>
+
+  <section class="content-box" id="no-sample-line-delay">
+    <h3>No Sample-Line Delay</h3>
+    <p>A waveform change occurs almost immediately at the sensor.</p>
+    <p>If there is a large unexplained delay, investigate processing or display behavior.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-sensor-alignment">
+    <h3>Mainstream Sensor Alignment</h3>
+    <p>The sensor must fit the adapter correctly.</p>
+    <p>If it is:</p>
+    <ul>
+      <li>Crooked</li>
+      <li>Not fully seated</li>
+    </ul>
+    <p>the optical path may not align.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-keying">
+    <h3>Mechanical Keying</h3>
+    <p>Many systems are keyed so the sensor only fits correctly one way.</p>
+    <p>Do not force it.</p>
+  </section>
+
+  <section class="content-box" id="loose-sensor">
+    <h3>Loose Sensor</h3>
+    <p>A loose sensor may create:</p>
+    <ul>
+      <li>Intermittent readings</li>
+      <li>Recognition problems</li>
+      <li>Optical alignment errors</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="adapter-cracks">
+    <h3>Adapter Cracks</h3>
+    <p>A cracked adapter may introduce:</p>
+    <ul>
+      <li>Gas leak</li>
+      <li>Optical distortion</li>
+    </ul>
+    <p>Inspect disposable and reusable components carefully.</p>
+  </section>
+
+  <section class="content-box" id="circuit-leak">
+    <h3>Circuit Leak</h3>
+    <p>A leak near the airway adapter can affect the respiratory system itself.</p>
+    <p>The CO2 sensor may correctly report lower ETCO2 because exhaled gas is being diluted.</p>
+  </section>
+
+  <section class="content-box" id="dilution">
+    <h3>Dilution</h3>
+    <p>If room air enters near the measurement site, CO2 concentration may drop.</p>
+    <p>The sensor may not be defective.</p>
+  </section>
+
+  <section class="content-box" id="supplemental-gas">
+    <h3>Supplemental Gas</h3>
+    <p>Depending on clinical setup, gas introduced near the sensor can also affect readings.</p>
+    <p>Interpret the measurement in context.</p>
+  </section>
+
+  <section class="content-box" id="test-gas">
+    <h3>Test Gas</h3>
+    <p>A known CO2 concentration can be used to verify measurement accuracy when the manufacturer specifies it.</p>
+    <p>Example:</p>
+    <p>Certified 5% CO2 test gas.</p>
+    <p>Compare sensor result to acceptable tolerance.</p>
+  </section>
+
+  <section class="content-box" id="gas-concentration-matters">
+    <h3>Gas Concentration Matters</h3>
+    <p>Do not use an approximate gas source and expect precise calibration verification.</p>
+    <p>Use certified test gas when required.</p>
+  </section>
+
+  <section class="content-box" id="gas-flow-through-adapter">
+    <h3>Gas Flow Through Adapter</h3>
+    <p>For bench testing, the test setup must deliver known gas through the adapter correctly.</p>
+    <p>If room air mixes with the test gas:</p>
+    <p>Reading will be low.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Certified gas:</p>
+    <p>5%.</p>
+    <p>Sensor reads:</p>
+    <p>3%.</p>
+    <p>Before calibrating:</p>
+    <p>Check for leaks or dilution in the test setup.</p>
+  </section>
+
+  <section class="content-box" id="test-gas-temperature-and-pressure">
+    <h3>Test Gas Temperature and Pressure</h3>
+    <p>Gas measurement can be affected by environmental conditions and compensation algorithms.</p>
+    <p>Use the approved verification setup.</p>
+  </section>
+
+  <section class="content-box" id="barometric-compensation">
+    <h3>Barometric Compensation</h3>
+    <p>Some CO2 systems compensate for barometric pressure.</p>
+    <p>Incorrect pressure data may affect calculated concentration or partial pressure.</p>
+  </section>
+
+  <section class="content-box" id="units">
+    <h3>Units</h3>
+    <p>CO2 may be displayed as:</p>
+    <ul>
+      <li>mmHg</li>
+      <li>kPa</li>
+      <li>%</li>
+    </ul>
+    <p>Make sure you compare the correct units.</p>
+  </section>
+
+  <section class="content-box" id="approximate-conversion">
+    <h3>Approximate Conversion</h3>
+    <p>A gas containing about:</p>
+    <p>5% CO2</p>
+    <p>at normal atmospheric pressure corresponds roughly to an ETCO2 around the upper 30s mmHg.</p>
+    <p>But use exact test-gas specifications and device limits for verification.</p>
+  </section>
+
+  <section class="content-box" id="sensor-accuracy-vs-clinical-value">
+    <h3>Sensor Accuracy vs Clinical Value</h3>
+    <p>A clinical ETCO2 number can be abnormal because of:</p>
+    <ul>
+      <li>Patient physiology</li>
+      <li>Ventilation</li>
+    </ul>
+    <p>not device failure.</p>
+    <p>Use known test gas or simulator methods to verify equipment.</p>
+  </section>
+
+  <section class="content-box" id="known-good-sensor">
+    <h3>Known-Good Sensor</h3>
+    <p>Original sensor:</p>
+    <p>Not recognized.</p>
+    <p>Known-good sensor:</p>
+    <p>Works.</p>
+    <p>Original sensor fails on another compatible monitor.</p>
+    <p>Failure follows sensor.</p>
+  </section>
+
+  <section class="content-box" id="known-good-adapter">
+    <h3>Known-Good Adapter</h3>
+    <p>Original adapter:</p>
+    <p>Erratic CO2.</p>
+    <p>New compatible adapter:</p>
+    <p>Normal.</p>
+    <p>Original adapter visibly contaminated.</p>
+    <p>Failure follows adapter.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-monitor">
+    <h3>Failure Stays With Monitor</h3>
+    <p>Two known-good sensors:</p>
+    <p>Fail to communicate on one monitor.</p>
+    <p>Both work elsewhere.</p>
+    <p>Now investigate monitor-side interface.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-sensor-cable">
+    <h3>Intermittent Sensor Cable</h3>
+    <p>Sensor works until cable is moved.</p>
+    <p>Then:</p>
+    <blockquote><p>CO2 Sensor Disconnected.</p></blockquote>
+    <p>Strong evidence of cable or strain-relief damage.</p>
+  </section>
+
+  <section class="content-box" id="cable-failure-vs-optical-failure">
+    <h3>Cable Failure vs Optical Failure</h3>
+    <p>If the sensor disappears from the monitor:</p>
+    <p>Think communication/power.</p>
+    <p>If sensor remains recognized but CO2 becomes wrong:</p>
+    <p>Think optical/gas measurement path.</p>
+  </section>
+
+  <section class="content-box" id="sensor-self-test">
+    <h3>Sensor Self-Test</h3>
+    <p>The sensor may perform internal checks.</p>
+    <p>A self-test failure may indicate:</p>
+    <ul>
+      <li>Optical source</li>
+      <li>Detector</li>
+      <li>Heater</li>
+      <li>Electronics</li>
+    </ul>
+    <p>Use service documentation for specific codes.</p>
+  </section>
+
+  <section class="content-box" id="optical-source-aging">
+    <h3>Optical Source Aging</h3>
+    <p>Infrared emitters can degrade.</p>
+    <p>Possible symptom:</p>
+    <ul>
+      <li>Weak signal</li>
+      <li>Failed calibration</li>
+    </ul>
+    <p>The exact failure mode depends on the sensor design.</p>
+  </section>
+
+  <section class="content-box" id="detector-failure">
+    <h3>Detector Failure</h3>
+    <p>A detector problem may cause:</p>
+    <ul>
+      <li>No reading</li>
+      <li>Unstable reading</li>
+      <li>Calibration error</li>
+    </ul>
+    <p>Again, verify with approved diagnostics.</p>
+  </section>
+
+  <section class="content-box" id="contamination-vs-electronics">
+    <h3>Contamination vs Electronics</h3>
+    <p>A dirty optical window can produce many of the same symptoms as failing electronics.</p>
+    <p>Always inspect the simple physical path first.</p>
+  </section>
+
+  <section class="content-box" id="reusable-sensor-vs-disposable-adapter">
+    <h3>Reusable Sensor vs Disposable Adapter</h3>
+    <p>In many systems:</p>
+    <p>Sensor:</p>
+    <p>Reusable.</p>
+    <p>Adapter:</p>
+    <p>Disposable or reusable depending design.</p>
+    <p>Do not replace an expensive sensor before trying the simple adapter.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-co2-on-ventilators">
+    <h3>Mainstream CO2 on Ventilators</h3>
+    <p>Some ventilators use a mainstream sensor connected directly to the ventilator.</p>
+    <p>The measured CO2 may feed:</p>
+    <ul>
+      <li>Display</li>
+      <li>Alarms</li>
+      <li>Trends</li>
+    </ul>
+    <p>but it usually does not control the basic ventilator gas-delivery system.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-co2-on-patient-monitors">
+    <h3>Mainstream CO2 on Patient Monitors</h3>
+    <p>Patient monitors may use a dedicated CO2 interface or parameter module.</p>
+    <p>Now the system has multiple layers:</p>
+    <p><strong>Sensor → CO2 Module → Host Monitor.</strong></p>
+  </section>
+
+  <section class="content-box" id="module-recognition">
+    <h3>Module Recognition</h3>
+    <p>If the entire CO2 module is missing:</p>
+    <p>Do not troubleshoot the airway sensor first.</p>
+    <p>First restore module-host communication.</p>
+  </section>
+
+  <section class="content-box" id="sensor-recognized-by-module">
+    <h3>Sensor Recognized by Module</h3>
+    <p>If module is present and reports sensor-specific fault:</p>
+    <p>Communication to the module is working.</p>
+    <p>Move outward to the sensor and adapter.</p>
+  </section>
+
+  <section class="content-box" id="capnogram-shape">
+    <h3>Capnogram Shape</h3>
+    <p>Waveform shape provides useful clues.</p>
+    <p>Possible patterns include:</p>
+    <ul>
+      <li>Flat zero</li>
+      <li>Elevated baseline</li>
+      <li>Slow rise</li>
+      <li>Irregular plateau</li>
+    </ul>
+    <p>Some patterns may reflect physiology or breathing-circuit behavior rather than sensor failure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-diagnose-clinical-conditions-from-bench-testing">
+    <h3>Do Not Diagnose Clinical Conditions From Bench Testing</h3>
+    <p>For equipment troubleshooting, use controlled test methods.</p>
+    <p>The goal is to determine whether the sensor measures known gas correctly.</p>
+  </section>
+
+  <section class="content-box" id="mainstream-vs-sidestream-troubleshooting">
+    <h3>Mainstream vs Sidestream Troubleshooting</h3>
+    <p>For mainstream, think:</p>
+    <p><strong>Sensor + Adapter + Optics</strong></p>
+    <p>For sidestream, think:</p>
+    <p><strong>Sample Line + Pump + Water Trap + Analyzer</strong></p>
+    <p>This distinction avoids a lot of wasted work.</p>
+  </section>
+
+  <section class="content-box" id="no-pump-noise-is-normal">
+    <h3>No Pump Noise Is Normal</h3>
+    <p>Do not look for a sampling pump in a mainstream system unless the device also contains a separate sampling function.</p>
+  </section>
+
+  <section class="content-box" id="water-trap-is-usually-not-part-of-mainstream-measurement">
+    <h3>Water Trap Is Usually Not Part of Mainstream Measurement</h3>
+    <p>If a troubleshooting guide mentions:</p>
+    <ul>
+      <li>Water trap</li>
+      <li>Sampling pump</li>
+    </ul>
+    <p>verify whether the device is actually using sidestream technology.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-sensor-not-recognized">
+    <h3>Real-World Example: Sensor Not Recognized</h3>
+    <p>Sensor:</p>
+    <p>No detection on Monitor A.</p>
+    <p>Known-good sensor:</p>
+    <p>Works.</p>
+    <p>Original sensor:</p>
+    <p>Not recognized on Monitor B.</p>
+    <p>Failure follows sensor/cable assembly.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-co2-reads-low">
+    <h3>Real-World Example: CO2 Reads Low</h3>
+    <p>Certified 5% gas applied.</p>
+    <p>Sensor reads 3%.</p>
+    <p>New airway adapter:</p>
+    <p>Reads correctly.</p>
+    <p>Original adapter had moisture film across optical window.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-zero-failure">
+    <h3>Real-World Example: Repeated Zero Failure</h3>
+    <p>Sensor zero fails.</p>
+    <p>Adapter replaced.</p>
+    <p>Still fails.</p>
+    <p>Sensor works on another monitor.</p>
+    <p>Monitor interface/CO2 module becomes suspect.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-high-inspiratory-baseline">
+    <h3>Real-World Example: High Inspiratory Baseline</h3>
+    <p>CO2 waveform does not return to zero during inspiration.</p>
+    <p>Known test setup shows sensor accuracy is correct.</p>
+    <p>Breathing system has rebreathing issue.</p>
+    <p>CO2 monitor is reporting a real condition.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-intermittent-dropout">
+    <h3>Real-World Example: Intermittent Dropout</h3>
+    <p>Sensor disappears when cable bends near strain relief.</p>
+    <p>Known-good sensor remains stable.</p>
+    <p>Cable assembly failure reproduced.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-waveform-on-test-lung">
+    <h3>Real-World Example: No Waveform on Test Lung</h3>
+    <p>Sensor recognized.</p>
+    <p>Adapter clear.</p>
+    <p>Test lung contains only room air.</p>
+    <p>No CO2 source connected.</p>
+    <p>Flat CO2 waveform is exactly what should happen.</p>
+    <p>The sensor has not failed.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="troubleshooting-mainstream-co2-like-sidestream-co2">
+    <h3>Troubleshooting Mainstream CO2 Like Sidestream CO2</h3>
+    <p>There is usually no sample line or pump.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-sensor-before-inspecting-the-adapter">
+    <h3>Replacing the Sensor Before Inspecting the Adapter</h3>
+    <p>Optical contamination is common.</p>
+  </section>
+
+  <section class="content-box" id="treating-sensor-not-detected-as-a-gas-measurement-problem">
+    <h3>Treating “Sensor Not Detected” as a Gas-Measurement Problem</h3>
+    <p>That is usually power/communication first.</p>
+  </section>
+
+  <section class="content-box" id="zeroing-with-co2-still-in-the-adapter">
+    <h3>Zeroing With CO2 Still in the Adapter</h3>
+    <p>That creates a bad baseline.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-high-inspiratory-baseline-means-sensor-failure">
+    <h3>Assuming a High Inspiratory Baseline Means Sensor Failure</h3>
+    <p>It may be real rebreathing.</p>
+  </section>
+
+  <section class="content-box" id="using-unverified-gas-for-accuracy-testing">
+    <h3>Using Unverified Gas for Accuracy Testing</h3>
+    <p>Use the specified test gas.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-cable-movement">
+    <h3>Ignoring Cable Movement</h3>
+    <p>Intermittent sensor cables can mimic sensor electronics failure.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a mainstream CO2 problem, ask:</p>
+    <p><strong>Is the sensor recognized?</strong></p>
+    <p>If no:</p>
+    <p>Check:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Connector</li>
+      <li>Sensor</li>
+      <li>Host/module interface</li>
+    </ul>
+    <p>If yes:</p>
+    <p><strong>Is the adapter correct, clean, and fully seated?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can the sensor zero successfully?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it read known CO2 gas accurately?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure follow the sensor, adapter, module, or host?</strong></p>
+    <p>That separates the problem into clear layers.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a sensor-recognition problem, an optical-measurement problem, or a real gas-condition problem?</strong></p>
+    <p>Those are three very different troubleshooting paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the monitor says:</p>
+    <blockquote><p>Mainstream CO2 Sensor Connected</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The host recognizes the sensor at some level.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Optical windows are clean</li>
+      <li>Zero is correct</li>
+      <li>CO2 accuracy is within specification</li>
+    </ul>
+    <p>If the sensor successfully zeros and measures certified CO2 test gas within specification using the correct adapter and test setup, you now have much stronger evidence that the mainstream measurement system is working properly.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Mainstream CO2 is simpler than sidestream in one important way:</p>
+    <p>The gas comes directly to the sensor.</p>
+    <p>There is no long sampling path to troubleshoot.</p>
+    <p>So think:</p>
+    <p><strong>Airway Gas → Adapter → Optical Sensor → Cable → Module/Monitor.</strong></p>
+    <p>If the sensor is missing:</p>
+    <p>Think communication.</p>
+    <p>If the sensor is present but reading is wrong:</p>
+    <p>Think optics, adapter, zero, and test gas.</p>
+    <p>And if the sensor measures known gas correctly but the clinical waveform looks abnormal:</p>
+    <p>Consider whether it is reporting a real breathing-system condition.</p>
+    <p>The goal is to determine:</p>
+    <p><strong>Is the gas wrong, or is the measurement wrong?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Mainstream CO2 sensor designs, airway adapters, zeroing procedures, calibration requirements, heating systems, barometric compensation, compatible modules, and accuracy limits vary by manufacturer and model. Follow current manufacturer service documentation, use approved airway adapters and certified test gas when required, and complete all required CO2, alarm, and functional verification before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-sidestream-co2-monitoring-works.html">How Sidestream CO2 Monitoring Works</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="how-parameter-modules-communicate-with-host-monitors.html">How Parameter Modules Communicate With Host Monitors</a></li>
+      <li><a href="how-an-anesthesia-machine-breathing-system-works.html">How an Anesthesia Machine Breathing System Works</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Device Batteries: Runtime, Capacity, and State of Health | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to battery state of charge, capacity, state of health, internal resistance, load behavior, smart-battery data, and runtime testing.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/medical-device-batteries-runtime-capacity-and-state-of-health.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>Medical Device Batteries: Runtime, Capacity, and State of Health</h2>
+  <p>How to understand what a battery percentage actually means and how to troubleshoot short runtime correctly</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Battery problems are everywhere in medical equipment.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>State of charge</li>
+      <li>Battery capacity</li>
+      <li>State of health</li>
+      <li>Runtime</li>
+      <li>Battery voltage</li>
+      <li>Smart batteries</li>
+      <li>Cycle count</li>
+      <li>Internal resistance</li>
+      <li>Charging versus capacity</li>
+      <li>Runtime testing</li>
+      <li>Battery analyzers</li>
+      <li>Temperature effects</li>
+      <li>Why batteries fail under load</li>
+      <li>Common troubleshooting mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of a battery like a fuel tank.</p>
+    <p><strong>State of charge</strong></p>
+    <p>How full the tank is right now.</p>
+    <p><strong>Capacity</strong></p>
+    <p>How much energy the tank can actually hold.</p>
+    <p><strong>State of health</strong></p>
+    <p>How much of its original ability the battery still has.</p>
+    <p>A worn-out battery can be:</p>
+    <p><strong>100% charged</strong></p>
+    <p>and still have:</p>
+    <p><strong>very little usable capacity.</strong></p>
+    <p>That is the key concept.</p>
+  </section>
+
+  <section class="content-box" id="state-of-charge">
+    <h3>State of Charge</h3>
+    <p>State of charge is usually abbreviated:</p>
+    <p><strong>SOC</strong></p>
+    <p>It represents how much charge the battery currently contains.</p>
+    <p>A device may display:</p>
+    <ul>
+      <li>100%</li>
+      <li>75%</li>
+      <li>50%</li>
+      <li>10%</li>
+    </ul>
+    <p>That is state of charge.</p>
+  </section>
+
+  <section class="content-box" id="state-of-charge-does-not-tell-you-battery-health">
+    <h3>State of Charge Does Not Tell You Battery Health</h3>
+    <p>Suppose two batteries both show:</p>
+    <p>100%.</p>
+    <p>Battery A runs the monitor for:</p>
+    <p>3 hours.</p>
+    <p>Battery B runs the same monitor for:</p>
+    <p>20 minutes.</p>
+    <p>Both were fully charged.</p>
+    <p>But they clearly do not have the same capacity.</p>
+  </section>
+
+  <section class="content-box" id="capacity">
+    <h3>Capacity</h3>
+    <p>Battery capacity describes how much electrical energy the battery can store and deliver.</p>
+    <p>Depending on battery type, capacity may be expressed in:</p>
+    <ul>
+      <li>Ah</li>
+      <li>mAh</li>
+      <li>Wh</li>
+    </ul>
+    <p>Examples:</p>
+    <ul>
+      <li>5 Ah</li>
+      <li>5000 mAh</li>
+      <li>72 Wh</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="amp-hours">
+    <h3>Amp-Hours</h3>
+    <p>Amp-hours describe how much charge a battery can theoretically supply over time.</p>
+    <p>Very simplified example:</p>
+    <p>A 5 Ah battery might theoretically provide:</p>
+    <p>5 amps for 1 hour</p>
+    <p>or:</p>
+    <p>1 amp for 5 hours.</p>
+    <p>Real battery behavior is more complicated, but the concept is useful.</p>
+  </section>
+
+  <section class="content-box" id="watt-hours">
+    <h3>Watt-Hours</h3>
+    <p>Watt-hours describe energy capacity.</p>
+    <p>This can be especially useful because it accounts for voltage.</p>
+    <p>Basic relationship:</p>
+    <p><strong>Wh = V × Ah</strong></p>
+    <p>Example:</p>
+    <p>14.4 V battery</p>
+    <p>5 Ah capacity</p>
+    <p>Approximately:</p>
+    <p>72 Wh.</p>
+  </section>
+
+  <section class="content-box" id="rated-capacity-vs-actual-capacity">
+    <h3>Rated Capacity vs Actual Capacity</h3>
+    <p>A new battery may be rated:</p>
+    <p>5 Ah.</p>
+    <p>After years of use, its actual capacity may be:</p>
+    <p>2 Ah.</p>
+    <p>The label does not change.</p>
+    <p>The battery does.</p>
+  </section>
+
+  <section class="content-box" id="state-of-health">
+    <h3>State of Health</h3>
+    <p>State of health is often abbreviated:</p>
+    <p><strong>SOH</strong></p>
+    <p>It generally describes how the battery's current ability compares with when it was new.</p>
+    <p>Example:</p>
+    <p>Original capacity:</p>
+    <p>5 Ah.</p>
+    <p>Current measured capacity:</p>
+    <p>4 Ah.</p>
+    <p>That is roughly:</p>
+    <p>80% of original capacity.</p>
+    <p>Different battery systems calculate health differently, so use manufacturer-defined criteria.</p>
+  </section>
+
+  <section class="content-box" id="state-of-health-is-not-always-displayed-directly">
+    <h3>State of Health Is Not Always Displayed Directly</h3>
+    <p>Some smart batteries report:</p>
+    <ul>
+      <li>Health percentage</li>
+      <li>Full charge capacity</li>
+      <li>Design capacity</li>
+      <li>Cycle count</li>
+    </ul>
+    <p>Others do not.</p>
+    <p>You may need runtime or analyzer testing.</p>
+  </section>
+
+  <section class="content-box" id="runtime">
+    <h3>Runtime</h3>
+    <p>Runtime is often what clinical staff actually care about.</p>
+    <p>Question:</p>
+    <blockquote><p>How long will this device keep operating when unplugged?</p></blockquote>
+    <p>That depends on:</p>
+    <ul>
+      <li>Battery capacity</li>
+      <li>Device load</li>
+      <li>Battery age</li>
+      <li>Temperature</li>
+      <li>Device settings</li>
+      <li>Battery condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="runtime-is-a-system-measurement">
+    <h3>Runtime Is a System Measurement</h3>
+    <p>The same battery may run different devices for different lengths of time.</p>
+    <p>Even the same device can draw different amounts of power depending on:</p>
+    <ul>
+      <li>Screen brightness</li>
+      <li>Wi-Fi</li>
+      <li>Printing</li>
+      <li>Pumps</li>
+      <li>Motors</li>
+      <li>Active modules</li>
+    </ul>
+    <p>So runtime is not just a battery number.</p>
+  </section>
+
+  <section class="content-box" id="battery-voltage">
+    <h3>Battery Voltage</h3>
+    <p>Voltage is useful.</p>
+    <p>But it is not enough by itself.</p>
+    <p>A battery may measure:</p>
+    <p>12.4 V</p>
+    <p>and still have poor capacity.</p>
+    <p>Why?</p>
+    <p>Because voltage tells you the electrical potential at that moment.</p>
+    <p>It does not tell you how much energy remains available under sustained load.</p>
+  </section>
+
+  <section class="content-box" id="no-load-voltage-can-be-misleading">
+    <h3>No-Load Voltage Can Be Misleading</h3>
+    <p>Battery removed from device:</p>
+    <p>12.5 V.</p>
+    <p>Install it.</p>
+    <p>Device starts.</p>
+    <p>Motor runs.</p>
+    <p>Voltage collapses to:</p>
+    <p>8 V.</p>
+    <p>Device shuts down.</p>
+    <p>That battery looked fine without load.</p>
+    <p>It failed when current demand increased.</p>
+  </section>
+
+  <section class="content-box" id="load-matters">
+    <h3>Load Matters</h3>
+    <p>A weak battery often reveals itself under load.</p>
+    <p>Possible symptoms include:</p>
+    <ul>
+      <li>Sudden shutdown</li>
+      <li>Reboot</li>
+      <li>Battery percentage drops rapidly</li>
+      <li>Low-battery alarm under heavy load</li>
+    </ul>
+    <p>The battery may recover voltage after the load is removed.</p>
+    <p>That does not mean it is healthy.</p>
+  </section>
+
+  <section class="content-box" id="internal-resistance">
+    <h3>Internal Resistance</h3>
+    <p>As batteries age, internal resistance can increase.</p>
+    <p>Higher internal resistance causes more voltage drop when current flows.</p>
+    <p>Simplified idea:</p>
+    <p>Healthy battery:</p>
+    <p>Voltage stays relatively stable under load.</p>
+    <p>Worn battery:</p>
+    <p>Voltage collapses more under the same load.</p>
+  </section>
+
+  <section class="content-box" id="why-this-matters">
+    <h3>Why This Matters</h3>
+    <p>A battery may still appear fully charged.</p>
+    <p>But when the device demands high current:</p>
+    <p>Voltage drops.</p>
+    <p>The device shuts down.</p>
+    <p>This is especially important in equipment with high-load events.</p>
+  </section>
+
+  <section class="content-box" id="high-load-examples">
+    <h3>High-Load Examples</h3>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Defibrillator charging</li>
+      <li>Motor movement</li>
+      <li>Printer operation</li>
+      <li>Ventilator compressor</li>
+      <li>Pump operation</li>
+    </ul>
+    <p>A battery can seem acceptable during idle operation and fail during these events.</p>
+  </section>
+
+  <section class="content-box" id="charging-is-not-capacity">
+    <h3>Charging Is Not Capacity</h3>
+    <p>A battery can charge normally and still have low capacity.</p>
+    <p>Example:</p>
+    <p>Battery starts:</p>
+    <p>20%.</p>
+    <p>After charging:</p>
+    <p>100%.</p>
+    <p>Runtime:</p>
+    <p>15 minutes.</p>
+    <p>The charger may be working perfectly.</p>
+    <p>The battery simply cannot store much energy anymore.</p>
+  </section>
+
+  <section class="content-box" id="capacity-is-not-charging">
+    <h3>Capacity Is Not Charging</h3>
+    <p>The reverse is also true.</p>
+    <p>A healthy battery may fail to charge because of:</p>
+    <ul>
+      <li>Charger failure</li>
+      <li>Bad contacts</li>
+      <li>Battery communication</li>
+      <li>Power supply issue</li>
+    </ul>
+    <p>Do not confuse battery health with charging-system health.</p>
+  </section>
+
+  <section class="content-box" id="smart-batteries">
+    <h3>Smart Batteries</h3>
+    <p>Modern medical equipment often uses smart batteries.</p>
+    <p>These batteries may communicate with the device.</p>
+    <p>They may report:</p>
+    <ul>
+      <li>State of charge</li>
+      <li>Temperature</li>
+      <li>Cycle count</li>
+      <li>Design capacity</li>
+      <li>Full charge capacity</li>
+      <li>Serial number</li>
+    </ul>
+    <p>That digital information can be very useful.</p>
+  </section>
+
+  <section class="content-box" id="smart-battery-communication-can-fail">
+    <h3>Smart Battery Communication Can Fail</h3>
+    <p>A battery may still provide power while communication fails.</p>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Battery not recognized</li>
+      <li>Percentage unavailable</li>
+      <li>Charging disabled</li>
+      <li>Battery status incorrect</li>
+    </ul>
+    <p>The power cells and communication electronics are separate parts of the system.</p>
+  </section>
+
+  <section class="content-box" id="design-capacity">
+    <h3>Design Capacity</h3>
+    <p>Design capacity is what the battery was originally designed to hold.</p>
+    <p>Example:</p>
+    <p>5000 mAh.</p>
+  </section>
+
+  <section class="content-box" id="full-charge-capacity">
+    <h3>Full Charge Capacity</h3>
+    <p>Full charge capacity is what the battery can currently hold when fully charged.</p>
+    <p>Example:</p>
+    <p>3500 mAh.</p>
+    <p>That difference gives insight into degradation.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Design capacity:</p>
+    <p>5000 mAh.</p>
+    <p>Current full charge capacity:</p>
+    <p>2500 mAh.</p>
+    <p>The battery may still charge to:</p>
+    <p>100%.</p>
+    <p>But that 100% now represents only about half the original capacity.</p>
+    <p>This is why percentage alone can mislead.</p>
+  </section>
+
+  <section class="content-box" id="cycle-count">
+    <h3>Cycle Count</h3>
+    <p>A charge cycle represents battery use equivalent to roughly one full discharge and recharge.</p>
+    <p>It does not always mean:</p>
+    <p>One time plugged in.</p>
+    <p>For example:</p>
+    <p>Two 50% discharges can roughly equal one full cycle.</p>
+    <p>Battery-management systems may calculate this differently.</p>
+  </section>
+
+  <section class="content-box" id="cycle-count-is-only-one-indicator">
+    <h3>Cycle Count Is Only One Indicator</h3>
+    <p>A high cycle count suggests wear.</p>
+    <p>But battery aging also depends on:</p>
+    <ul>
+      <li>Time</li>
+      <li>Temperature</li>
+      <li>Storage</li>
+      <li>Charging conditions</li>
+    </ul>
+    <p>Do not replace a battery based only on cycle count unless manufacturer criteria say to.</p>
+  </section>
+
+  <section class="content-box" id="calendar-aging">
+    <h3>Calendar Aging</h3>
+    <p>Lithium-ion batteries age even if they are rarely used.</p>
+    <p>A battery can degrade because of:</p>
+    <ul>
+      <li>Time</li>
+      <li>Heat</li>
+      <li>Storage at high charge</li>
+    </ul>
+    <p>So:</p>
+    <blockquote><p>It only has a few cycles.</p></blockquote>
+    <p>does not automatically mean it is healthy.</p>
+  </section>
+
+  <section class="content-box" id="temperature">
+    <h3>Temperature</h3>
+    <p>Battery performance changes with temperature.</p>
+    <p>Cold temperatures can reduce available performance.</p>
+    <p>High temperatures can accelerate battery aging.</p>
+    <p>Charging may also be restricted if temperature is outside an acceptable range.</p>
+  </section>
+
+  <section class="content-box" id="high-temperature">
+    <h3>High Temperature</h3>
+    <p>Repeated heat exposure can shorten battery life.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Poor ventilation</li>
+      <li>Hot storage</li>
+      <li>Device overheating</li>
+    </ul>
+    <p>If batteries fail unusually early across a fleet, look at environmental conditions.</p>
+  </section>
+
+  <section class="content-box" id="battery-age">
+    <h3>Battery Age</h3>
+    <p>Some facilities replace batteries based partly on age.</p>
+    <p>Others use:</p>
+    <ul>
+      <li>Capacity test</li>
+      <li>Runtime test</li>
+      <li>Manufacturer criteria</li>
+    </ul>
+    <p>Do not assume age alone tells the whole story.</p>
+    <p>Follow the applicable maintenance program.</p>
+  </section>
+
+  <section class="content-box" id="runtime-testing">
+    <h3>Runtime Testing</h3>
+    <p>A runtime test is one of the most practical battery-health checks.</p>
+    <p>Basic idea:</p>
+    <ol>
+      <li>Fully charge battery.</li>
+      <li>Run device under defined conditions.</li>
+      <li>Measure operating time.</li>
+      <li>Compare with required criteria.</li>
+    </ol>
+    <p>The exact procedure should come from manufacturer or facility requirements.</p>
+  </section>
+
+  <section class="content-box" id="define-the-load">
+    <h3>Define the Load</h3>
+    <p>Runtime testing is only meaningful if the test conditions are consistent.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Device idle</li>
+      <li>Display on</li>
+      <li>Certain modules installed</li>
+      <li>Specified operating mode</li>
+    </ul>
+    <p>Different loads create different runtimes.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Battery A:</p>
+    <p>90 minutes under standard test.</p>
+    <p>Battery B:</p>
+    <p>25 minutes under same test.</p>
+    <p>That comparison is meaningful because the conditions match.</p>
+  </section>
+
+  <section class="content-box" id="battery-analyzer">
+    <h3>Battery Analyzer</h3>
+    <p>A battery analyzer may measure:</p>
+    <ul>
+      <li>Capacity</li>
+      <li>Voltage</li>
+      <li>Internal resistance</li>
+      <li>Discharge behavior</li>
+    </ul>
+    <p>depending on the analyzer and battery type.</p>
+    <p>This can provide more controlled information than simply watching the device.</p>
+  </section>
+
+  <section class="content-box" id="use-the-correct-procedure">
+    <h3>Use the Correct Procedure</h3>
+    <p>Not every analyzer can safely or correctly test every battery.</p>
+    <p>Smart packs may require:</p>
+    <ul>
+      <li>Specific adapters</li>
+      <li>Communication</li>
+      <li>Manufacturer procedure</li>
+    </ul>
+    <p>Do not connect unknown lithium-ion packs to unsupported test equipment.</p>
+  </section>
+
+  <section class="content-box" id="battery-self-test">
+    <h3>Battery Self-Test</h3>
+    <p>Some devices contain built-in battery tests.</p>
+    <p>These may evaluate:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Communication</li>
+      <li>Capacity</li>
+      <li>Internal resistance</li>
+    </ul>
+    <p>depending on design.</p>
+    <p>Ask:</p>
+    <p><strong>What does this particular battery test actually measure?</strong></p>
+    <p>A pass may not guarantee full runtime unless the test specifically evaluates capacity.</p>
+  </section>
+
+  <section class="content-box" id="battery-calibration-or-learning">
+    <h3>Battery Calibration or Learning</h3>
+    <p>Some smart batteries or devices use a learning cycle to improve the accuracy of the displayed charge estimate.</p>
+    <p>This is sometimes called:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Relearning</li>
+      <li>Conditioning</li>
+    </ul>
+    <p>Do not perform these procedures unless specified by the manufacturer.</p>
+    <p>They do not magically restore lost battery capacity.</p>
+  </section>
+
+  <section class="content-box" id="battery-conditioning-myths">
+    <h3>Battery Conditioning Myths</h3>
+    <p>Older battery chemistries were sometimes associated with "memory" effects.</p>
+    <p>Modern lithium-ion batteries generally do not benefit from routine full discharge cycles simply to prevent memory.</p>
+    <p>Follow the manufacturer guidance for the specific chemistry.</p>
+  </section>
+
+  <section class="content-box" id="lithium-ion-batteries">
+    <h3>Lithium-Ion Batteries</h3>
+    <p>Lithium-ion batteries are widely used because they provide:</p>
+    <ul>
+      <li>High energy density</li>
+      <li>Rechargeability</li>
+      <li>Lower weight</li>
+    </ul>
+    <p>But they require proper battery-management and safety controls.</p>
+    <p>Watch for:</p>
+    <ul>
+      <li>Swelling</li>
+      <li>Heat</li>
+      <li>Physical damage</li>
+      <li>Unusual odor</li>
+      <li>Leakage</li>
+    </ul>
+    <p>Damaged lithium-ion batteries require special handling.</p>
+  </section>
+
+  <section class="content-box" id="swollen-batteries">
+    <h3>Swollen Batteries</h3>
+    <p>A swollen battery should not be treated like a normal low-capacity battery.</p>
+    <p>Do not:</p>
+    <ul>
+      <li>Continue charging it</li>
+      <li>Puncture it</li>
+      <li>Compress it</li>
+      <li>Force it back into the device</li>
+    </ul>
+    <p>Follow facility battery-safety procedures.</p>
+  </section>
+
+  <section class="content-box" id="battery-contacts">
+    <h3>Battery Contacts</h3>
+    <p>Sometimes the battery is healthy but the connection is not.</p>
+    <p>Inspect:</p>
+    <ul>
+      <li>Contacts</li>
+      <li>Spring terminals</li>
+      <li>Latch</li>
+      <li>Connector</li>
+      <li>Corrosion</li>
+    </ul>
+    <p>An intermittent contact can cause:</p>
+    <ul>
+      <li>Shutdown</li>
+      <li>Reboot</li>
+      <li>Battery removed message</li>
+    </ul>
+    <p>This may look exactly like battery failure.</p>
+  </section>
+
+  <section class="content-box" id="make-the-failure-follow-the-battery">
+    <h3>Make the Failure Follow the Battery</h3>
+    <p>Use known-good substitution.</p>
+    <p>Original battery in Device A:</p>
+    <p>Short runtime.</p>
+    <p>Known-good battery in Device A:</p>
+    <p>Normal runtime.</p>
+    <p>Original battery in Device B:</p>
+    <p>Short runtime.</p>
+    <p>Now the failure follows the battery.</p>
+    <p>Strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="if-failure-stays-with-device">
+    <h3>If Failure Stays With Device</h3>
+    <p>Original battery:</p>
+    <p>Short runtime.</p>
+    <p>Known-good battery:</p>
+    <p>Also short runtime.</p>
+    <p>Both batteries work normally in another device.</p>
+    <p>Now investigate the device.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Excessive power draw</li>
+      <li>Charging problem</li>
+      <li>Battery detection</li>
+      <li>Power management</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="excessive-device-load">
+    <h3>Excessive Device Load</h3>
+    <p>Sometimes the battery is fine.</p>
+    <p>The device simply draws too much current.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Failed fan</li>
+      <li>Motor problem</li>
+      <li>Internal short</li>
+      <li>Software keeping subsystem active</li>
+    </ul>
+    <p>If multiple known-good batteries drain unusually fast in the same device, investigate load.</p>
+  </section>
+
+  <section class="content-box" id="battery-percentage-drops-suddenly">
+    <h3>Battery Percentage Drops Suddenly</h3>
+    <p>Example:</p>
+    <p>Battery shows:</p>
+    <p>60%.</p>
+    <p>Then suddenly:</p>
+    <p>10%.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Poor state-of-charge estimation</li>
+      <li>Aging battery</li>
+      <li>High internal resistance</li>
+      <li>Cell imbalance</li>
+    </ul>
+    <p>A capacity test may clarify.</p>
+  </section>
+
+  <section class="content-box" id="battery-percentage-stuck-at-100">
+    <h3>Battery Percentage Stuck at 100%</h3>
+    <p>If percentage never changes, possible causes include:</p>
+    <ul>
+      <li>Battery communication issue</li>
+      <li>Gauge calibration</li>
+      <li>Software problem</li>
+    </ul>
+    <p>Do not assume the cells themselves are healthy.</p>
+  </section>
+
+  <section class="content-box" id="battery-not-recognized">
+    <h3>Battery Not Recognized</h3>
+    <p>This may be different from low capacity.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Battery electronics</li>
+      <li>Contacts</li>
+      <li>Communication line</li>
+      <li>Incompatible battery</li>
+    </ul>
+    <p>A battery can have excellent cells and still fail identification.</p>
+  </section>
+
+  <section class="content-box" id="battery-alarm-vs-battery-problem">
+    <h3>Battery Alarm vs Battery Problem</h3>
+    <p>A device may correctly alarm:</p>
+    <blockquote><p>Battery Low.</p></blockquote>
+    <p>That does not mean the alarm system is bad.</p>
+    <p>The battery may actually be low.</p>
+    <p>Always separate:</p>
+    <ul>
+      <li>Alarm function</li>
+      <li>Battery condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-full-battery-short-runtime">
+    <h3>Real-World Example: Full Battery, Short Runtime</h3>
+    <p>Monitor:</p>
+    <p>100%.</p>
+    <p>Unplugged:</p>
+    <p>Runs 18 minutes.</p>
+    <p>Known-good battery:</p>
+    <p>Runs 2 hours.</p>
+    <p>Original battery:</p>
+    <p>Fails capacity test.</p>
+    <p>The charger works.</p>
+    <p>The battery simply has poor capacity.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-voltage-looks-good">
+    <h3>Real-World Example: Battery Voltage Looks Good</h3>
+    <p>Battery:</p>
+    <p>12.6 V unloaded.</p>
+    <p>Under device startup load:</p>
+    <p>Drops to 8.9 V.</p>
+    <p>Device shuts down.</p>
+    <p>The battery cannot maintain voltage under load.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-two-batteries-both-fail">
+    <h3>Real-World Example: Two Batteries Both Fail</h3>
+    <p>Battery A:</p>
+    <p>Short runtime in suspect monitor.</p>
+    <p>Battery B:</p>
+    <p>Also short runtime.</p>
+    <p>Both batteries work normally in another monitor.</p>
+    <p>Now battery condition is less likely.</p>
+    <p>Investigate excessive device power draw.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-not-recognized">
+    <h3>Real-World Example: Battery Not Recognized</h3>
+    <p>Battery physically installed.</p>
+    <p>Voltage present.</p>
+    <p>Device says:</p>
+    <blockquote><p>Battery Not Detected.</p></blockquote>
+    <p>Known-good battery works.</p>
+    <p>Original battery fails in another device.</p>
+    <p>Failure likely involves battery electronics or communication, not necessarily cell voltage.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-charging-normal-but-runtime-bad">
+    <h3>Real-World Example: Charging Normal but Runtime Bad</h3>
+    <p>Battery charges from:</p>
+    <p>10% to 100%.</p>
+    <p>Charging process looks normal.</p>
+    <p>Runtime:</p>
+    <p>20 minutes.</p>
+    <p>This is a capacity problem.</p>
+    <p>Not necessarily a charging problem.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-100-means-healthy">
+    <h3>Assuming 100% Means Healthy</h3>
+    <p>It only describes state of charge.</p>
+  </section>
+
+  <section class="content-box" id="judging-battery-only-by-voltage">
+    <h3>Judging Battery Only by Voltage</h3>
+    <p>Capacity and internal resistance matter.</p>
+  </section>
+
+  <section class="content-box" id="confusing-charging-with-capacity">
+    <h3>Confusing Charging With Capacity</h3>
+    <p>They are different systems.</p>
+  </section>
+
+  <section class="content-box" id="replacing-battery-without-cross-testing">
+    <h3>Replacing Battery Without Cross-Testing</h3>
+    <p>Make the failure follow it.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-load">
+    <h3>Ignoring Load</h3>
+    <p>Weak batteries often fail under current demand.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-battery-age-and-temperature">
+    <h3>Ignoring Battery Age and Temperature</h3>
+    <p>Both affect health.</p>
+  </section>
+
+  <section class="content-box" id="treating-swollen-batteries-like-normal-failed-batteries">
+    <h3>Treating Swollen Batteries Like Normal Failed Batteries</h3>
+    <p>Use battery-safety procedures.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Ask:</p>
+    <p><strong>Is the battery recognized?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it charge?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it reach full state of charge?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it actually support the device under load?</strong></p>
+    <p>Then:</p>
+    <p><strong>How long does it run compared with the required criteria?</strong></p>
+    <p>That separates several different battery problems.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Am I troubleshooting charge level, capacity, or battery health?</strong></p>
+    <p>Those are not interchangeable.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the battery reads:</p>
+    <p>100%</p>
+    <p>you proved:</p>
+    <p><strong>The battery-management system reports a full state of charge.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Original capacity remains</li>
+      <li>Runtime is acceptable</li>
+      <li>Internal resistance is low</li>
+      <li>Battery will support a high-current load</li>
+    </ul>
+    <p>If the battery passes a defined capacity or runtime test, you have much stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Battery troubleshooting gets much easier when you stop treating:</p>
+    <p><strong>percentage</strong></p>
+    <p>as the same thing as:</p>
+    <p><strong>health.</strong></p>
+    <p>A battery can be fully charged and still be worn out.</p>
+    <p>It can have normal voltage and still collapse under load.</p>
+    <p>It can charge correctly and still provide terrible runtime.</p>
+    <p>So separate the concepts.</p>
+    <p><strong>State of charge:</strong> How full is it right now?</p>
+    <p><strong>Capacity:</strong> How much energy can it actually hold?</p>
+    <p><strong>State of health:</strong> How much of its original ability remains?</p>
+    <p>Then test the complaint.</p>
+    <p>If the issue is short runtime, test runtime or capacity.</p>
+    <p>If it will not charge, troubleshoot the charging path.</p>
+    <p>If it is not recognized, troubleshoot communication and contacts.</p>
+    <p>The battery icon is only the beginning of the story.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Battery test methods, replacement limits, storage requirements, service intervals, and safety procedures vary by manufacturer and battery chemistry. Follow current manufacturer documentation, facility battery-management procedures, approved test methods, and applicable lithium-ion safety requirements. Damaged, swollen, overheated, or otherwise abnormal batteries should be handled according to approved battery-safety procedures.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-smart-batteries-communicate-with-medical-equipment.html">How Smart Batteries Communicate With Medical Equipment</a></li>
+      <li><a href="how-medical-device-batteries-charge-and-communicate.html">How Medical Device Batteries Charge and Communicate</a></li>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+      <li><a href="how-to-troubleshoot-charging-problems.html">How to Troubleshoot Charging Problems</a></li>
+      <li><a href="what-known-good-actually-means.html">What “Known-Good” Actually Means</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

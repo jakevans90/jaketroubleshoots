@@ -159,7 +159,50 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to Prove a Repair Before Return to Service", planned)
         self.assertNotIn("How to Troubleshoot Communication Failures", planned)
         self.assertNotIn("How to Troubleshoot Charging Problems", planned)
-        self.assertIn("<strong>78</strong>", planned)
+        self.assertNotIn("The Troubleshooting Process: Observe, Isolate, Test, Verify", planned)
+        self.assertNotIn("The Difference Between a Symptom, Cause, and Root Cause", planned)
+        self.assertNotIn("How Experienced Biomeds Think Through a New Problem", planned)
+        self.assertNotIn("How to Read a Troubleshooting Flowchart", planned)
+        self.assertNotIn("AC vs DC Power Basics", planned)
+        self.assertNotIn("Analog vs Digital Signals", planned)
+        self.assertNotIn("Medical Device Batteries: Runtime, Capacity, and State of Health", planned)
+        self.assertNotIn("How to Read Device Specifications", planned)
+        self.assertNotIn("Tolerance vs Accuracy", planned)
+        self.assertNotIn("How to Compare Your Test Result to Manufacturer Specification", planned)
+        self.assertNotIn("Pass/Fail Limits and Why the Test Point Matters", planned)
+        self.assertNotIn("How NIBP Works in a Patient Monitor", planned)
+        self.assertNotIn("How SpO2 Measurement Works", planned)
+        self.assertNotIn("How ECG Acquisition Works", planned)
+        self.assertNotIn("How Sidestream CO2 Monitoring Works", planned)
+        self.assertNotIn("How Ventilator Flow Sensors Work", planned)
+        self.assertNotIn("How Ventilator Pressure Sensors Work", planned)
+        self.assertNotIn("How Medical Equipment Measures Pressure", planned)
+        self.assertNotIn("How Medical Equipment Measures Flow", planned)
+        self.assertNotIn("How Invasive Blood Pressure Monitoring Works", planned)
+        self.assertNotIn("How Oxygen Sensors Work in Ventilators and Anesthesia Machines", planned)
+        self.assertNotIn("How an Anesthesia Machine Breathing System Works", planned)
+        self.assertNotIn("How Anesthesia Waste Gas Scavenging Works", planned)
+        self.assertNotIn("How a Ventilator Measures Tidal Volume", planned)
+        self.assertNotIn("How PEEP Is Generated and Controlled", planned)
+        self.assertNotIn("How Infusion Pump Occlusion Detection Works", planned)
+        self.assertNotIn("How Infusion Pumps Measure or Control Flow", planned)
+        self.assertNotIn("How Defibrillators Charge and Deliver Energy", planned)
+        self.assertNotIn("How Medical Device Batteries Charge and Communicate", planned)
+        self.assertNotIn("How Smart Batteries Communicate With Medical Equipment", planned)
+        self.assertNotIn("How Parameter Modules Communicate With Host Monitors", planned)
+        self.assertNotIn("How Patient Monitors Communicate With Central Stations", planned)
+        self.assertNotIn("How ECG Lead-Off Detection Works", planned)
+        self.assertNotIn("How Mainstream CO2 Monitoring Works", planned)
+        self.assertNotIn("How Medical Gas Sampling Systems Work", planned)
+        self.assertNotIn("How an Anesthesia Machine Performs a Leak Test", planned)
+        self.assertNotIn("How to Become a Biomedical Equipment Technician", planned)
+        self.assertNotIn("What Degree Do You Need to Become a Biomed?", planned)
+        self.assertNotIn("What Entry-Level Biomeds Should Learn First", planned)
+        self.assertNotIn("What Electronics Knowledge Does a Biomed Actually Need?", planned)
+        self.assertIn("How an Anesthesia Vaporizer Works", planned)
+        self.assertIn("How Temperature Probes and Thermistors Work", planned)
+        self.assertIn("How to Read an OEM Training Certificate and Know What It Actually Qualifies You to Do", planned)
+        self.assertIn("<strong>104</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -190,6 +233,43 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-to-verify-a-repair-before-returning-equipment-to-service": "Repair Is Not Verification",
             "how-to-troubleshoot-communication-failures": "Find the Last Known-Good Point",
             "how-to-troubleshoot-charging-problems": "Battery Not Charging vs Short Runtime",
+            "the-troubleshooting-process-observe-isolate-test-verify": "The Most Important Question",
+            "the-difference-between-a-symptom-cause-and-root-cause": "Do Not Repair the Symptom",
+            "how-experienced-biomeds-think-through-a-new-problem": "Ask What Still Works",
+            "how-to-read-a-troubleshooting-flowchart": "A Decision Point Is a Question",
+            "ac-vs-dc-power-basics": "AC From the Wall, DC Inside the Device",
+            "analog-vs-digital-signals": "Continuity Is Not Signal Quality",
+            "medical-device-batteries-runtime-capacity-and-state-of-health": "State of Charge Does Not Tell You Battery Health",
+            "how-to-read-device-specifications": "Range Is Not Accuracy",
+            "tolerance-vs-accuracy": "Tolerance Creates the Pass/Fail Window",
+            "how-to-compare-your-test-result-to-manufacturer-specification": "Apply the Limit Before Looking at the Result",
+            "pass-fail-limits-and-why-the-test-point-matters": "Multiple Points Reveal Error Patterns",
+            "how-nibp-works-in-a-patient-monitor": "Oscillometric Measurement",
+            "how-spo2-measurement-works": "AC and DC Components of the Optical Signal",
+            "how-ecg-acquisition-works": "Common-Mode Rejection",
+            "how-sidestream-co2-monitoring-works": "Pump Running Does Not Mean Flow Is Good",
+            "how-ventilator-flow-sensors-work": "Flow Sensor Calibration Failure",
+            "how-ventilator-pressure-sensors-work": "Pressure Control vs Pressure Measurement",
+            "how-medical-equipment-measures-pressure": "Leak Test vs Accuracy Test",
+            "how-medical-equipment-measures-flow": "Estimated Flow vs Measured Flow",
+            "how-invasive-blood-pressure-monitoring-works": "Zeroing vs Leveling",
+            "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": "The Sensor Consumes Itself",
+            "how-an-anesthesia-machine-breathing-system-works": "Fresh Gas Is Not the Entire Breath",
+            "how-anesthesia-waste-gas-scavenging-works": "The Breathing System and Scavenging System Are Different",
+            "how-a-ventilator-measures-tidal-volume": "Set Volume Is Not Measured Volume",
+            "how-peep-is-generated-and-controlled": "Measurement Error vs Control Error",
+            "how-infusion-pump-occlusion-detection-works": "Alarm Threshold Is Not Alarm Time",
+            "how-infusion-pumps-measure-or-control-flow": "Programmed Flow vs Measured Flow",
+            "how-defibrillators-charge-and-deliver-energy": "Set Energy vs Delivered Energy",
+            "how-medical-device-batteries-charge-and-communicate": "AC Input Does Not Mean Battery Is Charging",
+            "how-smart-batteries-communicate-with-medical-equipment": "Power Can Still Work",
+            "how-parameter-modules-communicate-with-host-monitors": "Measurement and Display Are Separate",
+            "how-patient-monitors-communicate-with-central-stations": "Central Monitoring Is Not Just Screen Mirroring",
+            "how-ecg-lead-off-detection-works": "Lead-Off Is Different From Noisy ECG",
+            "how-mainstream-co2-monitoring-works": "The Adapter Is Part of the Measurement System",
+            "how-medical-gas-sampling-systems-work": "Pump Running Does Not Prove Sample Flow",
+            "how-an-anesthesia-machine-performs-a-leak-test": "Know the Test Boundary",
+            "how-to-become-a-biomedical-equipment-technician": "Troubleshooting Is the Core Skill",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -203,15 +283,20 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 41)
+        self.assertEqual(len(catalog), 81)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
             self.assertEqual(item["url"], f'biomed-basics/{item["slug"]}.html')
+            self.assertRegex(item["lastRevision"], r"^\d{4}-\d{2}-\d{2}$")
             self.assertTrue((ROOT / item["url"]).is_file())
+            self.assertIn(
+                '<body class="biomed-article">',
+                (ROOT / item["url"]).read_text(encoding="utf-8"),
+            )
             self.assertIn(item["group"], {
                 "start-here", "everyday-skills", "connected-systems",
-                "career-communication", "troubleshooting-safety",
+                "career-communication", "troubleshooting-safety", "how-it-works",
             })
         landing = (ROOT / "biomed-basics.html").read_text(encoding="utf-8")
         self.assertIn("fetch('data/biomed-basics.json')", landing)
@@ -234,6 +319,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertIn("<strong>1</strong>", cleaned)
 
     def test_new_article_categories_map_to_landing_page_groups(self):
+        self.assertEqual(biomed_group("How It Works"), "how-it-works")
         self.assertEqual(biomed_group("Integration"), "connected-systems")
         self.assertEqual(biomed_group("Electrical Safety"), "start-here")
         self.assertEqual(biomed_group("Safety & Risk"), "troubleshooting-safety")

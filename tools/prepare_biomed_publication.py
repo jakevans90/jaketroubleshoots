@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import hashlib
 import html
 import json
@@ -16,47 +17,87 @@ from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
 
 
 RELATED = {
-    "biomed-bmet-clinical-engineering-htm": ["biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
+    "biomed-bmet-clinical-engineering-htm": ["how-to-become-a-biomedical-equipment-technician", "biomed-translation-problems-medical-equipment-names", "biomed-resume-basics", "biomed-work-order-notes-ccr-method", "functional-testing-vs-calibration-vs-verification"],
     "electrical-safety-testing-medical-equipment": ["ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "functional-testing-vs-calibration-vs-verification"],
-    "functional-testing-vs-calibration-vs-verification": ["how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "electrical-safety-testing-medical-equipment"],
+    "functional-testing-vs-calibration-vs-verification": ["pass-fail-limits-and-why-the-test-point-matters", "tolerance-vs-accuracy", "how-to-read-device-specifications", "how-to-verify-a-repair-before-returning-equipment-to-service", "when-to-trust-the-device-s-internal-self-test"],
     "biomed-work-order-notes-ccr-method": ["what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "when-to-remove-medical-equipment-from-service"],
-    "medical-equipment-battery-basics": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means"],
-    "basic-networking-for-medical-equipment": ["how-to-troubleshoot-communication-failures", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english"],
-    "hospital-emrs-and-medical-device-integration": ["basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
+    "medical-equipment-battery-basics": ["how-medical-device-batteries-charge-and-communicate", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english"],
+    "basic-networking-for-medical-equipment": ["how-patient-monitors-communicate-with-central-stations", "how-to-troubleshoot-communication-failures", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "hospital-emrs-and-medical-device-integration", "what-hl7-means-in-plain-english"],
+    "hospital-emrs-and-medical-device-integration": ["how-patient-monitors-communicate-with-central-stations", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "what-hl7-means-in-plain-english", "nurse-call-integration-basics"],
     "what-dicom-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-hl7-means-in-plain-english", "biomed-work-order-notes-ccr-method", "biomed-translation-problems-medical-equipment-names"],
-    "biomed-resume-basics": ["biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "when-to-remove-medical-equipment-from-service"],
+    "biomed-resume-basics": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-translation-problems-medical-equipment-names", "biomed-work-order-notes-ccr-method", "when-to-remove-medical-equipment-from-service"],
     "biomed-translation-problems-medical-equipment-names": ["biomed-bmet-clinical-engineering-htm", "biomed-work-order-notes-ccr-method", "basic-networking-for-medical-equipment", "biomed-resume-basics", "when-to-remove-medical-equipment-from-service"],
     "when-to-remove-medical-equipment-from-service": ["how-to-verify-a-repair-before-returning-equipment-to-service", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "preserving-device-logs-after-a-serious-event", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
-    "how-to-think-before-calling-a-vendor": ["how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
+    "how-to-think-before-calling-a-vendor": ["how-experienced-biomeds-think-through-a-new-problem", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-hl7-means-in-plain-english": ["hospital-emrs-and-medical-device-integration", "basic-networking-for-medical-equipment", "what-dicom-means-in-plain-english", "nurse-call-integration-basics", "biomed-work-order-notes-ccr-method"],
     "nurse-call-integration-basics": ["medical-device-alarm-troubleshooting-fundamentals", "relays-and-contact-closures-in-plain-english", "what-hl7-means-in-plain-english", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
-    "how-to-read-a-medical-equipment-service-manual": ["software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-think-before-calling-a-vendor"],
+    "how-to-read-a-medical-equipment-service-manual": ["how-to-read-device-specifications", "how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t"],
     "how-to-reproduce-a-clinical-complaint-on-the-bench": ["environmental-causes-of-medical-equipment-failures", "what-unable-to-duplicate-should-actually-mean", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "what-known-good-actually-means"],
-    "how-to-use-a-multimeter-in-biomed": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "electrical-safety-testing-medical-equipment"],
-    "what-known-good-actually-means": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench", "functional-testing-vs-calibration-vs-verification"],
-    "fuses-breakers-and-power-supplies-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "medical-equipment-battery-basics"],
-    "voltage-current-resistance-and-continuity-in-plain-english": ["how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "electrical-safety-testing-medical-equipment"],
-    "sensors-and-transducers-basics": ["medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "when-to-trust-the-device-s-internal-self-test", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
+    "how-to-use-a-multimeter-in-biomed": ["tolerance-vs-accuracy", "how-to-read-a-troubleshooting-flowchart", "medical-equipment-cables-and-connectors-inspection-and-isolation", "voltage-current-resistance-and-continuity-in-plain-english", "electrical-safety-testing-medical-equipment"],
+    "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
+    "voltage-current-resistance-and-continuity-in-plain-english": ["how-defibrillators-charge-and-deliver-energy", "analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english"],
+    "sensors-and-transducers-basics": ["how-infusion-pump-occlusion-detection-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
-    "how-to-avoid-confirmation-bias-while-troubleshooting": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
+    "how-to-avoid-confirmation-bias-while-troubleshooting": ["the-difference-between-a-symptom-cause-and-root-cause", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification"],
     "when-to-trust-the-device-s-internal-self-test": ["error-codes-what-they-tell-you-and-what-they-don-t", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
-    "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
-    "ground-neutral-and-hot-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment"],
-    "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "why-changing-one-thing-at-a-time-matters": ["the-troubleshooting-process-observe-isolate-test-verify", "what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-think-before-calling-a-vendor"],
+    "ground-neutral-and-hot-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
+    "error-codes-what-they-tell-you-and-what-they-don-t": ["the-difference-between-a-symptom-cause-and-root-cause", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
-    "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters"],
-    "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
-    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
+    "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-ecg-lead-off-detection-works", "how-parameter-modules-communicate-with-host-monitors", "how-smart-batteries-communicate-with-medical-equipment", "how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means"],
+    "how-to-troubleshoot-medical-device-accessories": ["how-ecg-lead-off-detection-works", "how-mainstream-co2-monitoring-works", "how-sidestream-co2-monitoring-works", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-anesthesia-waste-gas-scavenging-works", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
-    "medical-device-alarm-troubleshooting-fundamentals": ["sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "medical-device-alarm-troubleshooting-fundamentals": ["how-ecg-lead-off-detection-works", "how-infusion-pump-occlusion-detection-works", "how-a-ventilator-measures-tidal-volume", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-pressure-sensors-work"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
-    "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
+    "software-firmware-and-configuration-problems-in-medical-equipment": ["how-parameter-modules-communicate-with-host-monitors", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
-    "how-to-verify-a-repair-before-returning-equipment-to-service": ["functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service", "when-to-trust-the-device-s-internal-self-test", "medical-device-alarm-troubleshooting-fundamentals", "biomed-work-order-notes-ccr-method"],
-    "how-to-troubleshoot-communication-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment"],
-    "how-to-troubleshoot-charging-problems": ["medical-equipment-battery-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
+    "how-to-verify-a-repair-before-returning-equipment-to-service": ["how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "the-troubleshooting-process-observe-isolate-test-verify", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service"],
+    "how-to-troubleshoot-communication-failures": ["how-patient-monitors-communicate-with-central-stations", "how-parameter-modules-communicate-with-host-monitors", "how-smart-batteries-communicate-with-medical-equipment", "analog-vs-digital-signals", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
+    "how-to-troubleshoot-charging-problems": ["how-medical-device-batteries-charge-and-communicate", "how-defibrillators-charge-and-deliver-energy", "medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-battery-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
+    "the-troubleshooting-process-observe-isolate-test-verify": ["how-to-read-a-troubleshooting-flowchart", "how-experienced-biomeds-think-through-a-new-problem", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "why-changing-one-thing-at-a-time-matters"],
+    "the-difference-between-a-symptom-cause-and-root-cause": ["the-troubleshooting-process-observe-isolate-test-verify", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-avoid-confirmation-bias-while-troubleshooting", "why-changing-one-thing-at-a-time-matters", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-experienced-biomeds-think-through-a-new-problem": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-read-a-medical-equipment-service-manual", "what-known-good-actually-means", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-think-before-calling-a-vendor"],
+    "how-to-read-a-troubleshooting-flowchart": ["how-to-read-a-medical-equipment-service-manual", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-trust-the-device-s-internal-self-test"],
+    "ac-vs-dc-power-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "ground-neutral-and-hot-in-medical-equipment", "fuses-breakers-and-power-supplies-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
+    "analog-vs-digital-signals": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
+    "medical-device-batteries-runtime-capacity-and-state-of-health": ["how-smart-batteries-communicate-with-medical-equipment", "how-medical-device-batteries-charge-and-communicate", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means"],
+    "how-to-read-device-specifications": ["how-nibp-works-in-a-patient-monitor", "how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification"],
+    "tolerance-vs-accuracy": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
+    "how-to-compare-your-test-result-to-manufacturer-specification": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "pass-fail-limits-and-why-the-test-point-matters": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-nibp-works-in-a-patient-monitor": ["how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-pressure", "how-sidestream-co2-monitoring-works", "how-spo2-measurement-works", "sensors-and-transducers-basics"],
+    "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
+    "how-ecg-acquisition-works": ["how-ecg-lead-off-detection-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics"],
+    "how-sidestream-co2-monitoring-works": ["how-medical-gas-sampling-systems-work", "how-mainstream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
+    "how-ventilator-flow-sensors-work": ["how-a-ventilator-measures-tidal-volume", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-ventilator-pressure-sensors-work": ["how-peep-is-generated-and-controlled", "how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-medical-equipment-measures-pressure": ["how-an-anesthesia-machine-performs-a-leak-test", "how-infusion-pump-occlusion-detection-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow"],
+    "how-medical-equipment-measures-flow": ["how-infusion-pumps-measure-or-control-flow", "how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-flow-sensors-work"],
+    "how-invasive-blood-pressure-monitoring-works": ["how-medical-equipment-measures-pressure", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": ["how-an-anesthesia-machine-breathing-system-works", "sensors-and-transducers-basics", "how-sidestream-co2-monitoring-works", "how-medical-equipment-measures-flow", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-an-anesthesia-machine-breathing-system-works": ["how-an-anesthesia-machine-performs-a-leak-test", "how-anesthesia-waste-gas-scavenging-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure"],
+    "how-anesthesia-waste-gas-scavenging-works": ["how-an-anesthesia-machine-performs-a-leak-test", "how-medical-gas-sampling-systems-work", "how-an-anesthesia-machine-breathing-system-works", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-a-ventilator-measures-tidal-volume": ["how-peep-is-generated-and-controlled", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-peep-is-generated-and-controlled": ["how-ventilator-pressure-sensors-work", "how-a-ventilator-measures-tidal-volume", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-infusion-pump-occlusion-detection-works": ["how-infusion-pumps-measure-or-control-flow", "how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories"],
+    "how-infusion-pumps-measure-or-control-flow": ["how-infusion-pump-occlusion-detection-works", "how-medical-equipment-measures-flow", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-troubleshoot-medical-device-accessories", "how-to-read-device-specifications"],
+    "how-defibrillators-charge-and-deliver-energy": ["voltage-current-resistance-and-continuity-in-plain-english", "fuses-breakers-and-power-supplies-in-medical-equipment", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-charging-problems", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-medical-device-batteries-charge-and-communicate": ["how-smart-batteries-communicate-with-medical-equipment", "medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-smart-batteries-communicate-with-medical-equipment": ["how-medical-device-batteries-charge-and-communicate", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
+    "how-parameter-modules-communicate-with-host-monitors": ["how-mainstream-co2-monitoring-works", "how-patient-monitors-communicate-with-central-stations", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-ecg-acquisition-works"],
+    "how-patient-monitors-communicate-with-central-stations": ["basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "hospital-emrs-and-medical-device-integration", "how-parameter-modules-communicate-with-host-monitors", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-ecg-lead-off-detection-works": ["how-ecg-acquisition-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-mainstream-co2-monitoring-works": ["how-sidestream-co2-monitoring-works", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "how-an-anesthesia-machine-breathing-system-works", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-medical-gas-sampling-systems-work": ["how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-to-troubleshoot-medical-device-accessories"],
+    "how-an-anesthesia-machine-performs-a-leak-test": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-medical-equipment-measures-pressure", "how-medical-gas-sampling-systems-work", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-to-become-a-biomedical-equipment-technician": ["biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
+    "what-degree-do-you-need-to-become-a-biomed": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment"],
+    "what-entry-level-biomeds-should-learn-first": ["how-to-become-a-biomedical-equipment-technician", "what-degree-do-you-need-to-become-a-biomed", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "how-to-read-a-medical-equipment-service-manual"],
+    "what-electronics-knowledge-does-a-biomed-actually-need": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "ac-vs-dc-power-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "analog-vs-digital-signals"],
 }
 
 ARTICLE_CONFIG = {
@@ -253,6 +294,246 @@ ARTICLE_CONFIG = {
         "badge": "Core Skill",
         "cardNote": "Battery and charging-path fault isolation",
     },
+    "the-troubleshooting-process-observe-isolate-test-verify": {
+        "description": "A practical four-step framework for observing symptoms, isolating the failure, testing suspected causes, and verifying medical-equipment repairs.",
+        "category": "Troubleshooting",
+        "badge": "Start Here",
+        "cardNote": "Observe, isolate, test, and verify",
+    },
+    "the-difference-between-a-symptom-cause-and-root-cause": {
+        "description": "A practical guide to separating observed medical-equipment symptoms, direct causes, contributing factors, and evidence-supported root causes.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Symptom, cause, and root-cause distinctions",
+    },
+    "how-experienced-biomeds-think-through-a-new-problem": {
+        "description": "A practical guide to approaching unfamiliar medical equipment by recognizing patterns, narrowing systems, choosing useful tests, and escalating with evidence.",
+        "category": "Troubleshooting",
+        "badge": "Start Here",
+        "cardNote": "A practical mindset for unfamiliar problems",
+    },
+    "how-to-read-a-troubleshooting-flowchart": {
+        "description": "A practical guide to following troubleshooting trees, evaluating decision points, respecting test conditions, and understanding what each branch proves.",
+        "category": "Troubleshooting",
+        "badge": "Core Skill",
+        "cardNote": "Flowchart decisions and test logic",
+    },
+    "ac-vs-dc-power-basics": {
+        "description": "A practical introduction to AC and DC power, conversion, polarity, voltage rails, adapters, batteries, and common medical-equipment power paths.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "AC, DC, conversion, and polarity basics",
+    },
+    "analog-vs-digital-signals": {
+        "description": "A practical introduction to analog and digital signals, conversion, noise, sampling, logic, and signal-path troubleshooting in medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Signal types, conversion, and fault patterns",
+    },
+    "medical-device-batteries-runtime-capacity-and-state-of-health": {
+        "description": "A practical guide to battery state of charge, capacity, state of health, internal resistance, load behavior, smart-battery data, and runtime testing.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Battery health and runtime evaluation",
+    },
+    "how-to-read-device-specifications": {
+        "description": "A practical guide to interpreting medical-device accuracy, tolerance, range, resolution, units, test conditions, and pass/fail specifications.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Specifications, conditions, and test limits",
+    },
+    "tolerance-vs-accuracy": {
+        "description": "A practical guide to distinguishing measurement accuracy from allowable tolerance and calculating defensible pass/fail limits for medical equipment.",
+        "category": "Testing & Verification",
+        "badge": "Core Concept",
+        "cardNote": "Accuracy, tolerance, and pass/fail math",
+    },
+    "how-to-compare-your-test-result-to-manufacturer-specification": {
+        "description": "A practical workflow for matching test conditions, calculating acceptable ranges, comparing analyzer results, and making defensible pass/fail decisions.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "From measured result to pass/fail decision",
+    },
+    "pass-fail-limits-and-why-the-test-point-matters": {
+        "description": "A practical guide to test-point-specific limits, multi-point testing, range-dependent errors, operating conditions, and defensible pass/fail decisions.",
+        "category": "Testing & Verification",
+        "badge": "Core Skill",
+        "cardNote": "Test points, limits, and range behavior",
+    },
+    "how-nibp-works-in-a-patient-monitor": {
+        "description": "A practical explanation of how cuffs, pumps, valves, pressure sensors, oscillations, and software work together during an NIBP measurement.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The NIBP pneumatic and measurement path",
+    },
+    "how-spo2-measurement-works": {
+        "description": "A practical explanation of how pulse oximetry uses red and infrared light, pulsatile absorption, photodetection, and signal processing to estimate SpO2.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The optical SpO2 measurement path",
+    },
+    "how-ecg-acquisition-works": {
+        "description": "A practical explanation of how electrodes, lead wires, differential inputs, amplification, filtering, conversion, and software produce an ECG waveform.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The ECG signal-acquisition path",
+    },
+    "how-sidestream-co2-monitoring-works": {
+        "description": "A practical explanation of how sampling lines, water traps, pumps, infrared measurement, zeroing, and software produce EtCO2 values and capnograms.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The sidestream capnography sampling path",
+    },
+    "how-ventilator-flow-sensors-work": {
+        "description": "A practical explanation of how ventilators measure gas movement and how flow-sensor problems affect tidal volume, alarms, triggering, leaks, and calibration.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The ventilator flow-measurement path",
+    },
+    "how-ventilator-pressure-sensors-work": {
+        "description": "A practical explanation of how ventilators measure airway pressure and how pressure-sensor problems affect alarms, PEEP, triggering, and delivered ventilation.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The ventilator pressure-measurement path",
+    },
+    "how-medical-equipment-measures-pressure": {
+        "description": "A practical explanation of how pressure sensors turn force from gas or fluid into electrical signals that medical equipment can display, control, and alarm on.",
+        "category": "How It Works",
+        "badge": "Measurement",
+        "cardNote": "The pressure-to-signal measurement path",
+    },
+    "how-medical-equipment-measures-flow": {
+        "description": "A practical explanation of how medical devices detect moving gas or liquid and turn that movement into values used for display, control, and alarms.",
+        "category": "How It Works",
+        "badge": "Measurement",
+        "cardNote": "The flow-to-signal measurement path",
+    },
+    "how-invasive-blood-pressure-monitoring-works": {
+        "description": "A practical explanation of how a fluid-filled pressure line and transducer turn arterial pressure into an electrical waveform on a patient monitor.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The fluid-filled invasive pressure path",
+    },
+    "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": {
+        "description": "A practical explanation of how ventilators and anesthesia machines measure oxygen concentration and why sensor age, calibration, gas flow, and sample location matter.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The oxygen measurement and calibration path",
+    },
+    "how-an-anesthesia-machine-breathing-system-works": {
+        "description": "A practical explanation of how fresh gas, one-way valves, the breathing circuit, CO2 absorber, reservoir bag, and ventilator work together.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "The anesthesia circle breathing-system path",
+    },
+    "how-anesthesia-waste-gas-scavenging-works": {
+        "description": "A practical explanation of how excess anesthetic gas leaves the breathing system without allowing suction or backpressure to disturb the patient circuit.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "The waste-gas disposal and isolation path",
+    },
+    "how-a-ventilator-measures-tidal-volume": {
+        "description": "A practical explanation of how ventilators turn flow over time into delivered and exhaled volume, including leaks, compliance, and measurement location.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The flow-to-tidal-volume calculation path",
+    },
+    "how-peep-is-generated-and-controlled": {
+        "description": "A practical explanation of how ventilators maintain positive pressure at end expiration and how valves, flow, sensors, leaks, and control loops affect PEEP.",
+        "category": "How It Works",
+        "badge": "Ventilation",
+        "cardNote": "The end-expiratory pressure control loop",
+    },
+    "how-infusion-pump-occlusion-detection-works": {
+        "description": "A practical explanation of how infusion pumps detect rising pressure or force and decide when to stop delivery and generate an occlusion alarm.",
+        "category": "How It Works",
+        "badge": "Infusion",
+        "cardNote": "The infusion pressure and occlusion-alarm path",
+    },
+    "how-infusion-pumps-measure-or-control-flow": {
+        "description": "A practical explanation of how infusion pumps turn motor movement into fluid delivery and why programmed rate can differ from measured output.",
+        "category": "How It Works",
+        "badge": "Infusion",
+        "cardNote": "The motor-to-fluid-delivery control path",
+    },
+    "how-defibrillators-charge-and-deliver-energy": {
+        "description": "A practical explanation of how defibrillators store high voltage, shape and deliver a shock, and verify that delivered energy matches the selected value.",
+        "category": "How It Works",
+        "badge": "Defibrillation",
+        "cardNote": "The high-voltage charge and discharge path",
+    },
+    "how-medical-device-batteries-charge-and-communicate": {
+        "description": "A practical explanation of how chargers, protection circuits, battery-management electronics, and smart-battery communication work together.",
+        "category": "How It Works",
+        "badge": "Power & Batteries",
+        "cardNote": "The smart-battery charging and communication path",
+    },
+    "how-smart-batteries-communicate-with-medical-equipment": {
+        "description": "A practical explanation of how smart batteries report charge, temperature, capacity, faults, and identification data to medical equipment.",
+        "category": "How It Works",
+        "badge": "Power & Batteries",
+        "cardNote": "The smart-battery data and host-interface path",
+    },
+    "how-parameter-modules-communicate-with-host-monitors": {
+        "description": "A practical explanation of how removable parameter modules receive power, identify themselves, exchange data, and appear on patient monitors.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The parameter-module power and data path",
+    },
+    "how-patient-monitors-communicate-with-central-stations": {
+        "description": "A practical explanation of how bedside monitors send waveforms, numerics, alarms, and patient information to central stations across the network.",
+        "category": "How It Works",
+        "badge": "Connectivity",
+        "cardNote": "The bedside-to-central monitoring path",
+    },
+    "how-ecg-lead-off-detection-works": {
+        "description": "A practical explanation of how patient monitors detect disconnected electrodes and broken lead wires, and how to isolate an invalid ECG path.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The ECG electrode and lead-off detection path",
+    },
+    "how-mainstream-co2-monitoring-works": {
+        "description": "A practical explanation of how mainstream capnography measures CO2 at the airway and how adapters, optics, moisture, alignment, and sensor recognition affect readings.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The mainstream capnography optical path",
+    },
+    "how-medical-gas-sampling-systems-work": {
+        "description": "A practical explanation of how medical gas systems transport a sample through tubing, moisture protection, pumps, analyzers, and exhaust or return paths.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The respiratory-gas sampling and analysis path",
+    },
+    "how-an-anesthesia-machine-performs-a-leak-test": {
+        "description": "A practical explanation of how anesthesia machines pressurize or evacuate defined system volumes, measure pressure behavior, and identify excessive leakage.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "Anesthesia leak-test boundaries and isolation",
+    },
+    "how-to-become-a-biomedical-equipment-technician": {
+        "description": "A practical, plain-English guide to entering the biomed profession, building useful technical knowledge, and developing a career working on medical equipment.",
+        "category": "Career",
+        "badge": "Career Guide",
+        "cardNote": "Education, skills, and entry-level career paths",
+    },
+    "what-degree-do-you-need-to-become-a-biomed": {
+        "description": "A practical guide to BMET degrees, electronics programs, military training, certificates, and other educational paths into the biomed profession.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "Degrees, training, and entry paths for future biomeds",
+    },
+    "what-entry-level-biomeds-should-learn-first": {
+        "description": "A practical learning order for new biomeds covering troubleshooting, electronics, test equipment, documentation, networking, and safe repair verification.",
+        "category": "Career",
+        "badge": "Career Guide",
+        "cardNote": "Core skills and priorities for entry-level biomeds",
+    },
+    "what-electronics-knowledge-does-a-biomed-actually-need": {
+        "description": "A practical guide to the electronics concepts biomeds actually use when troubleshooting medical equipment, from voltage and resistance to sensors and signals.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "Practical electronics knowledge for biomed troubleshooting",
+    },
 }
 
 
@@ -274,7 +555,7 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
         lines.pop(0)
     intro = ""
     intro_lines = []
-    while lines and not lines[0].startswith("## "):
+    while lines and not re.match(r"^#{1,2} ", lines[0]):
         if lines[0].strip():
             intro_lines.append(lines[0].strip())
         elif intro_lines:
@@ -285,10 +566,11 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
     current_title = ""
     current_lines: list[str] = []
     for line in lines:
-        if line.startswith("## "):
+        match = re.match(r"^#{1,2} (.+)$", line)
+        if match:
             if current_title:
                 sections.append((current_title, current_lines))
-            current_title, current_lines = line[3:].strip(), []
+            current_title, current_lines = match.group(1).strip(), []
         elif current_title:
             current_lines.append(line)
     if current_title:
@@ -380,10 +662,10 @@ def page_html(title: str, subtitle: str, description: str, hero_intro: str, sect
   <link rel="canonical" href="{SITE_URL}/biomed-basics/{slug}.html" />
   <script src="../social-links.js" defer></script>
 </head>
-<body>
+<body class="biomed-article">
 <header>
   <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
-  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
 </header>
 <section class="hero">
   <h2>{html.escape(title)}</h2>
@@ -415,6 +697,13 @@ def title_map(root: Path, new_titles: list[str]) -> dict[str, str]:
 
 def parse_batch(path: Path) -> list:
     source = path.read_text(encoding="utf-8")
+    source_lines = source.splitlines()
+    reviewed_start = next(
+        (index for index, line in enumerate(source_lines) if slugify(line.strip()) in ARTICLE_CONFIG),
+        None,
+    )
+    if reviewed_start is not None:
+        source = "\n".join(source_lines[reviewed_start:])
     chunks = re.split(r"\n\s*---\s*\n(?=#\s+)", source)
     articles = []
     with tempfile.TemporaryDirectory() as directory:
@@ -435,6 +724,8 @@ def replace_related(source: str, replacement: str) -> str:
 
 def biomed_group(category: str) -> str:
     normalized = category.casefold()
+    if "how it works" in normalized:
+        return "how-it-works"
     if any(word in normalized for word in ("network", "integration", "imaging", "dicom")):
         return "connected-systems"
     if any(word in normalized for word in ("career", "communication", "terminology")):
@@ -456,6 +747,11 @@ def catalog_entry(title: str, slug: str, config: dict[str, str], existing: dict 
         "group": biomed_group(config["category"]),
         "badge": config["badge"],
         "cardNote": config["cardNote"],
+        "lastRevision": (
+            existing.get("lastRevision")
+            if existing and existing.get("lastRevision")
+            else datetime.date.today().isoformat()
+        ),
     }
     for key in ("featured", "featuredOrder"):
         if existing and key in existing:

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Read a Troubleshooting Flowchart | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to following troubleshooting trees, evaluating decision points, respecting test conditions, and understanding what each branch proves.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-read-a-troubleshooting-flowchart.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How to Read a Troubleshooting Flowchart</h2>
+  <p>How to use a troubleshooting tree without blindly following boxes or skipping the logic behind it</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Troubleshooting flowcharts can be extremely useful.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What troubleshooting flowcharts are doing</li>
+      <li>How decision points work</li>
+      <li>Why exact symptoms matter</li>
+      <li>How to follow yes/no branches</li>
+      <li>Why prerequisites matter</li>
+      <li>How measurements fit into the tree</li>
+      <li>When to stop and verify a result</li>
+      <li>Why “replace board” is usually not the first thought</li>
+      <li>How to avoid skipping steps</li>
+      <li>When a flowchart may not fit the actual complaint</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A troubleshooting flowchart works like this:</p>
+    <p><strong>Observe a condition</strong></p>
+    <p>↓</p>
+    <p><strong>Perform a test</strong></p>
+    <p>↓</p>
+    <p><strong>Use the result to choose the next path</strong></p>
+    <p>Each branch eliminates possibilities.</p>
+    <p>The goal is not to reach the bottom quickly.</p>
+    <p>The goal is to reach the correct conclusion with evidence.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-correct-flowchart">
+    <h3>Start With the Correct Flowchart</h3>
+    <p>Before following anything, make sure the flowchart actually matches:</p>
+    <ul>
+      <li>Device model</li>
+      <li>Revision</li>
+      <li>Software version</li>
+      <li>Symptom</li>
+    </ul>
+    <p>A similar model may use different:</p>
+    <ul>
+      <li>Boards</li>
+      <li>Voltages</li>
+      <li>Connectors</li>
+      <li>Error codes</li>
+    </ul>
+    <p>Do not assume one flowchart applies to an entire product family unless the manufacturer says it does.</p>
+  </section>
+
+  <section class="content-box" id="match-the-symptom-exactly">
+    <h3>Match the Symptom Exactly</h3>
+    <p>Suppose the manual contains separate sections for:</p>
+    <ul>
+      <li>Will Not Power On</li>
+      <li>Randomly Shuts Down</li>
+      <li>Battery Will Not Charge</li>
+      <li>Display Is Blank</li>
+    </ul>
+    <p>A blank display is not automatically the same as no power.</p>
+    <p>The device may be booting normally with only the display path failed.</p>
+    <p>Choose the symptom that best matches what you actually observe.</p>
+  </section>
+
+  <section class="content-box" id="read-the-whole-branch-before-starting">
+    <h3>Read the Whole Branch Before Starting</h3>
+    <p>Before touching the device, scan the section.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Required tools</li>
+      <li>Safety warnings</li>
+      <li>Access requirements</li>
+      <li>Calibration requirements</li>
+      <li>Post-repair verification</li>
+    </ul>
+    <p>You do not want to reach Step 8 and discover the procedure requires a test adapter you do not have.</p>
+  </section>
+
+  <section class="content-box" id="understand-the-starting-conditions">
+    <h3>Understand the Starting Conditions</h3>
+    <p>Flowcharts often assume a specific setup.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Device connected to AC</li>
+      <li>Battery removed</li>
+      <li>Service mode active</li>
+      <li>Specific accessory installed</li>
+    </ul>
+    <p>If you test under different conditions, your result may not mean what the flowchart expects.</p>
+  </section>
+
+  <section class="content-box" id="a-decision-point-is-a-question">
+    <h3>A Decision Point Is a Question</h3>
+    <p>Example:</p>
+    <blockquote><p>Is the AC power indicator illuminated?</p></blockquote>
+    <p>That question divides the possible causes.</p>
+    <h4>Yes</h4>
+    <p>Some part of the AC detection path is working.</p>
+    <h4>No</h4>
+    <p>Focus earlier in the power path.</p>
+    <p>The question is doing diagnostic work.</p>
+  </section>
+
+  <section class="content-box" id="do-not-treat-the-question-as-a-formality">
+    <h3>Do Not Treat the Question as a Formality</h3>
+    <p>Actually observe or measure the condition.</p>
+    <p>Do not assume:</p>
+    <blockquote><p>It probably is.</p></blockquote>
+    <p>A wrong answer sends you down the wrong branch.</p>
+  </section>
+
+  <section class="content-box" id="yes-and-no-need-to-be-objective">
+    <h3>Yes and No Need to Be Objective</h3>
+    <p>Some questions are obvious.</p>
+    <blockquote><p>Does the display turn on?</p></blockquote>
+    <p>Others require measurement.</p>
+    <blockquote><p>Is TP5 between 4.75 and 5.25 VDC?</p></blockquote>
+    <p>Use the specified limit.</p>
+    <p>Do not convert that into:</p>
+    <blockquote><p>Voltage looks okay.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="follow-the-branch-you-actually-measured">
+    <h3>Follow the Branch You Actually Measured</h3>
+    <p>Suppose the manual says:</p>
+    <p>If voltage is above 23 VDC:</p>
+    <p>Go to Step 6.</p>
+    <p>If below 23 VDC:</p>
+    <p>Check power supply.</p>
+    <p>You measure:</p>
+    <p>18 VDC.</p>
+    <p>Follow the low-voltage branch.</p>
+    <p>Do not skip ahead because:</p>
+    <blockquote><p>Main boards fail a lot on these.</p></blockquote>
+    <p>The flowchart exists to stop that kind of guessing.</p>
+  </section>
+
+  <section class="content-box" id="understand-what-each-test-proves">
+    <h3>Understand What Each Test Proves</h3>
+    <p>Example:</p>
+    <p>Test:</p>
+    <p>Measure 24 VDC at power supply output.</p>
+    <p>Result:</p>
+    <p>24.1 VDC.</p>
+    <p>That proves:</p>
+    <p><strong>The power supply produced approximately 24 V at that point under the conditions tested.</strong></p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Voltage reaches the main board</li>
+      <li>Supply remains stable under load</li>
+      <li>Other voltage rails are good</li>
+    </ul>
+    <p>The next step may test those.</p>
+  </section>
+
+  <section class="content-box" id="flowcharts-work-by-isolation">
+    <h3>Flowcharts Work by Isolation</h3>
+    <p>Imagine:</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Cord</li>
+      <li>Fuse</li>
+      <li>Power supply</li>
+      <li>Main board</li>
+    </ul>
+    <p>Question:</p>
+    <blockquote><p>Is AC present at the inlet?</p></blockquote>
+    <p>If yes:</p>
+    <p>You eliminate much of the external path.</p>
+    <p>Next question:</p>
+    <blockquote><p>Is the fuse good?</p></blockquote>
+    <p>Each step narrows the field.</p>
+    <p>That is the underlying logic.</p>
+  </section>
+
+  <section class="content-box" id="use-the-test-point-specified">
+    <h3>Use the Test Point Specified</h3>
+    <p>If the manual says:</p>
+    <p>Measure at TP3 referenced to TP1.</p>
+    <p>Do not casually measure somewhere else and assume the result is equivalent.</p>
+    <p>Different ground references or circuit locations may produce different readings.</p>
+  </section>
+
+  <section class="content-box" id="verify-your-meter-setup">
+    <h3>Verify Your Meter Setup</h3>
+    <p>Before measurements:</p>
+    <ul>
+      <li>Correct function</li>
+      <li>Correct range</li>
+      <li>Leads in correct jacks</li>
+    </ul>
+    <p>Especially important when switching between:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Resistance</li>
+      <li>Current</li>
+    </ul>
+    <p>A meter set incorrectly can create dangerous situations or misleading results.</p>
+  </section>
+
+  <section class="content-box" id="respect-energized-measurement-warnings">
+    <h3>Respect Energized Measurement Warnings</h3>
+    <p>Some flowcharts require powered measurements.</p>
+    <p>Others specify de-energized testing.</p>
+    <p>Follow the manufacturer procedure.</p>
+    <p>Do not perform energized internal measurements unless trained and authorized.</p>
+  </section>
+
+  <section class="content-box" id="resistance-checks-usually-require-power-off">
+    <h3>Resistance Checks Usually Require Power Off</h3>
+    <p>If a flowchart says:</p>
+    <blockquote><p>Measure resistance across the fuse.</p></blockquote>
+    <p>the device is generally expected to be safely de-energized unless stated otherwise.</p>
+    <p>Do not measure resistance on a live circuit.</p>
+  </section>
+
+  <section class="content-box" id="pay-attention-to-connector-names">
+    <h3>Pay Attention to Connector Names</h3>
+    <p>Flowcharts may reference:</p>
+    <ul>
+      <li>J1</li>
+      <li>CN4</li>
+      <li>P3</li>
+      <li>TP7</li>
+    </ul>
+    <p>Use the board diagram or schematic to locate them correctly.</p>
+    <p>Do not guess based on physical proximity.</p>
+  </section>
+
+  <section class="content-box" id="connector-pin-numbers-matter">
+    <h3>Connector Pin Numbers Matter</h3>
+    <p>Example:</p>
+    <p>Measure:</p>
+    <p>Pin 3 to Pin 7.</p>
+    <p>Pin 3 may be:</p>
+    <p>24 V.</p>
+    <p>Pin 4 may be:</p>
+    <p>Data.</p>
+    <p>One pin difference can completely change the result.</p>
+  </section>
+
+  <section class="content-box" id="read-notes-and-footnotes">
+    <h3>Read Notes and Footnotes</h3>
+    <p>Important details often hide beside the chart.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Only applicable to Revision C boards</li>
+      <li>Battery must be installed</li>
+      <li>Wait 30 seconds before measurement</li>
+      <li>Voltage present only during startup</li>
+    </ul>
+    <p>Do not ignore small print.</p>
+  </section>
+
+  <section class="content-box" id="timing-can-matter">
+    <h3>Timing Can Matter</h3>
+    <p>A test point may only be active:</p>
+    <ul>
+      <li>During boot</li>
+      <li>While motor runs</li>
+      <li>During charging</li>
+      <li>During self-test</li>
+    </ul>
+    <p>If you measure at the wrong time, you may falsely conclude voltage is missing.</p>
+  </section>
+
+  <section class="content-box" id="example-motor-failure">
+    <h3>Example: Motor Failure</h3>
+    <p>Flowchart:</p>
+    <blockquote><p>Command motor movement.</p></blockquote>
+    <p>Then:</p>
+    <blockquote><p>Is motor voltage present?</p></blockquote>
+    <p>If you measure while the motor is idle, 0 V may be completely normal.</p>
+    <p>Test during the condition specified.</p>
+  </section>
+
+  <section class="content-box" id="replace-board-is-usually-a-conclusion">
+    <h3>“Replace Board” Is Usually a Conclusion</h3>
+    <p>When a flowchart eventually says:</p>
+    <blockquote><p>Replace Main PCB</p></blockquote>
+    <p>the steps before it usually exist to prove:</p>
+    <ul>
+      <li>Input power good</li>
+      <li>External components good</li>
+      <li>Signals good</li>
+      <li>Failure remains on board</li>
+    </ul>
+    <p>Do not jump directly to that box.</p>
+  </section>
+
+  <section class="content-box" id="why-manuals-sometimes-seem-to-replace-parts-quickly">
+    <h3>Why Manuals Sometimes Seem to Replace Parts Quickly</h3>
+    <p>Manufacturer flowcharts may be designed for:</p>
+    <ul>
+      <li>Efficient field service</li>
+      <li>Assembly-level repair</li>
+      <li>Limited component-level repair</li>
+    </ul>
+    <p>The manufacturer may not support repairing individual components on a PCB.</p>
+    <p>That does not mean the flowchart is saying:</p>
+    <blockquote><p>This resistor is definitely bad.</p></blockquote>
+    <p>It may mean:</p>
+    <blockquote><p>The supported repair for this isolated failure is PCB replacement.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="follow-supported-repair-levels">
+    <h3>Follow Supported Repair Levels</h3>
+    <p>If the manufacturer supports board-level replacement rather than component repair, follow your authorized scope and facility policy.</p>
+    <p>Do not modify safety-critical boards outside approved service procedures.</p>
+  </section>
+
+  <section class="content-box" id="if-a-test-fails-confirm-the-test">
+    <h3>If a Test Fails, Confirm the Test</h3>
+    <p>Before replacing an expensive component, make sure:</p>
+    <ul>
+      <li>Meter setup correct</li>
+      <li>Test point correct</li>
+      <li>Reference correct</li>
+      <li>Operating condition correct</li>
+    </ul>
+    <p>One bad measurement can send the entire diagnosis wrong.</p>
+  </section>
+
+  <section class="content-box" id="repeat-unexpected-results">
+    <h3>Repeat Unexpected Results</h3>
+    <p>If the manual expects:</p>
+    <p>12 VDC</p>
+    <p>and you see:</p>
+    <p>0.3 VDC</p>
+    <p>pause.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Correct pin</li>
+      <li>Correct ground</li>
+      <li>Correct device state</li>
+    </ul>
+    <p>Then repeat.</p>
+    <p>Do not automatically assume the manual is wrong or the board is dead.</p>
+  </section>
+
+  <section class="content-box" id="use-a-known-good-device-for-context">
+    <h3>Use a Known-Good Device for Context</h3>
+    <p>If available, compare the same point on an identical working unit.</p>
+    <p>This can help when:</p>
+    <ul>
+      <li>Manual wording unclear</li>
+      <li>Signal timing uncertain</li>
+      <li>Connector identification confusing</li>
+    </ul>
+    <p>But manufacturer specifications still take priority.</p>
+  </section>
+
+  <section class="content-box" id="flowcharts-may-use-functional-tests">
+    <h3>Flowcharts May Use Functional Tests</h3>
+    <p>Not every decision is electrical.</p>
+    <p>Example:</p>
+    <blockquote><p>Does the pump create pressure?</p></blockquote>
+    <p>Yes / No.</p>
+    <p>This may lead toward:</p>
+    <ul>
+      <li>Sensor path</li>
+      <li>Mechanical path</li>
+    </ul>
+    <p>The logic is the same.</p>
+  </section>
+
+  <section class="content-box" id="flowcharts-may-use-substitution">
+    <h3>Flowcharts May Use Substitution</h3>
+    <p>Example:</p>
+    <blockquote><p>Install known-good sensor.</p></blockquote>
+    <p>If problem remains:</p>
+    <p>Proceed to device-side troubleshooting.</p>
+    <p>This is still a decision point.</p>
+    <p>You are using comparison instead of voltage.</p>
+  </section>
+
+  <section class="content-box" id="do-not-skip-easy-steps-because-they-seem-obvious">
+    <h3>Do Not Skip Easy Steps Because They Seem Obvious</h3>
+    <p>Flowchart says:</p>
+    <p>Check cable.</p>
+    <p>You think:</p>
+    <blockquote><p>Cable looks fine.</p></blockquote>
+    <p>That is not the same as testing it.</p>
+    <p>Use the prescribed method or known-good substitution when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="skipping-steps-creates-bad-assumptions">
+    <h3>Skipping Steps Creates Bad Assumptions</h3>
+    <p>Suppose you skip:</p>
+    <blockquote><p>Verify power supply output.</p></blockquote>
+    <p>Then replace the main board.</p>
+    <p>Device still dead.</p>
+    <p>You may have replaced a perfectly good board because you never proved power reached it.</p>
+    <p>The earlier steps existed for a reason.</p>
+  </section>
+
+  <section class="content-box" id="but-do-not-follow-a-flowchart-blindly">
+    <h3>But Do Not Follow a Flowchart Blindly</h3>
+    <p>A flowchart is a tool.</p>
+    <p>If the actual symptom does not match the starting condition, stop.</p>
+    <p>Example:</p>
+    <p>Manual flowchart:</p>
+    <blockquote><p>Device completely dead.</p></blockquote>
+    <p>Your device:</p>
+    <ul>
+      <li>Fans running</li>
+      <li>Startup tone present</li>
+      <li>Blank screen</li>
+    </ul>
+    <p>That is not a completely dead device.</p>
+    <p>Use the display troubleshooting path instead.</p>
+  </section>
+
+  <section class="content-box" id="flowchart-does-not-replace-observation">
+    <h3>Flowchart Does Not Replace Observation</h3>
+    <p>If you discover:</p>
+    <ul>
+      <li>Burned connector</li>
+      <li>Swollen battery</li>
+      <li>Fluid intrusion</li>
+    </ul>
+    <p>do not ignore obvious evidence because:</p>
+    <blockquote><p>The chart says check voltage next.</p></blockquote>
+    <p>Safety and actual condition still matter.</p>
+  </section>
+
+  <section class="content-box" id="error-code-flowcharts">
+    <h3>Error-Code Flowcharts</h3>
+    <p>Some manuals begin with an error.</p>
+    <p>Example:</p>
+    <p>Error 415.</p>
+    <p>Flowchart:</p>
+    <ol>
+      <li>Inspect cable.</li>
+      <li>Run calibration.</li>
+      <li>Measure sensor voltage.</li>
+      <li>Replace sensor.</li>
+      <li>Replace board.</li>
+    </ol>
+    <p>The error identifies a detected condition.</p>
+    <p>The flowchart helps isolate why it occurred.</p>
+  </section>
+
+  <section class="content-box" id="self-test-flowcharts">
+    <h3>Self-Test Flowcharts</h3>
+    <p>A device may fail:</p>
+    <blockquote><p>Flow Sensor Calibration.</p></blockquote>
+    <p>The troubleshooting tree may ask:</p>
+    <ul>
+      <li>Circuit connected correctly?</li>
+      <li>Sensor clean?</li>
+      <li>Known-good sensor?</li>
+      <li>Internal pressure source good?</li>
+    </ul>
+    <p>Again, do not jump from failed test to failed sensor.</p>
+  </section>
+
+  <section class="content-box" id="keep-notes-as-you-go">
+    <h3>Keep Notes as You Go</h3>
+    <p>Record:</p>
+    <ul>
+      <li>Step</li>
+      <li>Test</li>
+      <li>Result</li>
+    </ul>
+    <p>Example:</p>
+    <p>Step 2:</p>
+    <p>Fuse F1 continuity = 0.2 Ω.</p>
+    <p>Step 3:</p>
+    <p>24 V output = 24.3 VDC.</p>
+    <p>Step 4:</p>
+    <p>5 V rail = 0.4 VDC.</p>
+    <p>This prevents you from repeating work and makes escalation easier.</p>
+  </section>
+
+  <section class="content-box" id="notes-are-especially-helpful-on-long-trees">
+    <h3>Notes Are Especially Helpful on Long Trees</h3>
+    <p>If the troubleshooting path has twenty steps, write down your results.</p>
+    <p>Otherwise you may forget:</p>
+    <blockquote><p>Did I check that connector before or after I reseated the board?</p></blockquote>
+    <p>Preserve the sequence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-change-variables-between-steps-unless-directed">
+    <h3>Do Not Change Variables Between Steps Unless Directed</h3>
+    <p>If you reseat every cable before completing the flowchart, you may alter the failure.</p>
+    <p>Follow the process deliberately.</p>
+  </section>
+
+  <section class="content-box" id="if-reseating-fixes-the-problem">
+    <h3>If Reseating Fixes the Problem</h3>
+    <p>That is useful.</p>
+    <p>But ask:</p>
+    <p><strong>What did I actually change?</strong></p>
+    <p>Did you correct:</p>
+    <ul>
+      <li>Loose connector</li>
+      <li>Oxidized contact</li>
+      <li>Mechanical seating</li>
+    </ul>
+    <p>Document it.</p>
+    <p>Do not simply write:</p>
+    <blockquote><p>Passed flowchart.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="when-the-flowchart-ends-without-solving-the-problem">
+    <h3>When the Flowchart Ends Without Solving the Problem</h3>
+    <p>Sometimes the device still fails.</p>
+    <p>Possible reasons:</p>
+    <ul>
+      <li>Intermittent fault</li>
+      <li>Different failure than flowchart assumes</li>
+      <li>Software/revision difference</li>
+      <li>Multiple simultaneous problems</li>
+    </ul>
+    <p>At that point, return to fundamentals.</p>
+    <p>Observe.</p>
+    <p>Isolate.</p>
+    <p>Test.</p>
+    <p>Use the flowchart as evidence, not as the entire troubleshooting universe.</p>
+  </section>
+
+  <section class="content-box" id="escalating-after-a-flowchart">
+    <h3>Escalating After a Flowchart</h3>
+    <p>Vendor support becomes much more useful if you can say:</p>
+    <blockquote><p>Followed no-power flowchart through Step 9. AC input and 24 V rail pass. 5 V rail measures 0.2 V under load. Known-good peripheral produces same result.</p></blockquote>
+    <p>That is far better than:</p>
+    <blockquote><p>Device doesn't turn on.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="real-world-example-patient-monitor-no-power">
+    <h3>Real-World Example: Patient Monitor No Power</h3>
+    <p>Flowchart:</p>
+    <p>Check outlet.</p>
+    <p>Pass.</p>
+    <p>Check cord.</p>
+    <p>Pass.</p>
+    <p>Check fuse.</p>
+    <p>Pass.</p>
+    <p>Measure supply input.</p>
+    <p>120 VAC.</p>
+    <p>Measure 24 V output.</p>
+    <p>0 VDC.</p>
+    <p>Supported action:</p>
+    <p>Replace power supply.</p>
+    <p>You reached the replacement through evidence.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-spo2-not-recognized">
+    <h3>Real-World Example: SpO2 Not Recognized</h3>
+    <p>Flowchart:</p>
+    <p>Check compatible sensor.</p>
+    <p>Pass.</p>
+    <p>Try known-good sensor.</p>
+    <p>Still fails.</p>
+    <p>Inspect connector.</p>
+    <p>Good.</p>
+    <p>Run module diagnostics.</p>
+    <p>Fails.</p>
+    <p>Supported action:</p>
+    <p>Replace SpO2 module.</p>
+    <p>Each earlier branch ruled something out.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nibp-failure">
+    <h3>Real-World Example: NIBP Failure</h3>
+    <p>Flowchart asks:</p>
+    <blockquote><p>Does pump run?</p></blockquote>
+    <p>Yes.</p>
+    <p>Then:</p>
+    <blockquote><p>Does pressure increase?</p></blockquote>
+    <p>No.</p>
+    <p>Next:</p>
+    <p>Check pneumatic path for leak.</p>
+    <p>Hose leak found.</p>
+    <p>You never reach pump replacement.</p>
+    <p>The chart prevented an unnecessary part order.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-blank-display">
+    <h3>Real-World Example: Blank Display</h3>
+    <p>Technician initially chooses:</p>
+    <blockquote><p>No power.</p></blockquote>
+    <p>But device:</p>
+    <ul>
+      <li>Beeps</li>
+      <li>Fan runs</li>
+      <li>Responds to buttons</li>
+    </ul>
+    <p>Wrong flowchart.</p>
+    <p>Switch to:</p>
+    <blockquote><p>Display blank.</p></blockquote>
+    <p>Now troubleshooting focuses on:</p>
+    <ul>
+      <li>Backlight</li>
+      <li>Display cable</li>
+      <li>Display assembly</li>
+    </ul>
+    <p>Choosing the right starting symptom matters.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Using the Wrong Model's Flowchart</h4>
+    <p>Verify documentation.</p>
+    <h4>Choosing the Wrong Symptom</h4>
+    <p>Observe first.</p>
+    <h4>Skipping Early Steps</h4>
+    <p>Simple causes matter.</p>
+    <h4>Guessing at Yes/No Answers</h4>
+    <p>Measure or observe.</p>
+    <h4>Ignoring Test Conditions</h4>
+    <p>Timing and setup matter.</p>
+    <h4>Jumping Straight to “Replace Board”</h4>
+    <p>Follow the isolation.</p>
+    <h4>Treating the Flowchart as Smarter Than Reality</h4>
+    <p>Use your observations too.</p>
+    <h4>Forgetting to Verify After Repair</h4>
+    <p>The flowchart gets you to the repair.</p>
+    <p>You still need return-to-service verification.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-way-to-think-about-every-box">
+    <h3>A Useful Way to Think About Every Box</h3>
+    <p>For each decision point, ask:</p>
+    <p><strong>What possibility is this step trying to eliminate?</strong></p>
+    <p>Example:</p>
+    <blockquote><p>Try known-good cable.</p></blockquote>
+    <p>The chart is asking:</p>
+    <p><strong>Is the external cable causing the failure?</strong></p>
+    <p>Understanding the reason behind the step makes the entire tree easier to follow.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>If I answer this question incorrectly, where will the flowchart send me?</strong></p>
+    <p>That reminds you to verify ambiguous results before continuing.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose a flowchart ends with:</p>
+    <blockquote><p>Replace Main PCB.</p></blockquote>
+    <p>You did not prove:</p>
+    <p><strong>Every component on the main PCB is defective.</strong></p>
+    <p>You proved:</p>
+    <p><strong>The previous tests isolated the failure to a condition for which the manufacturer's supported corrective action is replacement of the main PCB.</strong></p>
+    <p>That is a more accurate conclusion.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A troubleshooting flowchart is not a list of commands.</p>
+    <p>It is a logic tree.</p>
+    <p>Every step asks a question.</p>
+    <p>Every answer removes possibilities.</p>
+    <p>The better you understand what each question is trying to prove, the more useful the flowchart becomes.</p>
+    <p>Start with the correct symptom.</p>
+    <p>Verify the starting conditions.</p>
+    <p>Measure carefully.</p>
+    <p>Follow the branch your evidence supports.</p>
+    <p>Do not skip ahead to the part you expect to be bad.</p>
+    <p>And if the flowchart stops matching reality, return to the fundamentals.</p>
+    <p><strong>Observe.</strong></p>
+    <p><strong>Isolate.</strong></p>
+    <p><strong>Test.</strong></p>
+    <p><strong>Verify.</strong></p>
+    <p>The flowchart is there to organize that process.</p>
+    <p>Not replace it.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Troubleshooting flowcharts, test points, expected values, and corrective actions are specific to manufacturer, model, hardware revision, and software version. Follow current service documentation, safety warnings, approved repair levels, required post-repair testing, and your authorized service scope.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-read-a-medical-equipment-service-manual.html">How to Read a Medical Equipment Service Manual</a></li>
+      <li><a href="the-troubleshooting-process-observe-isolate-test-verify.html">The Troubleshooting Process: Observe, Isolate, Test, Verify</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+      <li><a href="what-known-good-actually-means.html">What “Known-Good” Actually Means</a></li>
+      <li><a href="when-to-trust-the-device-s-internal-self-test.html">When to Trust the Device&amp;#x27;s Internal Self-Test</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

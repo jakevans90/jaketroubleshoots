@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Difference Between a Symptom, Cause, and Root Cause | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to separating observed medical-equipment symptoms, direct causes, contributing factors, and evidence-supported root causes.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/the-difference-between-a-symptom-cause-and-root-cause.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>The Difference Between a Symptom, Cause, and Root Cause</h2>
+  <p>How to avoid fixing only what you can see and instead understand what actually failed</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One of the most useful troubleshooting skills in Biomed is learning to separate three things:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a symptom is</li>
+      <li>What a cause is</li>
+      <li>What a root cause is</li>
+      <li>Why the distinction matters</li>
+      <li>Why error codes are not always causes</li>
+      <li>Why replacing a failed part may not solve the root cause</li>
+      <li>How to avoid stopping too early</li>
+      <li>How to document each level clearly</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of it like this:</p>
+    <p><strong>Symptom</strong></p>
+    <p>What you observe.</p>
+    <p>↓</p>
+    <p><strong>Cause</strong></p>
+    <p>What directly made the symptom happen.</p>
+    <p>↓</p>
+    <p><strong>Root Cause</strong></p>
+    <p>Why that cause existed in the first place.</p>
+    <p>Not every repair requires a deep formal root-cause investigation.</p>
+    <p>But understanding the difference helps you troubleshoot better.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-symptom">
+    <h3>What Is a Symptom?</h3>
+    <p>A symptom is what the device is doing wrong.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Will not power on</li>
+      <li>Randomly shuts down</li>
+      <li>SpO2 not reading</li>
+      <li>NIBP measurement fails</li>
+      <li>Battery not charging</li>
+      <li>Network connection lost</li>
+      <li>High airway pressure alarm</li>
+    </ul>
+    <p>A symptom describes the problem.</p>
+    <p>It does not explain why it happened.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-symptom">
+    <h3>Start With the Symptom</h3>
+    <p>Good troubleshooting starts here.</p>
+    <p>Instead of:</p>
+    <blockquote><p>Power supply bad.</p></blockquote>
+    <p>write:</p>
+    <blockquote><p>Device will not power on from AC.</p></blockquote>
+    <p>That keeps your mind open to multiple possible causes.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-cause">
+    <h3>What Is a Cause?</h3>
+    <p>A cause is the condition that directly produces the symptom.</p>
+    <p>Example:</p>
+    <p>Symptom:</p>
+    <blockquote><p>Device will not power on.</p></blockquote>
+    <p>Cause:</p>
+    <blockquote><p>Internal power supply output is absent.</p></blockquote>
+    <p>Now you have identified the immediate technical reason.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-root-cause">
+    <h3>What Is a Root Cause?</h3>
+    <p>The root cause explains why that failure happened.</p>
+    <p>Continuing the example:</p>
+    <p>Symptom:</p>
+    <blockquote><p>Device will not power on.</p></blockquote>
+    <p>Cause:</p>
+    <blockquote><p>Internal power supply failed.</p></blockquote>
+    <p>Possible root cause:</p>
+    <blockquote><p>Cooling fan failed, causing repeated overheating and eventual power-supply damage.</p></blockquote>
+    <p>Now you understand more than just the failed part.</p>
+  </section>
+
+  <section class="content-box" id="not-every-failed-part-is-the-root-cause">
+    <h3>Not Every Failed Part Is the Root Cause</h3>
+    <p>This is one of the most important concepts.</p>
+    <p>Suppose a fuse is open.</p>
+    <p>Symptom:</p>
+    <blockquote><p>Device dead.</p></blockquote>
+    <p>Cause:</p>
+    <blockquote><p>Fuse is open.</p></blockquote>
+    <p>But why did the fuse open?</p>
+    <p>Possible root cause:</p>
+    <ul>
+      <li>Shorted power supply component</li>
+      <li>Damaged wiring</li>
+      <li>Motor fault</li>
+      <li>Surge</li>
+    </ul>
+    <p>If you replace only the fuse, the real problem may still exist.</p>
+  </section>
+
+  <section class="content-box" id="another-example-battery">
+    <h3>Another Example: Battery</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Device shuts down during transport.</p></blockquote>
+    <p>Cause:</p>
+    <blockquote><p>Battery connection opens intermittently.</p></blockquote>
+    <p>Root cause:</p>
+    <blockquote><p>Battery latch is worn and allows the battery to move.</p></blockquote>
+    <p>Replacing the battery alone may not solve it.</p>
+  </section>
+
+  <section class="content-box" id="another-example-ecg-artifact">
+    <h3>Another Example: ECG Artifact</h3>
+    <p>Symptom:</p>
+    <blockquote><p>ECG waveform has intermittent artifact.</p></blockquote>
+    <p>Cause:</p>
+    <blockquote><p>Lead wire conductor is broken near the strain relief.</p></blockquote>
+    <p>Root cause:</p>
+    <blockquote><p>Repeated tight wrapping damaged the cable over time.</p></blockquote>
+    <p>The immediate repair may be cable replacement.</p>
+    <p>The root cause may involve how cables are stored.</p>
+  </section>
+
+  <section class="content-box" id="why-the-distinction-matters">
+    <h3>Why the Distinction Matters</h3>
+    <p>If you stop at the symptom, you guess.</p>
+    <p>If you find the cause, you can usually repair the device.</p>
+    <p>If you understand the root cause, you may prevent the problem from returning.</p>
+    <p>That is the difference.</p>
+  </section>
+
+  <section class="content-box" id="error-codes-are-usually-symptoms-or-clues">
+    <h3>Error Codes Are Usually Symptoms or Clues</h3>
+    <p>An error code may tell you:</p>
+    <blockquote><p>Fan Speed Low.</p></blockquote>
+    <p>That does not automatically mean:</p>
+    <blockquote><p>Replace fan.</p></blockquote>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Failed fan</li>
+      <li>No fan power</li>
+      <li>Loose connector</li>
+      <li>Tach signal failure</li>
+      <li>Board cannot read speed</li>
+    </ul>
+    <p>The code tells you what the device detected.</p>
+    <p>You still need to find the cause.</p>
+  </section>
+
+  <section class="content-box" id="alarm-example">
+    <h3>Alarm Example</h3>
+    <p>Alarm:</p>
+    <blockquote><p>O2 Supply Pressure Low.</p></blockquote>
+    <p>Symptom:</p>
+    <p>Device reports low supply pressure.</p>
+    <p>Cause could be:</p>
+    <ul>
+      <li>Low wall pressure</li>
+      <li>Kinked hose</li>
+      <li>Faulty sensor</li>
+    </ul>
+    <p>Root cause depends on what created that condition.</p>
+    <p>Do not confuse the alarm with the diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="cause-vs-contributing-factor">
+    <h3>Cause vs Contributing Factor</h3>
+    <p>Sometimes more than one thing contributes.</p>
+    <p>Example:</p>
+    <p>Device overheats.</p>
+    <p>Direct cause:</p>
+    <p>Cooling fan stopped.</p>
+    <p>Contributing factor:</p>
+    <p>Filter heavily clogged.</p>
+    <p>Root cause:</p>
+    <p>Preventive maintenance process failed to identify the airflow restriction.</p>
+    <p>Depending on the situation, there may be multiple contributing factors.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-is-not-always-a-single-part">
+    <h3>Root Cause Is Not Always a Single Part</h3>
+    <p>Root cause can involve:</p>
+    <ul>
+      <li>Hardware</li>
+      <li>Environment</li>
+      <li>Workflow</li>
+      <li>Configuration</li>
+      <li>Maintenance</li>
+      <li>User handling</li>
+    </ul>
+    <p>Example:</p>
+    <p>Repeated cable failures may not be caused by defective cables.</p>
+    <p>The root cause may be:</p>
+    <blockquote><p>Cables are being pinched under bed frames during transport.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="do-not-force-a-root-cause-when-you-do-not-have-evidence">
+    <h3>Do Not Force a Root Cause When You Do Not Have Evidence</h3>
+    <p>This matters too.</p>
+    <p>If all you know is:</p>
+    <blockquote><p>Battery failed capacity test.</p></blockquote>
+    <p>Do not invent:</p>
+    <blockquote><p>Root cause was excessive charging cycles.</p></blockquote>
+    <p>unless you have evidence.</p>
+    <p>Sometimes the correct conclusion is simply:</p>
+    <blockquote><p>Battery degraded below acceptable capacity.</p></blockquote>
+    <p>That is enough.</p>
+  </section>
+
+  <section class="content-box" id="technical-cause-vs-operational-root-cause">
+    <h3>Technical Cause vs Operational Root Cause</h3>
+    <p>There can be different levels of explanation.</p>
+    <p>Example:</p>
+    <p>Symptom:</p>
+    <blockquote><p>Monitor disconnects from network.</p></blockquote>
+    <p>Technical cause:</p>
+    <blockquote><p>Ethernet cable intermittently opens.</p></blockquote>
+    <p>Operational root cause:</p>
+    <blockquote><p>Cable repeatedly gets pinched by the cart.</p></blockquote>
+    <p>Both can be useful.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-depends-on-the-question">
+    <h3>Root Cause Depends on the Question</h3>
+    <p>Ask:</p>
+    <p><strong>How deep do I need to go?</strong></p>
+    <p>For a simple corrective repair, identifying the failed cable may be enough.</p>
+    <p>For repeated fleet failures, you may need to ask why the cables keep failing.</p>
+    <p>Context matters.</p>
+  </section>
+
+  <section class="content-box" id="repeated-failures-deserve-deeper-thinking">
+    <h3>Repeated Failures Deserve Deeper Thinking</h3>
+    <p>If the same issue occurs once:</p>
+    <p>Repair may be straightforward.</p>
+    <p>If it occurs ten times:</p>
+    <p>Ask why.</p>
+    <p>Patterns suggest a root cause beyond individual part failure.</p>
+  </section>
+
+  <section class="content-box" id="example-repeated-battery-failures">
+    <h3>Example: Repeated Battery Failures</h3>
+    <p>Several devices have early battery failure.</p>
+    <p>Possible deeper causes:</p>
+    <ul>
+      <li>Wrong replacement battery</li>
+      <li>Charging firmware issue</li>
+      <li>Excessive heat</li>
+      <li>Incorrect storage</li>
+      <li>Bad battery lot</li>
+    </ul>
+    <p>Replacing batteries repeatedly does not address the root cause.</p>
+  </section>
+
+  <section class="content-box" id="example-repeated-fan-failures">
+    <h3>Example: Repeated Fan Failures</h3>
+    <p>Multiple units show overheating.</p>
+    <p>Individual cause:</p>
+    <p>Fan failure.</p>
+    <p>Fleet-level root cause might be:</p>
+    <ul>
+      <li>Dust-heavy environment</li>
+      <li>Blocked installation</li>
+      <li>Filter maintenance problem</li>
+    </ul>
+    <p>The context changes the analysis.</p>
+  </section>
+
+  <section class="content-box" id="symptom-can-have-many-causes">
+    <h3>Symptom Can Have Many Causes</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Device will not power on.</p></blockquote>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Cord</li>
+      <li>Fuse</li>
+      <li>Power supply</li>
+      <li>Battery</li>
+      <li>Main board</li>
+    </ul>
+    <p>The symptom alone does not tell you which one.</p>
+    <p>That is why isolation matters.</p>
+  </section>
+
+  <section class="content-box" id="one-cause-can-create-many-symptoms">
+    <h3>One Cause Can Create Many Symptoms</h3>
+    <p>A single power-supply problem might cause:</p>
+    <ul>
+      <li>Random reboot</li>
+      <li>Display flicker</li>
+      <li>Battery charging failure</li>
+      <li>Communication errors</li>
+    </ul>
+    <p>Multiple symptoms can share one cause.</p>
+    <p>Look for common points.</p>
+  </section>
+
+  <section class="content-box" id="example-power-rail-failure">
+    <h3>Example: Power Rail Failure</h3>
+    <p>Symptoms:</p>
+    <ul>
+      <li>Touchscreen freezes</li>
+      <li>Network disconnects</li>
+      <li>Device reboots</li>
+    </ul>
+    <p>Cause:</p>
+    <p>5 V rail drops under load.</p>
+    <p>One electrical problem created several software-looking symptoms.</p>
+  </section>
+
+  <section class="content-box" id="do-not-repair-the-symptom">
+    <h3>Do Not Repair the Symptom</h3>
+    <p>This is the classic trap.</p>
+    <p>Symptom:</p>
+    <blockquote><p>Device keeps rebooting.</p></blockquote>
+    <p>Action:</p>
+    <p>Reboot the device.</p>
+    <p>That may temporarily remove the symptom.</p>
+    <p>It does not fix the cause.</p>
+  </section>
+
+  <section class="content-box" id="temporary-recovery-vs-repair">
+    <h3>Temporary Recovery vs Repair</h3>
+    <p>If a reboot restores operation, you proved:</p>
+    <blockquote><p>The device can recover after restart.</p></blockquote>
+    <p>You did not prove:</p>
+    <blockquote><p>The underlying failure is fixed.</p></blockquote>
+    <p>Keep investigating recurring problems.</p>
+  </section>
+
+  <section class="content-box" id="component-replacement-does-not-automatically-equal-root-cause-repair">
+    <h3>Component Replacement Does Not Automatically Equal Root-Cause Repair</h3>
+    <p>Suppose you replace a damaged connector.</p>
+    <p>Why was it damaged?</p>
+    <p>If the cable is under constant tension, the new connector may fail again.</p>
+    <p>Sometimes the repair must address:</p>
+    <ul>
+      <li>Part</li>
+      <li>Routing</li>
+      <li>Strain relief</li>
+      <li>Usage condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="root-cause-and-preventive-action">
+    <h3>Root Cause and Preventive Action</h3>
+    <p>A useful root-cause finding often suggests a preventive action.</p>
+    <p>Example:</p>
+    <p>Root cause:</p>
+    <p>Battery connector loosens because mounting screws repeatedly back out.</p>
+    <p>Preventive action:</p>
+    <p>Correct torque and thread-locking method per manufacturer procedure.</p>
+    <p>Now you reduce recurrence.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-documentation">
+    <h3>Root Cause and Documentation</h3>
+    <p>Good documentation separates observation from diagnosis.</p>
+    <p>Example:</p>
+    <p><strong>Symptom</strong></p>
+    <blockquote><p>Monitor lost power during transport.</p></blockquote>
+    <p><strong>Cause</strong></p>
+    <blockquote><p>Battery connection opened intermittently during movement.</p></blockquote>
+    <p><strong>Root Cause</strong></p>
+    <blockquote><p>Battery latch worn and no longer retained pack securely.</p></blockquote>
+    <p>That tells a clear story.</p>
+  </section>
+
+  <section class="content-box" id="avoid-writing-unsupported-root-cause">
+    <h3>Avoid Writing Unsupported Root Cause</h3>
+    <p>Weak:</p>
+    <blockquote><p>Root cause: user abuse.</p></blockquote>
+    <p>Unless you have evidence, that is speculation.</p>
+    <p>Better:</p>
+    <blockquote><p>Housing cracked near connector; impact damage observed.</p></blockquote>
+    <p>Document what you can prove.</p>
+  </section>
+
+  <section class="content-box" id="clinical-complaint-may-already-contain-a-diagnosis">
+    <h3>Clinical Complaint May Already Contain a Diagnosis</h3>
+    <p>Staff may say:</p>
+    <blockquote><p>The sensor is bad.</p></blockquote>
+    <p>Treat that as a hypothesis.</p>
+    <p>Actual symptom may be:</p>
+    <blockquote><p>No temperature reading.</p></blockquote>
+    <p>Your job is to isolate the cause.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-troubleshooting-trees-often-follow-this-logic">
+    <h3>Manufacturer Troubleshooting Trees Often Follow This Logic</h3>
+    <p>A flowchart may move from:</p>
+    <p>Symptom</p>
+    <p>to:</p>
+    <p>Possible causes</p>
+    <p>to:</p>
+    <p>Tests</p>
+    <p>to:</p>
+    <p>Corrective action</p>
+    <p>That is the same concept in structured form.</p>
+  </section>
+
+  <section class="content-box" id="use-evidence-to-move-down-the-chain">
+    <h3>Use Evidence to Move Down the Chain</h3>
+    <p>Example:</p>
+    <p>Symptom:</p>
+    <blockquote><p>No SpO2.</p></blockquote>
+    <p>Test:</p>
+    <p>Known-good sensor also fails.</p>
+    <p>Now accessory becomes less likely.</p>
+    <p>Inspect connector.</p>
+    <p>Bent pin found.</p>
+    <p>That identifies cause.</p>
+    <p>Then ask:</p>
+    <p>Why bent?</p>
+    <p>If repeated connector damage exists, maybe cable handling is contributing.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-does-not-always-mean-formal-rca">
+    <h3>Root Cause Does Not Always Mean Formal RCA</h3>
+    <p>In Biomed, you may use “root cause” informally to mean:</p>
+    <blockquote><p>The underlying reason the failure occurred.</p></blockquote>
+    <p>A formal organizational Root Cause Analysis is a separate process and may involve:</p>
+    <ul>
+      <li>Risk management</li>
+      <li>Patient safety</li>
+      <li>Leadership</li>
+    </ul>
+    <p>Do not confuse everyday troubleshooting with formal incident RCA.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nibp-failure">
+    <h3>Real-World Example: NIBP Failure</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Cuff will not inflate.</p></blockquote>
+    <p>Cause:</p>
+    <p>Hose leak.</p>
+    <p>Root cause:</p>
+    <p>Hose repeatedly kinked at cart hook.</p>
+    <p>Repair:</p>
+    <p>Replace hose.</p>
+    <p>Prevention:</p>
+    <p>Correct routing/storage.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-monitor-reboot">
+    <h3>Real-World Example: Monitor Reboot</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Random reboot.</p></blockquote>
+    <p>Cause:</p>
+    <p>Battery contact intermittently opens.</p>
+    <p>Root cause:</p>
+    <p>Battery latch wear.</p>
+    <p>Repair:</p>
+    <p>Replace latch assembly.</p>
+    <p>Verification:</p>
+    <p>Repeated transport simulation without reboot.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator-high-temperature">
+    <h3>Real-World Example: Ventilator High Temperature</h3>
+    <p>Symptom:</p>
+    <blockquote><p>High internal temperature alarm.</p></blockquote>
+    <p>Cause:</p>
+    <p>Cooling airflow insufficient.</p>
+    <p>Root cause:</p>
+    <p>Filter heavily clogged.</p>
+    <p>Repair:</p>
+    <p>Replace/clean filter per procedure.</p>
+    <p>Verification:</p>
+    <p>Extended operation with normal temperature.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network-failure">
+    <h3>Real-World Example: Network Failure</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Monitor missing from central.</p></blockquote>
+    <p>Cause:</p>
+    <p>Wrong gateway configuration.</p>
+    <p>Root cause:</p>
+    <p>Configuration lost after board replacement.</p>
+    <p>Repair:</p>
+    <p>Restore approved network settings.</p>
+    <p>Now the failure makes sense from start to finish.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-fuse-failure">
+    <h3>Real-World Example: Repeated Fuse Failure</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Device dead.</p></blockquote>
+    <p>Cause:</p>
+    <p>Fuse open.</p>
+    <p>Replace fuse:</p>
+    <p>It opens again.</p>
+    <p>Root cause:</p>
+    <p>Shorted component on power board.</p>
+    <p>The fuse was not the real repair.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <h4>Treating the Symptom as the Cause</h4>
+    <p>“Will not power on” is not a diagnosis.</p>
+    <h4>Treating the Failed Part as the Root Cause Automatically</h4>
+    <p>Ask why it failed.</p>
+    <h4>Assuming the Error Code Names the Cause</h4>
+    <p>It usually names what was detected.</p>
+    <h4>Going Too Deep Without Evidence</h4>
+    <p>Do not invent root causes.</p>
+    <h4>Stopping After Temporary Recovery</h4>
+    <p>A reboot is not necessarily a repair.</p>
+    <h4>Ignoring Repeated Patterns</h4>
+    <p>Recurrence often points deeper.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>Ask:</p>
+    <p><strong>What do I observe?</strong></p>
+    <p>That is the symptom.</p>
+    <p>Then:</p>
+    <p><strong>What directly caused that condition?</strong></p>
+    <p>That is the cause.</p>
+    <p>Then:</p>
+    <p><strong>Why did that cause exist?</strong></p>
+    <p>That may be the root cause.</p>
+    <p>Keep going only as far as the evidence and situation require.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>If I replace this part, what would make the new part fail the same way?</strong></p>
+    <p>That question often reveals whether you have reached the root cause.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a fuse is open, you proved:</p>
+    <p><strong>The fuse is open.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The fuse itself was the original failure.</strong></p>
+    <p>If a battery fails a capacity test, you proved:</p>
+    <p><strong>The battery no longer meets required capacity under that test.</strong></p>
+    <p>You may not know exactly why it degraded.</p>
+    <p>Keep the conclusion aligned with the evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Troubleshooting gets much cleaner when you separate:</p>
+    <p><strong>Symptom</strong></p>
+    <p>from:</p>
+    <p><strong>Cause</strong></p>
+    <p>from:</p>
+    <p><strong>Root Cause.</strong></p>
+    <p>The symptom is what you see.</p>
+    <p>The cause is what directly created it.</p>
+    <p>The root cause explains why that failure happened.</p>
+    <p>Sometimes finding the cause is enough.</p>
+    <p>Sometimes repeated failures mean you need to go deeper.</p>
+    <p>The important thing is not to jump from:</p>
+    <blockquote><p>Device shut off.</p></blockquote>
+    <p>to:</p>
+    <blockquote><p>Bad battery.</p></blockquote>
+    <p>without evidence.</p>
+    <p>Start with what you can observe.</p>
+    <p>Isolate the cause.</p>
+    <p>Then ask whether there is a deeper reason that matters.</p>
+    <p>That is how you move from simply swapping parts to actually understanding the failure.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Root-cause depth should match the equipment risk, failure pattern, manufacturer guidance, and facility process. Formal incident investigations or organizational root-cause analyses may require involvement from risk management, patient safety, clinical leadership, manufacturers, or other departments beyond normal corrective maintenance troubleshooting.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="the-troubleshooting-process-observe-isolate-test-verify.html">The Troubleshooting Process: Observe, Isolate, Test, Verify</a></li>
+      <li><a href="error-codes-what-they-tell-you-and-what-they-don-t.html">Error Codes: What They Tell You and What They Don&amp;#x27;t</a></li>
+      <li><a href="how-to-avoid-confirmation-bias-while-troubleshooting.html">How to Avoid Confirmation Bias While Troubleshooting</a></li>
+      <li><a href="why-changing-one-thing-at-a-time-matters.html">Why Changing One Thing at a Time Matters</a></li>
+      <li><a href="how-to-reproduce-a-clinical-complaint-on-the-bench.html">How to Reproduce a Clinical Complaint on the Bench</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

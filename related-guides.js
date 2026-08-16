@@ -1,4 +1,14 @@
 // related-guides.js
+(function loadLearningRecommendationsComponent() {
+  if (document.querySelector("script[data-learning-recommendations]")) return;
+
+  const script = document.createElement("script");
+  script.src = new URL("learning-recommendations.js", document.currentScript.src).href;
+  script.defer = true;
+  script.dataset.learningRecommendations = "";
+  document.head.appendChild(script);
+})();
+
 function renderModelSpecificPm(currentGuide, pmProcedures, assetHubData) {
   const exactPm = pmProcedures.find(pm =>
     pm.manufacturer === currentGuide.manufacturer &&
@@ -66,7 +76,7 @@ function renderModelSpecificPm(currentGuide, pmProcedures, assetHubData) {
 
       <p class="pm-safety"><strong>Electrical Safety:</strong> ${exactPm.requiresElectricalSafety ? "Included" : "Not specified"}</p>
 
-      <p class="date">Added: ${exactPm.dateAdded}</p>
+      <p class="date"><em>Last Revision: ${exactPm.lastRevision || exactPm.dateAdded}</em></p>
     </div>
   `;
 

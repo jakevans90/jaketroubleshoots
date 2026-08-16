@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Infusion Pump Occlusion Detection Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how infusion pumps detect rising pressure or force and decide when to stop delivery and generate an occlusion alarm.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-infusion-pump-occlusion-detection-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How Infusion Pump Occlusion Detection Works</h2>
+  <p>How an infusion pump detects rising pressure in the fluid path and decides when to stop, alarm, and protect the patient</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">An infusion pump may be programmed to deliver:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an infusion occlusion is</li>
+      <li>Upstream versus downstream occlusions</li>
+      <li>How pressure builds in infusion tubing</li>
+      <li>Pressure sensors</li>
+      <li>Force sensing</li>
+      <li>Motor-current monitoring</li>
+      <li>Occlusion thresholds</li>
+      <li>Why alarms are delayed</li>
+      <li>Tubing compliance</li>
+      <li>Flow-rate effects</li>
+      <li>Bolus after occlusion</li>
+      <li>False occlusion alarms</li>
+      <li>Failed occlusion detection</li>
+      <li>Infusion analyzer testing</li>
+      <li>Common failure patterns</li>
+      <li>How to think through occlusion troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic downstream occlusion works like this:</p>
+    <p><strong>Pump continues trying to move fluid</strong></p>
+    <p>↓</p>
+    <p><strong>Fluid cannot move normally</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure rises in the tubing</strong></p>
+    <p>↓</p>
+    <p><strong>Pump senses increasing pressure or force</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure reaches the alarm threshold</strong></p>
+    <p>↓</p>
+    <p><strong>Pump stops delivery and alarms</strong></p>
+    <p>That means an occlusion alarm depends on:</p>
+    <ul>
+      <li>Actual restriction</li>
+      <li>Tubing</li>
+      <li>Pressure sensing</li>
+      <li>Alarm threshold</li>
+      <li>Software</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-is-an-occlusion">
+    <h3>What Is an Occlusion?</h3>
+    <p>An occlusion is a restriction that prevents or significantly reduces normal fluid flow.</p>
+    <p>It may be:</p>
+    <ul>
+      <li>Partial</li>
+      <li>Complete</li>
+    </ul>
+    <p>The pump usually does not physically see the blockage.</p>
+    <p>Instead, it detects the effect the blockage causes.</p>
+    <p>Most often:</p>
+    <p><strong>Increasing pressure.</strong></p>
+  </section>
+
+  <section class="content-box" id="downstream-occlusion">
+    <h3>Downstream Occlusion</h3>
+    <p>A downstream occlusion occurs after the pumping mechanism, toward the patient.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Closed roller clamp</li>
+      <li>Kinked patient tubing</li>
+      <li>Closed stopcock</li>
+      <li>Blocked catheter</li>
+    </ul>
+    <p>The pump pushes fluid against the restriction.</p>
+    <p>Pressure rises.</p>
+  </section>
+
+  <section class="content-box" id="upstream-occlusion">
+    <h3>Upstream Occlusion</h3>
+    <p>An upstream occlusion occurs before the pumping mechanism, toward the fluid source.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Empty or collapsed bag</li>
+      <li>Closed clamp above the pump</li>
+      <li>Kinked supply tubing</li>
+    </ul>
+    <p>The way an upstream occlusion is detected can differ from downstream detection.</p>
+  </section>
+
+  <section class="content-box" id="not-every-pump-detects-both-the-same-way">
+    <h3>Not Every Pump Detects Both the Same Way</h3>
+    <p>Some pumps have:</p>
+    <ul>
+      <li>Upstream pressure sensing</li>
+      <li>Downstream pressure sensing</li>
+      <li>Both</li>
+    </ul>
+    <p>Others may rely on different mechanisms.</p>
+    <p>Always understand the specific pump design.</p>
+  </section>
+
+  <section class="content-box" id="why-pressure-rises">
+    <h3>Why Pressure Rises</h3>
+    <p>Fluid is nearly incompressible.</p>
+    <p>But the infusion system is not perfectly rigid.</p>
+    <p>When the outlet is blocked, the pump may continue moving its mechanism.</p>
+    <p>That causes:</p>
+    <ul>
+      <li>Tubing expansion</li>
+      <li>Syringe deformation</li>
+      <li>Pressure increase</li>
+    </ul>
+    <p>The pump senses that change.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor">
+    <h3>Pressure Sensor</h3>
+    <p>Many infusion pumps use some type of pressure or force sensor.</p>
+    <p>Possible designs include:</p>
+    <ul>
+      <li>Strain gauge</li>
+      <li>Load cell</li>
+      <li>Force sensor</li>
+      <li>Pressure transducer</li>
+    </ul>
+    <p>The exact sensor may never directly touch the fluid.</p>
+  </section>
+
+  <section class="content-box" id="indirect-pressure-measurement">
+    <h3>Indirect Pressure Measurement</h3>
+    <p>A pump may press the IV tubing against a force sensor.</p>
+    <p>As pressure inside the tubing rises, the tubing pushes harder against that sensor.</p>
+    <p>The pump converts that force into an estimated pressure.</p>
+  </section>
+
+  <section class="content-box" id="syringe-pumps">
+    <h3>Syringe Pumps</h3>
+    <p>A syringe pump may detect force against the syringe plunger.</p>
+    <p>If the downstream line becomes blocked, the motor must push harder.</p>
+    <p>The force on the plunger increases.</p>
+    <p>That can be used for occlusion detection.</p>
+  </section>
+
+  <section class="content-box" id="motor-current">
+    <h3>Motor Current</h3>
+    <p>Some systems may also monitor motor load or current.</p>
+    <p>As resistance increases, the motor may need more torque.</p>
+    <p>That can provide additional evidence of an occlusion.</p>
+    <p>But motor current alone does not always equal fluid pressure.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-threshold">
+    <h3>Occlusion Threshold</h3>
+    <p>The pump needs a limit.</p>
+    <p>Example:</p>
+    <p>Alarm when downstream pressure reaches a defined threshold.</p>
+    <p>That threshold may be:</p>
+    <ul>
+      <li>Fixed</li>
+      <li>Adjustable</li>
+      <li>Profile-dependent</li>
+    </ul>
+    <p>The exact values vary by manufacturer and pump mode.</p>
+  </section>
+
+  <section class="content-box" id="adjustable-occlusion-limits">
+    <h3>Adjustable Occlusion Limits</h3>
+    <p>Some pumps allow different pressure settings.</p>
+    <p>A lower threshold may detect a blockage sooner.</p>
+    <p>A higher threshold may tolerate more resistance before alarming.</p>
+    <p>This is a clinical configuration, not something to change casually during troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="alarm-threshold-is-not-alarm-time">
+    <h3>Alarm Threshold Is Not Alarm Time</h3>
+    <p>This distinction is extremely important.</p>
+    <p>The pump may alarm at:</p>
+    <p>12 psi.</p>
+    <p>But it may take time to reach:</p>
+    <p>12 psi.</p>
+    <p>That time depends on the system.</p>
+  </section>
+
+  <section class="content-box" id="why-occlusion-alarms-can-take-time">
+    <h3>Why Occlusion Alarms Can Take Time</h3>
+    <p>After flow is blocked, the pump may continue compressing:</p>
+    <ul>
+      <li>Tubing</li>
+      <li>Syringe</li>
+      <li>Fluid path components</li>
+    </ul>
+    <p>Pressure rises gradually.</p>
+    <p>The pump does not alarm until the measured threshold is reached.</p>
+  </section>
+
+  <section class="content-box" id="flow-rate-affects-alarm-time">
+    <h3>Flow Rate Affects Alarm Time</h3>
+    <p>At a high flow rate, the pump moves more fluid per unit time.</p>
+    <p>Pressure may rise quickly.</p>
+    <p>At a low flow rate, pressure may rise slowly.</p>
+    <p>That means:</p>
+    <p><strong>The same occlusion threshold can produce very different alarm times at different flow rates.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pump set:</p>
+    <p>500 mL/hr.</p>
+    <p>Downstream clamp closed.</p>
+    <p>Occlusion alarm may occur relatively quickly.</p>
+    <p>Now set:</p>
+    <p>1 mL/hr.</p>
+    <p>Same clamp.</p>
+    <p>Same threshold.</p>
+    <p>Alarm may take much longer.</p>
+    <p>That does not automatically mean the pump is defective.</p>
+  </section>
+
+  <section class="content-box" id="tubing-compliance">
+    <h3>Tubing Compliance</h3>
+    <p>Compliance describes how much the infusion system expands under pressure.</p>
+    <p>More compliant tubing can absorb more pumped volume before pressure reaches the alarm threshold.</p>
+    <p>That increases alarm delay.</p>
+  </section>
+
+  <section class="content-box" id="stiffer-tubing">
+    <h3>Stiffer Tubing</h3>
+    <p>A stiffer system may reach the same pressure threshold faster.</p>
+    <p>So occlusion response can depend on:</p>
+    <ul>
+      <li>Administration set</li>
+      <li>Tubing material</li>
+      <li>Syringe type</li>
+    </ul>
+    <p>Use approved consumables during testing.</p>
+  </section>
+
+  <section class="content-box" id="syringe-compliance">
+    <h3>Syringe Compliance</h3>
+    <p>Syringes also deform slightly.</p>
+    <p>Different:</p>
+    <ul>
+      <li>Sizes</li>
+      <li>Brands</li>
+      <li>Materials</li>
+    </ul>
+    <p>may behave differently.</p>
+    <p>That can affect occlusion detection in syringe pumps.</p>
+  </section>
+
+  <section class="content-box" id="priming-matters">
+    <h3>Priming Matters</h3>
+    <p>Air in the line changes the system dramatically.</p>
+    <p>Air is compressible.</p>
+    <p>If a significant amount of air remains in the test setup, pressure may rise more slowly.</p>
+    <p>That can create an artificially long occlusion alarm time.</p>
+  </section>
+
+  <section class="content-box" id="remove-air-from-test-setup">
+    <h3>Remove Air From Test Setup</h3>
+    <p>When performing an approved occlusion test:</p>
+    <p>Prime the system correctly.</p>
+    <p>Otherwise you may test:</p>
+    <p><strong>Air compression</strong></p>
+    <p>instead of:</p>
+    <p><strong>Pump occlusion response.</strong></p>
+  </section>
+
+  <section class="content-box" id="downstream-occlusion-detection">
+    <h3>Downstream Occlusion Detection</h3>
+    <p>A typical downstream test may involve:</p>
+    <ul>
+      <li>Running pump at specified flow rate</li>
+      <li>Blocking the outlet</li>
+      <li>Measuring pressure</li>
+      <li>Recording pressure when alarm occurs</li>
+    </ul>
+    <p>Follow the manufacturer or analyzer procedure.</p>
+  </section>
+
+  <section class="content-box" id="infusion-device-analyzer">
+    <h3>Infusion Device Analyzer</h3>
+    <p>An infusion analyzer can help measure:</p>
+    <ul>
+      <li>Flow rate</li>
+      <li>Volume</li>
+      <li>Occlusion pressure</li>
+    </ul>
+    <p>It gives you an independent reference.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-pressure-test">
+    <h3>Occlusion Pressure Test</h3>
+    <p>The analyzer may create a controlled restriction.</p>
+    <p>Pressure builds as the pump continues operating.</p>
+    <p>When the pump alarms, the analyzer records the pressure.</p>
+    <p>You then compare it to the allowed limit.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Specified occlusion alarm range:</p>
+    <p>8 to 12 psi.</p>
+    <p>Analyzer shows alarm at:</p>
+    <p>10 psi.</p>
+    <p>Pass.</p>
+    <p>Alarm at:</p>
+    <p>16 psi.</p>
+    <p>Fail.</p>
+  </section>
+
+  <section class="content-box" id="alarm-too-early">
+    <h3>Alarm Too Early</h3>
+    <p>Suppose pump alarms at:</p>
+    <p>3 psi</p>
+    <p>when expected range is much higher.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Pressure sensor offset</li>
+      <li>Sensor calibration</li>
+      <li>Tubing loaded incorrectly</li>
+      <li>Mechanical pressure on sensor</li>
+    </ul>
+    <p>The pump may falsely believe pressure is already high.</p>
+  </section>
+
+  <section class="content-box" id="alarm-too-late">
+    <h3>Alarm Too Late</h3>
+    <p>If pressure rises well beyond the specified threshold before alarm:</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Pressure sensor underreading</li>
+      <li>Calibration issue</li>
+      <li>Sensor mechanical problem</li>
+      <li>Software/configuration issue</li>
+    </ul>
+    <p>That can be safety-critical.</p>
+  </section>
+
+  <section class="content-box" id="no-occlusion-alarm">
+    <h3>No Occlusion Alarm</h3>
+    <p>If pressure continues rising and no alarm occurs:</p>
+    <p>Stop the test according to the approved procedure.</p>
+    <p>Do not keep increasing pressure indefinitely.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Sensor failure</li>
+      <li>Detection circuit</li>
+      <li>Configuration</li>
+      <li>Mechanical loading issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="false-occlusion-alarm">
+    <h3>False Occlusion Alarm</h3>
+    <p>A pump may alarm even when fluid path is open.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Stiff or incorrectly loaded tubing</li>
+      <li>Pressure sensor offset</li>
+      <li>Door/latch alignment</li>
+      <li>Mechanical obstruction</li>
+      <li>Downstream resistance</li>
+    </ul>
+    <p>First determine whether real pressure is actually high.</p>
+  </section>
+
+  <section class="content-box" id="independent-pressure-measurement">
+    <h3>Independent Pressure Measurement</h3>
+    <p>This is another example of:</p>
+    <p><strong>Actual condition vs measured condition.</strong></p>
+    <p>If pump says:</p>
+    <p>Occlusion.</p>
+    <p>Analyzer shows:</p>
+    <p>Low pressure.</p>
+    <p>The pump may be falsely detecting pressure.</p>
+    <p>If analyzer confirms high pressure:</p>
+    <p>The alarm may be correct.</p>
+  </section>
+
+  <section class="content-box" id="pump-mechanism-and-occlusion">
+    <h3>Pump Mechanism and Occlusion</h3>
+    <p>A pumping mechanism can also create abnormal pressure if it is:</p>
+    <ul>
+      <li>Misaligned</li>
+      <li>Overcompressing tubing</li>
+      <li>Mechanically damaged</li>
+    </ul>
+    <p>Do not assume every occlusion fault comes from the pressure sensor.</p>
+  </section>
+
+  <section class="content-box" id="administration-set-loading">
+    <h3>Administration Set Loading</h3>
+    <p>Peristaltic pumps rely on the tubing being installed correctly.</p>
+    <p>Incorrect loading can cause:</p>
+    <ul>
+      <li>Flow error</li>
+      <li>Excessive pressure</li>
+      <li>False occlusion alarm</li>
+    </ul>
+    <p>Inspect the set path carefully.</p>
+  </section>
+
+  <section class="content-box" id="door-closure">
+    <h3>Door Closure</h3>
+    <p>Closing the door may position:</p>
+    <ul>
+      <li>Pumping fingers</li>
+      <li>Pressure sensor</li>
+      <li>Air detector</li>
+    </ul>
+    <p>Incorrect door alignment can change pressure sensing.</p>
+  </section>
+
+  <section class="content-box" id="sensor-contact-with-tubing">
+    <h3>Sensor Contact With Tubing</h3>
+    <p>If the pressure sensor measures through the tubing wall, correct contact is important.</p>
+    <p>Too little contact:</p>
+    <p>Sensor may underread.</p>
+    <p>Too much preload:</p>
+    <p>Sensor may read pressure when there is none.</p>
+  </section>
+
+  <section class="content-box" id="sensor-preload">
+    <h3>Sensor Preload</h3>
+    <p>Mechanical systems may apply a small preload to the pressure sensor.</p>
+    <p>If a part is:</p>
+    <ul>
+      <li>Bent</li>
+      <li>Worn</li>
+      <li>Misaligned</li>
+    </ul>
+    <p>the baseline may shift.</p>
+  </section>
+
+  <section class="content-box" id="zero-or-baseline">
+    <h3>Zero or Baseline</h3>
+    <p>The pump needs to know what normal unloaded pressure looks like.</p>
+    <p>Some systems establish this during:</p>
+    <ul>
+      <li>Startup</li>
+      <li>Door closure</li>
+      <li>Set loading</li>
+    </ul>
+    <p>A bad baseline can cause false alarms.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-drift">
+    <h3>Pressure Sensor Drift</h3>
+    <p>A sensor may drift over time.</p>
+    <p>Example:</p>
+    <p>No downstream restriction.</p>
+    <p>Pump initially reads normal.</p>
+    <p>After warming up:</p>
+    <p>Occlusion alarms begin.</p>
+    <p>Temperature-related sensor drift may be involved.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-occlusion-alarm">
+    <h3>Intermittent Occlusion Alarm</h3>
+    <p>If the complaint is intermittent, reproduce conditions such as:</p>
+    <ul>
+      <li>Door movement</li>
+      <li>Tubing movement</li>
+      <li>Warm-up</li>
+      <li>Different flow rates</li>
+    </ul>
+    <p>Do not simply run the pump for thirty seconds and declare it good.</p>
+  </section>
+
+  <section class="content-box" id="partial-occlusion">
+    <h3>Partial Occlusion</h3>
+    <p>Not every blockage is complete.</p>
+    <p>A partially closed clamp may allow some flow while creating elevated pressure.</p>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Reduced flow</li>
+      <li>Higher pressure</li>
+      <li>Delayed alarm</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="complete-occlusion">
+    <h3>Complete Occlusion</h3>
+    <p>A complete blockage stops downstream flow.</p>
+    <p>Pressure typically continues rising until:</p>
+    <ul>
+      <li>Pump alarms</li>
+      <li>Pump reaches another safety limit</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="upstream-occlusion">
+    <h3>Upstream Occlusion</h3>
+    <p>Upstream occlusion is different because the pump may try to draw fluid from a restricted source.</p>
+    <p>Possible effects include:</p>
+    <ul>
+      <li>Negative pressure</li>
+      <li>Tubing collapse</li>
+      <li>Reduced filling</li>
+    </ul>
+    <p>Some pumps have dedicated upstream sensors.</p>
+  </section>
+
+  <section class="content-box" id="upstream-sensor">
+    <h3>Upstream Sensor</h3>
+    <p>An upstream sensor may detect:</p>
+    <ul>
+      <li>Negative pressure</li>
+      <li>Tubing deformation</li>
+      <li>Lack of expected pressure</li>
+    </ul>
+    <p>The exact design varies.</p>
+  </section>
+
+  <section class="content-box" id="empty-container-vs-occlusion">
+    <h3>Empty Container vs Occlusion</h3>
+    <p>An empty bag can sometimes produce symptoms similar to an upstream occlusion.</p>
+    <p>The pump may detect:</p>
+    <ul>
+      <li>No fluid</li>
+      <li>Air</li>
+      <li>Pressure change</li>
+    </ul>
+    <p>Multiple sensors can be involved.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-vs-air-in-line">
+    <h3>Occlusion vs Air-in-Line</h3>
+    <p>These are different safety systems.</p>
+    <p>Air-in-line detection often uses:</p>
+    <ul>
+      <li>Ultrasonic</li>
+      <li>Optical</li>
+    </ul>
+    <p>methods.</p>
+    <p>Occlusion detection generally depends on:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Force</li>
+      <li>Motor load</li>
+    </ul>
+    <p>Do not confuse their error messages.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-vs-door-alarm">
+    <h3>Occlusion vs Door Alarm</h3>
+    <p>A door problem may prevent proper tubing compression and also affect the pressure sensor.</p>
+    <p>Multiple symptoms can share the same mechanical cause.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-and-flow-accuracy">
+    <h3>Occlusion and Flow Accuracy</h3>
+    <p>A pump can pass flow accuracy and still fail occlusion detection.</p>
+    <p>Example:</p>
+    <p>Open line:</p>
+    <p>100 mL/hr accurately.</p>
+    <p>Blocked line:</p>
+    <p>Alarm threshold far too high.</p>
+    <p>Those are different tests.</p>
+  </section>
+
+  <section class="content-box" id="passing-occlusion-does-not-prove-flow-accuracy">
+    <h3>Passing Occlusion Does Not Prove Flow Accuracy</h3>
+    <p>Likewise:</p>
+    <p>Correct occlusion alarm pressure</p>
+    <p>does not prove:</p>
+    <p>Correct delivery rate.</p>
+    <p>Each test evaluates a different function.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-release">
+    <h3>Occlusion Release</h3>
+    <p>When an occlusion is cleared, pressure stored in the tubing may release.</p>
+    <p>This can produce a small unintended bolus.</p>
+    <p>This is sometimes called:</p>
+    <p><strong>Post-occlusion bolus.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-pressure-builds-stored-volume">
+    <h3>Why Pressure Builds Stored Volume</h3>
+    <p>As pressure rises:</p>
+    <ul>
+      <li>Tubing stretches</li>
+      <li>Syringe components deform</li>
+    </ul>
+    <p>That stores energy and volume.</p>
+    <p>When the restriction disappears, some of that volume may move rapidly downstream.</p>
+  </section>
+
+  <section class="content-box" id="anti-bolus-features">
+    <h3>Anti-Bolus Features</h3>
+    <p>Some pumps include software or mechanical strategies to reduce post-occlusion bolus.</p>
+    <p>The exact approach varies.</p>
+  </section>
+
+  <section class="content-box" id="do-not-manually-release-high-pressure-without-understanding-the-setup">
+    <h3>Do Not Manually Release High Pressure Without Understanding the Setup</h3>
+    <p>In clinical use, line pressure management is a clinical procedure.</p>
+    <p>During bench testing, follow the manufacturer's or analyzer's controlled method.</p>
+  </section>
+
+  <section class="content-box" id="syringe-pump-plunger-force">
+    <h3>Syringe Pump Plunger Force</h3>
+    <p>In a syringe pump, the motor pushes the plunger.</p>
+    <p>The force required depends on:</p>
+    <ul>
+      <li>Syringe friction</li>
+      <li>Backpressure</li>
+      <li>Downstream resistance</li>
+    </ul>
+    <p>This makes syringe selection important.</p>
+  </section>
+
+  <section class="content-box" id="wrong-syringe-selection">
+    <h3>Wrong Syringe Selection</h3>
+    <p>If the pump is configured for the wrong syringe:</p>
+    <ul>
+      <li>Diameter calculation</li>
+      <li>Force behavior</li>
+      <li>Flow accuracy</li>
+    </ul>
+    <p>may be affected.</p>
+    <p>Use the correct syringe brand/type where required.</p>
+  </section>
+
+  <section class="content-box" id="syringe-size">
+    <h3>Syringe Size</h3>
+    <p>A larger syringe diameter requires different plunger travel and force relationships than a smaller one.</p>
+    <p>That can affect:</p>
+    <ul>
+      <li>Flow</li>
+      <li>Occlusion response</li>
+    </ul>
+    <p>Use manufacturer-approved setups.</p>
+  </section>
+
+  <section class="content-box" id="flow-rate-and-syringe-pump-alarm-delay">
+    <h3>Flow Rate and Syringe Pump Alarm Delay</h3>
+    <p>At very low syringe-pump rates, downstream pressure can build extremely slowly.</p>
+    <p>This is an important reason not to judge alarm response by:</p>
+    <blockquote><p>It took forever.</p></blockquote>
+    <p>Compare to the actual test requirement.</p>
+  </section>
+
+  <section class="content-box" id="alarm-limit-configuration">
+    <h3>Alarm Limit Configuration</h3>
+    <p>Make sure the test is performed at the specified:</p>
+    <ul>
+      <li>Occlusion setting</li>
+      <li>Profile</li>
+      <li>Mode</li>
+    </ul>
+    <p>If the pump allows selectable pressure sensitivity, the threshold may intentionally change.</p>
+  </section>
+
+  <section class="content-box" id="drug-library-configuration">
+    <h3>Drug Library Configuration</h3>
+    <p>Smart pumps may have profile or drug-specific settings that influence:</p>
+    <ul>
+      <li>Pressure alarm behavior</li>
+      <li>Flow operation</li>
+    </ul>
+    <p>Do not compare two pumps without checking configuration.</p>
+  </section>
+
+  <section class="content-box" id="software-version">
+    <h3>Software Version</h3>
+    <p>Occlusion algorithms may change with:</p>
+    <ul>
+      <li>Software</li>
+      <li>Firmware</li>
+    </ul>
+    <p>Use the applicable service documentation.</p>
+  </section>
+
+  <section class="content-box" id="pressure-units">
+    <h3>Pressure Units</h3>
+    <p>Possible occlusion units include:</p>
+    <ul>
+      <li>psi</li>
+      <li>mmHg</li>
+      <li>kPa</li>
+    </ul>
+    <p>Make sure analyzer and service limit use the same units.</p>
+  </section>
+
+  <section class="content-box" id="static-pressure-vs-dynamic-occlusion">
+    <h3>Static Pressure vs Dynamic Occlusion</h3>
+    <p>A static pressure test may evaluate sensor accuracy.</p>
+    <p>A dynamic occlusion test evaluates:</p>
+    <ul>
+      <li>Pump operation</li>
+      <li>Pressure rise</li>
+      <li>Alarm logic</li>
+    </ul>
+    <p>Passing one does not automatically prove the other.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-accuracy-test">
+    <h3>Pressure Sensor Accuracy Test</h3>
+    <p>Some service procedures may directly apply known pressure to the sensor.</p>
+    <p>This helps isolate:</p>
+    <p><strong>Sensor accuracy</strong></p>
+    <p>from:</p>
+    <p><strong>Full pumping-system behavior.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Static sensor test:</p>
+    <p>Pass.</p>
+    <p>Dynamic occlusion test:</p>
+    <p>Fails.</p>
+    <p>Now possible causes include:</p>
+    <ul>
+      <li>Set loading</li>
+      <li>Pump mechanics</li>
+      <li>Algorithm</li>
+    </ul>
+    <p>The sensor itself may be accurate.</p>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>Static sensor test:</p>
+    <p>Reads 5 psi high.</p>
+    <p>Dynamic test:</p>
+    <p>Occlusion alarms too early.</p>
+    <p>Now the relationship makes sense.</p>
+  </section>
+
+  <section class="content-box" id="motor-stall">
+    <h3>Motor Stall</h3>
+    <p>A severe blockage may increase motor load.</p>
+    <p>Some pumps may detect:</p>
+    <ul>
+      <li>Motor stall</li>
+      <li>Mechanism failure</li>
+    </ul>
+    <p>before or in addition to a pressure occlusion alarm.</p>
+    <p>The displayed error may therefore vary.</p>
+  </section>
+
+  <section class="content-box" id="pump-stops-before-occlusion-threshold">
+    <h3>Pump Stops Before Occlusion Threshold</h3>
+    <p>If the mechanism stalls before the specified pressure threshold, investigate:</p>
+    <ul>
+      <li>Drive system</li>
+      <li>Motor</li>
+      <li>Mechanical friction</li>
+    </ul>
+    <p>The pressure sensor may not be the problem.</p>
+  </section>
+
+  <section class="content-box" id="battery-operation">
+    <h3>Battery Operation</h3>
+    <p>If occlusion behavior changes only on battery:</p>
+    <p>Consider whether pump motor performance or power supply is affected.</p>
+    <p>But verify with the manufacturer procedure before making conclusions.</p>
+  </section>
+
+  <section class="content-box" id="temperature-effects">
+    <h3>Temperature Effects</h3>
+    <p>Tubing stiffness, sensor behavior, and syringe friction can change with temperature.</p>
+    <p>Use specified environmental conditions for verification.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-false-downstream-occlusion">
+    <h3>Real-World Example: False Downstream Occlusion</h3>
+    <p>Pump immediately alarms after start.</p>
+    <p>Analyzer pressure:</p>
+    <p>Near zero.</p>
+    <p>Known-good tubing:</p>
+    <p>Same result.</p>
+    <p>Pressure sensor baseline found shifted high.</p>
+    <p>Pump was detecting pressure that did not exist.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-late-occlusion-alarm">
+    <h3>Real-World Example: Late Occlusion Alarm</h3>
+    <p>Expected:</p>
+    <p>8–12 psi.</p>
+    <p>Pump alarms at:</p>
+    <p>17 psi.</p>
+    <p>Independent analyzer confirms actual pressure.</p>
+    <p>Static pressure verification also reads low.</p>
+    <p>Pressure-sensing calibration path is suspect.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-administration-set-fails">
+    <h3>Real-World Example: One Administration Set Fails</h3>
+    <p>Original tubing:</p>
+    <p>Repeated occlusion alarms.</p>
+    <p>Known-good approved set:</p>
+    <p>Normal.</p>
+    <p>Original tubing loaded into another pump:</p>
+    <p>Same failure.</p>
+    <p>Problem follows administration set.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-long-alarm-time-at-low-flow">
+    <h3>Real-World Example: Long Alarm Time at Low Flow</h3>
+    <p>Pump set:</p>
+    <p>1 mL/hr.</p>
+    <p>Complete downstream occlusion.</p>
+    <p>Pressure rises slowly.</p>
+    <p>Alarm eventually occurs within manufacturer requirement.</p>
+    <p>Pump is operating correctly.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-flow-good-occlusion-test-fails">
+    <h3>Real-World Example: Flow Good, Occlusion Test Fails</h3>
+    <p>Pump delivers:</p>
+    <p>100 mL/hr</p>
+    <p>within accuracy specification.</p>
+    <p>Occlusion alarm threshold:</p>
+    <p>Too high.</p>
+    <p>Flow system passes.</p>
+    <p>Safety-pressure detection does not.</p>
+    <p>One passing test does not prove the other.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-syringe-pump-false-alarm">
+    <h3>Real-World Example: Syringe Pump False Alarm</h3>
+    <p>Correct pressure analyzer setup:</p>
+    <p>Low pressure.</p>
+    <p>Pump reports occlusion.</p>
+    <p>Syringe holder misaligned and pushing additional force into plunger mechanism.</p>
+    <p>Sensor was responding to mechanical preload.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-every-occlusion-alarm-means-the-line-is-blocked">
+    <h3>Assuming Every Occlusion Alarm Means the Line Is Blocked</h3>
+    <p>Verify actual pressure.</p>
+  </section>
+
+  <section class="content-box" id="assuming-every-false-alarm-means-the-pressure-sensor-is-bad">
+    <h3>Assuming Every False Alarm Means the Pressure Sensor Is Bad</h3>
+    <p>Check set loading and mechanics.</p>
+  </section>
+
+  <section class="content-box" id="judging-alarm-time-without-considering-flow-rate">
+    <h3>Judging Alarm Time Without Considering Flow Rate</h3>
+    <p>Low flow can produce long delays.</p>
+  </section>
+
+  <section class="content-box" id="testing-with-air-in-the-tubing">
+    <h3>Testing With Air in the Tubing</h3>
+    <p>Air changes pressure buildup.</p>
+  </section>
+
+  <section class="content-box" id="using-the-wrong-administration-set-or-syringe">
+    <h3>Using the Wrong Administration Set or Syringe</h3>
+    <p>Consumables affect the system.</p>
+  </section>
+
+  <section class="content-box" id="confusing-occlusion-threshold-with-time-to-alarm">
+    <h3>Confusing Occlusion Threshold With Time-to-Alarm</h3>
+    <p>They are related but different.</p>
+  </section>
+
+  <section class="content-box" id="assuming-passing-flow-accuracy-proves-occlusion-detection">
+    <h3>Assuming Passing Flow Accuracy Proves Occlusion Detection</h3>
+    <p>They are separate functions.</p>
+  </section>
+
+  <section class="content-box" id="continuing-to-increase-pressure-beyond-approved-test-limits">
+    <h3>Continuing to Increase Pressure Beyond Approved Test Limits</h3>
+    <p>Use the defined procedure.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For an occlusion problem, ask:</p>
+    <p><strong>Is there actually a restriction?</strong></p>
+    <p>Then:</p>
+    <p><strong>What pressure is really present?</strong></p>
+    <p>Use an analyzer.</p>
+    <p>Then:</p>
+    <p><strong>At what pressure does the pump alarm?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the tubing or syringe loaded correctly?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure follow the consumable or stay with the pump?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does a static pressure-sensor test agree with the dynamic occlusion test?</strong></p>
+    <p>That separates the problem into manageable layers.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is the pump detecting a real pressure problem, or creating a false pressure problem?</strong></p>
+    <p>Those lead to very different troubleshooting paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a pump displays:</p>
+    <blockquote><p>Occlusion</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The pump's occlusion-detection system reached whatever condition caused it to generate that alarm.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The IV line is actually blocked.</strong></p>
+    <p>If an independent analyzer shows the pump alarms within the specified pressure range during a controlled occlusion test, you have much stronger evidence that:</p>
+    <ul>
+      <li>Pressure sensing</li>
+      <li>Threshold logic</li>
+      <li>Alarm response</li>
+    </ul>
+    <p>are functioning correctly under that test condition.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Infusion-pump occlusion detection is really a pressure problem.</p>
+    <p>The pump attempts to move fluid.</p>
+    <p>Something resists that movement.</p>
+    <p>Pressure or mechanical force rises.</p>
+    <p>The pump detects that rise and alarms.</p>
+    <p>So when an occlusion complaint comes in, do not stop at:</p>
+    <blockquote><p>It says occlusion.</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>Is there really pressure?</strong></p>
+    <p>Then:</p>
+    <p><strong>How much pressure?</strong></p>
+    <p>Then:</p>
+    <p><strong>At what pressure does the pump alarm?</strong></p>
+    <p>And remember that:</p>
+    <ul>
+      <li>Flow rate</li>
+      <li>Tubing compliance</li>
+      <li>Syringe type</li>
+      <li>Air in the line</li>
+      <li>Sensor baseline</li>
+      <li>Mechanical loading</li>
+    </ul>
+    <p>can all change what you see.</p>
+    <p>Separate:</p>
+    <p><strong>Actual blockage</strong></p>
+    <p>from:</p>
+    <p><strong>Pressure measurement</strong></p>
+    <p>from:</p>
+    <p><strong>Alarm logic.</strong></p>
+    <p>Once you do that, infusion-pump occlusion troubleshooting becomes much more straightforward.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Infusion-pump occlusion-sensing methods, pressure thresholds, alarm delays, approved administration sets, syringe requirements, selectable pressure settings, and verification procedures vary by manufacturer and model. Follow current manufacturer service documentation, use approved consumables and calibrated infusion-device analyzers, and complete required flow, occlusion, alarm, and safety testing before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-infusion-pumps-measure-or-control-flow.html">How Infusion Pumps Measure or Control Flow</a></li>
+      <li><a href="how-medical-equipment-measures-pressure.html">How Medical Equipment Measures Pressure</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

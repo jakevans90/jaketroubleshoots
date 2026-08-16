@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Medical Equipment Measures Pressure | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how pressure sensors turn force from gas or fluid into electrical signals that medical equipment can display, control, and alarm on.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-medical-equipment-measures-pressure.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>How Medical Equipment Measures Pressure</h2>
+  <p>How pressure sensors turn force from gas or fluid into an electrical signal that a medical device can display, control, and alarm on</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Pressure is measured all over medical equipment.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What pressure is</li>
+      <li>Gauge, absolute, and differential pressure</li>
+      <li>Common medical pressure units</li>
+      <li>Pressure transducers</li>
+      <li>Strain-gauge and piezoresistive sensing</li>
+      <li>Differential-pressure sensing</li>
+      <li>Pressure ports</li>
+      <li>Tubing</li>
+      <li>Zeroing</li>
+      <li>Calibration</li>
+      <li>Offset and gain errors</li>
+      <li>Drift</li>
+      <li>Moisture and contamination</li>
+      <li>Dynamic versus static pressure</li>
+      <li>Independent pressure testing</li>
+      <li>Common pressure-measurement failures</li>
+      <li>How to think through pressure troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic pressure measurement path looks like:</p>
+    <p><strong>Gas or fluid creates pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure reaches a sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Sensor physically deforms or responds</strong></p>
+    <p>↓</p>
+    <p><strong>Electrical signal changes</strong></p>
+    <p>↓</p>
+    <p><strong>Electronics amplify and convert the signal</strong></p>
+    <p>↓</p>
+    <p><strong>Software converts that signal into pressure units</strong></p>
+    <p>↓</p>
+    <p><strong>Device displays, controls, or alarms on the value</strong></p>
+    <p>A problem anywhere in that path can create a bad pressure reading.</p>
+  </section>
+
+  <section class="content-box" id="what-is-pressure">
+    <h3>What Is Pressure?</h3>
+    <p>Pressure is force applied over an area.</p>
+    <p>In medical equipment, that may be pressure from:</p>
+    <ul>
+      <li>Air</li>
+      <li>Oxygen</li>
+      <li>Breathing gas</li>
+      <li>Blood</li>
+      <li>Fluid</li>
+      <li>Hydraulic systems</li>
+    </ul>
+    <p>The exact medium and range depend on the equipment.</p>
+  </section>
+
+  <section class="content-box" id="common-pressure-units">
+    <h3>Common Pressure Units</h3>
+    <p>You may see:</p>
+    <ul>
+      <li>mmHg</li>
+      <li>cmH2O</li>
+      <li>psi</li>
+      <li>kPa</li>
+      <li>bar</li>
+      <li>mbar</li>
+      <li>hPa</li>
+    </ul>
+    <p>Always confirm the units before comparing measurements.</p>
+  </section>
+
+  <section class="content-box" id="same-pressure-different-units">
+    <h3>Same Pressure, Different Units</h3>
+    <p>A value in:</p>
+    <p>cmH2O</p>
+    <p>cannot be directly compared numerically to:</p>
+    <p>mmHg</p>
+    <p>without conversion.</p>
+    <p>A correct number in the wrong unit is still wrong.</p>
+  </section>
+
+  <section class="content-box" id="gauge-pressure">
+    <h3>Gauge Pressure</h3>
+    <p>Gauge pressure is measured relative to atmospheric pressure.</p>
+    <p>Example:</p>
+    <p>5 psi gauge.</p>
+    <p>That means:</p>
+    <p>5 psi above surrounding atmospheric pressure.</p>
+    <p>Many airway and pneumatic measurements are effectively gauge measurements.</p>
+  </section>
+
+  <section class="content-box" id="absolute-pressure">
+    <h3>Absolute Pressure</h3>
+    <p>Absolute pressure is referenced to a perfect vacuum.</p>
+    <p>Atmospheric pressure is therefore not zero on an absolute scale.</p>
+    <p>Absolute-pressure sensors may be used for:</p>
+    <ul>
+      <li>Barometric pressure</li>
+      <li>Gas compensation</li>
+      <li>Altitude-related calculations</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="differential-pressure">
+    <h3>Differential Pressure</h3>
+    <p>Differential pressure measures the difference between two points.</p>
+    <p>Example:</p>
+    <p>Pressure before restriction:</p>
+    <p>P1.</p>
+    <p>Pressure after restriction:</p>
+    <p>P2.</p>
+    <p>Difference:</p>
+    <p>P1 - P2.</p>
+    <p>This is commonly used to measure:</p>
+    <ul>
+      <li>Flow</li>
+      <li>Filter restriction</li>
+      <li>Pressure drop</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pressure-transducer">
+    <h3>Pressure Transducer</h3>
+    <p>A pressure transducer converts physical pressure into an electrical signal.</p>
+    <p>The device may then represent that signal as:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Digital data</li>
+    </ul>
+    <p>The exact design varies.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-vs-transducer">
+    <h3>Pressure Sensor vs Transducer</h3>
+    <p>These terms are often used loosely.</p>
+    <p>A sensor detects the physical pressure.</p>
+    <p>A transducer converts one form of energy into another.</p>
+    <p>In practical biomed work, you will often hear both used for the same component.</p>
+  </section>
+
+  <section class="content-box" id="piezoresistive-sensors">
+    <h3>Piezoresistive Sensors</h3>
+    <p>A common pressure-sensing method uses a diaphragm with resistive elements.</p>
+    <p>Pressure bends the diaphragm.</p>
+    <p>The electrical resistance changes.</p>
+    <p>Electronics measure that change.</p>
+  </section>
+
+  <section class="content-box" id="strain-gauge-principle">
+    <h3>Strain-Gauge Principle</h3>
+    <p>A strain gauge changes resistance when stretched or compressed.</p>
+    <p>If mounted to a pressure-sensitive diaphragm, pressure causes physical strain.</p>
+    <p>That strain becomes an electrical signal.</p>
+  </section>
+
+  <section class="content-box" id="wheatstone-bridge">
+    <h3>Wheatstone Bridge</h3>
+    <p>Many pressure sensors use resistive elements arranged as a:</p>
+    <p><strong>Wheatstone bridge.</strong></p>
+    <p>The bridge produces a small voltage difference as pressure changes.</p>
+    <p>The device amplifies and processes that signal.</p>
+    <p>You do not need to solve bridge equations every time you troubleshoot one.</p>
+    <p>The useful concept is:</p>
+    <p><strong>Pressure causes a small electrical imbalance that the electronics measure.</strong></p>
+  </section>
+
+  <section class="content-box" id="capacitive-pressure-sensors">
+    <h3>Capacitive Pressure Sensors</h3>
+    <p>Some pressure sensors use changes in capacitance.</p>
+    <p>Pressure moves a diaphragm.</p>
+    <p>The distance between conductive surfaces changes.</p>
+    <p>Capacitance changes.</p>
+    <p>Electronics convert that change into pressure.</p>
+  </section>
+
+  <section class="content-box" id="different-technologies-same-troubleshooting-logic">
+    <h3>Different Technologies, Same Troubleshooting Logic</h3>
+    <p>No matter the sensor technology, think:</p>
+    <p><strong>Pressure input</strong></p>
+    <p>↓</p>
+    <p><strong>Physical sensor response</strong></p>
+    <p>↓</p>
+    <p><strong>Electrical signal</strong></p>
+    <p>↓</p>
+    <p><strong>Digital value</strong></p>
+    <p>That path helps isolate failures.</p>
+  </section>
+
+  <section class="content-box" id="pressure-port">
+    <h3>Pressure Port</h3>
+    <p>The sensor needs to be exposed to the pressure being measured.</p>
+    <p>That often happens through a small pressure port.</p>
+    <p>If the port becomes blocked:</p>
+    <p>The sensor may be healthy but never see the correct pressure.</p>
+  </section>
+
+  <section class="content-box" id="tubing">
+    <h3>Tubing</h3>
+    <p>Pressure may travel from the system to the sensor through tubing.</p>
+    <p>Possible problems include:</p>
+    <ul>
+      <li>Crack</li>
+      <li>Leak</li>
+      <li>Kink</li>
+      <li>Disconnection</li>
+      <li>Moisture</li>
+      <li>Debris</li>
+    </ul>
+    <p>Small tubing problems can create large measurement errors.</p>
+  </section>
+
+  <section class="content-box" id="pressure-line-leak">
+    <h3>Pressure Line Leak</h3>
+    <p>A leak may cause the sensor to read lower than actual pressure.</p>
+    <p>Example:</p>
+    <p>Reference:</p>
+    <p>100 mmHg.</p>
+    <p>Device:</p>
+    <p>70 mmHg.</p>
+    <p>If the pneumatic path leaks before the sensor, the sensor may actually be measuring 70.</p>
+    <p>The sensor itself could be working perfectly.</p>
+  </section>
+
+  <section class="content-box" id="blocked-pressure-line">
+    <h3>Blocked Pressure Line</h3>
+    <p>A blocked line may cause:</p>
+    <ul>
+      <li>No response</li>
+      <li>Delayed response</li>
+      <li>Pressure stuck at old value</li>
+    </ul>
+    <p>The sensor cannot measure a pressure change that never reaches it.</p>
+  </section>
+
+  <section class="content-box" id="moisture">
+    <h3>Moisture</h3>
+    <p>Water in small pneumatic tubing can dramatically alter pressure transmission.</p>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Slow response</li>
+      <li>Damping</li>
+      <li>Calibration failure</li>
+      <li>Zeroing failure</li>
+    </ul>
+    <p>This is especially common in respiratory equipment.</p>
+  </section>
+
+  <section class="content-box" id="static-pressure">
+    <h3>Static Pressure</h3>
+    <p>Static pressure means pressure that is relatively steady.</p>
+    <p>Example:</p>
+    <p>Apply:</p>
+    <p>100 mmHg</p>
+    <p>and hold it.</p>
+    <p>Static tests are useful for checking:</p>
+    <ul>
+      <li>Sensor accuracy</li>
+      <li>Leak</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dynamic-pressure">
+    <h3>Dynamic Pressure</h3>
+    <p>Dynamic pressure changes rapidly over time.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Ventilator airway waveform</li>
+      <li>Pulsatile invasive blood pressure</li>
+      <li>NIBP oscillations</li>
+    </ul>
+    <p>A sensor may pass a static test but respond poorly dynamically.</p>
+  </section>
+
+  <section class="content-box" id="sensor-response-time">
+    <h3>Sensor Response Time</h3>
+    <p>A sensor and its tubing need to respond fast enough to capture changing pressure.</p>
+    <p>Restrictions can slow that response.</p>
+    <p>Example:</p>
+    <p>External analyzer:</p>
+    <p>Sharp pressure spike.</p>
+    <p>Device:</p>
+    <p>Slow rounded waveform.</p>
+    <p>The pressure path may be damped.</p>
+  </section>
+
+  <section class="content-box" id="damping">
+    <h3>Damping</h3>
+    <p>Damping reduces rapid changes in the measured waveform.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Long tubing</li>
+      <li>Narrow tubing</li>
+      <li>Air bubbles in fluid systems</li>
+      <li>Restrictions</li>
+      <li>Filters</li>
+    </ul>
+    <p>Some damping is intentional.</p>
+    <p>Too much can distort the measurement.</p>
+  </section>
+
+  <section class="content-box" id="zero-pressure">
+    <h3>Zero Pressure</h3>
+    <p>Many systems establish a baseline at:</p>
+    <p>0 pressure relative to their reference.</p>
+    <p>If the sensor reports:</p>
+    <p>+5</p>
+    <p>when true pressure is:</p>
+    <p>0,</p>
+    <p>every later measurement may be shifted.</p>
+  </section>
+
+  <section class="content-box" id="zeroing">
+    <h3>Zeroing</h3>
+    <p>Zeroing tells the device:</p>
+    <p><strong>This condition represents zero pressure.</strong></p>
+    <p>The exact procedure varies.</p>
+    <p>It may require:</p>
+    <ul>
+      <li>Open to atmosphere</li>
+      <li>No flow</li>
+      <li>Specific valve position</li>
+    </ul>
+    <p>If those conditions are wrong, the zero can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="zero-error-example">
+    <h3>Zero Error Example</h3>
+    <p>Actual:</p>
+    <p>0 mmHg.</p>
+    <p>Device:</p>
+    <p>+8 mmHg.</p>
+    <p>Actual:</p>
+    <p>100.</p>
+    <p>Device:</p>
+    <p>108.</p>
+    <p>Actual:</p>
+    <p>200.</p>
+    <p>Device:</p>
+    <p>208.</p>
+    <p>That is a classic offset pattern.</p>
+  </section>
+
+  <section class="content-box" id="offset-error">
+    <h3>Offset Error</h3>
+    <p>Offset means the entire measurement is shifted by roughly the same amount.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Sensor zero drift</li>
+      <li>Calibration</li>
+      <li>Electronics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="gain-error">
+    <h3>Gain Error</h3>
+    <p>Gain error means the error increases with pressure.</p>
+    <p>Example:</p>
+    <p>Reference → Device</p>
+    <p>50 → 52</p>
+    <p>100 → 104</p>
+    <p>200 → 208</p>
+    <p>The sensor scales incorrectly.</p>
+  </section>
+
+  <section class="content-box" id="nonlinearity">
+    <h3>Nonlinearity</h3>
+    <p>A sensor may be accurate at some points but wrong at others.</p>
+    <p>Example:</p>
+    <p>50 → 50</p>
+    <p>100 → 100</p>
+    <p>200 → 230</p>
+    <p>This is why multiple test points matter.</p>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>Calibration</h3>
+    <p>Calibration compares the device's pressure measurement to a known reference and adjusts it according to the approved procedure.</p>
+    <p>It may include:</p>
+    <ul>
+      <li>Zero point</li>
+      <li>Mid-range point</li>
+      <li>High-range point</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="calibration-is-not-the-same-as-repair">
+    <h3>Calibration Is Not the Same as Repair</h3>
+    <p>If the pressure path is:</p>
+    <ul>
+      <li>Leaking</li>
+      <li>Blocked</li>
+      <li>Wet</li>
+    </ul>
+    <p>do not calibrate around that problem.</p>
+    <p>Fix the physical failure first.</p>
+  </section>
+
+  <section class="content-box" id="drift">
+    <h3>Drift</h3>
+    <p>Pressure sensors can change over time.</p>
+    <p>Drift may show up as:</p>
+    <ul>
+      <li>Zero shifting</li>
+      <li>Accuracy changing</li>
+      <li>Temperature sensitivity</li>
+    </ul>
+    <p>If the complaint is intermittent, check whether the reading changes:</p>
+    <ul>
+      <li>After warm-up</li>
+      <li>Over several hours</li>
+      <li>With temperature</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="temperature-effects">
+    <h3>Temperature Effects</h3>
+    <p>Sensor output can change with temperature.</p>
+    <p>Manufacturers may use compensation.</p>
+    <p>A sensor may only meet its stated accuracy within a specified temperature range.</p>
+  </section>
+
+  <section class="content-box" id="electronics">
+    <h3>Electronics</h3>
+    <p>The sensor output may be very small.</p>
+    <p>Electronics may need to:</p>
+    <ul>
+      <li>Amplify</li>
+      <li>Filter</li>
+      <li>Convert</li>
+    </ul>
+    <p>the signal.</p>
+    <p>A problem after the sensor can create an incorrect reading even when the sensor itself is good.</p>
+  </section>
+
+  <section class="content-box" id="analog-to-digital-conversion">
+    <h3>Analog-to-Digital Conversion</h3>
+    <p>The sensor's analog signal may be converted by an ADC.</p>
+    <p>Software then converts that digital value into engineering units.</p>
+    <p>A bad:</p>
+    <ul>
+      <li>Reference voltage</li>
+      <li>ADC channel</li>
+      <li>Calibration coefficient</li>
+    </ul>
+    <p>can affect the result.</p>
+  </section>
+
+  <section class="content-box" id="sensor-supply-voltage">
+    <h3>Sensor Supply Voltage</h3>
+    <p>Some pressure sensors need a stable excitation or supply voltage.</p>
+    <p>If that supply is wrong, the sensor output may also be wrong.</p>
+    <p>Always use documentation before probing sensor circuits.</p>
+  </section>
+
+  <section class="content-box" id="multiple-pressure-sensors">
+    <h3>Multiple Pressure Sensors</h3>
+    <p>A device may use several sensors for:</p>
+    <ul>
+      <li>Airway pressure</li>
+      <li>Supply pressure</li>
+      <li>Differential pressure</li>
+      <li>Barometric pressure</li>
+    </ul>
+    <p>Do not assume a message saying:</p>
+    <blockquote><p>Pressure Sensor Error</p></blockquote>
+    <p>identifies which one.</p>
+    <p>Check the service documentation.</p>
+  </section>
+
+  <section class="content-box" id="shared-failures">
+    <h3>Shared Failures</h3>
+    <p>If multiple pressure channels become wrong together, consider shared components such as:</p>
+    <ul>
+      <li>Power supply</li>
+      <li>Reference voltage</li>
+      <li>ADC</li>
+      <li>Communication bus</li>
+    </ul>
+    <p>A common failure may explain several symptoms.</p>
+  </section>
+
+  <section class="content-box" id="pressure-used-for-monitoring">
+    <h3>Pressure Used for Monitoring</h3>
+    <p>Sometimes pressure is only displayed.</p>
+    <p>In that case, a sensor failure may mainly create a bad measurement.</p>
+  </section>
+
+  <section class="content-box" id="pressure-used-for-control">
+    <h3>Pressure Used for Control</h3>
+    <p>Sometimes pressure feeds back into the control loop.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Ventilator pressure control</li>
+      <li>Anesthesia machine pressure control</li>
+      <li>Infusion occlusion detection</li>
+    </ul>
+    <p>Now a bad measurement can change actual system behavior.</p>
+  </section>
+
+  <section class="content-box" id="pressure-used-for-safety">
+    <h3>Pressure Used for Safety</h3>
+    <p>Pressure may trigger:</p>
+    <ul>
+      <li>High-pressure alarm</li>
+      <li>Relief action</li>
+      <li>Pump shutdown</li>
+      <li>Occlusion alarm</li>
+    </ul>
+    <p>That means sensor accuracy can be safety-critical.</p>
+  </section>
+
+  <section class="content-box" id="independent-pressure-measurement">
+    <h3>Independent Pressure Measurement</h3>
+    <p>One of the strongest troubleshooting techniques is to compare against an independent calibrated analyzer.</p>
+    <p>Ask:</p>
+    <p><strong>What pressure is actually present?</strong></p>
+    <p>Then:</p>
+    <p><strong>What pressure does the device report?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Reference analyzer:</p>
+    <p>100 mmHg.</p>
+    <p>Device:</p>
+    <p>100 mmHg.</p>
+    <p>Good agreement.</p>
+    <p>Now:</p>
+    <p>Reference:</p>
+    <p>100.</p>
+    <p>Device:</p>
+    <p>125.</p>
+    <p>The measurement path is wrong.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-placement-matters">
+    <h3>Analyzer Placement Matters</h3>
+    <p>Pressure can vary across a system.</p>
+    <p>Measure at the manufacturer-specified location.</p>
+    <p>If the device measures at one point and your analyzer measures somewhere else, both may be correct.</p>
+  </section>
+
+  <section class="content-box" id="pressure-drop">
+    <h3>Pressure Drop</h3>
+    <p>Flow through resistance causes pressure drop.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Filter</li>
+      <li>Tubing</li>
+      <li>Valve</li>
+    </ul>
+    <p>That means:</p>
+    <p>Pressure before restriction</p>
+    <p>may not equal:</p>
+    <p>Pressure after restriction.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ventilator outlet:</p>
+    <p>30 cmH2O.</p>
+    <p>Patient wye:</p>
+    <p>24 cmH2O.</p>
+    <p>At high flow, circuit resistance may explain the difference.</p>
+    <p>Do not call the pressure sensor inaccurate until you compare the same point.</p>
+  </section>
+
+  <section class="content-box" id="known-pressure-source">
+    <h3>Known Pressure Source</h3>
+    <p>For bench testing, you may use:</p>
+    <ul>
+      <li>Pressure analyzer</li>
+      <li>Calibrated pressure source</li>
+      <li>Manufacturer fixture</li>
+    </ul>
+    <p>Apply known values and compare the device response.</p>
+  </section>
+
+  <section class="content-box" id="multi-point-testing">
+    <h3>Multi-Point Testing</h3>
+    <p>Typical test points may include:</p>
+    <ul>
+      <li>Zero</li>
+      <li>Low</li>
+      <li>Mid</li>
+      <li>High</li>
+    </ul>
+    <p>Why?</p>
+    <p>Because one passing point does not prove the whole range.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Reference → Device</p>
+    <p>0 → 0</p>
+    <p>50 → 50</p>
+    <p>100 → 100</p>
+    <p>200 → 230</p>
+    <p>A single 100-point test would completely miss the failure.</p>
+  </section>
+
+  <section class="content-box" id="leak-test-vs-accuracy-test">
+    <h3>Leak Test vs Accuracy Test</h3>
+    <p>These are different.</p>
+    <p>A leak test asks:</p>
+    <p><strong>Can the system hold pressure?</strong></p>
+    <p>An accuracy test asks:</p>
+    <p><strong>Does the device measure pressure correctly?</strong></p>
+    <p>A system can:</p>
+    <ul>
+      <li>Hold pressure but measure it wrong</li>
+      <li>Leak but have an accurate sensor</li>
+    </ul>
+    <p>Separate the tests.</p>
+  </section>
+
+  <section class="content-box" id="pressure-decay">
+    <h3>Pressure Decay</h3>
+    <p>A leak may be evaluated by:</p>
+    <ul>
+      <li>Pressurizing system</li>
+      <li>Isolating it</li>
+      <li>Measuring pressure loss over time</li>
+    </ul>
+    <p>Use manufacturer limits.</p>
+  </section>
+
+  <section class="content-box" id="pressure-alarm-testing">
+    <h3>Pressure Alarm Testing</h3>
+    <p>Suppose high pressure limit:</p>
+    <p>40 cmH2O.</p>
+    <p>Increase actual pressure using an approved test setup.</p>
+    <p>Alarm activates at:</p>
+    <p>41.</p>
+    <p>You have tested the threshold.</p>
+    <p>Simply proving the alarm can sound is not enough.</p>
+  </section>
+
+  <section class="content-box" id="occlusion-detection">
+    <h3>Occlusion Detection</h3>
+    <p>An infusion pump may estimate occlusion by measuring pressure in the delivery system.</p>
+    <p>If the pressure sensor drifts, occlusion alarms may occur:</p>
+    <ul>
+      <li>Too early</li>
+      <li>Too late</li>
+    </ul>
+    <p>The pump mechanism may be fine.</p>
+  </section>
+
+  <section class="content-box" id="nibp-pressure-measurement">
+    <h3>NIBP Pressure Measurement</h3>
+    <p>NIBP systems use pressure sensing to measure:</p>
+    <ul>
+      <li>Cuff inflation</li>
+      <li>Oscillations</li>
+      <li>Overpressure</li>
+    </ul>
+    <p>If the pressure sensor is wrong, several NIBP symptoms can appear at once.</p>
+  </section>
+
+  <section class="content-box" id="invasive-pressure-measurement">
+    <h3>Invasive Pressure Measurement</h3>
+    <p>Patient monitors also measure pressure electrically from external fluid-pressure transducers.</p>
+    <p>In that case, the medical device is not directly exposed to the patient's fluid pressure.</p>
+    <p>The external transducer converts pressure into an electrical signal first.</p>
+    <p>The monitor processes that signal.</p>
+    <p>Different architecture, same basic concept.</p>
+  </section>
+
+  <section class="content-box" id="gas-supply-pressure">
+    <h3>Gas Supply Pressure</h3>
+    <p>An anesthesia machine or ventilator may monitor supply pressures.</p>
+    <p>If one supply pressure reads incorrectly, determine whether:</p>
+    <p><strong>Actual gas pressure is wrong</strong></p>
+    <p>or:</p>
+    <p><strong>Only the reading is wrong.</strong></p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure-reads-high">
+    <h3>Real-World Example: Pressure Reads High</h3>
+    <p>Analyzer:</p>
+    <p>100 mmHg.</p>
+    <p>Device:</p>
+    <p>112.</p>
+    <p>At:</p>
+    <p>200 mmHg</p>
+    <p>device:</p>
+    <p>212.</p>
+    <p>Constant offset.</p>
+    <p>Check zero/calibration path.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure-reads-low-under-flow">
+    <h3>Real-World Example: Pressure Reads Low Under Flow</h3>
+    <p>Static pressure:</p>
+    <p>Correct.</p>
+    <p>During high flow:</p>
+    <p>Device reads lower than analyzer.</p>
+    <p>Pressure-sensing tubing partially restricted.</p>
+    <p>Dynamic response is damped.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-pressure-response">
+    <h3>Real-World Example: No Pressure Response</h3>
+    <p>External analyzer shows pressure increasing.</p>
+    <p>Device remains near zero.</p>
+    <p>Pressure port blocked with debris.</p>
+    <p>Sensor itself is fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-high-pressure-alarm">
+    <h3>Real-World Example: High Pressure Alarm</h3>
+    <p>Device alarms high pressure.</p>
+    <p>External analyzer confirms pressure is actually high.</p>
+    <p>The sensor and alarm may be working correctly.</p>
+    <p>Investigate the cause of the pressure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-false-high-pressure">
+    <h3>Real-World Example: False High Pressure</h3>
+    <p>Device:</p>
+    <p>50 cmH2O.</p>
+    <p>Analyzer:</p>
+    <p>25.</p>
+    <p>High-pressure alarm activates.</p>
+    <p>Alarm logic is responding correctly to a bad pressure measurement.</p>
+    <p>Troubleshoot the sensing path.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="replacing-a-pressure-sensor-before-checking-tubing">
+    <h3>Replacing a Pressure Sensor Before Checking Tubing</h3>
+    <p>Follow the pressure path.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-around-a-leak">
+    <h3>Calibrating Around a Leak</h3>
+    <p>Fix the leak.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-zero">
+    <h3>Ignoring Zero</h3>
+    <p>A bad zero affects everything.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-one-point">
+    <h3>Testing Only One Point</h3>
+    <p>Use the required range.</p>
+  </section>
+
+  <section class="content-box" id="comparing-different-measurement-locations">
+    <h3>Comparing Different Measurement Locations</h3>
+    <p>Test points matter.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-pressure-alarm-means-the-pressure-sensor-is-bad">
+    <h3>Assuming a Pressure Alarm Means the Pressure Sensor Is Bad</h3>
+    <p>Verify actual pressure.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-sensor-error-means-the-sensor-is-the-fault">
+    <h3>Assuming a Sensor Error Means the Sensor Is the Fault</h3>
+    <p>The path may be blocked or disconnected.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For any pressure problem, ask:</p>
+    <p><strong>What pressure is actually present?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where is the device sensing it?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can that pressure reach the sensor correctly?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the sensor report it accurately?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the value used only for display, or also for control and alarms?</strong></p>
+    <p>That structure works across many types of medical equipment.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is the pressure wrong, or is the measurement wrong?</strong></p>
+    <p>Those two conditions can look identical on the screen.</p>
+    <p>An independent reference separates them.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device displays:</p>
+    <p>100 mmHg,</p>
+    <p>you proved:</p>
+    <p><strong>The device reports 100 mmHg.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The actual pressure is 100 mmHg.</strong></p>
+    <p>If an independent calibrated analyzer at the same test point also measures:</p>
+    <p>100 mmHg</p>
+    <p>within the required tolerance, you have much stronger evidence that the pressure-measurement system is working correctly at that point.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Pressure measurement is everywhere in medical equipment.</p>
+    <p>The details change, but the basic chain is consistent:</p>
+    <p><strong>Pressure → Sensor → Electrical Signal → Processing → Display or Control.</strong></p>
+    <p>When pressure troubleshooting gets confusing, go back to that chain.</p>
+    <p>Verify the actual pressure.</p>
+    <p>Check the port.</p>
+    <p>Check the tubing.</p>
+    <p>Check for:</p>
+    <ul>
+      <li>Leaks</li>
+      <li>Restrictions</li>
+      <li>Moisture</li>
+    </ul>
+    <p>Then evaluate:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Calibration</li>
+      <li>Electronics</li>
+    </ul>
+    <p>Do not replace a sensor just because the number on the screen is wrong.</p>
+    <p>First prove where the number became wrong.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Pressure-sensor technologies, reference methods, units, calibration procedures, test points, allowable tolerances, and safety limits vary by manufacturer and device type. Follow current manufacturer documentation, use approved calibrated pressure equipment, and complete required functional and safety verification before returning medical equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-an-anesthesia-machine-performs-a-leak-test.html">How an Anesthesia Machine Performs a Leak Test</a></li>
+      <li><a href="how-infusion-pump-occlusion-detection-works.html">How Infusion Pump Occlusion Detection Works</a></li>
+      <li><a href="how-an-anesthesia-machine-breathing-system-works.html">How an Anesthesia Machine Breathing System Works</a></li>
+      <li><a href="how-invasive-blood-pressure-monitoring-works.html">How Invasive Blood Pressure Monitoring Works</a></li>
+      <li><a href="how-medical-equipment-measures-flow.html">How Medical Equipment Measures Flow</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

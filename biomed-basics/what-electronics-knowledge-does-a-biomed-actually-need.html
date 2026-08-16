@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>What Electronics Knowledge Does a Biomed Actually Need? | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to the electronics concepts biomeds actually use when troubleshooting medical equipment, from voltage and resistance to sensors and signals.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/what-electronics-knowledge-does-a-biomed-actually-need.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+<section class="hero">
+  <h2>What Electronics Knowledge Does a Biomed Actually Need?</h2>
+  <p>The practical electronics concepts biomedical equipment technicians actually use when troubleshooting medical devices</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Biomed is a technical field.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Resistance</li>
+      <li>Ohm’s law</li>
+      <li>AC and DC</li>
+      <li>Continuity</li>
+      <li>Series and parallel circuits</li>
+      <li>Power</li>
+      <li>Fuses</li>
+      <li>Power supplies</li>
+      <li>Batteries</li>
+      <li>Capacitors</li>
+      <li>Diodes</li>
+      <li>Transistors</li>
+      <li>Relays</li>
+      <li>Sensors</li>
+      <li>Analog and digital signals</li>
+      <li>Ground</li>
+      <li>Multimeter use</li>
+      <li>Schematics</li>
+    </ul>
+    <p>How much component-level knowledge a biomed really needs</p>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A biomed should be comfortable understanding:</p>
+    <ul>
+      <li>Power comes in</li>
+      <li>↓</li>
+      <li>Power is converted</li>
+      <li>↓</li>
+      <li>Circuits process inputs</li>
+      <li>↓</li>
+      <li>Sensors provide information</li>
+      <li>↓</li>
+      <li>Processors make decisions</li>
+      <li>↓</li>
+      <li>Outputs are controlled</li>
+    </ul>
+    <p>You do not have to understand every transistor in that chain.</p>
+    <p>You need to understand enough to determine:</p>
+    <ul>
+      <li>Where did the expected electrical behavior stop?</li>
+      <li>Start With Voltage</li>
+    </ul>
+    <p>Voltage is one of the most common things a biomed measures.</p>
+    <p>In simple terms, voltage is electrical potential difference.</p>
+    <p>For troubleshooting, the practical question is usually:</p>
+    <p>Is the voltage that should be here actually here?</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Power supply specification:</p>
+    <p>24 VDC output.</p>
+    <p>You measure:</p>
+    <p>0 VDC.</p>
+    <p>That immediately gives you useful information.</p>
+    <p>Either:</p>
+    <ul>
+      <li>Supply is not receiving power</li>
+      <li>Supply is not turning on</li>
+      <li>Supply failed</li>
+      <li>Protection circuit opened</li>
+    </ul>
+    <p>You now have somewhere to investigate.</p>
+  </section>
+
+  <section class="content-box" id="voltage-is-always-between-two-points">
+    <h3>Voltage Is Always Between Two Points</h3>
+    <p>A meter does not measure:</p>
+    <p>Voltage at this wire.</p>
+    <p>It measures the difference between:</p>
+    <ul>
+      <li>Point A</li>
+    </ul>
+    <p>and:</p>
+    <p>Point B.</p>
+    <p>Usually one point is:</p>
+    <ul>
+      <li>Ground</li>
+      <li>Return</li>
+      <li>Neutral</li>
+    </ul>
+    <p>depending on the circuit.</p>
+  </section>
+
+  <section class="content-box" id="reference-matters">
+    <h3>Reference Matters</h3>
+    <p>Suppose a board has:</p>
+    <ul>
+      <li>+12 V</li>
+    </ul>
+    <p>relative to circuit ground.</p>
+    <p>If you use the wrong reference point, the reading may be meaningless.</p>
+    <p>Always understand what the test point is referenced to.</p>
+  </section>
+
+  <section class="content-box" id="learn-dc-voltage">
+    <h3>Learn DC Voltage</h3>
+    <p>Medical devices contain a lot of DC power.</p>
+    <p>Common examples might include:</p>
+    <ul>
+      <li>3.3 V</li>
+      <li>5 V</li>
+      <li>12 V</li>
+      <li>24 V</li>
+    </ul>
+    <p>These rails power:</p>
+    <ul>
+      <li>Processors</li>
+      <li>Displays</li>
+      <li>Sensors</li>
+      <li>Motors</li>
+      <li>Valves</li>
+      <li>Learn AC Voltage</li>
+    </ul>
+    <p>AC is commonly encountered at:</p>
+    <ul>
+      <li>Wall power</li>
+      <li>Equipment input</li>
+      <li>Transformer circuits</li>
+    </ul>
+    <p>Understanding the difference between AC and DC is basic but essential.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-everything-after-the-power-supply-is-dc">
+    <h3>Do Not Assume Everything After the Power Supply Is DC</h3>
+    <p>Many circuits still use:</p>
+    <ul>
+      <li>AC waveforms</li>
+      <li>Pulsed signals</li>
+      <li>High-frequency switching</li>
+    </ul>
+    <p>But most basic power troubleshooting starts with identifying whether expected AC or DC is present.</p>
+  </section>
+
+  <section class="content-box" id="current">
+    <h3>Current</h3>
+    <p>Current is the movement of electrical charge.</p>
+    <p>A circuit can have normal voltage but still fail under load.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Because the source may not be able to provide the required current.</p>
+  </section>
+
+  <section class="content-box" id="battery-example">
+    <h3>Battery Example</h3>
+    <p>Battery open-circuit voltage:</p>
+    <p>12.4 V.</p>
+    <p>Looks good.</p>
+    <p>Device starts.</p>
+    <p>Then voltage collapses to:</p>
+    <ul>
+      <li>9 V</li>
+    </ul>
+    <p>under load.</p>
+    <p>The battery cannot support the required current.</p>
+    <p>The no-load voltage did not prove the battery was healthy.</p>
+  </section>
+
+  <section class="content-box" id="power-supply-example">
+    <h3>Power Supply Example</h3>
+    <p>Power supply output:</p>
+    <p>24 V with nothing connected.</p>
+    <p>Connect load:</p>
+    <p>Voltage falls to 15 V.</p>
+    <p>That strongly suggests a source or load problem.</p>
+  </section>
+
+  <section class="content-box" id="learn-the-difference-between-voltage-and-current">
+    <h3>Learn the Difference Between Voltage and Current</h3>
+    <p>Voltage and current are related.</p>
+    <p>They are not interchangeable.</p>
+    <p>A beginner may ask:</p>
+    <ul>
+      <li>Does this battery have enough voltage?</li>
+    </ul>
+    <p>A better question may be:</p>
+    <p>Can it maintain voltage while supplying the required current?</p>
+  </section>
+
+  <section class="content-box" id="resistance">
+    <h3>Resistance</h3>
+    <p>Resistance opposes current flow.</p>
+    <p>You will use resistance concepts when working with:</p>
+    <ul>
+      <li>Heating elements</li>
+      <li>Thermistors</li>
+      <li>Wires</li>
+      <li>Fuses</li>
+      <li>Motors</li>
+      <li>Sensors</li>
+      <li>Ohm’s Law</li>
+    </ul>
+    <p>The basic relationship is:</p>
+    <ul>
+      <li>V = I × R</li>
+    </ul>
+    <p>or:</p>
+    <p>Voltage = Current × Resistance.</p>
+    <p>You do not need to solve complicated equations constantly.</p>
+    <p>But you should understand the relationship.</p>
+  </section>
+
+  <section class="content-box" id="simple-example">
+    <h3>Simple Example</h3>
+    <p>12 V applied across:</p>
+    <p>6 Ω.</p>
+    <p>Current would be:</p>
+    <p>2 A.</p>
+    <p>That is useful when deciding whether a circuit behavior makes sense.</p>
+  </section>
+
+  <section class="content-box" id="do-you-need-to-memorize-the-formula">
+    <h3>Do You Need to Memorize the Formula?</h3>
+    <p>It helps.</p>
+    <p>But understanding the concept is more important.</p>
+    <p>If resistance rises while voltage stays the same:</p>
+    <p>Current falls.</p>
+    <p>That basic relationship appears everywhere.</p>
+  </section>
+
+  <section class="content-box" id="continuity">
+    <h3>Continuity</h3>
+    <p>Continuity checks whether an electrical path exists.</p>
+    <p>Useful for:</p>
+    <ul>
+      <li>Fuses</li>
+      <li>Wires</li>
+      <li>Switches</li>
+      <li>Cable conductors</li>
+      <li>Continuity Is Not Magic</li>
+    </ul>
+    <p>A meter beep means:</p>
+    <p>A conductive path existed during that measurement.</p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Wire works under movement</li>
+      <li>Connector handles current</li>
+      <li>Cable shielding is good</li>
+      <li>Contact resistance is acceptable</li>
+      <li>Example</li>
+    </ul>
+    <p>ECG cable:</p>
+    <p>Passes continuity.</p>
+    <p>Flex cable:</p>
+    <p>Lead drops out.</p>
+    <p>The conductor is intermittent.</p>
+    <p>Static continuity testing missed it.</p>
+  </section>
+
+  <section class="content-box" id="resistance-vs-continuity">
+    <h3>Resistance vs Continuity</h3>
+    <p>Continuity is basically a quick resistance test with an audible indication.</p>
+    <p>If you need more detail, measure the actual resistance.</p>
+  </section>
+
+  <section class="content-box" id="open-circuit">
+    <h3>Open Circuit</h3>
+    <p>An open circuit means the electrical path is broken.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Blown fuse</li>
+      <li>Broken wire</li>
+      <li>Open switch</li>
+      <li>Cracked connector solder joint</li>
+    </ul>
+    <p>An open usually produces extremely high resistance.</p>
+  </section>
+
+  <section class="content-box" id="short-circuit">
+    <h3>Short Circuit</h3>
+    <p>A short is an unintended low-resistance path.</p>
+    <p>This can cause:</p>
+    <ul>
+      <li>High current</li>
+      <li>Blown fuse</li>
+      <li>Power supply shutdown</li>
+      <li>Short Does Not Always Mean Zero Ohms</li>
+    </ul>
+    <p>A partially failed component can draw excessive current without being a perfect short.</p>
+    <p>Use the circuit behavior and documentation.</p>
+  </section>
+
+  <section class="content-box" id="series-circuits">
+    <h3>Series Circuits</h3>
+    <p>Components in series share the same current path.</p>
+    <p>If one opens:</p>
+    <p>The entire path stops conducting.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Power input:</p>
+    <p>Fuse → Switch → Power Supply.</p>
+    <p>If the fuse opens:</p>
+    <p>Nothing downstream receives power.</p>
+  </section>
+
+  <section class="content-box" id="parallel-circuits">
+    <h3>Parallel Circuits</h3>
+    <p>Parallel branches share voltage but can draw different current.</p>
+    <p>A failure in one branch may not stop the others.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>One device power supply might feed:</p>
+    <ul>
+      <li>Display branch</li>
+      <li>Motor branch</li>
+      <li>Processor branch</li>
+    </ul>
+    <p>If only the display rail fails, the device may still partially start.</p>
+  </section>
+
+  <section class="content-box" id="power">
+    <h3>Power</h3>
+    <p>Electrical power is approximately:</p>
+    <ul>
+      <li>P = V × I</li>
+    </ul>
+    <p>Power matters because electrical components must handle energy.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>24 V motor drawing:</p>
+    <p>2 A.</p>
+    <p>Power:</p>
+    <p>48 W.</p>
+    <p>That helps you understand the scale of the load.</p>
+  </section>
+
+  <section class="content-box" id="fuses">
+    <h3>Fuses</h3>
+    <p>A fuse protects against excessive current.</p>
+    <p>If a fuse blows, do not stop at:</p>
+    <p>Replace fuse.</p>
+    <p>Ask:</p>
+    <ul>
+      <li>Why did the fuse open?</li>
+      <li>Fuse Is Often the Symptom</li>
+    </ul>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Shorted component</li>
+      <li>Failed power supply</li>
+      <li>Motor fault</li>
+      <li>Wiring damage</li>
+    </ul>
+    <p>Replacing the fuse repeatedly without finding the cause is not troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="correct-fuse-matters">
+    <h3>Correct Fuse Matters</h3>
+    <p>Match the required:</p>
+    <ul>
+      <li>Current rating</li>
+      <li>Voltage rating</li>
+      <li>Fast/slow characteristics</li>
+      <li>Type</li>
+    </ul>
+    <p>Use manufacturer specifications.</p>
+  </section>
+
+  <section class="content-box" id="circuit-breakers">
+    <h3>Circuit Breakers</h3>
+    <p>Some equipment uses resettable protection.</p>
+    <p>A breaker repeatedly tripping usually indicates a problem.</p>
+    <p>Do not treat resetting it as the repair.</p>
+  </section>
+
+  <section class="content-box" id="power-supplies">
+    <h3>Power Supplies</h3>
+    <p>Power supplies are everywhere in medical equipment.</p>
+    <p>They convert incoming power into the voltages the device actually uses.</p>
+  </section>
+
+  <section class="content-box" id="common-power-supply-paths">
+    <h3>Common Power-Supply Paths</h3>
+    <p>A simplified device may look like:</p>
+    <ul>
+      <li>120 VAC</li>
+      <li>↓</li>
+      <li>Input protection</li>
+      <li>↓</li>
+      <li>AC/DC power supply</li>
+      <li>↓</li>
+      <li>24 VDC</li>
+      <li>↓</li>
+      <li>DC/DC converters</li>
+      <li>↓</li>
+      <li>12 V, 5 V, 3.3 V</li>
+      <li>One Rail Missing</li>
+    </ul>
+    <p>Suppose:</p>
+    <p>24 V:</p>
+    <p>Good.</p>
+    <p>12 V:</p>
+    <p>Good.</p>
+    <p>5 V:</p>
+    <p>Device partially starts.</p>
+    <p>Now you have localized the problem considerably.</p>
+  </section>
+
+  <section class="content-box" id="learn-to-follow-power">
+    <h3>Learn to Follow Power</h3>
+    <p>One of the most valuable electronics skills is simply tracing:</p>
+    <ul>
+      <li>Where is power present?</li>
+    </ul>
+    <p>and:</p>
+    <ul>
+      <li>Where does it disappear?</li>
+      <li>Power Good Signal</li>
+    </ul>
+    <p>Some supplies provide digital status signals such as:</p>
+    <ul>
+      <li>Power good</li>
+      <li>Enable</li>
+    </ul>
+    <p>A voltage rail can exist but the processor may still see a fault if one of these signals is wrong.</p>
+  </section>
+
+  <section class="content-box" id="enable-lines">
+    <h3>Enable Lines</h3>
+    <p>Some power supplies remain off until a control board sends an:</p>
+    <ul>
+      <li>Enable</li>
+    </ul>
+    <p>signal.</p>
+    <p>That means:</p>
+    <ul>
+      <li>No output voltage</li>
+    </ul>
+    <p>does not always mean:</p>
+    <p>Bad power supply.</p>
+    <p>The control command may be missing.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-schematics-matter">
+    <h3>This Is Why Schematics Matter</h3>
+    <p>Without understanding the control path, you may replace a perfectly good supply.</p>
+  </section>
+
+  <section class="content-box" id="batteries">
+    <h3>Batteries</h3>
+    <p>Batteries combine chemistry and electronics.</p>
+    <p>Learn:</p>
+    <ul>
+      <li>Nominal voltage</li>
+      <li>Charge voltage</li>
+      <li>Capacity</li>
+      <li>Internal resistance</li>
+      <li>Series/parallel arrangements</li>
+      <li>Capacity</li>
+    </ul>
+    <p>Battery capacity may be expressed in:</p>
+    <ul>
+      <li>Ah</li>
+      <li>mAh</li>
+      <li>Wh</li>
+    </ul>
+    <p>Capacity relates to how much energy the battery can provide over time.</p>
+  </section>
+
+  <section class="content-box" id="battery-voltage-is-not-capacity">
+    <h3>Battery Voltage Is Not Capacity</h3>
+    <p>A weak battery can show normal voltage.</p>
+    <p>Always remember that distinction.</p>
+  </section>
+
+  <section class="content-box" id="capacitors">
+    <h3>Capacitors</h3>
+    <p>Capacitors store electrical charge.</p>
+    <p>They appear in:</p>
+    <ul>
+      <li>Power supplies</li>
+      <li>Filters</li>
+      <li>Timing circuits</li>
+      <li>Defibrillators</li>
+      <li>Capacitors in Power Supplies</li>
+    </ul>
+    <p>They help smooth voltage and store energy.</p>
+    <p>A degraded capacitor may cause:</p>
+    <ul>
+      <li>Ripple</li>
+      <li>Startup problems</li>
+      <li>Random rebooting</li>
+      <li>High-Voltage Capacitors</li>
+    </ul>
+    <p>Defibrillators use large high-voltage capacitors to store shock energy.</p>
+    <p>These can remain dangerous after equipment is powered off.</p>
+    <p>Follow manufacturer discharge procedures.</p>
+  </section>
+
+  <section class="content-box" id="capacitor-failure-signs">
+    <h3>Capacitor Failure Signs</h3>
+    <p>Possible clues include:</p>
+    <ul>
+      <li>Bulging</li>
+      <li>Leakage</li>
+      <li>Heat damage</li>
+    </ul>
+    <p>But not every failed capacitor looks physically damaged.</p>
+  </section>
+
+  <section class="content-box" id="diodes">
+    <h3>Diodes</h3>
+    <p>A diode generally allows current to flow primarily in one direction.</p>
+    <p>Common uses include:</p>
+    <ul>
+      <li>Rectification</li>
+      <li>Reverse-polarity protection</li>
+      <li>Flyback protection</li>
+      <li>Signal control</li>
+      <li>Rectifier</li>
+    </ul>
+    <p>AC-to-DC power supplies often use diodes to convert alternating current into pulsating DC.</p>
+  </section>
+
+  <section class="content-box" id="failed-diode">
+    <h3>Failed Diode</h3>
+    <p>Possible failure modes include:</p>
+    <ul>
+      <li>Open</li>
+      <li>Short</li>
+    </ul>
+    <p>The effect depends on where it is used.</p>
+  </section>
+
+  <section class="content-box" id="leds-are-diodes">
+    <h3>LEDs Are Diodes</h3>
+    <p>An LED is a light-emitting diode.</p>
+    <p>Indicator lights may also be part of optical sensing systems.</p>
+  </section>
+
+  <section class="content-box" id="transistors">
+    <h3>Transistors</h3>
+    <p>Transistors are electronic switches or amplifiers.</p>
+    <p>Medical equipment uses them extensively.</p>
+    <p>You may encounter:</p>
+    <ul>
+      <li>MOSFETs</li>
+      <li>BJTs</li>
+      <li>IGBTs</li>
+      <li>Do You Need Deep Transistor Theory?</li>
+    </ul>
+    <p>Usually not for basic BMET work.</p>
+    <p>You should understand that a transistor may be controlling:</p>
+    <ul>
+      <li>Motor</li>
+      <li>Valve</li>
+      <li>Relay</li>
+      <li>Power rail</li>
+    </ul>
+    <p>and can fail:</p>
+    <ul>
+      <li>Open</li>
+      <li>Short</li>
+      <li>Partially</li>
+      <li>MOSFET</li>
+    </ul>
+    <p>MOSFETs are common in:</p>
+    <ul>
+      <li>Battery circuits</li>
+      <li>Switching supplies</li>
+      <li>Motor control</li>
+    </ul>
+    <p>If a MOSFET fails short, a circuit may stay on or draw excessive current.</p>
+  </section>
+
+  <section class="content-box" id="relays">
+    <h3>Relays</h3>
+    <p>A relay uses a control signal to switch another circuit.</p>
+    <p>A relay may switch:</p>
+    <ul>
+      <li>AC power</li>
+      <li>Nurse call</li>
+      <li>Motor loads</li>
+      <li>Heater circuits</li>
+      <li>Coil vs Contacts</li>
+    </ul>
+    <p>A relay has two distinct parts:</p>
+    <ul>
+      <li>Control side</li>
+    </ul>
+    <p>and:</p>
+    <p>Switched side.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Relay coil receives correct voltage.</p>
+    <p>You hear click.</p>
+    <p>Output contacts remain open.</p>
+    <p>The control circuit works.</p>
+    <p>Relay contacts may have failed.</p>
+  </section>
+
+  <section class="content-box" id="click-does-not-prove-relay-contacts-work">
+    <h3>Click Does Not Prove Relay Contacts Work</h3>
+    <p>That is another excellent:</p>
+    <ul>
+      <li>What did you actually prove?</li>
+    </ul>
+    <p>example.</p>
+    <p>A click proves mechanical movement occurred.</p>
+    <p>It does not prove the switched circuit completed correctly.</p>
+  </section>
+
+  <section class="content-box" id="switches">
+    <h3>Switches</h3>
+    <p>Switches can be:</p>
+    <ul>
+      <li>Mechanical</li>
+      <li>Electronic</li>
+      <li>Magnetic</li>
+      <li>Optical</li>
+    </ul>
+    <p>A device may use limit switches to detect:</p>
+    <ul>
+      <li>Door closed</li>
+      <li>Mechanism position</li>
+      <li>Cover installed</li>
+      <li>Mechanical Switch Failure</li>
+    </ul>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Intermittent operation</li>
+      <li>Device thinks door is open</li>
+      <li>Calibration cannot begin</li>
+      <li>Sensors</li>
+    </ul>
+    <p>Biomed equipment is full of sensors.</p>
+    <p>The exact technology varies.</p>
+    <p>But most sensors convert some physical property into an electrical signal.</p>
+  </section>
+
+  <section class="content-box" id="examples">
+    <h3>Examples</h3>
+    <p>Pressure:</p>
+    <p>Pressure → electrical signal.</p>
+    <p>Temperature:</p>
+    <p>Temperature → resistance or voltage.</p>
+    <p>Optical:</p>
+    <p>Light → electrical signal.</p>
+    <p>Flow:</p>
+    <p>Flow → pressure, heat, motion, or another measurable electrical quantity.</p>
+  </section>
+
+  <section class="content-box" id="learn-the-concept-before-the-sensor-part-number">
+    <h3>Learn the Concept Before the Sensor Part Number</h3>
+    <p>Ask:</p>
+    <ul>
+      <li>What physical quantity is this sensor measuring?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>What electrical signal should change?</li>
+      <li>Thermistors</li>
+    </ul>
+    <p>Thermistors change resistance with temperature.</p>
+    <p>Depending on type:</p>
+    <p>Resistance may increase or decrease as temperature changes.</p>
+  </section>
+
+  <section class="content-box" id="a-broken-thermistor-can-look-like-extreme-temperature">
+    <h3>A Broken Thermistor Can Look Like Extreme Temperature</h3>
+    <p>An open sensor might be interpreted as:</p>
+    <ul>
+      <li>Extremely hot</li>
+      <li>Extremely cold</li>
+    </ul>
+    <p>depending on circuit design.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensors">
+    <h3>Pressure Sensors</h3>
+    <p>Pressure sensors may generate small voltage changes in response to pressure.</p>
+    <p>The device amplifies and digitizes that signal.</p>
+  </section>
+
+  <section class="content-box" id="signal-chain">
+    <h3>Signal Chain</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Physical pressure</li>
+      <li>↓</li>
+      <li>Sensor</li>
+      <li>↓</li>
+      <li>Electrical signal</li>
+      <li>↓</li>
+      <li>Amplifier</li>
+      <li>↓</li>
+      <li>ADC</li>
+      <li>↓</li>
+      <li>Software</li>
+      <li>↓</li>
+      <li>Displayed pressure</li>
+    </ul>
+    <p>Every stage can fail.</p>
+  </section>
+
+  <section class="content-box" id="analog-signals">
+    <h3>Analog Signals</h3>
+    <p>Analog signals vary continuously.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>ECG voltage</li>
+      <li>Pressure sensor output</li>
+      <li>Temperature sensor voltage</li>
+      <li>Digital Signals</li>
+    </ul>
+    <p>Digital signals represent information in discrete states.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Communication buses</li>
+      <li>Logic control</li>
+      <li>Module data</li>
+      <li>Analog-to-Digital Conversion</li>
+    </ul>
+    <p>The processor cannot directly understand every analog sensor signal.</p>
+    <p>An:</p>
+    <ul>
+      <li>Analog-to-Digital Converter, or ADC,</li>
+    </ul>
+    <p>turns analog voltage into digital numbers.</p>
+  </section>
+
+  <section class="content-box" id="adc-problems">
+    <h3>ADC Problems</h3>
+    <p>If the analog signal is correct entering the ADC but the software value is wrong:</p>
+    <p>The problem is farther downstream.</p>
+  </section>
+
+  <section class="content-box" id="digital-communication">
+    <h3>Digital Communication</h3>
+    <p>Modern devices use digital buses between:</p>
+    <ul>
+      <li>Boards</li>
+      <li>Modules</li>
+      <li>Batteries</li>
+      <li>Sensors</li>
+    </ul>
+    <p>A component can have perfect power and still fail because the data path is dead.</p>
+  </section>
+
+  <section class="content-box" id="power-vs-data">
+    <h3>Power vs Data</h3>
+    <p>Always separate:</p>
+    <ul>
+      <li>Does it have power?</li>
+    </ul>
+    <p>from:</p>
+    <ul>
+      <li>Can it communicate?</li>
+    </ul>
+    <p>This applies to:</p>
+    <ul>
+      <li>Parameter modules</li>
+      <li>Smart batteries</li>
+      <li>Displays</li>
+      <li>Network interfaces</li>
+      <li>Ground</li>
+    </ul>
+    <p>Ground is one of the most misunderstood concepts.</p>
+    <p>Medical equipment may contain several different references:</p>
+    <ul>
+      <li>Protective earth</li>
+      <li>Circuit common</li>
+      <li>Chassis</li>
+      <li>Signal ground</li>
+    </ul>
+    <p>They are not always interchangeable.</p>
+  </section>
+
+  <section class="content-box" id="protective-earth">
+    <h3>Protective Earth</h3>
+    <p>Protective earth is primarily a safety connection.</p>
+    <p>It provides a low-resistance path for fault current.</p>
+  </section>
+
+  <section class="content-box" id="circuit-ground">
+    <h3>Circuit Ground</h3>
+    <p>Circuit ground is the electrical reference used by a circuit.</p>
+    <p>It may or may not be directly tied to protective earth.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-ground-means-zero-everywhere">
+    <h3>Do Not Assume Ground Means Zero Everywhere</h3>
+    <p>Different isolated sections may have different reference potentials.</p>
+    <p>Use the schematic and service procedure.</p>
+  </section>
+
+  <section class="content-box" id="isolation">
+    <h3>Isolation</h3>
+    <p>Medical equipment often uses electrical isolation to protect the patient and user.</p>
+    <p>Isolation may exist between:</p>
+    <ul>
+      <li>AC mains</li>
+      <li>Patient circuits</li>
+      <li>Communication ports</li>
+      <li>Patient-Applied Circuits</li>
+    </ul>
+    <p>ECG, SpO2, and other patient-connected circuits may include specialized isolation and protection.</p>
+    <p>Do not bypass these systems.</p>
+  </section>
+
+  <section class="content-box" id="defibrillation-protection">
+    <h3>Defibrillation Protection</h3>
+    <p>Some ECG inputs include components designed to survive high-energy defibrillation pulses.</p>
+    <p>A damaged protection component can affect normal ECG afterward.</p>
+  </section>
+
+  <section class="content-box" id="electrical-safety">
+    <h3>Electrical Safety</h3>
+    <p>Biomed electronics knowledge must include safety.</p>
+    <p>Understand concepts such as:</p>
+    <ul>
+      <li>Protective earth</li>
+      <li>Leakage current</li>
+      <li>Insulation</li>
+      <li>Applied parts</li>
+    </ul>
+    <p>according to the test procedures relevant to your role.</p>
+  </section>
+
+  <section class="content-box" id="schematics">
+    <h3>Schematics</h3>
+    <p>A schematic represents the electrical relationships between components.</p>
+    <p>At first, schematics can look overwhelming.</p>
+    <p>Do not try to read the entire drawing at once.</p>
+  </section>
+
+  <section class="content-box" id="follow-one-function">
+    <h3>Follow One Function</h3>
+    <p>If troubleshooting power:</p>
+    <p>Follow the power path.</p>
+    <p>If troubleshooting a motor:</p>
+    <p>Follow:</p>
+    <p>Control signal → driver → motor.</p>
+  </section>
+
+  <section class="content-box" id="block-diagrams-first">
+    <h3>Block Diagrams First</h3>
+    <p>When available, start with a block diagram.</p>
+    <p>It may show:</p>
+    <p>Power Supply → Main Board → Sensor Board → Display</p>
+    <p>That is often enough to isolate the problem before component-level troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="component-level-repair">
+    <h3>Component-Level Repair</h3>
+    <p>Not every biomed shop repairs circuit boards to the component level.</p>
+    <p>Many repairs are performed at:</p>
+    <ul>
+      <li>Board</li>
+      <li>Module</li>
+      <li>Assembly</li>
+    </ul>
+    <p>level.</p>
+  </section>
+
+  <section class="content-box" id="does-that-mean-electronics-knowledge-does-not-matter">
+    <h3>Does That Mean Electronics Knowledge Does Not Matter?</h3>
+    <p>No.</p>
+    <p>Electronics knowledge tells you:</p>
+    <p>Which assembly makes sense to test or replace.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A valve does not actuate.</p>
+    <p>Possible paths:</p>
+    <ul>
+      <li>Valve itself</li>
+      <li>Wiring</li>
+      <li>Driver transistor</li>
+      <li>Control signal</li>
+    </ul>
+    <p>Understanding the electronics helps you avoid guessing.</p>
+  </section>
+
+  <section class="content-box" id="learn-to-measure-before-replacing">
+    <h3>Learn to Measure Before Replacing</h3>
+    <p>If valve should receive:</p>
+    <ul>
+      <li>24 V</li>
+      <li>during activation,</li>
+    </ul>
+    <p>measure it.</p>
+  </section>
+
+  <section class="content-box" id="24-v-present-valve-does-not-move">
+    <h3>24 V present, valve does not move</h3>
+    <p>Valve or mechanical problem likely.</p>
+  </section>
+
+  <section class="content-box" id="0-v-present">
+    <h3>0 V present</h3>
+    <p>Move backward toward control electronics.</p>
+    <p>That is practical electronics troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="oscilloscope">
+    <h3>Oscilloscope</h3>
+    <p>A multimeter is enough for many problems.</p>
+    <p>An oscilloscope becomes useful when you need to see:</p>
+    <ul>
+      <li>Waveforms</li>
+      <li>Pulses</li>
+      <li>Noise</li>
+      <li>Timing</li>
+      <li>Communication activity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-you-need-to-master-an-oscilloscope-immediately">
+    <h3>Do You Need to Master an Oscilloscope Immediately?</h3>
+    <p>No.</p>
+    <p>But basic familiarity is valuable.</p>
+  </section>
+
+  <section class="content-box" id="multimeter-vs-oscilloscope">
+    <h3>Multimeter vs Oscilloscope</h3>
+    <p>A multimeter may tell you:</p>
+    <p>Signal averages 2.5 V.</p>
+    <p>An oscilloscope may show:</p>
+    <p>It actually switches rapidly between:</p>
+    <p>0 and 5 V.</p>
+    <p>Those are very different pieces of information.</p>
+  </section>
+
+  <section class="content-box" id="frequency">
+    <h3>Frequency</h3>
+    <p>Some sensors and control systems use frequency.</p>
+    <p>Understanding:</p>
+    <ul>
+      <li>Hz</li>
+      <li>kHz</li>
+      <li>Pulse timing</li>
+    </ul>
+    <p>is useful when troubleshooting:</p>
+    <ul>
+      <li>Motors</li>
+      <li>Digital signals</li>
+      <li>PWM</li>
+      <li>PWM</li>
+    </ul>
+    <p>Pulse-width modulation controls average power by switching rapidly on and off.</p>
+    <p>It is commonly used for:</p>
+    <ul>
+      <li>Motors</li>
+      <li>Fans</li>
+      <li>Valves</li>
+      <li>LEDs</li>
+      <li>Example</li>
+    </ul>
+    <p>Fan receives what looks like an odd voltage on a meter.</p>
+    <p>It may actually be PWM-controlled.</p>
+    <p>Without understanding PWM, the reading can be misleading.</p>
+  </section>
+
+  <section class="content-box" id="resistance-measurements-on-circuit-boards">
+    <h3>Resistance Measurements on Circuit Boards</h3>
+    <p>Be cautious measuring resistance in-circuit.</p>
+    <p>Other components may create parallel paths.</p>
+    <p>The reading may not represent the component alone.</p>
+  </section>
+
+  <section class="content-box" id="powered-circuit-measurements">
+    <h3>Powered Circuit Measurements</h3>
+    <p>Use appropriate safety precautions and manufacturer procedures.</p>
+    <p>Do not probe unfamiliar high-voltage circuitry casually.</p>
+  </section>
+
+  <section class="content-box" id="learn-where-not-to-measure">
+    <h3>Learn Where Not to Measure</h3>
+    <p>Good electronics knowledge includes knowing when:</p>
+    <ul>
+      <li>Voltage is dangerous</li>
+      <li>Circuit is isolated</li>
+      <li>Special equipment is required</li>
+      <li>Manufacturer prohibits field measurement</li>
+      <li>Connector Pinouts</li>
+    </ul>
+    <p>Service manuals may provide pinouts.</p>
+    <p>These can be extremely useful.</p>
+    <p>Example:</p>
+    <ul>
+      <li>Pin 1: +24 V</li>
+      <li>Pin 2: Ground</li>
+      <li>Pin 3: Enable</li>
+      <li>Pin 4: Feedback</li>
+    </ul>
+    <p>Now troubleshooting becomes structured.</p>
+  </section>
+
+  <section class="content-box" id="feedback-signals">
+    <h3>Feedback Signals</h3>
+    <p>Many systems include feedback.</p>
+    <p>The controller commands something and then verifies the result.</p>
+  </section>
+
+  <section class="content-box" id="motor-example">
+    <h3>Motor Example</h3>
+    <p>Controller commands motor.</p>
+    <p>Encoder reports movement.</p>
+    <p>If motor receives power but encoder never changes:</p>
+    <p>The motor may move but system still reports failure.</p>
+  </section>
+
+  <section class="content-box" id="closed-loop-systems">
+    <h3>Closed-Loop Systems</h3>
+    <p>Ventilators, infusion pumps, and other equipment often use feedback loops.</p>
+    <p>A simplified loop:</p>
+    <ul>
+      <li>Setpoint</li>
+      <li>↓</li>
+      <li>Controller</li>
+      <li>↓</li>
+      <li>Output</li>
+      <li>↓</li>
+      <li>Sensor</li>
+      <li>↓</li>
+      <li>Feedback</li>
+      <li>↓</li>
+      <li>Controller</li>
+    </ul>
+    <p>A bad sensor can make a working output behave incorrectly.</p>
+  </section>
+
+  <section class="content-box" id="electronics-troubleshooting-is-mostly-logic">
+    <h3>Electronics Troubleshooting Is Mostly Logic</h3>
+    <p>You do not need to calculate transistor bias networks every day.</p>
+    <p>You need to be able to ask:</p>
+    <ul>
+      <li>What is the input?</li>
+      <li>What should the output be?</li>
+      <li>Is power present?</li>
+      <li>Is the control signal present?</li>
+      <li>Is feedback correct?</li>
+      <li>A Useful Electronics Framework</li>
+    </ul>
+    <p>For an electrical problem, work through:</p>
+    <ul>
+      <li>Power</li>
+      <li>↓</li>
+      <li>Input</li>
+      <li>↓</li>
+      <li>Control</li>
+      <li>↓</li>
+      <li>Output</li>
+      <li>↓</li>
+      <li>Feedback</li>
+    </ul>
+    <p>At each step:</p>
+    <ul>
+      <li>What should be here?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>What is actually here?</li>
+      <li>Example: Fan Not Running</li>
+    </ul>
+    <p>Start with:</p>
+    <ul>
+      <li>Is the fan physically blocked?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Does it receive supply voltage?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Is PWM/control signal present?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Does known-good fan run?</li>
+    </ul>
+    <p>This is far better than immediately replacing the main board.</p>
+  </section>
+
+  <section class="content-box" id="example-nibp-pump-not-running">
+    <h3>Example: NIBP Pump Not Running</h3>
+    <p>Possible chain:</p>
+    <ul>
+      <li>Software command</li>
+      <li>↓</li>
+      <li>Pump driver</li>
+      <li>↓</li>
+      <li>Pump motor</li>
+    </ul>
+    <p>If motor voltage appears during an NIBP cycle but pump does not move:</p>
+    <p>Pump is likely.</p>
+    <p>If no voltage appears:</p>
+    <p>Move backward.</p>
+  </section>
+
+  <section class="content-box" id="example-device-will-not-power-on">
+    <h3>Example: Device Will Not Power On</h3>
+    <p>Follow:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>↓</li>
+      <li>Power cord</li>
+      <li>↓</li>
+      <li>Fuse</li>
+      <li>↓</li>
+      <li>Power supply input</li>
+      <li>↓</li>
+      <li>Supply output</li>
+      <li>↓</li>
+      <li>Main board rails</li>
+    </ul>
+    <p>At some point:</p>
+    <p>Expected voltage disappears.</p>
+    <p>You have isolated the failure area.</p>
+  </section>
+
+  <section class="content-box" id="how-much-math-do-you-need">
+    <h3>How Much Math Do You Need?</h3>
+    <p>You should be comfortable with basic:</p>
+    <ul>
+      <li>Arithmetic</li>
+      <li>Percentages</li>
+      <li>Ohm's law</li>
+      <li>Power calculations</li>
+    </ul>
+    <p>Advanced calculus is not required for most BMET troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="percentage-error">
+    <h3>Percentage Error</h3>
+    <p>This is especially useful for verification.</p>
+    <p>Example:</p>
+    <p>Set:</p>
+    <p>Measured:</p>
+    <p>Error:</p>
+    <p>4%.</p>
+    <p>If tolerance is:</p>
+    <ul>
+      <li>±5%,</li>
+    </ul>
+    <p>it passes.</p>
+  </section>
+
+  <section class="content-box" id="learn-units">
+    <h3>Learn Units</h3>
+    <p>Be comfortable converting and recognizing:</p>
+    <ul>
+      <li>V</li>
+      <li>mV</li>
+      <li>A</li>
+      <li>mA</li>
+      <li>Ω</li>
+      <li>kΩ</li>
+      <li>MΩ</li>
+      <li>W</li>
+      <li>Hz</li>
+    </ul>
+    <p>Confusing:</p>
+    <ul>
+      <li>mA</li>
+    </ul>
+    <p>with:</p>
+    <ul>
+      <li>A</li>
+    </ul>
+    <p>can be a thousand-fold mistake.</p>
+  </section>
+
+  <section class="content-box" id="metric-prefixes-matter">
+    <h3>Metric Prefixes Matter</h3>
+    <p>Know:</p>
+    <ul>
+      <li>milli = 0.001</li>
+      <li>micro = 0.000001</li>
+      <li>kilo = 1,000</li>
+      <li>mega = 1,000,000</li>
+    </ul>
+    <p>These appear constantly.</p>
+  </section>
+
+  <section class="content-box" id="you-do-not-need-to-memorize-every-component">
+    <h3>You Do Not Need to Memorize Every Component</h3>
+    <p>Learn to recognize broad categories:</p>
+    <ul>
+      <li>Resistor</li>
+      <li>Capacitor</li>
+      <li>Diode</li>
+      <li>Transistor</li>
+      <li>Relay</li>
+      <li>Transformer</li>
+      <li>Connector</li>
+      <li>Integrated circuit</li>
+    </ul>
+    <p>Then use documentation to determine exact function.</p>
+  </section>
+
+  <section class="content-box" id="integrated-circuits">
+    <h3>Integrated Circuits</h3>
+    <p>Modern boards contain complex ICs.</p>
+    <p>You may not be able to troubleshoot inside the chip.</p>
+    <p>But you can sometimes determine:</p>
+    <ul>
+      <li>Power reaches it</li>
+      <li>Inputs look correct</li>
+      <li>Output is missing</li>
+    </ul>
+    <p>At that point, board-level replacement may be appropriate.</p>
+  </section>
+
+  <section class="content-box" id="know-your-repair-level">
+    <h3>Know Your Repair Level</h3>
+    <p>The correct repair might be:</p>
+    <ul>
+      <li>Replace component</li>
+      <li>Replace board</li>
+      <li>Replace assembly</li>
+      <li>Send to OEM</li>
+    </ul>
+    <p>That depends on:</p>
+    <ul>
+      <li>Training</li>
+      <li>Documentation</li>
+      <li>Parts support</li>
+      <li>Facility policy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-turn-component-level-repair-into-an-ego-contest">
+    <h3>Do Not Turn Component-Level Repair Into an Ego Contest</h3>
+    <p>Replacing an approved assembly is not lesser troubleshooting.</p>
+    <p>The question is whether you correctly isolated the failure and restored the equipment safely.</p>
+  </section>
+
+  <section class="content-box" id="what-should-an-entry-level-biomed-know">
+    <h3>What Should an Entry-Level Biomed Know?</h3>
+    <p>At minimum, I would want a new biomed to understand:</p>
+    <ul>
+      <li>AC vs DC</li>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Resistance</li>
+      <li>Continuity</li>
+      <li>Ohm's law</li>
+      <li>Power</li>
+      <li>Fuses</li>
+      <li>Batteries</li>
+      <li>Basic power supplies</li>
+      <li>Switches and relays</li>
+      <li>Sensor basics</li>
+      <li>Analog vs digital</li>
+      <li>Safe multimeter use</li>
+    </ul>
+    <p>Then build from there.</p>
+  </section>
+
+  <section class="content-box" id="what-can-you-learn-later">
+    <h3>What Can You Learn Later?</h3>
+    <p>As your work becomes more advanced, add:</p>
+    <ul>
+      <li>Oscilloscope use</li>
+      <li>PWM</li>
+      <li>Digital buses</li>
+      <li>Advanced power supplies</li>
+      <li>Signal conditioning</li>
+      <li>Feedback control</li>
+    </ul>
+    <p>You do not need all of it on Day 1.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="thinking-you-need-an-electrical-engineering-degree">
+    <h3>Thinking You Need an Electrical Engineering Degree</h3>
+    <p>Most biomed troubleshooting does not require that depth of theory.</p>
+    <p>Thinking Electronics No Longer Matter Because Boards Are Replaced as Assemblies</p>
+    <p>You still need to isolate the correct assembly.</p>
+  </section>
+
+  <section class="content-box" id="treating-voltage-as-proof-a-source-is-healthy">
+    <h3>Treating Voltage as Proof a Source Is Healthy</h3>
+    <p>Test behavior under load when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="trusting-continuity-too-much">
+    <h3>Trusting Continuity Too Much</h3>
+    <p>Intermittent and high-resistance failures can pass.</p>
+  </section>
+
+  <section class="content-box" id="replacing-a-fuse-without-finding-why-it-opened">
+    <h3>Replacing a Fuse Without Finding Why It Opened</h3>
+    <p>A fuse is often the result, not the cause.</p>
+  </section>
+
+  <section class="content-box" id="assuming-no-power-supply-output-means-the-supply-failed">
+    <h3>Assuming No Power-Supply Output Means the Supply Failed</h3>
+    <p>Check enable/control conditions.</p>
+  </section>
+
+  <section class="content-box" id="using-the-wrong-ground-reference">
+    <h3>Using the Wrong Ground Reference</h3>
+    <p>Know what you are measuring against.</p>
+  </section>
+
+  <section class="content-box" id="probing-dangerous-circuits-without-understanding-them">
+    <h3>Probing Dangerous Circuits Without Understanding Them</h3>
+    <p>Know your limits and follow service procedures.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If you measure:</p>
+    <ul>
+      <li>24 V</li>
+    </ul>
+    <p>at the power supply output, you proved:</p>
+    <p>That voltage was present between your two meter points at that moment.</p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Supply can support load</li>
+      <li>Voltage reaches downstream board</li>
+      <li>Supply is stable over time</li>
+    </ul>
+    <p>If a relay clicks:</p>
+    <p>You proved:</p>
+    <p>The relay mechanism moved.</p>
+    <p>You did not prove:</p>
+    <p>The contacts switched correctly.</p>
+    <p>If a wire passes continuity:</p>
+    <p>You proved:</p>
+    <p>A conductive path existed during that measurement.</p>
+    <p>You did not prove:</p>
+    <p>The connection remains good under movement or load.</p>
+    <p>This is why electronics knowledge matters.</p>
+    <p>It helps you understand what each measurement actually tells you.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>You do not need to know everything about electronics to work in biomed.</p>
+    <p>You need a strong practical foundation.</p>
+    <p>Learn:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Resistance</li>
+      <li>Power</li>
+      <li>AC and DC</li>
+      <li>Fuses</li>
+      <li>Power supplies</li>
+      <li>Batteries</li>
+      <li>Relays</li>
+      <li>Sensors</li>
+      <li>Analog and digital signals</li>
+    </ul>
+    <p>Then learn how they fit together.</p>
+    <p>Most importantly, learn to follow a system logically:</p>
+    <ul>
+      <li>What comes in?</li>
+      <li>What should happen next?</li>
+      <li>What actually happened?</li>
+      <li>Where did the expected behavior stop?</li>
+    </ul>
+    <p>That is the electronics knowledge that makes you better at troubleshooting medical equipment.</p>
+    <p>The goal is not to look at a circuit board and name every component.</p>
+    <p>The goal is to look at the equipment and understand enough of the electrical system to ask the right next question.</p>
+    <p>And as always:</p>
+    <ul>
+      <li>What did you actually prove?</li>
+      <li>— Jake</li>
+      <li>Important Note</li>
+    </ul>
+    <p>Medical equipment may contain hazardous mains voltage, high-voltage capacitors, isolated patient circuits, high-current battery systems, and other electrical hazards. Follow current manufacturer service documentation, facility procedures, appropriate lockout/discharge precautions, and your authorized service scope. Do not probe or modify circuits you are not trained and equipped to service.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="voltage-current-resistance-and-continuity-in-plain-english.html">Voltage, Current, Resistance, and Continuity in Plain English</a></li>
+      <li><a href="how-to-use-a-multimeter-in-biomed.html">How to Use a Multimeter in Biomed</a></li>
+      <li><a href="ac-vs-dc-power-basics.html">AC vs DC Power Basics</a></li>
+      <li><a href="fuses-breakers-and-power-supplies-in-medical-equipment.html">Fuses, Breakers, and Power Supplies in Medical Equipment</a></li>
+      <li><a href="analog-vs-digital-signals.html">Analog vs Digital Signals</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
