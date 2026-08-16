@@ -75,8 +75,14 @@
       For scheduled maintenance procedures, inspection steps, AEM notes, and CMMS copy/paste PM documentation, use the Preventive Maintenance Procedure Library.
     </p>
 
+    <div class="guide-library-search">
+      <label for="guide-library-search">Search troubleshooting guides</label>
+      <input id="guide-library-search" type="search" placeholder="Search a model, alarm, error, symptom, or issue..." autocomplete="off">
+      <p id="guide-library-search-count">Loading troubleshooting guides...</p>
+    </div>
+
     <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-      <a href="search.html" class="hero-button">Search Guides</a>
+      <a href="search.html" class="hero-button">Search the Whole Site</a>
       <a href="preventive-maintenance.html" class="hero-button">View PM Procedures</a>
       <a href="biomed-basics.html" class="hero-button">Biomed Basics</a>
     </div>
@@ -324,13 +330,34 @@ Promise.all([
     a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true })
   );
 
-  renderGuidesByAssetManufacturerModel(sorted);
-
   const totalEl = document.getElementById('total-guides');
+  const searchInput = document.getElementById('guide-library-search');
+  const searchCount = document.getElementById('guide-library-search-count');
+  const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
 
-  if (totalEl) {
-    totalEl.textContent = `${sorted.length} Troubleshooting Guide${sorted.length !== 1 ? 's' : ''} Total`;
+  function filterGuides(query) {
+    const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    if (!terms.length) return sorted;
+    return sorted.filter(guide => {
+      const steps = Array.isArray(guide.steps) ? guide.steps.map(step => step.instructions || '').join(' ') : '';
+      const searchable = [guide.title, guide.description, guide.assetType, guide.manufacturer, guide.model, guide.url, steps].join(' ').toLowerCase();
+      return terms.every(term => searchable.includes(term));
+    });
   }
+
+  function updateGuideLibrary(query) {
+    const filtered = filterGuides(query);
+    renderGuidesByAssetManufacturerModel(filtered);
+    searchCount.textContent = query.trim() ? `${filtered.length} guide result${filtered.length === 1 ? '' : 's'} for “${query.trim()}”.` : `${filtered.length} troubleshooting guide${filtered.length === 1 ? '' : 's'} available.`;
+    if (totalEl) totalEl.textContent = `${filtered.length} Troubleshooting Guide${filtered.length !== 1 ? 's' : ''}${query.trim() ? ' Shown' : ' Total'}`;
+    const params = new URLSearchParams(window.location.search);
+    if (query.trim()) params.set('q', query.trim()); else params.delete('q');
+    history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
+  }
+
+  searchInput.value = initialQuery;
+  searchInput.addEventListener('input', event => updateGuideLibrary(event.target.value));
+  updateGuideLibrary(initialQuery);
 })
 .catch(err => console.error('Guide load error:', err));
 </script>
