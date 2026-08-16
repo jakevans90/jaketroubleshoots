@@ -97,6 +97,7 @@ RELATED = {
     "how-to-become-a-biomedical-equipment-technician": ["biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment", "how-to-read-a-medical-equipment-service-manual"],
     "what-degree-do-you-need-to-become-a-biomed": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment"],
     "what-entry-level-biomeds-should-learn-first": ["how-to-become-a-biomedical-equipment-technician", "what-degree-do-you-need-to-become-a-biomed", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "how-to-read-a-medical-equipment-service-manual"],
+    "what-electronics-knowledge-does-a-biomed-actually-need": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "ac-vs-dc-power-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "analog-vs-digital-signals"],
 }
 
 ARTICLE_CONFIG = {
@@ -526,6 +527,12 @@ ARTICLE_CONFIG = {
         "category": "Career",
         "badge": "Career Guide",
         "cardNote": "Core skills and priorities for entry-level biomeds",
+    },
+    "what-electronics-knowledge-does-a-biomed-actually-need": {
+        "description": "A practical guide to the electronics concepts biomeds actually use when troubleshooting medical equipment, from voltage and resistance to sensors and signals.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "Practical electronics knowledge for biomed troubleshooting",
     },
 }
 
