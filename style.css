@@ -3847,13 +3847,23 @@ html body .biomed-article-group .guides-grid {
 html body .guides-grid:has(> .guide-card:only-child),
 html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
 html body .search-results-section .guides-grid:has(> .guide-card:only-child) {
-  grid-template-columns: minmax(0, 360px);
+  grid-template-columns: minmax(0, calc((100% - 40px) / 3));
+  justify-content: start;
 }
 
 html body .guides-grid:has(> .guide-card:nth-child(2):last-child),
 html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:nth-child(2):last-child),
 html body .search-results-section .guides-grid:has(> .guide-card:nth-child(2):last-child) {
-  grid-template-columns: repeat(2, minmax(0, 360px));
+  grid-template-columns: repeat(2, minmax(0, calc((100% - 40px) / 3)));
+  justify-content: start;
+}
+
+.library-results-shell {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0;
 }
 
 /* Exact-model PM recommendations are contextual features, not collection results. */
@@ -3885,7 +3895,11 @@ html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
 
   html body .guides-grid:has(> .guide-card:only-child),
   html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
-  html body .search-results-section .guides-grid:has(> .guide-card:only-child),
+  html body .search-results-section .guides-grid:has(> .guide-card:only-child) {
+    grid-template-columns: minmax(0, calc((100% - 20px) / 2));
+    justify-content: start;
+  }
+
   html body .model-specific-pm-grid,
   html body #pm-grid:has(> .pm-card:only-child) {
     grid-template-columns: minmax(0, 1fr);
@@ -3898,7 +3912,10 @@ html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
   html body .search-results-section .guides-grid,
   html body .recent-guides-section #guides-organized .guides-grid,
   html body .biomed-article-group .guides-grid,
-  html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
+  html body #pm-grid:has(> .pm-card:nth-child(2):last-child),
+  html body .guides-grid:has(> .guide-card:only-child),
+  html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
+  html body .search-results-section .guides-grid:has(> .guide-card:only-child) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
