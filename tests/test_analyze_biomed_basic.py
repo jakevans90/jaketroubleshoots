@@ -161,7 +161,8 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to Troubleshoot Charging Problems", planned)
         self.assertNotIn("The Troubleshooting Process: Observe, Isolate, Test, Verify", planned)
         self.assertNotIn("The Difference Between a Symptom, Cause, and Root Cause", planned)
-        self.assertIn("<strong>76</strong>", planned)
+        self.assertNotIn("How Experienced Biomeds Think Through a New Problem", planned)
+        self.assertIn("<strong>75</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -194,6 +195,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "how-to-troubleshoot-charging-problems": "Battery Not Charging vs Short Runtime",
             "the-troubleshooting-process-observe-isolate-test-verify": "The Most Important Question",
             "the-difference-between-a-symptom-cause-and-root-cause": "Do Not Repair the Symptom",
+            "how-experienced-biomeds-think-through-a-new-problem": "Ask What Still Works",
         }
         catalog = self.biomed_catalog()
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
@@ -207,7 +209,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 43)
+        self.assertEqual(len(catalog), 44)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
