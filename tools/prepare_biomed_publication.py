@@ -71,7 +71,7 @@ RELATED = {
     "how-nibp-works-in-a-patient-monitor": ["how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-pressure", "how-sidestream-co2-monitoring-works", "how-spo2-measurement-works", "sensors-and-transducers-basics"],
     "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
     "how-ecg-acquisition-works": ["how-ecg-lead-off-detection-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics"],
-    "how-sidestream-co2-monitoring-works": ["how-mainstream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
+    "how-sidestream-co2-monitoring-works": ["how-medical-gas-sampling-systems-work", "how-mainstream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories"],
     "how-ventilator-flow-sensors-work": ["how-a-ventilator-measures-tidal-volume", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-ventilator-pressure-sensors-work": ["how-peep-is-generated-and-controlled", "how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-medical-equipment-measures-pressure": ["how-infusion-pump-occlusion-detection-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-breathing-system-works", "how-invasive-blood-pressure-monitoring-works", "how-medical-equipment-measures-flow"],
@@ -79,7 +79,7 @@ RELATED = {
     "how-invasive-blood-pressure-monitoring-works": ["how-medical-equipment-measures-pressure", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": ["how-an-anesthesia-machine-breathing-system-works", "sensors-and-transducers-basics", "how-sidestream-co2-monitoring-works", "how-medical-equipment-measures-flow", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-an-anesthesia-machine-breathing-system-works": ["how-anesthesia-waste-gas-scavenging-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
-    "how-anesthesia-waste-gas-scavenging-works": ["how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-anesthesia-waste-gas-scavenging-works": ["how-medical-gas-sampling-systems-work", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-a-ventilator-measures-tidal-volume": ["how-peep-is-generated-and-controlled", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-peep-is-generated-and-controlled": ["how-ventilator-pressure-sensors-work", "how-a-ventilator-measures-tidal-volume", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-infusion-pump-occlusion-detection-works": ["how-infusion-pumps-measure-or-control-flow", "how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories"],
@@ -91,6 +91,7 @@ RELATED = {
     "how-patient-monitors-communicate-with-central-stations": ["basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "hospital-emrs-and-medical-device-integration", "how-parameter-modules-communicate-with-host-monitors", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-ecg-lead-off-detection-works": ["how-ecg-acquisition-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-mainstream-co2-monitoring-works": ["how-sidestream-co2-monitoring-works", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "how-an-anesthesia-machine-breathing-system-works", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-medical-gas-sampling-systems-work": ["how-sidestream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-to-troubleshoot-medical-device-accessories"],
 }
 
 ARTICLE_CONFIG = {
@@ -490,6 +491,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Gas Monitoring",
         "cardNote": "The mainstream capnography optical path",
+    },
+    "how-medical-gas-sampling-systems-work": {
+        "description": "A practical explanation of how medical gas systems transport a sample through tubing, moisture protection, pumps, analyzers, and exhaust or return paths.",
+        "category": "How It Works",
+        "badge": "Gas Monitoring",
+        "cardNote": "The respiratory-gas sampling and analysis path",
     },
 }
 
