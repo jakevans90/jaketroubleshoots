@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How ECG Acquisition Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how electrodes, lead wires, differential inputs, amplification, filtering, conversion, and software produce an ECG waveform.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-ecg-acquisition-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How ECG Acquisition Works</h2>
+  <p>How electrodes, lead wires, differential inputs, filtering, and software turn tiny electrical signals into an ECG waveform</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">ECG is one of the most familiar signals on a patient monitor.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an ECG signal actually is</li>
+      <li>Electrodes</li>
+      <li>Lead wires</li>
+      <li>Trunk cables</li>
+      <li>Lead configurations</li>
+      <li>Differential measurement</li>
+      <li>Common-mode noise</li>
+      <li>Lead-off detection</li>
+      <li>Filtering</li>
+      <li>Artifact</li>
+      <li>Ground/reference electrodes</li>
+      <li>Signal amplification</li>
+      <li>Analog-to-digital conversion</li>
+      <li>Heart-rate calculation</li>
+      <li>Simulator testing</li>
+      <li>Common ECG failure patterns</li>
+      <li>How to think through ECG troubleshooting</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic ECG path looks like this:</p>
+    <p><strong>Heart electrical activity</strong></p>
+    <p>↓</p>
+    <p><strong>Skin electrodes</strong></p>
+    <p>↓</p>
+    <p><strong>Lead wires</strong></p>
+    <p>↓</p>
+    <p><strong>Trunk cable / patient cable</strong></p>
+    <p>↓</p>
+    <p><strong>ECG input circuitry</strong></p>
+    <p>↓</p>
+    <p><strong>Amplification and filtering</strong></p>
+    <p>↓</p>
+    <p><strong>Analog-to-digital conversion</strong></p>
+    <p>↓</p>
+    <p><strong>Software processing</strong></p>
+    <p>↓</p>
+    <p><strong>Waveform and heart rate</strong></p>
+    <p>If the waveform is bad, work through that path.</p>
+  </section>
+
+  <section class="content-box" id="what-is-the-ecg-signal">
+    <h3>What Is the ECG Signal?</h3>
+    <p>The heart produces electrical activity as cardiac cells depolarize and repolarize.</p>
+    <p>Electrodes placed on the body detect small differences in electrical potential.</p>
+    <p>The monitor compares those signals and displays them as an ECG waveform.</p>
+  </section>
+
+  <section class="content-box" id="the-signal-is-very-small">
+    <h3>The Signal Is Very Small</h3>
+    <p>ECG signals are tiny compared with many electrical signals inside medical equipment.</p>
+    <p>That means they are especially sensitive to:</p>
+    <ul>
+      <li>Poor electrode contact</li>
+      <li>Cable damage</li>
+      <li>Electrical noise</li>
+      <li>Motion</li>
+      <li>Grounding/reference problems</li>
+    </ul>
+    <p>A very small unwanted signal can significantly affect the waveform.</p>
+  </section>
+
+  <section class="content-box" id="electrodes">
+    <h3>Electrodes</h3>
+    <p>Electrodes are the first connection in the ECG signal path.</p>
+    <p>They make electrical contact with the patient's skin.</p>
+    <p>Poor electrode contact can cause:</p>
+    <ul>
+      <li>Lead-off</li>
+      <li>Artifact</li>
+      <li>Baseline wander</li>
+      <li>Noisy waveform</li>
+      <li>Intermittent signal</li>
+    </ul>
+    <p>Before blaming the monitor, check the patient connection.</p>
+  </section>
+
+  <section class="content-box" id="electrode-contact">
+    <h3>Electrode Contact</h3>
+    <p>Good electrode contact depends on factors such as:</p>
+    <ul>
+      <li>Correct placement</li>
+      <li>Skin preparation</li>
+      <li>Fresh electrode</li>
+      <li>Adhesion</li>
+    </ul>
+    <p>A dried or poorly attached electrode can create a very convincing equipment problem.</p>
+  </section>
+
+  <section class="content-box" id="lead-wires">
+    <h3>Lead Wires</h3>
+    <p>Lead wires connect the electrodes to the patient cable or trunk cable.</p>
+    <p>They are frequently:</p>
+    <ul>
+      <li>Bent</li>
+      <li>Pulled</li>
+      <li>Wrapped</li>
+      <li>Cleaned</li>
+      <li>Disconnected</li>
+    </ul>
+    <p>That makes them common failure points.</p>
+  </section>
+
+  <section class="content-box" id="lead-wire-failure">
+    <h3>Lead-Wire Failure</h3>
+    <p>A broken conductor may produce:</p>
+    <ul>
+      <li>One missing lead</li>
+      <li>Intermittent lead-off</li>
+      <li>Artifact when moved</li>
+    </ul>
+    <p>If moving one lead wire consistently causes dropout, that is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="trunk-cable">
+    <h3>Trunk Cable</h3>
+    <p>Many patient monitors use a trunk cable between the lead set and monitor.</p>
+    <p>This cable carries multiple ECG signals.</p>
+    <p>A trunk-cable failure can affect:</p>
+    <ul>
+      <li>Several leads</li>
+      <li>Lead-off detection</li>
+      <li>Signal quality</li>
+    </ul>
+    <p>Try known-good lead wires and trunk cable separately when the design allows.</p>
+  </section>
+
+  <section class="content-box" id="lead-configurations">
+    <h3>Lead Configurations</h3>
+    <p>ECG systems may use:</p>
+    <ul>
+      <li>3-lead</li>
+      <li>5-lead</li>
+      <li>10-lead</li>
+    </ul>
+    <p>configurations.</p>
+    <p>The exact number and purpose of electrodes depends on the application.</p>
+    <p>A bedside monitor and diagnostic 12-lead ECG system do not acquire data in exactly the same way.</p>
+  </section>
+
+  <section class="content-box" id="electrodes-vs-leads">
+    <h3>Electrodes vs Leads</h3>
+    <p>This distinction matters.</p>
+    <p>An electrode is a physical connection on the body.</p>
+    <p>A lead is an electrical view derived from differences between electrodes.</p>
+    <p>One electrode can contribute to multiple ECG leads.</p>
+  </section>
+
+  <section class="content-box" id="differential-measurement">
+    <h3>Differential Measurement</h3>
+    <p>ECG inputs usually measure the voltage difference between electrodes.</p>
+    <p>That is called differential measurement.</p>
+    <p>Example:</p>
+    <p>Lead I is based on the voltage difference between two limb electrodes.</p>
+    <p>The monitor is not simply measuring one electrode voltage by itself.</p>
+  </section>
+
+  <section class="content-box" id="why-differential-measurement-helps">
+    <h3>Why Differential Measurement Helps</h3>
+    <p>The system wants to detect:</p>
+    <p><strong>Difference caused by cardiac activity</strong></p>
+    <p>while rejecting electrical noise common to both inputs.</p>
+    <p>This is important because the patient and cables can pick up environmental electrical noise.</p>
+  </section>
+
+  <section class="content-box" id="common-mode-noise">
+    <h3>Common-Mode Noise</h3>
+    <p>Common-mode noise is unwanted electrical signal appearing similarly on multiple ECG inputs.</p>
+    <p>Possible sources include:</p>
+    <ul>
+      <li>Mains interference</li>
+      <li>Nearby electrical equipment</li>
+      <li>Poor electrode contact</li>
+    </ul>
+    <p>The ECG amplifier is designed to reject much of this common signal.</p>
+  </section>
+
+  <section class="content-box" id="common-mode-rejection">
+    <h3>Common-Mode Rejection</h3>
+    <p>You may see the term:</p>
+    <p><strong>Common-Mode Rejection Ratio</strong>, or CMRR.</p>
+    <p>It describes how well an amplifier rejects signals common to both inputs while amplifying the difference.</p>
+    <p>For troubleshooting, the practical point is:</p>
+    <p>Poor cable, electrode, or reference conditions can reduce the system's ability to reject noise.</p>
+  </section>
+
+  <section class="content-box" id="reference-ground-electrode">
+    <h3>Reference / Ground Electrode</h3>
+    <p>ECG systems typically use a reference or driven electrode to help stabilize the common-mode voltage and reduce interference.</p>
+    <p>Depending on the system, you may hear terms such as:</p>
+    <ul>
+      <li>RL</li>
+      <li>Right leg</li>
+      <li>Reference</li>
+      <li>Driven right leg</li>
+    </ul>
+    <p>If that connection is poor, the entire ECG can become noisy.</p>
+  </section>
+
+  <section class="content-box" id="ground-is-not-the-same-as-protective-earth">
+    <h3>Ground Is Not the Same as Protective Earth</h3>
+    <p>The ECG reference electrode is part of the patient signal system.</p>
+    <p>It is not simply the same thing as the building's protective earth conductor.</p>
+    <p>Do not confuse the two.</p>
+  </section>
+
+  <section class="content-box" id="lead-off-detection">
+    <h3>Lead-Off Detection</h3>
+    <p>The monitor needs to know whether an electrode or cable is disconnected.</p>
+    <p>It may do this by monitoring:</p>
+    <ul>
+      <li>Impedance</li>
+      <li>Bias current</li>
+      <li>Signal condition</li>
+    </ul>
+    <p>The exact method varies.</p>
+    <p>If the device detects an open connection, it may display:</p>
+    <blockquote><p>Leads Off</p></blockquote>
+    <p>or identify a specific electrode.</p>
+  </section>
+
+  <section class="content-box" id="lead-off-does-not-automatically-mean-the-lead-wire-is-bad">
+    <h3>Lead-Off Does Not Automatically Mean the Lead Wire Is Bad</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Electrode detached</li>
+      <li>Lead wire open</li>
+      <li>Trunk cable open</li>
+      <li>Connector issue</li>
+      <li>Input circuitry</li>
+    </ul>
+    <p>Start at the patient end and work inward.</p>
+  </section>
+
+  <section class="content-box" id="specific-lead-off-messages">
+    <h3>Specific Lead-Off Messages</h3>
+    <p>If the monitor says:</p>
+    <blockquote><p>RA Lead Off</p></blockquote>
+    <p>focus on the RA path first.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Electrode</li>
+      <li>Lead wire</li>
+      <li>Connector</li>
+    </ul>
+    <p>A specific message can narrow troubleshooting quickly.</p>
+  </section>
+
+  <section class="content-box" id="multiple-leads-off">
+    <h3>Multiple Leads Off</h3>
+    <p>If several leads suddenly report off at once, consider a shared point.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Trunk cable</li>
+      <li>Common connector</li>
+      <li>Reference electrode</li>
+      <li>Input module</li>
+    </ul>
+    <p>Three lead wires can fail together, but a common path may be more likely.</p>
+  </section>
+
+  <section class="content-box" id="the-ecg-input-amplifier">
+    <h3>The ECG Input Amplifier</h3>
+    <p>The raw ECG signal is too small to use directly.</p>
+    <p>The input electronics amplify it.</p>
+    <p>These circuits are designed to handle tiny differential signals while maintaining patient isolation and noise rejection.</p>
+  </section>
+
+  <section class="content-box" id="input-protection">
+    <h3>Input Protection</h3>
+    <p>ECG inputs may include protection against electrical transients.</p>
+    <p>This is especially important on monitoring systems that may be exposed to:</p>
+    <ul>
+      <li>Defibrillation</li>
+      <li>Electrosurgical interference</li>
+    </ul>
+    <p>The exact protection design is manufacturer-specific.</p>
+  </section>
+
+  <section class="content-box" id="filtering">
+    <h3>Filtering</h3>
+    <p>The monitor filters the ECG signal to reduce unwanted frequencies.</p>
+    <p>Possible filters may address:</p>
+    <ul>
+      <li>Baseline drift</li>
+      <li>Muscle noise</li>
+      <li>50/60 Hz interference</li>
+    </ul>
+    <p>Filtering changes what the waveform looks like.</p>
+  </section>
+
+  <section class="content-box" id="monitor-mode-vs-diagnostic-mode">
+    <h3>Monitor Mode vs Diagnostic Mode</h3>
+    <p>Some systems offer different ECG filtering modes.</p>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Monitor</li>
+      <li>Diagnostic</li>
+      <li>Surgical</li>
+    </ul>
+    <p>A waveform may look different depending on the selected filter.</p>
+    <p>That is not automatically a hardware problem.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Staff reports:</p>
+    <blockquote><p>ECG waveform looks smoother and smaller on this monitor.</p></blockquote>
+    <p>Compare filter settings.</p>
+    <p>One device may be in a monitoring filter mode while another is in diagnostic mode.</p>
+    <p>Configuration matters.</p>
+  </section>
+
+  <section class="content-box" id="baseline-wander">
+    <h3>Baseline Wander</h3>
+    <p>A slowly moving baseline can result from:</p>
+    <ul>
+      <li>Respiration</li>
+      <li>Motion</li>
+      <li>Poor electrode contact</li>
+    </ul>
+    <p>This is different from high-frequency electrical noise.</p>
+    <p>The appearance of the artifact provides clues.</p>
+  </section>
+
+  <section class="content-box" id="muscle-artifact">
+    <h3>Muscle Artifact</h3>
+    <p>Muscle activity can create rapid irregular noise.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Shivering</li>
+      <li>Patient movement</li>
+      <li>Poor electrode placement</li>
+    </ul>
+    <p>On a simulator, that kind of artifact should generally not be present.</p>
+  </section>
+
+  <section class="content-box" id="50-60-hz-interference">
+    <h3>50/60 Hz Interference</h3>
+    <p>Power-line interference may appear as repetitive electrical noise.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Poor electrode contact</li>
+      <li>Damaged shielding</li>
+      <li>Ground/reference problem</li>
+      <li>Environmental electrical interference</li>
+    </ul>
+    <p>Do not defeat protective grounding as a troubleshooting shortcut.</p>
+  </section>
+
+  <section class="content-box" id="motion-artifact">
+    <h3>Motion Artifact</h3>
+    <p>Movement changes:</p>
+    <ul>
+      <li>Electrode contact</li>
+      <li>Cable position</li>
+      <li>Skin potentials</li>
+    </ul>
+    <p>That can create large waveform changes.</p>
+    <p>If the complaint happens during transport, reproduce movement safely during bench testing.</p>
+  </section>
+
+  <section class="content-box" id="cable-shielding">
+    <h3>Cable Shielding</h3>
+    <p>Patient cables may include shielding to reduce electrical interference.</p>
+    <p>A cable can pass basic continuity and still have damaged shielding.</p>
+    <p>That may produce:</p>
+    <ul>
+      <li>Artifact</li>
+      <li>Noise</li>
+    </ul>
+    <p>without a complete lead-off.</p>
+  </section>
+
+  <section class="content-box" id="continuity-is-not-signal-quality">
+    <h3>Continuity Is Not Signal Quality</h3>
+    <p>This is important.</p>
+    <p>A cable can have electrical continuity and still perform poorly.</p>
+    <p>Why?</p>
+    <p>Because ECG signal integrity depends on:</p>
+    <ul>
+      <li>Low-resistance connections</li>
+      <li>Shielding</li>
+      <li>Stable contacts</li>
+    </ul>
+    <p>A meter beep does not prove the cable carries a clean ECG signal.</p>
+  </section>
+
+  <section class="content-box" id="analog-signal-path">
+    <h3>Analog Signal Path</h3>
+    <p>ECG starts as an analog signal.</p>
+    <p>The input circuitry:</p>
+    <ul>
+      <li>Amplifies</li>
+      <li>Filters</li>
+    </ul>
+    <p>that waveform.</p>
+    <p>Then it is converted into digital data.</p>
+  </section>
+
+  <section class="content-box" id="analog-to-digital-conversion">
+    <h3>Analog-to-Digital Conversion</h3>
+    <p>An ADC samples the ECG waveform and turns it into digital values.</p>
+    <p>The software can then:</p>
+    <ul>
+      <li>Display waveform</li>
+      <li>Detect QRS complexes</li>
+      <li>Calculate heart rate</li>
+      <li>Trigger alarms</li>
+    </ul>
+    <p>If analog input is correct but digital display is wrong, the problem may be farther downstream.</p>
+  </section>
+
+  <section class="content-box" id="heart-rate-detection">
+    <h3>Heart-Rate Detection</h3>
+    <p>The monitor usually calculates heart rate by detecting QRS complexes in the ECG.</p>
+    <p>If artifact looks like QRS activity, the monitor may calculate a false heart rate.</p>
+    <p>That means:</p>
+    <blockquote><p>Wrong heart rate</p></blockquote>
+    <p>does not always mean the heart-rate algorithm itself is defective.</p>
+    <p>The input signal may be bad.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>ECG waveform:</p>
+    <p>Heavy artifact.</p>
+    <p>Displayed rate:</p>
+    <p>180 bpm.</p>
+    <p>Actual simulator:</p>
+    <p>80 bpm.</p>
+    <p>First fix the signal quality.</p>
+    <p>Do not troubleshoot the rate calculation until the waveform is clean.</p>
+  </section>
+
+  <section class="content-box" id="multiple-leads">
+    <h3>Multiple Leads</h3>
+    <p>The monitor may use one selected lead for heart-rate detection.</p>
+    <p>If that lead is noisy while another is clean, changing the monitoring lead may improve detection.</p>
+    <p>But do not use configuration changes to hide a hardware failure.</p>
+  </section>
+
+  <section class="content-box" id="diagnostic-12-lead-ecg">
+    <h3>Diagnostic 12-Lead ECG</h3>
+    <p>A diagnostic ECG system uses more electrodes and derives multiple leads.</p>
+    <p>A standard 12-lead ECG uses 10 physical electrodes to derive 12 electrical leads.</p>
+    <p>Understanding the difference between electrode and lead is especially important here.</p>
+  </section>
+
+  <section class="content-box" id="limb-leads">
+    <h3>Limb Leads</h3>
+    <p>The limb electrodes are used to derive several frontal-plane leads.</p>
+    <p>If one limb electrode fails, multiple displayed leads may be affected.</p>
+    <p>That pattern can help isolate the bad connection.</p>
+  </section>
+
+  <section class="content-box" id="precordial-leads">
+    <h3>Precordial Leads</h3>
+    <p>Chest electrodes provide the precordial leads.</p>
+    <p>If only one chest lead is missing or noisy, check that individual electrode and lead path.</p>
+  </section>
+
+  <section class="content-box" id="simulator-testing">
+    <h3>Simulator Testing</h3>
+    <p>A patient simulator provides known ECG waveforms.</p>
+    <p>It can generate:</p>
+    <ul>
+      <li>Normal sinus rhythm</li>
+      <li>Specific heart rates</li>
+      <li>Arrhythmias</li>
+      <li>Lead conditions</li>
+    </ul>
+    <p>This is one of the best ways to separate:</p>
+    <p><strong>patient/electrode problem</strong></p>
+    <p>from:</p>
+    <p><strong>equipment problem.</strong></p>
+  </section>
+
+  <section class="content-box" id="simulator-first-question">
+    <h3>Simulator First Question</h3>
+    <p>With a known-good simulator:</p>
+    <p>Does the monitor display a clean ECG?</p>
+    <p>If yes:</p>
+    <p>The monitor input and cable path may be functioning.</p>
+    <p>If no:</p>
+    <p>Continue isolating the equipment.</p>
+  </section>
+
+  <section class="content-box" id="known-good-cable-testing">
+    <h3>Known-Good Cable Testing</h3>
+    <p>Original trunk cable:</p>
+    <p>Noisy ECG.</p>
+    <p>Known-good trunk cable:</p>
+    <p>Clean ECG.</p>
+    <p>Original cable on another monitor:</p>
+    <p>Noisy.</p>
+    <p>Failure follows the cable.</p>
+    <p>Strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-monitor">
+    <h3>Failure Stays With Monitor</h3>
+    <p>Original cable:</p>
+    <p>Noisy.</p>
+    <p>Known-good cable:</p>
+    <p>Also noisy.</p>
+    <p>Both cables are clean on another monitor.</p>
+    <p>Now investigate the monitor-side input path.</p>
+  </section>
+
+  <section class="content-box" id="one-lead-missing">
+    <h3>One Lead Missing</h3>
+    <p>Suppose:</p>
+    <p>Lead II and III affected.</p>
+    <p>Lead I normal.</p>
+    <p>The lead relationships may help identify which electrode path is failing.</p>
+    <p>You do not need to memorize every combination to begin troubleshooting, but the pattern can provide useful clues.</p>
+  </section>
+
+  <section class="content-box" id="no-ecg-at-all">
+    <h3>No ECG At All</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>All leads disconnected</li>
+      <li>Trunk cable failure</li>
+      <li>Reference connection</li>
+      <li>Input board</li>
+      <li>Module communication</li>
+    </ul>
+    <p>Ask whether the monitor recognizes any leads.</p>
+  </section>
+
+  <section class="content-box" id="ecg-module">
+    <h3>ECG Module</h3>
+    <p>Some monitors place ECG acquisition electronics in a detachable module.</p>
+    <p>If so, the path may be:</p>
+    <p><strong>Patient Cable</strong></p>
+    <p>↓</p>
+    <p><strong>ECG Module</strong></p>
+    <p>↓</p>
+    <p><strong>Host Monitor</strong></p>
+    <p>Now there are two different troubleshooting layers:</p>
+    <ul>
+      <li>Patient signal acquisition</li>
+      <li>Module-to-host communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="module-communication-failure">
+    <h3>Module Communication Failure</h3>
+    <p>If the entire parameter module disappears, that is not the same as an ECG signal-quality failure.</p>
+    <p>The problem may be:</p>
+    <ul>
+      <li>Module power</li>
+      <li>Backplane</li>
+      <li>Communication</li>
+    </ul>
+    <p>Distinguish missing parameter from bad waveform.</p>
+  </section>
+
+  <section class="content-box" id="ecg-present-but-no-heart-rate">
+    <h3>ECG Present but No Heart Rate</h3>
+    <p>If the waveform is clean but heart rate is absent, consider:</p>
+    <ul>
+      <li>Lead selection</li>
+      <li>QRS detection settings</li>
+      <li>Software</li>
+      <li>Rhythm characteristics</li>
+    </ul>
+    <p>The acquisition path may be fine.</p>
+  </section>
+
+  <section class="content-box" id="alarm-troubleshooting">
+    <h3>Alarm Troubleshooting</h3>
+    <p>If the complaint is:</p>
+    <blockquote><p>ECG alarm does not work,</p></blockquote>
+    <p>first verify the ECG measurement itself.</p>
+    <p>Then verify:</p>
+    <ul>
+      <li>Alarm limit</li>
+      <li>Alarm enabled</li>
+      <li>Priority</li>
+      <li>Audible/visual output</li>
+    </ul>
+    <p>Do not mix measurement and alarm troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="lead-off-alarm-troubleshooting">
+    <h3>Lead-Off Alarm Troubleshooting</h3>
+    <p>Generate a controlled lead disconnect using simulator or approved setup.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Correct lead-off message</li>
+      <li>Appropriate alarm behavior</li>
+      <li>Recovery when lead restored</li>
+    </ul>
+    <p>This tests more than just waveform acquisition.</p>
+  </section>
+
+  <section class="content-box" id="defibrillation-recovery">
+    <h3>Defibrillation Recovery</h3>
+    <p>Some monitoring systems are designed to recover ECG monitoring after defibrillation.</p>
+    <p>If that function is part of the required verification, follow manufacturer procedures with appropriate test equipment.</p>
+    <p>Do not improvise high-energy testing.</p>
+  </section>
+
+  <section class="content-box" id="electrosurgical-interference">
+    <h3>Electrosurgical Interference</h3>
+    <p>ESU use can produce substantial electrical interference.</p>
+    <p>Patient monitors may include filtering or special operating modes to reduce artifact.</p>
+    <p>A noisy ECG during surgery does not automatically mean the ECG board is failing.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Leads</li>
+      <li>Electrodes</li>
+      <li>ESU environment</li>
+      <li>Monitor settings</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="respiration-from-ecg-electrodes">
+    <h3>Respiration From ECG Electrodes</h3>
+    <p>Some monitors derive impedance respiration through ECG electrodes.</p>
+    <p>That means an ECG lead problem can also affect:</p>
+    <ul>
+      <li>Respiration waveform</li>
+      <li>Respiration rate</li>
+    </ul>
+    <p>Multiple symptoms may share the same patient cable path.</p>
+  </section>
+
+  <section class="content-box" id="shared-failure-clue">
+    <h3>Shared Failure Clue</h3>
+    <p>If ECG and impedance respiration disappear together, look for a shared electrode/cable issue before assuming two independent failures.</p>
+  </section>
+
+  <section class="content-box" id="connector-inspection">
+    <h3>Connector Inspection</h3>
+    <p>Inspect the ECG connector for:</p>
+    <ul>
+      <li>Bent pins</li>
+      <li>Pushed-back contacts</li>
+      <li>Corrosion</li>
+      <li>Fluid</li>
+      <li>Debris</li>
+    </ul>
+    <p>Patient cables are plugged in repeatedly, so connector damage matters.</p>
+  </section>
+
+  <section class="content-box" id="fluid-intrusion">
+    <h3>Fluid Intrusion</h3>
+    <p>Fluid around the patient connector can cause:</p>
+    <ul>
+      <li>Corrosion</li>
+      <li>Leakage paths</li>
+      <li>Intermittent signal</li>
+    </ul>
+    <p>Follow manufacturer cleaning and fluid-intrusion procedures.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-ecg">
+    <h3>Intermittent ECG</h3>
+    <p>If ECG only fails when:</p>
+    <ul>
+      <li>Cable moves</li>
+      <li>Connector shifts</li>
+      <li>Cart moves</li>
+    </ul>
+    <p>reproduce that condition.</p>
+    <p>Move one variable at a time.</p>
+    <p>Watch the waveform.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-lead-intermittent">
+    <h3>Real-World Example: One Lead Intermittent</h3>
+    <p>Simulator connected.</p>
+    <p>Waveform stable.</p>
+    <p>Flex one lead wire.</p>
+    <p>Lead-off appears.</p>
+    <p>Release wire.</p>
+    <p>Lead returns.</p>
+    <p>Known-good lead set:</p>
+    <p>Stable.</p>
+    <p>Failure follows lead wire.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-all-leads-noisy">
+    <h3>Real-World Example: All Leads Noisy</h3>
+    <p>Original cable:</p>
+    <p>All leads noisy.</p>
+    <p>Known-good trunk cable:</p>
+    <p>Clean.</p>
+    <p>Original cable on another monitor:</p>
+    <p>Same noise.</p>
+    <p>Likely cable/shielding problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-leads-off-with-good-electrodes">
+    <h3>Real-World Example: Leads Off With Good Electrodes</h3>
+    <p>Simulator:</p>
+    <p>Connected correctly.</p>
+    <p>Monitor repeatedly reports several leads off.</p>
+    <p>Known-good trunk cable:</p>
+    <p>Same issue.</p>
+    <p>Same cables work on another monitor.</p>
+    <p>Failure stays with ECG input/module.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-heart-rate">
+    <h3>Real-World Example: Wrong Heart Rate</h3>
+    <p>Simulator:</p>
+    <p>80 bpm.</p>
+    <p>Waveform:</p>
+    <p>Noisy with repeated artifact.</p>
+    <p>Monitor displays:</p>
+    <p>160 bpm.</p>
+    <p>Known-good cable:</p>
+    <p>Waveform cleans up and rate becomes 80.</p>
+    <p>Rate algorithm was reacting to bad input.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-monitor-looks-different">
+    <h3>Real-World Example: One Monitor Looks Different</h3>
+    <p>Two monitors on same simulator.</p>
+    <p>Monitor A:</p>
+    <p>Wide diagnostic-looking waveform.</p>
+    <p>Monitor B:</p>
+    <p>More filtered waveform.</p>
+    <p>Hardware tests pass.</p>
+    <p>Filter configuration differs.</p>
+    <p>The waveform difference is expected.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="calling-every-artifact-a-bad-ecg-board">
+    <h3>Calling Every Artifact a Bad ECG Board</h3>
+    <p>Start with electrodes and cables.</p>
+  </section>
+
+  <section class="content-box" id="treating-an-electrode-and-a-lead-as-the-same-thing">
+    <h3>Treating an Electrode and a Lead as the Same Thing</h3>
+    <p>They are related but different.</p>
+  </section>
+
+  <section class="content-box" id="assuming-continuity-proves-the-cable-is-good">
+    <h3>Assuming Continuity Proves the Cable Is Good</h3>
+    <p>Signal quality and shielding matter.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-the-reference-electrode">
+    <h3>Ignoring the Reference Electrode</h3>
+    <p>It can affect the whole waveform.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-heart-rate-before-cleaning-up-the-ecg">
+    <h3>Troubleshooting Heart Rate Before Cleaning Up the ECG</h3>
+    <p>Bad signal can create bad rate detection.</p>
+  </section>
+
+  <section class="content-box" id="treating-lead-off-as-proof-of-a-bad-lead-wire">
+    <h3>Treating Lead-Off as Proof of a Bad Lead Wire</h3>
+    <p>It only identifies a disconnected path.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-filter-settings">
+    <h3>Ignoring Filter Settings</h3>
+    <p>Configuration can change waveform appearance.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-monitor-before-using-a-simulator">
+    <h3>Replacing the Monitor Before Using a Simulator</h3>
+    <p>Use a controlled source first.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For an ECG problem, ask:</p>
+    <p><strong>Are the electrodes connected correctly?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the problem follow a lead wire or trunk cable?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does a simulator produce a clean waveform?</strong></p>
+    <p>Then:</p>
+    <p>**Is the problem one lead or all</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-spo2-measurement-works.html">How SpO2 Measurement Works</a></li>
+      <li><a href="how-nibp-works-in-a-patient-monitor.html">How NIBP Works in a Patient Monitor</a></li>
+      <li><a href="analog-vs-digital-signals.html">Analog vs Digital Signals</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

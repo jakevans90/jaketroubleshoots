@@ -36,7 +36,7 @@ RELATED = {
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
-    "sensors-and-transducers-basics": ["how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories"],
+    "sensors-and-transducers-basics": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "medical-device-alarm-troubleshooting-fundamentals"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -62,14 +62,15 @@ RELATED = {
     "how-experienced-biomeds-think-through-a-new-problem": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-read-a-medical-equipment-service-manual", "what-known-good-actually-means", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-think-before-calling-a-vendor"],
     "how-to-read-a-troubleshooting-flowchart": ["how-to-read-a-medical-equipment-service-manual", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "when-to-trust-the-device-s-internal-self-test"],
     "ac-vs-dc-power-basics": ["voltage-current-resistance-and-continuity-in-plain-english", "ground-neutral-and-hot-in-medical-equipment", "fuses-breakers-and-power-supplies-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
-    "analog-vs-digital-signals": ["how-spo2-measurement-works", "sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "how-to-troubleshoot-communication-failures"],
+    "analog-vs-digital-signals": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "sensors-and-transducers-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "medical-device-batteries-runtime-capacity-and-state-of-health": ["medical-equipment-battery-basics", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-to-read-device-specifications": ["how-nibp-works-in-a-patient-monitor", "how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-a-medical-equipment-service-manual", "functional-testing-vs-calibration-vs-verification"],
     "tolerance-vs-accuracy": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-use-a-multimeter-in-biomed"],
     "how-to-compare-your-test-result-to-manufacturer-specification": ["pass-fail-limits-and-why-the-test-point-matters", "how-to-read-device-specifications", "tolerance-vs-accuracy", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "pass-fail-limits-and-why-the-test-point-matters": ["how-to-compare-your-test-result-to-manufacturer-specification", "tolerance-vs-accuracy", "how-to-read-device-specifications", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-nibp-works-in-a-patient-monitor": ["how-spo2-measurement-works", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "how-to-read-device-specifications", "pass-fail-limits-and-why-the-test-point-matters"],
-    "how-spo2-measurement-works": ["how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
+    "how-ecg-acquisition-works": ["how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
 }
 
 ARTICLE_CONFIG = {
@@ -343,6 +344,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Patient Monitoring",
         "cardNote": "The optical SpO2 measurement path",
+    },
+    "how-ecg-acquisition-works": {
+        "description": "A practical explanation of how electrodes, lead wires, differential inputs, amplification, filtering, conversion, and software produce an ECG waveform.",
+        "category": "How It Works",
+        "badge": "Patient Monitoring",
+        "cardNote": "The ECG signal-acquisition path",
     },
 }
 
