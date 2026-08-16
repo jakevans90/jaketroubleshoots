@@ -36,7 +36,7 @@ RELATED = {
     "what-known-good-actually-means": ["medical-device-batteries-runtime-capacity-and-state-of-health", "medical-equipment-cables-and-connectors-inspection-and-isolation", "why-changing-one-thing-at-a-time-matters", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "fuses-breakers-and-power-supplies-in-medical-equipment": ["ac-vs-dc-power-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "ground-neutral-and-hot-in-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed"],
     "voltage-current-resistance-and-continuity-in-plain-english": ["analog-vs-digital-signals", "ac-vs-dc-power-basics", "how-to-use-a-multimeter-in-biomed", "relays-and-contact-closures-in-plain-english", "sensors-and-transducers-basics"],
-    "sensors-and-transducers-basics": ["how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work", "how-ventilator-flow-sensors-work", "how-sidestream-co2-monitoring-works", "how-ecg-acquisition-works"],
+    "sensors-and-transducers-basics": ["how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work", "how-ventilator-flow-sensors-work", "how-sidestream-co2-monitoring-works"],
     "relays-and-contact-closures-in-plain-english": ["nurse-call-integration-basics", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment", "basic-networking-for-medical-equipment"],
     "preserving-device-logs-after-a-serious-event": ["how-to-read-and-use-medical-device-event-logs", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
@@ -72,9 +72,10 @@ RELATED = {
     "how-spo2-measurement-works": ["how-ecg-acquisition-works", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-troubleshoot-medical-device-accessories"],
     "how-ecg-acquisition-works": ["how-spo2-measurement-works", "how-nibp-works-in-a-patient-monitor", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-sidestream-co2-monitoring-works": ["how-nibp-works-in-a-patient-monitor", "how-spo2-measurement-works", "sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories", "medical-device-alarm-troubleshooting-fundamentals"],
-    "how-ventilator-flow-sensors-work": ["how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-ventilator-flow-sensors-work": ["how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-ventilator-pressure-sensors-work": ["how-medical-equipment-measures-pressure", "how-ventilator-flow-sensors-work", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "medical-device-alarm-troubleshooting-fundamentals"],
-    "how-medical-equipment-measures-pressure": ["how-ventilator-pressure-sensors-work", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications"],
+    "how-medical-equipment-measures-pressure": ["how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-medical-equipment-measures-flow": ["how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-device-specifications"],
 }
 
 ARTICLE_CONFIG = {
@@ -378,6 +379,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Measurement",
         "cardNote": "The pressure-to-signal measurement path",
+    },
+    "how-medical-equipment-measures-flow": {
+        "description": "A practical explanation of how medical devices detect moving gas or liquid and turn that movement into values used for display, control, and alarms.",
+        "category": "How It Works",
+        "badge": "Measurement",
+        "cardNote": "The flow-to-signal measurement path",
     },
 }
 
