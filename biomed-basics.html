@@ -419,6 +419,12 @@ fetch('data/biomed-basics.json')
     allBiomedArticles = Array.isArray(articles) ? articles : [];
     document.getElementById('biomed-search')?.addEventListener('input', renderBiomedArticles);
     renderBiomedArticles();
+    const requestedSection = window.location.hash
+      ? document.getElementById(window.location.hash.slice(1))
+      : null;
+    if (requestedSection) {
+      requestAnimationFrame(() => requestedSection.scrollIntoView({ block: 'start' }));
+    }
   })
   .catch(error => {
     console.error('Biomed Basics load error:', error);
