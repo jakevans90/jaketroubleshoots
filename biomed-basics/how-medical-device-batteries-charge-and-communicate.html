@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Medical Device Batteries Charge and Communicate | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how chargers, protection circuits, battery-management electronics, and smart-battery communication work together.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-medical-device-batteries-charge-and-communicate.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>
+</header>
+<section class="hero">
+  <h2>How Medical Device Batteries Charge and Communicate</h2>
+  <p>How chargers, protection circuits, battery-management electronics, and smart-battery communication work together inside medical equipment</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device battery is not always just:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Battery cells</li>
+      <li>Charging basics</li>
+      <li>Constant-current and constant-voltage charging</li>
+      <li>Battery-management systems</li>
+      <li>Protection circuitry</li>
+      <li>Temperature sensing</li>
+      <li>State of charge</li>
+      <li>State of health</li>
+      <li>Smart batteries</li>
+      <li>SMBus-style communication</li>
+      <li>Battery identification</li>
+      <li>Charging permissions</li>
+      <li>Battery contacts</li>
+      <li>Calibration and learning</li>
+      <li>Common failure patterns</li>
+      <li>How to think through battery charging and communication problems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A modern battery system often works like this:</p>
+    <p><strong>AC or external power enters the device</strong></p>
+    <p>↓</p>
+    <p><strong>Power supply creates charging voltage</strong></p>
+    <p>↓</p>
+    <p><strong>Charger communicates with or monitors battery</strong></p>
+    <p>↓</p>
+    <p><strong>Battery-management electronics confirm conditions are safe</strong></p>
+    <p>↓</p>
+    <p><strong>Cells are charged using a controlled profile</strong></p>
+    <p>↓</p>
+    <p><strong>Battery reports information back to the device</strong></p>
+    <p>↓</p>
+    <p><strong>Device displays charge percentage, runtime, and battery status</strong></p>
+    <p>That means several things have to work before the screen can show:</p>
+    <blockquote><p>Charging.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="the-battery-cells">
+    <h3>The Battery Cells</h3>
+    <p>The cells are the part that actually store energy.</p>
+    <p>A battery pack may contain:</p>
+    <ul>
+      <li>One cell</li>
+      <li>Several cells in series</li>
+      <li>Several cells in parallel</li>
+      <li>Combination of series and parallel groups</li>
+    </ul>
+    <p>The arrangement determines pack:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Capacity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="series-cells">
+    <h3>Series Cells</h3>
+    <p>Connecting cells in series increases voltage.</p>
+    <p>Example:</p>
+    <p>Three cells around:</p>
+    <p>3.6 V nominal</p>
+    <p>in series create a pack around:</p>
+    <p>10.8 V nominal.</p>
+  </section>
+
+  <section class="content-box" id="parallel-cells">
+    <h3>Parallel Cells</h3>
+    <p>Parallel cell groups increase capacity while maintaining similar voltage.</p>
+    <p>The exact architecture varies by battery.</p>
+  </section>
+
+  <section class="content-box" id="battery-pack-voltage-is-not-the-whole-story">
+    <h3>Battery Pack Voltage Is Not the Whole Story</h3>
+    <p>A pack can show apparently normal voltage and still have:</p>
+    <ul>
+      <li>Poor capacity</li>
+      <li>High internal resistance</li>
+      <li>Cell imbalance</li>
+      <li>Protection fault</li>
+    </ul>
+    <p>Voltage alone does not prove battery health.</p>
+  </section>
+
+  <section class="content-box" id="lithium-ion-charging">
+    <h3>Lithium-Ion Charging</h3>
+    <p>Lithium-ion batteries require controlled charging.</p>
+    <p>You should not simply apply voltage and wait.</p>
+    <p>The charger manages the process carefully.</p>
+  </section>
+
+  <section class="content-box" id="constant-current-charging">
+    <h3>Constant-Current Charging</h3>
+    <p>During part of the charge cycle, the battery may receive approximately constant charging current.</p>
+    <p>The pack voltage gradually rises.</p>
+    <p>This is commonly called:</p>
+    <p><strong>Constant Current</strong>, or CC.</p>
+  </section>
+
+  <section class="content-box" id="constant-voltage-charging">
+    <h3>Constant-Voltage Charging</h3>
+    <p>As the battery approaches its upper voltage limit, the charger holds voltage near a defined value.</p>
+    <p>Charging current gradually decreases.</p>
+    <p>This is:</p>
+    <p><strong>Constant Voltage</strong>, or CV.</p>
+  </section>
+
+  <section class="content-box" id="cc-cv-charging">
+    <h3>CC/CV Charging</h3>
+    <p>Lithium-ion charging is often described as:</p>
+    <p><strong>CC/CV.</strong></p>
+    <p>Conceptually:</p>
+    <p><strong>Constant current first</strong></p>
+    <p>then:</p>
+    <p><strong>Constant voltage as the battery reaches full charge.</strong></p>
+    <p>The exact limits depend on the cells and battery design.</p>
+  </section>
+
+  <section class="content-box" id="why-lithium-ion-charging-is-controlled">
+    <h3>Why Lithium-Ion Charging Is Controlled</h3>
+    <p>Overcharging lithium-ion cells can be dangerous.</p>
+    <p>The system must prevent:</p>
+    <ul>
+      <li>Excessive voltage</li>
+      <li>Excessive current</li>
+      <li>Excessive temperature</li>
+    </ul>
+    <p>That is why charging circuitry and battery protection matter.</p>
+  </section>
+
+  <section class="content-box" id="the-charger-circuit">
+    <h3>The Charger Circuit</h3>
+    <p>The charger may be:</p>
+    <ul>
+      <li>On the main power board</li>
+      <li>On a dedicated charging board</li>
+      <li>Inside an external charging station</li>
+    </ul>
+    <p>It converts available device power into the voltage and current required by the battery.</p>
+  </section>
+
+  <section class="content-box" id="ac-input-does-not-mean-battery-is-charging">
+    <h3>AC Input Does Not Mean Battery Is Charging</h3>
+    <p>A device can run perfectly on AC while the battery never charges.</p>
+    <p>That tells you:</p>
+    <p><strong>Main device power works.</strong></p>
+    <p>It does not prove:</p>
+    <p><strong>Charging circuit works.</strong></p>
+  </section>
+
+  <section class="content-box" id="charging-voltage">
+    <h3>Charging Voltage</h3>
+    <p>The charger must provide appropriate voltage for the battery pack.</p>
+    <p>Too low:</p>
+    <p>Battery may not charge fully.</p>
+    <p>Too high:</p>
+    <p>Protection may stop charging or create a safety problem.</p>
+    <p>Use manufacturer test points and limits.</p>
+  </section>
+
+  <section class="content-box" id="charging-current">
+    <h3>Charging Current</h3>
+    <p>Current may vary throughout the charge cycle.</p>
+    <p>Do not assume:</p>
+    <blockquote><p>It should always be charging at 2 amps.</p></blockquote>
+    <p>The battery may intentionally reduce current near full charge.</p>
+  </section>
+
+  <section class="content-box" id="battery-management-system">
+    <h3>Battery-Management System</h3>
+    <p>Many battery packs contain a:</p>
+    <p><strong>Battery-Management System</strong>, or BMS.</p>
+    <p>The BMS may monitor:</p>
+    <ul>
+      <li>Cell voltage</li>
+      <li>Pack voltage</li>
+      <li>Current</li>
+      <li>Temperature</li>
+      <li>Charge cycles</li>
+      <li>State of charge</li>
+      <li>Fault conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="protection-circuit">
+    <h3>Protection Circuit</h3>
+    <p>The battery pack may contain independent protection against:</p>
+    <ul>
+      <li>Overcharge</li>
+      <li>Overdischarge</li>
+      <li>Overcurrent</li>
+      <li>Short circuit</li>
+      <li>Excessive temperature</li>
+    </ul>
+    <p>This can disconnect the cells from the external terminals.</p>
+  </section>
+
+  <section class="content-box" id="battery-appears-dead">
+    <h3>Battery Appears Dead</h3>
+    <p>If pack protection opens, the battery may appear to have:</p>
+    <ul>
+      <li>Very low voltage</li>
+      <li>No output</li>
+    </ul>
+    <p>even though some internal cell voltage remains.</p>
+    <p>Do not bypass protection circuitry.</p>
+  </section>
+
+  <section class="content-box" id="cell-monitoring">
+    <h3>Cell Monitoring</h3>
+    <p>In multi-cell packs, the BMS may monitor individual cell-group voltages.</p>
+    <p>One weak cell group can limit the entire battery.</p>
+  </section>
+
+  <section class="content-box" id="cell-imbalance">
+    <h3>Cell Imbalance</h3>
+    <p>Example:</p>
+    <p>Cell groups:</p>
+    <p>4.1 V 4.1 V 3.5 V</p>
+    <p>The low group may cause:</p>
+    <ul>
+      <li>Early low-battery shutdown</li>
+      <li>Charge problems</li>
+      <li>Reduced runtime</li>
+    </ul>
+    <p>Pack voltage alone may hide the imbalance.</p>
+  </section>
+
+  <section class="content-box" id="cell-balancing">
+    <h3>Cell Balancing</h3>
+    <p>Some battery-management systems can balance cell groups during charging.</p>
+    <p>The exact method varies.</p>
+    <p>Balancing helps keep series cells at similar states of charge.</p>
+  </section>
+
+  <section class="content-box" id="temperature-sensor">
+    <h3>Temperature Sensor</h3>
+    <p>Battery packs commonly include a temperature sensor.</p>
+    <p>Often this is a:</p>
+    <p><strong>Thermistor.</strong></p>
+    <p>The device or BMS uses it to determine whether charging is safe.</p>
+  </section>
+
+  <section class="content-box" id="temperature-can-disable-charging">
+    <h3>Temperature Can Disable Charging</h3>
+    <p>If battery temperature is:</p>
+    <ul>
+      <li>Too high</li>
+      <li>Too low</li>
+    </ul>
+    <p>the device may intentionally stop charging.</p>
+    <p>That is normal protection behavior.</p>
+  </section>
+
+  <section class="content-box" id="failed-temperature-sensor">
+    <h3>Failed Temperature Sensor</h3>
+    <p>A broken thermistor or sensor connection may make the device think the battery is:</p>
+    <ul>
+      <li>Extremely hot</li>
+      <li>Extremely cold</li>
+    </ul>
+    <p>Charging may be disabled even though the battery feels normal.</p>
+  </section>
+
+  <section class="content-box" id="battery-connector-pins">
+    <h3>Battery Connector Pins</h3>
+    <p>A smart battery may have more than:</p>
+    <p>Positive</p>
+    <p>and:</p>
+    <p>Negative.</p>
+    <p>Additional contacts may be used for:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Communication</li>
+      <li>Identification</li>
+      <li>Presence detection</li>
+    </ul>
+    <p>One damaged pin can create a very specific failure.</p>
+  </section>
+
+  <section class="content-box" id="dirty-contacts">
+    <h3>Dirty Contacts</h3>
+    <p>Battery contacts can become:</p>
+    <ul>
+      <li>Dirty</li>
+      <li>Oxidized</li>
+      <li>Bent</li>
+      <li>Recessed</li>
+    </ul>
+    <p>Possible symptoms:</p>
+    <ul>
+      <li>Intermittent battery</li>
+      <li>Battery not recognized</li>
+      <li>No charging</li>
+      <li>Random shutdown</li>
+    </ul>
+    <p>Inspect the interface before replacing boards.</p>
+  </section>
+
+  <section class="content-box" id="contact-resistance">
+    <h3>Contact Resistance</h3>
+    <p>A connection may look physically intact but have excessive resistance.</p>
+    <p>Under light load:</p>
+    <p>Works.</p>
+    <p>Under high load:</p>
+    <p>Voltage drops.</p>
+    <p>That can create:</p>
+    <ul>
+      <li>Random shutdown</li>
+      <li>Charge problems</li>
+      <li>False low battery</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="smart-battery">
+    <h3>Smart Battery</h3>
+    <p>A smart battery contains electronics that can communicate with the host device.</p>
+    <p>It may report information such as:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Temperature</li>
+      <li>Remaining capacity</li>
+      <li>Full-charge capacity</li>
+      <li>Cycle count</li>
+      <li>Manufacturer information</li>
+      <li>Fault status</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="smart-battery-does-more-than-report-percentage">
+    <h3>Smart Battery Does More Than Report Percentage</h3>
+    <p>The battery icon may come from data calculated by the battery-management system.</p>
+    <p>The host device may be trusting that data.</p>
+    <p>If communication is wrong, the displayed percentage can be wrong even when cell voltage is normal.</p>
+  </section>
+
+  <section class="content-box" id="state-of-charge">
+    <h3>State of Charge</h3>
+    <p>State of charge, or:</p>
+    <p><strong>SOC</strong></p>
+    <p>describes how full the battery is at that moment.</p>
+    <p>Example:</p>
+    <p>75%.</p>
+    <p>That does not tell you the battery's long-term health.</p>
+  </section>
+
+  <section class="content-box" id="state-of-health">
+    <h3>State of Health</h3>
+    <p>State of health, or:</p>
+    <p><strong>SOH</strong></p>
+    <p>describes how much useful capacity remains compared with when the battery was new.</p>
+    <p>A battery can be:</p>
+    <p>100% charged</p>
+    <p>but have poor state of health.</p>
+  </section>
+
+  <section class="content-box" id="full-charge-capacity">
+    <h3>Full Charge Capacity</h3>
+    <p>A smart battery may store or report:</p>
+    <p><strong>Full Charge Capacity.</strong></p>
+    <p>This is an estimate of how much energy the battery can currently hold.</p>
+  </section>
+
+  <section class="content-box" id="design-capacity">
+    <h3>Design Capacity</h3>
+    <p>Design capacity is what the battery was originally designed to hold.</p>
+    <p>Compare:</p>
+    <p>Design capacity:</p>
+    <p>5000 mAh.</p>
+    <p>Full charge capacity:</p>
+    <p>2800 mAh.</p>
+    <p>The battery may be significantly aged.</p>
+  </section>
+
+  <section class="content-box" id="remaining-capacity">
+    <h3>Remaining Capacity</h3>
+    <p>Remaining capacity estimates how much charge is currently left.</p>
+    <p>This changes as the battery charges and discharges.</p>
+  </section>
+
+  <section class="content-box" id="cycle-count">
+    <h3>Cycle Count</h3>
+    <p>The BMS may record charge cycles.</p>
+    <p>Cycle count can provide useful context.</p>
+    <p>But do not condemn a battery based on cycle count alone unless the manufacturer defines a limit.</p>
+  </section>
+
+  <section class="content-box" id="coulomb-counting">
+    <h3>Coulomb Counting</h3>
+    <p>Some smart batteries estimate charge by measuring current into and out of the pack over time.</p>
+    <p>This is often called:</p>
+    <p><strong>Coulomb counting.</strong></p>
+    <p>Conceptually:</p>
+    <p>Charge entering</p>
+    <p>minus:</p>
+    <p>Charge leaving</p>
+    <p>helps estimate remaining capacity.</p>
+  </section>
+
+  <section class="content-box" id="voltage-based-estimation">
+    <h3>Voltage-Based Estimation</h3>
+    <p>Battery voltage can also provide information about SOC.</p>
+    <p>But lithium-ion voltage does not change linearly with charge.</p>
+    <p>That makes voltage-only estimates imperfect.</p>
+  </section>
+
+  <section class="content-box" id="why-battery-percentage-can-be-wrong">
+    <h3>Why Battery Percentage Can Be Wrong</h3>
+    <p>The calculated gauge may drift because of:</p>
+    <ul>
+      <li>Aging</li>
+      <li>Incomplete learning</li>
+      <li>Calibration</li>
+      <li>Cell behavior</li>
+    </ul>
+    <p>The battery may need a learning or calibration cycle if the manufacturer supports one.</p>
+  </section>
+
+  <section class="content-box" id="battery-learning">
+    <h3>Battery Learning</h3>
+    <p>A learning cycle may help the BMS estimate actual capacity.</p>
+    <p>It may involve:</p>
+    <ul>
+      <li>Full charge</li>
+      <li>Controlled discharge</li>
+      <li>Full recharge</li>
+    </ul>
+    <p>Follow the manufacturer procedure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-deep-discharge-randomly">
+    <h3>Do Not Deep-Discharge Randomly</h3>
+    <p>Lithium-ion batteries should not be intentionally deep-discharged unless the approved procedure calls for it.</p>
+    <p>The BMS and device may have defined learning methods.</p>
+  </section>
+
+  <section class="content-box" id="communication-bus">
+    <h3>Communication Bus</h3>
+    <p>Smart batteries may communicate through a serial bus.</p>
+    <p>One common battery communication family is:</p>
+    <p><strong>SMBus.</strong></p>
+    <p>The exact implementation varies.</p>
+  </section>
+
+  <section class="content-box" id="smbus-concept">
+    <h3>SMBus Concept</h3>
+    <p>The host device can ask the battery:</p>
+    <ul>
+      <li>What is your voltage?</li>
+      <li>What is your temperature?</li>
+      <li>How much capacity remains?</li>
+      <li>Are you charging?</li>
+      <li>Do you have a fault?</li>
+    </ul>
+    <p>The battery responds digitally.</p>
+  </section>
+
+  <section class="content-box" id="communication-failure">
+    <h3>Communication Failure</h3>
+    <p>If power contacts work but data contacts fail, possible symptoms include:</p>
+    <ul>
+      <li>Battery powers device but shows 0%</li>
+      <li>Battery not recognized</li>
+      <li>Charging disabled</li>
+      <li>Unknown battery message</li>
+    </ul>
+    <p>This is very different from dead cells.</p>
+  </section>
+
+  <section class="content-box" id="battery-identification">
+    <h3>Battery Identification</h3>
+    <p>Some batteries include identification data.</p>
+    <p>The host may verify:</p>
+    <ul>
+      <li>Battery type</li>
+      <li>Manufacturer</li>
+      <li>Compatibility</li>
+    </ul>
+    <p>If identification fails, the device may reject the battery.</p>
+  </section>
+
+  <section class="content-box" id="battery-authentication">
+    <h3>Battery Authentication</h3>
+    <p>Some systems go further and authenticate approved batteries.</p>
+    <p>An electrically functional replacement may still be rejected if the host cannot validate it.</p>
+  </section>
+
+  <section class="content-box" id="battery-presence-detection">
+    <h3>Battery Presence Detection</h3>
+    <p>The device may use:</p>
+    <ul>
+      <li>Dedicated pin</li>
+      <li>Communication response</li>
+      <li>Voltage threshold</li>
+    </ul>
+    <p>to determine whether a battery is installed.</p>
+    <p>A presence-detection fault can cause:</p>
+    <blockquote><p>No Battery</p></blockquote>
+    <p>even though pack voltage exists.</p>
+  </section>
+
+  <section class="content-box" id="charger-and-battery-communication">
+    <h3>Charger and Battery Communication</h3>
+    <p>In some systems, charging only begins after the battery and charger exchange information.</p>
+    <p>The battery may tell the charger:</p>
+    <ul>
+      <li>Maximum charge current</li>
+      <li>Maximum charge voltage</li>
+      <li>Temperature status</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="charging-permission">
+    <h3>Charging Permission</h3>
+    <p>If the BMS reports a fault, charging may be denied.</p>
+    <p>That does not necessarily mean the charger itself is defective.</p>
+  </section>
+
+  <section class="content-box" id="battery-too-hot">
+    <h3>Battery Too Hot</h3>
+    <p>Device says:</p>
+    <blockquote><p>Battery Temperature High.</p></blockquote>
+    <p>Measure actual pack temperature if appropriate.</p>
+    <p>If the pack really is hot:</p>
+    <p>Investigate battery or charging condition.</p>
+    <p>If battery is normal:</p>
+    <p>Sensor or communication may be wrong.</p>
+  </section>
+
+  <section class="content-box" id="charge-inhibit">
+    <h3>Charge Inhibit</h3>
+    <p>Possible reasons charging is intentionally inhibited include:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Battery fault</li>
+      <li>Cell voltage abnormal</li>
+      <li>Unsupported battery</li>
+    </ul>
+    <p>Understand the status code before replacing hardware.</p>
+  </section>
+
+  <section class="content-box" id="charger-detects-ac">
+    <h3>Charger Detects AC</h3>
+    <p>Many devices show:</p>
+    <ul>
+      <li>Plug icon</li>
+      <li>AC icon</li>
+    </ul>
+    <p>when external power is connected.</p>
+    <p>That only proves the device recognizes external power.</p>
+    <p>It does not prove current is flowing into the battery.</p>
+  </section>
+
+  <section class="content-box" id="charging-indicator">
+    <h3>Charging Indicator</h3>
+    <p>A charging icon may be based on:</p>
+    <ul>
+      <li>Charger state</li>
+      <li>Battery current</li>
+      <li>Software command</li>
+    </ul>
+    <p>Verify actual charging behavior.</p>
+  </section>
+
+  <section class="content-box" id="measure-charge-progress">
+    <h3>Measure Charge Progress</h3>
+    <p>A useful observation is whether:</p>
+    <ul>
+      <li>Battery voltage rises</li>
+      <li>State of charge rises</li>
+      <li>Charge current exists</li>
+    </ul>
+    <p>over time.</p>
+    <p>One icon alone is weak evidence.</p>
+  </section>
+
+  <section class="content-box" id="battery-charges-but-runtime-is-short">
+    <h3>Battery Charges but Runtime Is Short</h3>
+    <p>This usually points more toward:</p>
+    <ul>
+      <li>Capacity</li>
+      <li>Cell aging</li>
+      <li>Increased internal resistance</li>
+    </ul>
+    <p>than toward a simple charging failure.</p>
+  </section>
+
+  <section class="content-box" id="battery-will-not-charge">
+    <h3>Battery Will Not Charge</h3>
+    <p>Now possible causes include:</p>
+    <ul>
+      <li>Charger</li>
+      <li>Battery protection</li>
+      <li>Temperature</li>
+      <li>Communication</li>
+      <li>Contacts</li>
+    </ul>
+    <p>Do not assume the cells are dead.</p>
+  </section>
+
+  <section class="content-box" id="battery-charges-only-to-80">
+    <h3>Battery Charges Only to 80%</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Battery conservation setting</li>
+      <li>Calibration/gauge issue</li>
+      <li>Aged cells</li>
+      <li>Charging limit</li>
+    </ul>
+    <p>Some devices intentionally limit maximum charge under certain settings.</p>
+    <p>Check configuration.</p>
+  </section>
+
+  <section class="content-box" id="battery-stuck-at-100">
+    <h3>Battery Stuck at 100%</h3>
+    <p>A battery icon staying at 100% while runtime is short may indicate:</p>
+    <ul>
+      <li>Poor capacity estimate</li>
+      <li>BMS learning problem</li>
+      <li>Aged battery</li>
+    </ul>
+    <p>Again:</p>
+    <p>100% SOC does not mean 100% original capacity.</p>
+  </section>
+
+  <section class="content-box" id="battery-drops-suddenly">
+    <h3>Battery Drops Suddenly</h3>
+    <p>Example:</p>
+    <p>Display:</p>
+    <p>60%.</p>
+    <p>Then:</p>
+    <p>5%.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Gauge calibration</li>
+      <li>Weak cell group</li>
+      <li>High internal resistance</li>
+    </ul>
+    <p>Under load, voltage may collapse unexpectedly.</p>
+  </section>
+
+  <section class="content-box" id="internal-resistance">
+    <h3>Internal Resistance</h3>
+    <p>As cells age, internal resistance can increase.</p>
+    <p>Under load:</p>
+    <p>Voltage drops more.</p>
+    <p>This may cause early shutdown even though open-circuit voltage appears good.</p>
+  </section>
+
+  <section class="content-box" id="charge-current-and-heat">
+    <h3>Charge Current and Heat</h3>
+    <p>Some warmth during charging may be expected.</p>
+    <p>Excessive heat is not.</p>
+    <p>If a battery becomes:</p>
+    <ul>
+      <li>Very hot</li>
+      <li>Swollen</li>
+      <li>Deformed</li>
+    </ul>
+    <p>remove it from service according to facility and manufacturer safety procedures.</p>
+  </section>
+
+  <section class="content-box" id="swollen-battery">
+    <h3>Swollen Battery</h3>
+    <p>Do not:</p>
+    <ul>
+      <li>Puncture</li>
+      <li>Compress</li>
+      <li>Continue charging</li>
+    </ul>
+    <p>a swollen lithium-ion battery.</p>
+    <p>Follow approved hazardous-battery handling procedures.</p>
+  </section>
+
+  <section class="content-box" id="charging-dock">
+    <h3>Charging Dock</h3>
+    <p>Some devices use external battery chargers.</p>
+    <p>If battery will not charge:</p>
+    <p>Cross-test:</p>
+    <p>Battery A in Charger 1.</p>
+    <p>Battery A in Charger 2.</p>
+    <p>Battery B in Charger 1.</p>
+    <p>This can isolate:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Charger bay</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="known-good-battery">
+    <h3>Known-Good Battery</h3>
+    <p>Original battery:</p>
+    <p>Not recognized.</p>
+    <p>Known-good battery:</p>
+    <p>Works.</p>
+    <p>Original battery:</p>
+    <p>Fails in another compatible device.</p>
+    <p>Failure follows battery.</p>
+    <p>Strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="failure-stays-with-device">
+    <h3>Failure Stays With Device</h3>
+    <p>Original battery:</p>
+    <p>Fails.</p>
+    <p>Known-good battery:</p>
+    <p>Also fails.</p>
+    <p>Both work elsewhere.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Contacts</li>
+      <li>Charging circuit</li>
+      <li>Communication interface</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="charges-in-external-dock-but-not-device">
+    <h3>Charges in External Dock but Not Device</h3>
+    <p>Battery charges normally in dock.</p>
+    <p>Same battery will not charge inside device.</p>
+    <p>Now the device's:</p>
+    <ul>
+      <li>Charger</li>
+      <li>Contacts</li>
+      <li>Communication</li>
+    </ul>
+    <p>become more likely.</p>
+  </section>
+
+  <section class="content-box" id="charges-in-device-but-not-dock">
+    <h3>Charges in Device but Not Dock</h3>
+    <p>Now investigate external charger.</p>
+    <p>Cross-testing is extremely useful.</p>
+  </section>
+
+  <section class="content-box" id="battery-powers-device-but-will-not-charge">
+    <h3>Battery Powers Device but Will Not Charge</h3>
+    <p>This tells you:</p>
+    <p><strong>Discharge power path works.</strong></p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Charge contacts</li>
+      <li>Charger</li>
+      <li>BMS charging path</li>
+    </ul>
+    <p>work.</p>
+    <p>Some packs use different internal switching for charge and discharge.</p>
+  </section>
+
+  <section class="content-box" id="battery-charges-but-will-not-power-device">
+    <h3>Battery Charges but Will Not Power Device</h3>
+    <p>The opposite can happen too.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Discharge protection</li>
+      <li>Contact issue</li>
+      <li>BMS switch problem</li>
+    </ul>
+    <p>Treat charge and discharge as related but separate paths.</p>
+  </section>
+
+  <section class="content-box" id="communication-without-power">
+    <h3>Communication Without Power</h3>
+    <p>The host may communicate with a battery even if the power path is not functioning correctly.</p>
+    <p>Likewise, battery voltage may be present while communication is absent.</p>
+    <p>Separate:</p>
+    <p><strong>Power path</strong></p>
+    <p>from:</p>
+    <p><strong>Data path.</strong></p>
+  </section>
+
+  <section class="content-box" id="firmware">
+    <h3>Firmware</h3>
+    <p>Battery compatibility and charge behavior can depend on:</p>
+    <ul>
+      <li>Device firmware</li>
+      <li>Battery firmware</li>
+    </ul>
+    <p>A replacement battery may require supported versions.</p>
+  </section>
+
+  <section class="content-box" id="battery-age-data">
+    <h3>Battery Age Data</h3>
+    <p>Smart batteries may contain:</p>
+    <ul>
+      <li>Manufacture date</li>
+      <li>Serial number</li>
+    </ul>
+    <p>Useful for service history.</p>
+    <p>Do not use age alone as the sole health test unless policy says so.</p>
+  </section>
+
+  <section class="content-box" id="replacement-battery-initialization">
+    <h3>Replacement Battery Initialization</h3>
+    <p>Some systems require:</p>
+    <ul>
+      <li>Battery registration</li>
+      <li>Calibration</li>
+      <li>Learning</li>
+    </ul>
+    <p>after replacement.</p>
+    <p>Follow manufacturer instructions.</p>
+  </section>
+
+  <section class="content-box" id="multiple-batteries">
+    <h3>Multiple Batteries</h3>
+    <p>Some devices have two or more batteries.</p>
+    <p>The system may:</p>
+    <ul>
+      <li>Charge sequentially</li>
+      <li>Discharge sequentially</li>
+      <li>Balance usage</li>
+    </ul>
+    <p>A problem with one bay can create unusual behavior.</p>
+  </section>
+
+  <section class="content-box" id="battery-bay-a-vs-b">
+    <h3>Battery Bay A vs B</h3>
+    <p>Cross-test the same battery between bays.</p>
+    <p>Battery works in A.</p>
+    <p>Fails in B.</p>
+    <p>Known-good battery also fails in B.</p>
+    <p>Problem stays with bay.</p>
+  </section>
+
+  <section class="content-box" id="redundant-battery-systems">
+    <h3>Redundant Battery Systems</h3>
+    <p>Some equipment can hot-swap batteries.</p>
+    <p>The power system must manage transitions without shutting down.</p>
+    <p>A problem may appear only when one battery is removed.</p>
+  </section>
+
+  <section class="content-box" id="random-shutdown-during-battery-swap">
+    <h3>Random Shutdown During Battery Swap</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Other battery weak</li>
+      <li>Bay contact</li>
+      <li>Power-path switching</li>
+    </ul>
+    <p>The battery percentages alone may look normal.</p>
+  </section>
+
+  <section class="content-box" id="ac-to-battery-transition">
+    <h3>AC-to-Battery Transition</h3>
+    <p>A useful test is:</p>
+    <p>Run on AC.</p>
+    <p>Disconnect AC.</p>
+    <p>Does the device transfer smoothly to battery?</p>
+    <p>If it shuts down immediately:</p>
+    <p>Battery may not actually be connected to the load.</p>
+  </section>
+
+  <section class="content-box" id="battery-to-ac-transition">
+    <h3>Battery-to-AC Transition</h3>
+    <p>Reconnect AC.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Device remains powered</li>
+      <li>Charge begins appropriately</li>
+    </ul>
+    <p>This tests part of the power-management path.</p>
+  </section>
+
+  <section class="content-box" id="charging-under-load">
+    <h3>Charging Under Load</h3>
+    <p>Some devices can charge while operating.</p>
+    <p>Others may charge more slowly under high load.</p>
+    <p>The available input power must support:</p>
+    <ul>
+      <li>Device operation</li>
+      <li>Battery charging</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-device-load">
+    <h3>High Device Load</h3>
+    <p>A device may show:</p>
+    <blockquote><p>Charging</p></blockquote>
+    <p>but charge very slowly if most available power is being consumed by:</p>
+    <ul>
+      <li>Display</li>
+      <li>Heater</li>
+      <li>Modules</li>
+    </ul>
+    <p>That may be normal.</p>
+  </section>
+
+  <section class="content-box" id="charger-current-limit">
+    <h3>Charger Current Limit</h3>
+    <p>If input supply cannot provide enough power, the device may intentionally reduce charge current.</p>
+    <p>Again, slow charge is not automatically a fault.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-not-recognized">
+    <h3>Real-World Example: Battery Not Recognized</h3>
+    <p>Pack voltage:</p>
+    <p>Normal.</p>
+    <p>Battery powers external test load.</p>
+    <p>Device says:</p>
+    <blockquote><p>No Battery.</p></blockquote>
+    <p>Known-good battery works.</p>
+    <p>Communication contact on original battery found damaged.</p>
+    <p>Cells were not the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-will-not-charge">
+    <h3>Real-World Example: Battery Will Not Charge</h3>
+    <p>Known-good battery:</p>
+    <p>Also will not charge.</p>
+    <p>Device operates normally on AC.</p>
+    <p>No charge current present.</p>
+    <p>External charger successfully charges both batteries.</p>
+    <p>Failure stays with device charger.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-charging-stops-at-50">
+    <h3>Real-World Example: Charging Stops at 50%</h3>
+    <p>Battery temperature reported:</p>
+    <p>75°C.</p>
+    <p>Actual pack:</p>
+    <p>Room temperature.</p>
+    <p>Thermistor/temperature-data fault causes charge inhibition.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-100-but-short-runtime">
+    <h3>Real-World Example: 100% but Short Runtime</h3>
+    <p>Battery reports:</p>
+    <p>100%.</p>
+    <p>Device runs only:</p>
+    <p>20 minutes.</p>
+    <p>Design capacity:</p>
+    <p>5000 mAh.</p>
+    <p>Full charge capacity:</p>
+    <p>1200 mAh.</p>
+    <p>Battery is fully charged relative to its remaining capacity, but badly aged.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-random-battery-shutdown">
+    <h3>Real-World Example: Random Battery Shutdown</h3>
+    <p>Battery open-circuit voltage:</p>
+    <p>Normal.</p>
+    <p>Under load:</p>
+    <p>Voltage collapses.</p>
+    <p>Known-good pack:</p>
+    <p>Stable.</p>
+    <p>Original battery has high internal resistance.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-battery-bay-fails">
+    <h3>Real-World Example: One Battery Bay Fails</h3>
+    <p>Battery A:</p>
+    <p>Works in Bay 1.</p>
+    <p>Fails in Bay 2.</p>
+    <p>Battery B:</p>
+    <p>Same behavior.</p>
+    <p>Failure stays with Bay 2.</p>
+    <p>No reason to replace either battery.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-a-battery-as-just-voltage-and-ground">
+    <h3>Treating a Battery as Just Voltage and Ground</h3>
+    <p>Modern packs may have data and temperature connections.</p>
+  </section>
+
+  <section class="content-box" id="assuming-100-means-healthy">
+    <h3>Assuming “100%” Means Healthy</h3>
+    <p>That is state of charge, not necessarily state of health.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-battery-before-trying-a-known-good-pack">
+    <h3>Replacing the Battery Before Trying a Known-Good Pack</h3>
+    <p>Cross-test first.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-charger-when-a-battery-is-too-hot-to-charge">
+    <h3>Replacing the Charger When a Battery Is Too Hot to Charge</h3>
+    <p>Charging may be intentionally inhibited.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-battery-contacts">
+    <h3>Ignoring Battery Contacts</h3>
+    <p>Power and communication both depend on them.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-charging-icon-means-current-is-actually-entering-the-battery">
+    <h3>Assuming a Charging Icon Means Current Is Actually Entering the Battery</h3>
+    <p>Verify charge behavior.</p>
+  </section>
+
+  <section class="content-box" id="deep-cycling-lithium-batteries-without-an-approved-procedure">
+    <h3>Deep-Cycling Lithium Batteries Without an Approved Procedure</h3>
+    <p>Use manufacturer learning methods.</p>
+  </section>
+
+  <section class="content-box" id="bypassing-bms-or-protection-circuitry">
+    <h3>Bypassing BMS or Protection Circuitry</h3>
+    <p>Do not defeat safety systems.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a battery problem, ask:</p>
+    <p><strong>Is the battery recognized?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it power the device?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can the device charge it?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is actual charge current or charge progress present?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does a known-good battery behave differently?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the original battery work in another device or charger?</strong></p>
+    <p>Then separate:</p>
+    <ul>
+      <li>Cells/capacity</li>
+      <li>BMS</li>
+      <li>Contacts</li>
+      <li>Charger</li>
+      <li>Communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this a battery-energy problem, a charging problem, or a battery-communication problem?</strong></p>
+    <p>Those are three different troubleshooting paths.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a device says:</p>
+    <blockquote><p>Battery 100%</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The battery-management system or host believes the battery's current state of charge is 100%.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Original capacity remains</li>
+      <li>Runtime is acceptable</li>
+      <li>Cells are healthy</li>
+    </ul>
+    <p>If the battery completes an approved runtime or capacity test, you have much stronger evidence about actual health.</p>
+    <p>If the battery also charges correctly, communicates correctly, and supports the device under load, you have verified several different parts of the battery system.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Modern battery troubleshooting is not just:</p>
+    <blockquote><p>Check the voltage.</p></blockquote>
+    <p>The complete system may include:</p>
+    <p><strong>Cells → Protection → BMS → Contacts → Communication → Charger → Host Device.</strong></p>
+    <p>Any one of those can create a:</p>
+    <ul>
+      <li>No battery</li>
+      <li>Not charging</li>
+      <li>Short runtime</li>
+      <li>Battery error</li>
+    </ul>
+    <p>complaint.</p>
+    <p>So start by separating the functions.</p>
+    <p><strong>Does the device recognize the battery?</strong></p>
+    <p><strong>Can the battery power the device?</strong></p>
+    <p><strong>Can it charge?</strong></p>
+    <p><strong>Does it communicate?</strong></p>
+    <p><strong>Does it actually have usable capacity?</strong></p>
+    <p>Once you stop treating all battery faults as cell failures, charging and battery problems become much easier to isolate.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Battery chemistries, BMS designs, communication protocols, charging profiles, temperature limits, calibration methods, replacement procedures, and safety requirements vary by manufacturer and battery pack. Follow current manufacturer documentation, use approved batteries and chargers, do not bypass battery protection circuitry, and remove swollen, damaged, overheating, or otherwise unsafe lithium-ion batteries from service according to facility procedures.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="medical-device-batteries-runtime-capacity-and-state-of-health.html">Medical Device Batteries: Runtime, Capacity, and State of Health</a></li>
+      <li><a href="medical-equipment-battery-basics.html">Medical Equipment Battery Basics for Biomeds</a></li>
+      <li><a href="how-to-troubleshoot-charging-problems.html">How to Troubleshoot Charging Problems</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
