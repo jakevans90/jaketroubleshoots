@@ -42,21 +42,22 @@ RELATED = {
     "what-to-do-when-a-medical-device-is-involved-in-an-incident": ["preserving-device-logs-after-a-serious-event", "when-to-remove-medical-equipment-from-service", "biomed-work-order-notes-ccr-method", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-think-before-calling-a-vendor"],
     "how-to-avoid-confirmation-bias-while-troubleshooting": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "what-known-good-actually-means", "how-to-think-before-calling-a-vendor", "functional-testing-vs-calibration-vs-verification", "biomed-work-order-notes-ccr-method"],
     "when-to-trust-the-device-s-internal-self-test": ["error-codes-what-they-tell-you-and-what-they-don-t", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics", "what-known-good-actually-means", "how-to-read-a-medical-equipment-service-manual"],
-    "why-changing-one-thing-at-a-time-matters": ["what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "biomed-work-order-notes-ccr-method", "how-to-think-before-calling-a-vendor"],
+    "why-changing-one-thing-at-a-time-matters": ["the-troubleshooting-process-observe-isolate-test-verify", "what-known-good-actually-means", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-avoid-confirmation-bias-while-troubleshooting", "how-to-think-before-calling-a-vendor"],
     "ground-neutral-and-hot-in-medical-equipment": ["medical-equipment-power-troubleshooting-outlet-to-internal-supply", "electrical-safety-testing-medical-equipment", "voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "fuses-breakers-and-power-supplies-in-medical-equipment"],
     "error-codes-what-they-tell-you-and-what-they-don-t": ["how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment", "how-to-read-a-medical-equipment-service-manual", "when-to-trust-the-device-s-internal-self-test", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "what-unable-to-duplicate-should-actually-mean": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "biomed-work-order-notes-ccr-method", "why-changing-one-thing-at-a-time-matters", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-remove-medical-equipment-from-service"],
     "medical-equipment-cables-and-connectors-inspection-and-isolation": ["how-to-troubleshoot-medical-device-accessories", "what-known-good-actually-means", "how-to-use-a-multimeter-in-biomed", "sensors-and-transducers-basics", "why-changing-one-thing-at-a-time-matters"],
     "how-to-troubleshoot-medical-device-accessories": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "sensors-and-transducers-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
-    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration"],
+    "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": ["the-troubleshooting-process-observe-isolate-test-verify", "how-to-troubleshoot-communication-failures", "environmental-causes-of-medical-equipment-failures", "how-to-troubleshoot-medical-device-accessories", "basic-networking-for-medical-equipment"],
     "medical-equipment-power-troubleshooting-outlet-to-internal-supply": ["how-to-troubleshoot-charging-problems", "fuses-breakers-and-power-supplies-in-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "medical-device-alarm-troubleshooting-fundamentals": ["sensors-and-transducers-basics", "error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "nurse-call-integration-basics", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "environmental-causes-of-medical-equipment-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-reproduce-a-clinical-complaint-on-the-bench", "what-unable-to-duplicate-should-actually-mean"],
     "software-firmware-and-configuration-problems-in-medical-equipment": ["error-codes-what-they-tell-you-and-what-they-don-t", "when-to-trust-the-device-s-internal-self-test", "how-to-read-a-medical-equipment-service-manual", "why-changing-one-thing-at-a-time-matters", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems"],
     "how-to-read-and-use-medical-device-event-logs": ["error-codes-what-they-tell-you-and-what-they-don-t", "preserving-device-logs-after-a-serious-event", "medical-device-alarm-troubleshooting-fundamentals", "what-unable-to-duplicate-should-actually-mean", "software-firmware-and-configuration-problems-in-medical-equipment"],
-    "how-to-verify-a-repair-before-returning-equipment-to-service": ["functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service", "when-to-trust-the-device-s-internal-self-test", "medical-device-alarm-troubleshooting-fundamentals", "biomed-work-order-notes-ccr-method"],
+    "how-to-verify-a-repair-before-returning-equipment-to-service": ["the-troubleshooting-process-observe-isolate-test-verify", "functional-testing-vs-calibration-vs-verification", "when-to-remove-medical-equipment-from-service", "when-to-trust-the-device-s-internal-self-test", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-to-troubleshoot-communication-failures": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "basic-networking-for-medical-equipment", "hospital-emrs-and-medical-device-integration", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment"],
     "how-to-troubleshoot-charging-problems": ["medical-equipment-battery-basics", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment"],
+    "the-troubleshooting-process-observe-isolate-test-verify": ["how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "why-changing-one-thing-at-a-time-matters", "what-known-good-actually-means", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
 }
 
 ARTICLE_CONFIG = {
@@ -253,6 +254,12 @@ ARTICLE_CONFIG = {
         "badge": "Core Skill",
         "cardNote": "Battery and charging-path fault isolation",
     },
+    "the-troubleshooting-process-observe-isolate-test-verify": {
+        "description": "A practical four-step framework for observing symptoms, isolating the failure, testing suspected causes, and verifying medical-equipment repairs.",
+        "category": "Troubleshooting",
+        "badge": "Start Here",
+        "cardNote": "Observe, isolate, test, and verify",
+    },
 }
 
 
@@ -274,7 +281,7 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
         lines.pop(0)
     intro = ""
     intro_lines = []
-    while lines and not lines[0].startswith("## "):
+    while lines and not re.match(r"^#{1,2} ", lines[0]):
         if lines[0].strip():
             intro_lines.append(lines[0].strip())
         elif intro_lines:
@@ -285,10 +292,11 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
     current_title = ""
     current_lines: list[str] = []
     for line in lines:
-        if line.startswith("## "):
+        match = re.match(r"^#{1,2} (.+)$", line)
+        if match:
             if current_title:
                 sections.append((current_title, current_lines))
-            current_title, current_lines = line[3:].strip(), []
+            current_title, current_lines = match.group(1).strip(), []
         elif current_title:
             current_lines.append(line)
     if current_title:
