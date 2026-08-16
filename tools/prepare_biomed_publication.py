@@ -78,7 +78,7 @@ RELATED = {
     "how-medical-equipment-measures-flow": ["how-infusion-pumps-measure-or-control-flow", "how-a-ventilator-measures-tidal-volume", "how-an-anesthesia-machine-breathing-system-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-ventilator-flow-sensors-work"],
     "how-invasive-blood-pressure-monitoring-works": ["how-medical-equipment-measures-pressure", "how-nibp-works-in-a-patient-monitor", "sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
     "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines": ["how-an-anesthesia-machine-breathing-system-works", "sensors-and-transducers-basics", "how-sidestream-co2-monitoring-works", "how-medical-equipment-measures-flow", "medical-device-alarm-troubleshooting-fundamentals"],
-    "how-an-anesthesia-machine-breathing-system-works": ["how-anesthesia-waste-gas-scavenging-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-an-anesthesia-machine-breathing-system-works": ["how-an-anesthesia-machine-performs-a-leak-test", "how-anesthesia-waste-gas-scavenging-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-equipment-measures-pressure"],
     "how-anesthesia-waste-gas-scavenging-works": ["how-medical-gas-sampling-systems-work", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-a-ventilator-measures-tidal-volume": ["how-peep-is-generated-and-controlled", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-flow", "how-ventilator-pressure-sensors-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-peep-is-generated-and-controlled": ["how-ventilator-pressure-sensors-work", "how-a-ventilator-measures-tidal-volume", "how-ventilator-flow-sensors-work", "how-medical-equipment-measures-pressure", "medical-device-alarm-troubleshooting-fundamentals"],
@@ -92,6 +92,7 @@ RELATED = {
     "how-ecg-lead-off-detection-works": ["how-ecg-acquisition-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-mainstream-co2-monitoring-works": ["how-sidestream-co2-monitoring-works", "how-to-troubleshoot-medical-device-accessories", "how-parameter-modules-communicate-with-host-monitors", "how-an-anesthesia-machine-breathing-system-works", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-medical-gas-sampling-systems-work": ["how-sidestream-co2-monitoring-works", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-to-troubleshoot-medical-device-accessories"],
+    "how-an-anesthesia-machine-performs-a-leak-test": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-medical-equipment-measures-pressure", "how-medical-gas-sampling-systems-work", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -497,6 +498,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Gas Monitoring",
         "cardNote": "The respiratory-gas sampling and analysis path",
+    },
+    "how-an-anesthesia-machine-performs-a-leak-test": {
+        "description": "A practical explanation of how anesthesia machines pressurize or evacuate defined system volumes, measure pressure behavior, and identify excessive leakage.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "Anesthesia leak-test boundaries and isolation",
     },
 }
 
