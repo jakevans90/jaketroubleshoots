@@ -633,7 +633,7 @@ def page_html(title: str, subtitle: str, description: str, hero_intro: str, sect
   <link rel="canonical" href="{SITE_URL}/biomed-basics/{slug}.html" />
   <script src="../social-links.js" defer></script>
 </head>
-<body>
+<body class="biomed-article">
 <header>
   <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
   <nav><a href="../index.html">Home</a><a href="../guides.html">Guides</a><a href="../search.html">Search</a><a href="../preventive-maintenance.html">PMs</a><a href="../vendors.html">Vendors</a><a href="../contact.html">About</a></nav>

@@ -283,6 +283,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         for item in catalog:
             self.assertEqual(item["url"], f'biomed-basics/{item["slug"]}.html')
             self.assertTrue((ROOT / item["url"]).is_file())
+            self.assertIn(
+                '<body class="biomed-article">',
+                (ROOT / item["url"]).read_text(encoding="utf-8"),
+            )
             self.assertIn(item["group"], {
                 "start-here", "everyday-skills", "connected-systems",
                 "career-communication", "troubleshooting-safety", "how-it-works",
