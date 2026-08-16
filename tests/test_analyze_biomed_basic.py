@@ -286,6 +286,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
             self.assertEqual(item["url"], f'biomed-basics/{item["slug"]}.html')
+            self.assertRegex(item["lastRevision"], r"^\d{4}-\d{2}-\d{2}$")
             self.assertTrue((ROOT / item["url"]).is_file())
             self.assertIn(
                 '<body class="biomed-article">',

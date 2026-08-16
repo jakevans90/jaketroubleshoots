@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import hashlib
 import html
 import json
@@ -725,6 +726,11 @@ def catalog_entry(title: str, slug: str, config: dict[str, str], existing: dict 
         "group": biomed_group(config["category"]),
         "badge": config["badge"],
         "cardNote": config["cardNote"],
+        "lastRevision": (
+            existing.get("lastRevision")
+            if existing and existing.get("lastRevision")
+            else datetime.date.today().isoformat()
+        ),
     }
     for key in ("featured", "featuredOrder"):
         if existing and key in existing:
