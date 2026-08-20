@@ -98,6 +98,7 @@ RELATED = {
     "what-degree-do-you-need-to-become-a-biomed": ["how-to-become-a-biomedical-equipment-technician", "biomed-bmet-clinical-engineering-htm", "biomed-resume-basics", "voltage-current-resistance-and-continuity-in-plain-english", "basic-networking-for-medical-equipment"],
     "what-entry-level-biomeds-should-learn-first": ["how-to-become-a-biomedical-equipment-technician", "what-degree-do-you-need-to-become-a-biomed", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-use-a-multimeter-in-biomed", "how-to-read-a-medical-equipment-service-manual"],
     "what-electronics-knowledge-does-a-biomed-actually-need": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "ac-vs-dc-power-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "analog-vs-digital-signals"],
+    "how-to-ask-clinical-staff-better-troubleshooting-questions": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "the-difference-between-a-symptom-cause-and-root-cause", "error-codes-what-they-tell-you-and-what-they-don-t", "what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident"],
 }
 
 ARTICLE_CONFIG = {
@@ -533,6 +534,12 @@ ARTICLE_CONFIG = {
         "category": "Career",
         "badge": "Education Guide",
         "cardNote": "Practical electronics knowledge for biomed troubleshooting",
+    },
+    "how-to-ask-clinical-staff-better-troubleshooting-questions": {
+        "description": "A practical guide to turning vague clinical equipment complaints into useful technical clues through focused follow-up questions and accurate documentation.",
+        "category": "Troubleshooting",
+        "badge": "Workflow",
+        "cardNote": "Clinical questions that reveal useful troubleshooting clues",
     },
 }
 
