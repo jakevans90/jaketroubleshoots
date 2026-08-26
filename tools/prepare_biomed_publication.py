@@ -100,6 +100,7 @@ RELATED = {
     "what-electronics-knowledge-does-a-biomed-actually-need": ["voltage-current-resistance-and-continuity-in-plain-english", "how-to-use-a-multimeter-in-biomed", "ac-vs-dc-power-basics", "fuses-breakers-and-power-supplies-in-medical-equipment", "analog-vs-digital-signals"],
     "how-to-ask-clinical-staff-better-troubleshooting-questions": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "the-difference-between-a-symptom-cause-and-root-cause", "error-codes-what-they-tell-you-and-what-they-don-t", "what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident"],
     "no-problem-found-when-that-answer-is-and-isn-t-good-enough": ["what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-read-and-use-medical-device-event-logs", "when-to-remove-medical-equipment-from-service"],
+    "how-an-anesthesia-vaporizer-works": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-performs-a-leak-test", "how-medical-gas-sampling-systems-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
 }
 
 ARTICLE_CONFIG = {
@@ -547,6 +548,12 @@ ARTICLE_CONFIG = {
         "category": "Safety & Risk",
         "badge": "Decision Guide",
         "cardNote": "Evidence and return-to-service decisions after NPF testing",
+    },
+    "how-an-anesthesia-vaporizer-works": {
+        "description": "A practical explanation of how anesthesia vaporizers turn liquid agent into a controlled vapor concentration and how flow, temperature, filling, and mounting affect output.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "Vaporizer flow splitting, compensation, and output control",
     },
 }
 
