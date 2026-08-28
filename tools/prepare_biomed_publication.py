@@ -101,6 +101,7 @@ RELATED = {
     "how-to-ask-clinical-staff-better-troubleshooting-questions": ["how-to-reproduce-a-clinical-complaint-on-the-bench", "the-difference-between-a-symptom-cause-and-root-cause", "error-codes-what-they-tell-you-and-what-they-don-t", "what-unable-to-duplicate-should-actually-mean", "what-to-do-when-a-medical-device-is-involved-in-an-incident"],
     "no-problem-found-when-that-answer-is-and-isn-t-good-enough": ["what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-read-and-use-medical-device-event-logs", "when-to-remove-medical-equipment-from-service"],
     "how-an-anesthesia-vaporizer-works": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-performs-a-leak-test", "how-medical-gas-sampling-systems-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
+    "how-electronic-flow-control-works-in-an-anesthesia-machine": ["how-an-anesthesia-vaporizer-works", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-ventilator-flow-sensors-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
 }
 
 ARTICLE_CONFIG = {
@@ -554,6 +555,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Anesthesia",
         "cardNote": "Vaporizer flow splitting, compensation, and output control",
+    },
+    "how-electronic-flow-control-works-in-an-anesthesia-machine": {
+        "description": "A practical explanation of how modern anesthesia machines use electronic valves, sensors, software, and closed-loop control to regulate fresh-gas delivery.",
+        "category": "How It Works",
+        "badge": "Anesthesia",
+        "cardNote": "Electronic gas mixing, sensor feedback, and flow control",
     },
 }
 
