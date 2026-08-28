@@ -104,6 +104,7 @@ RELATED = {
     "how-electronic-flow-control-works-in-an-anesthesia-machine": ["how-an-anesthesia-vaporizer-works", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-ventilator-flow-sensors-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
     "how-syringe-pump-drive-systems-work": ["how-infusion-pumps-measure-or-control-flow", "how-infusion-pump-occlusion-detection-works", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service", "what-known-good-actually-means"],
     "how-defibrillator-pacing-works": ["how-defibrillators-charge-and-deliver-energy", "how-ecg-acquisition-works", "how-ecg-lead-off-detection-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-nurse-call-relay-outputs-work": ["nurse-call-integration-basics", "relays-and-contact-closures-in-plain-english", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
 }
 
 ARTICLE_CONFIG = {
@@ -575,6 +576,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Defibrillation",
         "cardNote": "Pacing current, timing, sensing, and therapy connections",
+    },
+    "how-nurse-call-relay-outputs-work": {
+        "description": "A practical explanation of how medical equipment uses relay outputs and dry contacts to signal nurse call systems and how to isolate device, cable, and infrastructure faults.",
+        "category": "How It Works",
+        "badge": "Integration",
+        "cardNote": "Dry contacts, relay states, and nurse-call signaling",
     },
 }
 
