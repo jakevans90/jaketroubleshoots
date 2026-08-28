@@ -108,6 +108,8 @@ RELATED = {
     "how-touchscreens-work-in-medical-equipment": ["analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
     "how-medical-device-cooling-systems-work": ["environmental-causes-of-medical-equipment-failures", "fuses-breakers-and-power-supplies-in-medical-equipment", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-device-self-tests-detect-failures": ["when-to-trust-the-device-s-internal-self-test", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-read-and-use-medical-device-event-logs", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "biomedical-equipment-technician-degrees-explained": ["what-degree-do-you-need-to-become-a-biomed", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds", "how-to-become-a-biomedical-equipment-technician", "what-entry-level-biomeds-should-learn-first", "what-electronics-knowledge-does-a-biomed-actually-need"],
+    "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds": ["biomedical-equipment-technician-degrees-explained", "what-degree-do-you-need-to-become-a-biomed", "how-to-become-a-biomedical-equipment-technician", "what-entry-level-biomeds-should-learn-first", "biomed-bmet-clinical-engineering-htm"],
 }
 
 ARTICLE_CONFIG = {
@@ -603,6 +605,19 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Diagnostics",
         "cardNote": "Startup checks, continuous monitoring, and fault detection",
+    },
+    "biomedical-equipment-technician-degrees-explained": {
+        "description": "A practical guide to biomedical equipment technology, engineering technology, electronics, and related college programs that can prepare someone for BMET work.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "BMET degree names, curricula, labs, and career preparation",
+    },
+    "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds": {
+        "description": "A practical comparison of certificate, associate-degree, and bachelor’s-degree paths for entering biomed and building a long-term HTM career.",
+        "category": "Career",
+        "badge": "Education Guide",
+        "cardNote": "Comparing education paths, cost, time, and career options",
+        "plannedTitles": ["Certificate vs Associate Degree vs Bachelor�s Degree for Biomeds"],
     },
 }
 
