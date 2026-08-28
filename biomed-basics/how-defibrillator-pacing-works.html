@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Defibrillator Pacing Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how defibrillators deliver transcutaneous pacing pulses and how current, impedance, ECG sensing, timing, capture, and cable condition affect performance.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-defibrillator-pacing-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How Defibrillator Pacing Works</h2>
+  <p>How a defibrillator sends controlled electrical pulses through therapy pads to stimulate the heart, and why current, impedance, sensing, capture, and cable condition all matter</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Many modern defibrillators do more than deliver shocks.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>- What transcutaneous pacing is</li>
+      <li>- Pacing rate</li>
+      <li>- Pacing current</li>
+      <li>- Fixed versus demand pacing</li>
+      <li>- ECG sensing</li>
+      <li>- R-wave detection</li>
+      <li>- Pacing pulse generation</li>
+      <li>- Therapy pads and cables</li>
+      <li>- Patient impedance</li>
+      <li>- Capture versus electrical output</li>
+      <li>- Pacing artifacts</li>
+      <li>- Defibrillator analyzer testing</li>
+      <li>- Common failure patterns</li>
+      <li>- How to think through pacing troubleshooting</li>
+      <li>The Simple Version</li>
+    </ul>
+    <p>A pacing system generally works like this:</p>
+    <ul>
+      <li>User selects pacing mode</li>
+      <li>↓</li>
+      <li>User sets pacing rate and current</li>
+      <li>↓</li>
+      <li>Defibrillator generates repeated electrical pulses</li>
+      <li>↓</li>
+      <li>Pulse travels through therapy cable and pads</li>
+      <li>↓</li>
+      <li>Current passes through the patient</li>
+      <li>↓</li>
+      <li>Heart may respond with a paced beat</li>
+    </ul>
+    <p>In demand mode, another step is added:</p>
+    <ul>
+      <li>Device watches ECG</li>
+      <li>↓</li>
+    </ul>
+    <p>If natural beat occurs, pacing pulse is inhibited</p>
+    <p>↓</p>
+    <p>If no beat occurs within expected interval, pacing pulse is delivered</p>
+  </section>
+
+  <section class="content-box" id="what-is-transcutaneous-pacing">
+    <h3>What Is Transcutaneous Pacing?</h3>
+    <p>Transcutaneous pacing uses external adhesive pads to deliver electrical pulses through the chest.</p>
+    <p>The goal is to stimulate the myocardium when the patient's own heart rate is inadequate.</p>
+    <p>It is different from:</p>
+    <ul>
+      <li>- Defibrillation</li>
+      <li>- Synchronized cardioversion</li>
+    </ul>
+    <p>even though the same therapy pads may be used.</p>
+  </section>
+
+  <section class="content-box" id="defibrillation-vs-pacing">
+    <h3>Defibrillation vs Pacing</h3>
+    <p>Defibrillation delivers:</p>
+    <p>One large, brief high-energy shock.</p>
+    <p>Pacing delivers:</p>
+    <p>Repeated lower-energy pulses.</p>
+    <p>The electrical output hardware and control method are different.</p>
+  </section>
+
+  <section class="content-box" id="pacing-rate">
+    <h3>Pacing Rate</h3>
+    <p>The pacing rate is usually expressed in:</p>
+    <p>Pulses per minute, often corresponding to beats per minute.</p>
+    <p>Example:</p>
+    <p>70 ppm.</p>
+    <p>The defibrillator should generate approximately:</p>
+    <ul>
+      <li>70 pacing pulses each minute,</li>
+    </ul>
+    <p>unless demand pacing suppresses some pulses because intrinsic cardiac activity is detected.</p>
+  </section>
+
+  <section class="content-box" id="pacing-current">
+    <h3>Pacing Current</h3>
+    <p>Pacing output is commonly set in:</p>
+    <p>milliamps, or mA.</p>
+    <p>Example:</p>
+    <p>60 mA.</p>
+    <p>This controls the strength of the pacing pulse.</p>
+  </section>
+
+  <section class="content-box" id="current-is-different-from-voltage">
+    <h3>Current Is Different From Voltage</h3>
+    <p>The clinician typically selects current.</p>
+    <p>The device adjusts the voltage needed to drive approximately that current through the patient or test load.</p>
+  </section>
+
+  <section class="content-box" id="why-voltage-changes">
+    <h3>Why Voltage Changes</h3>
+    <p>Ohm's law applies conceptually:</p>
+    <ul>
+      <li>Voltage = Current × Resistance</li>
+    </ul>
+    <p>If patient impedance is higher:</p>
+    <p>The defibrillator may need more voltage to deliver the same pacing current.</p>
+  </section>
+
+  <section class="content-box" id="constant-current-pacing">
+    <h3>Constant-Current Pacing</h3>
+    <p>Many pacing systems are designed to approximate constant-current output.</p>
+    <p>That means:</p>
+    <p>Set:</p>
+    <p>60 mA.</p>
+    <p>The device attempts to deliver about:</p>
+    <ul>
+      <li>60 mA</li>
+    </ul>
+    <p>even as patient impedance varies within its supported range.</p>
+  </section>
+
+  <section class="content-box" id="current-source">
+    <h3>Current Source</h3>
+    <p>Internally, the defibrillator uses controlled electronics to generate the pacing pulse.</p>
+    <p>This may involve:</p>
+    <ul>
+      <li>- Power conversion</li>
+      <li>- Switching circuitry</li>
+      <li>- Current regulation</li>
+      <li>- Output monitoring</li>
+      <li>Pacing Pulse</li>
+    </ul>
+    <p>Each pacing pulse has several characteristics.</p>
+    <p>These may include:</p>
+    <ul>
+      <li>- Current</li>
+      <li>- Duration</li>
+      <li>- Repetition rate</li>
+      <li>- Waveform shape</li>
+    </ul>
+    <p>Manufacturer specifications define acceptable limits.</p>
+  </section>
+
+  <section class="content-box" id="pulse-width">
+    <h3>Pulse Width</h3>
+    <p>Pulse width describes how long each pacing pulse lasts.</p>
+    <p>It may be measured in:</p>
+    <p>Milliseconds.</p>
+    <p>The pulse is much longer than many ordinary electronic control signals but far smaller than the interval between paced beats.</p>
+  </section>
+
+  <section class="content-box" id="why-pulse-width-matters">
+    <h3>Why Pulse Width Matters</h3>
+    <p>Stimulation depends on both:</p>
+    <ul>
+      <li>- Current</li>
+      <li>- Pulse duration</li>
+    </ul>
+    <p>A pulse with correct current but incorrect width may not represent correct pacing output.</p>
+  </section>
+
+  <section class="content-box" id="defibrillator-analyzer">
+    <h3>Defibrillator Analyzer</h3>
+    <p>A defibrillator analyzer can independently measure pacing output.</p>
+    <p>Depending on analyzer capability, it may measure:</p>
+    <ul>
+      <li>- Pacing current</li>
+      <li>- Rate</li>
+      <li>- Pulse width</li>
+      <li>- Demand response</li>
+      <li>- Refractory behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="set-current-is-not-proof-of-delivered-current">
+    <h3>Set Current Is Not Proof of Delivered Current</h3>
+    <p>Suppose the defibrillator is set:</p>
+    <p>60 mA.</p>
+    <p>That proves:</p>
+    <p>The commanded pacing current is 60 mA.</p>
+    <p>It does not prove:</p>
+    <p>60 mA is actually reaching the load.</p>
+    <p>Use an analyzer.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Set:</p>
+    <p>60 mA.</p>
+    <p>Analyzer:</p>
+    <p>59 mA.</p>
+    <p>If within manufacturer tolerance:</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="low-output">
+    <h3>Low Output</h3>
+    <p>Set:</p>
+    <p>60 mA.</p>
+    <p>Analyzer:</p>
+    <p>35 mA.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>- Output circuitry</li>
+      <li>- Therapy cable</li>
+      <li>- Connector</li>
+      <li>- Calibration</li>
+      <li>- Load</li>
+      <li>No Output</li>
+    </ul>
+    <p>Pacing indicator flashes.</p>
+    <p>Analyzer measures:</p>
+    <p>0 mA.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>- Therapy cable</li>
+      <li>- Output circuit</li>
+      <li>- Pad detection</li>
+      <li>- Internal switch</li>
+      <li>Therapy Pads</li>
+    </ul>
+    <p>Pacing current reaches the patient through adhesive therapy pads.</p>
+    <p>These may also support:</p>
+    <ul>
+      <li>- Defibrillation</li>
+      <li>- Synchronized cardioversion</li>
+      <li>- ECG monitoring</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="therapy-cable">
+    <h3>Therapy Cable</h3>
+    <p>The cable is part of the pacing current path.</p>
+    <p>Damage can cause:</p>
+    <ul>
+      <li>- Reduced current</li>
+      <li>- No current</li>
+      <li>- Intermittent pacing</li>
+      <li>- Pads-off message</li>
+      <li>High-Current Path</li>
+    </ul>
+    <p>A therapy cable may pass basic continuity and still have problems under actual output conditions.</p>
+    <p>Inspect and test using manufacturer-approved procedures.</p>
+  </section>
+
+  <section class="content-box" id="connector-damage">
+    <h3>Connector Damage</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>- Burn marks</li>
+      <li>- Bent contacts</li>
+      <li>- Cracks</li>
+      <li>- Loose connection</li>
+    </ul>
+    <p>Repeated high-energy therapy places demands on these interfaces.</p>
+  </section>
+
+  <section class="content-box" id="pad-contact">
+    <h3>Pad Contact</h3>
+    <p>Poor pad contact increases impedance.</p>
+    <p>The defibrillator may:</p>
+    <ul>
+      <li>- Warn of poor contact</li>
+      <li>- Limit output</li>
+      <li>- Require higher voltage</li>
+      <li>Patient Impedance</li>
+    </ul>
+    <p>The electrical path through the chest presents impedance.</p>
+    <p>The device may monitor this to determine whether pacing output can be delivered effectively.</p>
+  </section>
+
+  <section class="content-box" id="analyzer-load">
+    <h3>Analyzer Load</h3>
+    <p>A defibrillator analyzer provides a known electrical load.</p>
+    <p>That gives a controlled way to verify pacing current.</p>
+  </section>
+
+  <section class="content-box" id="load-matters">
+    <h3>Load Matters</h3>
+    <p>If output is specified at a defined resistance:</p>
+    <p>Use that load.</p>
+    <p>A pacing circuit may behave differently at:</p>
+    <ul>
+      <li>- Low impedance</li>
+      <li>- High impedance</li>
+      <li>Multi-Load Testing</li>
+    </ul>
+    <p>Some procedures may verify pacing current at more than one load.</p>
+    <p>That tests the current-regulation system.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Set:</p>
+    <p>80 mA.</p>
+    <p>Analyzer at 50 Ω:</p>
+    <p>79 mA.</p>
+    <p>Analyzer at 100 Ω:</p>
+    <p>78 mA.</p>
+    <p>That suggests good regulation within those test conditions.</p>
+  </section>
+
+  <section class="content-box" id="current-drops-at-high-resistance">
+    <h3>Current Drops at High Resistance</h3>
+    <p>If:</p>
+    <ul>
+      <li>50 Ω → 80 mA</li>
+      <li>100 Ω → 55 mA</li>
+    </ul>
+    <p>the output stage may not be able to produce enough voltage under higher load.</p>
+  </section>
+
+  <section class="content-box" id="fixed-pacing">
+    <h3>Fixed Pacing</h3>
+    <p>In fixed or asynchronous pacing, the device delivers pacing pulses at the selected rate regardless of intrinsic ECG activity.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Set:</p>
+    <p>70 ppm.</p>
+    <p>The device sends approximately:</p>
+    <p>70 pulses per minute.</p>
+    <p>It does not wait for intrinsic beats.</p>
+  </section>
+
+  <section class="content-box" id="demand-pacing">
+    <h3>Demand Pacing</h3>
+    <p>Demand pacing monitors the patient's ECG.</p>
+    <p>If the patient's own heart beats faster than or appropriately within the pacing interval:</p>
+    <p>The device inhibits unnecessary pacing pulses.</p>
+  </section>
+
+  <section class="content-box" id="demand-mode-logic">
+    <h3>Demand Mode Logic</h3>
+    <p>Conceptually:</p>
+    <ul>
+      <li>Monitor ECG</li>
+      <li>↓</li>
+      <li>Detect R wave</li>
+      <li>↓</li>
+      <li>Reset pacing timer</li>
+      <li>↓</li>
+      <li>Wait</li>
+    </ul>
+    <p>If another R wave appears:</p>
+    <p>Reset again.</p>
+    <p>If no R wave appears before pacing interval expires:</p>
+    <p>Deliver pacing pulse.</p>
+  </section>
+
+  <section class="content-box" id="ecg-sensing-is-critical">
+    <h3>ECG Sensing Is Critical</h3>
+    <p>Demand pacing depends on reliable ECG detection.</p>
+    <p>If the ECG signal is poor, pacing timing can be wrong even if the pacing-output circuit is perfect.</p>
+  </section>
+
+  <section class="content-box" id="false-r-wave-detection">
+    <h3>False R-Wave Detection</h3>
+    <p>Artifact may be mistaken for intrinsic cardiac activity.</p>
+    <p>The device may inhibit pacing unnecessarily.</p>
+  </section>
+
+  <section class="content-box" id="missed-r-waves">
+    <h3>Missed R Waves</h3>
+    <p>If real R waves are not detected:</p>
+    <p>The device may pace even though intrinsic beats are present.</p>
+  </section>
+
+  <section class="content-box" id="demand-pacing-problem-can-be-an-ecg-problem">
+    <h3>Demand Pacing Problem Can Be an ECG Problem</h3>
+    <p>This is extremely important.</p>
+    <p>If fixed pacing works correctly but demand pacing behaves incorrectly:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>- ECG leads</li>
+      <li>- Signal quality</li>
+      <li>- Lead selection</li>
+      <li>- R-wave detection</li>
+    </ul>
+    <p>before blaming the pacing-output circuit.</p>
+  </section>
+
+  <section class="content-box" id="ecg-leads-vs-therapy-pads">
+    <h3>ECG Leads vs Therapy Pads</h3>
+    <p>Some defibrillators may obtain ECG through:</p>
+    <ul>
+      <li>- Monitoring electrodes</li>
+      <li>- Therapy pads</li>
+    </ul>
+    <p>depending on configuration.</p>
+    <p>Know which source is being used for demand pacing.</p>
+  </section>
+
+  <section class="content-box" id="lead-selection">
+    <h3>Lead Selection</h3>
+    <p>Demand pacing may require an ECG lead with clear R waves.</p>
+    <p>A poor lead selection can create unreliable sensing.</p>
+  </section>
+
+  <section class="content-box" id="r-wave-marker">
+    <h3>R-Wave Marker</h3>
+    <p>Some devices display markers showing detected intrinsic beats.</p>
+    <p>Those markers can be useful clues.</p>
+    <p>If pacing is inhibited unexpectedly but the monitor shows false R-wave markers:</p>
+    <p>Sensing is the issue.</p>
+  </section>
+
+  <section class="content-box" id="pacing-artifact">
+    <h3>Pacing Artifact</h3>
+    <p>Each pacing pulse produces a large electrical artifact on the ECG.</p>
+    <p>The monitor must distinguish:</p>
+    <ul>
+      <li>Pacing pulse</li>
+    </ul>
+    <p>from:</p>
+    <p>Actual cardiac response.</p>
+  </section>
+
+  <section class="content-box" id="pace-marker">
+    <h3>Pace Marker</h3>
+    <p>The display may show a marker for each pacing pulse.</p>
+    <p>This proves the device commanded or detected a pacing event.</p>
+    <p>It does not necessarily prove current reached the patient.</p>
+  </section>
+
+  <section class="content-box" id="electrical-capture">
+    <h3>Electrical Capture</h3>
+    <p>When a pacing pulse actually depolarizes the myocardium, this is called:</p>
+    <p>Electrical capture.</p>
+    <p>The ECG may show a QRS complex following the pacing spike.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-capture">
+    <h3>Mechanical Capture</h3>
+    <p>Mechanical capture means the electrical activation produces an actual cardiac contraction and pulse.</p>
+    <p>This is a clinical assessment.</p>
+  </section>
+
+  <section class="content-box" id="biomed-testing-does-not-prove-clinical-capture">
+    <h3>Biomed Testing Does Not Prove Clinical Capture</h3>
+    <p>A defibrillator analyzer can verify electrical pacing output.</p>
+    <p>It cannot prove that a specific patient's heart will respond to that current.</p>
+  </section>
+
+  <section class="content-box" id="this-distinction-matters">
+    <h3>This Distinction Matters</h3>
+    <p>If analyzer confirms:</p>
+    <ul>
+      <li>- Correct pacing current</li>
+      <li>- Correct pulse width</li>
+      <li>- Correct rate</li>
+    </ul>
+    <p>then the equipment may be functioning correctly even if clinical capture was difficult.</p>
+    <p>Patient physiology is a separate factor.</p>
+  </section>
+
+  <section class="content-box" id="capture-threshold">
+    <h3>Capture Threshold</h3>
+    <p>Clinically, pacing current may be increased until capture occurs.</p>
+    <p>The required threshold varies by patient.</p>
+    <p>There is no single mA setting that guarantees capture in everyone.</p>
+  </section>
+
+  <section class="content-box" id="service-testing-is-different">
+    <h3>Service Testing Is Different</h3>
+    <p>During service:</p>
+    <p>Use defined analyzer loads and manufacturer specifications.</p>
+    <p>Do not judge device performance by whether a clinical patient happened to capture at a particular setting.</p>
+  </section>
+
+  <section class="content-box" id="pacing-rate-accuracy">
+    <h3>Pacing Rate Accuracy</h3>
+    <p>Analyzer can verify pulse timing.</p>
+    <p>Example:</p>
+    <p>Set:</p>
+    <p>60 ppm.</p>
+    <p>Expected interval:</p>
+    <p>About 1 second between pulses.</p>
+  </section>
+
+  <section class="content-box" id="rate-error">
+    <h3>Rate Error</h3>
+    <p>Set:</p>
+    <p>60 ppm.</p>
+    <p>Analyzer:</p>
+    <p>45 ppm.</p>
+    <p>That is a timing/control problem.</p>
+  </section>
+
+  <section class="content-box" id="pulse-width-accuracy">
+    <h3>Pulse Width Accuracy</h3>
+    <p>Set pacing system may have a specified pulse width.</p>
+    <p>Analyzer verifies whether actual pulse duration falls within required range.</p>
+  </section>
+
+  <section class="content-box" id="why-rate-and-current-should-be-tested-separately">
+    <h3>Why Rate and Current Should Be Tested Separately</h3>
+    <p>A device can have:</p>
+    <ul>
+      <li>Correct current</li>
+    </ul>
+    <p>but:</p>
+    <p>Wrong rate.</p>
+    <p>Or:</p>
+    <ul>
+      <li>Correct rate</li>
+    </ul>
+    <p>but:</p>
+    <p>Low current.</p>
+    <p>Different functions.</p>
+  </section>
+
+  <section class="content-box" id="demand-pacing-test">
+    <h3>Demand Pacing Test</h3>
+    <p>An analyzer can generate a simulated ECG.</p>
+    <p>The defibrillator should detect the simulated beats and respond appropriately.</p>
+  </section>
+
+  <section class="content-box" id="demand-test-example">
+    <h3>Demand Test Example</h3>
+    <p>Defibrillator set:</p>
+    <p>70 ppm demand mode.</p>
+    <p>Analyzer provides ECG:</p>
+    <p>80 bpm.</p>
+    <p>Device should generally inhibit pacing because intrinsic simulated rate is faster.</p>
+  </section>
+
+  <section class="content-box" id="slow-simulated-rate">
+    <h3>Slow Simulated Rate</h3>
+    <p>Analyzer provides:</p>
+    <p>40 bpm.</p>
+    <p>Defibrillator set:</p>
+    <p>70 ppm.</p>
+    <p>The device should pace as required between the slower simulated beats according to its timing logic.</p>
+  </section>
+
+  <section class="content-box" id="demand-timing">
+    <h3>Demand Timing</h3>
+    <p>The exact timing behavior is manufacturer-specific.</p>
+    <p>Use the analyzer's pacing test and service manual requirements.</p>
+  </section>
+
+  <section class="content-box" id="refractory-period">
+    <h3>Refractory Period</h3>
+    <p>After detecting a beat or delivering a pacing pulse, the device may temporarily ignore certain signals.</p>
+    <p>This helps prevent:</p>
+    <ul>
+      <li>- Double counting</li>
+      <li>- Artifact sensing</li>
+      <li>Noise Rejection</li>
+    </ul>
+    <p>The pacing system must avoid interpreting:</p>
+    <ul>
+      <li>- Muscle artifact</li>
+      <li>- Pacing artifact</li>
+      <li>- Electrical noise</li>
+    </ul>
+    <p>as true intrinsic beats.</p>
+  </section>
+
+  <section class="content-box" id="esu-interference">
+    <h3>ESU Interference</h3>
+    <p>Electrical interference can affect ECG sensing.</p>
+    <p>The pacing-output system may be fine while demand sensing is disrupted.</p>
+  </section>
+
+  <section class="content-box" id="fixed-mode-can-help-isolate">
+    <h3>Fixed Mode Can Help Isolate</h3>
+    <p>If:</p>
+    <ul>
+      <li>Fixed pacing output is correct</li>
+    </ul>
+    <p>but:</p>
+    <ul>
+      <li>Demand mode fails,</li>
+    </ul>
+    <p>that strongly points toward:</p>
+    <ul>
+      <li>- ECG sensing</li>
+      <li>- Timing logic</li>
+    </ul>
+    <p>rather than the high-current output path.</p>
+  </section>
+
+  <section class="content-box" id="no-pacing-with-pads-off-message">
+    <h3>No Pacing With Pads-Off Message</h3>
+    <p>The device may intentionally prevent pacing if it does not detect a valid therapy connection.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>- Therapy pads</li>
+      <li>- Cable</li>
+      <li>- Impedance sensing</li>
+      <li>- Connector</li>
+      <li>Pad Detection</li>
+    </ul>
+    <p>The system may test the electrical path before enabling therapy.</p>
+    <p>An open circuit may trigger:</p>
+    <p>Pads Off.</p>
+  </section>
+
+  <section class="content-box" id="pacing-and-defibrillation-share-accessories">
+    <h3>Pacing and Defibrillation Share Accessories</h3>
+    <p>If both:</p>
+    <ul>
+      <li>- Pacing</li>
+      <li>- Defibrillation</li>
+      <li>fail using one therapy cable,</li>
+    </ul>
+    <p>look for a shared accessory.</p>
+  </section>
+
+  <section class="content-box" id="defibrillation-works-pacing-fails">
+    <h3>Defibrillation Works, Pacing Fails</h3>
+    <p>Now the cable may still be good for the high-energy shock path while another pacing-specific circuit has failed.</p>
+    <p>Shared accessories do not always mean identical internal electronics.</p>
+  </section>
+
+  <section class="content-box" id="pacing-works-defibrillation-fails">
+    <h3>Pacing Works, Defibrillation Fails</h3>
+    <p>The reverse can also occur.</p>
+    <p>Pacing output does not prove the defibrillation high-voltage system works.</p>
+  </section>
+
+  <section class="content-box" id="pacing-output-at-low-settings">
+    <h3>Pacing Output at Low Settings</h3>
+    <p>Service procedures may test several current settings.</p>
+    <p>Example:</p>
+    <ul>
+      <li>20 mA</li>
+      <li>100 mA</li>
+      <li>200 mA</li>
+    </ul>
+    <p>depending on device.</p>
+  </section>
+
+  <section class="content-box" id="multi-point-testing">
+    <h3>Multi-Point Testing</h3>
+    <p>One passing current does not prove the entire pacing-output range.</p>
+  </section>
+
+  <section class="content-box" id="linear-output-error">
+    <h3>Linear Output Error</h3>
+    <p>Example:</p>
+    <ul>
+      <li>Set → Analyzer</li>
+      <li>20 → 15</li>
+      <li>60 → 45</li>
+      <li>100 → 75</li>
+    </ul>
+    <p>The system consistently delivers about 25% low.</p>
+    <p>That may suggest calibration or scaling.</p>
+    <p>Offset Error</p>
+    <p>Set → Analyzer</p>
+    <p>20 → 30</p>
+    <p>60 → 70</p>
+  </section>
+
+  <section class="content-box" id="100-110">
+    <h3>100 → 110</h3>
+    <p>A roughly constant offset suggests a different problem.</p>
+  </section>
+
+  <section class="content-box" id="high-current-only-fails">
+    <h3>High Current Only Fails</h3>
+    <p>Example:</p>
+    <p>20 mA → Pass.</p>
+    <p>80 mA → Pass.</p>
+    <p>180 mA → Low.</p>
+    <p>The output stage may be reaching its voltage/current limit under load.</p>
+  </section>
+
+  <section class="content-box" id="battery-condition">
+    <h3>Battery Condition</h3>
+    <p>Pacing may operate for extended periods on battery.</p>
+    <p>A weak battery could potentially affect overall therapy performance if the device cannot maintain internal supply rails.</p>
+    <p>Follow manufacturer battery and pacing-duration tests.</p>
+  </section>
+
+  <section class="content-box" id="ac-vs-battery-testing">
+    <h3>AC vs Battery Testing</h3>
+    <p>If pacing works on AC but fails on battery:</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>- Battery</li>
+      <li>- Power path</li>
+    </ul>
+    <p>before pacing hardware.</p>
+  </section>
+
+  <section class="content-box" id="continuous-load">
+    <h3>Continuous Load</h3>
+    <p>Unlike a single defibrillation shock, pacing can continue for minutes or hours.</p>
+    <p>The output circuitry must handle repeated pulses reliably.</p>
+  </section>
+
+  <section class="content-box" id="thermal-behavior">
+    <h3>Thermal Behavior</h3>
+    <p>A pacing fault may appear only after prolonged output.</p>
+    <p>If complaint is:</p>
+    <ul>
+      <li>Pacing stops after 20 minutes,</li>
+    </ul>
+    <p>a brief analyzer test may miss it.</p>
+  </section>
+
+  <section class="content-box" id="long-duration-test">
+    <h3>Long-Duration Test</h3>
+    <p>Use the manufacturer-defined duration if required.</p>
+    <p>Observe:</p>
+    <ul>
+      <li>- Current stability</li>
+      <li>- Errors</li>
+      <li>- Temperature-related failures</li>
+      <li>Internal Output Monitoring</li>
+    </ul>
+    <p>The defibrillator may monitor its own pacing pulses.</p>
+    <p>If actual output differs from command, it may generate a fault.</p>
+  </section>
+
+  <section class="content-box" id="internal-self-test">
+    <h3>Internal Self-Test</h3>
+    <p>Self-test may check portions of:</p>
+    <ul>
+      <li>- Pacing output</li>
+      <li>- Therapy circuit</li>
+    </ul>
+    <p>But external analyzer verification remains important.</p>
+  </section>
+
+  <section class="content-box" id="internal-test-does-not-replace-external-measurement">
+    <h3>Internal Test Does Not Replace External Measurement</h3>
+    <p>The device is checking itself using its own sensors.</p>
+    <p>Independent test equipment provides separate evidence.</p>
+  </section>
+
+  <section class="content-box" id="pacing-current-display">
+    <h3>Pacing Current Display</h3>
+    <p>If the screen says:</p>
+    <ul>
+      <li>80 mA,</li>
+    </ul>
+    <p>that is usually the selected setting.</p>
+    <p>It is not necessarily a measured output value.</p>
+  </section>
+
+  <section class="content-box" id="therapy-event-log">
+    <h3>Therapy Event Log</h3>
+    <p>The device may record:</p>
+    <ul>
+      <li>- Pacing mode</li>
+      <li>- Rate</li>
+      <li>- Current</li>
+      <li>- Duration</li>
+    </ul>
+    <p>This can be useful when investigating a clinical complaint.</p>
+  </section>
+
+  <section class="content-box" id="log-shows-setting-not-necessarily-output">
+    <h3>Log Shows Setting, Not Necessarily Output</h3>
+    <p>If the log says:</p>
+    <ul>
+      <li>Pacing 70 ppm / 80 mA,</li>
+    </ul>
+    <p>that proves those settings were selected or recorded.</p>
+    <p>It does not independently prove the therapy cable actually delivered them.</p>
+  </section>
+
+  <section class="content-box" id="serious-clinical-events">
+    <h3>Serious Clinical Events</h3>
+    <p>If a defibrillator is involved in an event where pacing allegedly failed:</p>
+    <p>Preserve:</p>
+    <ul>
+      <li>- Logs</li>
+      <li>- Accessories</li>
+      <li>- Therapy cable</li>
+      <li>- Device configuration</li>
+    </ul>
+    <p>according to facility incident procedures.</p>
+    <p>Do not casually reset or update the device first.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-pacing-output">
+    <h3>Real-World Example: No Pacing Output</h3>
+    <p>Device enters pacing mode.</p>
+    <p>Markers appear.</p>
+    <p>Analyzer:</p>
+    <p>0 mA.</p>
+    <p>Known-good therapy cable:</p>
+    <p>Normal current returns.</p>
+    <p>Failure follows cable.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-current-at-high-load">
+    <h3>Real-World Example: Low Current at High Load</h3>
+    <p>Set:</p>
+    <p>100 mA.</p>
+    <p>50 Ω analyzer load:</p>
+    <p>99 mA.</p>
+    <p>100 Ω:</p>
+    <p>65 mA.</p>
+    <p>Output stage cannot maintain commanded current as required at higher impedance.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-demand-pacing-erratic">
+    <h3>Real-World Example: Demand Pacing Erratic</h3>
+    <p>Fixed mode:</p>
+    <p>Rate and current perfect.</p>
+    <p>Demand mode:</p>
+    <p>Pulses inhibited randomly.</p>
+    <p>ECG waveform shows heavy artifact and false R-wave markers.</p>
+    <p>Pacing hardware is fine.</p>
+    <p>Sensing is the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-paces-too-slowly">
+    <h3>Real-World Example: Paces Too Slowly</h3>
+    <p>Set:</p>
+    <p>70 ppm.</p>
+    <p>Analyzer measures:</p>
+    <p>52 ppm.</p>
+    <p>Current and pulse width normal.</p>
+    <p>Timing/control system fails specification.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-capture">
+    <h3>Real-World Example: “No Capture”</h3>
+    <p>Clinical complaint:</p>
+    <p>Could not get capture even at high current.</p>
+    <p>Bench analyzer:</p>
+    <p>Pacing current, pulse width, and rate all within specification.</p>
+    <p>Equipment passes.</p>
+    <p>Clinical capture is patient-dependent and is not itself proof of device failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-intermittent-therapy-connector">
+    <h3>Real-World Example: Intermittent Therapy Connector</h3>
+    <p>Pacing output drops when cable moves.</p>
+    <p>Defibrillation analyzer testing also shows intermittent therapy connection.</p>
+    <p>Connector damage found.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-selected-current-as-proof-of-delivered-current">
+    <h3>Treating Selected Current as Proof of Delivered Current</h3>
+    <p>Measure with an analyzer.</p>
+  </section>
+
+  <section class="content-box" id="confusing-pacing-output-with-clinical-capture">
+    <h3>Confusing Pacing Output With Clinical Capture</h3>
+    <p>They are different questions.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-pacing-circuit-when-only-demand-mode-fails">
+    <h3>Replacing the Pacing Circuit When Only Demand Mode Fails</h3>
+    <p>Check ECG sensing first.</p>
+  </section>
+
+  <section class="content-box" id="assuming-pace-markers-prove-current-reached-the-pads">
+    <h3>Assuming Pace Markers Prove Current Reached the Pads</h3>
+    <p>They may only indicate a commanded pulse.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-therapy-cable-and-connectors">
+    <h3>Ignoring Therapy Cable and Connectors</h3>
+    <p>They are part of the current path.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-one-current-setting">
+    <h3>Testing Only One Current Setting</h3>
+    <p>Range problems may be missed.</p>
+  </section>
+
+  <section class="content-box" id="assuming-defibrillation-passing-proves-pacing-passing">
+    <h3>Assuming Defibrillation Passing Proves Pacing Passing</h3>
+    <p>They use different output modes.</p>
+  </section>
+
+  <section class="content-box" id="assuming-pacing-passing-proves-defibrillation-passing">
+    <h3>Assuming Pacing Passing Proves Defibrillation Passing</h3>
+    <p>Same problem in reverse.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a pacing complaint, ask:</p>
+    <ul>
+      <li>Does the device enter pacing mode?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Is the therapy cable/pad path recognized?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>What current is selected?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>What current does an external analyzer measure?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Is pacing rate correct?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Is pulse width correct?</li>
+    </ul>
+    <p>Then:</p>
+    <ul>
+      <li>Does fixed pacing work?</li>
+    </ul>
+    <p>Then:</p>
+    <p>Does demand mode correctly detect and respond to simulated ECG?</p>
+    <p>That separates:</p>
+    <ul>
+      <li>- Output</li>
+      <li>- Timing</li>
+      <li>- Therapy path</li>
+      <li>- ECG sensing</li>
+      <li>Another Useful Question</li>
+    </ul>
+    <p>Ask:</p>
+    <p>Is the device failing to generate the pacing pulse, failing to deliver it through the therapy path, or incorrectly deciding when to pace?</p>
+    <p>Those are three different problems.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the screen shows:</p>
+    <ul>
+      <li>Pacing 70 ppm / 80 mA,</li>
+    </ul>
+    <p>you proved:</p>
+    <p>Those pacing settings are selected.</p>
+    <p>If pacing markers appear:</p>
+    <p>You proved:</p>
+    <p>The device is generating or indicating pacing events internally.</p>
+    <p>You still have not proven:</p>
+    <p>80 mA is actually reaching the external load.</p>
+    <p>If a calibrated defibrillator analyzer measures:</p>
+    <ul>
+      <li>- Correct current</li>
+      <li>- Correct rate</li>
+      <li>- Correct pulse width</li>
+    </ul>
+    <p>within manufacturer specification, you have strong evidence that the pacing-output system is functioning correctly under that test condition.</p>
+    <p>If demand testing also passes with simulated ECG:</p>
+    <p>You have additionally verified much of the pacing-sensing and timing path.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Defibrillator pacing is easiest to understand as two systems working together:</p>
+    <ul>
+      <li>ECG Sensing</li>
+    </ul>
+    <p>and:</p>
+    <p>Electrical Pulse Delivery.</p>
+    <p>The delivery path is:</p>
+    <p>Pacing Circuit → Therapy Cable → Pads → Patient/Analyzer.</p>
+    <p>Demand pacing adds:</p>
+    <p>ECG → R-Wave Detection → Timing Logic → Pacing Decision.</p>
+    <p>So when pacing fails, first determine:</p>
+    <ul>
+      <li>Is the pulse missing?</li>
+      <li>Is the pulse wrong?</li>
+    </ul>
+    <p>Or is the machine deciding to pace at the wrong time?</p>
+    <p>And do not confuse:</p>
+    <ul>
+      <li>Electrical output</li>
+    </ul>
+    <p>with:</p>
+    <p>Clinical capture.</p>
+    <p>A patient not capturing does not automatically prove the defibrillator failed.</p>
+    <p>Your analyzer tells you what the equipment actually delivered.</p>
+    <p>And as always:</p>
+    <ul>
+      <li>What did you actually prove?</li>
+      <li>— Jake</li>
+      <li>Important Note</li>
+    </ul>
+    <p>Pacing waveform shape, current range, pulse width, demand algorithms, ECG sensing requirements, therapy accessories, impedance limits, and verification tolerances vary by defibrillator manufacturer and model. Follow current manufacturer service documentation, use approved therapy cables and calibrated defibrillator analyzers, and complete all required pacing, defibrillation, synchronization, alarm, battery, and safety testing before returning equipment to clinical use.</p>
+    <p>1/2</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-defibrillators-charge-and-deliver-energy.html">How Defibrillators Charge and Deliver Energy</a></li>
+      <li><a href="how-ecg-acquisition-works.html">How ECG Acquisition Works</a></li>
+      <li><a href="how-ecg-lead-off-detection-works.html">How ECG Lead-Off Detection Works</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

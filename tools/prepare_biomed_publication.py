@@ -103,6 +103,7 @@ RELATED = {
     "how-an-anesthesia-vaporizer-works": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-performs-a-leak-test", "how-medical-gas-sampling-systems-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
     "how-electronic-flow-control-works-in-an-anesthesia-machine": ["how-an-anesthesia-vaporizer-works", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-ventilator-flow-sensors-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
     "how-syringe-pump-drive-systems-work": ["how-infusion-pumps-measure-or-control-flow", "how-infusion-pump-occlusion-detection-works", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service", "what-known-good-actually-means"],
+    "how-defibrillator-pacing-works": ["how-defibrillators-charge-and-deliver-energy", "how-ecg-acquisition-works", "how-ecg-lead-off-detection-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -568,6 +569,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Infusion",
         "cardNote": "Drive mechanics, plunger travel, and feedback sensing",
+    },
+    "how-defibrillator-pacing-works": {
+        "description": "A practical explanation of how defibrillators deliver transcutaneous pacing pulses and how current, impedance, ECG sensing, timing, capture, and cable condition affect performance.",
+        "category": "How It Works",
+        "badge": "Defibrillation",
+        "cardNote": "Pacing current, timing, sensing, and therapy connections",
     },
 }
 
