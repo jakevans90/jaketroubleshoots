@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How Device Self-Tests Detect Failures | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how medical devices use startup and continuous self-tests to check hardware, sensors, memory, communication paths, and safety systems.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-device-self-tests-detect-failures.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How Device Self-Tests Detect Failures</h2>
+  <p>How medical equipment checks its own hardware, sensors, memory, communication paths, and safety systems during startup and operation</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical equipment often checks itself before the user ever presses a clinical function.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a self-test is</li>
+      <li>Power-on self-test</li>
+      <li>Background self-tests</li>
+      <li>Sensor checks</li>
+      <li>Memory checks</li>
+      <li>Communication checks</li>
+      <li>Valve and motor checks</li>
+      <li>Calibration checks</li>
+      <li>Safety interlocks</li>
+      <li>Watchdog circuits</li>
+      <li>Error codes</li>
+      <li>False failures</li>
+      <li>False passes</li>
+      <li>Common failure patterns</li>
+      <li>How to think through self-test problems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic device self-test works like this:</p>
+    <p><strong>Device starts</strong></p>
+    <p>↓</p>
+    <p><strong>Processor checks key systems</strong></p>
+    <p>↓</p>
+    <p><strong>Known commands are sent</strong></p>
+    <p>↓</p>
+    <p><strong>Expected responses are measured</strong></p>
+    <p>↓</p>
+    <p><strong>Actual response is compared to expected response</strong></p>
+    <p>↓</p>
+    <p><strong>Pass if within limits</strong></p>
+    <p>or:</p>
+    <p><strong>Fail if outside limits</strong></p>
+    <p>That means most self-tests are really asking:</p>
+    <p><strong>Did this subsystem respond the way the software expected?</strong></p>
+  </section>
+
+  <section class="content-box" id="power-on-self-test">
+    <h3>Power-On Self-Test</h3>
+    <p>One of the most common forms is:</p>
+    <p><strong>Power-On Self-Test</strong>, often shortened to POST.</p>
+    <p>This happens when the device starts.</p>
+  </section>
+
+  <section class="content-box" id="what-post-may-check">
+    <h3>What POST May Check</h3>
+    <p>Depending on the equipment, startup testing may include:</p>
+    <ul>
+      <li>CPU</li>
+      <li>RAM</li>
+      <li>Flash memory</li>
+      <li>Internal communication</li>
+      <li>Power rails</li>
+      <li>Display</li>
+      <li>Alarm speaker</li>
+      <li>Sensors</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cpu-test">
+    <h3>CPU Test</h3>
+    <p>The processor has to execute code correctly.</p>
+    <p>If the main processor cannot start or execute the self-test itself, the device may:</p>
+    <ul>
+      <li>Stay blank</li>
+      <li>Freeze</li>
+      <li>Show boot error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="memory-test">
+    <h3>Memory Test</h3>
+    <p>The device may test:</p>
+    <ul>
+      <li>RAM</li>
+      <li>Flash</li>
+      <li>EEPROM</li>
+    </ul>
+    <p>for expected behavior.</p>
+  </section>
+
+  <section class="content-box" id="ram-failure">
+    <h3>RAM Failure</h3>
+    <p>RAM is temporary working memory.</p>
+    <p>A fault may cause:</p>
+    <ul>
+      <li>Boot failure</li>
+      <li>Random crashes</li>
+      <li>Self-test error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="flash-memory">
+    <h3>Flash Memory</h3>
+    <p>Flash may contain:</p>
+    <ul>
+      <li>Firmware</li>
+      <li>Software</li>
+      <li>Configuration</li>
+    </ul>
+    <p>Corruption can stop startup or create unexpected errors.</p>
+  </section>
+
+  <section class="content-box" id="eeprom">
+    <h3>EEPROM</h3>
+    <p>EEPROM may store:</p>
+    <ul>
+      <li>Calibration values</li>
+      <li>Serial data</li>
+      <li>Configuration</li>
+    </ul>
+    <p>If those values are corrupted, the device may fail a checksum or configuration check.</p>
+  </section>
+
+  <section class="content-box" id="checksum">
+    <h3>Checksum</h3>
+    <p>A checksum is a way to verify whether stored data changed unexpectedly.</p>
+    <p>The device calculates a value from the data and compares it to the expected one.</p>
+  </section>
+
+  <section class="content-box" id="checksum-failure">
+    <h3>Checksum Failure</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Corrupt memory</li>
+      <li>Failed write</li>
+      <li>Firmware issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="configuration-is-not-the-same-as-hardware">
+    <h3>Configuration Is Not the Same as Hardware</h3>
+    <p>A self-test may fail because configuration data is invalid.</p>
+    <p>That does not automatically mean a board is physically defective.</p>
+  </section>
+
+  <section class="content-box" id="power-rail-checks">
+    <h3>Power Rail Checks</h3>
+    <p>The device may monitor internal supply voltages.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>24 V</li>
+      <li>12 V</li>
+      <li>5 V</li>
+      <li>3.3 V</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="power-good-signal">
+    <h3>Power-Good Signal</h3>
+    <p>A power supply may provide a:</p>
+    <p><strong>Power Good</strong></p>
+    <p>signal.</p>
+    <p>The processor uses this to confirm the supply has stabilized.</p>
+  </section>
+
+  <section class="content-box" id="false-power-failure">
+    <h3>False Power Failure</h3>
+    <p>Actual voltage:</p>
+    <p>Correct.</p>
+    <p>Power-good line:</p>
+    <p>Missing.</p>
+    <p>Device may still report a power fault.</p>
+  </section>
+
+  <section class="content-box" id="sensor-self-test">
+    <h3>Sensor Self-Test</h3>
+    <p>A device may test whether a sensor output is within a plausible range.</p>
+    <p>Example:</p>
+    <p>Pressure sensor at zero pressure should read near zero.</p>
+    <p>If it reports:</p>
+    <p>50 cmH2O</p>
+    <p>before use:</p>
+    <p>Self-test fails.</p>
+  </section>
+
+  <section class="content-box" id="plausibility-check">
+    <h3>Plausibility Check</h3>
+    <p>The device may not know exact real-world truth.</p>
+    <p>It may simply ask:</p>
+    <p><strong>Is this reading possible under current conditions?</strong></p>
+  </section>
+
+  <section class="content-box" id="zero-check">
+    <h3>Zero Check</h3>
+    <p>A flow or pressure sensor may be checked while no pressure or flow is expected.</p>
+    <p>If output is too far from baseline:</p>
+    <p>Calibration or sensor fault may be reported.</p>
+  </section>
+
+  <section class="content-box" id="reference-signal">
+    <h3>Reference Signal</h3>
+    <p>Some systems apply a known reference to a sensor path.</p>
+    <p>If the measured response is wrong:</p>
+    <p>The device knows something in the chain is incorrect.</p>
+  </section>
+
+  <section class="content-box" id="internal-test-signal">
+    <h3>Internal Test Signal</h3>
+    <p>ECG systems may inject a known electrical test signal.</p>
+    <p>If the acquisition channel does not measure it correctly:</p>
+    <p>The device can detect the fault.</p>
+  </section>
+
+  <section class="content-box" id="actuator-self-test">
+    <h3>Actuator Self-Test</h3>
+    <p>A device may command a component to move.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Valve</li>
+      <li>Motor</li>
+      <li>Fan</li>
+      <li>Pump</li>
+    </ul>
+    <p>Then verify expected feedback.</p>
+  </section>
+
+  <section class="content-box" id="motor-test">
+    <h3>Motor Test</h3>
+    <p>Command:</p>
+    <p>Move drive 10 steps.</p>
+    <p>Encoder:</p>
+    <p>Reports 10 steps.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="motor-commanded-but-no-feedback">
+    <h3>Motor Commanded but No Feedback</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Motor</li>
+      <li>Mechanical jam</li>
+      <li>Encoder</li>
+      <li>Driver circuit</li>
+    </ul>
+    <p>The error may say:</p>
+    <blockquote><p>Motor Failure.</p></blockquote>
+    <p>But several parts can cause that result.</p>
+  </section>
+
+  <section class="content-box" id="valve-test">
+    <h3>Valve Test</h3>
+    <p>A ventilator may command a valve open or closed and watch:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Flow</li>
+      <li>Position feedback</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="valve-error-does-not-always-mean-valve">
+    <h3>Valve Error Does Not Always Mean Valve</h3>
+    <p>Example:</p>
+    <p>Valve opens correctly.</p>
+    <p>Flow sensor fails to detect resulting gas movement.</p>
+    <p>Device reports valve test failure.</p>
+    <p>The sensor is the actual problem.</p>
+  </section>
+
+  <section class="content-box" id="self-test-often-checks-a-chain">
+    <h3>Self-Test Often Checks a Chain</h3>
+    <p>This is critical.</p>
+    <p>A test may involve:</p>
+    <p><strong>Command → Actuator → Physical Response → Sensor → Processor.</strong></p>
+    <p>A failure anywhere in that chain can produce the same self-test error.</p>
+  </section>
+
+  <section class="content-box" id="fan-self-test">
+    <h3>Fan Self-Test</h3>
+    <p>The device may command a fan and then monitor:</p>
+    <ul>
+      <li>Tach signal</li>
+    </ul>
+    <p>If no RPM feedback appears:</p>
+    <p>Fan fault.</p>
+    <p>But possible causes include:</p>
+    <ul>
+      <li>Fan</li>
+      <li>Tach wire</li>
+      <li>Connector</li>
+      <li>Control board</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="speaker-self-test">
+    <h3>Speaker Self-Test</h3>
+    <p>A device may play a startup tone.</p>
+    <p>That provides limited evidence that the alarm speaker can generate sound.</p>
+  </section>
+
+  <section class="content-box" id="hearing-the-tone-proves-something">
+    <h3>Hearing the Tone Proves Something</h3>
+    <p>It proves:</p>
+    <p><strong>The speaker path produced sound during that test.</strong></p>
+    <p>It does not prove:</p>
+    <ul>
+      <li>All alarm priorities work</li>
+      <li>Volume settings are correct</li>
+      <li>Speaker will not fail later</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="display-self-test">
+    <h3>Display Self-Test</h3>
+    <p>Some devices display:</p>
+    <ul>
+      <li>Color bars</li>
+      <li>Full-screen patterns</li>
+    </ul>
+    <p>This can help detect:</p>
+    <ul>
+      <li>Missing color</li>
+      <li>Pixel region fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="touchscreen-self-test">
+    <h3>Touchscreen Self-Test</h3>
+    <p>A touch test may require pressing:</p>
+    <ul>
+      <li>Specific screen locations</li>
+    </ul>
+    <p>The device compares actual coordinates to expected points.</p>
+  </section>
+
+  <section class="content-box" id="battery-self-test">
+    <h3>Battery Self-Test</h3>
+    <p>A battery system may check:</p>
+    <ul>
+      <li>Presence</li>
+      <li>Voltage</li>
+      <li>Communication</li>
+      <li>Temperature</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-pass-does-not-prove-capacity">
+    <h3>Battery Pass Does Not Prove Capacity</h3>
+    <p>This is important.</p>
+    <p>A battery may pass a startup check because:</p>
+    <ul>
+      <li>Voltage is normal</li>
+      <li>Communication works</li>
+    </ul>
+    <p>while still having poor runtime.</p>
+  </section>
+
+  <section class="content-box" id="capacity-requires-different-testing">
+    <h3>Capacity Requires Different Testing</h3>
+    <p>A true capacity or runtime test evaluates:</p>
+    <p><strong>How much energy the battery can actually deliver.</strong></p>
+  </section>
+
+  <section class="content-box" id="communication-self-test">
+    <h3>Communication Self-Test</h3>
+    <p>Modular equipment may check whether expected modules respond.</p>
+    <p>Example:</p>
+    <p>Host sends query.</p>
+    <p>Module replies.</p>
+    <p>Pass.</p>
+  </section>
+
+  <section class="content-box" id="module-missing">
+    <h3>Module Missing</h3>
+    <p>No reply.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Module absent</li>
+      <li>No power</li>
+      <li>Connector</li>
+      <li>Communication bus</li>
+      <li>Module processor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="bus-loopback">
+    <h3>Bus Loopback</h3>
+    <p>Some communication interfaces can perform loopback testing.</p>
+    <p>The device sends data and verifies it returns correctly.</p>
+  </section>
+
+  <section class="content-box" id="network-self-test">
+    <h3>Network Self-Test</h3>
+    <p>Some devices may check:</p>
+    <ul>
+      <li>Link</li>
+      <li>IP configuration</li>
+      <li>Server connection</li>
+    </ul>
+    <p>These are different layers.</p>
+  </section>
+
+  <section class="content-box" id="link-pass-is-not-server-pass">
+    <h3>Link Pass Is Not Server Pass</h3>
+    <p>A network cable can be connected while application communication still fails.</p>
+    <p>Again:</p>
+    <p>Know what the self-test checked.</p>
+  </section>
+
+  <section class="content-box" id="watchdog-timer">
+    <h3>Watchdog Timer</h3>
+    <p>A watchdog is a hardware or software safety mechanism that monitors whether the processor is still operating normally.</p>
+  </section>
+
+  <section class="content-box" id="basic-watchdog-concept">
+    <h3>Basic Watchdog Concept</h3>
+    <p>Processor must periodically tell watchdog:</p>
+    <blockquote><p>I am alive.</p></blockquote>
+    <p>If it stops:</p>
+    <p>Watchdog may reset the system.</p>
+  </section>
+
+  <section class="content-box" id="watchdog-reset">
+    <h3>Watchdog Reset</h3>
+    <p>A log entry such as:</p>
+    <blockquote><p>Watchdog Reset</p></blockquote>
+    <p>suggests the processor stopped responding long enough to trigger recovery.</p>
+    <p>It does not automatically tell you why.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Software crash</li>
+      <li>CPU problem</li>
+      <li>Power instability</li>
+      <li>Memory fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="background-self-tests">
+    <h3>Background Self-Tests</h3>
+    <p>Some checks run while the device is operating.</p>
+    <p>They may continuously monitor:</p>
+    <ul>
+      <li>Sensor plausibility</li>
+      <li>Temperature</li>
+      <li>Communication</li>
+      <li>Voltage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="continuous-monitoring">
+    <h3>Continuous Monitoring</h3>
+    <p>A ventilator may constantly compare:</p>
+    <ul>
+      <li>Commanded pressure</li>
+      <li>Measured pressure</li>
+    </ul>
+    <p>If they disagree too much:</p>
+    <p>Fault is generated.</p>
+  </section>
+
+  <section class="content-box" id="redundant-sensors">
+    <h3>Redundant Sensors</h3>
+    <p>Safety-critical equipment may use two sensors measuring the same thing.</p>
+    <p>The device compares them.</p>
+  </section>
+
+  <section class="content-box" id="sensor-disagreement">
+    <h3>Sensor Disagreement</h3>
+    <p>Sensor A:</p>
+    <p>20 cmH2O.</p>
+    <p>Sensor B:</p>
+    <p>5 cmH2O.</p>
+    <p>The device may not know which one is correct.</p>
+    <p>But it knows:</p>
+    <p><strong>They should not disagree this much.</strong></p>
+  </section>
+
+  <section class="content-box" id="redundancy-detects-failure">
+    <h3>Redundancy Detects Failure</h3>
+    <p>This is powerful because the device does not need an external reference to detect inconsistency.</p>
+  </section>
+
+  <section class="content-box" id="dual-processor-systems">
+    <h3>Dual Processor Systems</h3>
+    <p>Some devices use independent processors that monitor each other.</p>
+    <p>One may handle primary control.</p>
+    <p>Another may supervise safety.</p>
+  </section>
+
+  <section class="content-box" id="safety-processor">
+    <h3>Safety Processor</h3>
+    <p>If the safety processor sees something inconsistent:</p>
+    <p>It may:</p>
+    <ul>
+      <li>Stop therapy</li>
+      <li>Alarm</li>
+      <li>Shut down output</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="self-test-before-therapy">
+    <h3>Self-Test Before Therapy</h3>
+    <p>Some equipment performs additional checks before delivering therapy.</p>
+    <p>Example:</p>
+    <p>Defibrillator may verify:</p>
+    <ul>
+      <li>Pads connected</li>
+      <li>Impedance acceptable</li>
+      <li>Charge circuit ready</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="therapy-inhibited">
+    <h3>Therapy Inhibited</h3>
+    <p>If a safety check fails:</p>
+    <p>Therapy may be blocked.</p>
+    <p>That is intentional.</p>
+  </section>
+
+  <section class="content-box" id="calibration-verification">
+    <h3>Calibration Verification</h3>
+    <p>Some devices compare current sensor behavior to stored calibration limits.</p>
+    <p>If the sensor falls outside allowable offset:</p>
+    <p>The device may request calibration.</p>
+  </section>
+
+  <section class="content-box" id="calibration-error-does-not-always-mean-calibrate-it">
+    <h3>Calibration Error Does Not Always Mean “Calibrate It”</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Contamination</li>
+      <li>Wrong setup</li>
+      <li>Failed sensor</li>
+    </ul>
+    <p>Correct the physical problem first.</p>
+  </section>
+
+  <section class="content-box" id="leak-test-as-self-test">
+    <h3>Leak Test as Self-Test</h3>
+    <p>An anesthesia machine automated checkout is a type of self-test.</p>
+    <p>It may use:</p>
+    <ul>
+      <li>Pressure</li>
+      <li>Flow</li>
+      <li>Valve control</li>
+    </ul>
+    <p>to evaluate system integrity.</p>
+  </section>
+
+  <section class="content-box" id="failed-leak-test-is-a-calculated-result">
+    <h3>Failed Leak Test Is a Calculated Result</h3>
+    <p>The machine detects:</p>
+    <ul>
+      <li>Excess pressure decay</li>
+      <li>Excess flow needed to maintain pressure</li>
+    </ul>
+    <p>It does not directly see:</p>
+    <blockquote><p>Absorber gasket is bad.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="error-codes">
+    <h3>Error Codes</h3>
+    <p>Self-test failures often generate error codes.</p>
+    <p>The code usually describes:</p>
+    <p><strong>What the device detected.</strong></p>
+    <p>Not necessarily:</p>
+    <p><strong>What part to replace.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Error:</p>
+    <blockquote><p>Fan Speed Low.</p></blockquote>
+    <p>The device detected low tachometer feedback.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Fan slow</li>
+      <li>Fan stopped</li>
+      <li>Tach wire broken</li>
+      <li>Sensor input failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>Error:</p>
+    <blockquote><p>Flow Sensor Calibration Failed.</p></blockquote>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Dirty sensor</li>
+      <li>Gas moving during zero</li>
+      <li>Leak</li>
+      <li>Sensor fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="error-message-is-the-starting-point">
+    <h3>Error Message Is the Starting Point</h3>
+    <p>Not the final diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="false-self-test-failure">
+    <h3>False Self-Test Failure</h3>
+    <p>A device can fail self-test even when major hardware is fine.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Wrong accessories</li>
+      <li>Improper test setup</li>
+      <li>Temporary environmental condition</li>
+      <li>Calibration drift</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-ventilator-flow-sensor">
+    <h3>Example: Ventilator Flow Sensor</h3>
+    <p>Flow sensor installed backward.</p>
+    <p>Self-test fails.</p>
+    <p>Sensor itself may be completely functional.</p>
+  </section>
+
+  <section class="content-box" id="example-anesthesia-circuit">
+    <h3>Example: Anesthesia Circuit</h3>
+    <p>Y-piece not occluded during checkout.</p>
+    <p>Leak test fails.</p>
+    <p>Machine is not necessarily leaking.</p>
+  </section>
+
+  <section class="content-box" id="accessories-can-be-part-of-self-test">
+    <h3>Accessories Can Be Part of Self-Test</h3>
+    <p>Some startup checks assume:</p>
+    <ul>
+      <li>Correct circuit</li>
+      <li>Correct sensor</li>
+      <li>Correct module</li>
+    </ul>
+    <p>If the setup is wrong, test result can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="false-pass">
+    <h3>False Pass</h3>
+    <p>Self-tests also have limits.</p>
+    <p>A device may pass startup and still fail clinically.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The self-test cannot reproduce every:</p>
+    <ul>
+      <li>Load</li>
+      <li>Patient condition</li>
+      <li>Runtime</li>
+      <li>Accessory</li>
+      <li>Environmental condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-weak-battery">
+    <h3>Example: Weak Battery</h3>
+    <p>Startup:</p>
+    <p>Pass.</p>
+    <p>Battery voltage acceptable.</p>
+    <p>Twenty minutes later:</p>
+    <p>Device shuts down.</p>
+    <p>Self-test did not perform a full capacity test.</p>
+  </section>
+
+  <section class="content-box" id="example-intermittent-cable">
+    <h3>Example: Intermittent Cable</h3>
+    <p>Startup:</p>
+    <p>Pass.</p>
+    <p>Cable stationary.</p>
+    <p>During patient movement:</p>
+    <p>Signal drops out.</p>
+  </section>
+
+  <section class="content-box" id="example-thermal-failure">
+    <h3>Example: Thermal Failure</h3>
+    <p>Cold startup:</p>
+    <p>Pass.</p>
+    <p>After one hour:</p>
+    <p>Power supply overheats.</p>
+    <p>Startup self-test never saw the warm condition.</p>
+  </section>
+
+  <section class="content-box" id="self-test-coverage">
+    <h3>Self-Test Coverage</h3>
+    <p>Think of a self-test as:</p>
+    <p><strong>A specific set of controlled checks.</strong></p>
+    <p>It does not prove functions it never tested.</p>
+  </section>
+
+  <section class="content-box" id="internal-test-vs-external-verification">
+    <h3>Internal Test vs External Verification</h3>
+    <p>A self-test uses the device's own:</p>
+    <ul>
+      <li>Sensors</li>
+      <li>Electronics</li>
+      <li>Software</li>
+    </ul>
+    <p>An external analyzer gives you an independent measurement.</p>
+  </section>
+
+  <section class="content-box" id="why-independence-matters">
+    <h3>Why Independence Matters</h3>
+    <p>Suppose the ventilator pressure sensor is wrong.</p>
+    <p>The device may use that same sensor during self-test.</p>
+    <p>Depending on architecture, it may not detect its own error.</p>
+    <p>An external pressure analyzer can.</p>
+  </section>
+
+  <section class="content-box" id="self-test-pass-external-test-fail">
+    <h3>Self-Test Pass + External Test Fail</h3>
+    <p>This is possible.</p>
+    <p>Example:</p>
+    <p>Defibrillator internal check:</p>
+    <p>Pass.</p>
+    <p>External analyzer:</p>
+    <p>Delivered energy low.</p>
+    <p>Now you know the internal test did not fully verify output accuracy.</p>
+  </section>
+
+  <section class="content-box" id="external-test-pass-self-test-fail">
+    <h3>External Test Pass + Self-Test Fail</h3>
+    <p>Also possible.</p>
+    <p>Example:</p>
+    <p>Ventilator output pressure:</p>
+    <p>Accurate externally.</p>
+    <p>Machine self-test:</p>
+    <p>Pressure sensor communication fault.</p>
+    <p>Maybe the device has a redundant sensor or internal communication problem.</p>
+  </section>
+
+  <section class="content-box" id="service-mode">
+    <h3>Service Mode</h3>
+    <p>Service menus often provide more detailed diagnostics than user-facing self-tests.</p>
+    <p>Possible information includes:</p>
+    <ul>
+      <li>Raw sensor values</li>
+      <li>Motor position</li>
+      <li>Valve command</li>
+      <li>Internal voltage</li>
+      <li>Error history</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="raw-values-are-useful">
+    <h3>Raw Values Are Useful</h3>
+    <p>Example:</p>
+    <p>Pressure should be zero.</p>
+    <p>Raw sensor:</p>
+    <p>Large offset.</p>
+    <p>That helps separate sensor from control behavior.</p>
+  </section>
+
+  <section class="content-box" id="event-logs">
+    <h3>Event Logs</h3>
+    <p>A self-test failure may be stored with:</p>
+    <ul>
+      <li>Timestamp</li>
+      <li>Error code</li>
+      <li>Subsystem</li>
+      <li>Additional data</li>
+    </ul>
+    <p>Use the log before clearing anything.</p>
+  </section>
+
+  <section class="content-box" id="repeated-error">
+    <h3>Repeated Error</h3>
+    <p>Same error appears:</p>
+    <p>20 times.</p>
+    <p>That is stronger evidence than one isolated startup glitch.</p>
+  </section>
+
+  <section class="content-box" id="different-errors-together">
+    <h3>Different Errors Together</h3>
+    <p>Several errors occurring simultaneously may point toward a shared problem.</p>
+    <p>Example:</p>
+    <p>Fan fault Sensor communication fault Module reset</p>
+    <p>all at same time.</p>
+    <p>Think:</p>
+    <ul>
+      <li>Power rail</li>
+      <li>Main bus</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="common-cause">
+    <h3>Common Cause</h3>
+    <p>Do not assume three components failed independently at the exact same moment.</p>
+  </section>
+
+  <section class="content-box" id="power-cycle-clears-error">
+    <h3>Power Cycle Clears Error</h3>
+    <p>A reboot may allow self-test to pass.</p>
+    <p>That proves:</p>
+    <p><strong>The condition is not currently present.</strong></p>
+    <p>It does not prove:</p>
+    <p><strong>The root cause is fixed.</strong></p>
+  </section>
+
+  <section class="content-box" id="intermittent-self-test-failure">
+    <h3>Intermittent Self-Test Failure</h3>
+    <p>If the device sometimes passes and sometimes fails:</p>
+    <p>Look for variables such as:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Movement</li>
+      <li>Power source</li>
+      <li>Connector position</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="self-test-after-repair">
+    <h3>Self-Test After Repair</h3>
+    <p>Many devices require a self-test after:</p>
+    <ul>
+      <li>Board replacement</li>
+      <li>Sensor replacement</li>
+      <li>Calibration</li>
+    </ul>
+    <p>This verifies part of the repair.</p>
+  </section>
+
+  <section class="content-box" id="self-test-is-not-always-final-verification">
+    <h3>Self-Test Is Not Always Final Verification</h3>
+    <p>Depending on repair, you may still need:</p>
+    <ul>
+      <li>External analyzer</li>
+      <li>Full performance test</li>
+      <li>Electrical safety test</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="self-test-and-pm">
+    <h3>Self-Test and PM</h3>
+    <p>A PM procedure may include:</p>
+    <ul>
+      <li>Run device self-test</li>
+    </ul>
+    <p>That does not mean PM is finished.</p>
+    <p>The PM may also require independent verification.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Infusion pump self-test:</p>
+    <p>Pass.</p>
+    <p>Flow accuracy:</p>
+    <p>Fail.</p>
+    <p>Self-test did not measure actual delivered volume over time.</p>
+  </section>
+
+  <section class="content-box" id="self-test-and-alarm-verification">
+    <h3>Self-Test and Alarm Verification</h3>
+    <p>Startup tone:</p>
+    <p>Pass.</p>
+    <p>You may still need to verify clinical alarm behavior under defined conditions.</p>
+  </section>
+
+  <section class="content-box" id="hardware-presence-check">
+    <h3>Hardware Presence Check</h3>
+    <p>Some devices simply check whether a component responds electrically.</p>
+    <p>Example:</p>
+    <p>Battery recognized.</p>
+    <p>That does not verify its full performance.</p>
+  </section>
+
+  <section class="content-box" id="plausibility-vs-accuracy">
+    <h3>Plausibility vs Accuracy</h3>
+    <p>This is a major distinction.</p>
+    <p>A sensor reading:</p>
+    <p>5 cmH2O</p>
+    <p>when expected near zero may be plausible enough to pass.</p>
+    <p>But if required accuracy is:</p>
+    <p>±1 cmH2O,</p>
+    <p>it may still fail formal calibration.</p>
+  </section>
+
+  <section class="content-box" id="self-test-limit-can-be-broader-than-service-specification">
+    <h3>Self-Test Limit Can Be Broader Than Service Specification</h3>
+    <p>The device may only need to know:</p>
+    <p><strong>Sensor is functioning enough to operate.</strong></p>
+    <p>PM may require tighter verification.</p>
+  </section>
+
+  <section class="content-box" id="safety-margin">
+    <h3>Safety Margin</h3>
+    <p>Self-tests often use limits designed around:</p>
+    <ul>
+      <li>Safety</li>
+      <li>Detectability</li>
+      <li>Reliability</li>
+    </ul>
+    <p>They are not necessarily the same as calibration tolerances.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-flow-sensor-error">
+    <h3>Real-World Example: Flow Sensor Error</h3>
+    <p>Ventilator self-test reports:</p>
+    <p>Flow Sensor Failure.</p>
+    <p>Sensor replaced.</p>
+    <p>Error remains.</p>
+    <p>Internal sensor tubing found blocked.</p>
+    <p>The error identified the failed function, not the failed part.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-motor-error">
+    <h3>Real-World Example: Motor Error</h3>
+    <p>Syringe pump reports:</p>
+    <p>Drive Motor Failure.</p>
+    <p>Motor receives correct power and rotates.</p>
+    <p>Lead screw jam prevents movement.</p>
+    <p>Position feedback never changes.</p>
+    <p>Motor was not the actual cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-passes-startup">
+    <h3>Real-World Example: Battery Passes Startup</h3>
+    <p>Monitor startup:</p>
+    <p>Battery OK.</p>
+    <p>Runtime:</p>
+    <p>Ten minutes.</p>
+    <p>Battery fails capacity test.</p>
+    <p>Self-test only verified presence, voltage, and communication.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-false-leak-test-failure">
+    <h3>Real-World Example: False Leak Test Failure</h3>
+    <p>Anesthesia machine automated checkout fails.</p>
+    <p>Machine tested with wrong circuit configuration.</p>
+    <p>Correct setup:</p>
+    <p>Pass.</p>
+    <p>No hardware repair needed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-watchdog-resets">
+    <h3>Real-World Example: Repeated Watchdog Resets</h3>
+    <p>Device bench-tests normally.</p>
+    <p>Logs show repeated watchdog resets around reported failures.</p>
+    <p>Long-duration test reproduces processor freeze.</p>
+    <p>Logs preserved evidence that a quick startup test missed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-fan-failure-message">
+    <h3>Real-World Example: Fan Failure Message</h3>
+    <p>Fan visibly spins.</p>
+    <p>Device reports:</p>
+    <p>Fan Failure.</p>
+    <p>Service diagnostics:</p>
+    <p>0 RPM.</p>
+    <p>Tach wire open.</p>
+    <p>Motor and fan blades were fine.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-a-self-test-error-as-a-parts-list">
+    <h3>Treating a Self-Test Error as a Parts List</h3>
+    <p>The error usually identifies a failed check, not necessarily the defective component.</p>
+  </section>
+
+  <section class="content-box" id="assuming-self-test-pass-means-entire-device-is-good">
+    <h3>Assuming Self-Test Pass Means Entire Device Is Good</h3>
+    <p>Know the test coverage.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-every-sensor-that-fails-self-test">
+    <h3>Calibrating Every Sensor That Fails Self-Test</h3>
+    <p>Check setup, leaks, and contamination first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-accessories-during-self-test">
+    <h3>Ignoring Accessories During Self-Test</h3>
+    <p>They may be part of the test boundary.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-until-the-device-passes-and-calling-it-fixed">
+    <h3>Rebooting Until the Device Passes and Calling It Fixed</h3>
+    <p>Intermittent faults can temporarily disappear.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-logs">
+    <h3>Ignoring Logs</h3>
+    <p>They can reveal what failed before the device recovered.</p>
+  </section>
+
+  <section class="content-box" id="using-internal-self-test-instead-of-required-external-verification">
+    <h3>Using Internal Self-Test Instead of Required External Verification</h3>
+    <p>They answer different questions.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>When a self-test fails, ask:</p>
+    <p><strong>What exact test failed?</strong></p>
+    <p>Then:</p>
+    <p><strong>What components and signals are involved in that test?</strong></p>
+    <p>Then:</p>
+    <p><strong>What command did the device issue?</strong></p>
+    <p>Then:</p>
+    <p><strong>What response did it expect?</strong></p>
+    <p>Then:</p>
+    <p><strong>What response did it actually receive?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can an independent measurement confirm the condition?</strong></p>
+    <p>That turns:</p>
+    <blockquote><p>Self-Test Failed</p></blockquote>
+    <p>into an actual troubleshooting path.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What chain of components had to work for this self-test to pass?</strong></p>
+    <p>That is usually more useful than asking:</p>
+    <blockquote><p>Which part does this error code mean?</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device reports:</p>
+    <blockquote><p>Self-Test Passed</p></blockquote>
+    <p>you proved:</p>
+    <p><strong>The device completed the internal checks included in that self-test without detecting a condition outside its acceptance limits.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Every function was tested</li>
+      <li>Every measurement is calibrated</li>
+      <li>Every accessory works</li>
+      <li>The device will not fail later</li>
+    </ul>
+    <p>If the self-test fails:</p>
+    <p>You proved:</p>
+    <p><strong>One of the expected internal responses did not meet the test's criteria.</strong></p>
+    <p>You have not automatically proven which physical component caused it.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A self-test is basically the device troubleshooting itself.</p>
+    <p>It sends commands.</p>
+    <p>It watches responses.</p>
+    <p>It compares those responses to expected limits.</p>
+    <p>Think:</p>
+    <p><strong>Command → Component → Physical Response → Sensor → Software Decision.</strong></p>
+    <p>If the test fails, find where that chain broke.</p>
+    <p>And if the test passes, remember what it did not test.</p>
+    <p>A self-test is valuable evidence.</p>
+    <p>It is not magic.</p>
+    <p>The best approach is to combine:</p>
+    <p><strong>Internal diagnostics</strong></p>
+    <p>with:</p>
+    <p><strong>External verification</strong></p>
+    <p>and always ask:</p>
+    <p><strong>What did the self-test actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Self-test coverage, startup diagnostics, redundant monitoring, error-code logic, watchdog behavior, calibration checks, and service-mode diagnostics vary widely by medical-device manufacturer and model. Follow current manufacturer service documentation, use approved external test equipment where required, and complete all applicable functional, alarm, performance, and safety verification before returning equipment to clinical use.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="when-to-trust-the-device-s-internal-self-test.html">When to Trust the Device&amp;#x27;s Internal Self-Test</a></li>
+      <li><a href="error-codes-what-they-tell-you-and-what-they-don-t.html">Error Codes: What They Tell You and What They Don&amp;#x27;t</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+      <li><a href="the-difference-between-a-symptom-cause-and-root-cause.html">The Difference Between a Symptom, Cause, and Root Cause</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

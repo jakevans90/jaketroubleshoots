@@ -105,6 +105,9 @@ RELATED = {
     "how-syringe-pump-drive-systems-work": ["how-infusion-pumps-measure-or-control-flow", "how-infusion-pump-occlusion-detection-works", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service", "what-known-good-actually-means"],
     "how-defibrillator-pacing-works": ["how-defibrillators-charge-and-deliver-energy", "how-ecg-acquisition-works", "how-ecg-lead-off-detection-works", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "how-nurse-call-relay-outputs-work": ["nurse-call-integration-basics", "relays-and-contact-closures-in-plain-english", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-communication-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-touchscreens-work-in-medical-equipment": ["analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation", "software-firmware-and-configuration-problems-in-medical-equipment", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-reproduce-a-clinical-complaint-on-the-bench"],
+    "how-medical-device-cooling-systems-work": ["environmental-causes-of-medical-equipment-failures", "fuses-breakers-and-power-supplies-in-medical-equipment", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "how-device-self-tests-detect-failures": ["when-to-trust-the-device-s-internal-self-test", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-read-and-use-medical-device-event-logs", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -582,6 +585,24 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Integration",
         "cardNote": "Dry contacts, relay states, and nurse-call signaling",
+    },
+    "how-touchscreens-work-in-medical-equipment": {
+        "description": "A practical explanation of how medical-equipment touchscreens convert contact into coordinates and commands, and how display, touch-layer, controller, cable, and software faults differ.",
+        "category": "How It Works",
+        "badge": "Controls",
+        "cardNote": "Touch sensing, coordinates, controllers, and display isolation",
+    },
+    "how-medical-device-cooling-systems-work": {
+        "description": "A practical explanation of how fans, vents, filters, heat sinks, sensors, and airflow paths protect medical equipment from overheating.",
+        "category": "How It Works",
+        "badge": "Thermal Systems",
+        "cardNote": "Airflow, heat transfer, temperature sensing, and protection",
+    },
+    "how-device-self-tests-detect-failures": {
+        "description": "A practical explanation of how medical devices use startup and continuous self-tests to check hardware, sensors, memory, communication paths, and safety systems.",
+        "category": "How It Works",
+        "badge": "Diagnostics",
+        "cardNote": "Startup checks, continuous monitoring, and fault detection",
     },
 }
 
