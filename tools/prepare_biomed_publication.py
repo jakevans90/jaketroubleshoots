@@ -102,6 +102,7 @@ RELATED = {
     "no-problem-found-when-that-answer-is-and-isn-t-good-enough": ["what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-read-and-use-medical-device-event-logs", "when-to-remove-medical-equipment-from-service"],
     "how-an-anesthesia-vaporizer-works": ["how-an-anesthesia-machine-breathing-system-works", "how-anesthesia-waste-gas-scavenging-works", "how-an-anesthesia-machine-performs-a-leak-test", "how-medical-gas-sampling-systems-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
     "how-electronic-flow-control-works-in-an-anesthesia-machine": ["how-an-anesthesia-vaporizer-works", "how-an-anesthesia-machine-breathing-system-works", "how-medical-equipment-measures-flow", "how-ventilator-flow-sensors-work", "how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines"],
+    "how-syringe-pump-drive-systems-work": ["how-infusion-pumps-measure-or-control-flow", "how-infusion-pump-occlusion-detection-works", "sensors-and-transducers-basics", "how-to-verify-a-repair-before-returning-equipment-to-service", "what-known-good-actually-means"],
 }
 
 ARTICLE_CONFIG = {
@@ -561,6 +562,12 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Anesthesia",
         "cardNote": "Electronic gas mixing, sensor feedback, and flow control",
+    },
+    "how-syringe-pump-drive-systems-work": {
+        "description": "A practical explanation of how syringe pumps convert motor movement into precise plunger travel using drive mechanics, syringe geometry, force sensing, and position feedback.",
+        "category": "How It Works",
+        "badge": "Infusion",
+        "cardNote": "Drive mechanics, plunger travel, and feedback sensing",
     },
 }
 
