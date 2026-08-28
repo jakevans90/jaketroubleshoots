@@ -110,6 +110,13 @@ RELATED = {
     "how-device-self-tests-detect-failures": ["when-to-trust-the-device-s-internal-self-test", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-read-and-use-medical-device-event-logs", "the-difference-between-a-symptom-cause-and-root-cause", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "biomedical-equipment-technician-degrees-explained": ["what-degree-do-you-need-to-become-a-biomed", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds", "how-to-become-a-biomedical-equipment-technician", "what-entry-level-biomeds-should-learn-first", "what-electronics-knowledge-does-a-biomed-actually-need"],
     "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds": ["biomedical-equipment-technician-degrees-explained", "what-degree-do-you-need-to-become-a-biomed", "how-to-become-a-biomedical-equipment-technician", "what-entry-level-biomeds-should-learn-first", "biomed-bmet-clinical-engineering-htm"],
+    "how-to-prepare-for-the-cbet-exam": ["what-is-the-cbet-certification", "cbet-eligibility-requirements-explained", "cbet-vs-eta-biomedical-certification", "what-entry-level-biomeds-should-learn-first", "what-electronics-knowledge-does-a-biomed-actually-need"],
+    "what-is-the-cbet-certification": ["cbet-eligibility-requirements-explained", "how-to-prepare-for-the-cbet-exam", "cbet-vs-eta-biomedical-certification", "what-is-the-cres-certification", "what-is-etas-biomedical-electronics-technician-certification"],
+    "cbet-eligibility-requirements-explained": ["what-is-the-cbet-certification", "how-to-prepare-for-the-cbet-exam", "what-degree-do-you-need-to-become-a-biomed", "biomedical-equipment-technician-degrees-explained", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds"],
+    "what-is-the-cres-certification": ["what-is-the-cbet-certification", "what-is-the-cles-certification", "cbet-vs-eta-biomedical-certification", "what-dicom-means-in-plain-english", "hospital-emrs-and-medical-device-integration"],
+    "what-is-the-cles-certification": ["what-is-the-cbet-certification", "what-is-the-cres-certification", "cbet-vs-eta-biomedical-certification", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics"],
+    "what-is-etas-biomedical-electronics-technician-certification": ["cbet-vs-eta-biomedical-certification", "what-is-the-cbet-certification", "what-electronics-knowledge-does-a-biomed-actually-need", "biomedical-equipment-technician-degrees-explained", "what-entry-level-biomeds-should-learn-first"],
+    "cbet-vs-eta-biomedical-certification": ["what-is-the-cbet-certification", "what-is-etas-biomedical-electronics-technician-certification", "cbet-eligibility-requirements-explained", "how-to-prepare-for-the-cbet-exam", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds"],
 }
 
 ARTICLE_CONFIG = {
@@ -618,6 +625,49 @@ ARTICLE_CONFIG = {
         "badge": "Education Guide",
         "cardNote": "Comparing education paths, cost, time, and career options",
         "plannedTitles": ["Certificate vs Associate Degree vs Bachelor�s Degree for Biomeds"],
+    },
+    "how-to-prepare-for-the-cbet-exam": {
+        "description": "A practical CBET study strategy covering baseline assessment, domain priorities, practice questions, troubleshooting reasoning, scheduling, and exam-day preparation.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "CBET study planning, weak-area review, and exam strategy",
+    },
+    "what-is-the-cbet-certification": {
+        "description": "A practical explanation of the Certified Biomedical Equipment Technician credential, what it represents, who pursues it, and how it differs from education and OEM training.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "CBET purpose, scope, exam domains, and career value",
+    },
+    "cbet-eligibility-requirements-explained": {
+        "description": "A practical guide to CBET eligibility paths, candidate status, education and experience requirements, documentation, and timing considerations.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "CBET eligibility paths, experience, and candidate status",
+    },
+    "what-is-the-cres-certification": {
+        "description": "A practical explanation of the Certified Radiology Equipment Specialist credential, its imaging focus, eligibility, exam areas, and relationship to CBET and OEM training.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "Imaging-specialist certification, eligibility, and scope",
+    },
+    "what-is-the-cles-certification": {
+        "description": "A practical explanation of the legacy Certified Laboratory Equipment Specialist credential and what it still communicates about laboratory-equipment expertise.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "Legacy laboratory-equipment certification and career context",
+    },
+    "what-is-etas-biomedical-electronics-technician-certification": {
+        "description": "A practical explanation of ETA International’s biomedical electronics certification, its electronics foundation, biomedical specialization, and relationship to CBET and OEM training.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "ETA BMD structure, electronics foundation, and scope",
+        "plannedTitles": ["What Is ETA�s Biomedical Electronics Technician Certification?"],
+    },
+    "cbet-vs-eta-biomedical-certification": {
+        "description": "A practical comparison of CBET and ETA biomedical certification, including eligibility, exam emphasis, recognition, cost, maintenance, and career fit.",
+        "category": "Career",
+        "badge": "Certification",
+        "cardNote": "Comparing CBET and ETA BMD structure and career fit",
     },
 }
 

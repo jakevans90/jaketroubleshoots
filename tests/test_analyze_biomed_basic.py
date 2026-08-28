@@ -211,9 +211,16 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How Device Self-Tests Detect Failures", planned)
         self.assertNotIn("Biomedical Equipment Technician Degrees Explained", planned)
         self.assertNotIn("Certificate vs Associate Degree vs Bachelor's Degree for Biomeds", planned)
+        self.assertNotIn("How to Prepare for the CBET Exam", planned)
+        self.assertNotIn("What Is the CBET Certification?", planned)
+        self.assertNotIn("CBET Eligibility Requirements Explained", planned)
+        self.assertNotIn("What Is the CRES Certification?", planned)
+        self.assertNotIn("What Is the CLES Certification?", planned)
+        self.assertNotIn("What Is ETA’s Biomedical Electronics Technician Certification?", planned)
+        self.assertNotIn("CBET vs ETA Biomedical Certification", planned)
         self.assertIn("How Temperature Probes and Thermistors Work", planned)
         self.assertIn("How to Read an OEM Training Certificate and Know What It Actually Qualifies You to Do", planned)
-        self.assertIn("<strong>92</strong>", planned)
+        self.assertIn("<strong>85</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -294,7 +301,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 93)
+        self.assertEqual(len(catalog), 100)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
