@@ -118,6 +118,8 @@ RELATED = {
     "what-is-etas-biomedical-electronics-technician-certification": ["cbet-vs-eta-biomedical-certification", "what-is-the-cbet-certification", "what-electronics-knowledge-does-a-biomed-actually-need", "biomedical-equipment-technician-degrees-explained", "what-entry-level-biomeds-should-learn-first"],
     "cbet-vs-eta-biomedical-certification": ["what-is-the-cbet-certification", "what-is-etas-biomedical-electronics-technician-certification", "cbet-eligibility-requirements-explained", "how-to-prepare-for-the-cbet-exam", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds"],
     "how-optical-sensors-work-in-medical-equipment": ["sensors-and-transducers-basics", "how-spo2-measurement-works", "how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "analog-vs-digital-signals"],
+    "how-temperature-probes-and-thermistors-work": ["sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "how-medical-device-cooling-systems-work"],
+    "ethernet-ports-link-lights-and-what-they-tell-you": ["basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "how-patient-monitors-communicate-with-central-stations", "hospital-emrs-and-medical-device-integration", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
 }
 
 ARTICLE_CONFIG = {
@@ -675,6 +677,18 @@ ARTICLE_CONFIG = {
         "category": "How It Works",
         "badge": "Sensors",
         "cardNote": "Emitters, detectors, optical paths, and signal interpretation",
+    },
+    "how-temperature-probes-and-thermistors-work": {
+        "description": "A practical explanation of how thermistors and temperature probes turn temperature into resistance and voltage, and how to isolate probe, cable, input, and calibration faults.",
+        "category": "How It Works",
+        "badge": "Sensors",
+        "cardNote": "Thermistors, probe circuits, conversion, and fault isolation",
+    },
+    "ethernet-ports-link-lights-and-what-they-tell-you": {
+        "description": "A practical guide to Ethernet ports, link and activity lights, cables, switch connections, addressing, and what physical link status does and does not prove.",
+        "category": "Networking",
+        "badge": "Networking",
+        "cardNote": "Physical links, port LEDs, cabling, and network layers",
     },
 }
 

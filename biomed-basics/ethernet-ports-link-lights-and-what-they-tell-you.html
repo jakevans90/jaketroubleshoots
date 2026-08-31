@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ethernet Ports, Link Lights, and What They Tell You | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to Ethernet ports, link and activity lights, cables, switch connections, addressing, and what physical link status does and does not prove.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/ethernet-ports-link-lights-and-what-they-tell-you.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Ethernet Ports, Link Lights, and What They Tell You</h2>
+  <p>How to use Ethernet link and activity indicators as fast troubleshooting evidence without assuming a blinking light means the network is working</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Modern medical equipment depends heavily on Ethernet.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an Ethernet port does</li>
+      <li>RJ45 connectors</li>
+      <li>Network interface controllers</li>
+      <li>Link lights</li>
+      <li>Activity lights</li>
+      <li>Speed indicators</li>
+      <li>Auto-negotiation</li>
+      <li>Network cables</li>
+      <li>Wall jacks</li>
+      <li>Switch ports</li>
+      <li>No-link conditions</li>
+      <li>Physical layer vs IP layer</li>
+      <li>Why a device can have link but still not communicate</li>
+      <li>Common failure patterns</li>
+      <li>How to troubleshoot Ethernet connectivity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A basic wired network path looks like:</p>
+    <p><strong>Medical Device</strong></p>
+    <p>↓</p>
+    <p><strong>Ethernet Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Wall Jack or Patch Panel</strong></p>
+    <p>↓</p>
+    <p><strong>Network Switch</strong></p>
+    <p>↓</p>
+    <p><strong>Hospital Network</strong></p>
+    <p>↓</p>
+    <p><strong>Server/Application</strong></p>
+    <p>A link light primarily tells you about the connection near the beginning of that chain.</p>
+    <p>It does not prove the entire chain works.</p>
+  </section>
+
+  <section class="content-box" id="what-is-ethernet">
+    <h3>What Is Ethernet?</h3>
+    <p>Ethernet is a common wired networking technology.</p>
+    <p>Medical devices may use Ethernet to exchange digital data with other systems.</p>
+  </section>
+
+  <section class="content-box" id="rj45-connector">
+    <h3>RJ45 Connector</h3>
+    <p>The familiar Ethernet plug is commonly called:</p>
+    <p><strong>RJ45.</strong></p>
+    <p>It usually contains eight contacts.</p>
+    <p>The cable often uses:</p>
+    <p><strong>Twisted pairs</strong></p>
+    <p>of conductors.</p>
+  </section>
+
+  <section class="content-box" id="why-twisted-pairs">
+    <h3>Why Twisted Pairs?</h3>
+    <p>Twisting helps reduce electrical interference and improve signal integrity.</p>
+  </section>
+
+  <section class="content-box" id="network-interface-controller">
+    <h3>Network Interface Controller</h3>
+    <p>Inside the device, the Ethernet port connects to a:</p>
+    <p><strong>Network Interface Controller</strong>, or NIC.</p>
+    <p>The NIC handles the electrical communication with the network.</p>
+  </section>
+
+  <section class="content-box" id="physical-layer">
+    <h3>Physical Layer</h3>
+    <p>At the lowest level, the Ethernet connection requires:</p>
+    <ul>
+      <li>Working NIC</li>
+      <li>Working cable</li>
+      <li>Working switch port</li>
+      <li>Compatible signaling</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="link">
+    <h3>Link</h3>
+    <p>When the two Ethernet devices recognize each other electrically, they establish:</p>
+    <p><strong>Link.</strong></p>
+  </section>
+
+  <section class="content-box" id="link-light">
+    <h3>Link Light</h3>
+    <p>A link LED usually indicates that the local Ethernet port has detected a valid physical connection with the device at the other end.</p>
+    <p>That other device is commonly a:</p>
+    <p><strong>Network switch.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-does-a-link-light-prove">
+    <h3>What Does a Link Light Prove?</h3>
+    <p>Typically, it gives evidence that:</p>
+    <ul>
+      <li>Device Ethernet port has power/function</li>
+      <li>Cable path is connected</li>
+      <li>Switch port is active enough to negotiate link</li>
+    </ul>
+    <p>That is useful.</p>
+  </section>
+
+  <section class="content-box" id="what-does-it-not-prove">
+    <h3>What Does It Not Prove?</h3>
+    <p>A link light does not automatically prove:</p>
+    <ul>
+      <li>Correct IP address</li>
+      <li>Correct VLAN</li>
+      <li>Correct gateway</li>
+      <li>DHCP works</li>
+      <li>DNS works</li>
+      <li>Server reachable</li>
+      <li>Required ports open</li>
+      <li>Application connected</li>
+      <li>EMR interface works</li>
+    </ul>
+    <p>This distinction is critical.</p>
+  </section>
+
+  <section class="content-box" id="think-in-layers">
+    <h3>Think in Layers</h3>
+    <p>Link light answers something like:</p>
+    <blockquote><p>Can these Ethernet interfaces physically communicate?</p></blockquote>
+    <p>It does not answer:</p>
+    <blockquote><p>Can this medical device talk to the application I care about?</p></blockquote>
+  </section>
+
+  <section class="content-box" id="activity-light">
+    <h3>Activity Light</h3>
+    <p>Many Ethernet ports also have an:</p>
+    <p><strong>Activity LED.</strong></p>
+    <p>It may blink when packets are:</p>
+    <ul>
+      <li>Sent</li>
+      <li>Received</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="blinking-does-not-mean-good-communication">
+    <h3>Blinking Does Not Mean Good Communication</h3>
+    <p>A blinking activity light only indicates network traffic.</p>
+    <p>That traffic could be:</p>
+    <ul>
+      <li>Broadcast packets</li>
+      <li>ARP</li>
+      <li>DHCP attempts</li>
+      <li>Unrelated network traffic</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor cannot connect to central.</p>
+    <p>Activity light blinks constantly.</p>
+    <p>That does not prove central communication works.</p>
+  </section>
+
+  <section class="content-box" id="speed-indicator">
+    <h3>Speed Indicator</h3>
+    <p>Some Ethernet LEDs also indicate negotiated speed.</p>
+    <p>Possible speeds include:</p>
+    <ul>
+      <li>10 Mbps</li>
+      <li>100 Mbps</li>
+      <li>1 Gbps</li>
+    </ul>
+    <p>Color meanings vary by manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="never-assume-led-color-meaning">
+    <h3>Never Assume LED Color Meaning</h3>
+    <p>One device may use:</p>
+    <p>Green = 1 Gbps.</p>
+    <p>Another:</p>
+    <p>Green = link.</p>
+    <p>Check documentation when the exact meaning matters.</p>
+  </section>
+
+  <section class="content-box" id="auto-negotiation">
+    <h3>Auto-Negotiation</h3>
+    <p>Ethernet devices commonly negotiate connection parameters automatically.</p>
+    <p>This may include:</p>
+    <ul>
+      <li>Speed</li>
+      <li>Duplex</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="duplex">
+    <h3>Duplex</h3>
+    <p>Duplex describes whether communication can occur:</p>
+    <ul>
+      <li>One direction at a time</li>
+      <li>Both directions simultaneously</li>
+    </ul>
+    <p>Modern networks commonly use full duplex.</p>
+  </section>
+
+  <section class="content-box" id="auto-negotiation-failure">
+    <h3>Auto-Negotiation Failure</h3>
+    <p>A compatibility or port configuration problem can sometimes produce:</p>
+    <ul>
+      <li>No link</li>
+      <li>Wrong speed</li>
+      <li>Unstable link</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="no-link-light">
+    <h3>No Link Light</h3>
+    <p>If no link LED appears:</p>
+    <p>Start with the physical path.</p>
+  </section>
+
+  <section class="content-box" id="first-questions">
+    <h3>First Questions</h3>
+    <p>Ask:</p>
+    <ul>
+      <li>Is the cable fully seated?</li>
+      <li>Is the cable damaged?</li>
+      <li>Does another cable work?</li>
+      <li>Does another device work on that wall jack?</li>
+      <li>Does the device link in another known-good port?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="failure-follows-cable">
+    <h3>Failure Follows Cable</h3>
+    <p>Original cable:</p>
+    <p>No link.</p>
+    <p>Known-good cable:</p>
+    <p>Link.</p>
+    <p>Original cable fails elsewhere.</p>
+    <p>Bad cable is likely.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-wall-port">
+    <h3>Failure Follows Wall Port</h3>
+    <p>Device works in Room A.</p>
+    <p>No link in Room B.</p>
+    <p>Known-good device also fails in Room B.</p>
+    <p>Think:</p>
+    <ul>
+      <li>Wall jack</li>
+      <li>Patch</li>
+      <li>Switch port</li>
+      <li>Network configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="failure-follows-device">
+    <h3>Failure Follows Device</h3>
+    <p>Known-good wall port and cable:</p>
+    <p>Other devices link.</p>
+    <p>Problem device:</p>
+    <p>No link.</p>
+    <p>Now investigate the device NIC or configuration.</p>
+  </section>
+
+  <section class="content-box" id="cable-categories">
+    <h3>Cable Categories</h3>
+    <p>Common Ethernet cable categories include:</p>
+    <ul>
+      <li>Cat5e</li>
+      <li>Cat6</li>
+    </ul>
+    <p>The required type depends on installation and speed.</p>
+  </section>
+
+  <section class="content-box" id="physical-cable-damage">
+    <h3>Physical Cable Damage</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>Broken latch</li>
+      <li>Crushed cable</li>
+      <li>Bent connector</li>
+      <li>Pulled strain relief</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="connector-seating">
+    <h3>Connector Seating</h3>
+    <p>An Ethernet plug can look connected but not be fully latched.</p>
+    <p>Reseat it.</p>
+  </section>
+
+  <section class="content-box" id="patch-panels">
+    <h3>Patch Panels</h3>
+    <p>Hospital network cabling often runs:</p>
+    <p><strong>Wall Jack → Building Cable → Patch Panel → Patch Cord → Switch.</strong></p>
+    <p>The problem may be anywhere in that path.</p>
+  </section>
+
+  <section class="content-box" id="switch-port">
+    <h3>Switch Port</h3>
+    <p>A network switch connects devices within the network.</p>
+    <p>Each physical Ethernet connection usually terminates on a switch port somewhere.</p>
+  </section>
+
+  <section class="content-box" id="switch-port-leds">
+    <h3>Switch Port LEDs</h3>
+    <p>The switch itself may also indicate:</p>
+    <ul>
+      <li>Link</li>
+      <li>Activity</li>
+      <li>Error</li>
+    </ul>
+    <p>IT staff can often check:</p>
+    <ul>
+      <li>Port state</li>
+      <li>VLAN</li>
+      <li>Learned MAC address</li>
+      <li>Error counters</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mac-address">
+    <h3>MAC Address</h3>
+    <p>Every Ethernet interface normally has a hardware identifier called a:</p>
+    <p><strong>MAC address.</strong></p>
+    <p>The switch can learn:</p>
+    <blockquote><p>This MAC address is connected to this port.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="why-mac-visibility-matters">
+    <h3>Why MAC Visibility Matters</h3>
+    <p>If the switch learns the device's MAC:</p>
+    <p>You have additional evidence the physical Ethernet connection is functioning.</p>
+  </section>
+
+  <section class="content-box" id="board-replacement">
+    <h3>Board Replacement</h3>
+    <p>Replacing a:</p>
+    <ul>
+      <li>Main board</li>
+      <li>NIC</li>
+      <li>Computer</li>
+    </ul>
+    <p>can change the device MAC address.</p>
+    <p>That may matter if network access depends on the old MAC.</p>
+  </section>
+
+  <section class="content-box" id="link-without-ip">
+    <h3>Link Without IP</h3>
+    <p>A device can have perfect Ethernet link and still have:</p>
+    <p>No usable IP configuration.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Link:</p>
+    <p>Green.</p>
+    <p>IP:</p>
+    <p>0.0.0.0.</p>
+    <p>Device may be waiting for DHCP.</p>
+  </section>
+
+  <section class="content-box" id="dhcp">
+    <h3>DHCP</h3>
+    <p>DHCP can automatically provide:</p>
+    <ul>
+      <li>IP address</li>
+      <li>Subnet mask</li>
+      <li>Gateway</li>
+      <li>Other network settings</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dhcp-failure">
+    <h3>DHCP Failure</h3>
+    <p>The physical link can be perfect.</p>
+    <p>The device repeatedly requests an address.</p>
+    <p>No DHCP response.</p>
+    <p>Result:</p>
+    <p>Link light on, application offline.</p>
+  </section>
+
+  <section class="content-box" id="static-ip">
+    <h3>Static IP</h3>
+    <p>Some medical equipment uses manually configured:</p>
+    <p><strong>Static IP addresses.</strong></p>
+    <p>If the address is wrong:</p>
+    <p>Link still works.</p>
+  </section>
+
+  <section class="content-box" id="duplicate-ip">
+    <h3>Duplicate IP</h3>
+    <p>Two devices configured with the same IP can cause:</p>
+    <ul>
+      <li>Intermittent communication</li>
+      <li>Connection drops</li>
+      <li>Strange behavior</li>
+    </ul>
+    <p>The link LEDs on both devices can still look normal.</p>
+  </section>
+
+  <section class="content-box" id="subnet-mask">
+    <h3>Subnet Mask</h3>
+    <p>The subnet mask helps determine which IP addresses are considered local.</p>
+    <p>Wrong subnet:</p>
+    <p>Physical link unaffected.</p>
+    <p>Communication may fail.</p>
+  </section>
+
+  <section class="content-box" id="default-gateway">
+    <h3>Default Gateway</h3>
+    <p>The gateway is used to reach networks outside the device's local subnet.</p>
+    <p>Wrong gateway:</p>
+    <p>Local devices may communicate.</p>
+    <p>Remote servers may not.</p>
+    <p>Link remains on.</p>
+  </section>
+
+  <section class="content-box" id="vlan">
+    <h3>VLAN</h3>
+    <p>A VLAN is a logical network segmentation method.</p>
+    <p>The switch port may need to place the medical device in a specific VLAN.</p>
+  </section>
+
+  <section class="content-box" id="wrong-vlan">
+    <h3>Wrong VLAN</h3>
+    <p>This is a classic example of why:</p>
+    <p><strong>Link does not equal connectivity.</strong></p>
+    <p>Device:</p>
+    <p>Link light on.</p>
+    <p>Switch:</p>
+    <p>Port active.</p>
+    <p>But device is on wrong VLAN.</p>
+    <p>It may be unable to reach the required server.</p>
+  </section>
+
+  <section class="content-box" id="ping">
+    <h3>Ping</h3>
+    <p>Ping tests basic IP reachability using ICMP.</p>
+  </section>
+
+  <section class="content-box" id="ping-works">
+    <h3>Ping Works</h3>
+    <p>If the device successfully pings another host, you have evidence that some IP communication works between those endpoints.</p>
+  </section>
+
+  <section class="content-box" id="what-ping-does-not-prove">
+    <h3>What Ping Does Not Prove</h3>
+    <p>Ping does not prove:</p>
+    <ul>
+      <li>Application service works</li>
+      <li>TCP port is open</li>
+      <li>DICOM works</li>
+      <li>HL7 works</li>
+      <li>Central monitoring works</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-fails">
+    <h3>Ping Fails</h3>
+    <p>Ping failure also does not always prove total network failure.</p>
+    <p>Some hosts or firewalls block ICMP.</p>
+  </section>
+
+  <section class="content-box" id="link-flapping">
+    <h3>Link Flapping</h3>
+    <p>If link repeatedly goes:</p>
+    <p>Up Down Up Down</p>
+    <p>that is often called:</p>
+    <p><strong>Link flapping.</strong></p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Bad cable</li>
+      <li>Loose connector</li>
+      <li>Failing NIC</li>
+      <li>Switch port</li>
+      <li>Power instability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="watch-the-link-light">
+    <h3>Watch the Link Light</h3>
+    <p>For intermittent complaints:</p>
+    <p>Observe whether the LED goes dark at the same time communication fails.</p>
+  </section>
+
+  <section class="content-box" id="if-link-drops-with-the-failure">
+    <h3>If Link Drops With the Failure</h3>
+    <p>Focus strongly on:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Port</li>
+      <li>NIC</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-link-stays-solid">
+    <h3>If Link Stays Solid</h3>
+    <p>The problem may be higher in the network stack.</p>
+    <p>Possible areas:</p>
+    <ul>
+      <li>IP</li>
+      <li>VLAN</li>
+      <li>Firewall</li>
+      <li>Application</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="network-interface-disabled">
+    <h3>Network Interface Disabled</h3>
+    <p>A device may have the NIC disabled in:</p>
+    <ul>
+      <li>BIOS</li>
+      <li>Operating system</li>
+      <li>Device configuration</li>
+    </ul>
+    <p>No amount of cable swapping fixes a disabled interface.</p>
+  </section>
+
+  <section class="content-box" id="driver-failure">
+    <h3>Driver Failure</h3>
+    <p>Computer-based medical equipment can have a functional NIC electrically but a software driver problem.</p>
+    <p>Possible outcome:</p>
+    <ul>
+      <li>Link LED present</li>
+      <li>OS shows adapter fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="operating-system-network-status">
+    <h3>Operating System Network Status</h3>
+    <p>If available, inspect:</p>
+    <ul>
+      <li>Adapter state</li>
+      <li>IP configuration</li>
+      <li>Errors</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="localhost-does-not-test-ethernet">
+    <h3>Localhost Does Not Test Ethernet</h3>
+    <p>Pinging:</p>
+    <p>127.0.0.1</p>
+    <p>only tests the local TCP/IP stack.</p>
+    <p>It does not prove the NIC or cable works.</p>
+  </section>
+
+  <section class="content-box" id="ping-own-ip">
+    <h3>Ping Own IP</h3>
+    <p>That also does not prove traffic left the device.</p>
+    <p>Be careful about what each test demonstrates.</p>
+  </section>
+
+  <section class="content-box" id="ping-gateway">
+    <h3>Ping Gateway</h3>
+    <p>Successfully pinging the gateway is stronger evidence that:</p>
+    <ul>
+      <li>NIC works</li>
+      <li>Local Ethernet path works</li>
+      <li>IP configuration is at least reasonably valid</li>
+      <li>Local network communication exists</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-server">
+    <h3>Ping Server</h3>
+    <p>Successfully pinging the required server proves additional network reachability.</p>
+    <p>But still:</p>
+    <p>Application may fail.</p>
+  </section>
+
+  <section class="content-box" id="ports">
+    <h3>Ports</h3>
+    <p>Applications communicate using specific:</p>
+    <p><strong>TCP or UDP ports.</strong></p>
+  </section>
+
+  <section class="content-box" id="firewall">
+    <h3>Firewall</h3>
+    <p>A firewall may allow:</p>
+    <p>Ping</p>
+    <p>but block:</p>
+    <p>Application traffic.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device can ping PACS server.</p>
+    <p>DICOM storage fails.</p>
+    <p>Possible cause:</p>
+    <p>Required DICOM port blocked or service unavailable.</p>
+    <p>Link light tells you almost nothing about that specific problem.</p>
+  </section>
+
+  <section class="content-box" id="central-monitoring-example">
+    <h3>Central Monitoring Example</h3>
+    <p>Bedside monitor:</p>
+    <p>Link light on.</p>
+    <p>IP correct.</p>
+    <p>Gateway reachable.</p>
+    <p>Central station still does not show monitor.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Wrong server configuration</li>
+      <li>Device not assigned</li>
+      <li>Application port blocked</li>
+      <li>Central service issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="emr-example">
+    <h3>EMR Example</h3>
+    <p>Medical device communicates with central station.</p>
+    <p>Vitals do not reach EMR.</p>
+    <p>Ethernet link is obviously functioning.</p>
+    <p>The failure may be downstream in:</p>
+    <ul>
+      <li>Middleware</li>
+      <li>Patient association</li>
+      <li>Interface engine</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="link-light-is-still-valuable">
+    <h3>Link Light Is Still Valuable</h3>
+    <p>Do not underestimate it.</p>
+    <p>A ten-second physical check can save significant time.</p>
+  </section>
+
+  <section class="content-box" id="no-link-narrows-the-problem-fast">
+    <h3>No Link Narrows the Problem Fast</h3>
+    <p>If there is no physical link:</p>
+    <p>Do not start troubleshooting:</p>
+    <ul>
+      <li>DNS</li>
+      <li>HL7</li>
+      <li>EMR interfaces</li>
+    </ul>
+    <p>yet.</p>
+    <p>Fix the lower layer first.</p>
+  </section>
+
+  <section class="content-box" id="start-at-the-bottom">
+    <h3>Start at the Bottom</h3>
+    <p>A useful network troubleshooting order is:</p>
+    <p><strong>Physical</strong></p>
+    <p>↓</p>
+    <p><strong>Link</strong></p>
+    <p>↓</p>
+    <p><strong>IP Configuration</strong></p>
+    <p>↓</p>
+    <p><strong>Reachability</strong></p>
+    <p>↓</p>
+    <p><strong>Ports/Services</strong></p>
+    <p>↓</p>
+    <p><strong>Application</strong></p>
+  </section>
+
+  <section class="content-box" id="known-good-cable">
+    <h3>Known-Good Cable</h3>
+    <p>One of the fastest tests.</p>
+    <p>If a known-good cable establishes link:</p>
+    <p>Original cable becomes suspect.</p>
+  </section>
+
+  <section class="content-box" id="known-good-port">
+    <h3>Known-Good Port</h3>
+    <p>Move to a port that is known to support the device configuration when permitted.</p>
+    <p>If link appears:</p>
+    <p>Original path becomes suspect.</p>
+  </section>
+
+  <section class="content-box" id="do-not-randomly-move-medical-devices-between-network-ports">
+    <h3>Do Not Randomly Move Medical Devices Between Network Ports</h3>
+    <p>Ports may be configured for:</p>
+    <ul>
+      <li>Different VLANs</li>
+      <li>Different security policies</li>
+    </ul>
+    <p>Coordinate with IT when required.</p>
+  </section>
+
+  <section class="content-box" id="switch-security">
+    <h3>Switch Security</h3>
+    <p>Some hospital networks use:</p>
+    <ul>
+      <li>Port security</li>
+      <li>Network access control</li>
+    </ul>
+    <p>A physically connected device may be prevented from normal network access.</p>
+  </section>
+
+  <section class="content-box" id="mac-based-controls">
+    <h3>MAC-Based Controls</h3>
+    <p>A replacement NIC with a new MAC may require:</p>
+    <ul>
+      <li>Registration</li>
+      <li>IT update</li>
+    </ul>
+    <p>before the network allows access.</p>
+  </section>
+
+  <section class="content-box" id="physical-link-can-still-appear">
+    <h3>Physical Link Can Still Appear</h3>
+    <p>Security blocks can occur after the physical link is established.</p>
+    <p>Again:</p>
+    <p>Green light does not equal authorization.</p>
+  </section>
+
+  <section class="content-box" id="poe">
+    <h3>PoE</h3>
+    <p>Some Ethernet devices use:</p>
+    <p><strong>Power over Ethernet</strong>, or PoE.</p>
+    <p>This allows Ethernet cabling to carry both:</p>
+    <ul>
+      <li>Data</li>
+      <li>Power</li>
+    </ul>
+    <p>Some medical accessories may use this.</p>
+  </section>
+
+  <section class="content-box" id="link-vs-power">
+    <h3>Link vs Power</h3>
+    <p>With PoE systems, troubleshoot:</p>
+    <ul>
+      <li>Power delivery</li>
+      <li>Data link</li>
+    </ul>
+    <p>as related but distinct functions.</p>
+  </section>
+
+  <section class="content-box" id="ethernet-isolation">
+    <h3>Ethernet Isolation</h3>
+    <p>Some medical devices incorporate isolation components between the network port and internal circuitry.</p>
+    <p>Damage there can affect link.</p>
+  </section>
+
+  <section class="content-box" id="esd-damage">
+    <h3>ESD Damage</h3>
+    <p>Ethernet ports can be damaged by:</p>
+    <ul>
+      <li>Electrostatic discharge</li>
+      <li>Electrical transients</li>
+    </ul>
+    <p>Possible symptom:</p>
+    <p>Device otherwise works but never establishes link.</p>
+  </section>
+
+  <section class="content-box" id="bent-port-contacts">
+    <h3>Bent Port Contacts</h3>
+    <p>Inspect the RJ45 jack.</p>
+    <p>Bent or damaged internal contacts can create:</p>
+    <ul>
+      <li>No link</li>
+      <li>Intermittent link</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="port-contamination">
+    <h3>Port Contamination</h3>
+    <p>Debris or fluid can also affect the connection.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-link-but-no-central">
+    <h3>Real-World Example: Link but No Central</h3>
+    <p>Monitor:</p>
+    <p>Link on.</p>
+    <p>IP correct.</p>
+    <p>Can ping gateway.</p>
+    <p>Central connection fails.</p>
+    <p>IT finds switch port assigned to wrong VLAN after network work.</p>
+    <p>Physical Ethernet was fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-link">
+    <h3>Real-World Example: No Link</h3>
+    <p>Device has no Ethernet LED.</p>
+    <p>Known-good cable:</p>
+    <p>Still no link.</p>
+    <p>Known-good switch port:</p>
+    <p>Still no link.</p>
+    <p>Other devices work on same cable and port.</p>
+    <p>Failure follows device NIC.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-failure-follows-room">
+    <h3>Real-World Example: Failure Follows Room</h3>
+    <p>Monitor works in Room 1.</p>
+    <p>No link in Room 2.</p>
+    <p>Second known-good monitor also shows no link in Room 2.</p>
+    <p>Infrastructure problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-new-main-board">
+    <h3>Real-World Example: New Main Board</h3>
+    <p>Monitor main board replaced.</p>
+    <p>Link comes up.</p>
+    <p>Device receives no application access.</p>
+    <p>New board has different MAC address and must be registered with network access control.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ping-works-but-dicom-does-not">
+    <h3>Real-World Example: Ping Works but DICOM Does Not</h3>
+    <p>Imaging device:</p>
+    <p>Can ping PACS.</p>
+    <p>DICOM echo/storage fails.</p>
+    <p>Required application port blocked.</p>
+    <p>Ping did not prove the application path.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-green-light-means-network-is-good">
+    <h3>Assuming Green Light Means Network Is Good</h3>
+    <p>It primarily proves physical link.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-ip-before-checking-the-cable">
+    <h3>Troubleshooting IP Before Checking the Cable</h3>
+    <p>Start at the bottom.</p>
+  </section>
+
+  <section class="content-box" id="assuming-blinking-means-the-application-is-communicating">
+    <h3>Assuming Blinking Means the Application Is Communicating</h3>
+    <p>Any network traffic can blink the activity LED.</p>
+  </section>
+
+  <section class="content-box" id="assuming-ping-proves-the-application-works">
+    <h3>Assuming Ping Proves the Application Works</h3>
+    <p>It does not test most application services.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-vlan-configuration">
+    <h3>Ignoring VLAN Configuration</h3>
+    <p>Wrong VLAN can look physically perfect.</p>
+  </section>
+
+  <section class="content-box" id="replacing-a-nic-before-testing-the-cable-and-port">
+    <h3>Replacing a NIC Before Testing the Cable and Port</h3>
+    <p>Follow the failure.</p>
+  </section>
+
+  <section class="content-box" id="moving-ports-without-considering-network-configuration">
+    <h3>Moving Ports Without Considering Network Configuration</h3>
+    <p>A different jack may belong to a different network.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a wired connection failure, ask:</p>
+    <p><strong>Is there physical link?</strong></p>
+    <p>If no:</p>
+    <p>Check:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Jack</li>
+      <li>Switch port</li>
+      <li>NIC</li>
+    </ul>
+    <p>If yes:</p>
+    <p>Ask:</p>
+    <p><strong>Does the device have the correct IP configuration?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it reach the local network or gateway?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it reach the required server?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the required application service working?</strong></p>
+    <p>Think:</p>
+    <p><strong>Cable → Link → IP → Network → Server → Application.</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>At what layer does the evidence stop?</strong></p>
+    <p>That prevents random network troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the link LED is on:</p>
+    <p>You proved:</p>
+    <p><strong>The Ethernet interfaces have established a physical link under the current conditions.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Correct VLAN</li>
+      <li>Correct IP</li>
+      <li>Server reachability</li>
+      <li>Application connectivity</li>
+    </ul>
+    <p>If ping to the gateway succeeds:</p>
+    <p>You proved more.</p>
+    <p>If the application successfully connects and transfers real data:</p>
+    <p>You have much stronger end-to-end evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Ethernet troubleshooting gets much easier when you stop treating:</p>
+    <blockquote><p>Network problem</p></blockquote>
+    <p>as one giant category.</p>
+    <p>Think in layers:</p>
+    <p><strong>Port</strong></p>
+    <p>↓</p>
+    <p><strong>Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Switch</strong></p>
+    <p>↓</p>
+    <p><strong>IP</strong></p>
+    <p>↓</p>
+    <p><strong>Network</strong></p>
+    <p>↓</p>
+    <p><strong>Application</strong></p>
+    <p>The link light is useful because it gives you an immediate clue about the bottom of that stack.</p>
+    <p>But do not let a green LED convince you the job is done.</p>
+    <p>A device can have:</p>
+    <ul>
+      <li>Perfect link</li>
+      <li>Valid IP</li>
+      <li>Successful ping</li>
+    </ul>
+    <p>and still fail to perform the clinical network function you actually care about.</p>
+    <p>So when you see a blinking Ethernet light, ask:</p>
+    <p><strong>What did that light actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Ethernet LED meanings, supported speeds, switch configurations, VLAN assignments, network security, medical-device IP settings, and application requirements vary by device manufacturer and healthcare organization. Coordinate network changes with authorized IT personnel and document device network settings before making configuration changes.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="how-to-troubleshoot-communication-failures.html">How to Troubleshoot Communication Failures</a></li>
+      <li><a href="how-patient-monitors-communicate-with-central-stations.html">How Patient Monitors Communicate With Central Stations</a></li>
+      <li><a href="hospital-emrs-and-medical-device-integration.html">Hospital EMRs and Medical Device Integration</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -219,9 +219,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("What Is ETA’s Biomedical Electronics Technician Certification?", planned)
         self.assertNotIn("CBET vs ETA Biomedical Certification", planned)
         self.assertNotIn("How Optical Sensors Work in Medical Equipment", planned)
-        self.assertIn("How Temperature Probes and Thermistors Work", planned)
+        self.assertNotIn("How Temperature Probes and Thermistors Work", planned)
+        self.assertNotIn("Ethernet Ports, Link Lights, and What They Tell You", planned)
         self.assertIn("How to Read an OEM Training Certificate and Know What It Actually Qualifies You to Do", planned)
-        self.assertIn("<strong>84</strong>", planned)
+        self.assertIn("<strong>82</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -302,7 +303,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 101)
+        self.assertEqual(len(catalog), 103)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
