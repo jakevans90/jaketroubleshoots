@@ -117,6 +117,7 @@ RELATED = {
     "what-is-the-cles-certification": ["what-is-the-cbet-certification", "what-is-the-cres-certification", "cbet-vs-eta-biomedical-certification", "functional-testing-vs-calibration-vs-verification", "sensors-and-transducers-basics"],
     "what-is-etas-biomedical-electronics-technician-certification": ["cbet-vs-eta-biomedical-certification", "what-is-the-cbet-certification", "what-electronics-knowledge-does-a-biomed-actually-need", "biomedical-equipment-technician-degrees-explained", "what-entry-level-biomeds-should-learn-first"],
     "cbet-vs-eta-biomedical-certification": ["what-is-the-cbet-certification", "what-is-etas-biomedical-electronics-technician-certification", "cbet-eligibility-requirements-explained", "how-to-prepare-for-the-cbet-exam", "certificate-vs-associate-degree-vs-bachelor-s-degree-for-biomeds"],
+    "how-optical-sensors-work-in-medical-equipment": ["sensors-and-transducers-basics", "how-spo2-measurement-works", "how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "analog-vs-digital-signals"],
 }
 
 ARTICLE_CONFIG = {
@@ -668,6 +669,12 @@ ARTICLE_CONFIG = {
         "category": "Career",
         "badge": "Certification",
         "cardNote": "Comparing CBET and ETA BMD structure and career fit",
+    },
+    "how-optical-sensors-work-in-medical-equipment": {
+        "description": "A practical explanation of how medical devices use light emitters, detectors, reflectivity, beam interruption, and wavelength changes to sense position, fluid, blood, and motion.",
+        "category": "How It Works",
+        "badge": "Sensors",
+        "cardNote": "Emitters, detectors, optical paths, and signal interpretation",
     },
 }
 
