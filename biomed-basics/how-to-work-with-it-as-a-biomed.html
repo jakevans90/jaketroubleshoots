@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Work With IT as a Biomed | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to collaborating with IT using clear symptoms, timestamps, network evidence, configuration details, ownership boundaries, and focused escalation.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-work-with-it-as-a-biomed.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How to Work With IT as a Biomed</h2>
+  <p>How biomeds and IT can troubleshoot networked medical equipment faster by sharing the right information and respecting the boundary between device and infrastructure</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Modern biomedical equipment increasingly depends on IT infrastructure.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What biomed should check before calling IT</li>
+      <li>What information IT actually needs</li>
+      <li>Device vs infrastructure problems</li>
+      <li>IP and MAC addresses</li>
+      <li>VLANs</li>
+      <li>Switch ports</li>
+      <li>Server names</li>
+      <li>Application ports</li>
+      <li>Timestamps</li>
+      <li>Network changes</li>
+      <li>Escalation</li>
+      <li>Documentation</li>
+      <li>Common communication mistakes</li>
+      <li>How to troubleshoot collaboratively without turning every problem into “IT vs Biomed”</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Before contacting IT, collect:</p>
+    <ul>
+      <li>Device name/model</li>
+      <li>Exact symptom</li>
+      <li>IP address</li>
+      <li>MAC address</li>
+      <li>Physical location</li>
+      <li>Wall jack or switch information if known</li>
+      <li>Server or application being reached</li>
+      <li>Time of failure</li>
+      <li>Whether other devices are affected</li>
+      <li>What tests already passed</li>
+    </ul>
+    <p>Then describe the problem as:</p>
+    <p><strong>Observed evidence</strong></p>
+    <p>not:</p>
+    <p><strong>Assumed cause.</strong></p>
+  </section>
+
+  <section class="content-box" id="stop-saying-the-network-is-down">
+    <h3>Stop Saying “The Network Is Down”</h3>
+    <p>Unless you actually know the network is down.</p>
+    <p>A device not communicating does not automatically mean:</p>
+    <blockquote><p>Network problem.</p></blockquote>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Device configuration</li>
+      <li>Cable</li>
+      <li>VLAN</li>
+      <li>Firewall</li>
+      <li>Server</li>
+      <li>Application</li>
+      <li>Patient association</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="better-description">
+    <h3>Better Description</h3>
+    <p>Instead of:</p>
+    <blockquote><p>The network is broken.</p></blockquote>
+    <p>Say:</p>
+    <blockquote><p>This monitor has physical link and a valid IP, can ping the gateway, but cannot connect to the central monitoring server. Other monitors in the same unit are connected normally.</p></blockquote>
+    <p>That gives IT somewhere to start.</p>
+  </section>
+
+  <section class="content-box" id="define-the-clinical-function">
+    <h3>Define the Clinical Function</h3>
+    <p>Start with:</p>
+    <p><strong>What is failing?</strong></p>
+    <p>Examples:</p>
+    <ul>
+      <li>Monitor missing from central</li>
+      <li>ECG cannot transmit to MUSE</li>
+      <li>CT cannot retrieve worklist</li>
+      <li>Images not reaching PACS</li>
+      <li>Device data not reaching EMR</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="local-function-vs-network-function">
+    <h3>Local Function vs Network Function</h3>
+    <p>Ask whether the device works locally.</p>
+    <p>Example:</p>
+    <p>Monitor displays ECG normally.</p>
+    <p>Central station does not receive it.</p>
+    <p>That strongly separates:</p>
+    <p><strong>Patient acquisition</strong></p>
+    <p>from:</p>
+    <p><strong>Network communication.</strong></p>
+  </section>
+
+  <section class="content-box" id="check-physical-link-first">
+    <h3>Check Physical Link First</h3>
+    <p>Look at:</p>
+    <ul>
+      <li>Ethernet cable</li>
+      <li>Port</li>
+      <li>Link lights</li>
+    </ul>
+    <p>If there is no physical link:</p>
+    <p>Tell IT.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <blockquote><p>No link light on device. Known-good cable tested. Device links normally in another room.</p></blockquote>
+    <p>That strongly suggests infrastructure at the original location.</p>
+  </section>
+
+  <section class="content-box" id="ip-address">
+    <h3>IP Address</h3>
+    <p>Record the actual IP.</p>
+    <p>Do not say:</p>
+    <blockquote><p>It has an IP.</p></blockquote>
+    <p>Give the value.</p>
+    <p>Example:</p>
+    <p>10.25.14.86.</p>
+  </section>
+
+  <section class="content-box" id="subnet-and-gateway">
+    <h3>Subnet and Gateway</h3>
+    <p>If available, record:</p>
+    <ul>
+      <li>Subnet mask</li>
+      <li>Default gateway</li>
+    </ul>
+    <p>These matter when troubleshooting reachability.</p>
+  </section>
+
+  <section class="content-box" id="mac-address">
+    <h3>MAC Address</h3>
+    <p>The MAC address identifies the network interface.</p>
+    <p>This is especially useful for IT because they may use it to locate the device on the switch.</p>
+  </section>
+
+  <section class="content-box" id="why-mac-matters">
+    <h3>Why MAC Matters</h3>
+    <p>IT may be able to determine:</p>
+    <ul>
+      <li>Which switch port sees the device</li>
+      <li>Whether the device moved</li>
+      <li>Whether port security recognizes it</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="main-board-replacement">
+    <h3>Main Board Replacement</h3>
+    <p>If a NIC or main board was replaced:</p>
+    <p>The MAC address may have changed.</p>
+    <p>Tell IT.</p>
+    <p>That can matter for:</p>
+    <ul>
+      <li>NAC</li>
+      <li>Port security</li>
+      <li>Device registration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="device-location">
+    <h3>Device Location</h3>
+    <p>Provide exact useful location.</p>
+    <p>Example:</p>
+    <blockquote><p>ED CT Room 2.</p></blockquote>
+    <p>Not:</p>
+    <blockquote><p>Somewhere in radiology.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="room-matters">
+    <h3>Room Matters</h3>
+    <p>A location-specific failure could involve:</p>
+    <ul>
+      <li>Wall jack</li>
+      <li>Switch port</li>
+      <li>VLAN assignment</li>
+      <li>Wi-Fi coverage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-device-vs-many">
+    <h3>One Device vs Many</h3>
+    <p>This is one of the highest-value pieces of information.</p>
+  </section>
+
+  <section class="content-box" id="one-device-only">
+    <h3>One Device Only</h3>
+    <p>If every other device works:</p>
+    <p>Think more locally.</p>
+  </section>
+
+  <section class="content-box" id="multiple-devices">
+    <h3>Multiple Devices</h3>
+    <p>If several devices fail at once:</p>
+    <p>Shared infrastructure becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="one-room-only">
+    <h3>One Room Only</h3>
+    <p>If every device in one room fails:</p>
+    <p>Think location.</p>
+  </section>
+
+  <section class="content-box" id="one-model-only">
+    <h3>One Model Only</h3>
+    <p>If all devices of one type fail but everything else works:</p>
+    <p>Think:</p>
+    <ul>
+      <li>Server</li>
+      <li>Application</li>
+      <li>Device-specific network path</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ask-what-changed">
+    <h3>Ask What Changed</h3>
+    <p>Useful changes include:</p>
+    <ul>
+      <li>Network outage</li>
+      <li>Switch replacement</li>
+      <li>VLAN change</li>
+      <li>Firewall change</li>
+      <li>Server migration</li>
+      <li>Software update</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="timing-is-useful">
+    <h3>Timing Is Useful</h3>
+    <p>If the problem started immediately after a planned outage:</p>
+    <p>That is relevant.</p>
+    <p>But it still does not prove the outage caused the problem.</p>
+  </section>
+
+  <section class="content-box" id="give-an-exact-timestamp">
+    <h3>Give an Exact Timestamp</h3>
+    <p>IT logs are time-based.</p>
+    <p>Instead of:</p>
+    <blockquote><p>It failed this morning.</p></blockquote>
+    <p>Say:</p>
+    <blockquote><p>Failure observed at approximately 08:42.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="why-this-helps">
+    <h3>Why This Helps</h3>
+    <p>IT can search:</p>
+    <ul>
+      <li>Firewall logs</li>
+      <li>Switch logs</li>
+      <li>Server logs</li>
+    </ul>
+    <p>around that time.</p>
+  </section>
+
+  <section class="content-box" id="ping-results">
+    <h3>Ping Results</h3>
+    <p>If allowed and appropriate, tell IT what you tested.</p>
+    <p>Example:</p>
+    <ul>
+      <li>Gateway ping succeeds</li>
+      <li>Server ping fails</li>
+    </ul>
+    <p>or:</p>
+    <ul>
+      <li>Both succeed</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-overstate-ping">
+    <h3>Do Not Overstate Ping</h3>
+    <p>Say:</p>
+    <blockquote><p>Server responds to ping.</p></blockquote>
+    <p>Do not say:</p>
+    <blockquote><p>Network is definitely good.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="application-port">
+    <h3>Application Port</h3>
+    <p>If you know the required port, include it.</p>
+    <p>Example:</p>
+    <blockquote><p>Device is configured to reach server 10.20.10.50 on TCP 2575.</p></blockquote>
+    <p>That is far better than:</p>
+    <blockquote><p>It can't connect.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="server-name">
+    <h3>Server Name</h3>
+    <p>Know which system the device is supposed to contact.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>PACS server</li>
+      <li>Central monitoring server</li>
+      <li>MUSE server</li>
+      <li>Integration gateway</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-server-is-too-vague">
+    <h3>“The Server” Is Too Vague</h3>
+    <p>Large systems may have:</p>
+    <ul>
+      <li>Application server</li>
+      <li>Database server</li>
+      <li>Interface server</li>
+    </ul>
+    <p>Be specific when possible.</p>
+  </section>
+
+  <section class="content-box" id="device-configuration-screenshot">
+    <h3>Device Configuration Screenshot</h3>
+    <p>When allowed, a screenshot of network configuration can be very useful.</p>
+    <p>Capture:</p>
+    <ul>
+      <li>IP</li>
+      <li>Gateway</li>
+      <li>Server</li>
+      <li>Port</li>
+      <li>Hostname</li>
+    </ul>
+    <p>before changing anything.</p>
+  </section>
+
+  <section class="content-box" id="document-before-changing">
+    <h3>Document Before Changing</h3>
+    <p>This is critical.</p>
+    <p>Do not start changing:</p>
+    <ul>
+      <li>IP</li>
+      <li>DNS</li>
+      <li>Gateway</li>
+      <li>Server address</li>
+    </ul>
+    <p>without recording the original values.</p>
+  </section>
+
+  <section class="content-box" id="avoid-random-network-changes">
+    <h3>Avoid Random Network Changes</h3>
+    <p>If you do not know what a setting does:</p>
+    <p>Do not guess.</p>
+    <p>Random changes can create:</p>
+    <ul>
+      <li>Duplicate IP</li>
+      <li>Wrong VLAN behavior</li>
+      <li>Lost server access</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="work-the-boundary">
+    <h3>Work the Boundary</h3>
+    <p>A useful biomed/IT boundary is:</p>
+    <p>Biomed proves what is happening at the device.</p>
+    <p>IT proves what is happening in the network.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Biomed:</p>
+    <blockquote><p>Device sends traffic to server IP.</p></blockquote>
+    <p>IT:</p>
+    <blockquote><p>Firewall sees traffic and allows it.</p></blockquote>
+    <p>Server team:</p>
+    <blockquote><p>Application is not listening.</p></blockquote>
+    <p>Now the problem is isolated.</p>
+  </section>
+
+  <section class="content-box" id="packet-evidence">
+    <h3>Packet Evidence</h3>
+    <p>IT may capture packets.</p>
+    <p>You do not need to be a Wireshark expert.</p>
+    <p>But you should understand what they may ask:</p>
+    <ul>
+      <li>Source IP</li>
+      <li>Destination IP</li>
+      <li>Port</li>
+      <li>Timestamp</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="switch-port">
+    <h3>Switch Port</h3>
+    <p>IT may identify the physical switch port associated with the device.</p>
+    <p>This can help verify:</p>
+    <ul>
+      <li>Link</li>
+      <li>Errors</li>
+      <li>VLAN</li>
+      <li>MAC learning</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="error-counters">
+    <h3>Error Counters</h3>
+    <p>A switch may show:</p>
+    <ul>
+      <li>CRC errors</li>
+      <li>Drops</li>
+      <li>Link flaps</li>
+    </ul>
+    <p>These can reveal a physical cabling problem.</p>
+  </section>
+
+  <section class="content-box" id="vlan">
+    <h3>VLAN</h3>
+    <p>If a device is on the wrong VLAN:</p>
+    <p>It may have physical link but no access to the required systems.</p>
+  </section>
+
+  <section class="content-box" id="ask-dont-demand">
+    <h3>Ask, Don’t Demand</h3>
+    <p>Instead of:</p>
+    <blockquote><p>Put this on VLAN 2651.</p></blockquote>
+    <p>Say:</p>
+    <blockquote><p>This device is expected to be on VLAN 2651 based on known-good units. Can you confirm the switch port configuration?</p></blockquote>
+    <p>That is collaborative and evidence-based.</p>
+  </section>
+
+  <section class="content-box" id="firewall">
+    <h3>Firewall</h3>
+    <p>If the device can ping but cannot connect to an application:</p>
+    <p>A firewall is one possibility.</p>
+    <p>But not the only one.</p>
+  </section>
+
+  <section class="content-box" id="better-request">
+    <h3>Better Request</h3>
+    <blockquote><p>Can you confirm whether traffic from 10.25.14.86 to 10.30.5.20 TCP 2575 is being allowed?</p></blockquote>
+    <p>That is actionable.</p>
+  </section>
+
+  <section class="content-box" id="server-service">
+    <h3>Server Service</h3>
+    <p>A server can be online while the application service is down.</p>
+    <p>Ask IT or the application team to confirm:</p>
+    <ul>
+      <li>Service running</li>
+      <li>Port listening</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-blame-it-too-early">
+    <h3>Do Not Blame IT Too Early</h3>
+    <p>The problem may be:</p>
+    <ul>
+      <li>Wrong device server address</li>
+      <li>Expired certificate</li>
+      <li>Device config</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="it-should-not-blame-the-device-too-early-either">
+    <h3>IT Should Not Blame the Device Too Early Either</h3>
+    <p>This is why evidence matters.</p>
+  </section>
+
+  <section class="content-box" id="known-good-comparison">
+    <h3>Known-Good Comparison</h3>
+    <p>Compare a working unit.</p>
+    <p>Record:</p>
+    <ul>
+      <li>IP range</li>
+      <li>Server address</li>
+      <li>Port</li>
+      <li>VLAN</li>
+      <li>Application settings</li>
+    </ul>
+    <p>Do not blindly copy a unique IP address.</p>
+  </section>
+
+  <section class="content-box" id="what-matches-and-what-differs">
+    <h3>What Matches and What Differs?</h3>
+    <p>That can reveal a misconfiguration quickly.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-device">
+    <h3>Failure Follows Device</h3>
+    <p>Device fails in multiple known-good ports.</p>
+    <p>Think device.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-location">
+    <h3>Failure Follows Location</h3>
+    <p>Multiple devices fail in one location.</p>
+    <p>Think infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-application">
+    <h3>Failure Follows Application</h3>
+    <p>All devices lose one service but retain other network functions.</p>
+    <p>Think server/application path.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-problems">
+    <h3>Wi-Fi Problems</h3>
+    <p>For wireless devices, collect:</p>
+    <ul>
+      <li>SSID</li>
+      <li>Signal strength if available</li>
+      <li>Location</li>
+      <li>Whether disconnect happens while roaming</li>
+      <li>Whether other devices are affected</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="strong-signal-is-not-enough">
+    <h3>Strong Signal Is Not Enough</h3>
+    <p>A device can have strong Wi-Fi signal and still fail:</p>
+    <ul>
+      <li>Authentication</li>
+      <li>DHCP</li>
+      <li>Server communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="work-with-security-teams">
+    <h3>Work With Security Teams</h3>
+    <p>Some network problems involve:</p>
+    <ul>
+      <li>Certificates</li>
+      <li>NAC</li>
+      <li>Firewall</li>
+      <li>Cybersecurity policy</li>
+    </ul>
+    <p>Do not bypass these controls to get a device working.</p>
+  </section>
+
+  <section class="content-box" id="medical-device-cybersecurity">
+    <h3>Medical Device Cybersecurity</h3>
+    <p>Biomeds and IT increasingly share responsibility for:</p>
+    <ul>
+      <li>Patching</li>
+      <li>Inventory</li>
+      <li>Network segmentation</li>
+      <li>Vulnerability management</li>
+    </ul>
+    <p>Neither team can do this effectively alone.</p>
+  </section>
+
+  <section class="content-box" id="define-ownership">
+    <h3>Define Ownership</h3>
+    <p>For recurring systems, it helps to know:</p>
+    <p><strong>Who owns what?</strong></p>
+    <p>Example:</p>
+    <p>Biomed:</p>
+    <ul>
+      <li>Device hardware</li>
+      <li>Device configuration</li>
+    </ul>
+    <p>IT:</p>
+    <ul>
+      <li>Switches</li>
+      <li>VLANs</li>
+      <li>Firewall</li>
+    </ul>
+    <p>Application team:</p>
+    <ul>
+      <li>Server/application</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ownership-prevents-confusion">
+    <h3>Ownership Prevents Confusion</h3>
+    <p>A ticket can be routed much faster when everyone knows the boundary.</p>
+  </section>
+
+  <section class="content-box" id="escalate-with-evidence">
+    <h3>Escalate With Evidence</h3>
+    <p>Weak escalation:</p>
+    <blockquote><p>Still broken. Please fix.</p></blockquote>
+    <p>Strong escalation:</p>
+    <blockquote><p>Device has link, correct static IP, and can ping gateway and server. TCP connection to required application port times out. Two other devices on same VLAN work. Failure began after 07:00 network maintenance.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="that-is-a-useful-ticket">
+    <h3>That Is a Useful Ticket</h3>
+    <p>It gives the next team something concrete.</p>
+  </section>
+
+  <section class="content-box" id="clinical-impact">
+    <h3>Clinical Impact</h3>
+    <p>Include impact.</p>
+    <p>Example:</p>
+    <blockquote><p>CT cannot retrieve patient worklist, requiring manual entry.</p></blockquote>
+    <p>That helps IT understand urgency.</p>
+  </section>
+
+  <section class="content-box" id="avoid-inflating-severity">
+    <h3>Avoid Inflating Severity</h3>
+    <p>Describe actual clinical impact honestly.</p>
+  </section>
+
+  <section class="content-box" id="screenshots">
+    <h3>Screenshots</h3>
+    <p>Useful screenshots may include:</p>
+    <ul>
+      <li>Network error</li>
+      <li>IP configuration</li>
+      <li>DICOM failure</li>
+      <li>Application message</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="exact-error-text-matters">
+    <h3>Exact Error Text Matters</h3>
+    <p>“Communication error” is weaker than:</p>
+    <blockquote><p>Connection refused: server 10.30.5.20 port 2575.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="save-logs">
+    <h3>Save Logs</h3>
+    <p>If device logs are available:</p>
+    <p>Preserve relevant entries.</p>
+  </section>
+
+  <section class="content-box" id="do-not-clear-logs-before-escalation">
+    <h3>Do Not Clear Logs Before Escalation</h3>
+    <p>They may contain the best evidence of what failed.</p>
+  </section>
+
+  <section class="content-box" id="use-plain-english">
+    <h3>Use Plain English</h3>
+    <p>You do not need to impress IT with jargon.</p>
+    <p>Clear evidence is more valuable.</p>
+  </section>
+
+  <section class="content-box" id="good-example">
+    <h3>Good Example</h3>
+    <blockquote><p>The device has link and a static IP but cannot reach the gateway.</p></blockquote>
+    <p>That is better than:</p>
+    <blockquote><p>Layer 3 routing architecture may be compromised.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="ask-specific-questions">
+    <h3>Ask Specific Questions</h3>
+    <p>Useful questions include:</p>
+    <ul>
+      <li>Can you see this MAC on the switch?</li>
+      <li>What VLAN is this port assigned to?</li>
+      <li>Can you see traffic to this server?</li>
+      <li>Is this TCP port allowed?</li>
+      <li>Is the server service listening?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="bad-question">
+    <h3>Bad Question</h3>
+    <blockquote><p>Can you check the network?</p></blockquote>
+    <p>Too broad.</p>
+  </section>
+
+  <section class="content-box" id="be-ready-to-stay-at-the-device">
+    <h3>Be Ready to Stay at the Device</h3>
+    <p>Sometimes IT needs you physically present to:</p>
+    <ul>
+      <li>Reboot</li>
+      <li>Disconnect cable</li>
+      <li>Trigger test transmission</li>
+      <li>Generate traffic</li>
+    </ul>
+    <p>Coordinate the test.</p>
+  </section>
+
+  <section class="content-box" id="trigger-the-failure-on-demand">
+    <h3>Trigger the Failure on Demand</h3>
+    <p>If possible:</p>
+    <p>Tell IT:</p>
+    <blockquote><p>I am sending a DICOM Echo now.</p></blockquote>
+    <p>Then they can watch traffic in real time.</p>
+  </section>
+
+  <section class="content-box" id="this-is-extremely-powerful">
+    <h3>This Is Extremely Powerful</h3>
+    <p>Real-time collaboration can turn a vague issue into:</p>
+    <blockquote><p>Request reaches firewall but server never responds.</p></blockquote>
+    <p>That is actual evidence.</p>
+  </section>
+
+  <section class="content-box" id="remote-support">
+    <h3>Remote Support</h3>
+    <p>OEM remote support may also depend on hospital networking.</p>
+    <p>If vendor cannot connect:</p>
+    <p>Separate:</p>
+    <ul>
+      <li>Device clinical connectivity</li>
+      <li>Vendor remote-access path</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-can-work-while-other-fails">
+    <h3>One Can Work While Other Fails</h3>
+    <p>A monitor may communicate perfectly with central but vendor remote service can be blocked.</p>
+    <p>Those are different paths.</p>
+  </section>
+
+  <section class="content-box" id="work-orders">
+    <h3>Work Orders</h3>
+    <p>Document enough network information for the next technician.</p>
+    <p>Example:</p>
+    <blockquote><p>Verified NIC link, IP 10.25.14.86, gateway reachable. Application server 10.30.5.20 reachable by ping, but application connection failed. IT confirmed TCP 2575 blocked at firewall and corrected rule. Device communication restored and verified.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="that-note-is-reusable-knowledge">
+    <h3>That Note Is Reusable Knowledge</h3>
+    <p>The next technician can understand the failure path.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="calling-it-before-checking-the-device">
+    <h3>Calling IT Before Checking the Device</h3>
+    <p>Do basic isolation first.</p>
+  </section>
+
+  <section class="content-box" id="saying-network-issue-without-evidence">
+    <h3>Saying “Network Issue” Without Evidence</h3>
+    <p>Describe the symptom.</p>
+  </section>
+
+  <section class="content-box" id="saying-ping-proves-everything">
+    <h3>Saying Ping Proves Everything</h3>
+    <p>It does not.</p>
+  </section>
+
+  <section class="content-box" id="not-giving-ip-or-mac">
+    <h3>Not Giving IP or MAC</h3>
+    <p>Those are basic identifiers.</p>
+  </section>
+
+  <section class="content-box" id="not-giving-a-timestamp">
+    <h3>Not Giving a Timestamp</h3>
+    <p>Logs become harder to correlate.</p>
+  </section>
+
+  <section class="content-box" id="changing-settings-without-recording-them">
+    <h3>Changing Settings Without Recording Them</h3>
+    <p>You can create more work.</p>
+  </section>
+
+  <section class="content-box" id="blaming-another-team">
+    <h3>Blaming Another Team</h3>
+    <p>Troubleshoot the system, not the department.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-collaboration-framework">
+    <h3>A Useful Collaboration Framework</h3>
+    <p>Before contacting IT, collect:</p>
+    <p><strong>Device</strong></p>
+    <p><strong>Location</strong></p>
+    <p><strong>IP</strong></p>
+    <p><strong>MAC</strong></p>
+    <p><strong>Symptom</strong></p>
+    <p><strong>Timestamp</strong></p>
+    <p><strong>Server</strong></p>
+    <p><strong>Port</strong></p>
+    <p><strong>What works</strong></p>
+    <p><strong>What fails</strong></p>
+    <p>Then ask:</p>
+    <p><strong>Can you see the same failure from the network side?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Where is the last point we can prove communication works?</strong></p>
+    <p>Maybe:</p>
+    <p>Device NIC.</p>
+    <p>Maybe:</p>
+    <p>Gateway.</p>
+    <p>Maybe:</p>
+    <p>Firewall.</p>
+    <p>Maybe:</p>
+    <p>Server.</p>
+    <p>That is how the teams meet in the middle.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If IT says:</p>
+    <blockquote><p>Switch port is up.</p></blockquote>
+    <p>You proved:</p>
+    <p><strong>The switch sees a physical link.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The medical application works.</strong></p>
+    <p>If biomed says:</p>
+    <blockquote><p>Device can ping the server.</p></blockquote>
+    <p>You proved:</p>
+    <p><strong>Some network reachability exists.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>Required service is available.</strong></p>
+    <p>If the device completes the real clinical transaction:</p>
+    <p>Now you have strong end-to-end evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Working with IT gets much easier when both teams stop arguing about ownership and start sharing evidence.</p>
+    <p>Biomed should understand enough networking to say:</p>
+    <p><strong>Here is what the device is doing.</strong></p>
+    <p>IT should be able to say:</p>
+    <p><strong>Here is what the network is doing.</strong></p>
+    <p>Then compare the two.</p>
+    <p>The best collaboration sounds like:</p>
+    <blockquote><p>I can prove the device gets this far.</p></blockquote>
+    <p>and:</p>
+    <blockquote><p>I can prove the traffic gets this far.</p></blockquote>
+    <p>Eventually those two lines meet.</p>
+    <p>That is where the problem is.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Network ownership, security policy, authorized troubleshooting tools, VLAN configuration, firewall access, and medical-device responsibilities vary by healthcare organization. Coordinate network and cybersecurity changes with authorized IT/security personnel, preserve device configuration before making changes, and follow facility policy for connected medical systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="ports-firewalls-and-why-a-device-can-ping-but-still-not-work.html">Ports, Firewalls, and Why a Device Can Ping but Still Not Work</a></li>
+      <li><a href="ethernet-ports-link-lights-and-what-they-tell-you.html">Ethernet Ports, Link Lights, and What They Tell You</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="how-to-isolate-device-vs-accessory-vs-infrastructure-problems.html">How to Isolate Device vs Accessory vs Infrastructure Problems</a></li>
+      <li><a href="how-to-ask-clinical-staff-better-troubleshooting-questions.html">How to Ask Clinical Staff Better Troubleshooting Questions</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

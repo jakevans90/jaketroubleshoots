@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Why Medical Equipment Reboots | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to medical-equipment reboots caused by power instability, battery transitions, overheating, watchdog resets, software faults, memory, storage, and peripherals.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/why-medical-equipment-reboots.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Why Medical Equipment Reboots</h2>
+  <p>How power instability, overheating, watchdog resets, software crashes, batteries, memory, and hardware faults can all make a medical device restart</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device that reboots can be deceptively hard to troubleshoot.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a reboot actually is</li>
+      <li>Power loss vs software restart</li>
+      <li>Brownouts</li>
+      <li>Batteries</li>
+      <li>Internal power supplies</li>
+      <li>Watchdog timers</li>
+      <li>Software crashes</li>
+      <li>Memory problems</li>
+      <li>Thermal shutdowns</li>
+      <li>Loose connectors</li>
+      <li>Peripheral faults</li>
+      <li>Event logs</li>
+      <li>Runtime patterns</li>
+      <li>Common failure patterns</li>
+      <li>How to troubleshoot intermittent reboots</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A device can reboot because:</p>
+    <p><strong>Power disappeared</strong></p>
+    <p>or:</p>
+    <p><strong>The processor intentionally restarted</strong></p>
+    <p>or:</p>
+    <p><strong>The processor crashed and a safety system restarted it.</strong></p>
+    <p>Those are different failure paths.</p>
+    <p>A useful first question is:</p>
+    <p><strong>Did the device lose power, or did it remain powered while the computer restarted?</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-a-reboot">
+    <h3>What Is a Reboot?</h3>
+    <p>A reboot means the device's processor starts its boot sequence again.</p>
+    <p>You may see:</p>
+    <ul>
+      <li>Manufacturer logo</li>
+      <li>Startup screen</li>
+      <li>Self-test</li>
+      <li>Software loading</li>
+    </ul>
+    <p>But the reason it restarted can vary.</p>
+  </section>
+
+  <section class="content-box" id="reboot-vs-shutdown">
+    <h3>Reboot vs Shutdown</h3>
+    <p>A shutdown is not always the same as a reboot.</p>
+    <p>A shutdown may involve:</p>
+    <ul>
+      <li>Controlled software sequence</li>
+      <li>Power removal</li>
+      <li>Thermal protection</li>
+    </ul>
+    <p>A reboot typically returns directly into startup.</p>
+  </section>
+
+  <section class="content-box" id="hard-reboot">
+    <h3>Hard Reboot</h3>
+    <p>A hard reboot may happen after:</p>
+    <ul>
+      <li>Sudden power loss</li>
+      <li>Processor reset</li>
+      <li>Watchdog event</li>
+    </ul>
+    <p>The operating system may not get time to shut down normally.</p>
+  </section>
+
+  <section class="content-box" id="soft-reboot">
+    <h3>Soft Reboot</h3>
+    <p>A soft reboot is initiated through software.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>User restart command</li>
+      <li>Software update</li>
+      <li>Operating system recovery</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="first-clue-what-does-the-screen-do">
+    <h3>First Clue: What Does the Screen Do?</h3>
+    <p>Ask staff what they actually saw.</p>
+    <p>Did it:</p>
+    <ul>
+      <li>Go completely black?</li>
+      <li>Show shutdown message?</li>
+      <li>Instantly show logo?</li>
+      <li>Freeze first?</li>
+      <li>Alarm before restarting?</li>
+    </ul>
+    <p>These details matter.</p>
+  </section>
+
+  <section class="content-box" id="screen-goes-completely-black">
+    <h3>Screen Goes Completely Black</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Loss of power</li>
+      <li>Power supply collapse</li>
+      <li>Battery disconnect</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="screen-freezes-then-reboots">
+    <h3>Screen Freezes Then Reboots</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Software crash</li>
+      <li>Main-board problem</li>
+      <li>Memory fault</li>
+      <li>Watchdog reset</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="power-source-matters">
+    <h3>Power Source Matters</h3>
+    <p>Ask whether the device was:</p>
+    <ul>
+      <li>On AC</li>
+      <li>On battery</li>
+      <li>Transitioning between them</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ac-to-battery-transfer">
+    <h3>AC to Battery Transfer</h3>
+    <p>A device may appear stable while plugged in but reboot when AC is disconnected.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Weak battery</li>
+      <li>Battery connection</li>
+      <li>Power-management circuit</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-to-ac-transfer">
+    <h3>Battery to AC Transfer</h3>
+    <p>A fault in the charging or power-transfer circuit could also cause reboot when AC is connected.</p>
+  </section>
+
+  <section class="content-box" id="weak-battery">
+    <h3>Weak Battery</h3>
+    <p>A weak battery can show:</p>
+    <ul>
+      <li>Normal voltage at rest</li>
+    </ul>
+    <p>but collapse under load.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Battery:</p>
+    <p>12.4 V unloaded.</p>
+    <p>Device starts.</p>
+    <p>Processor and display load increase.</p>
+    <p>Voltage drops suddenly.</p>
+    <p>Device resets.</p>
+  </section>
+
+  <section class="content-box" id="battery-percentage-is-not-proof">
+    <h3>Battery Percentage Is Not Proof</h3>
+    <p>The screen may say:</p>
+    <p>80%.</p>
+    <p>That does not prove the battery can support the load.</p>
+  </section>
+
+  <section class="content-box" id="battery-communication">
+    <h3>Battery Communication</h3>
+    <p>Some devices use smart batteries.</p>
+    <p>A communication fault may cause:</p>
+    <ul>
+      <li>Incorrect state-of-charge</li>
+      <li>Battery not recognized</li>
+      <li>Unexpected transfer behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-contacts">
+    <h3>Battery Contacts</h3>
+    <p>Loose or contaminated battery contacts can create:</p>
+    <ul>
+      <li>Momentary power interruption</li>
+      <li>Reboot during transport</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="movement-related-reboot">
+    <h3>Movement-Related Reboot</h3>
+    <p>If the complaint occurs when the cart rolls:</p>
+    <p>Think:</p>
+    <ul>
+      <li>Battery contacts</li>
+      <li>Power cable</li>
+      <li>Internal connector</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ac-power">
+    <h3>AC Power</h3>
+    <p>A brief interruption in wall power may cause reboot if the battery backup does not take over correctly.</p>
+  </section>
+
+  <section class="content-box" id="outlet-is-only-one-part">
+    <h3>Outlet Is Only One Part</h3>
+    <p>Possible AC path:</p>
+    <p><strong>Wall outlet</strong></p>
+    <p>↓</p>
+    <p><strong>Power cord</strong></p>
+    <p>↓</p>
+    <p><strong>Power-entry module</strong></p>
+    <p>↓</p>
+    <p><strong>Fuse</strong></p>
+    <p>↓</p>
+    <p><strong>Power supply</strong></p>
+  </section>
+
+  <section class="content-box" id="loose-power-cord">
+    <h3>Loose Power Cord</h3>
+    <p>A damaged or loose power cord can create very brief interruptions.</p>
+    <p>The device may restart too quickly for staff to notice the power loss itself.</p>
+  </section>
+
+  <section class="content-box" id="internal-power-supply">
+    <h3>Internal Power Supply</h3>
+    <p>The internal supply converts incoming power into DC rails.</p>
+    <p>Typical rails may include:</p>
+    <ul>
+      <li>24 V</li>
+      <li>12 V</li>
+      <li>5 V</li>
+      <li>3.3 V</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="processor-rails">
+    <h3>Processor Rails</h3>
+    <p>A processor may only need a tiny voltage drop to reset.</p>
+    <p>The display or fan may continue long enough to make the event look like:</p>
+    <blockquote><p>Software reboot.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="brownout">
+    <h3>Brownout</h3>
+    <p>A brownout is a drop in supply voltage rather than complete loss.</p>
+  </section>
+
+  <section class="content-box" id="brownout-detection">
+    <h3>Brownout Detection</h3>
+    <p>Processors often include reset circuitry that forces restart if voltage falls below a safe level.</p>
+    <p>That prevents unpredictable operation.</p>
+  </section>
+
+  <section class="content-box" id="power-good-signal">
+    <h3>Power-Good Signal</h3>
+    <p>A power supply may send:</p>
+    <p><strong>Power Good</strong></p>
+    <p>to the main board.</p>
+    <p>If that signal drops:</p>
+    <p>The processor may reset even if some voltage is still present.</p>
+  </section>
+
+  <section class="content-box" id="capacitors">
+    <h3>Capacitors</h3>
+    <p>Power supplies rely heavily on capacitors.</p>
+    <p>Aging capacitors can cause:</p>
+    <ul>
+      <li>Ripple</li>
+      <li>Startup problems</li>
+      <li>Load instability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="reboots-under-heavy-load">
+    <h3>Reboots Under Heavy Load</h3>
+    <p>If the device restarts only when:</p>
+    <ul>
+      <li>NIBP pump starts</li>
+      <li>Printer runs</li>
+      <li>Heater activates</li>
+      <li>Motor engages</li>
+    </ul>
+    <p>suspect load-dependent power instability.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor stable until NIBP starts.</p>
+    <p>Pump draws extra current.</p>
+    <p>5 V rail dips.</p>
+    <p>Processor reboots.</p>
+    <p>That strongly points toward power delivery.</p>
+  </section>
+
+  <section class="content-box" id="overheating">
+    <h3>Overheating</h3>
+    <p>Processors, power supplies, and other components may shut down or reset when too hot.</p>
+  </section>
+
+  <section class="content-box" id="thermal-pattern">
+    <h3>Thermal Pattern</h3>
+    <p>Device:</p>
+    <p>Works for 30 minutes.</p>
+    <p>Reboots.</p>
+    <p>Cools.</p>
+    <p>Works again.</p>
+    <p>That pattern is highly useful.</p>
+  </section>
+
+  <section class="content-box" id="fans-and-filters">
+    <h3>Fans and Filters</h3>
+    <p>Cooling problems may come from:</p>
+    <ul>
+      <li>Failed fan</li>
+      <li>Dirty filter</li>
+      <li>Blocked vent</li>
+      <li>Bad thermal interface</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="thermal-sensor">
+    <h3>Thermal Sensor</h3>
+    <p>A false temperature reading can also trigger a protective restart.</p>
+  </section>
+
+  <section class="content-box" id="actual-vs-reported-temperature">
+    <h3>Actual vs Reported Temperature</h3>
+    <p>Again ask:</p>
+    <p><strong>Is it truly overheating, or does it only think it is?</strong></p>
+  </section>
+
+  <section class="content-box" id="watchdog-timer">
+    <h3>Watchdog Timer</h3>
+    <p>A watchdog monitors processor health.</p>
+  </section>
+
+  <section class="content-box" id="basic-idea">
+    <h3>Basic Idea</h3>
+    <p>Software must periodically tell the watchdog:</p>
+    <blockquote><p>I am still running.</p></blockquote>
+    <p>If the software stops responding:</p>
+    <p>The watchdog resets the device.</p>
+  </section>
+
+  <section class="content-box" id="why-watchdogs-exist">
+    <h3>Why Watchdogs Exist</h3>
+    <p>In a medical device, a frozen processor may be more dangerous than a controlled restart.</p>
+    <p>The watchdog provides automatic recovery.</p>
+  </section>
+
+  <section class="content-box" id="watchdog-reset-is-a-clue">
+    <h3>Watchdog Reset Is a Clue</h3>
+    <p>If the event log says:</p>
+    <p><strong>Watchdog Reset</strong></p>
+    <p>you know the processor stopped behaving normally.</p>
+    <p>You still do not know why.</p>
+  </section>
+
+  <section class="content-box" id="possible-watchdog-causes">
+    <h3>Possible Watchdog Causes</h3>
+    <ul>
+      <li>Software bug</li>
+      <li>Memory corruption</li>
+      <li>CPU fault</li>
+      <li>Peripheral deadlock</li>
+      <li>Power instability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="software-crash">
+    <h3>Software Crash</h3>
+    <p>Medical devices often run:</p>
+    <ul>
+      <li>Embedded operating systems</li>
+      <li>Windows</li>
+      <li>Linux</li>
+      <li>Proprietary software</li>
+    </ul>
+    <p>Software can crash.</p>
+  </section>
+
+  <section class="content-box" id="crash-vs-power-loss">
+    <h3>Crash vs Power Loss</h3>
+    <p>A software crash may leave evidence such as:</p>
+    <ul>
+      <li>Error log</li>
+      <li>Dump file</li>
+      <li>Watchdog event</li>
+    </ul>
+    <p>Power loss may leave different evidence.</p>
+  </section>
+
+  <section class="content-box" id="event-logs-matter">
+    <h3>Event Logs Matter</h3>
+    <p>One of the first things to check after an intermittent reboot is:</p>
+    <p><strong>Event history.</strong></p>
+  </section>
+
+  <section class="content-box" id="useful-log-entries">
+    <h3>Useful Log Entries</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>Unexpected shutdown</li>
+      <li>Watchdog reset</li>
+      <li>Thermal event</li>
+      <li>Battery fault</li>
+      <li>Power failure</li>
+      <li>Application crash</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="timestamp-matters">
+    <h3>Timestamp Matters</h3>
+    <p>Compare the reported clinical time with log entries.</p>
+  </section>
+
+  <section class="content-box" id="no-log">
+    <h3>No Log</h3>
+    <p>A sudden power loss may prevent the device from recording anything.</p>
+    <p>So:</p>
+    <p>No event log does not prove the reboot did not occur.</p>
+  </section>
+
+  <section class="content-box" id="memory-problems">
+    <h3>Memory Problems</h3>
+    <p>RAM or flash memory faults can cause:</p>
+    <ul>
+      <li>Crashes</li>
+      <li>Boot loops</li>
+      <li>Random reboots</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ram">
+    <h3>RAM</h3>
+    <p>Faulty RAM can corrupt active software.</p>
+    <p>Possible result:</p>
+    <ul>
+      <li>Freeze</li>
+      <li>Restart</li>
+      <li>Watchdog</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="flash-storage">
+    <h3>Flash Storage</h3>
+    <p>Corrupt flash can affect:</p>
+    <ul>
+      <li>Firmware</li>
+      <li>Operating system</li>
+      <li>Configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="storage-failure">
+    <h3>Storage Failure</h3>
+    <p>A failing SSD or flash device may cause:</p>
+    <ul>
+      <li>Slow startup</li>
+      <li>File corruption</li>
+      <li>Reboot</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="boot-loop">
+    <h3>Boot Loop</h3>
+    <p>A boot loop is a more severe form of restart failure.</p>
+    <p>The device repeatedly:</p>
+    <p>Starts Fails Restarts</p>
+    <p>without reaching normal operation.</p>
+  </section>
+
+  <section class="content-box" id="software-update-problems">
+    <h3>Software Update Problems</h3>
+    <p>A bad or incomplete software update can create:</p>
+    <ul>
+      <li>Reboots</li>
+      <li>Startup errors</li>
+      <li>Compatibility problems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="firmware-mismatch">
+    <h3>Firmware Mismatch</h3>
+    <p>Replacing a board with incompatible firmware may also produce repeated restarts.</p>
+  </section>
+
+  <section class="content-box" id="peripheral-fault">
+    <h3>Peripheral Fault</h3>
+    <p>The main processor may restart because another module behaves badly.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Parameter module</li>
+      <li>USB device</li>
+      <li>Network interface</li>
+      <li>Internal peripheral</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="boot-with-peripheral-removed">
+    <h3>Boot With Peripheral Removed</h3>
+    <p>If manufacturer procedure permits:</p>
+    <p>Removing a suspect module can help isolate the failure.</p>
+  </section>
+
+  <section class="content-box" id="usb-device">
+    <h3>USB Device</h3>
+    <p>A failed USB peripheral can sometimes cause:</p>
+    <ul>
+      <li>Boot hang</li>
+      <li>Driver crash</li>
+      <li>Reboot</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="network-driver">
+    <h3>Network Driver</h3>
+    <p>A network adapter or driver can also destabilize computer-based equipment.</p>
+  </section>
+
+  <section class="content-box" id="external-accessory">
+    <h3>External Accessory</h3>
+    <p>Do not forget external devices.</p>
+    <p>A connected accessory may cause:</p>
+    <ul>
+      <li>Short</li>
+      <li>Communication fault</li>
+      <li>Excess load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device reboots only when a specific module is attached.</p>
+    <p>Known-good module:</p>
+    <p>No reboot.</p>
+    <p>Failure follows accessory.</p>
+  </section>
+
+  <section class="content-box" id="loose-internal-connector">
+    <h3>Loose Internal Connector</h3>
+    <p>Vibration can briefly interrupt:</p>
+    <ul>
+      <li>Power</li>
+      <li>Data</li>
+      <li>Reset signal</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="movement-test">
+    <h3>Movement Test</h3>
+    <p>If safe and appropriate:</p>
+    <p>Reproduce normal transport or cable movement.</p>
+  </section>
+
+  <section class="content-box" id="do-not-shake-the-device-aggressively">
+    <h3>Do Not Shake the Device Aggressively</h3>
+    <p>Controlled reproduction should resemble real use.</p>
+  </section>
+
+  <section class="content-box" id="main-board">
+    <h3>Main Board</h3>
+    <p>A failing main board may produce:</p>
+    <ul>
+      <li>Random resets</li>
+      <li>No clear pattern</li>
+      <li>Multiple unrelated faults</li>
+    </ul>
+    <p>But board replacement should come after lower-level causes are considered.</p>
+  </section>
+
+  <section class="content-box" id="clock-or-reset-circuit">
+    <h3>Clock or Reset Circuit</h3>
+    <p>The processor relies on:</p>
+    <ul>
+      <li>Stable clock</li>
+      <li>Reset circuitry</li>
+    </ul>
+    <p>Faults here can mimic software instability.</p>
+  </section>
+
+  <section class="content-box" id="reboot-during-startup">
+    <h3>Reboot During Startup</h3>
+    <p>If the device consistently restarts at the same point:</p>
+    <p>That is useful.</p>
+  </section>
+
+  <section class="content-box" id="same-point-every-time">
+    <h3>Same Point Every Time</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Software load failure</li>
+      <li>Peripheral initialization</li>
+      <li>Power demand increase</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device boots until display turns on.</p>
+    <p>Then reboots.</p>
+    <p>Backlight load may expose weak power supply.</p>
+  </section>
+
+  <section class="content-box" id="random-timing">
+    <h3>Random Timing</h3>
+    <p>Truly random reboots are harder.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Movement</li>
+      <li>Battery state</li>
+      <li>Workload</li>
+    </ul>
+    <p>There is often a hidden pattern.</p>
+  </section>
+
+  <section class="content-box" id="clinical-questions">
+    <h3>Clinical Questions</h3>
+    <p>Ask:</p>
+    <ul>
+      <li>What was happening when it rebooted?</li>
+      <li>Was it plugged in?</li>
+      <li>Was it moving?</li>
+      <li>Was NIBP running?</li>
+      <li>How long had it been on?</li>
+      <li>Did an error appear first?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-reboot-vs-repeated-reboots">
+    <h3>One Reboot vs Repeated Reboots</h3>
+    <p>One isolated reboot may be difficult to reproduce.</p>
+    <p>Repeated events create stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="service-history">
+    <h3>Service History</h3>
+    <p>Check whether the device has prior complaints for:</p>
+    <ul>
+      <li>Reboot</li>
+      <li>Shutdown</li>
+      <li>Power loss</li>
+      <li>Battery issues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pattern-across-work-orders">
+    <h3>Pattern Across Work Orders</h3>
+    <p>Several “different” complaints may really be the same fault.</p>
+  </section>
+
+  <section class="content-box" id="long-duration-testing">
+    <h3>Long-Duration Testing</h3>
+    <p>If it fails after hours of use:</p>
+    <p>Test long enough.</p>
+    <p>A ten-minute bench test proves little.</p>
+  </section>
+
+  <section class="content-box" id="load-testing">
+    <h3>Load Testing</h3>
+    <p>Exercise functions that increase power demand.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>NIBP</li>
+      <li>Printer</li>
+      <li>Battery charging</li>
+      <li>Motor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ac-and-battery-testing">
+    <h3>AC and Battery Testing</h3>
+    <p>Run separately on:</p>
+    <ul>
+      <li>AC</li>
+      <li>Battery</li>
+    </ul>
+    <p>Then test transitions.</p>
+  </section>
+
+  <section class="content-box" id="power-rail-monitoring">
+    <h3>Power Rail Monitoring</h3>
+    <p>For intermittent reboots, it may be useful to monitor suspect DC rails if manufacturer procedures permit.</p>
+  </section>
+
+  <section class="content-box" id="multimeter-limitation">
+    <h3>Multimeter Limitation</h3>
+    <p>A multimeter may miss a very brief voltage drop.</p>
+  </section>
+
+  <section class="content-box" id="oscilloscope">
+    <h3>Oscilloscope</h3>
+    <p>An oscilloscope can reveal:</p>
+    <ul>
+      <li>Transient dips</li>
+      <li>Ripple</li>
+      <li>Noise</li>
+    </ul>
+    <p>that a slower meter may miss.</p>
+  </section>
+
+  <section class="content-box" id="but-start-simple">
+    <h3>But Start Simple</h3>
+    <p>Do not begin with an oscilloscope if:</p>
+    <ul>
+      <li>Battery is loose</li>
+      <li>Fan is packed with dust</li>
+    </ul>
+    <p>Work from common causes outward.</p>
+  </section>
+
+  <section class="content-box" id="error-correlation">
+    <h3>Error Correlation</h3>
+    <p>If reboot always follows:</p>
+    <p><strong>High temperature alarm</strong></p>
+    <p>that is significant.</p>
+    <p>If reboot always follows:</p>
+    <p><strong>Battery communication lost</strong></p>
+    <p>that is significant.</p>
+  </section>
+
+  <section class="content-box" id="one-device-vs-many">
+    <h3>One Device vs Many</h3>
+    <p>If several devices reboot simultaneously:</p>
+    <p>Think shared infrastructure.</p>
+    <p>Possible causes:</p>
+    <ul>
+      <li>AC power event</li>
+      <li>Network/software event</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="single-device">
+    <h3>Single Device</h3>
+    <p>A single affected unit points more toward local hardware or configuration.</p>
+  </section>
+
+  <section class="content-box" id="server-restart-vs-device-restart">
+    <h3>Server Restart vs Device Restart</h3>
+    <p>Sometimes staff says:</p>
+    <blockquote><p>The monitors rebooted.</p></blockquote>
+    <p>What actually happened may be:</p>
+    <p>Central station application restarted.</p>
+    <p>The bedside devices never rebooted.</p>
+    <p>Clarify the scope.</p>
+  </section>
+
+  <section class="content-box" id="display-restart-only">
+    <h3>Display Restart Only</h3>
+    <p>Some devices have separate computers or displays.</p>
+    <p>The display can restart while therapy continues.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ventilator GUI reboots.</p>
+    <p>Blower continues ventilating.</p>
+    <p>That architecture is very different from full device power loss.</p>
+  </section>
+
+  <section class="content-box" id="know-the-system-architecture">
+    <h3>Know the System Architecture</h3>
+    <p>A medical device may contain:</p>
+    <ul>
+      <li>Therapy controller</li>
+      <li>User interface processor</li>
+      <li>Safety processor</li>
+    </ul>
+    <p>One can reset without all of them resetting.</p>
+  </section>
+
+  <section class="content-box" id="alarm-during-reboot">
+    <h3>Alarm During Reboot</h3>
+    <p>Safety systems may generate:</p>
+    <ul>
+      <li>Technical alarm</li>
+      <li>Backup alarm</li>
+    </ul>
+    <p>when a processor restarts.</p>
+  </section>
+
+  <section class="content-box" id="reboot-is-sometimes-protective">
+    <h3>Reboot Is Sometimes Protective</h3>
+    <p>A controlled restart may be the device responding correctly to an internal fault.</p>
+    <p>The reboot is not necessarily the root cause.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="calling-every-reboot-a-software-glitch">
+    <h3>Calling Every Reboot a Software Glitch</h3>
+    <p>Power problems are common.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-battery-because-the-device-restarted">
+    <h3>Replacing the Battery Because the Device Restarted</h3>
+    <p>Test the battery and power path first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-load-conditions">
+    <h3>Ignoring Load Conditions</h3>
+    <p>Reboots may only appear during high current draw.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-the-device-and-calling-it-repaired">
+    <h3>Rebooting the Device and Calling It Repaired</h3>
+    <p>You only proved it started again.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-temperature">
+    <h3>Ignoring Temperature</h3>
+    <p>Thermal faults are often delayed.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-event-logs">
+    <h3>Ignoring Event Logs</h3>
+    <p>They may contain the only evidence.</p>
+  </section>
+
+  <section class="content-box" id="replacing-main-board-too-early">
+    <h3>Replacing Main Board Too Early</h3>
+    <p>Follow the lower-level evidence first.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a rebooting device, ask:</p>
+    <p><strong>Did the entire device lose power?</strong></p>
+    <p>Then:</p>
+    <p><strong>Was it on AC, battery, or transitioning?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did it happen under a specific load?</strong></p>
+    <p>Then:</p>
+    <p><strong>Was the device hot?</strong></p>
+    <p>Then:</p>
+    <p><strong>What do the event logs show?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure reproduce with known-good power and accessories?</strong></p>
+    <p>That separates:</p>
+    <ul>
+      <li>Power</li>
+      <li>Battery</li>
+      <li>Thermal</li>
+      <li>Software</li>
+      <li>Peripheral</li>
+      <li>Main board</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What changed immediately before the reboot?</strong></p>
+    <p>Examples:</p>
+    <ul>
+      <li>Pump started</li>
+      <li>Device unplugged</li>
+      <li>Cart moved</li>
+      <li>Temperature rose</li>
+      <li>Module connected</li>
+    </ul>
+    <p>The trigger can be more valuable than the reboot itself.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device reboots once and then works:</p>
+    <p>You proved:</p>
+    <p><strong>It successfully completed startup after the event.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The fault is fixed.</strong></p>
+    <p>If replacing a battery stops the reboot:</p>
+    <p>You proved more if:</p>
+    <ul>
+      <li>Original battery fails load test</li>
+      <li>Known-good battery works</li>
+      <li>Failure follows original battery</li>
+    </ul>
+    <p>If the log reports:</p>
+    <p><strong>Watchdog reset,</strong></p>
+    <p>you proved:</p>
+    <p><strong>The watchdog triggered a restart.</strong></p>
+    <p>You did not prove why the processor became unresponsive.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A reboot is not a diagnosis.</p>
+    <p>It is a symptom that tells you:</p>
+    <p><strong>Normal operation stopped and startup began again.</strong></p>
+    <p>Think in major categories:</p>
+    <p><strong>Power</strong></p>
+    <p><strong>Battery</strong></p>
+    <p><strong>Heat</strong></p>
+    <p><strong>Software</strong></p>
+    <p><strong>Memory</strong></p>
+    <p><strong>Peripheral</strong></p>
+    <p><strong>Main Board</strong></p>
+    <p>Then look for the trigger.</p>
+    <p>Did the power rail dip?</p>
+    <p>Did the battery disconnect?</p>
+    <p>Did the device get hot?</p>
+    <p>Did software freeze?</p>
+    <p>Did a peripheral cause the crash?</p>
+    <p>Once you stop treating:</p>
+    <blockquote><p>Random reboot</p></blockquote>
+    <p>as one specific failure, the problem becomes much easier to isolate.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Device power architecture, watchdog behavior, event logging, thermal protection, battery management, processor design, software-recovery behavior, and acceptable service tests vary by manufacturer and model. Follow current manufacturer service documentation, preserve event logs when appropriate, use approved test methods, and complete all required functional and safety verification before returning equipment to service.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-medical-device-cooling-systems-work.html">How Medical Device Cooling Systems Work</a></li>
+      <li><a href="medical-equipment-power-troubleshooting-outlet-to-internal-supply.html">Medical Equipment Power Troubleshooting: Outlet to Internal Supply</a></li>
+      <li><a href="how-medical-device-batteries-charge-and-communicate.html">How Medical Device Batteries Charge and Communicate</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ports, Firewalls, and Why a Device Can Ping but Still Not Work | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of why successful ping does not prove an application works, including ports, firewalls, services, DNS, routing, and device-to-server troubleshooting.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/ports-firewalls-and-why-a-device-can-ping-but-still-not-work.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Ports, Firewalls, and Why a Device Can Ping but Still Not Work</h2>
+  <p>Why successful ping does not prove an application works and how biomeds can think through blocked ports, server services, and network communication in plain English</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One of the most common network troubleshooting traps in biomed is:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What ping actually tests</li>
+      <li>ICMP</li>
+      <li>TCP and UDP</li>
+      <li>Network ports</li>
+      <li>Firewalls</li>
+      <li>Application services</li>
+      <li>Open vs closed ports</li>
+      <li>Why ping can work when the application fails</li>
+      <li>DICOM and other medical-device examples</li>
+      <li>Server-side failures</li>
+      <li>Network-path failures</li>
+      <li>Common troubleshooting mistakes</li>
+      <li>How biomeds can work effectively with IT</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A networked application path may look like:</p>
+    <p><strong>Medical Device</strong></p>
+    <p>↓</p>
+    <p><strong>IP Network</strong></p>
+    <p>↓</p>
+    <p><strong>Firewall</strong></p>
+    <p>↓</p>
+    <p><strong>Server</strong></p>
+    <p>↓</p>
+    <p><strong>Application Service</strong></p>
+    <p>Ping may only prove:</p>
+    <p><strong>Device → IP Network → Target responds to ICMP.</strong></p>
+    <p>It does not prove:</p>
+    <p><strong>Device → Required Application Port → Correct Server Service.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-ping">
+    <h3>What Is Ping?</h3>
+    <p>Ping is a basic network diagnostic tool.</p>
+    <p>It generally uses:</p>
+    <p><strong>ICMP</strong></p>
+    <p>which stands for:</p>
+    <p><strong>Internet Control Message Protocol.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-ping-asks">
+    <h3>What Ping Asks</h3>
+    <p>Conceptually, ping says:</p>
+    <blockquote><p>Are you reachable at this IP address, and will you answer an ICMP echo request?</p></blockquote>
+    <p>If the other host replies:</p>
+    <p>You have evidence of basic IP reachability.</p>
+  </section>
+
+  <section class="content-box" id="successful-ping-is-useful">
+    <h3>Successful Ping Is Useful</h3>
+    <p>If Device A can ping Server B, you have evidence that several things are probably working:</p>
+    <ul>
+      <li>Device network interface</li>
+      <li>Basic IP configuration</li>
+      <li>Some portion of the network path</li>
+      <li>Target host is reachable enough to answer</li>
+    </ul>
+    <p>That is valuable.</p>
+  </section>
+
+  <section class="content-box" id="but-ping-is-not-the-application">
+    <h3>But Ping Is Not the Application</h3>
+    <p>A PACS server does not receive CT images using ping.</p>
+    <p>A central monitoring server does not normally receive patient waveforms using ping.</p>
+    <p>MUSE does not exchange ECG data using ping.</p>
+    <p>Those applications use other protocols.</p>
+  </section>
+
+  <section class="content-box" id="think-of-an-ip-address-like-a-building-address">
+    <h3>Think of an IP Address Like a Building Address</h3>
+    <p>The IP address gets you to the:</p>
+    <p><strong>Building.</strong></p>
+    <p>The port tells you which:</p>
+    <p><strong>Door.</strong></p>
+  </section>
+
+  <section class="content-box" id="network-ports">
+    <h3>Network Ports</h3>
+    <p>TCP and UDP use numbered ports to identify different services.</p>
+    <p>Examples might include:</p>
+    <ul>
+      <li>Web server</li>
+      <li>Database</li>
+      <li>DICOM service</li>
+      <li>Proprietary medical-device service</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-server-can-run-many-services">
+    <h3>One Server Can Run Many Services</h3>
+    <p>A single server IP may support:</p>
+    <ul>
+      <li>Web interface</li>
+      <li>Database</li>
+      <li>DICOM listener</li>
+      <li>Management service</li>
+    </ul>
+    <p>Each may use a different port.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Server IP:</p>
+    <p>10.20.30.40</p>
+    <p>A device might ping:</p>
+    <p>10.20.30.40</p>
+    <p>successfully.</p>
+    <p>But its clinical application may need:</p>
+    <p>10.20.30.40:104</p>
+    <p>or another configured port.</p>
+    <p>If that port is blocked or the service is not listening:</p>
+    <p>The application still fails.</p>
+  </section>
+
+  <section class="content-box" id="tcp">
+    <h3>TCP</h3>
+    <p>TCP stands for:</p>
+    <p><strong>Transmission Control Protocol.</strong></p>
+    <p>It is connection-oriented.</p>
+    <p>Before sending application data, two systems generally establish a connection.</p>
+  </section>
+
+  <section class="content-box" id="tcp-reliability">
+    <h3>TCP Reliability</h3>
+    <p>TCP includes mechanisms for:</p>
+    <ul>
+      <li>Delivery confirmation</li>
+      <li>Ordering</li>
+      <li>Retransmission</li>
+    </ul>
+    <p>This makes it useful for many healthcare applications.</p>
+  </section>
+
+  <section class="content-box" id="udp">
+    <h3>UDP</h3>
+    <p>UDP stands for:</p>
+    <p><strong>User Datagram Protocol.</strong></p>
+    <p>It is simpler and does not establish the same type of reliable connection.</p>
+    <p>Some real-time or specialized systems use UDP.</p>
+  </section>
+
+  <section class="content-box" id="port-number">
+    <h3>Port Number</h3>
+    <p>A TCP or UDP port is a number associated with a service.</p>
+    <p>Ports range from:</p>
+    <p>0 through 65535.</p>
+  </section>
+
+  <section class="content-box" id="well-known-ports">
+    <h3>Well-Known Ports</h3>
+    <p>Some services commonly use standardized ports.</p>
+    <p>But medical-device manufacturers may also use:</p>
+    <ul>
+      <li>Proprietary ports</li>
+      <li>Configurable ports</li>
+    </ul>
+    <p>Never assume the correct port without documentation.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-firewall">
+    <h3>What Is a Firewall?</h3>
+    <p>A firewall controls network traffic based on rules.</p>
+    <p>It may decide:</p>
+    <p><strong>Allow</strong></p>
+    <p>or:</p>
+    <p><strong>Block</strong></p>
+    <p>based on things such as:</p>
+    <ul>
+      <li>Source IP</li>
+      <li>Destination IP</li>
+      <li>Protocol</li>
+      <li>Source port</li>
+      <li>Destination port</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="firewall-example">
+    <h3>Firewall Example</h3>
+    <p>Rule:</p>
+    <p>Allow ICMP.</p>
+    <p>Result:</p>
+    <p>Ping works.</p>
+    <p>Another rule:</p>
+    <p>Block TCP port used by medical application.</p>
+    <p>Result:</p>
+    <p>Application fails.</p>
+    <p>This is a classic:</p>
+    <p><strong>Ping works but device does not work</strong></p>
+    <p>scenario.</p>
+  </section>
+
+  <section class="content-box" id="firewall-can-exist-in-several-places">
+    <h3>Firewall Can Exist in Several Places</h3>
+    <p>Possible firewall locations include:</p>
+    <ul>
+      <li>Network firewall</li>
+      <li>Server operating system</li>
+      <li>Device operating system</li>
+      <li>Cloud or data-center firewall</li>
+      <li>Security appliance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="server-firewall">
+    <h3>Server Firewall</h3>
+    <p>Even if the hospital network allows the traffic, the server itself may reject it.</p>
+  </section>
+
+  <section class="content-box" id="windows-firewall-example">
+    <h3>Windows Firewall Example</h3>
+    <p>Server responds to ping.</p>
+    <p>Application port blocked by local Windows firewall.</p>
+    <p>The network path is mostly fine.</p>
+    <p>The application still cannot connect.</p>
+  </section>
+
+  <section class="content-box" id="what-is-an-open-port">
+    <h3>What Is an Open Port?</h3>
+    <p>An open port generally means a service is:</p>
+    <ul>
+      <li>Listening</li>
+      <li>Available for connection</li>
+    </ul>
+    <p>at that IP/port combination.</p>
+  </section>
+
+  <section class="content-box" id="closed-port">
+    <h3>Closed Port</h3>
+    <p>A closed port usually means:</p>
+    <p>The host is reachable, but no service is accepting connections on that port.</p>
+  </section>
+
+  <section class="content-box" id="filtered-port">
+    <h3>Filtered Port</h3>
+    <p>A firewall may silently block traffic.</p>
+    <p>The sender may see:</p>
+    <ul>
+      <li>Timeout</li>
+      <li>No response</li>
+    </ul>
+    <p>rather than an immediate rejection.</p>
+  </section>
+
+  <section class="content-box" id="timeout-vs-refused">
+    <h3>Timeout vs Refused</h3>
+    <p>These can provide clues.</p>
+  </section>
+
+  <section class="content-box" id="connection-refused">
+    <h3>Connection Refused</h3>
+    <p>May suggest:</p>
+    <ul>
+      <li>Host reachable</li>
+      <li>Port reached</li>
+      <li>No service listening</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="timeout">
+    <h3>Timeout</h3>
+    <p>May suggest:</p>
+    <ul>
+      <li>Firewall</li>
+      <li>Routing</li>
+      <li>Host unavailable</li>
+    </ul>
+    <p>But exact behavior varies.</p>
+  </section>
+
+  <section class="content-box" id="application-service">
+    <h3>Application Service</h3>
+    <p>The server needs software actively listening for the connection.</p>
+  </section>
+
+  <section class="content-box" id="server-is-on-does-not-mean-service-is-running">
+    <h3>Server Is On Does Not Mean Service Is Running</h3>
+    <p>A server can:</p>
+    <ul>
+      <li>Respond to ping</li>
+      <li>Allow remote desktop</li>
+      <li>Host other applications</li>
+    </ul>
+    <p>while the medical-device service itself is stopped.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Integration server:</p>
+    <p>Online.</p>
+    <p>Ping:</p>
+    <p>Pass.</p>
+    <p>Required interface service:</p>
+    <p>Stopped.</p>
+    <p>Medical devices cannot connect.</p>
+  </section>
+
+  <section class="content-box" id="restarting-the-entire-server-is-not-always-necessary">
+    <h3>Restarting the Entire Server Is Not Always Necessary</h3>
+    <p>Sometimes IT only needs to restart:</p>
+    <ul>
+      <li>Specific service</li>
+      <li>Application</li>
+      <li>Interface engine</li>
+    </ul>
+    <p>Troubleshoot at the correct layer.</p>
+  </section>
+
+  <section class="content-box" id="dicom-example">
+    <h3>DICOM Example</h3>
+    <p>An imaging device may need to send images to PACS.</p>
+    <p>Configuration may include:</p>
+    <ul>
+      <li>Destination IP</li>
+      <li>Port</li>
+      <li>AE Title</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-to-pacs-works">
+    <h3>Ping to PACS Works</h3>
+    <p>That proves:</p>
+    <p>Basic reachability.</p>
+  </section>
+
+  <section class="content-box" id="dicom-echo-fails">
+    <h3>DICOM Echo Fails</h3>
+    <p>Now possible causes include:</p>
+    <ul>
+      <li>Wrong port</li>
+      <li>DICOM service stopped</li>
+      <li>Firewall</li>
+      <li>Wrong AE Title</li>
+      <li>Application configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-and-dicom-echo-are-different-tests">
+    <h3>Ping and DICOM Echo Are Different Tests</h3>
+    <p>Ping:</p>
+    <p><strong>Network reachability.</strong></p>
+    <p>DICOM Echo:</p>
+    <p><strong>DICOM application communication.</strong></p>
+    <p>A successful DICOM Echo proves significantly more for an imaging workflow.</p>
+  </section>
+
+  <section class="content-box" id="dicom-storage-can-still-fail">
+    <h3>DICOM Storage Can Still Fail</h3>
+    <p>Even if DICOM Echo works:</p>
+    <p>Image storage could still fail because of:</p>
+    <ul>
+      <li>AE configuration</li>
+      <li>Storage permission</li>
+      <li>Unsupported object</li>
+      <li>PACS application issue</li>
+    </ul>
+    <p>Again:</p>
+    <p>Each test has a boundary.</p>
+  </section>
+
+  <section class="content-box" id="central-monitoring-example">
+    <h3>Central Monitoring Example</h3>
+    <p>Bedside monitor:</p>
+    <ul>
+      <li>Ethernet link good</li>
+      <li>IP correct</li>
+      <li>Ping server succeeds</li>
+    </ul>
+    <p>But:</p>
+    <p>Central does not display monitor.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Wrong application port</li>
+      <li>Monitoring service stopped</li>
+      <li>Bed configuration</li>
+      <li>Device not admitted/assigned</li>
+      <li>Firewall</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="emr-integration-example">
+    <h3>EMR Integration Example</h3>
+    <p>Bedside monitor works.</p>
+    <p>Central station works.</p>
+    <p>Patient data does not reach EMR.</p>
+    <p>Ping to integration server works.</p>
+    <p>The problem might be:</p>
+    <ul>
+      <li>Middleware</li>
+      <li>HL7 interface</li>
+      <li>Patient association</li>
+      <li>Downstream server</li>
+    </ul>
+    <p>The bedside network may be completely healthy.</p>
+  </section>
+
+  <section class="content-box" id="muse-example">
+    <h3>MUSE Example</h3>
+    <p>ECG cart:</p>
+    <p>Obtains IP.</p>
+    <p>Pings server.</p>
+    <p>Cannot transmit ECG.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>MUSE service</li>
+      <li>Configured port</li>
+      <li>Device hostname/server settings</li>
+      <li>Firewall</li>
+    </ul>
+    <p>Do not stop at ping.</p>
+  </section>
+
+  <section class="content-box" id="remote-service-example">
+    <h3>Remote Service Example</h3>
+    <p>Manufacturer remote support cannot connect.</p>
+    <p>Device itself communicates normally with hospital systems.</p>
+    <p>This may indicate:</p>
+    <ul>
+      <li>Remote-service port blocked</li>
+      <li>VPN issue</li>
+      <li>Vendor gateway issue</li>
+    </ul>
+    <p>rather than device failure.</p>
+  </section>
+
+  <section class="content-box" id="direction-matters">
+    <h3>Direction Matters</h3>
+    <p>Firewall rules can depend on direction.</p>
+    <p>A rule might allow:</p>
+    <p><strong>Device → Server</strong></p>
+    <p>but block:</p>
+    <p><strong>Server → Device.</strong></p>
+  </section>
+
+  <section class="content-box" id="initiator-matters">
+    <h3>Initiator Matters</h3>
+    <p>Ask:</p>
+    <p><strong>Which side starts the connection?</strong></p>
+    <p>This matters when working with IT.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>You may assume server connects to monitor.</p>
+    <p>Actual architecture:</p>
+    <p>Monitor initiates connection to server.</p>
+    <p>Firewall rule needs to permit that direction.</p>
+  </section>
+
+  <section class="content-box" id="source-and-destination">
+    <h3>Source and Destination</h3>
+    <p>When requesting firewall help, provide:</p>
+    <ul>
+      <li>Source IP</li>
+      <li>Destination IP</li>
+      <li>Protocol</li>
+      <li>Destination port</li>
+    </ul>
+    <p>That is much more useful than:</p>
+    <blockquote><p>Can you open the firewall for this monitor?</p></blockquote>
+  </section>
+
+  <section class="content-box" id="port-range">
+    <h3>Port Range</h3>
+    <p>Some applications use:</p>
+    <ul>
+      <li>One port</li>
+      <li>Several ports</li>
+      <li>Dynamic port ranges</li>
+    </ul>
+    <p>Check manufacturer documentation.</p>
+  </section>
+
+  <section class="content-box" id="do-not-ask-it-to-open-everything">
+    <h3>Do Not Ask IT to “Open Everything”</h3>
+    <p>That is poor security practice.</p>
+    <p>Specify only what is required.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-matters">
+    <h3>Cybersecurity Matters</h3>
+    <p>Medical devices still exist inside a secured network.</p>
+    <p>Randomly disabling firewalls can create risk.</p>
+    <p>Coordinate with authorized IT/security teams.</p>
+  </section>
+
+  <section class="content-box" id="vlans-and-ports-are-different">
+    <h3>VLANs and Ports Are Different</h3>
+    <p>A VLAN determines logical network placement.</p>
+    <p>A TCP/UDP port identifies an application service.</p>
+    <p>They are unrelated concepts despite both using the word:</p>
+    <p><strong>Port.</strong></p>
+  </section>
+
+  <section class="content-box" id="physical-switch-port">
+    <h3>Physical Switch Port</h3>
+    <p>Another use of the word “port” is:</p>
+    <p><strong>Ethernet switch port.</strong></p>
+    <p>So there are at least three common meanings:</p>
+    <ul>
+      <li>Physical Ethernet port</li>
+      <li>Switch port</li>
+      <li>TCP/UDP application port</li>
+    </ul>
+    <p>Do not confuse them.</p>
+  </section>
+
+  <section class="content-box" id="physical-link-can-work-while-application-port-is-blocked">
+    <h3>Physical Link Can Work While Application Port Is Blocked</h3>
+    <p>That is exactly why:</p>
+    <ul>
+      <li>Link light</li>
+      <li>Ping</li>
+    </ul>
+    <p>can both look perfect while the clinical application fails.</p>
+  </section>
+
+  <section class="content-box" id="dns">
+    <h3>DNS</h3>
+    <p>Some devices connect to a server using:</p>
+    <p><strong>Hostname</strong></p>
+    <p>instead of raw IP address.</p>
+  </section>
+
+  <section class="content-box" id="ping-by-ip-works">
+    <h3>Ping by IP Works</h3>
+    <p>But hostname fails.</p>
+    <p>Possible issue:</p>
+    <p><strong>DNS.</strong></p>
+  </section>
+
+  <section class="content-box" id="application-uses-hostname">
+    <h3>Application Uses Hostname</h3>
+    <p>If the medical application is configured with:</p>
+    <p>serverhospital.local</p>
+    <p>and DNS cannot resolve it:</p>
+    <p>Application fails.</p>
+    <p>Even though ping to the server's IP works.</p>
+  </section>
+
+  <section class="content-box" id="test-the-same-destination-the-application-uses">
+    <h3>Test the Same Destination the Application Uses</h3>
+    <p>If application uses:</p>
+    <p>Hostname,</p>
+    <p>test hostname resolution.</p>
+    <p>If application uses:</p>
+    <p>IP,</p>
+    <p>DNS may be irrelevant.</p>
+  </section>
+
+  <section class="content-box" id="server-address-changed">
+    <h3>Server Address Changed</h3>
+    <p>A backend server may be replaced or migrated.</p>
+    <p>Device still points to:</p>
+    <p>Old IP.</p>
+    <p>Link and general network access remain fine.</p>
+    <p>Application fails.</p>
+  </section>
+
+  <section class="content-box" id="load-balancer">
+    <h3>Load Balancer</h3>
+    <p>Larger systems may use a:</p>
+    <p><strong>Load balancer</strong></p>
+    <p>between device and server.</p>
+    <p>The IP the device connects to may not be the physical server itself.</p>
+    <p>That can complicate troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="network-address-translation">
+    <h3>Network Address Translation</h3>
+    <p>Some networks use:</p>
+    <p><strong>NAT</strong>, or Network Address Translation.</p>
+    <p>This can make the address seen by one side different from the address used internally.</p>
+    <p>Biomeds do not usually need to configure NAT, but understanding that network paths can translate addresses helps when working with IT.</p>
+  </section>
+
+  <section class="content-box" id="multiple-servers">
+    <h3>Multiple Servers</h3>
+    <p>A medical system may depend on several servers.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Database</li>
+      <li>Application server</li>
+      <li>Interface engine</li>
+      <li>Licensing server</li>
+    </ul>
+    <p>One can fail while others remain reachable.</p>
+  </section>
+
+  <section class="content-box" id="server-is-up">
+    <h3>“Server Is Up”</h3>
+    <p>Ask:</p>
+    <p><strong>Which server?</strong></p>
+    <p>and:</p>
+    <p><strong>Which service?</strong></p>
+  </section>
+
+  <section class="content-box" id="one-device-vs-many-devices">
+    <h3>One Device vs Many Devices</h3>
+    <p>This is one of the fastest ways to classify a problem.</p>
+  </section>
+
+  <section class="content-box" id="one-device-fails">
+    <h3>One Device Fails</h3>
+    <p>Other identical devices work.</p>
+    <p>Think:</p>
+    <ul>
+      <li>Device configuration</li>
+      <li>Device IP</li>
+      <li>Local port/cable</li>
+      <li>Device software</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="entire-unit-fails">
+    <h3>Entire Unit Fails</h3>
+    <p>Many devices simultaneously lose same service.</p>
+    <p>Think:</p>
+    <ul>
+      <li>Server</li>
+      <li>Network</li>
+      <li>Firewall</li>
+      <li>VLAN</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-room-fails">
+    <h3>One Room Fails</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Local jack</li>
+      <li>Switch port</li>
+      <li>Room-specific network configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="all-devices-ping-none-connect">
+    <h3>All Devices Ping, None Connect</h3>
+    <p>That strongly suggests something above basic IP reachability.</p>
+    <p>Possible areas:</p>
+    <ul>
+      <li>Firewall</li>
+      <li>Server service</li>
+      <li>Application</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="service-listening-test">
+    <h3>Service Listening Test</h3>
+    <p>IT may use tools to verify whether a server is listening on the expected port.</p>
+    <p>Biomeds may also have approved tools depending on environment.</p>
+    <p>The important concept is:</p>
+    <p><strong>Can a TCP connection actually be established to the required service?</strong></p>
+  </section>
+
+  <section class="content-box" id="telnet">
+    <h3>Telnet</h3>
+    <p>Historically, technicians sometimes used Telnet as a quick test to a specific TCP port.</p>
+    <p>Example:</p>
+    <p>telnet server 104</p>
+    <p>If connection opens:</p>
+    <p>Port is reachable.</p>
+    <p>Modern systems may not have Telnet installed, and other tools may be preferred.</p>
+  </section>
+
+  <section class="content-box" id="powershell">
+    <h3>PowerShell</h3>
+    <p>On Windows, IT may use commands such as:</p>
+    <p>Test-NetConnection</p>
+    <p>to check a specific destination and port.</p>
+    <p>You do not need to memorize every command to understand the concept.</p>
+  </section>
+
+  <section class="content-box" id="packet-capture">
+    <h3>Packet Capture</h3>
+    <p>For deeper troubleshooting, IT may use:</p>
+    <ul>
+      <li>Wireshark</li>
+      <li>Switch captures</li>
+    </ul>
+    <p>to see packets.</p>
+  </section>
+
+  <section class="content-box" id="packet-capture-can-answer">
+    <h3>Packet Capture Can Answer</h3>
+    <ul>
+      <li>Did device send connection request?</li>
+      <li>Did server respond?</li>
+      <li>Was connection reset?</li>
+      <li>Is traffic retransmitting?</li>
+    </ul>
+    <p>This can clearly locate the failure.</p>
+  </section>
+
+  <section class="content-box" id="you-do-not-need-to-become-a-packet-expert-immediately">
+    <h3>You Do Not Need to Become a Packet Expert Immediately</h3>
+    <p>A biomed should understand enough networking to ask useful questions and collect useful evidence.</p>
+    <p>IT can help with deeper network analysis.</p>
+  </section>
+
+  <section class="content-box" id="logs">
+    <h3>Logs</h3>
+    <p>Medical devices may log:</p>
+    <ul>
+      <li>Connection refused</li>
+      <li>Server timeout</li>
+      <li>Host unreachable</li>
+      <li>DNS failure</li>
+    </ul>
+    <p>These messages can point toward different layers.</p>
+  </section>
+
+  <section class="content-box" id="unable-to-connect">
+    <h3>“Unable to Connect”</h3>
+    <p>This is too broad by itself.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Error code</li>
+      <li>Destination</li>
+      <li>Timestamp</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="exact-time-matters">
+    <h3>Exact Time Matters</h3>
+    <p>IT may need to correlate:</p>
+    <ul>
+      <li>Firewall logs</li>
+      <li>Server logs</li>
+      <li>Switch logs</li>
+    </ul>
+    <p>with the clinical failure.</p>
+    <p>Give them:</p>
+    <blockquote><p>Failure occurred around 14:32.</p></blockquote>
+    <p>not:</p>
+    <blockquote><p>It happened earlier today.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="configuration-documentation">
+    <h3>Configuration Documentation</h3>
+    <p>Before changing network settings, record:</p>
+    <ul>
+      <li>IP</li>
+      <li>Subnet</li>
+      <li>Gateway</li>
+      <li>DNS</li>
+      <li>Server IP/hostname</li>
+      <li>Port</li>
+      <li>VLAN if known</li>
+      <li>MAC address</li>
+    </ul>
+    <p>This helps prevent creating a second problem.</p>
+  </section>
+
+  <section class="content-box" id="do-not-randomly-change-ip-addresses">
+    <h3>Do Not Randomly Change IP Addresses</h3>
+    <p>If ping fails:</p>
+    <p>Do not start assigning random static IPs.</p>
+    <p>You can create:</p>
+    <ul>
+      <li>Duplicate IP</li>
+      <li>Wrong subnet</li>
+      <li>Security issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="firewall-change-after-maintenance">
+    <h3>Firewall Change After Maintenance</h3>
+    <p>A common scenario:</p>
+    <p>System worked yesterday.</p>
+    <p>Network/security maintenance occurs.</p>
+    <p>Today:</p>
+    <p>Devices ping server but application fails.</p>
+    <p>A firewall or ACL change becomes plausible.</p>
+  </section>
+
+  <section class="content-box" id="but-timing-is-not-proof">
+    <h3>But Timing Is Not Proof</h3>
+    <p>It gives you a lead.</p>
+    <p>You still need evidence.</p>
+  </section>
+
+  <section class="content-box" id="software-update">
+    <h3>Software Update</h3>
+    <p>Application software updates can also change:</p>
+    <ul>
+      <li>Port</li>
+      <li>Service</li>
+      <li>Security requirements</li>
+    </ul>
+    <p>A network path that worked before may no longer match the new configuration.</p>
+  </section>
+
+  <section class="content-box" id="tls-and-certificates">
+    <h3>TLS and Certificates</h3>
+    <p>Some modern medical applications use encrypted connections.</p>
+    <p>The TCP port may be reachable, but communication can still fail because of:</p>
+    <ul>
+      <li>Expired certificate</li>
+      <li>Trust issue</li>
+      <li>Protocol mismatch</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-does-not-test-encryption">
+    <h3>Ping Does Not Test Encryption</h3>
+    <p>Again:</p>
+    <p>Ping is only a basic network test.</p>
+  </section>
+
+  <section class="content-box" id="authentication">
+    <h3>Authentication</h3>
+    <p>A server may be reachable, but the device can fail authentication.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Username/password</li>
+      <li>Certificate</li>
+      <li>Device registration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="port-open-does-not-prove-full-application-function">
+    <h3>Port Open Does Not Prove Full Application Function</h3>
+    <p>Even successful TCP connection only proves:</p>
+    <p><strong>You reached the service.</strong></p>
+    <p>The application can still reject:</p>
+    <ul>
+      <li>Authentication</li>
+      <li>Configuration</li>
+      <li>Data format</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="think-in-increasing-levels-of-proof">
+    <h3>Think in Increasing Levels of Proof</h3>
+
+  </section>
+
+  <section class="content-box" id="link-light">
+    <h3>Link Light</h3>
+    <p>Proves:</p>
+    <p>Physical Ethernet link.</p>
+  </section>
+
+  <section class="content-box" id="valid-ip">
+    <h3>Valid IP</h3>
+    <p>Proves:</p>
+    <p>Device has network configuration.</p>
+  </section>
+
+  <section class="content-box" id="ping-gateway">
+    <h3>Ping Gateway</h3>
+    <p>Proves:</p>
+    <p>Some local IP reachability.</p>
+  </section>
+
+  <section class="content-box" id="ping-server">
+    <h3>Ping Server</h3>
+    <p>Proves:</p>
+    <p>Some IP reachability to server.</p>
+  </section>
+
+  <section class="content-box" id="port-test">
+    <h3>Port Test</h3>
+    <p>Proves:</p>
+    <p>Specific TCP service is reachable.</p>
+  </section>
+
+  <section class="content-box" id="application-handshake">
+    <h3>Application Handshake</h3>
+    <p>Proves:</p>
+    <p>Application-level communication.</p>
+  </section>
+
+  <section class="content-box" id="successful-clinical-data-transfer">
+    <h3>Successful Clinical Data Transfer</h3>
+    <p>Provides the strongest practical end-to-end proof.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ping-works-central-does-not">
+    <h3>Real-World Example: Ping Works, Central Does Not</h3>
+    <p>Monitor:</p>
+    <p>Link good.</p>
+    <p>Ping server:</p>
+    <p>Pass.</p>
+    <p>Port test:</p>
+    <p>Fails.</p>
+    <p>Firewall rule missing after network change.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-port-open-but-application-fails">
+    <h3>Real-World Example: Port Open but Application Fails</h3>
+    <p>CT:</p>
+    <p>DICOM port reachable.</p>
+    <p>DICOM Echo fails.</p>
+    <p>PACS application service misconfigured.</p>
+    <p>Network firewall was fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-device-fails">
+    <h3>Real-World Example: One Device Fails</h3>
+    <p>Ten monitors communicate normally.</p>
+    <p>One does not.</p>
+    <p>All use same server.</p>
+    <p>Problem monitor has wrong server port configured.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-entire-unit-fails">
+    <h3>Real-World Example: Entire Unit Fails</h3>
+    <p>Twenty monitors suddenly disappear from central.</p>
+    <p>All can ping server.</p>
+    <p>Central monitoring application service has stopped.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ip-works-hostname-does-not">
+    <h3>Real-World Example: IP Works, Hostname Does Not</h3>
+    <p>Device configured with server hostname.</p>
+    <p>Ping server IP:</p>
+    <p>Pass.</p>
+    <p>Hostname resolution:</p>
+    <p>Fail.</p>
+    <p>DNS setting incorrect.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="it-pings-so-the-network-is-fine">
+    <h3>“It Pings, So the Network Is Fine”</h3>
+    <p>Ping only tests limited network reachability.</p>
+  </section>
+
+  <section class="content-box" id="blaming-the-firewall-for-everything">
+    <h3>Blaming the Firewall for Everything</h3>
+    <p>A stopped service can look similar.</p>
+  </section>
+
+  <section class="content-box" id="asking-it-to-open-every-port">
+    <h3>Asking IT to Open Every Port</h3>
+    <p>Use documented requirements.</p>
+  </section>
+
+  <section class="content-box" id="confusing-vlan-with-tcp-port">
+    <h3>Confusing VLAN With TCP Port</h3>
+    <p>They are different concepts.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-server-services">
+    <h3>Ignoring Server Services</h3>
+    <p>The server can be alive while the required application is dead.</p>
+  </section>
+
+  <section class="content-box" id="testing-the-wrong-destination">
+    <h3>Testing the Wrong Destination</h3>
+    <p>Test the server and service the device actually uses.</p>
+  </section>
+
+  <section class="content-box" id="changing-network-settings-before-recording-them">
+    <h3>Changing Network Settings Before Recording Them</h3>
+    <p>Document first.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>For a networked medical device that has link but does not communicate:</p>
+    <p><strong>Does it have the correct IP configuration?</strong></p>
+    <p>↓</p>
+    <p><strong>Can it reach the gateway?</strong></p>
+    <p>↓</p>
+    <p><strong>Can it reach the required server?</strong></p>
+    <p>↓</p>
+    <p><strong>Can it reach the required application port?</strong></p>
+    <p>↓</p>
+    <p><strong>Is the server service actually running?</strong></p>
+    <p>↓</p>
+    <p><strong>Does the application handshake succeed?</strong></p>
+    <p>↓</p>
+    <p><strong>Does real clinical data transfer?</strong></p>
+    <p>That takes you from:</p>
+    <p><strong>Network</strong></p>
+    <p>to:</p>
+    <p><strong>Application</strong></p>
+    <p>without guessing.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask IT:</p>
+    <p><strong>Can you see traffic from this device IP to this destination IP and port at the time of failure?</strong></p>
+    <p>That is much more actionable than:</p>
+    <blockquote><p>The network isn't working.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device successfully pings the server:</p>
+    <p>You proved:</p>
+    <p><strong>The device can exchange ICMP traffic with that server over the current network path.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Required TCP/UDP port is open</li>
+      <li>Application service is running</li>
+      <li>Device authentication succeeds</li>
+      <li>Clinical data can transfer</li>
+    </ul>
+    <p>If a test confirms the required port is reachable:</p>
+    <p>You proved more.</p>
+    <p>If the actual medical application completes a successful transaction:</p>
+    <p>Now you have meaningful end-to-end evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>The phrase:</p>
+    <blockquote><p>It pings.</p></blockquote>
+    <p>should be the beginning of the next question, not the end of troubleshooting.</p>
+    <p>Think:</p>
+    <p><strong>IP gets you to the building.</strong></p>
+    <p><strong>Port gets you to the door.</strong></p>
+    <p><strong>Application service is what has to answer.</strong></p>
+    <p>A medical device can have:</p>
+    <ul>
+      <li>Link</li>
+      <li>Correct IP</li>
+      <li>Successful ping</li>
+    </ul>
+    <p>and still fail completely at the function users care about.</p>
+    <p>So move through the layers:</p>
+    <p><strong>Physical → IP → Port → Service → Application.</strong></p>
+    <p>And every time one test passes, ask:</p>
+    <p><strong>What did I actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Required network ports, protocols, firewall rules, authentication methods, server architectures, and cybersecurity requirements vary by medical-device manufacturer and healthcare organization. Use current manufacturer network documentation and coordinate firewall, VLAN, server, and security changes with authorized IT or cybersecurity personnel.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="ethernet-ports-link-lights-and-what-they-tell-you.html">Ethernet Ports, Link Lights, and What They Tell You</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="how-to-troubleshoot-communication-failures.html">How to Troubleshoot Communication Failures</a></li>
+      <li><a href="how-patient-monitors-communicate-with-central-stations.html">How Patient Monitors Communicate With Central Stations</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
