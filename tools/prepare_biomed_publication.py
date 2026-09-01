@@ -120,6 +120,10 @@ RELATED = {
     "how-optical-sensors-work-in-medical-equipment": ["sensors-and-transducers-basics", "how-spo2-measurement-works", "how-sidestream-co2-monitoring-works", "how-mainstream-co2-monitoring-works", "analog-vs-digital-signals"],
     "how-temperature-probes-and-thermistors-work": ["sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-use-a-multimeter-in-biomed", "what-known-good-actually-means", "how-medical-device-cooling-systems-work"],
     "ethernet-ports-link-lights-and-what-they-tell-you": ["basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "how-patient-monitors-communicate-with-central-stations", "hospital-emrs-and-medical-device-integration", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "ports-firewalls-and-why-a-device-can-ping-but-still-not-work": ["ethernet-ports-link-lights-and-what-they-tell-you", "basic-networking-for-medical-equipment", "how-to-troubleshoot-communication-failures", "how-patient-monitors-communicate-with-central-stations", "what-dicom-means-in-plain-english"],
+    "how-to-work-with-it-as-a-biomed": ["ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "ethernet-ports-link-lights-and-what-they-tell-you", "basic-networking-for-medical-equipment", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "how-to-ask-clinical-staff-better-troubleshooting-questions"],
+    "why-medical-equipment-reboots": ["how-medical-device-cooling-systems-work", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-medical-device-batteries-charge-and-communicate", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment"],
+    "calibration-stickers-what-they-do-and-dont-mean": ["functional-testing-vs-calibration-vs-verification", "tolerance-vs-accuracy", "pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -689,6 +693,31 @@ ARTICLE_CONFIG = {
         "category": "Networking",
         "badge": "Networking",
         "cardNote": "Physical links, port LEDs, cabling, and network layers",
+    },
+    "ports-firewalls-and-why-a-device-can-ping-but-still-not-work": {
+        "description": "A practical explanation of why successful ping does not prove an application works, including ports, firewalls, services, DNS, routing, and device-to-server troubleshooting.",
+        "category": "Networking",
+        "badge": "Networking",
+        "cardNote": "Ping, application ports, firewalls, services, and DNS",
+    },
+    "how-to-work-with-it-as-a-biomed": {
+        "description": "A practical guide to collaborating with IT using clear symptoms, timestamps, network evidence, configuration details, ownership boundaries, and focused escalation.",
+        "category": "Career",
+        "badge": "Collaboration",
+        "cardNote": "Evidence-based collaboration between biomed and IT",
+    },
+    "why-medical-equipment-reboots": {
+        "description": "A practical guide to medical-equipment reboots caused by power instability, battery transitions, overheating, watchdog resets, software faults, memory, storage, and peripherals.",
+        "category": "Troubleshooting",
+        "badge": "Failure Pattern",
+        "cardNote": "Power, thermal, software, and watchdog reboot causes",
+    },
+    "calibration-stickers-what-they-do-and-dont-mean": {
+        "description": "A practical explanation of what calibration stickers document, what they do not prove, and how labels relate to test results, traceability, uncertainty, PM, and return-to-service decisions.",
+        "category": "Testing & Verification",
+        "badge": "Calibration",
+        "cardNote": "Calibration labels, traceability, scope, and evidence",
+        "plannedTitles": ["Calibration Stickers: What They Do and Don't Mean"],
     },
 }
 
