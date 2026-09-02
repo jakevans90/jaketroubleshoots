@@ -124,6 +124,9 @@ RELATED = {
     "how-to-work-with-it-as-a-biomed": ["ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "ethernet-ports-link-lights-and-what-they-tell-you", "basic-networking-for-medical-equipment", "how-to-isolate-device-vs-accessory-vs-infrastructure-problems", "how-to-ask-clinical-staff-better-troubleshooting-questions"],
     "why-medical-equipment-reboots": ["how-medical-device-cooling-systems-work", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-medical-device-batteries-charge-and-communicate", "how-to-read-and-use-medical-device-event-logs", "software-firmware-and-configuration-problems-in-medical-equipment"],
     "calibration-stickers-what-they-do-and-dont-mean": ["functional-testing-vs-calibration-vs-verification", "tolerance-vs-accuracy", "pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "measurement-uncertainty-in-plain-english": ["tolerance-vs-accuracy", "pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "calibration-stickers-what-they-do-and-dont-mean", "functional-testing-vs-calibration-vs-verification"],
+    "root-cause-troubleshooting-basics": ["the-difference-between-a-symptom-cause-and-root-cause", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-avoid-confirmation-bias-while-troubleshooting", "error-codes-what-they-tell-you-and-what-they-don-t", "what-to-do-when-a-medical-device-is-involved-in-an-incident"],
+    "when-to-replace-a-cable-battery-board-or-entire-device": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -718,6 +721,24 @@ ARTICLE_CONFIG = {
         "badge": "Calibration",
         "cardNote": "Calibration labels, traceability, scope, and evidence",
         "plannedTitles": ["Calibration Stickers: What They Do and Don't Mean"],
+    },
+    "measurement-uncertainty-in-plain-english": {
+        "description": "A practical explanation of measurement uncertainty, accuracy, precision, resolution, traceability, setup effects, and how to interpret results near pass/fail limits.",
+        "category": "Testing & Verification",
+        "badge": "Measurement",
+        "cardNote": "Uncertainty, traceability, setup effects, and decision limits",
+    },
+    "root-cause-troubleshooting-basics": {
+        "description": "A practical guide to moving beyond symptoms and failed parts to identify evidence-supported physical, environmental, software, network, accessory, and process root causes.",
+        "category": "Troubleshooting",
+        "badge": "Core Concept",
+        "cardNote": "Evidence-based root causes, repeated failures, and verification",
+    },
+    "when-to-replace-a-cable-battery-board-or-entire-device": {
+        "description": "A practical decision guide for choosing whether to replace a cable, battery, connector, module, board, or complete medical device based on evidence, risk, cost, and supportability.",
+        "category": "Safety & Risk",
+        "badge": "Decision Guide",
+        "cardNote": "Repair scope, replacement evidence, risk, and lifecycle decisions",
     },
 }
 
