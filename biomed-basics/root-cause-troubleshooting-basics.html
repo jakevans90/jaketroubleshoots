@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Root Cause Troubleshooting Basics | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to moving beyond symptoms and failed parts to identify evidence-supported physical, environmental, software, network, accessory, and process root causes.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/root-cause-troubleshooting-basics.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Root Cause Troubleshooting Basics</h2>
+  <p>How to move past the first obvious failure, identify what actually caused it, and avoid fixing the same medical equipment problem over and over</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A device comes into the shop with a blown fuse.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What root cause means</li>
+      <li>Symptom vs cause vs root cause</li>
+      <li>Why the first failed component is not always the root cause</li>
+      <li>When root cause analysis is useful</li>
+      <li>Repeated failures</li>
+      <li>Shared causes</li>
+      <li>Environmental causes</li>
+      <li>Use-related and accessory-related causes</li>
+      <li>Repair-induced failures</li>
+      <li>Software and network causes</li>
+      <li>How far to investigate</li>
+      <li>How to document a root cause without overstating certainty</li>
+      <li>Common troubleshooting mistakes</li>
+      <li>Practical medical-equipment examples</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A useful troubleshooting chain is:</p>
+    <p><strong>What happened?</strong></p>
+    <p>That is the symptom.</p>
+    <p><strong>What failed?</strong></p>
+    <p>That is the immediate cause.</p>
+    <p><strong>Why did it fail?</strong></p>
+    <p>That may reveal the root cause.</p>
+    <p>For example:</p>
+    <p><strong>Symptom:</strong> Device will not power on.</p>
+    <p><strong>Immediate cause:</strong> Internal fuse is open.</p>
+    <p><strong>Possible root cause:</strong> Power supply has a shorted switching component that repeatedly draws excessive current.</p>
+    <p>Replacing the fuse addresses the symptom.</p>
+    <p>Repairing the failed power supply addresses the cause.</p>
+    <p>Understanding why the power supply failed may or may not require further investigation depending on the situation.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-root-cause">
+    <h3>What Is a Root Cause?</h3>
+    <p>A root cause is the underlying condition that produced the failure you observed.</p>
+    <p>It is the point in the chain where, if you correct that condition, the same failure should no longer continue for the same reason.</p>
+    <p>That sounds simple, but real equipment can have several contributing causes.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-is-not-always-one-thing">
+    <h3>Root Cause Is Not Always One Thing</h3>
+    <p>A failure may result from a combination of factors.</p>
+    <p>Example:</p>
+    <p>A monitor repeatedly overheats because:</p>
+    <ul>
+      <li>Filter is clogged</li>
+      <li>Fan is weak</li>
+      <li>Device is installed with almost no rear clearance</li>
+    </ul>
+    <p>Which one is the root cause?</p>
+    <p>Possibly all three contributed.</p>
+    <p>Real systems are not always neat enough to have one perfect answer.</p>
+  </section>
+
+  <section class="content-box" id="symptom-cause-and-root-cause">
+    <h3>Symptom, Cause, and Root Cause</h3>
+    <p>These terms are worth separating.</p>
+  </section>
+
+  <section class="content-box" id="symptom">
+    <h3>Symptom</h3>
+    <p>What the user or technician observes.</p>
+    <p>Example:</p>
+    <blockquote><p>Device shuts down after 30 minutes.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="cause">
+    <h3>Cause</h3>
+    <p>The technical condition producing that symptom.</p>
+    <p>Example:</p>
+    <blockquote><p>Power supply enters thermal protection.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="root-cause">
+    <h3>Root Cause</h3>
+    <p>Why that condition developed.</p>
+    <p>Example:</p>
+    <blockquote><p>Cooling fan has failed, causing the power supply to overheat.</p></blockquote>
+    <p>Now you have a much stronger repair story.</p>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>Symptom:</p>
+    <blockquote><p>Infusion pump reports repeated downstream occlusion.</p></blockquote>
+    <p>Immediate cause:</p>
+    <blockquote><p>Drive-force sensor sees excessive force.</p></blockquote>
+    <p>Root cause:</p>
+    <blockquote><p>Lead screw is contaminated and binding, increasing drive force even with an open fluid path.</p></blockquote>
+    <p>If you simply adjust the occlusion sensor, you could make the equipment less safe while leaving the mechanical problem intact.</p>
+  </section>
+
+  <section class="content-box" id="the-first-bad-part-may-only-be-the-victim">
+    <h3>The First Bad Part May Only Be the Victim</h3>
+    <p>This is one of the most useful root-cause concepts.</p>
+    <p>A failed component may be:</p>
+    <p><strong>The cause</strong></p>
+    <p>or:</p>
+    <p><strong>The victim of another failure.</strong></p>
+  </section>
+
+  <section class="content-box" id="example-blown-fuse">
+    <h3>Example: Blown Fuse</h3>
+    <p>Fuse is open.</p>
+    <p>You know:</p>
+    <p><strong>Excessive current occurred.</strong></p>
+    <p>You do not yet know why.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Shorted power supply</li>
+      <li>Failed motor</li>
+      <li>Incorrect replacement fuse</li>
+      <li>Wiring short</li>
+      <li>Transient event</li>
+    </ul>
+    <p>The fuse did its job.</p>
+    <p>It may not be the component that needs investigation.</p>
+  </section>
+
+  <section class="content-box" id="example-burned-connector">
+    <h3>Example: Burned Connector</h3>
+    <p>You find a burned DC connector.</p>
+    <p>You could replace it.</p>
+    <p>But why did it burn?</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Loose contact</li>
+      <li>High resistance</li>
+      <li>Excess current</li>
+      <li>Fluid contamination</li>
+    </ul>
+    <p>If the mating connector is also damaged and you replace only one side, the failure may return.</p>
+  </section>
+
+  <section class="content-box" id="example-dead-battery">
+    <h3>Example: Dead Battery</h3>
+    <p>Battery has poor capacity.</p>
+    <p>Replace it.</p>
+    <p>Done?</p>
+    <p>Maybe.</p>
+    <p>But if three new batteries fail early in the same device, start asking:</p>
+    <p><strong>Why does this device keep killing batteries?</strong></p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Charging problem</li>
+      <li>Excessive heat</li>
+      <li>Deep discharge</li>
+      <li>Incorrect battery configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="root-cause-becomes-more-important-when-failures-repeat">
+    <h3>Root Cause Becomes More Important When Failures Repeat</h3>
+    <p>A single battery reaching normal end of life may not justify a deep investigation.</p>
+    <p>Three batteries failing in six months probably does.</p>
+  </section>
+
+  <section class="content-box" id="repeated-failure-is-evidence">
+    <h3>Repeated Failure Is Evidence</h3>
+    <p>Suppose service history shows:</p>
+    <p>January:</p>
+    <p>Power supply replaced.</p>
+    <p>March:</p>
+    <p>Power supply replaced.</p>
+    <p>June:</p>
+    <p>Power supply replaced.</p>
+    <p>Do not automatically install a fourth one.</p>
+    <p>Ask what these repairs have in common.</p>
+  </section>
+
+  <section class="content-box" id="look-for-shared-conditions">
+    <h3>Look for Shared Conditions</h3>
+    <p>Possible shared factors include:</p>
+    <ul>
+      <li>Same room</li>
+      <li>Same accessory</li>
+      <li>Same power source</li>
+      <li>Same environmental exposure</li>
+      <li>Same installation</li>
+      <li>Same repair procedure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="work-order-history-is-a-troubleshooting-tool">
+    <h3>Work-Order History Is a Troubleshooting Tool</h3>
+    <p>A CMMS should not only tell you:</p>
+    <blockquote><p>What was replaced last time?</p></blockquote>
+    <p>It can reveal patterns.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Five repairs list:</p>
+    <blockquote><p>NIBP pump replaced.</p></blockquote>
+    <p>If the pump keeps failing, ask whether:</p>
+    <ul>
+      <li>Cuff hose is restricted</li>
+      <li>Liquid contamination enters pneumatics</li>
+      <li>Pump control is overdriving it</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-confuse-repetition-with-proof">
+    <h3>Do Not Confuse Repetition With Proof</h3>
+    <p>If the same component repeatedly fails, that suggests an upstream condition.</p>
+    <p>It does not automatically prove one.</p>
+    <p>Gather evidence.</p>
+  </section>
+
+  <section class="content-box" id="how-far-should-you-go">
+    <h3>How Far Should You Go?</h3>
+    <p>Not every repair requires finding the philosophical first cause of the universe.</p>
+    <p>You need enough investigation to make a safe, technically defensible repair.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A ten-year-old fan develops noisy bearings.</p>
+    <p>You replace it.</p>
+    <p>Do you need to determine why the bearing eventually wore out?</p>
+    <p>Probably not.</p>
+    <p>That may simply be normal component aging.</p>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>A fan less than a month old fails because its blades are rubbing against a cable installed during the previous repair.</p>
+    <p>Now the root cause matters.</p>
+  </section>
+
+  <section class="content-box" id="practical-root-cause-is-the-goal">
+    <h3>Practical Root Cause Is the Goal</h3>
+    <p>The useful question is:</p>
+    <p><strong>Is there another unresolved condition likely to make this failure recur or create another safety problem?</strong></p>
+    <p>If yes, investigate further.</p>
+  </section>
+
+  <section class="content-box" id="ask-why-more-than-once">
+    <h3>Ask “Why?” More Than Once</h3>
+    <p>A simple technique is repeatedly asking:</p>
+    <p><strong>Why?</strong></p>
+    <p>This is sometimes called the:</p>
+    <p><strong>Five Whys.</strong></p>
+    <p>You do not literally need exactly five.</p>
+    <p>The purpose is to keep moving beyond the first symptom.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Why did the monitor shut down?</p>
+    <p>Because the internal temperature became too high.</p>
+    <p>Why?</p>
+    <p>Because the cooling fan stopped.</p>
+    <p>Why?</p>
+    <p>Because the fan connector was loose.</p>
+    <p>Why?</p>
+    <p>Because the locking tab was broken.</p>
+    <p>Now you have a repair target deeper than:</p>
+    <blockquote><p>Unit overheated.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="do-not-force-the-five-whys">
+    <h3>Do Not Force the Five Whys</h3>
+    <p>Sometimes the evidence stops.</p>
+    <p>Do not invent explanations simply to reach another “why.”</p>
+    <p>Technical documentation should distinguish:</p>
+    <ul>
+      <li>Proven cause</li>
+      <li>Likely cause</li>
+      <li>Unknown cause</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="root-cause-requires-evidence">
+    <h3>Root Cause Requires Evidence</h3>
+    <p>Bad documentation:</p>
+    <blockquote><p>Root cause was power surge.</p></blockquote>
+    <p>Evidence:</p>
+    <p>None.</p>
+    <p>That is speculation.</p>
+  </section>
+
+  <section class="content-box" id="better-documentation">
+    <h3>Better Documentation</h3>
+    <blockquote><p>Input fuse open and power supply primary switching device shorted. No evidence available to determine why the power-supply component failed.</p></blockquote>
+    <p>That is honest.</p>
+  </section>
+
+  <section class="content-box" id="sometimes-root-cause-remains-unknown">
+    <h3>Sometimes Root Cause Remains Unknown</h3>
+    <p>This is acceptable.</p>
+    <p>Your job is not to manufacture certainty.</p>
+  </section>
+
+  <section class="content-box" id="physical-root-causes">
+    <h3>Physical Root Causes</h3>
+    <p>Common physical causes include:</p>
+    <ul>
+      <li>Wear</li>
+      <li>Corrosion</li>
+      <li>Impact</li>
+      <li>Loose connections</li>
+      <li>Fluid intrusion</li>
+      <li>Contamination</li>
+      <li>Heat</li>
+      <li>Vibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mechanical-wear">
+    <h3>Mechanical Wear</h3>
+    <p>Example:</p>
+    <p>Syringe-pump drive develops excessive backlash.</p>
+    <p>Symptom:</p>
+    <p>Low-rate accuracy poor.</p>
+    <p>Immediate cause:</p>
+    <p>Plunger travel is inconsistent.</p>
+    <p>Underlying cause:</p>
+    <p>Drive nut is worn.</p>
+  </section>
+
+  <section class="content-box" id="loose-connection">
+    <h3>Loose Connection</h3>
+    <p>Loose electrical connections can create:</p>
+    <ul>
+      <li>Intermittent power</li>
+      <li>Heat</li>
+      <li>Arcing</li>
+      <li>High resistance</li>
+    </ul>
+    <p>The connector itself may later appear burned.</p>
+    <p>The looseness came first.</p>
+  </section>
+
+  <section class="content-box" id="fluid-intrusion">
+    <h3>Fluid Intrusion</h3>
+    <p>A board may fail electrically.</p>
+    <p>But if you see dried fluid around it, the board failure may be secondary to:</p>
+    <p><strong>Fluid intrusion.</strong></p>
+    <p>Replacing only the board may allow the problem to happen again if seals or enclosure damage remain.</p>
+  </section>
+
+  <section class="content-box" id="cleaning-related-causes">
+    <h3>Cleaning-Related Causes</h3>
+    <p>Some failures follow:</p>
+    <ul>
+      <li>Excess liquid</li>
+      <li>Wrong chemical</li>
+      <li>Spraying directly into openings</li>
+    </ul>
+    <p>The technical failure might be corrosion.</p>
+    <p>The underlying environmental cause may be cleaning exposure.</p>
+  </section>
+
+  <section class="content-box" id="be-careful-with-blame">
+    <h3>Be Careful With Blame</h3>
+    <p>Your goal is not:</p>
+    <blockquote><p>Prove nursing broke it.</p></blockquote>
+    <p>Your goal is:</p>
+    <blockquote><p>Identify what condition allowed the failure to occur and how recurrence can be reduced.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="environmental-causes">
+    <h3>Environmental Causes</h3>
+    <p>Equipment can be affected by:</p>
+    <ul>
+      <li>Heat</li>
+      <li>Dust</li>
+      <li>Humidity</li>
+      <li>Poor ventilation</li>
+      <li>Fluid</li>
+      <li>Electrical supply</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-repeated-overheating">
+    <h3>Example: Repeated Overheating</h3>
+    <p>Device:</p>
+    <p>Technically good.</p>
+    <p>Location:</p>
+    <p>Ventilation opening consistently blocked by cabinet.</p>
+    <p>The equipment problem may actually be an installation problem.</p>
+  </section>
+
+  <section class="content-box" id="facility-infrastructure">
+    <h3>Facility Infrastructure</h3>
+    <p>Possible root causes can exist outside the medical device.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Bad wall power</li>
+      <li>Low medical gas pressure</li>
+      <li>Network port configuration</li>
+      <li>Faulty nurse call wiring</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-repeated-network-board-replacement">
+    <h3>Example: Repeated Network Board Replacement</h3>
+    <p>Device repeatedly loses network connection.</p>
+    <p>Boards replaced twice.</p>
+    <p>Eventually discovered:</p>
+    <p>Wall jack has intermittent pair.</p>
+    <p>The boards were never the cause.</p>
+  </section>
+
+  <section class="content-box" id="accessories-can-be-root-causes">
+    <h3>Accessories Can Be Root Causes</h3>
+    <p>Medical equipment rarely operates alone.</p>
+    <p>Accessories include:</p>
+    <ul>
+      <li>Cables</li>
+      <li>Sensors</li>
+      <li>Cuffs</li>
+      <li>Hoses</li>
+      <li>Disposables</li>
+      <li>Probes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Patient monitor repeatedly reports:</p>
+    <p>SpO2 failure.</p>
+    <p>Monitor passes every bench test.</p>
+    <p>Original extension cable has intermittent conductor.</p>
+    <p>Replacing the monitor would never solve it.</p>
+  </section>
+
+  <section class="content-box" id="wrong-accessory">
+    <h3>Wrong Accessory</h3>
+    <p>A device may fail because an accessory is:</p>
+    <ul>
+      <li>Incompatible</li>
+      <li>Incorrectly configured</li>
+      <li>Physically damaged</li>
+    </ul>
+    <p>The main equipment can be completely functional.</p>
+  </section>
+
+  <section class="content-box" id="software-root-causes">
+    <h3>Software Root Causes</h3>
+    <p>Modern medical devices are computers.</p>
+    <p>Software can cause:</p>
+    <ul>
+      <li>Reboots</li>
+      <li>Freezes</li>
+      <li>Lost configuration</li>
+      <li>Communication failures</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="configuration-vs-software-bug">
+    <h3>Configuration vs Software Bug</h3>
+    <p>These are not the same.</p>
+    <p>A device can fail because:</p>
+    <p><strong>Software behaves incorrectly</strong></p>
+    <p>or because:</p>
+    <p><strong>Software is configured incorrectly.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor will not connect to central.</p>
+    <p>Network works.</p>
+    <p>Server works.</p>
+    <p>Device configured with old server address after a server migration.</p>
+    <p>Root cause:</p>
+    <p>Configuration not updated.</p>
+  </section>
+
+  <section class="content-box" id="updates-can-introduce-failures">
+    <h3>Updates Can Introduce Failures</h3>
+    <p>Suppose several devices fail immediately after a software update.</p>
+    <p>That timing is useful.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Release notes</li>
+      <li>Compatibility</li>
+      <li>Configuration</li>
+    </ul>
+    <p>But do not automatically assume the update caused it without evidence.</p>
+  </section>
+
+  <section class="content-box" id="network-root-causes">
+    <h3>Network Root Causes</h3>
+    <p>A networked failure may occur far from the bedside device.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>VLAN</li>
+      <li>Firewall</li>
+      <li>Server service</li>
+      <li>DNS</li>
+      <li>DHCP</li>
+      <li>Switch</li>
+      <li>Cabling</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>CT cannot retrieve worklist.</p>
+    <p>Local scanner functions normal.</p>
+    <p>Network link normal.</p>
+    <p>DICOM Echo to worklist server fails.</p>
+    <p>IT discovers firewall rule was removed.</p>
+    <p>Root cause is network infrastructure, not scanner hardware.</p>
+  </section>
+
+  <section class="content-box" id="human-factors">
+    <h3>Human Factors</h3>
+    <p>Some failures are related to workflow.</p>
+    <p>That does not automatically mean:</p>
+    <blockquote><p>User error.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="poor-interface-design">
+    <h3>Poor Interface Design</h3>
+    <p>If multiple clinicians make the same mistake, ask whether:</p>
+    <ul>
+      <li>Device workflow is confusing</li>
+      <li>Training is incomplete</li>
+      <li>Labels are unclear</li>
+    </ul>
+    <p>The root cause may be larger than one person's action.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pump repeatedly reported as:</p>
+    <blockquote><p>Not charging.</p></blockquote>
+    <p>Staff consistently plug AC adapter into a nearby accessory connector because the two ports look similar.</p>
+    <p>You could call this user error.</p>
+    <p>A better response might include:</p>
+    <ul>
+      <li>Training</li>
+      <li>Labeling</li>
+      <li>Workflow improvement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="repair-induced-root-causes">
+    <h3>Repair-Induced Root Causes</h3>
+    <p>Previous service can create future failures.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Connector not fully seated</li>
+      <li>Screw omitted</li>
+      <li>Cable pinched</li>
+      <li>Wrong part installed</li>
+      <li>Calibration skipped</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="never-assume-previous-repair-was-correct">
+    <h3>Never Assume Previous Repair Was Correct</h3>
+    <p>Approach the evidence objectively.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device develops intermittent shutdown after battery replacement.</p>
+    <p>Inspection finds battery connector latch never fully engaged.</p>
+    <p>The new battery is not bad.</p>
+    <p>The installation is.</p>
+  </section>
+
+  <section class="content-box" id="replacement-part-quality">
+    <h3>Replacement Part Quality</h3>
+    <p>Not every replacement component is equivalent.</p>
+    <p>Repeated early failures can come from:</p>
+    <ul>
+      <li>Wrong specification</li>
+      <li>Poor-quality aftermarket part</li>
+      <li>Incorrect firmware version</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wrong-fuse-example">
+    <h3>Wrong Fuse Example</h3>
+    <p>Original design:</p>
+    <p>Time-delay fuse.</p>
+    <p>Replacement:</p>
+    <p>Fast-acting fuse with same current rating.</p>
+    <p>Device repeatedly blows fuse during normal inrush current.</p>
+    <p>Same amperage does not mean equivalent part.</p>
+  </section>
+
+  <section class="content-box" id="shared-root-cause">
+    <h3>Shared Root Cause</h3>
+    <p>When multiple unrelated symptoms appear at once, look for a common subsystem.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device simultaneously shows:</p>
+    <ul>
+      <li>Sensor errors</li>
+      <li>Fan error</li>
+      <li>Network reset</li>
+    </ul>
+    <p>Could three components have failed simultaneously?</p>
+    <p>Possible.</p>
+    <p>But a shared:</p>
+    <ul>
+      <li>Power rail</li>
+      <li>Communication bus</li>
+    </ul>
+    <p>may be more likely.</p>
+  </section>
+
+  <section class="content-box" id="follow-what-the-failures-share">
+    <h3>Follow What the Failures Share</h3>
+    <p>Ask:</p>
+    <p><strong>What do these failed functions have in common?</strong></p>
+    <p>That is one of the strongest troubleshooting questions you can ask.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-calibration">
+    <h3>Root Cause and Calibration</h3>
+    <p>Calibration is especially dangerous when used to hide a hardware problem.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure sensor reads low.</p>
+    <p>You adjust calibration.</p>
+    <p>A week later it is low again.</p>
+    <p>Eventually you discover:</p>
+    <ul>
+      <li>Pneumatic leak</li>
+      <li>Cracked tubing</li>
+    </ul>
+    <p>You calibrated around a changing physical failure.</p>
+  </section>
+
+  <section class="content-box" id="drift-vs-failure">
+    <h3>Drift vs Failure</h3>
+    <p>Small predictable drift may be corrected through authorized calibration.</p>
+    <p>Large or unstable drift suggests something else.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-error-codes">
+    <h3>Root Cause and Error Codes</h3>
+    <p>An error code identifies what the device detected.</p>
+    <p>Example:</p>
+    <blockquote><p>Fan RPM Low.</p></blockquote>
+    <p>That does not automatically mean:</p>
+    <blockquote><p>Fan motor failed.</p></blockquote>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Tach signal</li>
+      <li>Wiring</li>
+      <li>Obstruction</li>
+      <li>Fan</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ask-what-measurement-generated-the-error">
+    <h3>Ask What Measurement Generated the Error</h3>
+    <p>This often reveals the actual troubleshooting path.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-self-tests">
+    <h3>Root Cause and Self-Tests</h3>
+    <p>Self-tests often check chains.</p>
+    <p>Example:</p>
+    <p>Command valve open.</p>
+    <p>Pressure does not change.</p>
+    <p>Device reports:</p>
+    <blockquote><p>Valve Test Failed.</p></blockquote>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Valve</li>
+      <li>Driver</li>
+      <li>Pressure sensor</li>
+      <li>Blocked gas path</li>
+    </ul>
+    <p>The root cause lies somewhere in the chain.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-no-problem-found">
+    <h3>Root Cause and “No Problem Found”</h3>
+    <p>Intermittent failures are especially difficult.</p>
+    <p>If a device repeatedly returns with the same complaint but passes bench testing:</p>
+    <p>Do not let every ticket exist in isolation.</p>
+    <p>Review the pattern.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Three work orders:</p>
+    <blockquote><p>Random shutdown during transport.</p></blockquote>
+    <p>Bench testing:</p>
+    <p>Pass.</p>
+    <p>Eventually you learn all events occur while crossing a threshold into the elevator.</p>
+    <p>Controlled movement reproduces intermittent battery contact.</p>
+    <p>The pattern revealed what individual bench tests missed.</p>
+  </section>
+
+  <section class="content-box" id="ask-what-changed">
+    <h3>Ask What Changed</h3>
+    <p>One of the most valuable root-cause questions is:</p>
+    <p><strong>What changed before the problem began?</strong></p>
+    <p>Changes may include:</p>
+    <ul>
+      <li>Part replacement</li>
+      <li>Software upgrade</li>
+      <li>Department move</li>
+      <li>Network migration</li>
+      <li>New disposable</li>
+      <li>Cleaning method</li>
+      <li>Accessory change</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="correlation-is-not-causation">
+    <h3>Correlation Is Not Causation</h3>
+    <p>If the problem began after:</p>
+    <p>Software update,</p>
+    <p>the update is a suspect.</p>
+    <p>It is not automatically guilty.</p>
+  </section>
+
+  <section class="content-box" id="confirm-the-relationship">
+    <h3>Confirm the Relationship</h3>
+    <p>Can you:</p>
+    <ul>
+      <li>Reproduce it?</li>
+      <li>Compare with unaffected devices?</li>
+      <li>Roll back if authorized?</li>
+      <li>Find supporting logs?</li>
+    </ul>
+    <p>Evidence matters.</p>
+  </section>
+
+  <section class="content-box" id="root-cause-and-verification">
+    <h3>Root Cause and Verification</h3>
+    <p>A root-cause repair should address both:</p>
+    <p><strong>The failed condition</strong></p>
+    <p>and:</p>
+    <p><strong>The underlying cause.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Burned connector replaced.</p>
+    <p>Also repair:</p>
+    <p>Loose mating contact that created the heat.</p>
+    <p>Then verify:</p>
+    <ul>
+      <li>Current</li>
+      <li>Temperature</li>
+      <li>Function</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="return-to-service-testing">
+    <h3>Return-to-Service Testing</h3>
+    <p>Once the repair is complete, verify the actual clinical function.</p>
+    <p>Do not stop because:</p>
+    <blockquote><p>The bad-looking part is gone.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ventilator flow sensor replaced because water contamination damaged it.</p>
+    <p>Before return:</p>
+    <p>Also verify:</p>
+    <ul>
+      <li>Drain/water management</li>
+      <li>Flow calibration</li>
+      <li>Volume measurement</li>
+      <li>Required alarms</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="root-cause-may-require-process-change">
+    <h3>Root Cause May Require Process Change</h3>
+    <p>Sometimes the correct response is not another component.</p>
+    <p>It may involve:</p>
+    <ul>
+      <li>Staff education</li>
+      <li>Installation change</li>
+      <li>PM change</li>
+      <li>Network configuration</li>
+      <li>Cleaning process</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Repeated fan failures caused by severe lint accumulation in one environment.</p>
+    <p>Replacing fans addresses each failure.</p>
+    <p>A shorter filter-cleaning interval may reduce recurrence.</p>
+  </section>
+
+  <section class="content-box" id="trending-helps">
+    <h3>Trending Helps</h3>
+    <p>If your CMMS shows:</p>
+    <ul>
+      <li>Frequent battery failures</li>
+      <li>Frequent power-cord failures</li>
+      <li>Repeated errors by model</li>
+    </ul>
+    <p>that may justify broader investigation.</p>
+  </section>
+
+  <section class="content-box" id="one-device-vs-fleet-problem">
+    <h3>One Device vs Fleet Problem</h3>
+    <p>One failure:</p>
+    <p>Maybe individual equipment.</p>
+    <p>Twenty identical failures:</p>
+    <p>Think systemic issue.</p>
+  </section>
+
+  <section class="content-box" id="fleet-level-root-causes">
+    <h3>Fleet-Level Root Causes</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Manufacturing defect</li>
+      <li>Firmware bug</li>
+      <li>Accessory design</li>
+      <li>Environmental condition</li>
+      <li>Maintenance procedure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="safety-notices-and-recalls">
+    <h3>Safety Notices and Recalls</h3>
+    <p>Repeated unexpected failures across a model may also justify checking for:</p>
+    <ul>
+      <li>Manufacturer bulletins</li>
+      <li>Safety notices</li>
+      <li>Recalls</li>
+    </ul>
+    <p>Use current manufacturer and regulatory information when applicable.</p>
+  </section>
+
+  <section class="content-box" id="do-not-over-root-cause-routine-wear">
+    <h3>Do Not Over-Root-Cause Routine Wear</h3>
+    <p>Root cause thinking can also go too far.</p>
+    <p>A battery lasts its expected service life and loses capacity.</p>
+    <p>Root cause:</p>
+    <p>Probably normal aging.</p>
+    <p>You do not need an investigation into why lithium-ion chemistry ages.</p>
+  </section>
+
+  <section class="content-box" id="match-effort-to-risk">
+    <h3>Match Effort to Risk</h3>
+    <p>Investigate more deeply when:</p>
+    <ul>
+      <li>Failure is safety-critical</li>
+      <li>Failure repeats</li>
+      <li>Repair is expensive</li>
+      <li>Cause is unusual</li>
+      <li>Multiple devices affected</li>
+      <li>Existing repair did not hold</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="root-cause-analysis-after-serious-incidents">
+    <h3>Root Cause Analysis After Serious Incidents</h3>
+    <p>A serious patient event may require a formal investigation beyond routine biomed troubleshooting.</p>
+    <p>That can involve:</p>
+    <ul>
+      <li>Risk management</li>
+      <li>Manufacturer</li>
+      <li>Clinical leadership</li>
+      <li>Regulatory processes</li>
+    </ul>
+    <p>Follow facility procedure.</p>
+  </section>
+
+  <section class="content-box" id="preserve-evidence">
+    <h3>Preserve Evidence</h3>
+    <p>Do not casually:</p>
+    <ul>
+      <li>Clear logs</li>
+      <li>Update software</li>
+      <li>Reset configuration</li>
+    </ul>
+    <p>on incident equipment before the appropriate process allows it.</p>
+  </section>
+
+  <section class="content-box" id="formal-rca-vs-everyday-root-cause-thinking">
+    <h3>Formal RCA vs Everyday Root-Cause Thinking</h3>
+    <p>A formal Root Cause Analysis may be a structured organizational process.</p>
+    <p>Routine troubleshooting is different.</p>
+    <p>But the underlying reasoning overlaps:</p>
+    <p><strong>What happened?</strong></p>
+    <p><strong>Why?</strong></p>
+    <p><strong>What conditions allowed it?</strong></p>
+    <p><strong>What prevents recurrence?</strong></p>
+  </section>
+
+  <section class="content-box" id="document-facts-first">
+    <h3>Document Facts First</h3>
+    <p>A good corrective-maintenance note should distinguish what you:</p>
+    <p><strong>Observed</strong></p>
+    <p>from what you:</p>
+    <p><strong>Concluded.</strong></p>
+  </section>
+
+  <section class="content-box" id="weak-note">
+    <h3>Weak Note</h3>
+    <blockquote><p>Device failed because nursing dropped it.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="better-note">
+    <h3>Better Note</h3>
+    <blockquote><p>Enclosure cracked and internal mounting bracket displaced. Staff reported device had fallen from cart immediately before failure.</p></blockquote>
+    <p>Now the evidence is clear.</p>
+  </section>
+
+  <section class="content-box" id="weak-root-cause-note">
+    <h3>Weak Root-Cause Note</h3>
+    <blockquote><p>Bad power supply.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="better-note">
+    <h3>Better Note</h3>
+    <blockquote><p>Unit intermittently rebooted under NIBP load. 5 V rail dropped below specification when pump activated. Replaced power supply; voltage remained stable during repeated NIBP cycles and extended functional test.</p></blockquote>
+    <p>You have a defensible cause-and-verification chain.</p>
+  </section>
+
+  <section class="content-box" id="when-you-cannot-prove-the-root-cause">
+    <h3>When You Cannot Prove the Root Cause</h3>
+    <p>Say so.</p>
+    <p>Example:</p>
+    <blockquote><p>Replaced failed power supply. Cause of component failure could not be determined. No evidence of fluid intrusion, overheating, or external damage noted.</p></blockquote>
+    <p>That is technically stronger than inventing a story.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="replacing-the-first-failed-component-and-stopping">
+    <h3>Replacing the First Failed Component and Stopping</h3>
+    <p>Ask whether anything caused it to fail.</p>
+  </section>
+
+  <section class="content-box" id="confusing-symptom-with-cause">
+    <h3>Confusing Symptom With Cause</h3>
+    <p>“Won't power on” is not a diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="calling-every-failure-user-error">
+    <h3>Calling Every Failure “User Error”</h3>
+    <p>Look at the system and workflow.</p>
+  </section>
+
+  <section class="content-box" id="calibrating-around-hardware-problems">
+    <h3>Calibrating Around Hardware Problems</h3>
+    <p>Fix changing physical conditions first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-work-order-history">
+    <h3>Ignoring Work-Order History</h3>
+    <p>Repeated failures are evidence.</p>
+  </section>
+
+  <section class="content-box" id="inventing-a-root-cause-without-proof">
+    <h3>Inventing a Root Cause Without Proof</h3>
+    <p>Unknown is better than wrong.</p>
+  </section>
+
+  <section class="content-box" id="looking-only-inside-the-device">
+    <h3>Looking Only Inside the Device</h3>
+    <p>Infrastructure and accessories can be the root cause.</p>
+  </section>
+
+  <section class="content-box" id="investigating-forever">
+    <h3>Investigating Forever</h3>
+    <p>Stop when you have enough evidence to make a safe and defensible decision.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-root-cause-framework">
+    <h3>A Useful Root-Cause Framework</h3>
+    <p>Start with:</p>
+    <p><strong>What exactly failed?</strong></p>
+    <p>Then ask:</p>
+    <p><strong>What component or subsystem produced that failure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Why did that component or subsystem fail?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is there an unresolved condition that could cause it to happen again?</strong></p>
+    <p>Finally:</p>
+    <p><strong>Did the repair eliminate both the failure and the underlying condition?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-framework">
+    <h3>Another Useful Framework</h3>
+    <p>Think:</p>
+    <p><strong>Symptom</strong></p>
+    <p>↓</p>
+    <p><strong>Failed Function</strong></p>
+    <p>↓</p>
+    <p><strong>Failed Component or Condition</strong></p>
+    <p>↓</p>
+    <p><strong>Contributing Cause</strong></p>
+    <p>↓</p>
+    <p><strong>Verification</strong></p>
+    <p>That keeps the investigation grounded in evidence.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose a device repeatedly shuts down.</p>
+    <p>You replace the battery.</p>
+    <p>The shutdown stops.</p>
+    <p>What did you prove?</p>
+    <p>You proved:</p>
+    <p><strong>The known-good battery corrected the symptom under the conditions you tested.</strong></p>
+    <p>If the original battery also fails an independent capacity test:</p>
+    <p>Now you have stronger evidence the battery was defective.</p>
+    <p>But if the original battery is only six weeks old:</p>
+    <p>You may still ask:</p>
+    <p><strong>Why did it fail so early?</strong></p>
+    <p>If charging voltage is wrong:</p>
+    <p>Now you have found a deeper cause.</p>
+    <p>That is the difference between:</p>
+    <p><strong>Replacing what failed</strong></p>
+    <p>and:</p>
+    <p><strong>Understanding why it failed.</strong></p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Root cause troubleshooting does not mean making every repair complicated.</p>
+    <p>It means knowing when to ask one more:</p>
+    <p><strong>Why?</strong></p>
+    <p>A failed fuse may be the problem.</p>
+    <p>Or it may be protecting you from the problem.</p>
+    <p>A failed battery may simply be old.</p>
+    <p>Or the charger may be damaging every battery installed.</p>
+    <p>A network card may appear dead.</p>
+    <p>Or the wall connection may be intermittent.</p>
+    <p>Your goal is not to create the longest possible explanation.</p>
+    <p>Your goal is to identify enough of the failure chain that you can make a repair that is:</p>
+    <ul>
+      <li>Safe</li>
+      <li>Repeatable</li>
+      <li>Defensible</li>
+      <li>Unlikely to return for the same unresolved reason</li>
+    </ul>
+    <p>Sometimes the root cause is obvious.</p>
+    <p>Sometimes it requires more testing.</p>
+    <p>Sometimes it remains unknown.</p>
+    <p>That is fine.</p>
+    <p>Just do not confuse the first thing you find with the deepest thing you have actually proven.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Formal root-cause analysis requirements, incident investigations, equipment quarantine, reporting responsibilities, and corrective-action processes vary by healthcare organization and event severity. Serious patient-safety events should be handled according to facility incident-response and evidence-preservation procedures in addition to normal technical troubleshooting.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="the-difference-between-a-symptom-cause-and-root-cause.html">The Difference Between a Symptom, Cause, and Root Cause</a></li>
+      <li><a href="the-troubleshooting-process-observe-isolate-test-verify.html">The Troubleshooting Process: Observe, Isolate, Test, Verify</a></li>
+      <li><a href="how-to-avoid-confirmation-bias-while-troubleshooting.html">How to Avoid Confirmation Bias While Troubleshooting</a></li>
+      <li><a href="error-codes-what-they-tell-you-and-what-they-don-t.html">Error Codes: What They Tell You and What They Don&amp;#x27;t</a></li>
+      <li><a href="what-to-do-when-a-medical-device-is-involved-in-an-incident.html">What to Do When a Medical Device Is Involved in an Incident</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
