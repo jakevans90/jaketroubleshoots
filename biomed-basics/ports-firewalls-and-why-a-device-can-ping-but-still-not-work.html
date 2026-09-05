@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Ports, Firewalls, and Why a Device Can Ping but Still Not Work | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of why successful ping does not prove an application works, including ports, firewalls, services, DNS, routing, and device-to-server troubleshooting.">
+  <meta name="datePublished" content="2026-09-01">
+  <meta name="dateModified" content="2026-09-05">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -21,6 +23,7 @@
   <h2>Ports, Firewalls, and Why a Device Can Ping but Still Not Work</h2>
   <p>Why successful ping does not prove an application works and how biomeds can think through blocked ports, server services, and network communication in plain English</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One of the most common network troubleshooting traps in biomed is:</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published September 1, 2026 · Revised September 5, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -46,20 +49,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A networked application path may look like:</p>
-    <p><strong>Medical Device</strong></p>
-    <p>↓</p>
-    <p><strong>IP Network</strong></p>
-    <p>↓</p>
-    <p><strong>Firewall</strong></p>
-    <p>↓</p>
-    <p><strong>Server</strong></p>
-    <p>↓</p>
-    <p><strong>Application Service</strong></p>
-    <p>Ping may only prove:</p>
-    <p><strong>Device → IP Network → Target responds to ICMP.</strong></p>
-    <p>It does not prove:</p>
-    <p><strong>Device → Required Application Port → Correct Server Service.</strong></p>
+    <p>A successful ping shows that the target answered an ICMP echo request across at least one usable IP path. That is helpful, but the clinical application probably uses a different protocol and a specific TCP or UDP port. The application can still fail because a firewall blocks that port, the server service is stopped, the device is pointed at the wrong destination, authentication fails, or the application rejects the message.</p>
+    <p>Think of the IP address as the building address and the port as a particular door. Ping can confirm that someone at the building answered without proving that the required door is open or that the correct department is working behind it. Troubleshooting must therefore test the actual application path, not stop at basic reachability.</p>
+  </section>
+
+  <section class="content-box" id="worked-ping-example">
+    <h3>Worked Example: The Server Pings but DICOM Fails</h3>
+    <p>Suppose an imaging device can ping the PACS server but cannot send a study. Confirm the destination IP or hostname, configured DICOM port, called and calling AE titles, local time, and the exact error or association status. Ask whether another device can send to the same destination and whether this device ever worked with its current configuration. Those facts separate a device-specific setting from a shared server or network failure.</p>
+    <p>Give IT or the application owner a precise request: source address, destination address, protocol and port, timestamp, and observed error. “Please open the firewall” is premature because the service may be stopped or the application may be rejecting the association. Do not disable security controls as a test; verify the approved rule and listening service with the responsible team.</p>
   </section>
 
   <section class="content-box" id="what-is-ping">

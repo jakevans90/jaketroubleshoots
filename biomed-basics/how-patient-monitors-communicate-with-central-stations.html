@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How Patient Monitors Communicate With Central Stations | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how bedside monitors send waveforms, numerics, alarms, and patient information to central stations across the network.">
+  <meta name="datePublished" content="2026-08-16">
+  <meta name="dateModified" content="2026-09-05">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>How Patient Monitors Communicate With Central Stations</h2>
   <p>How bedside monitors send waveforms, numerics, alarms, and patient information across the network — and where that communication can fail</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A bedside patient monitor can be working perfectly at the bedside and still be completely missing from the central station.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 16, 2026 · Revised September 5, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -64,26 +67,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A typical central-monitoring path looks like:</p>
-    <p><strong>Patient parameter is measured</strong></p>
-    <p>↓</p>
-    <p><strong>Bedside monitor processes the data</strong></p>
-    <p>↓</p>
-    <p><strong>Monitor sends data through its network interface</strong></p>
-    <p>↓</p>
-    <p><strong>Hospital network carries the traffic</strong></p>
-    <p>↓</p>
-    <p><strong>Monitoring infrastructure receives it</strong></p>
-    <p>↓</p>
-    <p><strong>Central station identifies the monitor and bed</strong></p>
-    <p>↓</p>
-    <p><strong>Waveforms, numerics, and alarms appear centrally</strong></p>
-    <p>That means a failure can occur at several layers:</p>
-    <p><strong>Measurement</strong></p>
-    <p><strong>Monitor</strong></p>
-    <p><strong>Network</strong></p>
-    <p><strong>Monitoring infrastructure</strong></p>
-    <p><strong>Central station</strong></p>
+    <p>The bedside monitor measures and processes patient parameters, then sends waveforms, numerics, alarms, and identity information through its wired or wireless network interface. Network switches, access points, servers, and monitoring services carry and interpret that traffic before the central station associates it with the correct unit and bed. A normal local display therefore proves only the measurement side; it does not prove that the complete central-monitoring path is healthy.</p>
+    <p>Troubleshoot that path in order. Confirm the parameter locally, confirm the monitor has the expected network connection and identity, determine whether one bed or many beds are affected, and check whether the central station sees the monitor but lacks only one type of data. Those observations separate a sensor problem from a monitor configuration problem, a network outage, or a central-system issue.</p>
+  </section>
+
+  <section class="content-box" id="worked-central-station-example">
+    <h3>Worked Example: One Monitor Is Missing</h3>
+    <p>If one bedside monitor is normal locally but absent from central while neighboring monitors work, begin with the failed monitor's immediate path. Check its cable or Wi-Fi association, link indication, IP configuration, network jack or access point, device name, unit, and bed assignment. A known-good cable or approved jack swap can help isolate the physical connection, provided the hospital's network policy permits it.</p>
+    <p>If several monitors disappear together, stop treating them as unrelated device failures. Look for the shared switch, wireless area, VLAN, monitoring server, gateway, or central station. Record the affected beds and time of failure before escalating; that pattern gives networking or clinical-systems staff something much more useful than “central is down.” Never leave central monitoring unavailable without following the facility's clinical notification and downtime process.</p>
   </section>
 
   <section class="content-box" id="local-monitoring-comes-first">
