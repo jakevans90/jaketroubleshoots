@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How Device Self-Tests Detect Failures | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how medical devices use startup and continuous self-tests to check hardware, sensors, memory, communication paths, and safety systems.">
+  <meta name="datePublished" content="2026-08-28">
+  <meta name="dateModified" content="2026-09-05">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -21,6 +23,7 @@
   <h2>How Device Self-Tests Detect Failures</h2>
   <p>How medical equipment checks its own hardware, sensors, memory, communication paths, and safety systems during startup and operation</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical equipment often checks itself before the user ever presses a clinical function.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 28, 2026 · Revised September 5, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -48,22 +51,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A basic device self-test works like this:</p>
-    <p><strong>Device starts</strong></p>
-    <p>↓</p>
-    <p><strong>Processor checks key systems</strong></p>
-    <p>↓</p>
-    <p><strong>Known commands are sent</strong></p>
-    <p>↓</p>
-    <p><strong>Expected responses are measured</strong></p>
-    <p>↓</p>
-    <p><strong>Actual response is compared to expected response</strong></p>
-    <p>↓</p>
-    <p><strong>Pass if within limits</strong></p>
-    <p>or:</p>
-    <p><strong>Fail if outside limits</strong></p>
-    <p>That means most self-tests are really asking:</p>
-    <p><strong>Did this subsystem respond the way the software expected?</strong></p>
+    <p>During a self-test, the processor checks selected systems by reading status, sending known commands, measuring responses, and comparing those responses with stored limits. Depending on the device, it may test memory, power rails, sensors, motors, valves, alarm outputs, internal communication, or safety interlocks. Most results answer a narrow question: did this subsystem respond the way the software expected under the test conditions?</p>
+    <p>A passed self-test is useful evidence, but it is not proof that every clinical function works. Some loads, accessories, alarm paths, or performance ranges cannot be exercised internally. A failed self-test is also a symptom rather than a complete diagnosis; the named subsystem, its power, wiring, feedback sensor, mechanical load, configuration, or test conditions may be responsible.</p>
+  </section>
+
+  <section class="content-box" id="worked-self-test-example">
+    <h3>Worked Example: A Valve Self-Test Fails</h3>
+    <p>Suppose a device commands a valve during startup and reports that the expected pressure change did not occur. That does not prove the valve itself is bad. The valve may lack power or drive, a connector may be loose, the pneumatic path may leak or be blocked, the pressure sensor may be offset, or the supply pressure may be missing. The error tells you which response the device failed to observe; the service procedure tells you how to isolate why.</p>
+    <p>Capture the exact code, text, startup stage, and conditions before cycling power or clearing logs. Check required accessories and consumables, inspect recent service history, and reproduce the test as the manufacturer directs. After repairing the cause, rerun the self-test and perform the external functional or performance verification required for return to service. Clearing the message alone is not verification.</p>
   </section>
 
   <section class="content-box" id="power-on-self-test">

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How to Troubleshoot Communication Failures | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to finding where communication stops between a medical device, accessory, physical link, network, server, application, or connected system.">
+  <meta name="datePublished" content="2026-08-14">
+  <meta name="dateModified" content="2026-09-05">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>How to Troubleshoot Communication Failures</h2>
   <p>A practical way to find where communication stops between a medical device, accessory, network, server, or connected system</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Communication failures are some of the easiest problems to overcomplicate.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 14, 2026 · Revised September 5, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -63,19 +66,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Think of communication like a chain.</p>
-    <p><strong>Source</strong></p>
-    <p>↓</p>
-    <p><strong>Cable / Wireless Link</strong></p>
-    <p>↓</p>
-    <p><strong>Device Interface</strong></p>
-    <p>↓</p>
-    <p><strong>Network or Communication Path</strong></p>
-    <p>↓</p>
-    <p><strong>Destination</strong></p>
-    <p>If information does not reach the destination, determine:</p>
-    <p><strong>How far did it get?</strong></p>
-    <p>That is the core of communication troubleshooting.</p>
+    <p>Communication is a chain with a source, a physical or wireless link, one or more interfaces, a transport path, and a destination that must recognize and accept the data. When information does not arrive, the most useful question is: <strong>How far did it get?</strong> Finding the last confirmed good point turns a vague communication complaint into a smaller, testable problem.</p>
+    <p>Be exact about the symptom before changing anything. “The monitor displays ECG locally but the central station shows the bed offline” identifies different working and failed points. “It doesn't communicate” does not. Also establish whether the failure affects one device, one room, one unit, one application, or an entire site; the size of the failure often identifies the size of the shared component.</p>
+  </section>
+
+  <section class="content-box" id="last-known-good-example">
+    <h3>Worked Example: Find the Last Known-Good Point</h3>
+    <p>An ECG cart completes an acquisition but the study does not appear in the management system. First confirm that the study exists on the cart and note whether it is queued, rejected, or marked as sent. Then verify the cart's link or Wi-Fi association, network configuration, destination settings, time, and patient identifiers. A successful ping, when permitted, proves only that some network traffic can pass; it does not prove the required service, port, authentication, route, or application is working.</p>
+    <p>If another cart on the same network can send to the same destination, compare the two configurations without copying values blindly. If no carts can send, preserve timestamps and error messages and investigate the shared network, interface engine, server, or application. Avoid factory resets and broad configuration changes early in the process: they erase evidence and can turn one known problem into several unknown ones.</p>
   </section>
 
   <section class="content-box" id="start-with-the-exact-failure">

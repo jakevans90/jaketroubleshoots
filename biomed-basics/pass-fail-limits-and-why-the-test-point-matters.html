@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Pass/Fail Limits and Why the Test Point Matters | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to test-point-specific limits, multi-point testing, range-dependent errors, operating conditions, and defensible pass/fail decisions.">
+  <meta name="datePublished" content="2026-08-16">
+  <meta name="dateModified" content="2026-09-05">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>Pass/Fail Limits and Why the Test Point Matters</h2>
   <p>How the same device can pass at one value, fail at another, and why testing the right point matters</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device does not always perform the same way across its entire operating range.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 16, 2026 · Revised September 5, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -59,21 +62,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Think of it like this:</p>
-    <p><strong>Test Point</strong></p>
-    <p>The exact value or operating condition you are testing.</p>
-    <p><strong>Pass/Fail Limit</strong></p>
-    <p>The acceptable result at that point.</p>
-    <p>Example:</p>
-    <p>Set:</p>
-    <p>100 mL/hr.</p>
-    <p>Acceptable:</p>
-    <p>95 to 105 mL/hr.</p>
-    <p>That tells you whether the pump passes <strong>at 100 mL/hr</strong>.</p>
-    <p>It does not automatically tell you whether it passes at:</p>
-    <p>1 mL/hr</p>
-    <p>or:</p>
-    <p>999 mL/hr.</p>
+    <p>A <strong>test point</strong> is the exact setting or operating condition being checked. The <strong>pass/fail limit</strong> is the acceptable result at that point. If an infusion pump set to 100 mL/hr must measure between 95 and 105 mL/hr, a result inside that window proves performance at 100 mL/hr under the stated test conditions. It does not prove that the pump performs correctly at 1 mL/hr or 999 mL/hr.</p>
+    <p>That is why service procedures often specify low, middle, and high points. Low-rate testing may expose resolution, friction, or intermittent delivery problems. High-rate testing may expose restrictions, weak drive systems, pressure effects, or gain errors. Substituting one convenient middle point removes the very coverage the manufacturer intended.</p>
+  </section>
+
+  <section class="content-box" id="three-point-pattern-example">
+    <h3>What Three Test Points Can Tell You</h3>
+    <p>Imagine a pressure channel tested at 50, 150, and 250 mmHg. If every indication is about 5 mmHg high, the pattern suggests an offset. If the low point is close but the error grows as pressure rises, think about gain, span, compliance, or a range-dependent problem. If only the middle point fails, repeat the setup carefully and consider nonlinearity or an intermittent connection rather than forcing one adjustment to fit every point.</p>
+    <p>Record every required point, its applicable limit, and the actual unrounded result. Do not average a failed point together with passing points unless the manufacturer explicitly defines an averaging method. Each required point is normally its own pass/fail decision, and one failure means the tested function has not met the full procedure.</p>
   </section>
 
   <section class="content-box" id="what-is-a-test-point">
