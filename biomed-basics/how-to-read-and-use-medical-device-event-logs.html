@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How to Read and Use Medical Device Event Logs | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to turning medical-device alarms, errors, resets, timestamps, and event history into useful troubleshooting evidence.">
+  <meta name="datePublished" content="2026-08-13">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>How to Read and Use Medical Device Event Logs</h2>
   <p>How to turn alarms, errors, resets, timestamps, and service history into useful troubleshooting evidence</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical device logs can be incredibly useful.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 13, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -62,12 +65,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>When reviewing a log, ask four questions:</p>
-    <p><strong>What happened?</strong></p>
-    <p><strong>When did it happen?</strong></p>
-    <p><strong>What happened immediately before it?</strong></p>
-    <p><strong>Does it match the reported complaint?</strong></p>
-    <p>Those four questions are usually more useful than simply searching for the scariest error code.</p>
+    <p>Read a log as a timeline, not a list of scary codes. Identify what happened, when it happened, what immediately preceded it, what followed it, and whether that sequence matches the reported complaint. A shutdown entry after repeated low-voltage events tells a different story from the same shutdown entry after a watchdog reset.</p>
+    <p>Confirm the device clock and time zone before correlating events with clinical records or network systems. Preserve the original log before clearing, updating, resetting, or changing configuration. Historical entries may be harmless leftovers, while a cluster at the complaint time can be strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="worked-log-example">
+    <h3>Worked Example: “The Monitor Randomly Rebooted”</h3>
+    <p>Record the reported time, location, power source, connected accessories, and what staff observed. Export or photograph the log according to policy, then look several entries before the reboot—not only at the final restart event. Low-battery transitions, communication loss, temperature warnings, application errors, or a deliberate user shutdown can change the investigation.</p>
+    <p>Compare the timeline with power, network, and service history and reproduce only under safe bench conditions. State conclusions carefully: “watchdog reset occurred at 14:03 after three application faults” is evidence; “bad main board” is a hypothesis until tested. For incident equipment, follow the facility's preservation process before altering data.</p>
   </section>
 
   <section class="content-box" id="what-is-an-event-log">
