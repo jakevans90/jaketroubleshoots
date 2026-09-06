@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Ethernet Ports, Link Lights, and What They Tell You | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to Ethernet ports, link and activity lights, cables, switch connections, addressing, and what physical link status does and does not prove.">
+  <meta name="datePublished" content="2026-08-31">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -21,6 +23,7 @@
   <h2>Ethernet Ports, Link Lights, and What They Tell You</h2>
   <p>How to use Ethernet link and activity indicators as fast troubleshooting evidence without assuming a blinking light means the network is working</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Modern medical equipment depends heavily on Ethernet.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 31, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -48,20 +51,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A basic wired network path looks like:</p>
-    <p><strong>Medical Device</strong></p>
-    <p>↓</p>
-    <p><strong>Ethernet Cable</strong></p>
-    <p>↓</p>
-    <p><strong>Wall Jack or Patch Panel</strong></p>
-    <p>↓</p>
-    <p><strong>Network Switch</strong></p>
-    <p>↓</p>
-    <p><strong>Hospital Network</strong></p>
-    <p>↓</p>
-    <p><strong>Server/Application</strong></p>
-    <p>A link light primarily tells you about the connection near the beginning of that chain.</p>
-    <p>It does not prove the entire chain works.</p>
+    <p>A wired path begins at the device's network interface, crosses a cable, wall jack, patching, and switch port, then continues through the hospital network to the required server or application. A link light shows that the local Ethernet interfaces negotiated some physical connection. An activity light shows frames moving, not necessarily useful clinical data.</p>
+    <p>Neither light proves that the device has the correct address, VLAN, route, DNS, port access, authentication, or application service. Use the LEDs as early-path evidence, then continue testing the actual communication requirement.</p>
+  </section>
+
+  <section class="content-box" id="worked-link-example">
+    <h3>Worked Example: No Link Light</h3>
+    <p>Confirm that the interface is enabled and inspect the connector for bent contacts or damage. Substitute a known-good approved cable and, with IT authorization, compare a known-good wall jack or switch port. If another device links on the same path but the original does not, the device interface or its configuration becomes more likely.</p>
+    <p>If link is present but the application fails, stop swapping physical parts and record the device address, destination, timestamp, and exact error. Check approved IP settings and involve IT or the application owner for VLAN, routing, firewall, and service checks. A blinking light is a clue, not a complete network test.</p>
   </section>
 
   <section class="content-box" id="what-is-ethernet">

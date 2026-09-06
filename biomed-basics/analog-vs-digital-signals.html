@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Analog vs Digital Signals | Jake Troubleshoots</title>
   <meta name="description" content="A practical introduction to analog and digital signals, conversion, noise, sampling, logic, and signal-path troubleshooting in medical equipment.">
+  <meta name="datePublished" content="2026-08-16">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>Analog vs Digital Signals</h2>
   <p>A practical explanation of how medical equipment senses, converts, transmits, and interprets information</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical equipment constantly moves information.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 16, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -59,25 +62,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Think of it like this:</p>
-    <p><strong>Analog</strong></p>
-    <p>A value changes continuously.</p>
-    <p>Examples:</p>
-    <ul>
-      <li>Voltage</li>
-      <li>Pressure-sensor output</li>
-      <li>ECG waveform</li>
-    </ul>
-    <p><strong>Digital</strong></p>
-    <p>Information is represented in discrete states or encoded data.</p>
-    <p>Examples:</p>
-    <ul>
-      <li>Module communication</li>
-      <li>USB</li>
-      <li>Ethernet</li>
-      <li>Serial data</li>
-    </ul>
-    <p>Many medical devices convert analog signals into digital information internally.</p>
+    <p>An analog signal changes continuously and can represent values such as ECG voltage, temperature, pressure, or light intensity. A digital signal uses discrete logic states or encoded data to represent and move information. Most medical devices use both: a sensor produces an analog response, conditioning circuits prepare it, and an analog-to-digital converter turns samples into numbers for software.</p>
+    <p>This distinction helps localize faults. Noise or offset before conversion can corrupt every later display and calculation, while a communication or software problem can lose correct digital data after the sensor path is working. Follow the signal from physical input to final output and identify the last point where it remains believable.</p>
+  </section>
+
+  <section class="content-box" id="worked-signal-example">
+    <h3>Worked Example: A Pressure Value Jumps Randomly</h3>
+    <p>Compare the physical pressure with an independent reference, then inspect the analog sensor output and supply if the service procedure exposes safe test points. If the analog signal jumps too, investigate the sensor, wiring, shielding, reference, and conditioning circuit. If analog output is stable but the displayed value jumps, focus on conversion, data transfer, processing, or software.</p>
+    <p>Use proper grounding and measurement bandwidth so the test instrument does not create or hide noise. After repair, verify zero, multiple pressure points, stability, and related alarms. A clean digital display at one instant does not prove the analog path is stable.</p>
   </section>
 
   <section class="content-box" id="what-is-an-analog-signal">
