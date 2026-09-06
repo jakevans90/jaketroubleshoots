@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Medical Equipment Power Troubleshooting: Outlet to Internal Supply | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to tracing no-power, charging, shutdown, and AC-input problems from the outlet through the internal medical-device power system.">
+  <meta name="datePublished" content="2026-08-13">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>Medical Equipment Power Troubleshooting: Outlet to Internal Supply</h2>
   <p>A practical way to trace a no-power, charging, shutdown, or AC-input problem from the wall to the electronics</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">When a medical device will not power on, it is tempting to jump straight inside.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 13, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -62,24 +65,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Think of the power path like this:</p>
-    <p><strong>Wall Outlet</strong></p>
-    <p>↓</p>
-    <p><strong>Power Cord / Adapter</strong></p>
-    <p>↓</p>
-    <p><strong>Device Power Inlet</strong></p>
-    <p>↓</p>
-    <p><strong>Fuse / Protection</strong></p>
-    <p>↓</p>
-    <p><strong>Internal Power Supply</strong></p>
-    <p>↓</p>
-    <p><strong>DC Power Rails</strong></p>
-    <p>↓</p>
-    <p><strong>Battery / Charging / Power Management</strong></p>
-    <p>↓</p>
-    <p><strong>Boards, Motors, Display, and Other Loads</strong></p>
-    <p>If the device is dead, do not guess.</p>
-    <p>Follow the power.</p>
+    <p>Start outside the device and follow the expected energy path: receptacle, approved cord or adapter, inlet, fuse or protective device, internal supply, DC rails, battery and power-management circuits, and finally the boards, display, motors, and other loads. Confirm each stage before moving deeper. The last good point and first bad point define a much smaller troubleshooting area.</p>
+    <p>The symptom helps choose the path. A unit that works on battery but not AC points toward the AC-input or conversion side. A unit that works on AC but dies when unplugged points toward the battery, contacts, charge state, or power switching. A reboot only when a motor starts suggests voltage collapse under load rather than a total loss of power.</p>
+  </section>
+
+  <section class="content-box" id="worked-power-isolation-example">
+    <h3>Worked Example: Device Reboots Under Load</h3>
+    <p>Suppose a device powers up normally but reboots when its pump or motor starts. Measure the appropriate DC rail under the manufacturer's specified load condition, not only while the unit is idle. If the rail drops as the load starts, check the supply, connectors, wiring resistance, battery support path, and the load itself. A supply can show correct open-circuit voltage yet fail when asked to deliver current.</p>
+    <p>If the rail stays stable at the supply but falls at the load, look for a high-resistance connector, cable, fuse holder, relay, or trace between those points. If voltage remains stable everywhere, the reboot may come from control, feedback, software, or protection logic rather than raw power. Mains circuits and charged capacitors can be lethal; follow the service manual's isolation, discharge, and measurement requirements.</p>
   </section>
 
   <section class="content-box" id="start-with-the-symptom">
