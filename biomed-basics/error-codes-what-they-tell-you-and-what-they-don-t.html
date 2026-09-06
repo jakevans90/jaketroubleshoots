@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Error Codes: What They Tell You and What They Don&#x27;t | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to interpreting medical-device error codes as diagnostic clues without mistaking the detected condition for the root cause.">
+  <meta name="datePublished" content="2026-08-13">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>Error Codes: What They Tell You and What They Don&#x27;t</h2>
   <p>How to use medical device error codes as clues without mistaking them for a diagnosis</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Error codes are useful.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 13, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -60,27 +63,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>An error code usually means:</p>
-    <p><strong>The device detected something outside the condition it expected.</strong></p>
-    <p>That does not always mean:</p>
-    <p><strong>The component named in the message is broken.</strong></p>
-    <p>For example:</p>
-    <blockquote><p>Flow Sensor Error</p></blockquote>
-    <p>may mean:</p>
-    <p>The device cannot obtain a valid flow measurement.</p>
-    <p>Possible causes could include:</p>
-    <ul>
-      <li>Bad sensor</li>
-      <li>Dirty sensor</li>
-      <li>Incorrect installation</li>
-      <li>Cable problem</li>
-      <li>Connector problem</li>
-      <li>Calibration failure</li>
-      <li>Blocked flow path</li>
-      <li>Input board problem</li>
-    </ul>
-    <p>The code gives you a starting point.</p>
-    <p>You still have to troubleshoot.</p>
+    <p>An error code usually means the device detected a condition outside what its software expected. It does not automatically mean the component named in the message is defective. A “flow sensor error,” for example, may only tell you that the device could not obtain a believable flow value. The cause could be a dirty or incorrectly installed sensor, a damaged cable, a blocked pneumatic path, missing supply, failed calibration, or the circuit that reads the sensor.</p>
+    <p>Use the code to identify the failed check, then troubleshoot the complete path that could produce that response. Preserve the exact code and wording, when it occurred, what the device was doing, installed accessories, recent service, and nearby events. Those details often matter more than the code number by itself.</p>
+  </section>
+
+  <section class="content-box" id="worked-error-code-example">
+    <h3>Worked Example: Intermittent Motor Error</h3>
+    <p>Suppose a pump logs a motor-position error only during high-rate operation. Before ordering a motor, check the service manual's code definition and event context. The controller may have commanded movement but failed to see the expected encoder change. Possible causes include mechanical binding, a slipping drive, an intermittent encoder cable, weak motor drive, excessive load, or a position sensor problem.</p>
+    <p>Reproduce the condition safely using the approved test setup and compare low- and high-load behavior. Review timestamps and related power or communication errors. Capture evidence before clearing logs. After correcting the root cause, rerun the applicable self-test and full performance verification; the absence of a code after one power cycle does not prove the repair.</p>
   </section>
 
   <section class="content-box" id="the-device-knows-what-it-can-measure">

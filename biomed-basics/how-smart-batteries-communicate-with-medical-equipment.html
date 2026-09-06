@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How Smart Batteries Communicate With Medical Equipment | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how smart batteries report charge, temperature, capacity, faults, and identification data to medical equipment.">
+  <meta name="datePublished" content="2026-08-16">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>How Smart Batteries Communicate With Medical Equipment</h2>
   <p>How a battery reports charge, temperature, capacity, faults, and identification data to the device using digital communication</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A modern medical-device battery may look like a simple removable pack.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 16, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -64,28 +67,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A smart battery may work like this:</p>
-    <p><strong>Battery cells provide power</strong></p>
-    <p>while separately:</p>
-    <p><strong>Battery-management electronics collect data</strong></p>
-    <p>↓</p>
-    <p><strong>Data is sent over a communication bus</strong></p>
-    <p>↓</p>
-    <p><strong>Host device reads the battery information</strong></p>
-    <p>↓</p>
-    <p><strong>Device displays:</strong></p>
-    <ul>
-      <li>Charge percentage</li>
-      <li>Runtime</li>
-      <li>Temperature</li>
-      <li>Battery condition</li>
-      <li>Charging status</li>
-    </ul>
-    <p>So the system has at least two important paths:</p>
-    <p><strong>Power path</strong></p>
-    <p>and:</p>
-    <p><strong>Communication path.</strong></p>
-    <p>One can fail while the other still works.</p>
+    <p>A smart battery has at least two important paths. Its cells and power contacts deliver energy, while battery-management electronics measure voltage, current, temperature, and accumulated charge. A separate data connection lets the host device read identification, charge percentage, estimated runtime, capacity, health, and fault information.</p>
+    <p>Those paths can fail independently. A battery may power the equipment while appearing unknown because its data contacts or communication electronics have failed. It may also communicate normally and report a plausible percentage while weak cells collapse under load. Treat displayed battery information as useful evidence, then confirm actual performance with the manufacturer's approved checks.</p>
+  </section>
+
+  <section class="content-box" id="worked-smart-battery-example">
+    <h3>Worked Example: Battery Detected but Runtime Is Short</h3>
+    <p>If the device identifies the correct battery and reports a high state of charge but shuts down early, compare reported remaining capacity and state of health with a controlled runtime or load test when the service procedure calls for one. Watch pack voltage and device status under load. A gauge can be out of synchronization, but aged cells or rising internal resistance can also make voltage fall before the reported charge reaches zero.</p>
+    <p>If a known-good approved battery works normally in the same device, the original pack becomes more likely. If multiple batteries show the same symptom, investigate the host contacts, current measurement, power path, firmware, and load. Do not open, bypass, or directly charge a lithium battery pack unless the manufacturer provides a specific service procedure.</p>
   </section>
 
   <section class="content-box" id="what-makes-a-battery-smart">

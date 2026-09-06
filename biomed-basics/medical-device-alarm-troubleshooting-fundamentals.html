@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Medical Device Alarm Troubleshooting Fundamentals | Jake Troubleshoots</title>
   <meta name="description" content="A practical guide to separating alarm conditions, measurement errors, alarm-logic problems, and failed audible, visual, or remote notifications.">
+  <meta name="datePublished" content="2026-08-13">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -36,6 +38,7 @@
   <h2>Medical Device Alarm Troubleshooting Fundamentals</h2>
   <p>How to determine whether the device is alarming correctly, sensing the wrong condition, or failing to notify the user</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical device alarms can be confusing because the alarm itself is not always the problem.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 13, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -61,18 +64,14 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Most alarm systems follow a path like this:</p>
-    <p><strong>Physical Condition</strong></p>
-    <p>↓</p>
-    <p><strong>Sensor / Measurement</strong></p>
-    <p>↓</p>
-    <p><strong>Device Decides Alarm Criteria Are Met</strong></p>
-    <p>↓</p>
-    <p><strong>Alarm Logic</strong></p>
-    <p>↓</p>
-    <p><strong>Audible / Visual / Remote Notification</strong></p>
-    <p>A failure can occur at any point.</p>
-    <p>Before replacing an alarm speaker or board, figure out where the path stops behaving correctly.</p>
+    <p>An alarm begins with a physical or device condition that is measured by a sensor or internal status circuit. Software compares that information with configured criteria, applies priority, delay, latching, silence, and escalation rules, and then commands audible, visual, and sometimes remote notification. A complaint that “the alarm failed” can originate at any point in that chain.</p>
+    <p>First determine whether the alarm condition was truly present and measured correctly. Then check whether the logic should have declared an alarm under the active mode, limits, and delay. Finally verify each required notification path. A working screen message does not prove the speaker, alarm light, nurse-call contact, or central-station notification works.</p>
+  </section>
+
+  <section class="content-box" id="worked-alarm-example">
+    <h3>Worked Example: Visual Alarm but No Sound</h3>
+    <p>If a reproducible alarm produces the correct message and priority color but no audible tone, the sensing and much of the decision logic are already working. Check whether alarm pause, silence, startup suppression, minimum-volume rules, or service settings explain the behavior. Then use the manufacturer-prescribed alarm test to evaluate the speaker, amplifier, wiring, and alternate audible paths.</p>
+    <p>Also verify the complaint under the same clinical mode and configuration; alarm behavior can change with priority and delay. After repair, test representative alarm priorities plus any required remote outputs. Never create an unsafe condition on a patient to reproduce an alarm—use simulators, analyzers, test loads, or the approved built-in procedure.</p>
   </section>
 
   <section class="content-box" id="start-with-the-exact-alarm">

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>How Nurse Call Relay Outputs Work | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how medical equipment uses relay outputs and dry contacts to signal nurse call systems and how to isolate device, cable, and infrastructure faults.">
+  <meta name="datePublished" content="2026-08-28">
+  <meta name="dateModified" content="2026-09-06">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
@@ -21,6 +23,7 @@
   <h2>How Nurse Call Relay Outputs Work</h2>
   <p>How medical equipment uses dry contacts, relays, and simple state changes to signal nurse call systems</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Many medical devices can send an alarm or status signal to a nurse call system.</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 28, 2026 · Revised September 6, 2026</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
@@ -47,21 +50,11 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A basic nurse call relay interface may work like this:</p>
-    <p><strong>Medical device detects alarm</strong></p>
-    <p>↓</p>
-    <p><strong>Internal relay changes state</strong></p>
-    <p>↓</p>
-    <p><strong>Two relay contacts open or close</strong></p>
-    <p>↓</p>
-    <p><strong>Nurse call system detects the contact change</strong></p>
-    <p>↓</p>
-    <p><strong>Room or central nurse call alarm activates</strong></p>
-    <p>The medical device does not necessarily send:</p>
-    <blockquote><p>High heart rate alarm at Bed 12.</p></blockquote>
-    <p>It may simply send:</p>
-    <p><strong>Contact closed.</strong></p>
+    <p>When the medical device detects a qualifying alarm, an internal relay changes the state of isolated contacts. The nurse-call system senses that open-to-closed or closed-to-open transition and generates its own room or central notification. The interface may carry only a generic state—not the alarm text, priority, or patient data shown on the device.</p>
+    <p>Troubleshooting must separate alarm generation, relay operation, cable and pinout, wall interface, nurse-call input programming, and downstream notification. A working local alarm does not prove the relay changed, and a changing relay does not prove the hospital system received it.</p>
   </section>
+
+  <section class="content-box" id="worked-nurse-call-example"><h3>Worked Example: Local Alarm Works but Nurse Call Does Not</h3><p>Generate the manufacturer-approved test alarm and measure or observe the relay state at the device output using the correct pinout and electrical limits. If the contact does not change, check configuration, alarm eligibility, delay, connector, and relay circuit. If it changes, move the boundary to the approved cable and nurse-call input.</p><p>Coordinate with the nurse-call owner before testing live infrastructure and prevent nuisance clinical alarms. After repair, verify activation, clearing, priority behavior, delays, and failure response at both the medical device and receiving station.</p></section>
 
   <section class="content-box" id="what-is-a-relay">
     <h3>What Is a Relay?</h3>
