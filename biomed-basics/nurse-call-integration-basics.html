@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Nurse Call Integration Basics | Jake Troubleshoots</title>
+  <meta name="datePublished" content="2026-08-11">
+  <meta name="dateModified" content="2026-09-06">
   <meta name="description" content="A practical introduction to nurse call interfaces, contact closures, alarm signals, cables, room connections, and common failure patterns.">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
@@ -34,6 +36,7 @@
 </header>
 <section class="hero">
   <h2>Nurse Call Integration Basics</h2>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 11, 2026 · Revised September 6, 2026</p>
   <p>How medical equipment sends alarms and calls into a hospital nurse call system</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Nurse call integration can look deceptively simple.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -59,12 +62,8 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Many medical devices provide a simple output that changes state when an alarm occurs.</p>
-    <p>The nurse call system detects that change.</p>
-    <p>It then generates whatever notification the hospital has configured.</p>
-    <p>The device may not be sending a complicated digital message.</p>
-    <p>In many systems, it may simply be opening or closing an electrical contact.</p>
-    <p>That contact acts like a switch.</p>
+    <p>Many medical devices signal nurse call through a relay or isolated contact that changes state during an alarm. The nurse-call input watches that electrical state and turns it into the notification configured by the hospital. The source device may be acting like a switch rather than sending a detailed digital message, so the downstream system may know that an alarm exists without knowing its clinical priority or text.</p>
+    <p>Successful integration depends on the device configuration, correct cable and pinout, normally open or normally closed behavior, nurse-call input programming, alarm conditions, and the facility's response workflow. Test the complete path with clinical and IT stakeholders: create an approved test alarm, confirm the expected annunciation and reset behavior, and document any alarm types that are intentionally excluded. Never assume a connector fit proves electrical or functional compatibility.</p>
   </section>
 
   <section class="content-box" id="the-device-is-often-just-providing-a-signal">
