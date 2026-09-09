@@ -120,7 +120,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_vendor_article_is_registered_in_grid_and_preserves_key_copy(self):
         slug = "how-to-think-before-calling-a-vendor"
         page = (ROOT / "biomed-basics" / f"{slug}.html").read_text(encoding="utf-8")
-        self.assertIn("What is the device supposed to be doing?", page)
+        self.assertIn("define what the device should do", page)
         self.assertIn("A practical troubleshooting mindset for biomeds", page)
         matches = [item for item in self.biomed_catalog() if item["slug"] == slug]
         self.assertEqual(len(matches), 1)
@@ -228,8 +228,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Measurement Uncertainty in Plain English", planned)
         self.assertNotIn("Root Cause Troubleshooting Basics", planned)
         self.assertNotIn("When to Replace a Cable, Battery, Board, or Entire Device", planned)
-        self.assertIn("How to Read an OEM Training Certificate and Know What It Actually Qualifies You to Do", planned)
-        self.assertIn("<strong>75</strong>", planned)
+        self.assertNotIn("How to Document an Intermittent Problem", planned)
+        self.assertNotIn("Electrical Safety Analyzer Basics", planned)
+        self.assertIn("Incoming Inspection Basics", planned)
+        self.assertIn("<strong>90</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -239,7 +241,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "what-known-good-actually-means": "Known-good status should come from evidence",
             "fuses-breakers-and-power-supplies-in-medical-equipment": "A Blown Fuse Is Usually a Symptom",
             "voltage-current-resistance-and-continuity-in-plain-english": "Voltage is electrical potential difference",
-            "sensors-and-transducers-basics": "A sensor detects something physical",
+            "sensors-and-transducers-basics": "A sensor responds to a physical condition",
             "relays-and-contact-closures-in-plain-english": "A relay is controlled electrically",
             "preserving-device-logs-after-a-serious-event": "Do Not “Test It a Few Times” First",
             "what-to-do-when-a-medical-device-is-involved-in-an-incident": "This Is Not a Normal Work Order",
@@ -250,7 +252,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             "error-codes-what-they-tell-you-and-what-they-don-t": "Error Condition vs Root Cause",
             "what-unable-to-duplicate-should-actually-mean": "“Powers On” Is Not a Reproduction Attempt",
             "medical-equipment-cables-and-connectors-inspection-and-isolation": "Failure Follows the Cable",
-            "how-to-troubleshoot-medical-device-accessories": "Does the problem follow the accessory",
+            "how-to-troubleshoot-medical-device-accessories": "problem follows that accessory",
             "how-to-isolate-device-vs-accessory-vs-infrastructure-problems": "The Last Known-Good Point",
             "medical-equipment-power-troubleshooting-outlet-to-internal-supply": "Where does the power stop?",
             "medical-device-alarm-troubleshooting-fundamentals": "Alarm Condition vs Alarm-System Failure",
@@ -310,7 +312,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 110)
+        self.assertEqual(len(catalog), 112)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
