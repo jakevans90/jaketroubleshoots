@@ -127,6 +127,8 @@ RELATED = {
     "measurement-uncertainty-in-plain-english": ["tolerance-vs-accuracy", "pass-fail-limits-and-why-the-test-point-matters", "how-to-compare-your-test-result-to-manufacturer-specification", "calibration-stickers-what-they-do-and-dont-mean", "functional-testing-vs-calibration-vs-verification"],
     "root-cause-troubleshooting-basics": ["the-difference-between-a-symptom-cause-and-root-cause", "the-troubleshooting-process-observe-isolate-test-verify", "how-to-avoid-confirmation-bias-while-troubleshooting", "error-codes-what-they-tell-you-and-what-they-don-t", "what-to-do-when-a-medical-device-is-involved-in-an-incident"],
     "when-to-replace-a-cable-battery-board-or-entire-device": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service"],
+    "how-to-document-an-intermittent-problem": ["what-unable-to-duplicate-should-actually-mean", "no-problem-found-when-that-answer-is-and-isn-t-good-enough", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-read-and-use-medical-device-event-logs"],
+    "electrical-safety-analyzer-basics": ["electrical-safety-testing-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "calibration-stickers-what-they-do-and-dont-mean"],
 }
 
 ARTICLE_CONFIG = {
@@ -739,6 +741,18 @@ ARTICLE_CONFIG = {
         "category": "Safety & Risk",
         "badge": "Decision Guide",
         "cardNote": "Repair scope, replacement evidence, risk, and lifecycle decisions",
+    },
+    "how-to-document-an-intermittent-problem": {
+        "description": "A practical guide to documenting intermittent medical-equipment problems with conditions, timing, observations, tests, evidence, and clear follow-up guidance.",
+        "category": "Troubleshooting",
+        "badge": "Documentation",
+        "cardNote": "Capturing intermittent symptoms, conditions, evidence, and next steps",
+    },
+    "electrical-safety-analyzer-basics": {
+        "description": "A practical introduction to what electrical safety analyzers measure, how they connect to medical equipment, and how to interpret grounding, leakage-current, and insulation tests.",
+        "category": "Testing & Verification",
+        "badge": "Test Equipment",
+        "cardNote": "Ground resistance, leakage current, connections, and test setup",
     },
 }
 
