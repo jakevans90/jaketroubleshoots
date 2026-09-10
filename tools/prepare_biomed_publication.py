@@ -129,6 +129,8 @@ RELATED = {
     "when-to-replace-a-cable-battery-board-or-entire-device": ["medical-equipment-cables-and-connectors-inspection-and-isolation", "medical-device-batteries-runtime-capacity-and-state-of-health", "how-to-troubleshoot-charging-problems", "what-known-good-actually-means", "when-to-remove-medical-equipment-from-service"],
     "how-to-document-an-intermittent-problem": ["what-unable-to-duplicate-should-actually-mean", "no-problem-found-when-that-answer-is-and-isn-t-good-enough", "how-to-reproduce-a-clinical-complaint-on-the-bench", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-read-and-use-medical-device-event-logs"],
     "electrical-safety-analyzer-basics": ["electrical-safety-testing-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "calibration-stickers-what-they-do-and-dont-mean"],
+    "how-to-choose-the-right-test-equipment": ["electrical-safety-analyzer-basics", "how-to-use-a-multimeter-in-biomed", "patient-simulators-what-they-actually-simulate", "measurement-uncertainty-in-plain-english", "functional-testing-vs-calibration-vs-verification"],
+    "patient-simulators-what-they-actually-simulate": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "how-invasive-blood-pressure-monitoring-works", "how-to-choose-the-right-test-equipment", "functional-testing-vs-calibration-vs-verification"],
 }
 
 ARTICLE_CONFIG = {
@@ -753,6 +755,18 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Test Equipment",
         "cardNote": "Ground resistance, leakage current, connections, and test setup",
+    },
+    "how-to-choose-the-right-test-equipment": {
+        "description": "A practical guide to matching test equipment to the measurement, failure mode, required accuracy, test boundary, and manufacturer procedure.",
+        "category": "Testing & Verification",
+        "badge": "Test Equipment",
+        "cardNote": "Choosing the simplest tool that can prove the answer",
+    },
+    "patient-simulators-what-they-actually-simulate": {
+        "description": "A practical explanation of what patient simulators generate, what ECG, respiration, pressure, temperature, and SpO2 tests can prove, and where their test boundaries end.",
+        "category": "Testing & Verification",
+        "badge": "Test Equipment",
+        "cardNote": "Known inputs, simulated parameters, and test boundaries",
     },
 }
 
