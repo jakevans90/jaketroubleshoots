@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Troubleshoot “Sensor Not Recognized” | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to separating sensor, cable, connector, compatibility, configuration, interface, and main-device causes when medical equipment does not recognize a sensor.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-troubleshoot-sensor-not-recognized.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How to Troubleshoot “Sensor Not Recognized”</h2>
+  <p>How to separate a bad sensor from a bad cable, connector, power rail, communication path, configuration problem, or host-device failure</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">“Sensor not recognized” sounds like a sensor problem.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What “not recognized” really means</li>
+      <li>Passive vs smart sensors</li>
+      <li>Identification resistors</li>
+      <li>EEPROM and digital ID</li>
+      <li>Supply voltage</li>
+      <li>Connector sensing</li>
+      <li>Optical recognition</li>
+      <li>Mechanical flags</li>
+      <li>Communication buses</li>
+      <li>Known-good substitution</li>
+      <li>Cable faults</li>
+      <li>Host-side failures</li>
+      <li>Firmware and compatibility</li>
+      <li>Intermittent recognition</li>
+      <li>Common troubleshooting mistakes</li>
+      <li>How to prove whether the failure follows the sensor or the device</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A device usually recognizes a sensor by detecting something specific.</p>
+    <p>That may be:</p>
+    <ul>
+      <li>Resistance</li>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Digital message</li>
+      <li>Physical switch</li>
+      <li>Optical target</li>
+      <li>Identification code</li>
+    </ul>
+    <p>A useful mental model is:</p>
+    <p><strong>Host sends or expects something</strong></p>
+    <p>↓</p>
+    <p><strong>Sensor/accessory responds</strong></p>
+    <p>↓</p>
+    <p><strong>Host checks that response</strong></p>
+    <p>↓</p>
+    <p><strong>Device decides whether the sensor is present and valid</strong></p>
+    <p>If any part of that chain breaks, the device may report:</p>
+    <p><strong>Sensor Not Recognized</strong></p>
+    <p>even if the sensor itself is perfectly good.</p>
+  </section>
+
+  <section class="content-box" id="not-recognized-is-a-detection-failure">
+    <h3>“Not Recognized” Is a Detection Failure</h3>
+    <p>Do not translate the message directly into:</p>
+    <blockquote><p>Replace sensor.</p></blockquote>
+    <p>Instead translate it into:</p>
+    <blockquote><p>The device did not receive the expected evidence that this sensor is present and compatible.</p></blockquote>
+    <p>That is a much better starting point.</p>
+  </section>
+
+  <section class="content-box" id="first-ask-what-kind-of-sensor-it-is">
+    <h3>First Ask What Kind of Sensor It Is</h3>
+    <p>Different sensors are detected differently.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Passive resistive sensor</li>
+      <li>Analog transducer</li>
+      <li>Digital smart sensor</li>
+      <li>Optical sensor</li>
+      <li>Mechanical position sensor</li>
+      <li>Disposable with ID feature</li>
+    </ul>
+    <p>The troubleshooting path depends heavily on the architecture.</p>
+  </section>
+
+  <section class="content-box" id="passive-sensors">
+    <h3>Passive Sensors</h3>
+    <p>Some sensors are electrically simple.</p>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Thermistors</li>
+      <li>Pressure transducers</li>
+      <li>Switches</li>
+    </ul>
+    <p>The host may identify the sensor by measuring:</p>
+    <ul>
+      <li>Resistance</li>
+      <li>Excitation current</li>
+      <li>Expected voltage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-thermistor-probe">
+    <h3>Example: Thermistor Probe</h3>
+    <p>A temperature probe may look like nothing more than a resistance that changes with temperature.</p>
+    <p>The monitor may detect:</p>
+    <ul>
+      <li>Resistance within expected range = probe present</li>
+      <li>Open circuit = probe disconnected</li>
+      <li>Short circuit = probe fault</li>
+    </ul>
+    <p>In this case, “not recognized” may simply mean:</p>
+    <p><strong>The electrical path is open or outside the expected range.</strong></p>
+  </section>
+
+  <section class="content-box" id="smart-sensors">
+    <h3>Smart Sensors</h3>
+    <p>Other accessories contain electronics.</p>
+    <p>They may include:</p>
+    <ul>
+      <li>EEPROM</li>
+      <li>Microcontroller</li>
+      <li>Memory chip</li>
+      <li>Digital ID</li>
+    </ul>
+    <p>The host communicates with the accessory and asks:</p>
+    <blockquote><p>Who are you?</p></blockquote>
+  </section>
+
+  <section class="content-box" id="digital-identification">
+    <h3>Digital Identification</h3>
+    <p>The sensor may respond with information such as:</p>
+    <ul>
+      <li>Model</li>
+      <li>Serial number</li>
+      <li>Calibration data</li>
+      <li>Manufacturing data</li>
+    </ul>
+    <p>If that communication fails, the device may reject the sensor.</p>
+  </section>
+
+  <section class="content-box" id="the-sensor-can-be-electrically-alive-but-still-not-recognized">
+    <h3>The Sensor Can Be Electrically Alive but Still Not Recognized</h3>
+    <p>A smart sensor may have:</p>
+    <ul>
+      <li>Power</li>
+      <li>Some functional electronics</li>
+    </ul>
+    <p>but fail its identification communication.</p>
+    <p>That can create confusing partial behavior.</p>
+  </section>
+
+  <section class="content-box" id="identification-resistors">
+    <h3>Identification Resistors</h3>
+    <p>Some accessories use a simple resistor value to identify themselves.</p>
+    <p>The host applies a voltage and measures the resulting electrical value.</p>
+    <p>Different resistance values may correspond to different accessory types.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Accessory A:</p>
+    <p>10 kΩ ID resistor.</p>
+    <p>Accessory B:</p>
+    <p>20 kΩ ID resistor.</p>
+    <p>If the identification conductor breaks, the host may no longer know which accessory is connected.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-the-main-signal-path-and-id-path-are-the-same">
+    <h3>Do Not Assume the Main Signal Path and ID Path Are the Same</h3>
+    <p>A cable may contain separate conductors for:</p>
+    <ul>
+      <li>Measurement</li>
+      <li>Power</li>
+      <li>Identification</li>
+    </ul>
+    <p>One conductor can fail while the others remain intact.</p>
+  </section>
+
+  <section class="content-box" id="this-explains-strange-symptoms">
+    <h3>This Explains Strange Symptoms</h3>
+    <p>A sensor may appear physically connected and even partly functional but still report:</p>
+    <blockquote><p>Not recognized.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="supply-voltage">
+    <h3>Supply Voltage</h3>
+    <p>Some sensors need power from the host.</p>
+    <p>Possible supply rails include low-voltage DC outputs.</p>
+    <p>If that supply is missing, the sensor cannot respond.</p>
+  </section>
+
+  <section class="content-box" id="host-side-power-failure">
+    <h3>Host-Side Power Failure</h3>
+    <p>Known-good sensor:</p>
+    <p>Fails.</p>
+    <p>Second known-good sensor:</p>
+    <p>Fails.</p>
+    <p>Measured sensor supply:</p>
+    <p>Missing.</p>
+    <p>Now the host input or power rail becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="cable-drop">
+    <h3>Cable Drop</h3>
+    <p>A damaged cable may introduce enough resistance to reduce supply voltage under load.</p>
+    <p>Static continuity may still pass.</p>
+  </section>
+
+  <section class="content-box" id="measure-under-operating-conditions">
+    <h3>Measure Under Operating Conditions</h3>
+    <p>If possible, compare:</p>
+    <ul>
+      <li>Supply voltage unloaded</li>
+      <li>Supply voltage with sensor connected</li>
+    </ul>
+    <p>A voltage collapse under load can reveal a weak connection.</p>
+  </section>
+
+  <section class="content-box" id="connector-damage">
+    <h3>Connector Damage</h3>
+    <p>Sensor connectors are frequent failure points.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Bent pins</li>
+      <li>Recessed contacts</li>
+      <li>Corrosion</li>
+      <li>Contamination</li>
+      <li>Cracked shell</li>
+      <li>Broken latch</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="recessed-pin">
+    <h3>Recessed Pin</h3>
+    <p>A pin may look present but be pushed backward into the connector body.</p>
+    <p>The sensor may connect intermittently depending on insertion angle.</p>
+  </section>
+
+  <section class="content-box" id="inspect-both-sides">
+    <h3>Inspect Both Sides</h3>
+    <p>Do not inspect only the sensor plug.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Sensor connector</li>
+      <li>Host receptacle</li>
+    </ul>
+    <p>A damaged host port can make multiple good sensors look bad.</p>
+  </section>
+
+  <section class="content-box" id="known-good-substitution">
+    <h3>Known-Good Substitution</h3>
+    <p>One of the fastest tests is:</p>
+    <p><strong>Known-good sensor on suspect device.</strong></p>
+    <p>Then:</p>
+    <p><strong>Suspect sensor on known-good device.</strong></p>
+  </section>
+
+  <section class="content-box" id="four-useful-outcomes">
+    <h3>Four Useful Outcomes</h3>
+
+  </section>
+
+  <section class="content-box" id="suspect-sensor-fails-everywhere">
+    <h3>Suspect Sensor Fails Everywhere</h3>
+    <p>Sensor likely bad.</p>
+  </section>
+
+  <section class="content-box" id="known-good-sensor-works-on-suspect-device">
+    <h3>Known-Good Sensor Works on Suspect Device</h3>
+    <p>Again points to original sensor.</p>
+  </section>
+
+  <section class="content-box" id="every-sensor-fails-on-one-device">
+    <h3>Every Sensor Fails on One Device</h3>
+    <p>Host side becomes likely.</p>
+  </section>
+
+  <section class="content-box" id="sensor-works-intermittently-on-both">
+    <h3>Sensor Works Intermittently on Both</h3>
+    <p>Accessory or cable fault may still exist.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-the-part">
+    <h3>Failure Follows the Part</h3>
+    <p>This phrase is worth internalizing.</p>
+    <p>Do not ask:</p>
+    <blockquote><p>What do I think is broken?</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>Where does the failure follow?</strong></p>
+    <p>That is stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-recognition">
+    <h3>Intermittent Recognition</h3>
+    <p>Intermittent sensor detection is especially common with:</p>
+    <ul>
+      <li>Flexed cables</li>
+      <li>Loose connectors</li>
+      <li>Dirty contacts</li>
+      <li>Marginal power</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="movement-test">
+    <h3>Movement Test</h3>
+    <p>If safe, gently reproduce the way the cable is used clinically.</p>
+    <p>Watch for:</p>
+    <ul>
+      <li>Recognition lost</li>
+      <li>Reading drop</li>
+      <li>Error appears</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>SpO2 sensor recognized until extension cable bends near strain relief.</p>
+    <p>Recognition drops.</p>
+    <p>Straighten cable:</p>
+    <p>Returns.</p>
+    <p>That is strong evidence for cable damage.</p>
+  </section>
+
+  <section class="content-box" id="do-not-abuse-the-cable">
+    <h3>Do Not Abuse the Cable</h3>
+    <p>Use controlled movement.</p>
+    <p>Do not create damage in the process of testing.</p>
+  </section>
+
+  <section class="content-box" id="communication-buses">
+    <h3>Communication Buses</h3>
+    <p>Smart sensors may use:</p>
+    <ul>
+      <li>I2C</li>
+      <li>SPI</li>
+      <li>UART</li>
+      <li>Proprietary serial bus</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="digital-communication-failure">
+    <h3>Digital Communication Failure</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Broken data line</li>
+      <li>Missing clock</li>
+      <li>Wrong voltage level</li>
+      <li>Firmware incompatibility</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="oscilloscope-or-logic-analyzer">
+    <h3>Oscilloscope or Logic Analyzer</h3>
+    <p>For deeper authorized troubleshooting, these tools may help reveal whether communication is present.</p>
+    <p>But start with simpler isolation first.</p>
+  </section>
+
+  <section class="content-box" id="firmware-compatibility">
+    <h3>Firmware Compatibility</h3>
+    <p>A physically compatible sensor may still be unsupported by:</p>
+    <ul>
+      <li>Older firmware</li>
+      <li>Wrong regional configuration</li>
+      <li>Wrong software option</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>New sensor generation connects physically.</p>
+    <p>Device says:</p>
+    <p>Unsupported accessory.</p>
+    <p>Known-good older sensor works.</p>
+    <p>The issue may be compatibility rather than hardware.</p>
+  </section>
+
+  <section class="content-box" id="check-release-notes">
+    <h3>Check Release Notes</h3>
+    <p>If the complaint began after:</p>
+    <ul>
+      <li>Software update</li>
+      <li>Accessory change</li>
+      <li>Model revision</li>
+    </ul>
+    <p>compatibility becomes important.</p>
+  </section>
+
+  <section class="content-box" id="sensor-calibration-data">
+    <h3>Sensor Calibration Data</h3>
+    <p>Some smart sensors store calibration information internally.</p>
+    <p>If the memory becomes corrupt, the host may reject it.</p>
+  </section>
+
+  <section class="content-box" id="recognition-vs-calibration">
+    <h3>Recognition vs Calibration</h3>
+    <p>A device may successfully identify the sensor but fail calibration.</p>
+    <p>Those are different stages.</p>
+  </section>
+
+  <section class="content-box" id="think-in-sequence">
+    <h3>Think in Sequence</h3>
+    <p><strong>Detected</strong></p>
+    <p>↓</p>
+    <p><strong>Identified</strong></p>
+    <p>↓</p>
+    <p><strong>Initialized</strong></p>
+    <p>↓</p>
+    <p><strong>Calibrated</strong></p>
+    <p>↓</p>
+    <p><strong>Measuring</strong></p>
+    <p>Knowing which stage fails helps isolate the problem.</p>
+  </section>
+
+  <section class="content-box" id="detected-but-invalid">
+    <h3>“Detected but Invalid”</h3>
+    <p>Some devices distinguish between:</p>
+    <ul>
+      <li>Not detected</li>
+      <li>Unsupported</li>
+      <li>Calibration failed</li>
+      <li>Sensor error</li>
+    </ul>
+    <p>Use the exact message.</p>
+  </section>
+
+  <section class="content-box" id="optical-recognition">
+    <h3>Optical Recognition</h3>
+    <p>Some systems detect accessories optically.</p>
+    <p>Examples may include:</p>
+    <ul>
+      <li>Cassette position</li>
+      <li>Disposable presence</li>
+      <li>Fluid container</li>
+      <li>Mechanical flag</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="optical-path">
+    <h3>Optical Path</h3>
+    <p>Recognition may depend on:</p>
+    <p><strong>Emitter → Target → Detector</strong></p>
+    <p>If any part is blocked, the device may think the sensor or disposable is missing.</p>
+  </section>
+
+  <section class="content-box" id="contamination">
+    <h3>Contamination</h3>
+    <p>Dust, fluid, or residue can block the light path.</p>
+    <p>Before replacing electronics, inspect:</p>
+    <ul>
+      <li>Window</li>
+      <li>Reflector</li>
+      <li>Flag</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mechanical-recognition">
+    <h3>Mechanical Recognition</h3>
+    <p>Some devices use:</p>
+    <ul>
+      <li>Microswitch</li>
+      <li>Reed switch</li>
+      <li>Hall sensor</li>
+    </ul>
+    <p>to detect whether an accessory is inserted.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Cassette inserted.</p>
+    <p>Mechanical tab should depress switch.</p>
+    <p>Tab broken.</p>
+    <p>Device reports cassette not recognized.</p>
+    <p>The electronics may be fine.</p>
+  </section>
+
+  <section class="content-box" id="hall-sensors">
+    <h3>Hall Sensors</h3>
+    <p>A magnetic accessory may be detected using a Hall-effect sensor.</p>
+    <p>If the magnet is missing or misaligned:</p>
+    <p>Recognition can fail.</p>
+  </section>
+
+  <section class="content-box" id="disposable-recognition">
+    <h3>Disposable Recognition</h3>
+    <p>Pumps and analyzers may use disposable identification systems.</p>
+    <p>These can include:</p>
+    <ul>
+      <li>Mechanical keying</li>
+      <li>RFID</li>
+      <li>Barcode</li>
+      <li>Optical code</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wrong-disposable">
+    <h3>Wrong Disposable</h3>
+    <p>Sometimes the device is correctly rejecting an incompatible item.</p>
+    <p>Do not defeat recognition systems to make it work.</p>
+  </section>
+
+  <section class="content-box" id="barcodes">
+    <h3>Barcodes</h3>
+    <p>A sensor or cartridge may require barcode scanning for:</p>
+    <ul>
+      <li>Lot</li>
+      <li>Type</li>
+      <li>Calibration</li>
+    </ul>
+    <p>If the code is damaged or unreadable, the device may report an accessory error even though the physical part is intact.</p>
+  </section>
+
+  <section class="content-box" id="rfid">
+    <h3>RFID</h3>
+    <p>Some systems use RFID tags.</p>
+    <p>Possible failures include:</p>
+    <ul>
+      <li>Damaged tag</li>
+      <li>Reader fault</li>
+      <li>Wrong tag type</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sensor-contamination">
+    <h3>Sensor Contamination</h3>
+    <p>Some sensors fail because the sensing element itself is contaminated.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Flow sensor</li>
+      <li>Optical detector</li>
+      <li>Gas sensor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="recognition-vs-performance">
+    <h3>Recognition vs Performance</h3>
+    <p>A dirty sensor may still be recognized but read incorrectly.</p>
+    <p>A severely contaminated sensor may fail initialization or self-test.</p>
+  </section>
+
+  <section class="content-box" id="flow-sensor-example">
+    <h3>Flow Sensor Example</h3>
+    <p>Ventilator detects flow sensor electronically.</p>
+    <p>Sensor passes ID.</p>
+    <p>Calibration fails.</p>
+    <p>Do not call that:</p>
+    <blockquote><p>Sensor not recognized.</p></blockquote>
+    <p>It is a different stage.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor-example">
+    <h3>Pressure Sensor Example</h3>
+    <p>Pressure transducer receives excitation voltage but output remains implausible.</p>
+    <p>Host may flag:</p>
+    <p>Sensor fault.</p>
+    <p>Again, identification may be fine.</p>
+  </section>
+
+  <section class="content-box" id="sensor-not-recognized-after-cleaning">
+    <h3>Sensor Not Recognized After Cleaning</h3>
+    <p>This should raise suspicion for:</p>
+    <ul>
+      <li>Fluid intrusion</li>
+      <li>Wet connector</li>
+      <li>Residue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Temperature probe cleaned aggressively.</p>
+    <p>Moisture enters connector.</p>
+    <p>Resistance path becomes unstable.</p>
+    <p>Monitor intermittently reports probe absent.</p>
+  </section>
+
+  <section class="content-box" id="drying-is-not-always-enough">
+    <h3>Drying Is Not Always Enough</h3>
+    <p>Residue can remain.</p>
+    <p>Inspect and clean using approved methods.</p>
+  </section>
+
+  <section class="content-box" id="host-input-damage">
+    <h3>Host Input Damage</h3>
+    <p>Repeated accessory failure on one port can indicate damage to:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Protection circuit</li>
+      <li>Input amplifier</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="esd-or-defibrillation-exposure">
+    <h3>ESD or Defibrillation Exposure</h3>
+    <p>Patient-connected ports may contain protection components.</p>
+    <p>A damaged protection device can affect recognition.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>ECG module no longer recognizes leads after electrical event.</p>
+    <p>Input protection network may be involved.</p>
+  </section>
+
+  <section class="content-box" id="shared-port-power">
+    <h3>Shared Port Power</h3>
+    <p>Several sensor inputs may share a power rail.</p>
+    <p>If all fail simultaneously:</p>
+    <p>Look for a common supply.</p>
+  </section>
+
+  <section class="content-box" id="one-port-only">
+    <h3>One Port Only</h3>
+    <p>If three identical ports exist and only one fails:</p>
+    <p>Port-specific hardware becomes likely.</p>
+  </section>
+
+  <section class="content-box" id="swap-ports">
+    <h3>Swap Ports</h3>
+    <p>If manufacturer design permits, compare behavior across identical channels.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Temperature probe:</p>
+    <p>Channel 1 fails.</p>
+    <p>Channel 2 works.</p>
+    <p>Probe itself is probably good.</p>
+    <p>Channel 1 input becomes suspect.</p>
+  </section>
+
+  <section class="content-box" id="module-based-systems">
+    <h3>Module-Based Systems</h3>
+    <p>Some monitors use removable parameter modules.</p>
+    <p>A sensor may connect to:</p>
+    <p><strong>Sensor → Parameter Module → Host Monitor</strong></p>
+  </section>
+
+  <section class="content-box" id="failure-domain">
+    <h3>Failure Domain</h3>
+    <p>Test:</p>
+    <p>Sensor on another module.</p>
+    <p>Module in another host.</p>
+    <p>This can separate:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Module</li>
+      <li>Host</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-skip-the-middle-layer">
+    <h3>Do Not Skip the Middle Layer</h3>
+    <p>If the parameter module is the actual failure, replacing the host monitor solves nothing.</p>
+  </section>
+
+  <section class="content-box" id="networked-sensors">
+    <h3>Networked Sensors</h3>
+    <p>Some modern accessories communicate through more complex digital systems.</p>
+    <p>The recognition failure may actually be:</p>
+    <ul>
+      <li>Network address</li>
+      <li>Pairing</li>
+      <li>Wireless association</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wireless-sensors">
+    <h3>Wireless Sensors</h3>
+    <p>Possible issues include:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Pairing</li>
+      <li>RF interference</li>
+      <li>Firmware</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pairing-failure-is-not-sensor-detection-in-the-traditional-sense">
+    <h3>Pairing Failure Is Not Sensor Detection in the Traditional Sense</h3>
+    <p>But clinically the complaint may sound identical:</p>
+    <blockquote><p>Sensor not recognized.</p></blockquote>
+    <p>Clarify whether the device means:</p>
+    <ul>
+      <li>Not electrically detected</li>
+      <li>Not paired</li>
+      <li>Not registered</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-powered-sensors">
+    <h3>Battery-Powered Sensors</h3>
+    <p>A wireless sensor with a dead battery may simply disappear.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Charge</li>
+      <li>Battery health</li>
+      <li>Power state</li>
+    </ul>
+    <p>before deeper troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="sensor-configuration">
+    <h3>Sensor Configuration</h3>
+    <p>The host may require a parameter to be enabled.</p>
+    <p>A good sensor connected to a disabled channel may not appear.</p>
+  </section>
+
+  <section class="content-box" id="software-license-or-option">
+    <h3>Software License or Option</h3>
+    <p>Some systems require licensed options for certain modules.</p>
+    <p>If hardware is present but software option is absent, recognition may fail or function may remain unavailable.</p>
+  </section>
+
+  <section class="content-box" id="serial-number-binding">
+    <h3>Serial Number Binding</h3>
+    <p>Certain accessories or modules may be associated with a specific host.</p>
+    <p>Replacement may require:</p>
+    <ul>
+      <li>Pairing</li>
+      <li>Registration</li>
+      <li>Configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="board-replacement-can-affect-recognition">
+    <h3>Board Replacement Can Affect Recognition</h3>
+    <p>Replacing a main board may remove:</p>
+    <ul>
+      <li>Calibration data</li>
+      <li>Option codes</li>
+      <li>Sensor configuration</li>
+    </ul>
+    <p>If several sensors stop being recognized after board replacement, check configuration before blaming every sensor.</p>
+  </section>
+
+  <section class="content-box" id="boot-sequence-matters">
+    <h3>Boot Sequence Matters</h3>
+    <p>Some devices only detect sensors during startup.</p>
+    <p>If connected afterward, they may not enumerate properly.</p>
+  </section>
+
+  <section class="content-box" id="hot-plugging">
+    <h3>Hot-Plugging</h3>
+    <p>Other systems support hot-plugging.</p>
+    <p>Know which applies.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-is-not-a-diagnosis">
+    <h3>Rebooting Is Not a Diagnosis</h3>
+    <p>If reboot makes the sensor return:</p>
+    <p>That tells you something about initialization.</p>
+    <p>It does not prove the root cause is software.</p>
+  </section>
+
+  <section class="content-box" id="logs-and-error-codes">
+    <h3>Logs and Error Codes</h3>
+    <p>Capture the exact message.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Sensor absent</li>
+      <li>Sensor invalid</li>
+      <li>Sensor incompatible</li>
+      <li>Communication lost</li>
+    </ul>
+    <p>These may correspond to different failure stages.</p>
+  </section>
+
+  <section class="content-box" id="service-diagnostics">
+    <h3>Service Diagnostics</h3>
+    <p>OEM diagnostics may expose:</p>
+    <ul>
+      <li>Raw resistance</li>
+      <li>ID code</li>
+      <li>Supply voltage</li>
+      <li>Communication status</li>
+    </ul>
+    <p>These are extremely useful.</p>
+  </section>
+
+  <section class="content-box" id="raw-values">
+    <h3>Raw Values</h3>
+    <p>Suppose service mode shows:</p>
+    <p>Sensor ID resistance expected:</p>
+    <p>10 kΩ.</p>
+    <p>Actual:</p>
+    <p>Open.</p>
+    <p>Now you have a much more specific problem.</p>
+  </section>
+
+  <section class="content-box" id="event-history">
+    <h3>Event History</h3>
+    <p>Intermittent recognition may generate timestamps.</p>
+    <p>Compare with:</p>
+    <ul>
+      <li>Cable movement</li>
+      <li>Device transport</li>
+      <li>Cleaning event</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="failure-after-warm-up">
+    <h3>Failure After Warm-Up</h3>
+    <p>A sensor or input circuit may fail thermally.</p>
+    <p>Example:</p>
+    <p>Recognized when cold.</p>
+    <p>After 30 minutes:</p>
+    <p>Disconnected.</p>
+    <p>After cooling:</p>
+    <p>Returns.</p>
+    <p>That suggests temperature-sensitive hardware.</p>
+  </section>
+
+  <section class="content-box" id="known-good-is-not-always-truly-known-good">
+    <h3>Known-Good Is Not Always Truly Known Good</h3>
+    <p>If you grab another sensor from a drawer, make sure it is:</p>
+    <ul>
+      <li>Compatible</li>
+      <li>Functional</li>
+    </ul>
+    <p>Otherwise you may create false evidence.</p>
+  </section>
+
+  <section class="content-box" id="test-the-known-good-accessory-elsewhere-first">
+    <h3>Test the Known-Good Accessory Elsewhere First</h3>
+    <p>This is especially important if several accessories have uncertain history.</p>
+  </section>
+
+  <section class="content-box" id="accessory-compatibility">
+    <h3>Accessory Compatibility</h3>
+    <p>Same connector does not guarantee:</p>
+    <ul>
+      <li>Same pinout</li>
+      <li>Same ID</li>
+      <li>Same calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Two temperature probes both fit.</p>
+    <p>One uses different resistance curve.</p>
+    <p>Device may reject or misread one.</p>
+  </section>
+
+  <section class="content-box" id="clinical-complaint-vs-bench-result">
+    <h3>Clinical Complaint vs Bench Result</h3>
+    <p>Staff reports:</p>
+    <blockquote><p>Sensor keeps disconnecting.</p></blockquote>
+    <p>On bench:</p>
+    <p>Works for five minutes.</p>
+    <p>That is weak evidence.</p>
+    <p>Reproduce:</p>
+    <ul>
+      <li>Movement</li>
+      <li>Runtime</li>
+      <li>Cleaning condition</li>
+      <li>Original cable</li>
+    </ul>
+    <p>if possible.</p>
+  </section>
+
+  <section class="content-box" id="long-duration-testing">
+    <h3>Long-Duration Testing</h3>
+    <p>Intermittent recognition may require longer testing.</p>
+    <p>Document how long the sensor remained connected.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <blockquote><p>Known-good sensor remained recognized for 90 minutes with repeated connector movement; original sensor dropped out within 2 minutes of flexing near strain relief.</p></blockquote>
+    <p>That is strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-spo2-sensor-not-recognized">
+    <h3>Real-World Example: SpO2 Sensor Not Recognized</h3>
+    <p>Original sensor:</p>
+    <p>Not detected.</p>
+    <p>Known-good sensor:</p>
+    <p>Detected immediately.</p>
+    <p>Original sensor also fails on second monitor.</p>
+    <p>Failure follows sensor.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-every-sensor-fails">
+    <h3>Real-World Example: Every Sensor Fails</h3>
+    <p>Three known-good temperature probes all report:</p>
+    <p>Probe missing.</p>
+    <p>Input supply voltage is absent.</p>
+    <p>Fault lies in monitor input circuit.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-intermittent-extension-cable">
+    <h3>Real-World Example: Intermittent Extension Cable</h3>
+    <p>SpO2 sensor works direct to monitor.</p>
+    <p>Fails through original extension cable.</p>
+    <p>Known-good extension works.</p>
+    <p>The sensor itself was never bad.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ventilator-flow-sensor">
+    <h3>Real-World Example: Ventilator Flow Sensor</h3>
+    <p>Flow sensor present.</p>
+    <p>Device says:</p>
+    <p>Sensor not connected.</p>
+    <p>Connector contains moisture after cleaning.</p>
+    <p>After approved cleaning and drying:</p>
+    <p>Recognition restored.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-smart-probe-compatibility">
+    <h3>Real-World Example: Smart Probe Compatibility</h3>
+    <p>New probe physically fits older ultrasound platform.</p>
+    <p>System reports unsupported transducer.</p>
+    <p>Older probe works.</p>
+    <p>The new probe is not defective.</p>
+    <p>The platform firmware does not support it.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-mechanical-flag">
+    <h3>Real-World Example: Mechanical Flag</h3>
+    <p>Pump reports cassette missing.</p>
+    <p>Cassette is physically installed.</p>
+    <p>Inspection shows cassette tab broken and not actuating detection switch.</p>
+    <p>Electronics are functioning exactly as designed.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="replacing-the-sensor-immediately">
+    <h3>Replacing the Sensor Immediately</h3>
+    <p>First determine how recognition works.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-the-cable">
+    <h3>Ignoring the Cable</h3>
+    <p>Many recognition paths travel through separate conductors.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-host-supply-voltage">
+    <h3>Ignoring Host Supply Voltage</h3>
+    <p>A good sensor cannot respond without power.</p>
+  </section>
+
+  <section class="content-box" id="assuming-not-recognized-means-no-signal">
+    <h3>Assuming “Not Recognized” Means “No Signal”</h3>
+    <p>The device may see electrical activity but reject identification.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-one-known-good-accessory">
+    <h3>Testing Only One Known-Good Accessory</h3>
+    <p>Confirm your reference is truly good.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-firmware-compatibility">
+    <h3>Ignoring Firmware Compatibility</h3>
+    <p>Physical fit is not proof of support.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-connector-damage">
+    <h3>Ignoring Connector Damage</h3>
+    <p>Bent pins can mimic expensive module failures.</p>
+  </section>
+
+  <section class="content-box" id="treating-calibration-failure-as-recognition-failure">
+    <h3>Treating Calibration Failure as Recognition Failure</h3>
+    <p>Identify which stage actually failed.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-troubleshooting-framework">
+    <h3>A Useful Troubleshooting Framework</h3>
+    <p>When you see:</p>
+    <p><strong>Sensor Not Recognized</strong></p>
+    <p>ask:</p>
+    <p><strong>How does this device detect the sensor?</strong></p>
+    <p>Then check:</p>
+    <p><strong>Power</strong></p>
+    <p>Is the sensor receiving what it needs?</p>
+    <p><strong>Physical Connection</strong></p>
+    <p>Are pins, cables, and contacts intact?</p>
+    <p><strong>Identification</strong></p>
+    <p>Is the expected resistor, ID chip, or digital response present?</p>
+    <p><strong>Compatibility</strong></p>
+    <p>Is this sensor supported by the software/configuration?</p>
+    <p><strong>Host Input</strong></p>
+    <p>Does the same sensor work on another channel/device?</p>
+  </section>
+
+  <section class="content-box" id="think-in-layers">
+    <h3>Think in Layers</h3>
+    <p>A useful chain is:</p>
+    <p><strong>Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Cable</strong></p>
+    <p>↓</p>
+    <p><strong>Connector</strong></p>
+    <p>↓</p>
+    <p><strong>Power / ID</strong></p>
+    <p>↓</p>
+    <p><strong>Communication</strong></p>
+    <p>↓</p>
+    <p><strong>Host Input</strong></p>
+    <p>↓</p>
+    <p><strong>Software Recognition</strong></p>
+    <p>Follow the failure through the chain.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What exact response is the host waiting for before it decides this sensor exists?</strong></p>
+    <p>That response may be:</p>
+    <ul>
+      <li>Resistance</li>
+      <li>Voltage</li>
+      <li>Data packet</li>
+      <li>Optical reflection</li>
+      <li>Mechanical switch closure</li>
+    </ul>
+    <p>Once you know that, the troubleshooting stops being vague.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a known-good sensor works on the suspect device:</p>
+    <p>You proved:</p>
+    <p><strong>The host can recognize at least one compatible sensor under the current conditions.</strong></p>
+    <p>You did not yet prove every part of the original sensor is defective.</p>
+    <p>If the original sensor fails on two known-good devices:</p>
+    <p>You have much stronger evidence the failure follows the sensor.</p>
+    <p>If every known-good sensor fails on one input:</p>
+    <p>You have stronger evidence for:</p>
+    <ul>
+      <li>Connector</li>
+      <li>Power</li>
+      <li>Host circuit</li>
+    </ul>
+    <p>The more controlled your substitution, the stronger the conclusion.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>“Sensor not recognized” is not a diagnosis.</p>
+    <p>It is the host device saying:</p>
+    <blockquote><p>I did not receive the expected proof that this sensor is present and valid.</p></blockquote>
+    <p>That proof might be:</p>
+    <ul>
+      <li>Electrical</li>
+      <li>Digital</li>
+      <li>Optical</li>
+      <li>Mechanical</li>
+    </ul>
+    <p>So do not jump straight to:</p>
+    <blockquote><p>Replace sensor.</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>How is the sensor recognized?</strong></p>
+    <p>Then work through:</p>
+    <p><strong>Power → Connection → Identification → Communication → Host.</strong></p>
+    <p>Follow where the failure goes.</p>
+    <p>If it follows the sensor, replace the sensor.</p>
+    <p>If it stays with the port, troubleshoot the port.</p>
+    <p>If it appears only with one software version, investigate compatibility.</p>
+    <p>The message is only the symptom.</p>
+    <p>Your job is to find which part of the recognition chain stopped making sense.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Sensor-recognition methods, accessory identification, supply voltages, communication protocols, firmware compatibility, calibration requirements, and replacement procedures vary widely by medical-device manufacturer and model. Follow current manufacturer documentation and use approved sensors, cables, accessories, and service procedures when troubleshooting recognition faults.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="medical-equipment-cables-and-connectors-inspection-and-isolation.html">Medical Equipment Cables and Connectors: Inspection and Isolation</a></li>
+      <li><a href="what-known-good-actually-means.html">What “Known-Good” Actually Means</a></li>
+      <li><a href="how-parameter-modules-communicate-with-host-monitors.html">How Parameter Modules Communicate With Host Monitors</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
