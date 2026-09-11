@@ -131,6 +131,9 @@ RELATED = {
     "electrical-safety-analyzer-basics": ["electrical-safety-testing-medical-equipment", "ground-neutral-and-hot-in-medical-equipment", "how-to-use-a-multimeter-in-biomed", "functional-testing-vs-calibration-vs-verification", "calibration-stickers-what-they-do-and-dont-mean"],
     "how-to-choose-the-right-test-equipment": ["electrical-safety-analyzer-basics", "how-to-use-a-multimeter-in-biomed", "patient-simulators-what-they-actually-simulate", "measurement-uncertainty-in-plain-english", "functional-testing-vs-calibration-vs-verification"],
     "patient-simulators-what-they-actually-simulate": ["how-ecg-acquisition-works", "how-spo2-measurement-works", "how-invasive-blood-pressure-monitoring-works", "how-to-choose-the-right-test-equipment", "functional-testing-vs-calibration-vs-verification"],
+    "display-problems-screen-backlight-or-main-board": ["how-touchscreens-work-in-medical-equipment", "how-medical-device-cooling-systems-work", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-device-self-tests-detect-failures"],
+    "fluid-intrusion-basics": ["environmental-causes-of-medical-equipment-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "when-to-remove-medical-equipment-from-service", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
+    "how-to-troubleshoot-sensor-not-recognized": ["sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "how-parameter-modules-communicate-with-host-monitors"],
 }
 
 ARTICLE_CONFIG = {
@@ -767,6 +770,25 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Test Equipment",
         "cardNote": "Known inputs, simulated parameters, and test boundaries",
+    },
+    "display-problems-screen-backlight-or-main-board": {
+        "description": "A practical guide to separating display-panel, backlight, cable, power, graphics, software, and main-board failures in medical equipment.",
+        "category": "Troubleshooting",
+        "badge": "Fault Isolation",
+        "cardNote": "Separating screen, backlight, signal, and main-board faults",
+    },
+    "fluid-intrusion-basics": {
+        "description": "A practical guide to fluid intrusion in medical equipment, including immediate safety actions, inspection boundaries, hidden damage, corrosion, and return-to-service decisions.",
+        "category": "Safety & Risk",
+        "badge": "Device Safety",
+        "cardNote": "Liquid exposure, hidden damage, corrosion, and safe disposition",
+        "plannedTitles": ["Fluid Intrusion: Triage, Damage, and Safe Disposition"],
+    },
+    "how-to-troubleshoot-sensor-not-recognized": {
+        "description": "A practical guide to separating sensor, cable, connector, compatibility, configuration, interface, and main-device causes when medical equipment does not recognize a sensor.",
+        "category": "Troubleshooting",
+        "badge": "Fault Isolation",
+        "cardNote": "Sensor recognition, compatibility, cabling, and interface faults",
     },
 }
 
