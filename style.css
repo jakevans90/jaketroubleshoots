@@ -3961,43 +3961,45 @@ footer p:nth-last-child(2) {
 /* Homepage brand mark: featured beside the hero copy, then used as a
    quiet watermark when there is not enough room for a second column. */
 .hero.hero-photo .hero-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(200px, 21vw, 285px);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: center;
+  display: block;
   max-width: 1180px;
 }
 
 .hero.hero-photo .hero-copy {
   position: relative;
   z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
   min-width: 0;
 }
 
 .hero.hero-photo .hero-actions {
   position: relative;
   z-index: 2;
-  grid-column: 1 / -1;
   width: 100%;
   max-width: 820px;
-  margin: -8px auto 0;
+  margin: 22px auto 0;
 }
 
 .hero.hero-photo .hero-brand-mark {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 0;
+  top: -20px;
+  right: 70px;
   display: grid;
   place-items: center;
   aspect-ratio: 1;
-  width: 100%;
-  padding: 12%;
+  width: clamp(230px, 23vw, 300px);
+  padding: clamp(26px, 3vw, 38px);
   border: 7px solid var(--pink);
   border-radius: 50%;
   background: var(--black);
   box-shadow:
     0 0 0 6px var(--black),
     0 0 0 13px var(--lime);
-  transform: translateY(-10px);
+  opacity: 0.13;
+  transform: rotate(7deg);
+  pointer-events: none;
 }
 
 .hero.hero-photo .hero-brand-mark img {
