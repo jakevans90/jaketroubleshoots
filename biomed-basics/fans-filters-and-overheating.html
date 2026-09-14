@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fans, Filters, and Overheating | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to medical-equipment cooling failures involving fans, filters, airflow, heat sinks, thermal sensors, ambient conditions, and heat-soak testing.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/fans-filters-and-overheating.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Fans, Filters, and Overheating</h2>
+  <p>How medical equipment cooling systems fail, why a device can overheat even when the fan is spinning, and how airflow, filters, sensors, and thermal interfaces work together</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A device that overheats does not necessarily have a bad fan.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>How electronic devices generate heat</li>
+      <li>Passive vs active cooling</li>
+      <li>Fans</li>
+      <li>Filters</li>
+      <li>Airflow direction</li>
+      <li>Heat sinks</li>
+      <li>Thermal paste and pads</li>
+      <li>Temperature sensors</li>
+      <li>Fan tachometer signals</li>
+      <li>PWM fan control</li>
+      <li>Overtemperature alarms</li>
+      <li>False temperature readings</li>
+      <li>Blocked vents</li>
+      <li>Dust buildup</li>
+      <li>Delayed thermal failures</li>
+      <li>Why testing with the covers removed can mislead you</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A typical cooling path looks like:</p>
+    <p><strong>Heat Source</strong></p>
+    <p>↓</p>
+    <p><strong>Heat Sink / Chassis</strong></p>
+    <p>↓</p>
+    <p><strong>Airflow</strong></p>
+    <p>↓</p>
+    <p><strong>Exhaust Vent</strong></p>
+    <p>The control system may look like:</p>
+    <p><strong>Temperature Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Fan Speed</strong></p>
+    <p>If any part of those chains stops working properly, temperature rises.</p>
+  </section>
+
+  <section class="content-box" id="where-does-the-heat-come-from">
+    <h3>Where Does the Heat Come From?</h3>
+    <p>Electronic components are not perfectly efficient.</p>
+    <p>Some electrical energy becomes heat.</p>
+    <p>Common heat sources include:</p>
+    <ul>
+      <li>Power supplies</li>
+      <li>Processors</li>
+      <li>Amplifiers</li>
+      <li>Motors</li>
+      <li>RF components</li>
+      <li>Batteries</li>
+      <li>Heaters</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="more-load-often-means-more-heat">
+    <h3>More Load Often Means More Heat</h3>
+    <p>A device may run cool at idle and overheat under heavy use.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>High processor load</li>
+      <li>Battery charging</li>
+      <li>Motor operation</li>
+      <li>RF transmission</li>
+    </ul>
+    <p>That is why short bench testing may miss thermal faults.</p>
+  </section>
+
+  <section class="content-box" id="passive-cooling">
+    <h3>Passive Cooling</h3>
+    <p>Some equipment relies on:</p>
+    <ul>
+      <li>Heat sinks</li>
+      <li>Metal chassis</li>
+      <li>Natural convection</li>
+    </ul>
+    <p>with no fan.</p>
+  </section>
+
+  <section class="content-box" id="active-cooling">
+    <h3>Active Cooling</h3>
+    <p>Other equipment uses fans to move air through the enclosure.</p>
+    <p>Active cooling is more powerful but adds additional failure points.</p>
+  </section>
+
+  <section class="content-box" id="the-fan-is-only-one-piece">
+    <h3>The Fan Is Only One Piece</h3>
+    <p>A spinning fan can still provide poor cooling if:</p>
+    <ul>
+      <li>Filter is blocked</li>
+      <li>Vent is obstructed</li>
+      <li>Air path is leaking</li>
+      <li>Fan is running too slowly</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="airflow-matters">
+    <h3>Airflow Matters</h3>
+    <p>Cooling depends on moving enough air across the right components.</p>
+  </section>
+
+  <section class="content-box" id="intake-and-exhaust">
+    <h3>Intake and Exhaust</h3>
+    <p>Most fan-cooled equipment has an intended airflow direction.</p>
+    <p>For example:</p>
+    <p><strong>Cool air enters front</strong></p>
+    <p>↓</p>
+    <p><strong>Moves across electronics</strong></p>
+    <p>↓</p>
+    <p><strong>Warm air exits rear</strong></p>
+    <p>If the path is blocked:</p>
+    <p>Temperature rises.</p>
+  </section>
+
+  <section class="content-box" id="filters">
+    <h3>Filters</h3>
+    <p>Filters keep dust from accumulating inside equipment.</p>
+    <p>Over time they can become loaded with:</p>
+    <ul>
+      <li>Lint</li>
+      <li>Dust</li>
+      <li>Hair</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dirty-filter">
+    <h3>Dirty Filter</h3>
+    <p>A dirty filter increases airflow resistance.</p>
+    <p>The fan may spin normally while actual airflow becomes very low.</p>
+  </section>
+
+  <section class="content-box" id="why-this-can-be-misleading">
+    <h3>Why This Can Be Misleading</h3>
+    <p>Technician looks:</p>
+    <blockquote><p>Fan is running.</p></blockquote>
+    <p>and assumes cooling is fine.</p>
+    <p>But the device still overheats because the fan cannot pull enough air through the clogged filter.</p>
+  </section>
+
+  <section class="content-box" id="filter-inspection">
+    <h3>Filter Inspection</h3>
+    <p>Compare the filter with:</p>
+    <ul>
+      <li>Clean replacement</li>
+      <li>Manufacturer appearance guidance</li>
+    </ul>
+    <p>if available.</p>
+    <p>A heavily discolored or matted filter is suspicious.</p>
+  </section>
+
+  <section class="content-box" id="do-not-run-permanently-without-the-filter">
+    <h3>Do Not Run Permanently Without the Filter</h3>
+    <p>Removing the filter may increase airflow temporarily.</p>
+    <p>But it may also allow contamination into the device.</p>
+    <p>Use the correct replacement.</p>
+  </section>
+
+  <section class="content-box" id="blocked-external-vents">
+    <h3>Blocked External Vents</h3>
+    <p>The device itself may be fine.</p>
+    <p>Installation can block airflow.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Pushed against wall</li>
+      <li>Covered by blanket</li>
+      <li>Installed in cabinet</li>
+      <li>Supplies stacked around vents</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="environment-is-part-of-cooling">
+    <h3>Environment Is Part of Cooling</h3>
+    <p>A perfectly functional device can overheat if the surrounding air cannot circulate.</p>
+  </section>
+
+  <section class="content-box" id="ambient-temperature">
+    <h3>Ambient Temperature</h3>
+    <p>Cooling performance depends on room temperature.</p>
+    <p>If ambient air is already hot:</p>
+    <p>The system has less temperature difference available to remove heat.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-temperature-range">
+    <h3>Manufacturer Temperature Range</h3>
+    <p>Devices usually specify an operating temperature range.</p>
+    <p>Running outside it may cause:</p>
+    <ul>
+      <li>Alarm</li>
+      <li>Shutdown</li>
+      <li>Reduced performance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="heat-sink">
+    <h3>Heat Sink</h3>
+    <p>A heat sink transfers heat from a component into the surrounding air.</p>
+    <p>Its effectiveness depends on:</p>
+    <ul>
+      <li>Good contact</li>
+      <li>Clean surface</li>
+      <li>Airflow</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="thermal-interface-material">
+    <h3>Thermal Interface Material</h3>
+    <p>Between a component and heat sink you may find:</p>
+    <ul>
+      <li>Thermal paste</li>
+      <li>Thermal pad</li>
+    </ul>
+    <p>These materials improve heat transfer by filling microscopic air gaps.</p>
+  </section>
+
+  <section class="content-box" id="poor-thermal-contact">
+    <h3>Poor Thermal Contact</h3>
+    <p>If a heat sink is:</p>
+    <ul>
+      <li>Loose</li>
+      <li>Improperly installed</li>
+    </ul>
+    <p>the component may overheat despite excellent airflow.</p>
+  </section>
+
+  <section class="content-box" id="dried-thermal-paste">
+    <h3>Dried Thermal Paste</h3>
+    <p>On older systems, thermal interface material may degrade.</p>
+    <p>Whether it should be replaced depends on manufacturer procedure.</p>
+  </section>
+
+  <section class="content-box" id="processor-overheating">
+    <h3>Processor Overheating</h3>
+    <p>A CPU may:</p>
+    <ul>
+      <li>Reduce speed</li>
+      <li>Freeze</li>
+      <li>Reset</li>
+      <li>Shut down</li>
+    </ul>
+    <p>when temperature rises too far.</p>
+  </section>
+
+  <section class="content-box" id="power-supply-overheating">
+    <h3>Power Supply Overheating</h3>
+    <p>Power supplies also contain temperature-sensitive components.</p>
+    <p>A device may therefore shut down even though the processor itself is not hot.</p>
+  </section>
+
+  <section class="content-box" id="local-hot-spots">
+    <h3>Local Hot Spots</h3>
+    <p>Overall internal air temperature may look reasonable while one component overheats.</p>
+    <p>That is why the location of the temperature sensor matters.</p>
+  </section>
+
+  <section class="content-box" id="temperature-sensor">
+    <h3>Temperature Sensor</h3>
+    <p>A device may use:</p>
+    <ul>
+      <li>Thermistor</li>
+      <li>Digital temperature sensor</li>
+    </ul>
+    <p>to monitor internal temperature.</p>
+  </section>
+
+  <section class="content-box" id="actual-overheating-vs-false-overtemperature">
+    <h3>Actual Overheating vs False Overtemperature</h3>
+    <p>Suppose device says:</p>
+    <blockquote><p>Overtemperature.</p></blockquote>
+    <p>Two possibilities exist:</p>
+    <ol>
+      <li>Device is genuinely too hot.</li>
+      <li>Temperature sensing circuit is wrong.</li>
+    </ol>
+    <p>Do not assume which one.</p>
+  </section>
+
+  <section class="content-box" id="independent-temperature-measurement">
+    <h3>Independent Temperature Measurement</h3>
+    <p>When appropriate, compare against:</p>
+    <ul>
+      <li>Calibrated thermometer</li>
+      <li>Thermal probe</li>
+      <li>Other approved measurement method</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sensor-open-circuit">
+    <h3>Sensor Open Circuit</h3>
+    <p>Depending on design, an open thermistor circuit may look like an extreme temperature.</p>
+    <p>That can trigger a false thermal shutdown.</p>
+  </section>
+
+  <section class="content-box" id="fan-tachometer">
+    <h3>Fan Tachometer</h3>
+    <p>Many fans provide a:</p>
+    <p><strong>Tachometer signal.</strong></p>
+    <p>This lets the controller monitor fan speed.</p>
+  </section>
+
+  <section class="content-box" id="fan-can-spin-but-still-fail-tach-test">
+    <h3>Fan Can Spin but Still Fail Tach Test</h3>
+    <p>If the tach wire is open:</p>
+    <p>Fan physically spins.</p>
+    <p>Device reports:</p>
+    <p>Fan failure.</p>
+  </section>
+
+  <section class="content-box" id="opposite-problem">
+    <h3>Opposite Problem</h3>
+    <p>The fan may report RPM while airflow remains inadequate because:</p>
+    <ul>
+      <li>Blades damaged</li>
+      <li>Filter blocked</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="rpm-is-not-airflow">
+    <h3>RPM Is Not Airflow</h3>
+    <p>That distinction matters.</p>
+  </section>
+
+  <section class="content-box" id="pwm-fan-control">
+    <h3>PWM Fan Control</h3>
+    <p>Many fans are controlled using:</p>
+    <p><strong>Pulse-Width Modulation</strong>, or PWM.</p>
+    <p>The controller changes fan speed based on cooling demand.</p>
+  </section>
+
+  <section class="content-box" id="normal-behavior">
+    <h3>Normal Behavior</h3>
+    <p>Cold device:</p>
+    <p>Fan slow.</p>
+    <p>Hot device:</p>
+    <p>Fan faster.</p>
+  </section>
+
+  <section class="content-box" id="fan-always-slow">
+    <h3>Fan Always Slow</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Controller</li>
+      <li>PWM signal</li>
+      <li>Fan electronics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fan-always-full-speed">
+    <h3>Fan Always Full Speed</h3>
+    <p>This can be a clue too.</p>
+    <p>The device may:</p>
+    <ul>
+      <li>Detect missing temperature sensor</li>
+      <li>Enter protective mode</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="loud-fan-does-not-automatically-mean-fault">
+    <h3>Loud Fan Does Not Automatically Mean Fault</h3>
+    <p>Some devices intentionally increase fan speed under:</p>
+    <ul>
+      <li>High load</li>
+      <li>High ambient temperature</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fan-bearings">
+    <h3>Fan Bearings</h3>
+    <p>Aging fan bearings can cause:</p>
+    <ul>
+      <li>Noise</li>
+      <li>Reduced speed</li>
+      <li>Intermittent startup</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fan-starts-when-tapped">
+    <h3>Fan Starts When Tapped</h3>
+    <p>If a fan sometimes needs physical disturbance to begin spinning, it is not reliable.</p>
+    <p>Do not normalize that behavior.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-fan-startup">
+    <h3>Intermittent Fan Startup</h3>
+    <p>A fan may run once started but fail after each power cycle.</p>
+    <p>That can create a confusing thermal complaint.</p>
+  </section>
+
+  <section class="content-box" id="dust-inside-equipment">
+    <h3>Dust Inside Equipment</h3>
+    <p>If filtration is poor, dust may accumulate on:</p>
+    <ul>
+      <li>Heat sinks</li>
+      <li>Fans</li>
+      <li>Power supplies</li>
+    </ul>
+    <p>Dust acts as an insulating layer and restricts airflow.</p>
+  </section>
+
+  <section class="content-box" id="dust-can-be-conductive-or-contaminated">
+    <h3>Dust Can Be Conductive or Contaminated</h3>
+    <p>In some environments, debris may also create electrical issues.</p>
+    <p>Use approved cleaning methods.</p>
+  </section>
+
+  <section class="content-box" id="compressed-air">
+    <h3>Compressed Air</h3>
+    <p>Be cautious with compressed air.</p>
+    <p>It can:</p>
+    <ul>
+      <li>Push contamination deeper</li>
+      <li>Overspeed fans</li>
+      <li>Spread debris</li>
+    </ul>
+    <p>Follow manufacturer cleaning guidance.</p>
+  </section>
+
+  <section class="content-box" id="fan-direction">
+    <h3>Fan Direction</h3>
+    <p>Replacement fans have an airflow direction.</p>
+    <p>Installing one backward can completely alter cooling.</p>
+  </section>
+
+  <section class="content-box" id="this-can-happen">
+    <h3>This Can Happen</h3>
+    <p>Replacement fan fits perfectly.</p>
+    <p>Connector matches.</p>
+    <p>Device still overheats.</p>
+    <p>Airflow direction is reversed.</p>
+  </section>
+
+  <section class="content-box" id="check-the-airflow-arrow">
+    <h3>Check the Airflow Arrow</h3>
+    <p>Many fans have markings indicating:</p>
+    <ul>
+      <li>Rotation</li>
+      <li>Airflow</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fan-size-is-not-enough">
+    <h3>Fan Size Is Not Enough</h3>
+    <p>Two fans with same dimensions can differ in:</p>
+    <ul>
+      <li>Voltage</li>
+      <li>Current</li>
+      <li>Airflow</li>
+      <li>Static pressure</li>
+      <li>Tach output</li>
+      <li>PWM control</li>
+    </ul>
+    <p>Use the correct replacement.</p>
+  </section>
+
+  <section class="content-box" id="air-ducts">
+    <h3>Air Ducts</h3>
+    <p>Some devices use plastic ducts to route cooling air directly over:</p>
+    <ul>
+      <li>Processor</li>
+      <li>Power supply</li>
+      <li>RF section</li>
+    </ul>
+    <p>If the duct is missing after service:</p>
+    <p>Fan may run but air bypasses the intended component.</p>
+  </section>
+
+  <section class="content-box" id="foam-seals">
+    <h3>Foam Seals</h3>
+    <p>Foam or gaskets may be part of the airflow path.</p>
+    <p>Removing them can reduce cooling efficiency.</p>
+  </section>
+
+  <section class="content-box" id="cover-off-testing-can-fool-you">
+    <h3>Cover-Off Testing Can Fool You</h3>
+    <p>This is extremely important.</p>
+    <p>A device may overheat:</p>
+    <p>With covers installed.</p>
+    <p>You remove the cover to troubleshoot.</p>
+    <p>Now cool room air reaches everything.</p>
+    <p>The device runs normally.</p>
+    <p>You conclude:</p>
+    <blockquote><p>Unable to duplicate.</p></blockquote>
+    <p>Then you reinstall the cover and return it.</p>
+    <p>The fault comes back.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Removing the cover changed the cooling system.</p>
+  </section>
+
+  <section class="content-box" id="always-reproduce-thermal-problems-in-normal-configuration">
+    <h3>Always Reproduce Thermal Problems in Normal Configuration</h3>
+    <p>If safe and appropriate, test with:</p>
+    <ul>
+      <li>Covers installed</li>
+      <li>Filters installed</li>
+      <li>Normal airflow path</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="thermal-problems-need-time">
+    <h3>Thermal Problems Need Time</h3>
+    <p>If complaint is:</p>
+    <blockquote><p>Shuts down after two hours,</p></blockquote>
+    <p>a ten-minute test is weak.</p>
+  </section>
+
+  <section class="content-box" id="heat-soak">
+    <h3>Heat Soak</h3>
+    <p>Components gradually warm until they reach thermal equilibrium.</p>
+    <p>This may take significant time.</p>
+  </section>
+
+  <section class="content-box" id="load-matters-too">
+    <h3>Load Matters Too</h3>
+    <p>A device might run indefinitely at idle.</p>
+    <p>Under full operation:</p>
+    <p>It overheats.</p>
+  </section>
+
+  <section class="content-box" id="reproduce-normal-clinical-load">
+    <h3>Reproduce Normal Clinical Load</h3>
+    <p>Where appropriate, activate functions that increase heat.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Charging</li>
+      <li>Motor operation</li>
+      <li>High display brightness</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="monitor-temperature-over-time">
+    <h3>Monitor Temperature Over Time</h3>
+    <p>Data logging can be valuable.</p>
+    <p>Record:</p>
+    <ul>
+      <li>Internal reported temperature</li>
+      <li>Ambient temperature</li>
+      <li>Fan speed</li>
+      <li>Time to failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pattern-example">
+    <h3>Pattern Example</h3>
+    <p>0 minutes:</p>
+    <p>35°C</p>
+    <p>30 minutes:</p>
+    <p>48°C</p>
+    <p>60 minutes:</p>
+    <p>63°C</p>
+    <p>Shutdown:</p>
+    <p>65°C</p>
+    <p>That is much stronger evidence than:</p>
+    <blockquote><p>Gets hot.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="sudden-temperature-jump">
+    <h3>Sudden Temperature Jump</h3>
+    <p>If internal temperature jumps:</p>
+    <p>40°C → 90°C</p>
+    <p>instantly,</p>
+    <p>that is likely sensor/electrical behavior rather than real physical heating.</p>
+  </section>
+
+  <section class="content-box" id="real-temperature-changes-take-time">
+    <h3>Real Temperature Changes Take Time</h3>
+    <p>Physics can help distinguish:</p>
+    <ul>
+      <li>Sensor fault</li>
+      <li>Actual overheating</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-temperature">
+    <h3>Battery Temperature</h3>
+    <p>Batteries may also be temperature-monitored.</p>
+    <p>A charger may reduce or stop charging when a battery is too hot.</p>
+  </section>
+
+  <section class="content-box" id="false-battery-temperature">
+    <h3>False Battery Temperature</h3>
+    <p>A bad battery thermistor can cause:</p>
+    <ul>
+      <li>Charging disabled</li>
+      <li>Temperature alarm</li>
+    </ul>
+    <p>even when the pack is physically cool.</p>
+  </section>
+
+  <section class="content-box" id="thermal-shutdown">
+    <h3>Thermal Shutdown</h3>
+    <p>A shutdown caused by temperature is often protective.</p>
+    <p>Do not disable the temperature sensor simply to keep the device running.</p>
+  </section>
+
+  <section class="content-box" id="protective-systems-exist-for-a-reason">
+    <h3>Protective Systems Exist for a Reason</h3>
+    <p>The root cause is:</p>
+    <p>Why did temperature reach the shutdown point?</p>
+  </section>
+
+  <section class="content-box" id="overheating-and-reboots">
+    <h3>Overheating and Reboots</h3>
+    <p>Some equipment:</p>
+    <ul>
+      <li>Shuts down</li>
+    </ul>
+    <p>Others:</p>
+    <ul>
+      <li>Reboot</li>
+    </ul>
+    <p>after thermal protection triggers.</p>
+    <p>Check logs.</p>
+  </section>
+
+  <section class="content-box" id="event-logs">
+    <h3>Event Logs</h3>
+    <p>Useful entries may include:</p>
+    <ul>
+      <li>Overtemperature</li>
+      <li>Fan failure</li>
+      <li>Thermal shutdown</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="capture-them-before-clearing">
+    <h3>Capture Them Before Clearing</h3>
+    <p>They may be the only evidence of the event.</p>
+  </section>
+
+  <section class="content-box" id="environment-specific-failure">
+    <h3>Environment-Specific Failure</h3>
+    <p>If one device overheats only in one room:</p>
+    <p>Check installation.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ventilation grill faces wall with:</p>
+    <p>1 cm clearance.</p>
+    <p>Device works in shop.</p>
+    <p>Overheats clinically.</p>
+    <p>The environment is the difference.</p>
+  </section>
+
+  <section class="content-box" id="fleet-wide-overheating">
+    <h3>Fleet-Wide Overheating</h3>
+    <p>If multiple identical devices begin overheating:</p>
+    <p>Look for shared change.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>New filter type</li>
+      <li>Software fan-control change</li>
+      <li>Environmental issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cleaning-can-affect-filters">
+    <h3>Cleaning Can Affect Filters</h3>
+    <p>Some filters are:</p>
+    <ul>
+      <li>Washable</li>
+      <li>Disposable</li>
+    </ul>
+    <p>Using the wrong method can damage them and reduce airflow.</p>
+  </section>
+
+  <section class="content-box" id="filter-installation-direction">
+    <h3>Filter Installation Direction</h3>
+    <p>Some specialized filters may have orientation requirements.</p>
+    <p>Follow documentation.</p>
+  </section>
+
+  <section class="content-box" id="pm-importance">
+    <h3>PM Importance</h3>
+    <p>Cooling-system maintenance often looks boring.</p>
+    <p>But cleaning:</p>
+    <ul>
+      <li>Filters</li>
+      <li>Vents</li>
+    </ul>
+    <p>can prevent expensive failures.</p>
+  </section>
+
+  <section class="content-box" id="why-overheating-damages-electronics">
+    <h3>Why Overheating Damages Electronics</h3>
+    <p>Heat accelerates aging of many components.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Capacitors</li>
+      <li>Batteries</li>
+      <li>Semiconductors</li>
+    </ul>
+    <p>Repeated thermal stress can shorten device life even before immediate shutdown occurs.</p>
+  </section>
+
+  <section class="content-box" id="capacitors">
+    <h3>Capacitors</h3>
+    <p>Electrolytic capacitors are especially sensitive to temperature.</p>
+    <p>Higher internal temperatures can accelerate degradation.</p>
+  </section>
+
+  <section class="content-box" id="battery-life">
+    <h3>Battery Life</h3>
+    <p>Lithium-ion batteries also age faster at high temperature.</p>
+    <p>A cooling problem can therefore create a secondary battery problem.</p>
+  </section>
+
+  <section class="content-box" id="heat-can-cause-intermittent-electrical-faults">
+    <h3>Heat Can Cause Intermittent Electrical Faults</h3>
+    <p>Materials expand as they warm.</p>
+    <p>A cracked solder joint may:</p>
+    <ul>
+      <li>Work cold</li>
+      <li>Open when hot</li>
+    </ul>
+    <p>This can create thermal intermittent failures.</p>
+  </section>
+
+  <section class="content-box" id="freeze-spray-and-heat">
+    <h3>Freeze Spray and Heat</h3>
+    <p>Advanced board-level troubleshooting may sometimes use controlled thermal techniques.</p>
+    <p>Use only within authorized service scope.</p>
+  </section>
+
+  <section class="content-box" id="thermal-camera">
+    <h3>Thermal Camera</h3>
+    <p>An infrared camera can help locate:</p>
+    <ul>
+      <li>Hot components</li>
+      <li>Poor thermal paths</li>
+    </ul>
+    <p>But emissivity and reflective surfaces can mislead measurements.</p>
+    <p>It is a clue, not magic.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-dirty-filter">
+    <h3>Real-World Example: Dirty Filter</h3>
+    <p>Device alarms overtemperature after 90 minutes.</p>
+    <p>Fan runs.</p>
+    <p>Filter is nearly blocked with lint.</p>
+    <p>New filter restores airflow.</p>
+    <p>Extended loaded test shows stable temperature.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-bad-tach-signal">
+    <h3>Real-World Example: Bad Tach Signal</h3>
+    <p>Device reports fan fault immediately at startup.</p>
+    <p>Fan spins normally.</p>
+    <p>Service mode reports:</p>
+    <p>0 RPM.</p>
+    <p>Tach conductor is open.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-false-overtemperature">
+    <h3>Real-World Example: False Overtemperature</h3>
+    <p>Monitor reports:</p>
+    <p>95°C internal temperature seconds after power-on.</p>
+    <p>Chassis is room temperature.</p>
+    <p>Thermistor circuit is open.</p>
+    <p>Actual overheating is impossible in that time frame.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-missing-air-duct">
+    <h3>Real-World Example: Missing Air Duct</h3>
+    <p>Main board replaced.</p>
+    <p>Device later overheats.</p>
+    <p>Inspection finds plastic air guide was not reinstalled.</p>
+    <p>Fan spins normally, but air bypasses processor heat sink.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-cover-off-trap">
+    <h3>Real-World Example: Cover-Off Trap</h3>
+    <p>Device runs perfectly for hours on bench with top cover removed.</p>
+    <p>Fails after 45 minutes with cover installed.</p>
+    <p>Cooling failure was unintentionally masked during troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-a-spinning-fan-means-cooling-is-good">
+    <h3>Assuming a Spinning Fan Means Cooling Is Good</h3>
+    <p>Check airflow and filter.</p>
+  </section>
+
+  <section class="content-box" id="replacing-fan-without-checking-tach-feedback">
+    <h3>Replacing Fan Without Checking Tach Feedback</h3>
+    <p>The fan may not be the failed element.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-installation-clearance">
+    <h3>Ignoring Installation Clearance</h3>
+    <p>External blockage can defeat cooling.</p>
+  </section>
+
+  <section class="content-box" id="testing-thermal-failures-with-covers-removed">
+    <h3>Testing Thermal Failures With Covers Removed</h3>
+    <p>You changed the system.</p>
+  </section>
+
+  <section class="content-box" id="testing-for-too-short-a-time">
+    <h3>Testing for Too Short a Time</h3>
+    <p>Thermal faults are often delayed.</p>
+  </section>
+
+  <section class="content-box" id="assuming-every-overtemperature-alarm-is-real">
+    <h3>Assuming Every Overtemperature Alarm Is Real</h3>
+    <p>Verify the sensor.</p>
+  </section>
+
+  <section class="content-box" id="installing-a-similar-looking-fan">
+    <h3>Installing a Similar-Looking Fan</h3>
+    <p>Electrical and airflow specifications matter.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-dust-on-heat-sinks">
+    <h3>Ignoring Dust on Heat Sinks</h3>
+    <p>Airflow cannot cool an insulated surface effectively.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-cooling-system-framework">
+    <h3>A Useful Cooling-System Framework</h3>
+    <p>For overheating, ask:</p>
+    <p><strong>Is the temperature actually high?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the fan running?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is it running at the correct speed?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is enough air actually moving?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the airflow reaching the correct components?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is heat transferring properly into the heat sink?</strong></p>
+    <p>This moves through the full cooling path.</p>
+  </section>
+
+  <section class="content-box" id="think-in-a-chain">
+    <h3>Think in a Chain</h3>
+    <p><strong>Heat Source</strong></p>
+    <p>↓</p>
+    <p><strong>Thermal Interface</strong></p>
+    <p>↓</p>
+    <p><strong>Heat Sink</strong></p>
+    <p>↓</p>
+    <p><strong>Airflow</strong></p>
+    <p>↓</p>
+    <p><strong>Exhaust</strong></p>
+    <p>and simultaneously:</p>
+    <p><strong>Temperature Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Fan Control</strong></p>
+    <p>A failure in either chain can create an overtemperature problem.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What changed when I removed the cover?</strong></p>
+    <p>If the answer is:</p>
+    <blockquote><p>Airflow,</p></blockquote>
+    <p>then cover-off testing may no longer represent the clinical condition.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the fan spins:</p>
+    <p>You proved:</p>
+    <p><strong>The fan motor is rotating under those conditions.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Correct RPM</li>
+      <li>Correct airflow</li>
+      <li>Correct direction</li>
+    </ul>
+    <p>If a new filter eliminates the thermal rise during a long loaded test:</p>
+    <p>You have stronger evidence that airflow restriction caused the problem.</p>
+    <p>If the displayed temperature says 90°C while an independent measurement shows normal temperature:</p>
+    <p>You have evidence of a sensing problem rather than actual overheating.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Cooling problems become easier when you stop thinking:</p>
+    <blockquote><p>Fan.</p></blockquote>
+    <p>Think:</p>
+    <p><strong>Heat Path + Air Path + Control Loop.</strong></p>
+    <p>A fan can spin and still fail to cool.</p>
+    <p>A clean filter can still be installed in a blocked cabinet.</p>
+    <p>A device can report overheating when the temperature sensor is wrong.</p>
+    <p>And a device can look perfect on your bench simply because you removed the cover and accidentally fixed the airflow.</p>
+    <p>So for thermal problems, reproduce:</p>
+    <ul>
+      <li>Time</li>
+      <li>Load</li>
+      <li>Covers</li>
+      <li>Environment</li>
+    </ul>
+    <p>Then follow the heat from the component all the way out of the enclosure.</p>
+    <p>That is how you separate:</p>
+    <p><strong>actual overheating</strong></p>
+    <p>from:</p>
+    <p><strong>false thermal alarms</strong></p>
+    <p>and:</p>
+    <p><strong>poor cooling design conditions.</strong></p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Cooling-system design, fan control, filter requirements, temperature limits, thermal-interface materials, diagnostic modes, and service procedures vary by medical-device manufacturer and model. Follow current OEM documentation, use approved replacement fans and filters, restore all air ducts and covers before final testing, and complete all required functional and safety verification before returning equipment to service.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-medical-device-cooling-systems-work.html">How Medical Device Cooling Systems Work</a></li>
+      <li><a href="why-medical-equipment-reboots.html">Why Medical Equipment Reboots</a></li>
+      <li><a href="environmental-causes-of-medical-equipment-failures.html">Environmental Causes of Medical Equipment Failures</a></li>
+      <li><a href="medical-equipment-power-troubleshooting-outlet-to-internal-supply.html">Medical Equipment Power Troubleshooting: Outlet to Internal Supply</a></li>
+      <li><a href="how-device-self-tests-detect-failures.html">How Device Self-Tests Detect Failures</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
