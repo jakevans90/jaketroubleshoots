@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="datePublished" content="2026-09-10">
+  <meta name="dateModified" content="2026-09-14">
   <title>Patient Simulators: What They Actually Simulate | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of what patient simulators generate, what ECG, respiration, pressure, temperature, and SpO2 tests can prove, and where their test boundaries end.">
   <link rel="stylesheet" href="../style.css">
@@ -19,6 +21,7 @@
 </header>
 <section class="hero">
   <h2>Patient Simulators: What They Actually Simulate</h2>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published September 10, 2026 · Revised September 14, 2026</p>
   <p>What a patient simulator sends to a medical device, what it can prove during troubleshooting, and why a simulator passing does not mean the entire patient monitoring system is good</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Patient simulators are among the most useful tools in a biomed shop.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -47,26 +50,8 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>For an ECG channel, the real clinical chain may look like:</p>
-    <p><strong>Patient</strong></p>
-    <p>↓</p>
-    <p><strong>Electrode</strong></p>
-    <p>↓</p>
-    <p><strong>Lead Wire</strong></p>
-    <p>↓</p>
-    <p><strong>Trunk Cable</strong></p>
-    <p>↓</p>
-    <p><strong>Monitor Input</strong></p>
-    <p>↓</p>
-    <p><strong>Amplifier</strong></p>
-    <p>↓</p>
-    <p><strong>Signal Processing</strong></p>
-    <p>↓</p>
-    <p><strong>Displayed ECG</strong></p>
-    <p>A patient simulator usually replaces the:</p>
-    <p><strong>Patient + physiologic electrical signal</strong></p>
-    <p>with a controlled known signal.</p>
-    <p>It does not automatically prove every component before or after that connection point.</p>
+    <p>A patient simulator replaces part of the clinical signal chain with a controlled electrical or pneumatic reference. For ECG, it supplies a known waveform at the lead connection so the technician can evaluate the lead set, monitor input, amplification, processing, rate calculation, and alarms included downstream of that point.</p>
+    <p>A passing simulated signal does not prove skin preparation, electrode adhesion, patient physiology, every accessory not used in the setup, central-station communication, or charting into the EMR. Match the simulator, leads, parameter, amplitude, rate, and test points to the service procedure, verify the simulator's own calibration and limitations, and state exactly which portion of the system the test covered.</p>
   </section>
 
   <section class="content-box" id="the-simulator-is-a-known-input">

@@ -134,6 +134,8 @@ RELATED = {
     "display-problems-screen-backlight-or-main-board": ["how-touchscreens-work-in-medical-equipment", "how-medical-device-cooling-systems-work", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-device-self-tests-detect-failures"],
     "fluid-intrusion-basics": ["environmental-causes-of-medical-equipment-failures", "medical-equipment-cables-and-connectors-inspection-and-isolation", "when-to-remove-medical-equipment-from-service", "what-to-do-when-a-medical-device-is-involved-in-an-incident", "medical-equipment-power-troubleshooting-outlet-to-internal-supply"],
     "how-to-troubleshoot-sensor-not-recognized": ["sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "how-parameter-modules-communicate-with-host-monitors"],
+    "how-to-troubleshoot-failed-self-tests": ["how-device-self-tests-detect-failures", "when-to-trust-the-device-s-internal-self-test", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-read-and-use-medical-device-event-logs", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "fans-filters-and-overheating": ["how-medical-device-cooling-systems-work", "why-medical-equipment-reboots", "environmental-causes-of-medical-equipment-failures", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-device-self-tests-detect-failures"],
 }
 
 ARTICLE_CONFIG = {
@@ -789,6 +791,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Fault Isolation",
         "cardNote": "Sensor recognition, compatibility, cabling, and interface faults",
+    },
+    "how-to-troubleshoot-failed-self-tests": {
+        "description": "A practical guide to interpreting failed startup and diagnostic self-tests, isolating the monitored system, checking raw values, and independently verifying the repair.",
+        "category": "Troubleshooting",
+        "badge": "Diagnostics",
+        "cardNote": "Self-test boundaries, failure evidence, and independent verification",
+    },
+    "fans-filters-and-overheating": {
+        "description": "A practical guide to medical-equipment cooling failures involving fans, filters, airflow, heat sinks, thermal sensors, ambient conditions, and heat-soak testing.",
+        "category": "Troubleshooting",
+        "badge": "Cooling Systems",
+        "cardNote": "Fans, filters, airflow, sensors, and thermal faults",
     },
 }
 
