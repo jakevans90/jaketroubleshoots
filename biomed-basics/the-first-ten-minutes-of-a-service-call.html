@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The First Ten Minutes of a Service Call | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to the first observations, safety decisions, questions, evidence, and fault-isolation steps experienced biomeds use at the start of a service call.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/the-first-ten-minutes-of-a-service-call.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>The First Ten Minutes of a Service Call</h2>
+  <p>What experienced biomeds try to learn before they start swapping parts, rebooting equipment, or dragging a device back to the shop</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">The first ten minutes of a service call can determine whether the repair takes twenty minutes or three hours.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What to ask before touching the equipment</li>
+      <li>How to preserve the original failure condition</li>
+      <li>Why the exact complaint matters</li>
+      <li>How to determine clinical impact</li>
+      <li>What to look at before rebooting</li>
+      <li>Why accessories matter</li>
+      <li>How to use comparison equipment</li>
+      <li>When to check logs</li>
+      <li>How to separate device, accessory, infrastructure, and workflow problems</li>
+      <li>When equipment should stay out of service</li>
+      <li>How to avoid destroying intermittent-failure evidence</li>
+      <li>Common mistakes during the first few minutes of troubleshooting</li>
+      <li>A practical first-ten-minutes workflow</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>When you arrive at a problem device, do not begin with:</p>
+    <blockquote><p>What part should I replace?</p></blockquote>
+    <p>Begin with:</p>
+    <p><strong>What exactly happened?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is it happening right now?</strong></p>
+    <p>Then:</p>
+    <p><strong>What was the device doing when it happened?</strong></p>
+    <p>Then:</p>
+    <p><strong>What evidence can I capture before I change anything?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the problem in the device, accessory, infrastructure, or workflow?</strong></p>
+    <p>Those questions usually save more time than immediately entering service mode.</p>
+  </section>
+
+  <section class="content-box" id="minute-zero-do-not-destroy-the-failure">
+    <h3>Minute Zero: Do Not Destroy the Failure</h3>
+    <p>If the device is actively showing the problem, stop yourself from immediately rebooting it.</p>
+    <p>A reboot can be useful later.</p>
+    <p>It is often a terrible first troubleshooting step.</p>
+    <p>Before restarting, capture:</p>
+    <ul>
+      <li>Exact error message</li>
+      <li>Error code</li>
+      <li>Alarm condition</li>
+      <li>Current operating mode</li>
+      <li>Battery percentage</li>
+      <li>Network status</li>
+      <li>Accessories connected</li>
+      <li>Time of failure</li>
+    </ul>
+    <p>If practical, take a picture or screenshot according to facility policy.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Because once the device restarts, the most useful clue may disappear.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A monitor displays:</p>
+    <blockquote><p>Network connection lost — Server 10.24.31.18 timeout.</p></blockquote>
+    <p>You reboot it.</p>
+    <p>The error disappears.</p>
+    <p>Now all you remember is:</p>
+    <blockquote><p>Something about the network.</p></blockquote>
+    <p>That is a major loss of information.</p>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>An anesthesia machine will not pass its pre-use test.</p>
+    <p>You power cycle it before checking which test failed.</p>
+    <p>Now it passes.</p>
+    <p>Did you fix anything?</p>
+    <p>No.</p>
+    <p>You removed the failure condition before understanding it.</p>
+  </section>
+
+  <section class="content-box" id="first-question-what-actually-happened">
+    <h3>First Question: What Actually Happened?</h3>
+    <p>Clinical complaints are often brief because clinical staff are busy.</p>
+    <p>You may hear:</p>
+    <blockquote><p>It stopped working.</p></blockquote>
+    <p>That is not enough.</p>
+    <p>Your first goal is to turn that sentence into an observable symptom.</p>
+  </section>
+
+  <section class="content-box" id="useful-questions">
+    <h3>Useful Questions</h3>
+    <p>Ask:</p>
+    <ul>
+      <li>What were you trying to do?</li>
+      <li>What did the device do instead?</li>
+      <li>Did it stop completely or only one function?</li>
+      <li>Did it alarm?</li>
+      <li>Did it display a message?</li>
+      <li>Did it recover by itself?</li>
+      <li>Has it happened more than once?</li>
+      <li>Was it plugged in?</li>
+      <li>Was it being moved?</li>
+      <li>Was this accessory attached?</li>
+    </ul>
+    <p>The goal is not to interrogate the user.</p>
+    <p>The goal is to understand the failure.</p>
+  </section>
+
+  <section class="content-box" id="good-questions-are-specific">
+    <h3>Good Questions Are Specific</h3>
+    <p>Instead of:</p>
+    <blockquote><p>What happened?</p></blockquote>
+    <p>You may get:</p>
+    <blockquote><p>It broke.</p></blockquote>
+    <p>Try:</p>
+    <blockquote><p>Did the screen go black, or did the numbers freeze?</p></blockquote>
+    <p>That gives the user something concrete to answer.</p>
+  </section>
+
+  <section class="content-box" id="example-monitor-shut-off">
+    <h3>Example: “Monitor Shut Off”</h3>
+    <p>That phrase could mean:</p>
+    <ul>
+      <li>Entire monitor lost power</li>
+      <li>Display went black</li>
+      <li>Application froze</li>
+      <li>Network connection dropped</li>
+      <li>Central station lost the bedside</li>
+    </ul>
+    <p>Those are completely different troubleshooting paths.</p>
+  </section>
+
+  <section class="content-box" id="ask-what-still-worked">
+    <h3>Ask What Still Worked</h3>
+    <p>This is one of the most useful questions in troubleshooting:</p>
+    <p><strong>What still worked when the problem happened?</strong></p>
+    <p>Suppose staff says:</p>
+    <blockquote><p>The monitor went down.</p></blockquote>
+    <p>Then you learn:</p>
+    <ul>
+      <li>Local ECG still displayed</li>
+      <li>Central station lost connection</li>
+      <li>Alarms still sounded</li>
+    </ul>
+    <p>Now you know the monitor did not actually “go down.”</p>
+    <p>The networking path failed.</p>
+  </section>
+
+  <section class="content-box" id="the-failure-boundary-matters">
+    <h3>The Failure Boundary Matters</h3>
+    <p>The faster you identify what continued working, the faster you isolate the failed subsystem.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Infusion pump complaint:</p>
+    <blockquote><p>Pump stopped.</p></blockquote>
+    <p>Ask:</p>
+    <ul>
+      <li>Did motor stop?</li>
+      <li>Did screen stay on?</li>
+      <li>Was there an alarm?</li>
+      <li>Did it say occlusion?</li>
+      <li>Did the entire pump reboot?</li>
+    </ul>
+    <p>Each answer moves you toward a different cause.</p>
+  </section>
+
+  <section class="content-box" id="ask-what-changed">
+    <h3>Ask What Changed</h3>
+    <p>Another powerful question:</p>
+    <p><strong>What happened immediately before the failure?</strong></p>
+    <p>Possible clues include:</p>
+    <ul>
+      <li>Device was unplugged</li>
+      <li>Cart was moved</li>
+      <li>Cable was connected</li>
+      <li>New disposable installed</li>
+      <li>Software updated</li>
+      <li>Patient moved rooms</li>
+      <li>Network outage occurred</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="changes-are-leads-not-proof">
+    <h3>Changes Are Leads, Not Proof</h3>
+    <p>If a problem begins after a software update:</p>
+    <p>The update is relevant.</p>
+    <p>It is not automatically the cause.</p>
+  </section>
+
+  <section class="content-box" id="determine-whether-the-failure-is-still-present">
+    <h3>Determine Whether the Failure Is Still Present</h3>
+    <p>There are two very different types of service call:</p>
+    <ol>
+      <li>Device is currently failing.</li>
+      <li>Device currently works but failed earlier.</li>
+    </ol>
+    <p>Treat them differently.</p>
+  </section>
+
+  <section class="content-box" id="active-failure">
+    <h3>Active Failure</h3>
+    <p>If the problem is happening right now:</p>
+    <p>Preserve it.</p>
+    <p>Observe before changing anything.</p>
+  </section>
+
+  <section class="content-box" id="historical-failure">
+    <h3>Historical Failure</h3>
+    <p>If the device is currently normal:</p>
+    <p>Focus more on:</p>
+    <ul>
+      <li>Staff interview</li>
+      <li>Logs</li>
+      <li>Service history</li>
+      <li>Recreating conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="clinical-impact-comes-early">
+    <h3>Clinical Impact Comes Early</h3>
+    <p>Before deep troubleshooting, understand whether the device can safely remain in use.</p>
+    <p>Ask:</p>
+    <p><strong>What function is affected?</strong></p>
+    <p>A broken printer on a monitor and an unreliable alarm speaker are not equivalent.</p>
+  </section>
+
+  <section class="content-box" id="examples">
+    <h3>Examples</h3>
+    <p>Printer failure:</p>
+    <p>May affect workflow.</p>
+    <p>Alarm failure:</p>
+    <p>May affect safety.</p>
+    <p>Battery runtime failure:</p>
+    <p>May matter greatly on transport equipment.</p>
+    <p>Network failure:</p>
+    <p>May or may not require removal depending on workflow.</p>
+  </section>
+
+  <section class="content-box" id="do-not-let-clinical-urgency-force-bad-troubleshooting">
+    <h3>Do Not Let Clinical Urgency Force Bad Troubleshooting</h3>
+    <p>The department may need the device.</p>
+    <p>That is real.</p>
+    <p>But:</p>
+    <p><strong>Equipment availability and equipment safety are separate problems.</strong></p>
+    <p>If the failure affects a critical function, the right decision may be:</p>
+    <p>Remove it.</p>
+    <p>Then troubleshoot.</p>
+  </section>
+
+  <section class="content-box" id="look-at-the-device-before-moving-it">
+    <h3>Look at the Device Before Moving It</h3>
+    <p>The clinical environment can contain clues that disappear in the shop.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Where it is plugged in</li>
+      <li>Cable routing</li>
+      <li>Dock</li>
+      <li>Network jack</li>
+      <li>Gas connection</li>
+      <li>Nearby equipment</li>
+      <li>Ventilation clearance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device repeatedly overheats clinically.</p>
+    <p>In the shop:</p>
+    <p>Never overheats.</p>
+    <p>Back on floor you notice:</p>
+    <p>Rear vent pushed against cabinet.</p>
+    <p>The environment was part of the failure.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor loses power in one room.</p>
+    <p>Before removing it:</p>
+    <p>Check outlet and power cord position.</p>
+    <p>The device may not be the problem.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-the-box-is-guilty">
+    <h3>Do Not Assume the Box Is Guilty</h3>
+    <p>Medical equipment depends on systems around it.</p>
+    <p>Possible external causes include:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Network</li>
+      <li>Medical gas</li>
+      <li>Dock</li>
+      <li>Charger</li>
+      <li>Accessory</li>
+      <li>Server</li>
+      <li>Patient cable</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="first-visual-inspection">
+    <h3>First Visual Inspection</h3>
+    <p>Before tools, look.</p>
+    <p>You may find:</p>
+    <ul>
+      <li>Cracked housing</li>
+      <li>Fluid</li>
+      <li>Loose connector</li>
+      <li>Bent pin</li>
+      <li>Frayed cord</li>
+      <li>Blocked filter</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="visual-inspection-is-high-value">
+    <h3>Visual Inspection Is High-Value</h3>
+    <p>A thirty-second inspection can prevent an hour of unnecessary board-level troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="smell">
+    <h3>Smell</h3>
+    <p>A burned odor can be useful evidence.</p>
+    <p>If the complaint involves:</p>
+    <ul>
+      <li>Smoke</li>
+      <li>Overheating</li>
+    </ul>
+    <p>do not repeatedly power the device to see whether the smell returns.</p>
+  </section>
+
+  <section class="content-box" id="listen">
+    <h3>Listen</h3>
+    <p>Some devices provide mechanical clues.</p>
+    <p>You may hear:</p>
+    <ul>
+      <li>Fan bearing</li>
+      <li>Relay clicking</li>
+      <li>Pump struggling</li>
+      <li>Motor grinding</li>
+      <li>Valve cycling</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="touch-carefully">
+    <h3>Touch Carefully</h3>
+    <p>Without exposing yourself to hazards, note whether the enclosure feels abnormally hot.</p>
+    <p>This can support an overheating complaint.</p>
+  </section>
+
+  <section class="content-box" id="capture-the-error-exactly">
+    <h3>Capture the Error Exactly</h3>
+    <p>Do not write:</p>
+    <blockquote><p>Error message.</p></blockquote>
+    <p>Write:</p>
+    <blockquote><p>Error 4072 — Flow Sensor Calibration Failed.</p></blockquote>
+    <p>Exact codes help with:</p>
+    <ul>
+      <li>Service manual lookup</li>
+      <li>OEM support</li>
+      <li>Repeat failures</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="photographs-and-screenshots">
+    <h3>Photographs and Screenshots</h3>
+    <p>When allowed, capture:</p>
+    <ul>
+      <li>Error</li>
+      <li>Physical damage</li>
+      <li>Configuration</li>
+    </ul>
+    <p>Do not photograph patient-identifying information unnecessarily.</p>
+  </section>
+
+  <section class="content-box" id="record-the-time">
+    <h3>Record the Time</h3>
+    <p>Exact or approximate failure time is especially valuable for:</p>
+    <ul>
+      <li>Network problems</li>
+      <li>Software crashes</li>
+      <li>Server events</li>
+    </ul>
+    <p>IT can search logs much more effectively with:</p>
+    <blockquote><p>14:32</p></blockquote>
+    <p>than:</p>
+    <blockquote><p>Earlier this afternoon.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="check-the-accessories">
+    <h3>Check the Accessories</h3>
+    <p>A huge amount of biomed troubleshooting is actually accessory troubleshooting.</p>
+    <p>Before taking the device:</p>
+    <p>Ask:</p>
+    <p><strong>What was connected when it failed?</strong></p>
+  </section>
+
+  <section class="content-box" id="examples">
+    <h3>Examples</h3>
+    <ul>
+      <li>ECG trunk cable</li>
+      <li>SpO2 extension</li>
+      <li>NIBP cuff</li>
+      <li>Temperature probe</li>
+      <li>Footswitch</li>
+      <li>Power adapter</li>
+      <li>USB device</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="take-the-problem-accessory-with-you">
+    <h3>Take the Problem Accessory With You</h3>
+    <p>If possible.</p>
+    <p>Otherwise you may test the main device with your own known-good accessory and find:</p>
+    <blockquote><p>Nothing wrong.</p></blockquote>
+    <p>Because you removed the actual failure.</p>
+  </section>
+
+  <section class="content-box" id="label-the-accessory">
+    <h3>Label the Accessory</h3>
+    <p>Do not let the original suspect cable disappear into a drawer.</p>
+    <p>Keep the failure chain intact.</p>
+  </section>
+
+  <section class="content-box" id="check-whether-the-accessory-is-correct">
+    <h3>Check Whether the Accessory Is Correct</h3>
+    <p>Sometimes the accessory is not broken.</p>
+    <p>It is wrong.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Incompatible sensor</li>
+      <li>Wrong cuff</li>
+      <li>Unsupported probe</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="known-good-comparison">
+    <h3>Known-Good Comparison</h3>
+    <p>If an identical working device is nearby, compare before changing settings.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Configuration</li>
+      <li>Accessories</li>
+      <li>Network settings</li>
+      <li>Display behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-copy-unique-settings-blindly">
+    <h3>Do Not Copy Unique Settings Blindly</h3>
+    <p>Never copy:</p>
+    <ul>
+      <li>IP address</li>
+      <li>Serial-specific calibration</li>
+    </ul>
+    <p>simply because another device works.</p>
+    <p>Compare intelligently.</p>
+  </section>
+
+  <section class="content-box" id="is-it-one-device-or-many">
+    <h3>Is It One Device or Many?</h3>
+    <p>This question rapidly changes the direction of troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="one-device">
+    <h3>One Device</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Local hardware</li>
+      <li>Local accessory</li>
+      <li>Configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="several-devices">
+    <h3>Several Devices</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Infrastructure</li>
+      <li>Server</li>
+      <li>Environmental change</li>
+      <li>Software update</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>One monitor cannot reach central:</p>
+    <p>Could be monitor.</p>
+    <p>Twenty monitors lose central at once:</p>
+    <p>Probably not twenty simultaneous NIC failures.</p>
+  </section>
+
+  <section class="content-box" id="check-service-history-early">
+    <h3>Check Service History Early</h3>
+    <p>If the device has repeated complaints, previous work orders may save substantial time.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Same symptom</li>
+      <li>Same part replacement</li>
+      <li>Repeat NPF</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Current complaint:</p>
+    <blockquote><p>Shuts down during transport.</p></blockquote>
+    <p>History:</p>
+    <p>Three previous shutdown calls.</p>
+    <p>Now this is not a random one-time complaint.</p>
+    <p>It is a repeat failure.</p>
+  </section>
+
+  <section class="content-box" id="equipment-history-changes-your-threshold">
+    <h3>Equipment History Changes Your Threshold</h3>
+    <p>Repeated intermittent failures often justify deeper troubleshooting or longer observation.</p>
+  </section>
+
+  <section class="content-box" id="check-logs-before-clearing-anything">
+    <h3>Check Logs Before Clearing Anything</h3>
+    <p>Logs can show:</p>
+    <ul>
+      <li>Watchdog resets</li>
+      <li>Thermal events</li>
+      <li>Network loss</li>
+      <li>Battery fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="preserve-before-resetting">
+    <h3>Preserve Before Resetting</h3>
+    <p>Do not:</p>
+    <ul>
+      <li>Clear logs</li>
+      <li>Reset defaults</li>
+      <li>Update firmware</li>
+    </ul>
+    <p>before capturing useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="service-mode">
+    <h3>Service Mode</h3>
+    <p>Service mode can be helpful early, but use it with purpose.</p>
+    <p>Do not enter diagnostics simply because you can.</p>
+    <p>Ask:</p>
+    <p><strong>What value am I looking for?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Complaint:</p>
+    <p>Battery suddenly drops from 70% to zero.</p>
+    <p>Useful service data:</p>
+    <ul>
+      <li>Battery voltage</li>
+      <li>Cycle count</li>
+      <li>State of health</li>
+    </ul>
+    <p>That is targeted.</p>
+  </section>
+
+  <section class="content-box" id="random-menu-browsing-is-not-troubleshooting">
+    <h3>Random Menu Browsing Is Not Troubleshooting</h3>
+    <p>Ten pages of diagnostic values are useless if you do not know which one relates to the failure.</p>
+  </section>
+
+  <section class="content-box" id="reproduce-before-repairing">
+    <h3>Reproduce Before Repairing</h3>
+    <p>If the device is safe to test:</p>
+    <p>Try to reproduce the actual complaint.</p>
+  </section>
+
+  <section class="content-box" id="use-the-original-conditions">
+    <h3>Use the Original Conditions</h3>
+    <p>If failure occurred:</p>
+    <ul>
+      <li>On battery</li>
+      <li>During transport</li>
+      <li>After 2 hours</li>
+    </ul>
+    <p>test those conditions.</p>
+  </section>
+
+  <section class="content-box" id="do-not-test-a-different-problem">
+    <h3>Do Not Test a Different Problem</h3>
+    <p>If staff says:</p>
+    <blockquote><p>It shuts off on battery,</p></blockquote>
+    <p>testing on AC for ten minutes does not address the complaint.</p>
+  </section>
+
+  <section class="content-box" id="movement">
+    <h3>Movement</h3>
+    <p>Intermittent failures often depend on:</p>
+    <ul>
+      <li>Cable flex</li>
+      <li>Connector movement</li>
+      <li>Battery movement</li>
+    </ul>
+    <p>Carefully recreate those conditions.</p>
+  </section>
+
+  <section class="content-box" id="runtime">
+    <h3>Runtime</h3>
+    <p>Some problems need time.</p>
+    <p>If complaint occurs after:</p>
+    <p>One hour,</p>
+    <p>do not expect a five-minute test to prove much.</p>
+  </section>
+
+  <section class="content-box" id="load">
+    <h3>Load</h3>
+    <p>Some failures appear only under load.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>NIBP pump starts</li>
+      <li>Heater activates</li>
+      <li>Motor runs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor stable until NIBP cycles.</p>
+    <p>Every cuff inflation causes reboot.</p>
+    <p>That is a powerful clue toward load-related power instability.</p>
+  </section>
+
+  <section class="content-box" id="decide-whether-to-move-it-to-the-shop">
+    <h3>Decide Whether to Move It to the Shop</h3>
+    <p>Not every failure should immediately leave the department.</p>
+    <p>Some troubleshooting is best done where it happened.</p>
+  </section>
+
+  <section class="content-box" id="investigate-on-site-first-when">
+    <h3>Investigate On Site First When</h3>
+    <p>The problem may involve:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Network</li>
+      <li>Dock</li>
+      <li>Room environment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="move-it-when">
+    <h3>Move It When</h3>
+    <p>You need:</p>
+    <ul>
+      <li>Disassembly</li>
+      <li>Extended testing</li>
+      <li>Specialized analyzer</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="preserve-configuration-before-moving">
+    <h3>Preserve Configuration Before Moving</h3>
+    <p>If disconnecting the device changes its state, record useful information first.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Network-connected equipment may receive different configuration after reconnecting.</p>
+    <p>Capture the original state.</p>
+  </section>
+
+  <section class="content-box" id="create-a-failure-statement">
+    <h3>Create a Failure Statement</h3>
+    <p>By the end of the first few minutes, try to describe the problem in one clear sentence.</p>
+    <p>Weak:</p>
+    <blockquote><p>Monitor broken.</p></blockquote>
+    <p>Better:</p>
+    <blockquote><p>Monitor loses central connection intermittently while local monitoring remains functional.</p></blockquote>
+    <p>Better still:</p>
+    <blockquote><p>Monitor loses central connection during transport between ICU and CT while local ECG and alarms remain active.</p></blockquote>
+    <p>That statement guides troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="separate-symptom-from-cause">
+    <h3>Separate Symptom From Cause</h3>
+    <p>Do not write:</p>
+    <blockquote><p>Bad Wi-Fi.</p></blockquote>
+    <p>unless you proved it.</p>
+    <p>Write:</p>
+    <blockquote><p>Central connection drops during transport.</p></blockquote>
+    <p>That is the observed symptom.</p>
+  </section>
+
+  <section class="content-box" id="form-a-hypothesis-after-evidence">
+    <h3>Form a Hypothesis After Evidence</h3>
+    <p>Good troubleshooting uses hypotheses.</p>
+    <p>Example:</p>
+    <blockquote><p>Failure may be related to Wi-Fi roaming.</p></blockquote>
+    <p>Now test it.</p>
+    <p>Do not turn your first theory into your final diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="the-first-ten-minutes-are-about-narrowing-the-system">
+    <h3>The First Ten Minutes Are About Narrowing the System</h3>
+    <p>Start broad:</p>
+    <p><strong>Device problem</strong></p>
+    <p>Then narrow:</p>
+    <p><strong>Power problem</strong></p>
+    <p>Then perhaps:</p>
+    <p><strong>Battery-transfer problem</strong></p>
+    <p>Then perhaps:</p>
+    <p><strong>Intermittent battery-contact problem</strong></p>
+    <p>Each step should be supported by evidence.</p>
+  </section>
+
+  <section class="content-box" id="example-patient-monitor">
+    <h3>Example: Patient Monitor</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Shuts off.</p></blockquote>
+    <p>Minute 1:</p>
+    <p>Staff says only happens during transport.</p>
+    <p>Minute 2:</p>
+    <p>Device works on AC.</p>
+    <p>Minute 3:</p>
+    <p>Unplug AC.</p>
+    <p>Monitor immediately shuts down.</p>
+    <p>Now you have already isolated toward:</p>
+    <p>Battery/power transfer.</p>
+    <p>You do not need to troubleshoot ECG.</p>
+  </section>
+
+  <section class="content-box" id="example-infusion-pump">
+    <h3>Example: Infusion Pump</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Keeps alarming occlusion.</p></blockquote>
+    <p>Ask:</p>
+    <p>Does it alarm with tubing disconnected?</p>
+    <p>No.</p>
+    <p>Inspect original tubing:</p>
+    <p>Kink found at clamp.</p>
+    <p>The pump may be functioning correctly.</p>
+  </section>
+
+  <section class="content-box" id="example-ventilator">
+    <h3>Example: Ventilator</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Won't pass test.</p></blockquote>
+    <p>Capture exact stage:</p>
+    <p>Circuit leak test.</p>
+    <p>Inspect circuit:</p>
+    <p>Loose humidifier connection.</p>
+    <p>Do not replace an internal valve before checking the external circuit.</p>
+  </section>
+
+  <section class="content-box" id="example-ecg-cart">
+    <h3>Example: ECG Cart</h3>
+    <p>Complaint:</p>
+    <blockquote><p>Won't send ECG.</p></blockquote>
+    <p>Local acquisition and print work.</p>
+    <p>Network link present.</p>
+    <p>Server ping works.</p>
+    <p>Transmission fails.</p>
+    <p>You have isolated the complaint toward the application path.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="rebooting-first">
+    <h3>Rebooting First</h3>
+    <p>You may erase the best evidence.</p>
+  </section>
+
+  <section class="content-box" id="taking-the-device-without-the-problem-accessory">
+    <h3>Taking the Device Without the Problem Accessory</h3>
+    <p>You removed part of the failure.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-the-clinical-environment">
+    <h3>Ignoring the Clinical Environment</h3>
+    <p>Some failures only exist in the room.</p>
+  </section>
+
+  <section class="content-box" id="assuming-the-user-s-diagnosis-is-the-actual-failure">
+    <h3>Assuming the User&#x27;s Diagnosis Is the Actual Failure</h3>
+    <p>Ask what they observed.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-what-is-convenient">
+    <h3>Testing Only What Is Convenient</h3>
+    <p>Reproduce the actual conditions.</p>
+  </section>
+
+  <section class="content-box" id="going-straight-to-service-mode">
+    <h3>Going Straight to Service Mode</h3>
+    <p>Observe the basic system first.</p>
+  </section>
+
+  <section class="content-box" id="skipping-service-history">
+    <h3>Skipping Service History</h3>
+    <p>Repeat failures matter.</p>
+  </section>
+
+  <section class="content-box" id="forming-a-diagnosis-too-early">
+    <h3>Forming a Diagnosis Too Early</h3>
+    <p>Treat the first theory as a hypothesis.</p>
+  </section>
+
+  <section class="content-box" id="a-practical-first-ten-minutes-checklist">
+    <h3>A Practical First-Ten-Minutes Checklist</h3>
+    <p>Before changing anything, try to answer:</p>
+    <ol>
+      <li>What exactly was reported?</li>
+      <li>Is the failure present now?</li>
+      <li>What still works?</li>
+      <li>What was happening when it failed?</li>
+      <li>What changed immediately before the failure?</li>
+      <li>What accessories were involved?</li>
+      <li>Is there an error code?</li>
+      <li>Is there physical damage or contamination?</li>
+      <li>Is one device affected or several?</li>
+      <li>Is there relevant service history?</li>
+      <li>Are there logs worth preserving?</li>
+      <li>Is the device safe to remain in service?</li>
+    </ol>
+    <p>You will not always answer all twelve in ten minutes.</p>
+    <p>The point is the order of thinking.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>Suppose you arrive and reboot the device.</p>
+    <p>It starts normally.</p>
+    <p>What did you prove?</p>
+    <p><strong>The device can currently complete startup.</strong></p>
+    <p>That is all.</p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Original complaint was false</li>
+      <li>Failure is fixed</li>
+    </ul>
+    <p>Now compare that with:</p>
+    <p>Staff reports shutdown on battery.</p>
+    <p>You disconnect AC.</p>
+    <p>Device shuts down immediately.</p>
+    <p>You install a known-good battery.</p>
+    <p>It remains operating.</p>
+    <p>Original battery fails capacity test.</p>
+    <p>Now you have built an evidence chain.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>The first ten minutes of a service call should not be frantic.</p>
+    <p>They should be deliberate.</p>
+    <p>You are trying to preserve information before the system changes.</p>
+    <p>Get the complaint.</p>
+    <p>Look at the device.</p>
+    <p>Look at the environment.</p>
+    <p>Capture the error.</p>
+    <p>Identify what still works.</p>
+    <p>Bring the original accessories into the investigation.</p>
+    <p>Check whether the problem is isolated or widespread.</p>
+    <p>Only then start changing things.</p>
+    <p>A lot of unnecessary troubleshooting begins with changing something before understanding what was wrong.</p>
+    <p>Rebooting is easy.</p>
+    <p>Replacing parts is easy.</p>
+    <p>The harder skill is knowing what evidence matters before you touch anything.</p>
+    <p>So when you arrive at the next service call, resist the urge to immediately fix it.</p>
+    <p>Spend a few minutes understanding it first.</p>
+    <p>Because the fastest repair is often the one where you correctly define the problem before you start.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Initial response, equipment-removal decisions, log preservation, incident handling, troubleshooting scope, and return-to-service requirements vary by medical-device type, manufacturer, facility policy, and event severity. Follow current manufacturer documentation and organizational procedures, especially when the equipment may have been involved in a patient-safety event.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="the-troubleshooting-process-observe-isolate-test-verify.html">The Troubleshooting Process: Observe, Isolate, Test, Verify</a></li>
+      <li><a href="how-experienced-biomeds-think-through-a-new-problem.html">How Experienced Biomeds Think Through a New Problem</a></li>
+      <li><a href="how-to-ask-clinical-staff-better-troubleshooting-questions.html">How to Ask Clinical Staff Better Troubleshooting Questions</a></li>
+      <li><a href="how-to-document-an-intermittent-problem.html">How to Document an Intermittent Problem</a></li>
+      <li><a href="when-to-remove-medical-equipment-from-service.html">When to Remove Medical Equipment From Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -136,6 +136,8 @@ RELATED = {
     "how-to-troubleshoot-sensor-not-recognized": ["sensors-and-transducers-basics", "how-to-troubleshoot-medical-device-accessories", "medical-equipment-cables-and-connectors-inspection-and-isolation", "what-known-good-actually-means", "how-parameter-modules-communicate-with-host-monitors"],
     "how-to-troubleshoot-failed-self-tests": ["how-device-self-tests-detect-failures", "when-to-trust-the-device-s-internal-self-test", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-read-and-use-medical-device-event-logs", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "fans-filters-and-overheating": ["how-medical-device-cooling-systems-work", "why-medical-equipment-reboots", "environmental-causes-of-medical-equipment-failures", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-device-self-tests-detect-failures"],
+    "the-first-ten-minutes-of-a-service-call": ["the-troubleshooting-process-observe-isolate-test-verify", "how-experienced-biomeds-think-through-a-new-problem", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-document-an-intermittent-problem", "when-to-remove-medical-equipment-from-service"],
+    "how-to-use-equipment-history-during-troubleshooting": ["biomed-work-order-notes-ccr-method", "how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "root-cause-troubleshooting-basics", "how-to-read-and-use-medical-device-event-logs"],
 }
 
 ARTICLE_CONFIG = {
@@ -803,6 +805,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Cooling Systems",
         "cardNote": "Fans, filters, airflow, sensors, and thermal faults",
+    },
+    "the-first-ten-minutes-of-a-service-call": {
+        "description": "A practical guide to the first observations, safety decisions, questions, evidence, and fault-isolation steps experienced biomeds use at the start of a service call.",
+        "category": "Troubleshooting",
+        "badge": "Service Call",
+        "cardNote": "Preserving evidence, defining the complaint, and choosing the first test",
+    },
+    "how-to-use-equipment-history-during-troubleshooting": {
+        "description": "A practical guide to using CMMS history, prior work orders, recurring symptoms, parts replacements, and maintenance patterns to guide medical-equipment troubleshooting.",
+        "category": "Troubleshooting",
+        "badge": "Service History",
+        "cardNote": "Finding patterns in work orders, repairs, and repeat failures",
     },
 }
 
