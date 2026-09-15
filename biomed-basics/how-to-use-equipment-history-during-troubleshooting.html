@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Use Equipment History During Troubleshooting | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to using CMMS history, prior work orders, recurring symptoms, parts replacements, and maintenance patterns to guide medical-equipment troubleshooting.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-use-equipment-history-during-troubleshooting.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How to Use Equipment History During Troubleshooting</h2>
+  <p>How previous work orders, repeat failures, replaced parts, PM findings, and service patterns can help you stop treating every repair like it is the first time the device has ever failed</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A medical device rarely fails in a vacuum.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Why equipment history matters</li>
+      <li>What to look for in CMMS records</li>
+      <li>Repeat failures</li>
+      <li>Parts-replacement patterns</li>
+      <li>Previous NPF findings</li>
+      <li>PM trends</li>
+      <li>Battery history</li>
+      <li>Vendor repair history</li>
+      <li>Firmware and software changes</li>
+      <li>Environmental and location patterns</li>
+      <li>How to distinguish coincidence from a real pattern</li>
+      <li>Why poor work-order notes make future troubleshooting harder</li>
+      <li>How equipment history should influence repair decisions</li>
+      <li>Common mistakes when reviewing service history</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Before you troubleshoot a difficult or repeat failure, review the history.</p>
+    <p>Look for:</p>
+    <ul>
+      <li>Same complaint before</li>
+      <li>Same part replaced before</li>
+      <li>Same location</li>
+      <li>Same accessory</li>
+      <li>Same operating condition</li>
+      <li>Same time-to-failure</li>
+      <li>Recent software or hardware change</li>
+    </ul>
+    <p>You are trying to answer:</p>
+    <p><strong>Is this really a new failure, or is it the latest version of an old one?</strong></p>
+  </section>
+
+  <section class="content-box" id="cmms-history-is-more-than-administrative-data">
+    <h3>CMMS History Is More Than Administrative Data</h3>
+    <p>A CMMS is often treated as:</p>
+    <blockquote><p>The place where we close work orders.</p></blockquote>
+    <p>That is a waste of one of its most useful functions.</p>
+    <p>Good service history can act like a long-term diagnostic log.</p>
+    <p>It tells you what happened when you were not there.</p>
+  </section>
+
+  <section class="content-box" id="what-makes-history-useful">
+    <h3>What Makes History Useful</h3>
+    <p>The value depends on the quality of previous documentation.</p>
+    <p>A note that says:</p>
+    <blockquote><p>Checked unit. Works fine.</p></blockquote>
+    <p>gives you almost nothing.</p>
+    <p>A note that says:</p>
+    <blockquote><p>Reported intermittent shutdown during transport. Unable to duplicate during 90-minute battery operation. Battery passed capacity test. AC-to-battery transitions normal. No reset events in logs.</p></blockquote>
+    <p>is useful.</p>
+    <p>Now you know what was already tested.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-complaint">
+    <h3>Start With the Complaint</h3>
+    <p>Search the recent history for the same symptom.</p>
+    <p>Example:</p>
+    <p>Current complaint:</p>
+    <blockquote><p>Reboots randomly.</p></blockquote>
+    <p>Look for previous work orders containing:</p>
+    <ul>
+      <li>Reboot</li>
+      <li>Shutdown</li>
+      <li>Power loss</li>
+      <li>Screen black</li>
+      <li>Restart</li>
+      <li>Battery failure</li>
+    </ul>
+    <p>Clinical language and technical language may differ.</p>
+  </section>
+
+  <section class="content-box" id="different-words-can-describe-the-same-failure">
+    <h3>Different Words Can Describe the Same Failure</h3>
+    <p>One work order may say:</p>
+    <blockquote><p>Screen went blank.</p></blockquote>
+    <p>Another:</p>
+    <blockquote><p>Monitor shut off.</p></blockquote>
+    <p>Another:</p>
+    <blockquote><p>Unit rebooted.</p></blockquote>
+    <p>Those may or may not be the same issue.</p>
+    <p>Read the details.</p>
+  </section>
+
+  <section class="content-box" id="frequency-matters">
+    <h3>Frequency Matters</h3>
+    <p>One complaint over five years may be noise.</p>
+    <p>Five complaints in six months are a pattern.</p>
+  </section>
+
+  <section class="content-box" id="repeat-failure-changes-the-decision">
+    <h3>Repeat Failure Changes the Decision</h3>
+    <p>A first-time complaint may justify:</p>
+    <ul>
+      <li>Basic troubleshooting</li>
+      <li>Standard repair</li>
+    </ul>
+    <p>A repeated complaint may justify:</p>
+    <ul>
+      <li>Deeper testing</li>
+      <li>Longer observation</li>
+      <li>Escalation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example-repeated-battery-replacement">
+    <h3>Example: Repeated Battery Replacement</h3>
+    <p>History:</p>
+    <p>January: battery replaced.</p>
+    <p>April: battery replaced.</p>
+    <p>July: battery replaced.</p>
+    <p>That is not normal unless the batteries themselves are poor quality or the usage is extreme.</p>
+    <p>Ask:</p>
+    <p><strong>Why are batteries failing early?</strong></p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Charger fault</li>
+      <li>Heat</li>
+      <li>Deep discharge</li>
+      <li>Wrong battery type</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="parts-history-can-reveal-misdiagnosis">
+    <h3>Parts History Can Reveal Misdiagnosis</h3>
+    <p>Suppose the device has had:</p>
+    <ul>
+      <li>Main board replaced twice</li>
+      <li>Power supply replaced once</li>
+    </ul>
+    <p>and the same reboot complaint continues.</p>
+    <p>That tells you something important:</p>
+    <p><strong>The original diagnosis may not have been correct.</strong></p>
+  </section>
+
+  <section class="content-box" id="do-not-repeat-failed-repair-logic">
+    <h3>Do Not Repeat Failed Repair Logic</h3>
+    <p>One of the worst habits is:</p>
+    <blockquote><p>They replaced the board last time, so I'll replace it again.</p></blockquote>
+    <p>Previous part replacement is evidence.</p>
+    <p>It is not proof that the part was the cause.</p>
+  </section>
+
+  <section class="content-box" id="ask-whether-the-previous-repair-actually-held">
+    <h3>Ask Whether the Previous Repair Actually Held</h3>
+    <p>Look at the timeline.</p>
+    <p>If board replaced and same complaint returned two days later:</p>
+    <p>Strong evidence the board may not have been root cause.</p>
+    <p>If complaint returns five years later:</p>
+    <p>That is different.</p>
+  </section>
+
+  <section class="content-box" id="time-between-failures-matters">
+    <h3>Time Between Failures Matters</h3>
+    <p>A repair that lasts years may have been legitimate.</p>
+    <p>A repair that lasts hours probably was not.</p>
+  </section>
+
+  <section class="content-box" id="previous-no-problem-found-work-orders">
+    <h3>Previous “No Problem Found” Work Orders</h3>
+    <p>Multiple NPF work orders can be especially valuable.</p>
+    <p>Example:</p>
+    <p>January:</p>
+    <p>Unable to duplicate.</p>
+    <p>March:</p>
+    <p>Unable to duplicate.</p>
+    <p>June:</p>
+    <p>Unable to duplicate.</p>
+    <p>Current complaint:</p>
+    <p>Same symptom.</p>
+    <p>Do not treat this as another isolated NPF.</p>
+  </section>
+
+  <section class="content-box" id="repeated-npf-is-a-pattern">
+    <h3>Repeated NPF Is a Pattern</h3>
+    <p>It suggests the failure may depend on:</p>
+    <ul>
+      <li>Time</li>
+      <li>Movement</li>
+      <li>Environment</li>
+      <li>Specific accessory</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Three notes mention:</p>
+    <blockquote><p>Failure during transport.</p></blockquote>
+    <p>That may be the most important clue in the history.</p>
+  </section>
+
+  <section class="content-box" id="pm-findings">
+    <h3>PM Findings</h3>
+    <p>Preventive-maintenance records can also provide troubleshooting evidence.</p>
+    <p>Look for trends such as:</p>
+    <ul>
+      <li>Battery capacity declining</li>
+      <li>Increasing leakage</li>
+      <li>Repeated calibration adjustment</li>
+      <li>Fan noise</li>
+      <li>Mechanical wear</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="trend-vs-single-point">
+    <h3>Trend vs Single Point</h3>
+    <p>One PM result may not mean much.</p>
+    <p>A pattern over several PMs can.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Infusion pump flow test:</p>
+    <p>Year 1: 100.2 mL/hr</p>
+    <p>Year 2: 99.1 mL/hr</p>
+    <p>Year 3: 96.0 mL/hr</p>
+    <p>Year 4: 94.8 mL/hr</p>
+    <p>That trend may suggest wear before a hard failure occurs.</p>
+  </section>
+
+  <section class="content-box" id="calibration-history">
+    <h3>Calibration History</h3>
+    <p>Repeated calibration drift can point toward an underlying issue.</p>
+    <p>If the same parameter constantly needs adjustment:</p>
+    <p>Ask why.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pressure channel adjusted at every PM.</p>
+    <p>That may indicate:</p>
+    <ul>
+      <li>Sensor aging</li>
+      <li>Leak</li>
+      <li>Reference issue</li>
+    </ul>
+    <p>rather than normal drift.</p>
+  </section>
+
+  <section class="content-box" id="vendor-history">
+    <h3>Vendor History</h3>
+    <p>OEM service reports can contain clues not captured in the CMMS.</p>
+    <p>Review:</p>
+    <ul>
+      <li>Parts replaced</li>
+      <li>Error codes</li>
+      <li>Firmware applied</li>
+      <li>Technician notes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-record-sent-to-vendor-and-stop-there">
+    <h3>Do Not Record “Sent to Vendor” and Stop There</h3>
+    <p>When the device returns, capture:</p>
+    <ul>
+      <li>What vendor found</li>
+      <li>What they replaced</li>
+      <li>What software changed</li>
+    </ul>
+    <p>Otherwise the history becomes incomplete.</p>
+  </section>
+
+  <section class="content-box" id="firmware-and-software-changes">
+    <h3>Firmware and Software Changes</h3>
+    <p>Modern equipment failures can follow:</p>
+    <ul>
+      <li>Firmware update</li>
+      <li>OS change</li>
+      <li>Configuration change</li>
+      <li>Server migration</li>
+    </ul>
+    <p>Look at when the issue began relative to those events.</p>
+  </section>
+
+  <section class="content-box" id="correlation-is-not-proof">
+    <h3>Correlation Is Not Proof</h3>
+    <p>If complaints start after version 4.2:</p>
+    <p>That is worth investigating.</p>
+    <p>It does not automatically prove 4.2 caused them.</p>
+  </section>
+
+  <section class="content-box" id="location-patterns">
+    <h3>Location Patterns</h3>
+    <p>The equipment history may reveal that failures happen only in:</p>
+    <ul>
+      <li>One room</li>
+      <li>One department</li>
+      <li>One transport route</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor has three Wi-Fi complaints.</p>
+    <p>All occurred:</p>
+    <blockquote><p>During transport to CT.</p></blockquote>
+    <p>That points you toward:</p>
+    <ul>
+      <li>Coverage</li>
+      <li>Roaming</li>
+    </ul>
+    <p>not necessarily monitor hardware.</p>
+  </section>
+
+  <section class="content-box" id="compare-with-fleet-history">
+    <h3>Compare With Fleet History</h3>
+    <p>Do not look only at the one asset.</p>
+    <p>Ask:</p>
+    <p><strong>Are other devices of the same model having the same issue?</strong></p>
+  </section>
+
+  <section class="content-box" id="fleet-pattern">
+    <h3>Fleet Pattern</h3>
+    <p>If ten units show the same failure:</p>
+    <p>Think systemic.</p>
+    <p>Possibilities include:</p>
+    <ul>
+      <li>Design issue</li>
+      <li>Firmware</li>
+      <li>Recall</li>
+      <li>Common part</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-device-only">
+    <h3>One Device Only</h3>
+    <p>If one device has repeated issues while twenty identical units do not:</p>
+    <p>Think local.</p>
+  </section>
+
+  <section class="content-box" id="asset-age">
+    <h3>Asset Age</h3>
+    <p>Older equipment naturally accumulates more repairs.</p>
+    <p>That does not mean every failure is age-related.</p>
+    <p>But age helps interpret the repair history.</p>
+  </section>
+
+  <section class="content-box" id="service-intensity">
+    <h3>Service Intensity</h3>
+    <p>Two devices of the same age may have very different histories.</p>
+    <p>One in a busy ED may have:</p>
+    <ul>
+      <li>Hundreds more hours</li>
+      <li>More transport</li>
+    </ul>
+    <p>Usage matters.</p>
+  </section>
+
+  <section class="content-box" id="runtime-and-cycle-counts">
+    <h3>Runtime and Cycle Counts</h3>
+    <p>Some devices track:</p>
+    <ul>
+      <li>Operating hours</li>
+      <li>Pump cycles</li>
+      <li>Battery cycles</li>
+    </ul>
+    <p>These can be more meaningful than calendar age.</p>
+  </section>
+
+  <section class="content-box" id="accessory-history">
+    <h3>Accessory History</h3>
+    <p>Sometimes the repeat failure is not the main device.</p>
+    <p>Review whether the same:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Dock</li>
+      <li>Charger</li>
+      <li>Battery</li>
+    </ul>
+    <p>has followed the asset.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor repeatedly loses power.</p>
+    <p>Same mobile stand has damaged power adapter.</p>
+    <p>Device hardware was never the problem.</p>
+  </section>
+
+  <section class="content-box" id="external-infrastructure">
+    <h3>External Infrastructure</h3>
+    <p>History can expose infrastructure patterns.</p>
+    <p>Example:</p>
+    <p>Several devices in same OR show intermittent network loss.</p>
+    <p>Different models.</p>
+    <p>Same network drop.</p>
+    <p>That is valuable.</p>
+  </section>
+
+  <section class="content-box" id="use-history-to-build-better-hypotheses">
+    <h3>Use History to Build Better Hypotheses</h3>
+    <p>Suppose current complaint is:</p>
+    <blockquote><p>Device shuts off.</p></blockquote>
+    <p>Without history, possibilities are broad.</p>
+    <p>History shows:</p>
+    <ul>
+      <li>Previous failures only on battery</li>
+      <li>Battery recently replaced</li>
+      <li>Battery contact repaired once</li>
+    </ul>
+    <p>Now battery contact becomes a strong hypothesis.</p>
+  </section>
+
+  <section class="content-box" id="history-narrows-the-search-space">
+    <h3>History Narrows the Search Space</h3>
+    <p>That is its biggest value.</p>
+  </section>
+
+  <section class="content-box" id="do-not-let-history-create-confirmation-bias">
+    <h3>Do Not Let History Create Confirmation Bias</h3>
+    <p>This is important.</p>
+    <p>If previous technician wrote:</p>
+    <blockquote><p>Bad battery,</p></blockquote>
+    <p>you may be tempted to assume battery again.</p>
+    <p>Test it.</p>
+  </section>
+
+  <section class="content-box" id="history-should-guide-not-dictate">
+    <h3>History Should Guide, Not Dictate</h3>
+    <p>Use it as evidence.</p>
+    <p>Do not let it override current findings.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Previous three complaints were battery-related.</p>
+    <p>Current unit does not power on even on AC.</p>
+    <p>This may be different.</p>
+  </section>
+
+  <section class="content-box" id="look-for-what-was-never-tested">
+    <h3>Look for What Was Never Tested</h3>
+    <p>Previous work orders may reveal gaps.</p>
+    <p>Example:</p>
+    <p>Three shutdown complaints.</p>
+    <p>Each note says:</p>
+    <blockquote><p>Tested on AC, passed.</p></blockquote>
+    <p>Nobody tested on battery.</p>
+    <p>That is a clue in itself.</p>
+  </section>
+
+  <section class="content-box" id="look-at-repair-depth">
+    <h3>Look at Repair Depth</h3>
+    <p>Was the device:</p>
+    <ul>
+      <li>Inspected</li>
+      <li>Tested</li>
+      <li>Part replaced</li>
+      <li>Calibrated</li>
+    </ul>
+    <p>The difference matters.</p>
+  </section>
+
+  <section class="content-box" id="replaced-battery-is-not-enough">
+    <h3>“Replaced Battery” Is Not Enough</h3>
+    <p>Did they verify:</p>
+    <ul>
+      <li>Runtime</li>
+      <li>Charge</li>
+      <li>AC transition</li>
+    </ul>
+    <p>Maybe not.</p>
+  </section>
+
+  <section class="content-box" id="build-a-timeline">
+    <h3>Build a Timeline</h3>
+    <p>For complex recurring failures, a simple timeline can be extremely useful.</p>
+    <p>Example:</p>
+    <p>January 5 — first shutdown complaint</p>
+    <p>January 7 — NPF</p>
+    <p>February 18 — battery replaced</p>
+    <p>March 2 — shutdown again</p>
+    <p>March 3 — battery contacts cleaned</p>
+    <p>April 10 — shutdown again during transport</p>
+    <p>Now you can see the story.</p>
+  </section>
+
+  <section class="content-box" id="patterns-are-easier-to-see-chronologically">
+    <h3>Patterns Are Easier to See Chronologically</h3>
+    <p>CMMS screens often show work orders individually.</p>
+    <p>Mentally convert them into a sequence.</p>
+  </section>
+
+  <section class="content-box" id="ask-whether-the-failure-is-getting-worse">
+    <h3>Ask Whether the Failure Is Getting Worse</h3>
+    <p>Example:</p>
+    <p>First complaint:</p>
+    <p>Once per month.</p>
+    <p>Now:</p>
+    <p>Once per day.</p>
+    <p>That progression may indicate degradation.</p>
+  </section>
+
+  <section class="content-box" id="ask-whether-the-failure-changed">
+    <h3>Ask Whether the Failure Changed</h3>
+    <p>Maybe the original problem was:</p>
+    <p>Short runtime.</p>
+    <p>Now:</p>
+    <p>Unexpected shutdown.</p>
+    <p>These may share a battery cause but are not identical.</p>
+  </section>
+
+  <section class="content-box" id="repair-decisions-should-consider-history">
+    <h3>Repair Decisions Should Consider History</h3>
+    <p>A device with:</p>
+    <ul>
+      <li>One minor repair</li>
+    </ul>
+    <p>is different from one with:</p>
+    <ul>
+      <li>Six major repairs in a year</li>
+    </ul>
+    <p>Even if the current failure is technically repairable.</p>
+  </section>
+
+  <section class="content-box" id="reliability-matters">
+    <h3>Reliability Matters</h3>
+    <p>Repeated failures cost more than parts.</p>
+    <p>They create:</p>
+    <ul>
+      <li>Downtime</li>
+      <li>Clinical frustration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="history-and-replacement-planning">
+    <h3>History and Replacement Planning</h3>
+    <p>Service history can support capital replacement decisions.</p>
+    <p>Instead of:</p>
+    <blockquote><p>This thing is old.</p></blockquote>
+    <p>you can say:</p>
+    <blockquote><p>Unit has required five corrective repairs in 12 months, including two main-board replacements, and parts availability is limited.</p></blockquote>
+    <p>That is a stronger argument.</p>
+  </section>
+
+  <section class="content-box" id="history-and-escalation">
+    <h3>History and Escalation</h3>
+    <p>OEM technical support will often ask:</p>
+    <ul>
+      <li>What has already been replaced?</li>
+      <li>How often does it happen?</li>
+      <li>What software version?</li>
+      <li>What error codes?</li>
+    </ul>
+    <p>Have that ready.</p>
+  </section>
+
+  <section class="content-box" id="build-a-useful-escalation-package">
+    <h3>Build a Useful Escalation Package</h3>
+    <p>Do not make the vendor rediscover the history.</p>
+    <p>Give them:</p>
+    <ul>
+      <li>Timeline</li>
+      <li>Previous parts</li>
+      <li>Logs</li>
+      <li>Current symptoms</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="documentation-quality-compounds-over-time">
+    <h3>Documentation Quality Compounds Over Time</h3>
+    <p>Good notes make future repairs faster.</p>
+    <p>Bad notes make each repair start at zero.</p>
+    <p>That is why documentation matters beyond billing or compliance.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-random-reboot">
+    <h3>Real-World Example: Random Reboot</h3>
+    <p>Current complaint:</p>
+    <p>Monitor randomly reboots.</p>
+    <p>History:</p>
+    <ul>
+      <li>Two previous reboot complaints</li>
+      <li>Both occurred during NIBP cycling</li>
+      <li>Battery replaced once</li>
+      <li>Power supply never tested under load</li>
+    </ul>
+    <p>Now test the power rail during NIBP activation.</p>
+    <p>You find voltage collapse.</p>
+    <p>History pointed you toward the real trigger.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-nibp-error">
+    <h3>Real-World Example: Repeated NIBP Error</h3>
+    <p>Pump replaced three times.</p>
+    <p>History shows complaints continue.</p>
+    <p>Current inspection finds contaminated hose causing excessive load.</p>
+    <p>The pump may have been the victim, not the cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network-drop">
+    <h3>Real-World Example: Network Drop</h3>
+    <p>One monitor repeatedly loses central connection.</p>
+    <p>History shows every complaint occurred in same room.</p>
+    <p>Second monitor in same room also has issue.</p>
+    <p>Now infrastructure becomes much more likely.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-touchscreen">
+    <h3>Real-World Example: Touchscreen</h3>
+    <p>Touchscreen replaced twice.</p>
+    <p>Complaint returns.</p>
+    <p>History shows failures always after aggressive cleaning.</p>
+    <p>Inspection reveals fluid intrusion around bezel.</p>
+    <p>Replacing displays did not address the environmental cause.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="not-reading-the-history">
+    <h3>Not Reading the History</h3>
+    <p>You may repeat work already done.</p>
+  </section>
+
+  <section class="content-box" id="trusting-the-previous-diagnosis-too-much">
+    <h3>Trusting the Previous Diagnosis Too Much</h3>
+    <p>Previous technicians can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="looking-only-at-the-last-work-order">
+    <h3>Looking Only at the Last Work Order</h3>
+    <p>Patterns may span years.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-npf-history">
+    <h3>Ignoring NPF History</h3>
+    <p>Repeated inability to duplicate is itself useful information.</p>
+  </section>
+
+  <section class="content-box" id="failing-to-capture-vendor-repair-details">
+    <h3>Failing to Capture Vendor Repair Details</h3>
+    <p>The next technician loses context.</p>
+  </section>
+
+  <section class="content-box" id="treating-every-complaint-as-independent">
+    <h3>Treating Every Complaint as Independent</h3>
+    <p>Some are clearly related.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-equipment-history-framework">
+    <h3>A Useful Equipment-History Framework</h3>
+    <p>Before troubleshooting a difficult problem, ask:</p>
+    <p><strong>Has this happened before?</strong></p>
+    <p>Then:</p>
+    <p><strong>What was done last time?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did the repair hold?</strong></p>
+    <p>Then:</p>
+    <p><strong>What conditions repeat across the failures?</strong></p>
+    <p>Then:</p>
+    <p><strong>What has never been tested?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is this one asset or a fleet pattern?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What would I conclude if I saw all of these work orders at once instead of one at a time?</strong></p>
+    <p>That question often reveals the pattern.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the previous work order says:</p>
+    <blockquote><p>Battery replaced,</p></blockquote>
+    <p>you proved only that a battery was replaced.</p>
+    <p>You did not prove the battery caused the original failure.</p>
+    <p>If the note says:</p>
+    <blockquote><p>Original battery failed capacity test, known-good battery eliminated shutdown, and unit passed 2-hour battery operation,</p></blockquote>
+    <p>now you have much stronger evidence.</p>
+    <p>History is only as strong as the evidence captured in it.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Every medical device tells a story over time.</p>
+    <p>The CMMS is where that story should live.</p>
+    <p>Use it.</p>
+    <p>Before replacing the same board again, ask:</p>
+    <p><strong>Has this already been tried?</strong></p>
+    <p>Before calling a failure random, ask:</p>
+    <p><strong>Has it happened under the same conditions before?</strong></p>
+    <p>Before deciding a device is unreliable, look at the actual repair pattern.</p>
+    <p>Good troubleshooting happens in the present.</p>
+    <p>Great troubleshooting also uses the past.</p>
+    <p>And sometimes the most important clue is not inside the device at all.</p>
+    <p>It is buried in a work order from six months ago.</p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>CMMS structure, service-history requirements, asset-management practices, vendor documentation, and retention policies vary by healthcare organization. Service history should support troubleshooting and lifecycle decisions, but current equipment condition, manufacturer guidance, facility policy, and direct testing should remain the primary basis for technical conclusions.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="biomed-work-order-notes-ccr-method.html">How to Write Better Biomed Work Order Notes Using the CCR Method</a></li>
+      <li><a href="how-to-document-an-intermittent-problem.html">How to Document an Intermittent Problem</a></li>
+      <li><a href="what-unable-to-duplicate-should-actually-mean.html">What “Unable to Duplicate” Should Actually Mean</a></li>
+      <li><a href="root-cause-troubleshooting-basics.html">Root Cause Troubleshooting Basics</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
