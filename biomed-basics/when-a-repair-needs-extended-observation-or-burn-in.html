@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>When a Repair Needs Extended Observation or Burn-In | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to deciding when a medical-equipment repair needs extended observation, repeated cycling, heat soak, runtime testing, or controlled burn-in before return to service.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/when-a-repair-needs-extended-observation-or-burn-in.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>When a Repair Needs Extended Observation or Burn-In</h2>
+  <p>Why some medical equipment problems cannot be cleared by a five-minute bench test and when longer testing is necessary before you trust the repair</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Some repairs are easy to verify.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What extended observation means</li>
+      <li>What burn-in is and is not</li>
+      <li>Why some faults need time</li>
+      <li>Thermal failures</li>
+      <li>Battery-related failures</li>
+      <li>Reboot and shutdown complaints</li>
+      <li>Repeated mechanical cycles</li>
+      <li>Network and communication stability</li>
+      <li>How long to test</li>
+      <li>How to reproduce realistic load</li>
+      <li>Why simply leaving a device powered on may not be enough</li>
+      <li>What evidence to record</li>
+      <li>When a device still should not return to service</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>If the original failure occurred:</p>
+    <ul>
+      <li>After two hours</li>
+      <li>Under heavy load</li>
+      <li>During transport</li>
+      <li>During repeated cycles</li>
+    </ul>
+    <p>then your verification should try to reproduce those same conditions.</p>
+    <p>A five-minute test proves:</p>
+    <p><strong>The device worked for five minutes.</strong></p>
+    <p>It does not prove:</p>
+    <p><strong>The two-hour intermittent failure is gone.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-extended-observation">
+    <h3>What Is Extended Observation?</h3>
+    <p>Extended observation means operating the equipment for a longer period than a basic functional test because the reported failure is time-dependent or intermittent.</p>
+    <p>This may involve:</p>
+    <ul>
+      <li>Continuous runtime</li>
+      <li>Repeated cycling</li>
+      <li>Thermal load</li>
+      <li>Battery operation</li>
+      <li>Network communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-is-burn-in">
+    <h3>What Is Burn-In?</h3>
+    <p>“Burn-in” is often used informally in repair shops to mean:</p>
+    <blockquote><p>Run it for a while and see if it fails.</p></blockquote>
+    <p>That can be useful.</p>
+    <p>But useful burn-in should be more structured than simply leaving the device on a shelf.</p>
+  </section>
+
+  <section class="content-box" id="idle-time-is-not-the-same-as-stress-testing">
+    <h3>Idle Time Is Not the Same as Stress Testing</h3>
+    <p>If the complaint occurs only when a pump runs, leaving the device idle for four hours may tell you very little.</p>
+    <p>The test should include the function that triggers the failure.</p>
+  </section>
+
+  <section class="content-box" id="match-the-original-failure">
+    <h3>Match the Original Failure</h3>
+    <p>Start with:</p>
+    <p><strong>When did the problem occur?</strong></p>
+    <p>Examples:</p>
+    <ul>
+      <li>After warm-up</li>
+      <li>After several cycles</li>
+      <li>On battery</li>
+      <li>During movement</li>
+    </ul>
+    <p>Then build the test around that.</p>
+  </section>
+
+  <section class="content-box" id="thermal-failures">
+    <h3>Thermal Failures</h3>
+    <p>Heat is one of the biggest reasons extended testing matters.</p>
+    <p>A device may work cold and fail after internal temperature rises.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor works for 30 minutes.</p>
+    <p>Then:</p>
+    <ul>
+      <li>Display freezes</li>
+      <li>Reboots</li>
+    </ul>
+    <p>After cooling:</p>
+    <p>Works again.</p>
+    <p>That is classic time-dependent behavior.</p>
+  </section>
+
+  <section class="content-box" id="heat-soak">
+    <h3>Heat Soak</h3>
+    <p>Components take time to reach operating temperature.</p>
+    <p>That means a 10-minute test may never reach the failure condition.</p>
+  </section>
+
+  <section class="content-box" id="covers-matter">
+    <h3>Covers Matter</h3>
+    <p>If the device normally runs with covers installed, test it that way whenever safe.</p>
+    <p>Removing covers can dramatically improve cooling and mask the problem.</p>
+  </section>
+
+  <section class="content-box" id="load-matters">
+    <h3>Load Matters</h3>
+    <p>Higher load often produces more heat.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>NIBP cycling</li>
+      <li>Battery charging</li>
+      <li>Motor operation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-problems-need-runtime">
+    <h3>Battery Problems Need Runtime</h3>
+    <p>A battery may look normal for the first few minutes.</p>
+    <p>Then voltage collapses later.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Battery shows:</p>
+    <p>80%.</p>
+    <p>Device runs for:</p>
+    <p>15 minutes.</p>
+    <p>Then abruptly shuts down.</p>
+    <p>A five-minute battery test would miss this.</p>
+  </section>
+
+  <section class="content-box" id="run-the-relevant-duration">
+    <h3>Run the Relevant Duration</h3>
+    <p>If staff reports:</p>
+    <blockquote><p>Lasts about 20 minutes,</p></blockquote>
+    <p>run beyond 20 minutes after repair.</p>
+    <p>Ideally give yourself margin.</p>
+  </section>
+
+  <section class="content-box" id="battery-transition">
+    <h3>Battery Transition</h3>
+    <p>Also test transitions between:</p>
+    <ul>
+      <li>AC</li>
+      <li>Battery</li>
+    </ul>
+    <p>if that was part of the complaint.</p>
+  </section>
+
+  <section class="content-box" id="repeated-cycling">
+    <h3>Repeated Cycling</h3>
+    <p>Mechanical faults may require repeated operation.</p>
+    <p>Example:</p>
+    <p>Infusion pump door works once.</p>
+    <p>After 30 open/close cycles:</p>
+    <p>Latch begins sticking.</p>
+    <p>One successful cycle is weak evidence.</p>
+  </section>
+
+  <section class="content-box" id="nibp-cycling">
+    <h3>NIBP Cycling</h3>
+    <p>If reboot occurs during cuff inflation:</p>
+    <p>Run repeated NIBP cycles.</p>
+    <p>Do not simply monitor ECG for an hour.</p>
+  </section>
+
+  <section class="content-box" id="motor-and-pump-stress">
+    <h3>Motor and Pump Stress</h3>
+    <p>Repeated motor operation can expose:</p>
+    <ul>
+      <li>Worn bearings</li>
+      <li>Overheating</li>
+      <li>Weak driver circuits</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="intermittent-connectors">
+    <h3>Intermittent Connectors</h3>
+    <p>Movement-dependent faults require movement.</p>
+    <p>A cart that fails only while being transported should be tested under controlled movement.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Monitor shuts down when crossing thresholds.</p>
+    <p>Stationary burn-in will not reproduce it.</p>
+    <p>You need:</p>
+    <ul>
+      <li>Battery operation</li>
+      <li>Controlled movement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="network-problems">
+    <h3>Network Problems</h3>
+    <p>Communication dropouts may require longer observation.</p>
+    <p>Example:</p>
+    <p>Monitor loses central connection once every 45 minutes.</p>
+    <p>A five-minute ping test is weak.</p>
+  </section>
+
+  <section class="content-box" id="useful-network-observation">
+    <h3>Useful Network Observation</h3>
+    <p>Monitor:</p>
+    <ul>
+      <li>Link</li>
+      <li>Application connection</li>
+      <li>Error logs</li>
+    </ul>
+    <p>over time.</p>
+  </section>
+
+  <section class="content-box" id="server-side-problems">
+    <h3>Server-Side Problems</h3>
+    <p>If the issue may involve:</p>
+    <ul>
+      <li>Session timeout</li>
+      <li>Authentication expiration</li>
+    </ul>
+    <p>extended observation may reveal it.</p>
+  </section>
+
+  <section class="content-box" id="touchscreen-freezes">
+    <h3>Touchscreen Freezes</h3>
+    <p>If staff reports touch stops after an hour, leave the device running and actively use the touchscreen periodically.</p>
+    <p>Simply leaving the screen untouched may not trigger the fault.</p>
+  </section>
+
+  <section class="content-box" id="software-crashes">
+    <h3>Software Crashes</h3>
+    <p>Some software failures require:</p>
+    <ul>
+      <li>Memory buildup</li>
+      <li>Repeated operations</li>
+    </ul>
+    <p>to appear.</p>
+  </section>
+
+  <section class="content-box" id="repeat-the-workflow">
+    <h3>Repeat the Workflow</h3>
+    <p>If clinical staff can describe a sequence that triggers the problem, reproduce that sequence.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>ECG cart crashes after transmitting several studies.</p>
+    <p>Test:</p>
+    <ul>
+      <li>Acquire</li>
+      <li>Save</li>
+      <li>Transmit</li>
+    </ul>
+    <p>repeatedly.</p>
+  </section>
+
+  <section class="content-box" id="how-long-should-burn-in-be">
+    <h3>How Long Should Burn-In Be?</h3>
+    <p>There is no universal number.</p>
+    <p>The test duration should be driven by:</p>
+    <ul>
+      <li>Original failure timing</li>
+      <li>Risk</li>
+      <li>Manufacturer procedure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="practical-example">
+    <h3>Practical Example</h3>
+    <p>Complaint:</p>
+    <p>Shuts down after 45 minutes.</p>
+    <p>A reasonable verification should run significantly longer than:</p>
+    <p>45 minutes.</p>
+  </section>
+
+  <section class="content-box" id="do-not-pick-an-arbitrary-number">
+    <h3>Do Not Pick an Arbitrary Number</h3>
+    <p>Running every repair for:</p>
+    <p>24 hours</p>
+    <p>may waste time.</p>
+    <p>Use the failure behavior to choose the test.</p>
+  </section>
+
+  <section class="content-box" id="safety-critical-intermittent-failures">
+    <h3>Safety-Critical Intermittent Failures</h3>
+    <p>The more serious the failure, the more confidence you need.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>Unexpected therapy interruption</li>
+      <li>Ventilator shutdown</li>
+      <li>Defibrillator failure</li>
+    </ul>
+    <p>A brief successful run is not enough.</p>
+  </section>
+
+  <section class="content-box" id="extended-observation-does-not-replace-root-cause">
+    <h3>Extended Observation Does Not Replace Root Cause</h3>
+    <p>Running it for six hours and seeing no failure is useful.</p>
+    <p>But if you never identified what changed, you may still have uncertainty.</p>
+  </section>
+
+  <section class="content-box" id="stronger-repair">
+    <h3>Stronger Repair</h3>
+    <p>Example:</p>
+    <p>Failure reproduced after 30 minutes.</p>
+    <p>Fan found stalled.</p>
+    <p>Fan replaced.</p>
+    <p>Device runs:</p>
+    <p>4 hours under load.</p>
+    <p>That is a strong chain.</p>
+  </section>
+
+  <section class="content-box" id="weaker-situation">
+    <h3>Weaker Situation</h3>
+    <p>Staff reports random shutdown.</p>
+    <p>You cannot reproduce.</p>
+    <p>Run 2 hours.</p>
+    <p>No failure.</p>
+    <p>That is better than five minutes, but still not a proven repair.</p>
+    <p>Document it honestly.</p>
+  </section>
+
+  <section class="content-box" id="burn-in-is-not-works-fine">
+    <h3>Burn-In Is Not “Works Fine”</h3>
+    <p>Your note should include:</p>
+    <ul>
+      <li>Duration</li>
+      <li>Load</li>
+      <li>Power source</li>
+      <li>Cycles</li>
+      <li>Result</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <blockquote><p>Operated monitor for 3 hours on battery with ECG/SpO2 simulation and NIBP cycling every 5 minutes. No reboot or power interruption observed.</p></blockquote>
+    <p>That is meaningful.</p>
+  </section>
+
+  <section class="content-box" id="compare-with-original-condition">
+    <h3>Compare With Original Condition</h3>
+    <p>If original complaint occurred:</p>
+    <p>On battery,</p>
+    <p>test on battery.</p>
+    <p>If it occurred:</p>
+    <p>With cover closed,</p>
+    <p>test with cover closed.</p>
+  </section>
+
+  <section class="content-box" id="do-not-change-too-many-conditions">
+    <h3>Do Not Change Too Many Conditions</h3>
+    <p>If you test in a completely different environment, you may not be testing the same failure.</p>
+  </section>
+
+  <section class="content-box" id="environmental-factors">
+    <h3>Environmental Factors</h3>
+    <p>Consider:</p>
+    <ul>
+      <li>Room temperature</li>
+      <li>Ventilation</li>
+      <li>Power source</li>
+    </ul>
+    <p>when relevant.</p>
+  </section>
+
+  <section class="content-box" id="logging-during-burn-in">
+    <h3>Logging During Burn-In</h3>
+    <p>If possible, record:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Battery voltage</li>
+      <li>Fan speed</li>
+      <li>Error events</li>
+    </ul>
+    <p>Data gives you more than:</p>
+    <blockquote><p>It survived.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Temperature stabilizes at:</p>
+    <p>55°C</p>
+    <p>for three hours.</p>
+    <p>That is stronger evidence than simply noting no shutdown.</p>
+  </section>
+
+  <section class="content-box" id="baseline-comparison">
+    <h3>Baseline Comparison</h3>
+    <p>Compare with known-good equipment if possible.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Suspect device runs:</p>
+    <p>15°C hotter</p>
+    <p>than identical unit under same load.</p>
+    <p>Even if it has not shut down yet, that difference may be important.</p>
+  </section>
+
+  <section class="content-box" id="repeatability">
+    <h3>Repeatability</h3>
+    <p>If you reproduced failure before repair, try to repeat the same trigger afterward.</p>
+    <p>This is one of the strongest verification methods.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Before repair:</p>
+    <p>Device rebooted every NIBP inflation.</p>
+    <p>After repair:</p>
+    <p>50 consecutive cycles complete normally.</p>
+    <p>That is compelling evidence.</p>
+  </section>
+
+  <section class="content-box" id="intermittent-fault-that-does-not-reproduce">
+    <h3>Intermittent Fault That Does Not Reproduce</h3>
+    <p>Sometimes you cannot reproduce it at all.</p>
+    <p>Then extended observation becomes part of risk management.</p>
+  </section>
+
+  <section class="content-box" id="ask">
+    <h3>Ask</h3>
+    <ul>
+      <li>How serious was the complaint?</li>
+      <li>How often did it occur?</li>
+      <li>Is there history?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="low-risk-example">
+    <h3>Low-Risk Example</h3>
+    <p>Printer occasionally stops.</p>
+    <p>May be reasonable to monitor after standard testing.</p>
+  </section>
+
+  <section class="content-box" id="high-risk-example">
+    <h3>High-Risk Example</h3>
+    <p>Ventilator unexpectedly shuts down.</p>
+    <p>That deserves a much higher threshold before return.</p>
+  </section>
+
+  <section class="content-box" id="extended-observation-can-be-automated">
+    <h3>Extended Observation Can Be Automated</h3>
+    <p>Some equipment supports:</p>
+    <ul>
+      <li>Automated cycling</li>
+      <li>Diagnostic loops</li>
+    </ul>
+    <p>Use them if they meaningfully simulate the failure.</p>
+  </section>
+
+  <section class="content-box" id="do-not-use-diagnostic-loops-that-bypass-the-relevant-function">
+    <h3>Do Not Use Diagnostic Loops That Bypass the Relevant Function</h3>
+    <p>Make sure the test actually challenges the system you care about.</p>
+  </section>
+
+  <section class="content-box" id="thermal-camera-or-temperature-probe">
+    <h3>Thermal Camera or Temperature Probe</h3>
+    <p>For suspected overheating, measuring temperature during burn-in can help identify where heat builds.</p>
+  </section>
+
+  <section class="content-box" id="current-draw">
+    <h3>Current Draw</h3>
+    <p>Changes in current draw over time can reveal:</p>
+    <ul>
+      <li>Motor loading</li>
+      <li>Component degradation</li>
+    </ul>
+    <p>if measurement is appropriate.</p>
+  </section>
+
+  <section class="content-box" id="battery-percentage-is-not-enough">
+    <h3>Battery Percentage Is Not Enough</h3>
+    <p>During runtime testing, watch actual behavior.</p>
+    <p>A battery gauge may remain at 60% and then collapse.</p>
+  </section>
+
+  <section class="content-box" id="charge-cycle">
+    <h3>Charge Cycle</h3>
+    <p>If complaint involves charging, observe a meaningful portion of charge behavior.</p>
+    <p>Check:</p>
+    <ul>
+      <li>Charge current</li>
+      <li>Temperature</li>
+      <li>Percentage progression</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="device-logs">
+    <h3>Device Logs</h3>
+    <p>Review after the observation period.</p>
+    <p>Some events may occur without obvious user symptoms.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>No visible reboot.</p>
+    <p>Log shows repeated communication resets.</p>
+    <p>That may still matter.</p>
+  </section>
+
+  <section class="content-box" id="do-not-clear-logs-before-the-test">
+    <h3>Do Not Clear Logs Before the Test</h3>
+    <p>You need baseline and post-test comparison.</p>
+  </section>
+
+  <section class="content-box" id="what-if-it-fails-during-burn-in">
+    <h3>What If It Fails During Burn-In?</h3>
+    <p>Good.</p>
+    <p>Not good for the device.</p>
+    <p>Good for troubleshooting.</p>
+    <p>You now have a reproducible fault.</p>
+    <p>Capture:</p>
+    <ul>
+      <li>Time</li>
+      <li>Temperature</li>
+      <li>Load</li>
+      <li>Error</li>
+    </ul>
+    <p>That is valuable.</p>
+  </section>
+
+  <section class="content-box" id="reproduce-again-if-safe">
+    <h3>Reproduce Again If Safe</h3>
+    <p>A repeatable failure is easier to isolate.</p>
+  </section>
+
+  <section class="content-box" id="repair-and-repeat">
+    <h3>Repair and Repeat</h3>
+    <p>After correction, perform the same test.</p>
+    <p>This is ideal verification.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-overheating-monitor">
+    <h3>Real-World Example: Overheating Monitor</h3>
+    <p>Complaint:</p>
+    <p>Reboots after one hour.</p>
+    <p>Fan spinning.</p>
+    <p>Filter clogged.</p>
+    <p>Filter replaced.</p>
+    <p>Device run with covers installed under NIBP load for three hours.</p>
+    <p>No reboot.</p>
+    <p>Internal temperature remains stable.</p>
+    <p>Strong repair verification.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-shutdown">
+    <h3>Real-World Example: Battery Shutdown</h3>
+    <p>Device shuts off during transport after 15–20 minutes.</p>
+    <p>Original battery fails capacity test.</p>
+    <p>Known-good battery installed.</p>
+    <p>Device run 90 minutes on battery with movement and NIBP cycling.</p>
+    <p>No shutdown.</p>
+    <p>Again, strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-touchscreen-freeze">
+    <h3>Real-World Example: Touchscreen Freeze</h3>
+    <p>Touch becomes unresponsive after 45 minutes.</p>
+    <p>Failure reproduced.</p>
+    <p>Display assembly replaced.</p>
+    <p>Device run two hours with repeated touchscreen use.</p>
+    <p>No freeze.</p>
+    <p>That is appropriate extended verification.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network-drop">
+    <h3>Real-World Example: Network Drop</h3>
+    <p>Monitor disappears from central about once per hour.</p>
+    <p>Patch cable replaced.</p>
+    <p>Device remains connected continuously for four hours.</p>
+    <p>Logs show no link drops.</p>
+    <p>Much better than:</p>
+    <blockquote><p>Pings okay.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="five-minute-test-for-an-hour-long-failure">
+    <h3>Five-Minute Test for an Hour-Long Failure</h3>
+    <p>Test duration should reflect the complaint.</p>
+  </section>
+
+  <section class="content-box" id="leaving-device-idle">
+    <h3>Leaving Device Idle</h3>
+    <p>Challenge the function that triggers the issue.</p>
+  </section>
+
+  <section class="content-box" id="running-with-covers-removed">
+    <h3>Running With Covers Removed</h3>
+    <p>You may mask thermal problems.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-battery-state">
+    <h3>Ignoring Battery State</h3>
+    <p>Battery faults change over time.</p>
+  </section>
+
+  <section class="content-box" id="calling-burn-in-a-repair">
+    <h3>Calling Burn-In a Repair</h3>
+    <p>It is verification, not root-cause correction.</p>
+  </section>
+
+  <section class="content-box" id="writing-extended-test-passed-with-no-details">
+    <h3>Writing “Extended Test Passed” With No Details</h3>
+    <p>Document duration and conditions.</p>
+  </section>
+
+  <section class="content-box" id="returning-a-high-risk-device-after-one-good-cycle">
+    <h3>Returning a High-Risk Device After One Good Cycle</h3>
+    <p>Risk matters.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-extended-observation-framework">
+    <h3>A Useful Extended-Observation Framework</h3>
+    <p>Ask:</p>
+    <p><strong>What condition triggered the original failure?</strong></p>
+    <p>Then:</p>
+    <p><strong>How long did it take?</strong></p>
+    <p>Then:</p>
+    <p><strong>What load was present?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can I reproduce that safely?</strong></p>
+    <p>Then:</p>
+    <p><strong>What data should I monitor?</strong></p>
+    <p>Finally:</p>
+    <p><strong>How long after the repair do I need to run before I have reasonable confidence?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>If the failure normally happens after 45 minutes, what does a 10-minute test actually prove?</strong></p>
+    <p>The answer:</p>
+    <p>Not much about that failure.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If a device runs for:</p>
+    <p>Two hours</p>
+    <p>without failure, you proved:</p>
+    <p><strong>It remained stable for two hours under the conditions you tested.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>It can never fail again.</strong></p>
+    <p>If you reproduced the fault before repair and cannot reproduce it after repair under the same or more demanding conditions:</p>
+    <p>That is much stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Some repairs need time.</p>
+    <p>Intermittent problems are often hidden by short testing.</p>
+    <p>Thermal faults need heat.</p>
+    <p>Battery faults need discharge.</p>
+    <p>Mechanical faults may need cycles.</p>
+    <p>Network faults may need extended connectivity.</p>
+    <p>The important part is not simply:</p>
+    <blockquote><p>Run it longer.</p></blockquote>
+    <p>The important part is:</p>
+    <p><strong>Run it under the conditions that matter.</strong></p>
+    <p>A good extended test should challenge the same failure mechanism that brought the device to you.</p>
+    <p>So if the original complaint was:</p>
+    <blockquote><p>It fails after an hour,</p></blockquote>
+    <p>do not let ten quiet minutes on the bench convince you the repair is done.</p>
+    <p>Match the test to the failure.</p>
+    <p>Document what you did.</p>
+    <p>And before you return the device, ask:</p>
+    <p><strong>Did I actually challenge the condition that caused this problem in the first place?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Extended observation, burn-in duration, automated cycling, battery testing, thermal testing, and return-to-service requirements vary by device, manufacturer, failure type, and clinical risk. Follow current manufacturer procedures and facility policy, and do not rely on extended operation alone when a safety-critical failure remains unexplained.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-document-an-intermittent-problem.html">How to Document an Intermittent Problem</a></li>
+      <li><a href="what-unable-to-duplicate-should-actually-mean.html">What “Unable to Duplicate” Should Actually Mean</a></li>
+      <li><a href="how-to-reproduce-a-clinical-complaint-on-the-bench.html">How to Reproduce a Clinical Complaint on the Bench</a></li>
+      <li><a href="fans-filters-and-overheating.html">Fans, Filters, and Overheating</a></li>
+      <li><a href="how-to-verify-a-repair-before-returning-equipment-to-service.html">How to Verify a Repair Before Returning Equipment to Service</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

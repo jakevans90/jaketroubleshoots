@@ -138,6 +138,8 @@ RELATED = {
     "fans-filters-and-overheating": ["how-medical-device-cooling-systems-work", "why-medical-equipment-reboots", "environmental-causes-of-medical-equipment-failures", "medical-equipment-power-troubleshooting-outlet-to-internal-supply", "how-device-self-tests-detect-failures"],
     "the-first-ten-minutes-of-a-service-call": ["the-troubleshooting-process-observe-isolate-test-verify", "how-experienced-biomeds-think-through-a-new-problem", "how-to-ask-clinical-staff-better-troubleshooting-questions", "how-to-document-an-intermittent-problem", "when-to-remove-medical-equipment-from-service"],
     "how-to-use-equipment-history-during-troubleshooting": ["biomed-work-order-notes-ccr-method", "how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "root-cause-troubleshooting-basics", "how-to-read-and-use-medical-device-event-logs"],
+    "what-to-check-before-ordering-parts": ["what-known-good-actually-means", "why-changing-one-thing-at-a-time-matters", "how-to-use-equipment-history-during-troubleshooting", "when-to-replace-a-cable-battery-board-or-entire-device", "how-to-read-a-medical-equipment-service-manual"],
+    "when-a-repair-needs-extended-observation-or-burn-in": ["how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "fans-filters-and-overheating", "how-to-verify-a-repair-before-returning-equipment-to-service"],
 }
 
 ARTICLE_CONFIG = {
@@ -817,6 +819,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Service History",
         "cardNote": "Finding patterns in work orders, repairs, and repeat failures",
+    },
+    "what-to-check-before-ordering-parts": {
+        "description": "A practical guide to confirming the failed function, checking power, signals, connectors, accessories, compatibility, history, and evidence before ordering medical-equipment parts.",
+        "category": "Troubleshooting",
+        "badge": "Repair Decisions",
+        "cardNote": "Confirming the failure and part identity before ordering",
+    },
+    "when-a-repair-needs-extended-observation-or-burn-in": {
+        "description": "A practical guide to deciding when a medical-equipment repair needs extended observation, repeated cycling, heat soak, runtime testing, or controlled burn-in before return to service.",
+        "category": "Testing & Verification",
+        "badge": "Repair Verification",
+        "cardNote": "Heat soak, runtime, cycling, logging, and intermittent-fault verification",
     },
 }
 
