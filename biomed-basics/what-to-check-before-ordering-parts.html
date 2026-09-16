@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>What to Check Before Ordering Parts | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to confirming the failed function, checking power, signals, connectors, accessories, compatibility, history, and evidence before ordering medical-equipment parts.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/what-to-check-before-ordering-parts.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>What to Check Before Ordering Parts</h2>
+  <p>How to make sure the part you are about to buy is actually the part that failed</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Ordering parts is easy.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Why symptoms do not always identify the failed part</li>
+      <li>How to isolate the failure before ordering</li>
+      <li>Known-good substitution</li>
+      <li>Power and signal checks</li>
+      <li>Accessory vs device failures</li>
+      <li>Connector inspection</li>
+      <li>Service history</li>
+      <li>Part revisions and compatibility</li>
+      <li>Configuration after replacement</li>
+      <li>Why “the error says the board is bad” is not enough</li>
+      <li>When ordering a part on probability is reasonable</li>
+      <li>How to document the evidence behind a parts decision</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Before ordering a part, try to answer:</p>
+    <ol>
+      <li>What function failed?</li>
+      <li>What components are in that path?</li>
+      <li>What have I ruled out?</li>
+      <li>Does the failure follow this part?</li>
+      <li>Is the replacement part actually compatible?</li>
+      <li>What will need to be done after replacement?</li>
+    </ol>
+    <p>That last question matters more than many people expect.</p>
+    <p>A board may require:</p>
+    <ul>
+      <li>Configuration</li>
+      <li>Calibration</li>
+      <li>Software</li>
+      <li>Serial-number programming</li>
+      <li>Network settings</li>
+      <li>Option codes</li>
+    </ul>
+    <p>The repair does not end when the box arrives.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-failed-function">
+    <h3>Start With the Failed Function</h3>
+    <p>Do not start with the part number.</p>
+    <p>Start with:</p>
+    <p><strong>What stopped working?</strong></p>
+    <p>Example:</p>
+    <blockquote><p>Monitor will not display SpO2.</p></blockquote>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Extension cable</li>
+      <li>Connector</li>
+      <li>SpO2 module</li>
+      <li>Host communication</li>
+      <li>Power rail</li>
+    </ul>
+    <p>If you immediately order the SpO2 board because the symptom involves SpO2, you may be skipping most of the failure path.</p>
+  </section>
+
+  <section class="content-box" id="symptom-is-not-component">
+    <h3>Symptom Is Not Component</h3>
+    <p>A display problem does not automatically mean:</p>
+    <p><strong>Display assembly.</strong></p>
+    <p>A charging problem does not automatically mean:</p>
+    <p><strong>Battery.</strong></p>
+    <p>A communication error does not automatically mean:</p>
+    <p><strong>Network card.</strong></p>
+    <p>The symptom identifies the affected function.</p>
+    <p>You still have to isolate the failed part.</p>
+  </section>
+
+  <section class="content-box" id="follow-the-chain">
+    <h3>Follow the Chain</h3>
+    <p>A useful troubleshooting model is:</p>
+    <p><strong>Input</strong></p>
+    <p>↓</p>
+    <p><strong>Cable / Connector</strong></p>
+    <p>↓</p>
+    <p><strong>Power</strong></p>
+    <p>↓</p>
+    <p><strong>Component</strong></p>
+    <p>↓</p>
+    <p><strong>Feedback / Output</strong></p>
+    <p>Ask which point in that chain stops behaving correctly.</p>
+  </section>
+
+  <section class="content-box" id="example-nibp-will-not-inflate">
+    <h3>Example: NIBP Will Not Inflate</h3>
+    <p>Possible chain:</p>
+    <p><strong>Command</strong></p>
+    <p>↓</p>
+    <p><strong>Pump driver</strong></p>
+    <p>↓</p>
+    <p><strong>Pump</strong></p>
+    <p>↓</p>
+    <p><strong>Tubing</strong></p>
+    <p>↓</p>
+    <p><strong>Cuff / Pressure system</strong></p>
+    <p>Before ordering the pump, ask:</p>
+    <ul>
+      <li>Is the pump receiving power?</li>
+      <li>Does it run?</li>
+      <li>Is tubing leaking?</li>
+      <li>Is valve stuck open?</li>
+      <li>Is the pressure sensor misreading?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-the-pump-receives-no-voltage">
+    <h3>If the Pump Receives No Voltage</h3>
+    <p>The pump itself may be perfectly good.</p>
+    <p>The problem may be:</p>
+    <ul>
+      <li>Driver</li>
+      <li>Fuse</li>
+      <li>Control board</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-pump-runs-but-pressure-never-builds">
+    <h3>If Pump Runs but Pressure Never Builds</h3>
+    <p>Now consider:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Valve</li>
+      <li>Hose</li>
+      <li>Cuff</li>
+    </ul>
+    <p>Again, same symptom.</p>
+    <p>Different parts.</p>
+  </section>
+
+  <section class="content-box" id="known-good-substitution">
+    <h3>Known-Good Substitution</h3>
+    <p>One of the strongest reasons to order a part is when the failure follows it.</p>
+    <p>Example:</p>
+    <p>Original battery:</p>
+    <p>Device shuts down.</p>
+    <p>Known-good battery:</p>
+    <p>Device runs normally.</p>
+    <p>Original battery on another compatible device:</p>
+    <p>Fails again.</p>
+    <p>Now you have strong evidence.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-the-part">
+    <h3>Failure Follows the Part</h3>
+    <p>This is better than:</p>
+    <blockquote><p>Battery is old, so probably battery.</p></blockquote>
+    <p>Age can support a hypothesis.</p>
+    <p>Controlled substitution gives you stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-substitute-random-parts">
+    <h3>Do Not Substitute Random Parts</h3>
+    <p>Known-good means:</p>
+    <p><strong>Known good.</strong></p>
+    <p>Not:</p>
+    <blockquote><p>This one was sitting on a shelf.</p></blockquote>
+    <p>A questionable replacement can confuse the diagnosis.</p>
+  </section>
+
+  <section class="content-box" id="accessories-first">
+    <h3>Accessories First</h3>
+    <p>Before ordering an expensive internal component, check the easy external pieces.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Power cord</li>
+      <li>Patient cable</li>
+      <li>Sensor</li>
+      <li>Hose</li>
+      <li>Footswitch</li>
+      <li>External power supply</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device reports:</p>
+    <blockquote><p>Temperature probe not detected.</p></blockquote>
+    <p>You order temperature input board.</p>
+    <p>Later you find:</p>
+    <p>Probe cable open near strain relief.</p>
+    <p>That was an avoidable parts order.</p>
+  </section>
+
+  <section class="content-box" id="inspect-the-connector">
+    <h3>Inspect the Connector</h3>
+    <p>Connector faults are common because connectors are exposed to:</p>
+    <ul>
+      <li>Repeated plugging</li>
+      <li>Pulling</li>
+      <li>Cleaning</li>
+      <li>Fluid</li>
+    </ul>
+    <p>Look for:</p>
+    <ul>
+      <li>Bent pins</li>
+      <li>Pushed-back contacts</li>
+      <li>Corrosion</li>
+      <li>Loose jack</li>
+      <li>Broken latch</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="host-connector-vs-accessory-connector">
+    <h3>Host Connector vs Accessory Connector</h3>
+    <p>Check both.</p>
+    <p>A damaged host port can make several good accessories appear bad.</p>
+  </section>
+
+  <section class="content-box" id="power-comes-before-logic">
+    <h3>Power Comes Before Logic</h3>
+    <p>Many board replacements happen because a board is:</p>
+    <blockquote><p>Not responding.</p></blockquote>
+    <p>Before condemning it, verify:</p>
+    <p><strong>Is the board receiving the power it needs?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Parameter module will not initialize.</p>
+    <p>Expected 12 V supply:</p>
+    <p>0 V.</p>
+    <p>Ordering a replacement module will not fix missing supply power.</p>
+  </section>
+
+  <section class="content-box" id="check-the-power-rail-under-load">
+    <h3>Check the Power Rail Under Load</h3>
+    <p>A rail may look correct until the component tries to operate.</p>
+    <p>Example:</p>
+    <p>12 V no load.</p>
+    <p>Drops to 7 V when motor starts.</p>
+    <p>The load may expose:</p>
+    <ul>
+      <li>Weak supply</li>
+      <li>High-resistance connector</li>
+      <li>Bad regulator</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="signal-checks">
+    <h3>Signal Checks</h3>
+    <p>If the component is receiving correct power, check whether it receives the expected command.</p>
+    <p>Example:</p>
+    <p>Fan does not run.</p>
+    <p>Fan supply present.</p>
+    <p>PWM command absent.</p>
+    <p>The fan may not be the problem.</p>
+  </section>
+
+  <section class="content-box" id="feedback-matters">
+    <h3>Feedback Matters</h3>
+    <p>Some systems need confirmation from the part.</p>
+    <p>Example:</p>
+    <p>Motor runs.</p>
+    <p>Encoder does not report movement.</p>
+    <p>The device may report a motor fault even though the motor itself turns.</p>
+  </section>
+
+  <section class="content-box" id="read-the-error-carefully">
+    <h3>Read the Error Carefully</h3>
+    <p>Do not translate:</p>
+    <blockquote><p>Motor Test Failed</p></blockquote>
+    <p>into:</p>
+    <blockquote><p>Motor bad.</p></blockquote>
+    <p>The test may include:</p>
+    <ul>
+      <li>Motor</li>
+      <li>Driver</li>
+      <li>Encoder</li>
+      <li>Mechanics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="error-codes-are-evidence-not-verdicts">
+    <h3>Error Codes Are Evidence, Not Verdicts</h3>
+    <p>Use the error to locate the subsystem.</p>
+    <p>Then troubleshoot the subsystem.</p>
+  </section>
+
+  <section class="content-box" id="service-manual-parts-flow">
+    <h3>Service Manual Parts Flow</h3>
+    <p>OEM documentation may tell you to:</p>
+    <ol>
+      <li>Check connector</li>
+      <li>Measure voltage</li>
+      <li>Run diagnostic</li>
+      <li>Replace board</li>
+    </ol>
+    <p>That order exists for a reason.</p>
+  </section>
+
+  <section class="content-box" id="do-not-skip-straight-to-step-4">
+    <h3>Do Not Skip Straight to Step 4</h3>
+    <p>Especially if steps 1–3 are easy.</p>
+  </section>
+
+  <section class="content-box" id="check-service-history">
+    <h3>Check Service History</h3>
+    <p>Before ordering a part, ask:</p>
+    <p><strong>Has this part already been replaced for the same complaint?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Current complaint:</p>
+    <p>Random reboot.</p>
+    <p>History:</p>
+    <p>Main board replaced twice.</p>
+    <p>Same complaint returned.</p>
+    <p>Ordering a third board without new evidence is probably not a strong decision.</p>
+  </section>
+
+  <section class="content-box" id="a-previous-part-replacement-does-not-prove-it-was-the-cause">
+    <h3>A Previous Part Replacement Does Not Prove It Was the Cause</h3>
+    <p>It may have:</p>
+    <ul>
+      <li>Temporarily changed a connector</li>
+      <li>Reset software</li>
+      <li>Disturbed an intermittent fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="look-for-repeat-patterns">
+    <h3>Look for Repeat Patterns</h3>
+    <p>Repeated failure of the same component may indicate a deeper problem.</p>
+    <p>Example:</p>
+    <p>Power supply replaced every year.</p>
+    <p>Ask:</p>
+    <ul>
+      <li>Overheating?</li>
+      <li>Input power?</li>
+      <li>Fan?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="part-as-victim">
+    <h3>Part as Victim</h3>
+    <p>The failed component may be the victim of another condition.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Fuse repeatedly blows.</p>
+    <p>Do not just order more fuses.</p>
+    <p>Find the overcurrent cause.</p>
+  </section>
+
+  <section class="content-box" id="physical-damage">
+    <h3>Physical Damage</h3>
+    <p>If the part is visibly:</p>
+    <ul>
+      <li>Burned</li>
+      <li>Cracked</li>
+      <li>Corroded</li>
+    </ul>
+    <p>that is useful evidence.</p>
+    <p>But still ask whether something else caused that damage.</p>
+  </section>
+
+  <section class="content-box" id="burned-connector">
+    <h3>Burned Connector</h3>
+    <p>If one side of a connector is burned, inspect the mating side.</p>
+    <p>Replacing only half may leave the high-resistance connection intact.</p>
+  </section>
+
+  <section class="content-box" id="fluid-intrusion">
+    <h3>Fluid Intrusion</h3>
+    <p>If a board failed after fluid intrusion, inspect the surrounding area.</p>
+    <p>A new board installed into a contaminated connector may fail again.</p>
+  </section>
+
+  <section class="content-box" id="software-and-configuration">
+    <h3>Software and Configuration</h3>
+    <p>Some hardware faults are actually configuration issues.</p>
+    <p>Example:</p>
+    <p>Network card replaced.</p>
+    <p>Still no connection.</p>
+    <p>Device IP configuration wrong.</p>
+    <p>The hardware was never the problem.</p>
+  </section>
+
+  <section class="content-box" id="firmware-compatibility">
+    <h3>Firmware Compatibility</h3>
+    <p>A replacement board may require:</p>
+    <ul>
+      <li>Matching firmware</li>
+      <li>Correct hardware revision</li>
+    </ul>
+    <p>Before ordering, verify compatibility.</p>
+  </section>
+
+  <section class="content-box" id="same-part-number-can-have-revisions">
+    <h3>Same Part Number Can Have Revisions</h3>
+    <p>Do not assume:</p>
+    <blockquote><p>Same-looking board = same board.</p></blockquote>
+    <p>Check:</p>
+    <ul>
+      <li>Revision</li>
+      <li>Serial range</li>
+      <li>Firmware requirement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="oem-part-number">
+    <h3>OEM Part Number</h3>
+    <p>Use the actual manufacturer part number when available.</p>
+    <p>Do not identify parts only by appearance.</p>
+  </section>
+
+  <section class="content-box" id="option-codes">
+    <h3>Option Codes</h3>
+    <p>Some boards may support multiple device configurations.</p>
+    <p>Replacement may require enabling:</p>
+    <ul>
+      <li>Licensed options</li>
+      <li>Clinical modules</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="serial-number-programming">
+    <h3>Serial Number Programming</h3>
+    <p>Some systems store serial identity on a board.</p>
+    <p>Replacement may require reprogramming.</p>
+  </section>
+
+  <section class="content-box" id="calibration-data">
+    <h3>Calibration Data</h3>
+    <p>Calibration constants may be stored on:</p>
+    <ul>
+      <li>Main board</li>
+      <li>Sensor board</li>
+      <li>EEPROM</li>
+    </ul>
+    <p>Replacing the part can erase the old calibration.</p>
+  </section>
+
+  <section class="content-box" id="ask-before-ordering">
+    <h3>Ask Before Ordering</h3>
+    <p><strong>What setup will be required after I install this?</strong></p>
+    <p>That can affect whether local replacement is even practical.</p>
+  </section>
+
+  <section class="content-box" id="board-level-vs-module-level-repair">
+    <h3>Board-Level vs Module-Level Repair</h3>
+    <p>Some shops repair at component level.</p>
+    <p>Others replace modules.</p>
+    <p>Follow:</p>
+    <ul>
+      <li>Manufacturer support</li>
+      <li>Facility scope</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-turn-every-board-into-a-soldering-project">
+    <h3>Do Not Turn Every Board Into a Soldering Project</h3>
+    <p>If board-level repair is not supported or cannot be validated safely, module replacement may be the correct repair.</p>
+  </section>
+
+  <section class="content-box" id="cost-matters-but-evidence-comes-first">
+    <h3>Cost Matters, But Evidence Comes First</h3>
+    <p>A cheap part is easier to justify probabilistically.</p>
+    <p>A $25 cable may be worth substituting early.</p>
+    <p>A $6,000 main board should usually have stronger evidence behind it.</p>
+  </section>
+
+  <section class="content-box" id="probability-has-a-place">
+    <h3>Probability Has a Place</h3>
+    <p>Sometimes perfect proof is impossible.</p>
+    <p>Intermittent faults may require a judgment call.</p>
+    <p>The question becomes:</p>
+    <p><strong>Is this part sufficiently likely to be the cause that replacement is reasonable?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Intermittent reboot.</p>
+    <p>Logs consistently show internal power-supply fault.</p>
+    <p>Voltage rail drops during failure.</p>
+    <p>Power supply is a reasonable replacement even if it does not fail every time.</p>
+  </section>
+
+  <section class="content-box" id="document-your-reasoning">
+    <h3>Document Your Reasoning</h3>
+    <p>A good note might say:</p>
+    <blockquote><p>Unit intermittently rebooted during NIBP operation. 5 V rail dropped below specification during pump startup. Input voltage remained stable. Recommending replacement of power-supply module.</p></blockquote>
+    <p>That is much stronger than:</p>
+    <blockquote><p>Ordering power supply.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="ordering-multiple-parts">
+    <h3>Ordering Multiple Parts</h3>
+    <p>Sometimes OEM troubleshooting requires replacing assemblies together.</p>
+    <p>That can be valid.</p>
+    <p>But avoid:</p>
+    <blockquote><p>Shotgunning parts</p></blockquote>
+    <p>simply because you are unsure.</p>
+  </section>
+
+  <section class="content-box" id="why-shotgunning-is-bad">
+    <h3>Why Shotgunning Is Bad</h3>
+    <p>If you replace:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Main board</li>
+      <li>Power supply</li>
+    </ul>
+    <p>all at once and the problem disappears, you may never know what actually fixed it.</p>
+    <p>That makes the next failure harder.</p>
+  </section>
+
+  <section class="content-box" id="change-one-thing-at-a-time-when-practical">
+    <h3>Change One Thing at a Time When Practical</h3>
+    <p>This preserves diagnostic value.</p>
+  </section>
+
+  <section class="content-box" id="emergency-repairs">
+    <h3>Emergency Repairs</h3>
+    <p>Sometimes downtime matters enough that you cannot wait for perfect isolation.</p>
+    <p>You may order probable parts in parallel.</p>
+    <p>That is a business/operational decision.</p>
+    <p>Still document what is known and unknown.</p>
+  </section>
+
+  <section class="content-box" id="verify-parts-availability-before-disassembly">
+    <h3>Verify Parts Availability Before Disassembly</h3>
+    <p>Some parts may be:</p>
+    <ul>
+      <li>Backordered</li>
+      <li>Discontinued</li>
+    </ul>
+    <p>Know the repair path before taking apart critical equipment unnecessarily.</p>
+  </section>
+
+  <section class="content-box" id="loaners-and-alternatives">
+    <h3>Loaners and Alternatives</h3>
+    <p>If the required part has long lead time, coordinate:</p>
+    <ul>
+      <li>Loaner</li>
+      <li>Spare</li>
+      <li>Rental</li>
+    </ul>
+    <p>instead of rushing an uncertain repair.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-dead-touchscreen">
+    <h3>Real-World Example: Dead Touchscreen</h3>
+    <p>Complaint:</p>
+    <p>Touch does not respond.</p>
+    <p>Image is normal.</p>
+    <p>Hard keys work.</p>
+    <p>Touch diagnostics show no input.</p>
+    <p>Touch controller power present.</p>
+    <p>Known-good display/touch assembly restores touch.</p>
+    <p>Now ordering display assembly is defensible.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery-not-charging">
+    <h3>Real-World Example: Battery Not Charging</h3>
+    <p>Battery will not charge.</p>
+    <p>Known-good battery also will not charge.</p>
+    <p>Charge voltage absent at battery connector.</p>
+    <p>Ordering battery is unlikely to help.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-nibp-pump">
+    <h3>Real-World Example: NIBP Pump</h3>
+    <p>Pump runs.</p>
+    <p>Pressure does not rise.</p>
+    <p>External cuff and hose known good.</p>
+    <p>Internal leak found at valve manifold.</p>
+    <p>Pump does not need replacement.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network-board">
+    <h3>Real-World Example: Network Board</h3>
+    <p>No network link.</p>
+    <p>Known-good cable and switch port.</p>
+    <p>Correct power present.</p>
+    <p>NIC link LEDs remain dark.</p>
+    <p>Same board fails in second compatible unit.</p>
+    <p>Now board replacement is well supported.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="ordering-the-part-named-in-the-error">
+    <h3>Ordering the Part Named in the Error</h3>
+    <p>Error name may describe the failed test, not component.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-accessories">
+    <h3>Ignoring Accessories</h3>
+    <p>Check cheap, exposed items first.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-power">
+    <h3>Ignoring Power</h3>
+    <p>No board works without correct supply.</p>
+  </section>
+
+  <section class="content-box" id="replacing-parts-that-were-already-replaced-for-the-same-complaint">
+    <h3>Replacing Parts That Were Already Replaced for the Same Complaint</h3>
+    <p>Review history.</p>
+  </section>
+
+  <section class="content-box" id="ordering-before-checking-compatibility">
+    <h3>Ordering Before Checking Compatibility</h3>
+    <p>Revision matters.</p>
+  </section>
+
+  <section class="content-box" id="forgetting-post-replacement-configuration">
+    <h3>Forgetting Post-Replacement Configuration</h3>
+    <p>Install is not the end of repair.</p>
+  </section>
+
+  <section class="content-box" id="replacing-several-parts-at-once">
+    <h3>Replacing Several Parts at Once</h3>
+    <p>You lose diagnostic information.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-pre-parts-checklist">
+    <h3>A Useful Pre-Parts Checklist</h3>
+    <p>Before ordering, ask:</p>
+    <p><strong>What exactly failed?</strong></p>
+    <p><strong>What is in the failure path?</strong></p>
+    <p><strong>What have I ruled out?</strong></p>
+    <p><strong>Does the failure follow this component?</strong></p>
+    <p><strong>Does the part have proper power and commands?</strong></p>
+    <p><strong>Is there any upstream cause?</strong></p>
+    <p><strong>Has this part been replaced before?</strong></p>
+    <p><strong>Is the replacement revision correct?</strong></p>
+    <p><strong>What calibration or configuration comes afterward?</strong></p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If you replace a board and the device works:</p>
+    <p>You proved:</p>
+    <p><strong>The device functions with the replacement board installed.</strong></p>
+    <p>You did not automatically prove:</p>
+    <p><strong>The original board was the root cause.</strong></p>
+    <p>Your evidence is stronger if:</p>
+    <ul>
+      <li>Original board fails diagnostics</li>
+      <li>Failure follows it</li>
+      <li>Electrical measurements support the diagnosis</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Parts replacement is part of biomed work.</p>
+    <p>Parts guessing should not be.</p>
+    <p>You do not need courtroom-level proof before every repair.</p>
+    <p>But you should know why you are ordering what you are ordering.</p>
+    <p>Start with the failed function.</p>
+    <p>Work the chain.</p>
+    <p>Rule out the easy external causes.</p>
+    <p>Check power and communication.</p>
+    <p>Use known-good substitution where appropriate.</p>
+    <p>Review the history.</p>
+    <p>Then order the part that the evidence points toward.</p>
+    <p>The goal is not to make parts ordering difficult.</p>
+    <p>The goal is to stop spending time and money replacing components that were never actually broken.</p>
+    <p>Before you click:</p>
+    <blockquote><p>Submit Order</p></blockquote>
+    <p>ask one last question:</p>
+    <p><strong>What did I actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Parts identification, hardware revisions, authorized repair level, calibration requirements, firmware compatibility, and post-replacement configuration vary by medical-device manufacturer and model. Follow current service documentation and facility purchasing and repair procedures before installing replacement components.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="what-known-good-actually-means.html">What “Known-Good” Actually Means</a></li>
+      <li><a href="why-changing-one-thing-at-a-time-matters.html">Why Changing One Thing at a Time Matters</a></li>
+      <li><a href="how-to-use-equipment-history-during-troubleshooting.html">How to Use Equipment History During Troubleshooting</a></li>
+      <li><a href="when-to-replace-a-cable-battery-board-or-entire-device.html">When to Replace a Cable, Battery, Board, or Entire Device</a></li>
+      <li><a href="how-to-read-a-medical-equipment-service-manual.html">How to Read a Medical Equipment Service Manual</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
