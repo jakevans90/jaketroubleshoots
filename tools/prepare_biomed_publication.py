@@ -140,6 +140,8 @@ RELATED = {
     "how-to-use-equipment-history-during-troubleshooting": ["biomed-work-order-notes-ccr-method", "how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "root-cause-troubleshooting-basics", "how-to-read-and-use-medical-device-event-logs"],
     "what-to-check-before-ordering-parts": ["what-known-good-actually-means", "why-changing-one-thing-at-a-time-matters", "how-to-use-equipment-history-during-troubleshooting", "when-to-replace-a-cable-battery-board-or-entire-device", "how-to-read-a-medical-equipment-service-manual"],
     "when-a-repair-needs-extended-observation-or-burn-in": ["how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "fans-filters-and-overheating", "how-to-verify-a-repair-before-returning-equipment-to-service"],
+    "incoming-inspection-basics": ["electrical-safety-analyzer-basics", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-read-a-medical-equipment-service-manual", "how-to-choose-the-right-test-equipment"],
+    "how-to-build-a-useful-escalation-package": ["how-to-think-before-calling-a-vendor", "how-to-work-with-it-as-a-biomed", "how-to-read-and-use-medical-device-event-logs", "how-to-document-an-intermittent-problem", "how-to-use-equipment-history-during-troubleshooting"],
 }
 
 ARTICLE_CONFIG = {
@@ -831,6 +833,18 @@ ARTICLE_CONFIG = {
         "category": "Testing & Verification",
         "badge": "Repair Verification",
         "cardNote": "Heat soak, runtime, cycling, logging, and intermittent-fault verification",
+    },
+    "incoming-inspection-basics": {
+        "description": "A practical guide to inspecting, identifying, configuring, documenting, and functionally verifying new, used, loaned, or transferred medical equipment before deployment.",
+        "category": "Testing & Verification",
+        "badge": "Equipment Intake",
+        "cardNote": "Identity, condition, accessories, configuration, safety, and acceptance checks",
+    },
+    "how-to-build-a-useful-escalation-package": {
+        "description": "A practical guide to collecting equipment identity, symptoms, reproduction steps, error details, logs, test results, service history, and focused questions before escalating a difficult repair.",
+        "category": "Troubleshooting",
+        "badge": "Escalation",
+        "cardNote": "Evidence, timelines, logs, test results, and clear next questions",
     },
 }
 
