@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Mode and Built-In Diagnostics: What to Trust | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to using service modes, self-tests, raw values, logs, counters, and internal diagnostics while recognizing their limits and verifying results independently.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/service-mode-and-built-in-diagnostics-what-to-trust.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>Service Mode and Built-In Diagnostics: What to Trust</h2>
+  <p>How to use internal diagnostics without letting service mode convince you that the device is healthy just because the screen says PASS</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Service mode is one of the most useful tools a biomed has.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What service mode is</li>
+      <li>What built-in diagnostics can do well</li>
+      <li>What they cannot prove</li>
+      <li>Raw values</li>
+      <li>Self-tests</li>
+      <li>Error logs</li>
+      <li>Internal calibration data</li>
+      <li>Battery diagnostics</li>
+      <li>Temperature and fan data</li>
+      <li>Network status</li>
+      <li>Module communication</li>
+      <li>Why built-in tests can miss biased sensors</li>
+      <li>Why external test equipment still matters</li>
+      <li>How to use service mode without becoming overconfident</li>
+      <li>Common mistakes</li>
+      <li>How to compare internal and external evidence</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Service mode is useful because it tells you:</p>
+    <p><strong>What the device thinks is happening.</strong></p>
+    <p>External test equipment tells you:</p>
+    <p><strong>What is actually happening from an independent reference.</strong></p>
+    <p>Those are not always the same.</p>
+    <p>A strong troubleshooting process often compares both.</p>
+    <p>For example:</p>
+    <p><strong>Service mode says pressure = 100 mmHg</strong></p>
+    <p>while:</p>
+    <p><strong>External pressure analyzer says actual pressure = 90 mmHg</strong></p>
+    <p>Now you know the device is confidently believing the wrong value.</p>
+    <p>That is much more useful than simply seeing:</p>
+    <blockquote><p>Pressure sensor: PASS.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-is-service-mode">
+    <h3>What Is Service Mode?</h3>
+    <p>Service mode is a technician-oriented interface that provides deeper access to device status and diagnostic information.</p>
+    <p>It may also be called:</p>
+    <ul>
+      <li>Diagnostic mode</li>
+      <li>Maintenance mode</li>
+      <li>Engineering mode</li>
+      <li>Technical mode</li>
+    </ul>
+    <p>depending on the manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="service-mode-can-be-extremely-valuable">
+    <h3>Service Mode Can Be Extremely Valuable</h3>
+    <p>It can help answer questions such as:</p>
+    <ul>
+      <li>Does the device see this module?</li>
+      <li>What raw value is the sensor producing?</li>
+      <li>What temperature does the processor think it sees?</li>
+      <li>How many battery cycles are recorded?</li>
+      <li>What error happened before the reboot?</li>
+    </ul>
+    <p>That information can dramatically narrow the problem.</p>
+  </section>
+
+  <section class="content-box" id="but-it-is-still-inside-the-same-system">
+    <h3>But It Is Still Inside the Same System</h3>
+    <p>This is the most important limitation.</p>
+    <p>The device is using:</p>
+    <ul>
+      <li>Its own sensors</li>
+      <li>Its own software</li>
+      <li>Its own calibration</li>
+      <li>Its own communication buses</li>
+    </ul>
+    <p>to judge itself.</p>
+    <p>That means some failure modes can fool the diagnostics.</p>
+  </section>
+
+  <section class="content-box" id="example-biased-pressure-sensor">
+    <h3>Example: Biased Pressure Sensor</h3>
+    <p>Suppose a pressure sensor has drifted.</p>
+    <p>Actual pressure:</p>
+    <p>100 mmHg.</p>
+    <p>Sensor reports:</p>
+    <p>107 mmHg.</p>
+    <p>If startup self-test only checks whether the reading is within a broad plausible range, it may pass.</p>
+    <p>Service mode may show:</p>
+    <p>107.</p>
+    <p>The device has no independent way to know the true pressure is 100.</p>
+    <p>That requires an external reference.</p>
+  </section>
+
+  <section class="content-box" id="internal-diagnostics-are-not-independent">
+    <h3>Internal Diagnostics Are Not Independent</h3>
+    <p>That does not make them bad.</p>
+    <p>It just means you need to understand their boundary.</p>
+  </section>
+
+  <section class="content-box" id="raw-values-can-be-more-useful-than-pass-fail">
+    <h3>Raw Values Can Be More Useful Than PASS/FAIL</h3>
+    <p>A PASS label compresses information.</p>
+    <p>A raw value gives you more context.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Service mode:</p>
+    <p>Fan test: PASS.</p>
+    <p>Raw RPM:</p>
+    <p>1,900.</p>
+    <p>Known-good unit:</p>
+    <p>3,400 under same condition.</p>
+    <p>The PASS result may still be technically inside the threshold, but the comparison reveals something worth investigating.</p>
+  </section>
+
+  <section class="content-box" id="raw-sensor-counts">
+    <h3>Raw Sensor Counts</h3>
+    <p>Some devices expose:</p>
+    <ul>
+      <li>ADC counts</li>
+      <li>Resistance values</li>
+      <li>Frequency</li>
+      <li>Voltage</li>
+      <li>Pressure counts</li>
+    </ul>
+    <p>These can be extremely useful.</p>
+  </section>
+
+  <section class="content-box" id="what-raw-values-tell-you">
+    <h3>What Raw Values Tell You</h3>
+    <p>They show what the electronics are actually seeing before some higher-level processing.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Temperature channel displays:</p>
+    <p>42°C.</p>
+    <p>Service raw resistance corresponds to that same apparent temperature.</p>
+    <p>That suggests the display is not the problem.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Probe</li>
+      <li>Input circuit</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="baseline-comparison">
+    <h3>Baseline Comparison</h3>
+    <p>If you do not know whether a raw value is normal, compare with:</p>
+    <ul>
+      <li>OEM spec</li>
+      <li>Known-good device</li>
+      <li>Known-good sensor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-guess-at-raw-counts">
+    <h3>Do Not Guess at Raw Counts</h3>
+    <p>A number like:</p>
+    <p>32768</p>
+    <p>means nothing unless you know what range is expected.</p>
+  </section>
+
+  <section class="content-box" id="self-tests">
+    <h3>Self-Tests</h3>
+    <p>Built-in self-tests are valuable because they exercise internal functions.</p>
+    <p>But remember:</p>
+    <p><strong>A self-test evaluates whatever the manufacturer chose to test.</strong></p>
+    <p>It does not necessarily test every function to full specification.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Battery self-test may confirm:</p>
+    <ul>
+      <li>Battery detected</li>
+      <li>Voltage plausible</li>
+      <li>Temperature valid</li>
+      <li>Communication working</li>
+    </ul>
+    <p>It may not confirm:</p>
+    <ul>
+      <li>One-hour runtime</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>Monitor startup test may confirm:</p>
+    <ul>
+      <li>NIBP module responds</li>
+    </ul>
+    <p>It may not confirm:</p>
+    <ul>
+      <li>NIBP accuracy over full range</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="error-logs">
+    <h3>Error Logs</h3>
+    <p>Error logs are among the highest-value diagnostic features.</p>
+    <p>They can preserve evidence that disappeared before you arrived.</p>
+    <p>Useful entries may include:</p>
+    <ul>
+      <li>Watchdog reset</li>
+      <li>Overtemperature</li>
+      <li>Battery communication loss</li>
+      <li>Module disconnect</li>
+      <li>Failed startup test</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="timestamp-matters">
+    <h3>Timestamp Matters</h3>
+    <p>A log entry means more when it aligns with:</p>
+    <ul>
+      <li>Staff-reported failure time</li>
+      <li>Network outage</li>
+      <li>Power event</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="exact-error-frequency-matters-too">
+    <h3>Exact Error Frequency Matters Too</h3>
+    <p>One isolated communication error over five years may mean little.</p>
+    <p>Fifty identical errors in the last two weeks are different.</p>
+  </section>
+
+  <section class="content-box" id="do-not-read-logs-without-context">
+    <h3>Do Not Read Logs Without Context</h3>
+    <p>Many medical devices record benign or recoverable events.</p>
+    <p>Not every logged error means the device needs repair.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A monitor may record:</p>
+    <ul>
+      <li>Sensor disconnected</li>
+    </ul>
+    <p>every time a clinician removes a probe.</p>
+    <p>That is expected.</p>
+  </section>
+
+  <section class="content-box" id="service-history-and-logs-together-are-stronger">
+    <h3>Service History and Logs Together Are Stronger</h3>
+    <p>CMMS:</p>
+    <blockquote><p>Random shutdown reported three times.</p></blockquote>
+    <p>Device log:</p>
+    <blockquote><p>Three unexpected power-loss events.</p></blockquote>
+    <p>Now the evidence aligns.</p>
+  </section>
+
+  <section class="content-box" id="log-absence-does-not-prove-no-failure">
+    <h3>Log Absence Does Not Prove No Failure</h3>
+    <p>Some failures occur too quickly for logging.</p>
+    <p>A sudden hard power loss may leave:</p>
+    <ul>
+      <li>No final event</li>
+    </ul>
+    <p>because the processor lost power before it could write one.</p>
+  </section>
+
+  <section class="content-box" id="service-mode-may-change-device-behavior">
+    <h3>Service Mode May Change Device Behavior</h3>
+    <p>This is easy to forget.</p>
+    <p>When you enter service mode:</p>
+    <ul>
+      <li>Clinical application may stop</li>
+      <li>Certain alarms may be suppressed</li>
+      <li>Loads may change</li>
+    </ul>
+    <p>That can alter the failure.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device overheats clinically.</p>
+    <p>You enter service mode.</p>
+    <p>Main application workload decreases.</p>
+    <p>The device runs cooler.</p>
+    <p>Now you cannot reproduce the failure.</p>
+    <p>Service mode itself changed the condition.</p>
+  </section>
+
+  <section class="content-box" id="diagnostic-tests-may-bypass-normal-workflow">
+    <h3>Diagnostic Tests May Bypass Normal Workflow</h3>
+    <p>A motor test may command the motor directly.</p>
+    <p>That proves:</p>
+    <p><strong>Motor can run under service command.</strong></p>
+    <p>It may not prove:</p>
+    <p><strong>Normal application software is commanding it correctly.</strong></p>
+  </section>
+
+  <section class="content-box" id="built-in-loopback-tests">
+    <h3>Built-In Loopback Tests</h3>
+    <p>Some devices test communication by sending signals internally and checking for return.</p>
+    <p>That can prove:</p>
+    <ul>
+      <li>Interface electronics respond</li>
+    </ul>
+    <p>but may bypass:</p>
+    <ul>
+      <li>External cable</li>
+      <li>Network infrastructure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="network-status">
+    <h3>Network Status</h3>
+    <p>Service mode may show:</p>
+    <p><strong>Connected</strong></p>
+    <p>But connected to what?</p>
+    <p>It may only mean:</p>
+    <ul>
+      <li>Link up</li>
+      <li>Wi-Fi associated</li>
+    </ul>
+    <p>It may not mean:</p>
+    <ul>
+      <li>Central monitoring connected</li>
+      <li>EMR data flowing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="distinguish-network-layers">
+    <h3>Distinguish Network Layers</h3>
+    <p>Service mode may tell you:</p>
+    <ul>
+      <li>Ethernet link</li>
+      <li>IP acquired</li>
+      <li>Server session</li>
+    </ul>
+    <p>Know which layer the status represents.</p>
+  </section>
+
+  <section class="content-box" id="battery-diagnostics">
+    <h3>Battery Diagnostics</h3>
+    <p>Smart batteries may report:</p>
+    <ul>
+      <li>State of charge</li>
+      <li>Cycle count</li>
+      <li>Health</li>
+    </ul>
+    <p>These are useful.</p>
+    <p>But they come from:</p>
+    <ul>
+      <li>Battery-management electronics</li>
+      <li>Internal algorithms</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="estimated-values-can-be-wrong">
+    <h3>Estimated Values Can Be Wrong</h3>
+    <p>A worn battery may report:</p>
+    <p>70%</p>
+    <p>then collapse under load.</p>
+    <p>That is why real runtime testing may still matter.</p>
+  </section>
+
+  <section class="content-box" id="battery-cycle-count">
+    <h3>Battery Cycle Count</h3>
+    <p>Useful, but not absolute.</p>
+    <p>A battery with few cycles can still be bad from:</p>
+    <ul>
+      <li>Age</li>
+      <li>Heat</li>
+      <li>Storage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="internal-temperature">
+    <h3>Internal Temperature</h3>
+    <p>Service mode may show:</p>
+    <p>CPU 75°C.</p>
+    <p>That is useful.</p>
+    <p>But if the temperature sensor circuit is wrong, the number itself may be wrong.</p>
+  </section>
+
+  <section class="content-box" id="compare-with-physical-reality">
+    <h3>Compare With Physical Reality</h3>
+    <p>If service mode says:</p>
+    <p>110°C</p>
+    <p>two seconds after startup while the chassis is room temperature:</p>
+    <p>Sensor problem becomes likely.</p>
+  </section>
+
+  <section class="content-box" id="fan-speed">
+    <h3>Fan Speed</h3>
+    <p>Service mode may show RPM.</p>
+    <p>That is valuable.</p>
+    <p>But remember:</p>
+    <p><strong>RPM is not airflow.</strong></p>
+    <p>A fan can spin while:</p>
+    <ul>
+      <li>Filter is clogged</li>
+      <li>Duct missing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fan-test-pass">
+    <h3>Fan Test PASS</h3>
+    <p>May mean:</p>
+    <p>RPM above threshold.</p>
+    <p>It does not prove cooling is adequate.</p>
+  </section>
+
+  <section class="content-box" id="power-rail-monitoring">
+    <h3>Power-Rail Monitoring</h3>
+    <p>Some devices expose internal voltages.</p>
+    <p>Example:</p>
+    <p>5 V rail = 5.02 V.</p>
+    <p>That is useful.</p>
+    <p>But internal monitoring itself has tolerances.</p>
+  </section>
+
+  <section class="content-box" id="external-measurement">
+    <h3>External Measurement</h3>
+    <p>For a critical or borderline value, an independent meter may still be warranted.</p>
+  </section>
+
+  <section class="content-box" id="calibration-values">
+    <h3>Calibration Values</h3>
+    <p>Service mode may display calibration coefficients.</p>
+    <p>Do not change them casually.</p>
+  </section>
+
+  <section class="content-box" id="calibration-numbers-are-not-troubleshooting-knobs">
+    <h3>Calibration Numbers Are Not Troubleshooting Knobs</h3>
+    <p>If a pressure reading is wrong, do not immediately adjust calibration to make the number match.</p>
+    <p>First ask:</p>
+    <ul>
+      <li>Sensor good?</li>
+      <li>Tubing leak?</li>
+      <li>Reference good?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="calibration-can-hide-a-hardware-problem">
+    <h3>Calibration Can Hide a Hardware Problem</h3>
+    <p>If a failing sensor drifts every week and you keep recalibrating it, you may be masking degradation.</p>
+  </section>
+
+  <section class="content-box" id="compare-as-found-before-adjustment">
+    <h3>Compare As-Found Before Adjustment</h3>
+    <p>Preserve the original value when possible.</p>
+    <p>It helps show whether the device is drifting.</p>
+  </section>
+
+  <section class="content-box" id="module-status">
+    <h3>Module Status</h3>
+    <p>Complex devices often show whether modules are:</p>
+    <ul>
+      <li>Present</li>
+      <li>Online</li>
+      <li>Initialized</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="module-online-does-not-mean-fully-functional">
+    <h3>Module Online Does Not Mean Fully Functional</h3>
+    <p>A module can communicate and still have a bad sensor or output.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>SpO2 module online.</p>
+    <p>Sensor port damaged.</p>
+    <p>Host sees module perfectly.</p>
+    <p>Clinical function fails.</p>
+  </section>
+
+  <section class="content-box" id="communication-counters">
+    <h3>Communication Counters</h3>
+    <p>Some systems show:</p>
+    <ul>
+      <li>Error counts</li>
+      <li>Retries</li>
+      <li>Packet loss</li>
+    </ul>
+    <p>These can be useful for intermittent problems.</p>
+  </section>
+
+  <section class="content-box" id="increasing-error-counters">
+    <h3>Increasing Error Counters</h3>
+    <p>If retries climb rapidly during failure:</p>
+    <p>That is evidence of communication instability.</p>
+  </section>
+
+  <section class="content-box" id="software-version-information">
+    <h3>Software Version Information</h3>
+    <p>Service mode is often the fastest place to verify:</p>
+    <ul>
+      <li>Firmware</li>
+      <li>Application version</li>
+    </ul>
+    <p>This matters for:</p>
+    <ul>
+      <li>Compatibility</li>
+      <li>Bulletins</li>
+      <li>Known bugs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-assume-latest-is-always-best">
+    <h3>Do Not Assume Latest Is Always Best</h3>
+    <p>If multiple devices fail after a specific update, version history matters.</p>
+  </section>
+
+  <section class="content-box" id="configuration-screens">
+    <h3>Configuration Screens</h3>
+    <p>Service mode may expose:</p>
+    <ul>
+      <li>Server addresses</li>
+      <li>Module settings</li>
+      <li>Option codes</li>
+    </ul>
+    <p>Document before changing anything.</p>
+  </section>
+
+  <section class="content-box" id="configuration-errors-can-look-like-hardware-failures">
+    <h3>Configuration Errors Can Look Like Hardware Failures</h3>
+    <p>Example:</p>
+    <p>Module installed correctly.</p>
+    <p>Option disabled.</p>
+    <p>Device reports unavailable function.</p>
+    <p>No hardware replacement is needed.</p>
+  </section>
+
+  <section class="content-box" id="factory-reset">
+    <h3>Factory Reset</h3>
+    <p>Service menus may include:</p>
+    <ul>
+      <li>Factory reset</li>
+      <li>Configuration reset</li>
+    </ul>
+    <p>These are powerful and potentially destructive.</p>
+  </section>
+
+  <section class="content-box" id="do-not-use-reset-as-a-first-troubleshooting-step">
+    <h3>Do Not Use Reset as a First Troubleshooting Step</h3>
+    <p>You may erase:</p>
+    <ul>
+      <li>Logs</li>
+      <li>Network settings</li>
+      <li>Calibration data</li>
+    </ul>
+    <p>depending on device design.</p>
+  </section>
+
+  <section class="content-box" id="screenshot-before-change">
+    <h3>Screenshot Before Change</h3>
+    <p>Capture important settings when permitted.</p>
+  </section>
+
+  <section class="content-box" id="oem-remote-diagnostics">
+    <h3>OEM Remote Diagnostics</h3>
+    <p>Some manufacturers can remotely read deeper logs or internal states.</p>
+    <p>That can be useful when local diagnostics reach their limit.</p>
+  </section>
+
+  <section class="content-box" id="but-remote-support-still-needs-good-evidence">
+    <h3>But Remote Support Still Needs Good Evidence</h3>
+    <p>Provide:</p>
+    <ul>
+      <li>Exact symptom</li>
+      <li>Timing</li>
+      <li>What you tested</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="service-mode-does-not-replace-external-test-equipment">
+    <h3>Service Mode Does Not Replace External Test Equipment</h3>
+    <p>This is the central point.</p>
+    <p>Internal diagnostics and external analyzers answer different questions.</p>
+  </section>
+
+  <section class="content-box" id="example-defibrillator">
+    <h3>Example: Defibrillator</h3>
+    <p>Service mode says:</p>
+    <p>Energy circuit OK.</p>
+    <p>External defibrillator analyzer measures actual delivered energy.</p>
+    <p>The analyzer provides independent verification.</p>
+  </section>
+
+  <section class="content-box" id="example-infusion-pump">
+    <h3>Example: Infusion Pump</h3>
+    <p>Service mode says:</p>
+    <p>Motor normal.</p>
+    <p>Infusion analyzer measures actual flow.</p>
+  </section>
+
+  <section class="content-box" id="example-ventilator">
+    <h3>Example: Ventilator</h3>
+    <p>Internal sensors report:</p>
+    <p>500 mL tidal volume.</p>
+    <p>External ventilator analyzer reports:</p>
+    <p>430 mL.</p>
+    <p>Now you know the internal measurement cannot be trusted at face value.</p>
+  </section>
+
+  <section class="content-box" id="independent-evidence-is-strongest">
+    <h3>Independent Evidence Is Strongest</h3>
+    <p>When internal and external measurements agree:</p>
+    <p>Confidence rises.</p>
+  </section>
+
+  <section class="content-box" id="when-they-disagree">
+    <h3>When They Disagree</h3>
+    <p>That is often the most useful clue.</p>
+  </section>
+
+  <section class="content-box" id="known-good-comparison">
+    <h3>Known-Good Comparison</h3>
+    <p>A known-good device can also help interpret service mode.</p>
+    <p>Compare:</p>
+    <ul>
+      <li>Raw sensor values</li>
+      <li>Fan RPM</li>
+      <li>Error counts</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="be-careful-with-configuration-differences">
+    <h3>Be Careful With Configuration Differences</h3>
+    <p>Two devices may legitimately have different values due to:</p>
+    <ul>
+      <li>Options</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="use-service-mode-to-narrow-not-declare-victory">
+    <h3>Use Service Mode to Narrow, Not Declare Victory</h3>
+    <p>Think of service mode as:</p>
+    <p><strong>A window into what the device believes.</strong></p>
+    <p>Not:</p>
+    <p><strong>Absolute truth.</strong></p>
+  </section>
+
+  <section class="content-box" id="real-world-example-battery">
+    <h3>Real-World Example: Battery</h3>
+    <p>Service mode:</p>
+    <p>Battery 75%, health good.</p>
+    <p>Unit shuts down after 10 minutes.</p>
+    <p>Runtime test confirms severe capacity loss.</p>
+    <p>The battery's internal estimate was wrong or misleading.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-fan">
+    <h3>Real-World Example: Fan</h3>
+    <p>Service mode:</p>
+    <p>Fan PASS.</p>
+    <p>Device overheats.</p>
+    <p>RPM present.</p>
+    <p>Filter completely clogged.</p>
+    <p>Fan test was correct.</p>
+    <p>Cooling system was still inadequate.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pressure">
+    <h3>Real-World Example: Pressure</h3>
+    <p>Self-test passes.</p>
+    <p>Internal pressure display matches sensor.</p>
+    <p>External calibrated reference shows 8% error.</p>
+    <p>The internal test never independently verified accuracy.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-network">
+    <h3>Real-World Example: Network</h3>
+    <p>Service screen:</p>
+    <p>Wi-Fi connected.</p>
+    <p>Device cannot communicate with central.</p>
+    <p>Wireless association is good.</p>
+    <p>Application path is not.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-pass-as-a-diagnosis">
+    <h3>Treating PASS as a Diagnosis</h3>
+    <p>Ask what was tested.</p>
+  </section>
+
+  <section class="content-box" id="trusting-internal-sensors-as-independent-references">
+    <h3>Trusting Internal Sensors as Independent References</h3>
+    <p>They are part of the system under test.</p>
+  </section>
+
+  <section class="content-box" id="changing-calibration-before-isolating-hardware">
+    <h3>Changing Calibration Before Isolating Hardware</h3>
+    <p>You may hide the fault.</p>
+  </section>
+
+  <section class="content-box" id="clearing-logs-early">
+    <h3>Clearing Logs Early</h3>
+    <p>Preserve evidence.</p>
+  </section>
+
+  <section class="content-box" id="assuming-connected-means-end-to-end-connectivity">
+    <h3>Assuming “Connected” Means End-to-End Connectivity</h3>
+    <p>Know the network layer.</p>
+  </section>
+
+  <section class="content-box" id="running-diagnostics-without-reproducing-normal-load">
+    <h3>Running Diagnostics Without Reproducing Normal Load</h3>
+    <p>Service mode may alter behavior.</p>
+  </section>
+
+  <section class="content-box" id="comparing-raw-values-without-knowing-expected-range">
+    <h3>Comparing Raw Values Without Knowing Expected Range</h3>
+    <p>Context matters.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-diagnostic-framework">
+    <h3>A Useful Diagnostic Framework</h3>
+    <p>When using service mode, ask:</p>
+    <p><strong>What variable am I looking at?</strong></p>
+    <p>Then:</p>
+    <p><strong>Where does that value come from?</strong></p>
+    <p>Then:</p>
+    <p><strong>What hardware and software influence it?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can I verify it independently?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the internal value agree with reality?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Is this diagnostic measuring the failure, or is it using the same potentially faulty component to judge itself?</strong></p>
+    <p>That question can expose the limitation quickly.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If service mode says:</p>
+    <p>Fan PASS,</p>
+    <p>you proved:</p>
+    <p><strong>The device's fan test met its internal criteria at that moment.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Filter clear</li>
+      <li>Airflow adequate</li>
+    </ul>
+    <p>If an external analyzer confirms the relevant function:</p>
+    <p>You have independent evidence.</p>
+    <p>That is why experienced biomeds combine:</p>
+    <p><strong>Internal diagnostics</strong></p>
+    <p>with:</p>
+    <p><strong>External verification.</strong></p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Service mode is one of the best troubleshooting tools you have.</p>
+    <p>Use it.</p>
+    <p>Read the logs.</p>
+    <p>Look at raw values.</p>
+    <p>Watch the system status.</p>
+    <p>But never forget:</p>
+    <p>The device is judging itself using its own eyes and ears.</p>
+    <p>Sometimes those eyes and ears are the very thing that failed.</p>
+    <p>So use service mode to understand:</p>
+    <p><strong>What the device thinks is happening.</strong></p>
+    <p>Then use external testing to determine:</p>
+    <p><strong>What is actually happening.</strong></p>
+    <p>When both agree, your confidence grows.</p>
+    <p>When they disagree, you may have found the problem.</p>
+    <p>And every time the screen tells you:</p>
+    <p><strong>PASS</strong></p>
+    <p>ask:</p>
+    <p><strong>What did it actually test?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Service-mode access, diagnostic functions, calibration controls, raw-value interpretation, reset functions, and permitted adjustments vary significantly by medical-device manufacturer and model. Follow current service documentation, preserve relevant configuration and logs before making changes, and use calibrated external test equipment where required for independent verification.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-troubleshoot-failed-self-tests.html">How to Troubleshoot Failed Self-Tests</a></li>
+      <li><a href="when-to-trust-the-device-s-internal-self-test.html">When to Trust the Device&amp;#x27;s Internal Self-Test</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+      <li><a href="error-codes-what-they-tell-you-and-what-they-don-t.html">Error Codes: What They Tell You and What They Don&amp;#x27;t</a></li>
+      <li><a href="how-to-choose-the-right-test-equipment.html">How to Choose the Right Test Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Investigate Repeat Failures | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to recognizing and investigating repeated failures across assets, models, locations, parts, software versions, workflows, and shared infrastructure.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-to-investigate-repeat-failures.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h2>How to Investigate Repeat Failures</h2>
+  <p>How to recognize when the same device, component, model, room, or workflow keeps failing and stop treating every new work order as an isolated event</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One failed battery is a repair.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What counts as a repeat failure</li>
+      <li>Same device vs same model</li>
+      <li>Repeated part replacement</li>
+      <li>Location-specific failures</li>
+      <li>Environment and workflow</li>
+      <li>Fleet-level trends</li>
+      <li>Repeat NPF</li>
+      <li>Software and firmware patterns</li>
+      <li>Accessories</li>
+      <li>Cleaning and fluid exposure</li>
+      <li>Infrastructure problems</li>
+      <li>How to build a failure timeline</li>
+      <li>When to escalate to OEM or leadership</li>
+      <li>How to avoid confirmation bias</li>
+      <li>How service history can reveal systemic causes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>When a failure repeats, stop asking only:</p>
+    <blockquote><p>What is wrong with this device today?</p></blockquote>
+    <p>Also ask:</p>
+    <blockquote><p>What is common across all of these events?</p></blockquote>
+    <p>Possible common factors include:</p>
+    <ul>
+      <li>Same asset</li>
+      <li>Same model</li>
+      <li>Same room</li>
+      <li>Same accessory</li>
+      <li>Same software version</li>
+      <li>Same repair</li>
+      <li>Same environment</li>
+      <li>Same clinical workflow</li>
+    </ul>
+    <p>That shared factor may be closer to the real cause.</p>
+  </section>
+
+  <section class="content-box" id="what-counts-as-a-repeat-failure">
+    <h3>What Counts as a Repeat Failure?</h3>
+    <p>A repeat failure is not simply:</p>
+    <blockquote><p>Device broke again.</p></blockquote>
+    <p>It means there is enough similarity between events to justify asking whether they are related.</p>
+  </section>
+
+  <section class="content-box" id="same-exact-symptom">
+    <h3>Same Exact Symptom</h3>
+    <p>Example:</p>
+    <p>Monitor reboots during NIBP inflation three times.</p>
+    <p>Clearly repeat.</p>
+  </section>
+
+  <section class="content-box" id="different-symptoms-can-share-one-cause">
+    <h3>Different Symptoms Can Share One Cause</h3>
+    <p>Example:</p>
+    <p>First complaint:</p>
+    <p>Random reboot.</p>
+    <p>Second:</p>
+    <p>Screen went black.</p>
+    <p>Third:</p>
+    <p>Lost central connection.</p>
+    <p>These could be separate.</p>
+    <p>Or they could all be caused by:</p>
+    <ul>
+      <li>Unstable power</li>
+    </ul>
+    <p>Read the details.</p>
+  </section>
+
+  <section class="content-box" id="same-asset">
+    <h3>Same Asset</h3>
+    <p>Start with:</p>
+    <p><strong>Has this exact asset had the same or similar complaint before?</strong></p>
+  </section>
+
+  <section class="content-box" id="same-model">
+    <h3>Same Model</h3>
+    <p>Then broaden:</p>
+    <p><strong>Are other devices of this model doing the same thing?</strong></p>
+  </section>
+
+  <section class="content-box" id="same-department">
+    <h3>Same Department</h3>
+    <p>Then:</p>
+    <p><strong>Does the pattern follow a location rather than equipment?</strong></p>
+    <p>Each level tells you something different.</p>
+  </section>
+
+  <section class="content-box" id="build-a-timeline">
+    <h3>Build a Timeline</h3>
+    <p>For repeat failures, create a simple chronology.</p>
+    <p>Example:</p>
+    <p>January 4 — battery replaced February 20 — unexpected shutdown March 15 — battery replaced April 2 — shutdown during transport</p>
+    <p>Now you can see that:</p>
+    <p>Battery replacement did not resolve the deeper problem.</p>
+  </section>
+
+  <section class="content-box" id="timeline-helps-you-see-failed-repairs">
+    <h3>Timeline Helps You See Failed Repairs</h3>
+    <p>A repair that only lasts a week deserves scrutiny.</p>
+  </section>
+
+  <section class="content-box" id="same-part-replaced-repeatedly">
+    <h3>Same Part Replaced Repeatedly</h3>
+    <p>This is a major clue.</p>
+    <p>Example:</p>
+    <p>Fan replaced three times in one year.</p>
+    <p>Possible explanations:</p>
+    <ul>
+      <li>Poor-quality replacement part</li>
+      <li>Wrong fan specification</li>
+      <li>Overvoltage</li>
+      <li>Excessive heat</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-part-may-be-the-victim">
+    <h3>The Part May Be the Victim</h3>
+    <p>Repeated failure often means you have not identified what is causing that part to fail.</p>
+  </section>
+
+  <section class="content-box" id="ask-what-could-damage-it">
+    <h3>Ask What Could Damage It</h3>
+    <p>If fuses keep opening:</p>
+    <p>Find the overcurrent.</p>
+    <p>If connectors keep burning:</p>
+    <p>Find the resistance or load.</p>
+  </section>
+
+  <section class="content-box" id="repeat-battery-failures">
+    <h3>Repeat Battery Failures</h3>
+    <p>Batteries deserve special attention because they are commonly replaced without deeper investigation.</p>
+  </section>
+
+  <section class="content-box" id="possible-shared-causes">
+    <h3>Possible Shared Causes</h3>
+    <ul>
+      <li>Charger</li>
+      <li>Excess heat</li>
+      <li>Storage practice</li>
+      <li>Wrong battery type</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Three batteries swell in the same device.</p>
+    <p>That should immediately raise questions about:</p>
+    <ul>
+      <li>Charging</li>
+      <li>Temperature</li>
+    </ul>
+    <p>not simply battery quality.</p>
+  </section>
+
+  <section class="content-box" id="repeat-npf-is-still-a-pattern">
+    <h3>Repeat NPF Is Still a Pattern</h3>
+    <p>“No Problem Found” does not erase the complaint.</p>
+    <p>If the same device returns:</p>
+    <p>Five times</p>
+    <p>with:</p>
+    <p>The same intermittent shutdown,</p>
+    <p>the inability to duplicate is itself a repeated event.</p>
+  </section>
+
+  <section class="content-box" id="what-condition-are-you-missing">
+    <h3>What Condition Are You Missing?</h3>
+    <p>Ask:</p>
+    <ul>
+      <li>Does it fail only after long runtime?</li>
+      <li>Only on battery?</li>
+      <li>Only during transport?</li>
+      <li>Only with a specific accessory?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="repeated-npf-should-increase-curiosity">
+    <h3>Repeated NPF Should Increase Curiosity</h3>
+    <p>Not decrease it.</p>
+  </section>
+
+  <section class="content-box" id="same-location-different-devices">
+    <h3>Same Location, Different Devices</h3>
+    <p>This is one of the strongest clues for infrastructure.</p>
+    <p>Example:</p>
+    <p>Three monitors in Room 12 lose network.</p>
+    <p>The devices differ.</p>
+    <p>The location does not.</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Network jack</li>
+      <li>Wireless coverage</li>
+      <li>Power</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="same-device-different-rooms">
+    <h3>Same Device, Different Rooms</h3>
+    <p>If the failure follows the asset:</p>
+    <p>Device-side cause becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="location-vs-asset-matrix">
+    <h3>Location vs Asset Matrix</h3>
+    <p>A useful mental experiment:</p>
+    <p>Move suspect device to known-good environment.</p>
+    <p>Move known-good device into suspect environment.</p>
+    <p>Where does the failure go?</p>
+  </section>
+
+  <section class="content-box" id="environment">
+    <h3>Environment</h3>
+    <p>Repeat failures can come from:</p>
+    <ul>
+      <li>Heat</li>
+      <li>Dust</li>
+      <li>Moisture</li>
+      <li>Vibration</li>
+      <li>Electrical supply</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Several devices in one OR overheat.</p>
+    <p>All vents are blocked by custom cabinetry.</p>
+    <p>The problem is not the fan model.</p>
+  </section>
+
+  <section class="content-box" id="cleaning-patterns">
+    <h3>Cleaning Patterns</h3>
+    <p>Repeated failures in:</p>
+    <ul>
+      <li>Touchscreens</li>
+      <li>Keypads</li>
+    </ul>
+    <p>may relate to:</p>
+    <ul>
+      <li>Cleaning practice</li>
+      <li>Fluid intrusion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="look-beyond-electronics">
+    <h3>Look Beyond Electronics</h3>
+    <p>The environment may be damaging the equipment.</p>
+  </section>
+
+  <section class="content-box" id="accessory-patterns">
+    <h3>Accessory Patterns</h3>
+    <p>A problematic accessory can move between devices.</p>
+    <p>Example:</p>
+    <p>Same SpO2 extension cable follows a patient monitor cart.</p>
+    <p>Multiple monitors appear to have intermittent SpO2 problems.</p>
+    <p>The accessory is the shared factor.</p>
+  </section>
+
+  <section class="content-box" id="docking-stations">
+    <h3>Docking Stations</h3>
+    <p>A portable device may repeatedly:</p>
+    <ul>
+      <li>Fail to charge</li>
+    </ul>
+    <p>because the dock is bad.</p>
+    <p>Replacing device batteries does not fix the dock.</p>
+  </section>
+
+  <section class="content-box" id="software-version-patterns">
+    <h3>Software-Version Patterns</h3>
+    <p>Modern fleet failures may correlate with:</p>
+    <ul>
+      <li>Firmware</li>
+      <li>Application version</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>All devices on version 3.4 freeze.</p>
+    <p>Devices still on 3.3 do not.</p>
+    <p>That is strong evidence worth escalating.</p>
+  </section>
+
+  <section class="content-box" id="do-not-jump-to-conclusion">
+    <h3>Do Not Jump to Conclusion</h3>
+    <p>It still does not prove the software is responsible.</p>
+    <p>Compare:</p>
+    <ul>
+      <li>Configuration</li>
+      <li>Hardware revisions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fleet-level-comparison">
+    <h3>Fleet-Level Comparison</h3>
+    <p>Make a simple table if needed:</p>
+    <p>Asset | Version | Failure | Location</p>
+    <p>Patterns often become obvious.</p>
+  </section>
+
+  <section class="content-box" id="configuration-pattern">
+    <h3>Configuration Pattern</h3>
+    <p>A failure may follow:</p>
+    <ul>
+      <li>Specific server address</li>
+      <li>Alarm profile</li>
+      <li>Network configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="replacement-board-pattern">
+    <h3>Replacement Board Pattern</h3>
+    <p>If every replacement board requires the same setting and that step is missed:</p>
+    <p>Several “bad boards” may simply be misconfigured.</p>
+  </section>
+
+  <section class="content-box" id="oem-bulletins">
+    <h3>OEM Bulletins</h3>
+    <p>When a failure repeats across a model, check for:</p>
+    <ul>
+      <li>Service bulletins</li>
+      <li>Field actions</li>
+      <li>Recalls</li>
+    </ul>
+    <p>Current manufacturer information may explain the pattern.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-every-repeat-failure-is-a-recall">
+    <h3>Do Not Assume Every Repeat Failure Is a Recall</h3>
+    <p>Most are not.</p>
+    <p>But repeated unusual failures justify checking.</p>
+  </section>
+
+  <section class="content-box" id="same-failure-after-same-repair">
+    <h3>Same Failure After Same Repair</h3>
+    <p>If a problem returns after a repair, ask:</p>
+    <p><strong>Was the original repair actually verified?</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Cable replaced.</p>
+    <p>Complaint returns.</p>
+    <p>Maybe the cable was not root cause.</p>
+  </section>
+
+  <section class="content-box" id="or-replacement-quality">
+    <h3>Or Replacement Quality</h3>
+    <p>The replacement itself may be defective.</p>
+  </section>
+
+  <section class="content-box" id="compare-old-and-new-parts">
+    <h3>Compare Old and New Parts</h3>
+    <p>If possible.</p>
+  </section>
+
+  <section class="content-box" id="repeat-mechanical-failures">
+    <h3>Repeat Mechanical Failures</h3>
+    <p>Mechanical wear patterns can reveal:</p>
+    <ul>
+      <li>Misalignment</li>
+      <li>Excess load</li>
+      <li>Poor installation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Same caster repeatedly breaks.</p>
+    <p>Maybe device is routinely crossing a severe threshold.</p>
+  </section>
+
+  <section class="content-box" id="clinical-workflow">
+    <h3>Clinical Workflow</h3>
+    <p>Sometimes the failure is connected to how equipment is used.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Pump doors repeatedly damaged because carts store them with tubing clamped in the door.</p>
+    <p>This is not simply:</p>
+    <blockquote><p>Staff keeps breaking pumps.</p></blockquote>
+    <p>It may be:</p>
+    <ul>
+      <li>Workflow</li>
+      <li>Storage design</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="human-factors-matter">
+    <h3>Human Factors Matter</h3>
+    <p>If the same mistake happens repeatedly, the system may encourage it.</p>
+  </section>
+
+  <section class="content-box" id="power-quality">
+    <h3>Power Quality</h3>
+    <p>If several devices in one area experience:</p>
+    <ul>
+      <li>Reboots</li>
+      <li>Power supply failures</li>
+    </ul>
+    <p>consider:</p>
+    <ul>
+      <li>Outlet</li>
+      <li>Circuit</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="network-infrastructure">
+    <h3>Network Infrastructure</h3>
+    <p>Repeat connectivity complaints may trace to:</p>
+    <ul>
+      <li>Switch</li>
+      <li>VLAN</li>
+      <li>Wireless AP</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Different devices all lose communication around the same time daily.</p>
+    <p>That suggests shared infrastructure or scheduled network behavior.</p>
+  </section>
+
+  <section class="content-box" id="time-of-day-patterns">
+    <h3>Time-of-Day Patterns</h3>
+    <p>Yes, time can be a shared variable.</p>
+    <p>Ask whether failures happen:</p>
+    <ul>
+      <li>During shift change</li>
+      <li>During cleaning</li>
+      <li>During nightly updates</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Devices reboot every night at 2:00 AM.</p>
+    <p>That may involve:</p>
+    <ul>
+      <li>Scheduled software task</li>
+      <li>Network process</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pattern-by-clinical-task">
+    <h3>Pattern by Clinical Task</h3>
+    <p>Failures may occur only during:</p>
+    <ul>
+      <li>Transport</li>
+      <li>Cleaning</li>
+      <li>Charging</li>
+      <li>High-load operation</li>
+    </ul>
+    <p>That condition may matter more than asset identity.</p>
+  </section>
+
+  <section class="content-box" id="use-data-not-memory-alone">
+    <h3>Use Data, Not Memory Alone</h3>
+    <p>People are bad at remembering frequency.</p>
+    <p>Use:</p>
+    <ul>
+      <li>CMMS</li>
+      <li>Device logs</li>
+      <li>Network logs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="count-failures">
+    <h3>Count Failures</h3>
+    <p>Instead of:</p>
+    <blockquote><p>This keeps happening,</p></blockquote>
+    <p>find out:</p>
+    <p>How many times?</p>
+    <p>Over what period?</p>
+  </section>
+
+  <section class="content-box" id="failure-rate-matters">
+    <h3>Failure Rate Matters</h3>
+    <p>Five failures across:</p>
+    <p>5,000 devices</p>
+    <p>is different from:</p>
+    <p>Five failures across 10 devices.</p>
+  </section>
+
+  <section class="content-box" id="fleet-denominator">
+    <h3>Fleet Denominator</h3>
+    <p>If you are comparing models, consider:</p>
+    <ul>
+      <li>Number in service</li>
+      <li>Usage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="avoid-overreacting-to-high-counts-without-context">
+    <h3>Avoid Overreacting to High Counts Without Context</h3>
+    <p>A large fleet naturally produces more work orders.</p>
+  </section>
+
+  <section class="content-box" id="severity-matters-too">
+    <h3>Severity Matters Too</h3>
+    <p>Ten minor printer issues are not the same as:</p>
+    <p>Two therapy interruptions.</p>
+  </section>
+
+  <section class="content-box" id="prioritize-by-risk">
+    <h3>Prioritize by Risk</h3>
+    <p>Repeat-failure investigation should consider:</p>
+    <ul>
+      <li>Frequency</li>
+      <li>Severity</li>
+      <li>Detectability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="hidden-failures">
+    <h3>Hidden Failures</h3>
+    <p>A failure that produces a clear alarm may be less dangerous than one that silently produces incorrect output.</p>
+  </section>
+
+  <section class="content-box" id="repeat-accuracy-drift">
+    <h3>Repeat Accuracy Drift</h3>
+    <p>If multiple devices repeatedly drift out of calibration:</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Sensor design</li>
+      <li>Environmental exposure</li>
+      <li>Test equipment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="could-the-analyzer-be-wrong">
+    <h3>Could the Analyzer Be Wrong?</h3>
+    <p>If every device suddenly fails the same measurement:</p>
+    <p>Check the reference.</p>
+  </section>
+
+  <section class="content-box" id="test-equipment-as-shared-factor">
+    <h3>Test Equipment as Shared Factor</h3>
+    <p>This is often overlooked.</p>
+    <p>If one analyzer is biased, you can create a fleet-wide pattern that does not actually exist.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>All infusion pumps appear 4% high.</p>
+    <p>Second analyzer shows normal.</p>
+    <p>Shared factor was the first analyzer.</p>
+  </section>
+
+  <section class="content-box" id="parts-lot">
+    <h3>Parts Lot</h3>
+    <p>Replacement parts from one production lot can also create repeated failures.</p>
+    <p>Record part identifiers when relevant.</p>
+  </section>
+
+  <section class="content-box" id="repair-technique">
+    <h3>Repair Technique</h3>
+    <p>If the same repair repeatedly fails after one technician or one procedure:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Installation</li>
+      <li>Torque</li>
+      <li>Connector seating</li>
+    </ul>
+    <p>Do this carefully and without turning it into blame.</p>
+  </section>
+
+  <section class="content-box" id="process-improvement">
+    <h3>Process Improvement</h3>
+    <p>The goal is to improve the system.</p>
+  </section>
+
+  <section class="content-box" id="build-a-hypothesis">
+    <h3>Build a Hypothesis</h3>
+    <p>Once you see a pattern, write a testable idea.</p>
+    <p>Example:</p>
+    <blockquote><p>Devices on this cart lose power because battery connector opens during transport.</p></blockquote>
+    <p>Now test it.</p>
+  </section>
+
+  <section class="content-box" id="do-not-call-pattern-the-root-cause-yet">
+    <h3>Do Not Call Pattern the Root Cause Yet</h3>
+    <p>Pattern generates hypothesis.</p>
+    <p>Testing provides evidence.</p>
+  </section>
+
+  <section class="content-box" id="controlled-comparison">
+    <h3>Controlled Comparison</h3>
+    <p>Compare:</p>
+    <p>Affected vs unaffected.</p>
+    <p>Example:</p>
+    <p>Overheating units:</p>
+    <p>Dirty filters.</p>
+    <p>Unaffected units:</p>
+    <p>Clean filters.</p>
+    <p>Now the relationship becomes stronger.</p>
+  </section>
+
+  <section class="content-box" id="change-one-shared-factor">
+    <h3>Change One Shared Factor</h3>
+    <p>When possible, change one variable and see if failure follows.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Move known-good monitor into room.</p>
+    <p>It loses network.</p>
+    <p>Infrastructure becomes likely.</p>
+  </section>
+
+  <section class="content-box" id="escalate-fleet-patterns-early">
+    <h3>Escalate Fleet Patterns Early</h3>
+    <p>A systemic problem can affect many devices quickly.</p>
+    <p>If several devices show unusual identical failures:</p>
+    <p>Escalate to:</p>
+    <ul>
+      <li>Leadership</li>
+      <li>OEM</li>
+      <li>IT</li>
+    </ul>
+    <p>as appropriate.</p>
+  </section>
+
+  <section class="content-box" id="build-the-escalation-package">
+    <h3>Build the Escalation Package</h3>
+    <p>Include:</p>
+    <ul>
+      <li>Assets affected</li>
+      <li>Software versions</li>
+      <li>Failure frequency</li>
+      <li>Error codes</li>
+      <li>Common conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="vendor-support-needs-patterns">
+    <h3>Vendor Support Needs Patterns</h3>
+    <p>OEM may already know about:</p>
+    <ul>
+      <li>Known issue</li>
+      <li>Bulletin</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="document-the-investigation">
+    <h3>Document the Investigation</h3>
+    <p>Create a record that tells future technicians:</p>
+    <ul>
+      <li>What pattern was identified</li>
+      <li>What was tested</li>
+      <li>What conclusion was reached</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-leave-the-knowledge-in-one-person-s-head">
+    <h3>Do Not Leave the Knowledge in One Person&#x27;s Head</h3>
+    <p>If only one technician knows:</p>
+    <blockquote><p>These fail when used with Dock B,</p></blockquote>
+    <p>the organization has not captured the lesson.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-batteries">
+    <h3>Real-World Example: Repeated Batteries</h3>
+    <p>Monitor receives four batteries in one year.</p>
+    <p>Review shows internal temperature runs high because intake filter is blocked.</p>
+    <p>Battery heat exposure likely accelerates degradation.</p>
+    <p>Battery replacement alone never addressed the environment.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeat-network-complaints">
+    <h3>Real-World Example: Repeat Network Complaints</h3>
+    <p>Different patient monitors lose central only in hallway near radiology.</p>
+    <p>Wi-Fi survey identifies coverage gap.</p>
+    <p>The devices are fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeat-touchscreen-failures">
+    <h3>Real-World Example: Repeat Touchscreen Failures</h3>
+    <p>Several touchscreens fail in same department.</p>
+    <p>Inspection repeatedly shows cleaner residue at bezel.</p>
+    <p>Cleaning method becomes the shared factor.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-repeated-main-boards">
+    <h3>Real-World Example: Repeated Main Boards</h3>
+    <p>Three main boards replaced for reboot complaint.</p>
+    <p>Problem returns.</p>
+    <p>Power rail monitored under NIBP load and drops sharply.</p>
+    <p>Power supply was the actual shared cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-fleet-software-issue">
+    <h3>Real-World Example: Fleet Software Issue</h3>
+    <p>Multiple devices begin freezing after same firmware deployment.</p>
+    <p>Older version units remain stable.</p>
+    <p>Logs show identical application fault.</p>
+    <p>Escalated to OEM with fleet evidence.</p>
+    <p>Now you have a systemic case, not five unrelated tickets.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-every-work-order-independently">
+    <h3>Treating Every Work Order Independently</h3>
+    <p>History matters.</p>
+  </section>
+
+  <section class="content-box" id="replacing-the-same-part-again-without-asking-why">
+    <h3>Replacing the Same Part Again Without Asking Why</h3>
+    <p>Repeated part failure is a clue.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-npf-work-orders">
+    <h3>Ignoring NPF Work Orders</h3>
+    <p>Repeated NPF can still reveal conditions.</p>
+  </section>
+
+  <section class="content-box" id="blaming-users-without-looking-at-workflow">
+    <h3>Blaming Users Without Looking at Workflow</h3>
+    <p>Find the mechanism.</p>
+  </section>
+
+  <section class="content-box" id="calling-a-pattern-with-too-little-data">
+    <h3>Calling a Pattern With Too Little Data</h3>
+    <p>Separate coincidence from trend.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-test-equipment-as-a-shared-factor">
+    <h3>Ignoring Test Equipment as a Shared Factor</h3>
+    <p>Your reference can create false patterns.</p>
+  </section>
+
+  <section class="content-box" id="keeping-the-pattern-in-your-head">
+    <h3>Keeping the Pattern in Your Head</h3>
+    <p>Document it.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-repeat-failure-framework">
+    <h3>A Useful Repeat-Failure Framework</h3>
+    <p>Ask:</p>
+    <p><strong>What is repeating?</strong></p>
+    <p>Then:</p>
+    <p><strong>What is shared across those events?</strong></p>
+    <p>Then:</p>
+    <p><strong>What differs between affected and unaffected equipment?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can I change one variable and make the failure follow it?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is this asset-specific, location-specific, model-specific, or system-wide?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>What if the failed part is not the root cause but the thing that keeps getting sacrificed?</strong></p>
+    <p>That question is especially useful with:</p>
+    <ul>
+      <li>Batteries</li>
+      <li>Power supplies</li>
+      <li>Fuses</li>
+      <li>Fans</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If five devices fail after a software update:</p>
+    <p>You proved:</p>
+    <p><strong>The failures correlate with the update.</strong></p>
+    <p>You did not yet prove:</p>
+    <p><strong>The software caused them.</strong></p>
+    <p>If rollback removes the failure while everything else stays the same:</p>
+    <p>Your evidence becomes much stronger.</p>
+    <p>If one device repeatedly fails in multiple rooms while known-good devices work:</p>
+    <p>You have strong evidence the failure follows the asset.</p>
+    <p>Repeat-failure investigation is about strengthening those relationships until the pattern becomes technically defensible.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A repeat failure is a message.</p>
+    <p>The equipment is telling you:</p>
+    <blockquote><p>The last explanation may not have been complete.</p></blockquote>
+    <p>Do not automatically replace the same part again.</p>
+    <p>Zoom out.</p>
+    <p>Look at:</p>
+    <ul>
+      <li>History</li>
+      <li>Location</li>
+      <li>Environment</li>
+      <li>Software</li>
+      <li>Accessories</li>
+      <li>Infrastructure</li>
+    </ul>
+    <p>Then ask what every failure has in common.</p>
+    <p>Sometimes the answer is inside the device.</p>
+    <p>Sometimes it is the charger.</p>
+    <p>Sometimes it is the network.</p>
+    <p>Sometimes it is the way the equipment is used.</p>
+    <p>The important skill is recognizing when the work order in front of you is not really a new problem.</p>
+    <p>It is another chapter in the same one.</p>
+    <p>And before you close another repeat repair, ask:</p>
+    <p><strong>What did we actually learn this time that we did not know last time?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Repeat-failure investigations may involve technical troubleshooting, manufacturer escalation, quality review, clinical workflow evaluation, IT or Facilities support, or formal safety processes depending on the equipment and severity. Follow current facility procedures and preserve relevant service history, logs, configuration information, and affected-part data when investigating recurring or fleet-wide problems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-use-equipment-history-during-troubleshooting.html">How to Use Equipment History During Troubleshooting</a></li>
+      <li><a href="root-cause-troubleshooting-basics.html">Root Cause Troubleshooting Basics</a></li>
+      <li><a href="how-to-document-an-intermittent-problem.html">How to Document an Intermittent Problem</a></li>
+      <li><a href="how-to-build-a-useful-escalation-package.html">How to Build a Useful Escalation Package</a></li>
+      <li><a href="how-to-avoid-confirmation-bias-while-troubleshooting.html">How to Avoid Confirmation Bias While Troubleshooting</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
