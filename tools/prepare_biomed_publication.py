@@ -142,6 +142,8 @@ RELATED = {
     "when-a-repair-needs-extended-observation-or-burn-in": ["how-to-document-an-intermittent-problem", "what-unable-to-duplicate-should-actually-mean", "how-to-reproduce-a-clinical-complaint-on-the-bench", "fans-filters-and-overheating", "how-to-verify-a-repair-before-returning-equipment-to-service"],
     "incoming-inspection-basics": ["electrical-safety-analyzer-basics", "functional-testing-vs-calibration-vs-verification", "how-to-verify-a-repair-before-returning-equipment-to-service", "how-to-read-a-medical-equipment-service-manual", "how-to-choose-the-right-test-equipment"],
     "how-to-build-a-useful-escalation-package": ["how-to-think-before-calling-a-vendor", "how-to-work-with-it-as-a-biomed", "how-to-read-and-use-medical-device-event-logs", "how-to-document-an-intermittent-problem", "how-to-use-equipment-history-during-troubleshooting"],
+    "service-mode-and-built-in-diagnostics-what-to-trust": ["how-to-troubleshoot-failed-self-tests", "when-to-trust-the-device-s-internal-self-test", "how-to-read-and-use-medical-device-event-logs", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-choose-the-right-test-equipment"],
+    "how-to-investigate-repeat-failures": ["how-to-use-equipment-history-during-troubleshooting", "root-cause-troubleshooting-basics", "how-to-document-an-intermittent-problem", "how-to-build-a-useful-escalation-package", "how-to-avoid-confirmation-bias-while-troubleshooting"],
 }
 
 ARTICLE_CONFIG = {
@@ -845,6 +847,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Escalation",
         "cardNote": "Evidence, timelines, logs, test results, and clear next questions",
+    },
+    "service-mode-and-built-in-diagnostics-what-to-trust": {
+        "description": "A practical guide to using service modes, self-tests, raw values, logs, counters, and internal diagnostics while recognizing their limits and verifying results independently.",
+        "category": "Troubleshooting",
+        "badge": "Diagnostics",
+        "cardNote": "Using internal diagnostics without mistaking them for independent proof",
+    },
+    "how-to-investigate-repeat-failures": {
+        "description": "A practical guide to recognizing and investigating repeated failures across assets, models, locations, parts, software versions, workflows, and shared infrastructure.",
+        "category": "Troubleshooting",
+        "badge": "Pattern Analysis",
+        "cardNote": "Timelines, fleet patterns, shared causes, and controlled comparisons",
     },
 }
 
