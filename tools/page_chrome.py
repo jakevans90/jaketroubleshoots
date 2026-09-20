@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DETAIL_DIRS = ("guides", "preventive-maintenance", "biomed-basics")
 TOC = re.compile(r'<!-- page-navigation:start -->.*?<!-- page-navigation:end -->\s*', re.S)
-ASSET_VERSIONS = {"style.css": "20260920", "site-search.js": "20260919-2"}
+ASSET_VERSIONS = {"style.css": "20260920-2", "site-search.js": "20260919-2"}
 
 
 def production_pages(root):
