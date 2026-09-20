@@ -342,7 +342,9 @@ function renderGuideRows(containerId, allGuides, rowCount) {
   if (!container) return;
 
   const columns = getGridColumnCount(container);
-  const cardCount = columns * rowCount;
+  // Keep the homepage preview useful on phones: three guides stack vertically
+  // instead of shrinking the content preview to a single card.
+  const cardCount = Math.max(columns * rowCount, 3);
 
   const guidesToShow = getRecentGuides(allGuides, cardCount);
   renderGuides(containerId, guidesToShow);
