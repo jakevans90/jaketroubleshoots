@@ -78,7 +78,7 @@
   if (document.querySelector('script[data-pm-related-guides]')) return;
 
   const relatedScript = document.createElement('script');
-  relatedScript.src = new URL('pm-related-guides.js', document.currentScript.src).href;
+  relatedScript.src = new URL('pm-related-guides.js?v=20260919', document.currentScript.src).href;
   relatedScript.defer = true;
   relatedScript.dataset.pmRelatedGuides = '';
   document.head.appendChild(relatedScript);

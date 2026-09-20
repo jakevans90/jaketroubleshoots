@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Biomedical Equipment Troubleshooting Guides | Jake Troubleshoots</title>
 
   <meta name="description" content="Browse biomedical equipment troubleshooting guides for BMETs, clinical engineers, HTM departments, and healthcare technology staff. Find guides by asset type, manufacturer, model, alarm, error, symptom, or equipment issue.">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260919">
 
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
@@ -26,6 +27,7 @@
 </head>
 
 <body>
+<a class="skip-link" href="#page-heading">Skip to content</a>
 
 <header>
   <a href="index.html" class="site-logo">
@@ -52,7 +54,7 @@
 </header>
 
 <section class="hero">
-  <h2>Biomedical Equipment Troubleshooting Guide Library</h2>
+  <h1 id="page-heading" tabindex="-1">Biomedical Equipment Troubleshooting Guide Library</h1>
 
   <p>
     Symptom-based troubleshooting guides for BMETs, clinical engineers, HTM departments, and healthcare technology staff.
@@ -106,8 +108,6 @@
     <p id="guide-library-search-count" class="library-search-status" aria-live="polite">Loading troubleshooting guides...</p>
   </section>
 
-</main>
-
 <section class="homepage-section recent-guides-section">
   <div class="section-header">
     <p class="section-kicker">Troubleshooting Library</p>
@@ -118,9 +118,13 @@
   </div>
 
   <div id="guides-organized" class="library-results-shell"></div>
+  <p id="guide-library-shown" class="library-search-status" aria-live="polite"></p>
+  <button type="button" id="guide-library-more" class="hero-button" hidden>Show more guides</button>
 </section>
 
 <p id="total-guides" style="margin-top:15px; font-weight:bold; text-align:center;"></p>
+
+</main>
 
 <footer>
   <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
@@ -134,7 +138,8 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
-<script src="guides.js"></script>
+<script src="guides.js?v=20260919"></script>
+<script src="site-search.js?v=20260919-2"></script>
 
 <script>
 function slugify(text) {
@@ -328,15 +333,22 @@ grid.style.width = '100%';
 }
 
 Promise.all([
-  fetchGuides(),
+  fetchGuides({ strict: true, search: true }),
   fetch('data/hub-asset.json').then(r => r.json())
 ])
 .then(([allGuides, assetHubData]) => {
   assetHubDataGlobal = assetHubData;
 
   const sorted = [...allGuides].sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, { sensitivity: 'base', numeric: true })
+    [a.assetType, a.manufacturer, a.model, a.title].join('\n').localeCompare(
+      [b.assetType, b.manufacturer, b.model, b.title].join('\n'), undefined, { sensitivity: 'base', numeric: true })
   );
+  const index = JakeSearch.createIndex(sorted, 'guides');
+  const pageSize = 60;
+  let shown = pageSize;
+  let lastQuery = null;
+  let filtered = [];
+  let inputTimer;
 
   const totalEl = document.getElementById('total-guides');
   const searchInput = document.getElementById('guide-library-search');
@@ -344,30 +356,44 @@ Promise.all([
   const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
 
   function filterGuides(query) {
-    const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
-    if (!terms.length) return sorted;
-    return sorted.filter(guide => {
-      const steps = Array.isArray(guide.steps) ? guide.steps.map(step => step.instructions || '').join(' ') : '';
-      const searchable = [guide.title, guide.description, guide.assetType, guide.manufacturer, guide.model, guide.url, steps].join(' ').toLowerCase();
-      return terms.every(term => searchable.includes(term));
-    });
+    if (!query.trim()) return sorted;
+    const matches = new Set(JakeSearch.rank(index, query));
+    return sorted.filter(guide => matches.has(guide));
   }
 
   function updateGuideLibrary(query) {
-    const filtered = filterGuides(query);
-    renderGuidesByAssetManufacturerModel(filtered);
+    if (query !== lastQuery) {
+      filtered = filterGuides(query);
+      shown = pageSize;
+      lastQuery = query;
+    }
+    renderGuidesByAssetManufacturerModel(filtered.slice(0, shown));
+    document.getElementById('guide-library-more').hidden = shown >= filtered.length;
+    document.getElementById('guide-library-shown').textContent = `Showing ${Math.min(shown, filtered.length)} of ${filtered.length} guides.`;
     searchCount.textContent = query.trim() ? `${filtered.length} guide result${filtered.length === 1 ? '' : 's'} for “${query.trim()}”.` : `${filtered.length} troubleshooting guide${filtered.length === 1 ? '' : 's'} available.`;
-    if (totalEl) totalEl.textContent = `${filtered.length} Troubleshooting Guide${filtered.length !== 1 ? 's' : ''}${query.trim() ? ' Shown' : ' Total'}`;
+    if (totalEl) totalEl.textContent = `${filtered.length} Troubleshooting Guide${filtered.length !== 1 ? 's' : ''}${query.trim() ? ' Matching' : ' Total'}`;
     const params = new URLSearchParams(window.location.search);
     if (query.trim()) params.set('q', query.trim()); else params.delete('q');
     history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
   }
 
   searchInput.value = initialQuery;
-  searchInput.addEventListener('input', event => updateGuideLibrary(event.target.value));
+  searchInput.addEventListener('input', () => {
+    clearTimeout(inputTimer);
+    inputTimer = setTimeout(() => updateGuideLibrary(searchInput.value), 180);
+  });
+  document.getElementById('guide-library-more').addEventListener('click', () => {
+    const previous = shown;
+    shown += pageSize;
+    updateGuideLibrary(searchInput.value);
+    document.querySelectorAll('#guides-organized .guide-card')[previous]?.focus();
+  });
   updateGuideLibrary(initialQuery);
 })
-.catch(err => console.error('Guide load error:', err));
+.catch(err => {
+  console.error('Guide load error:', err);
+  document.getElementById('guide-library-search-count').textContent = 'The guide library could not load. Reload to try again, or use the equipment browse links above.';
+});
 </script>
 
 </body>

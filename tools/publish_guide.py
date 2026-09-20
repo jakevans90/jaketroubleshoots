@@ -20,6 +20,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from build_guide_discovery import INDEX_PATHS, build_outputs as build_discovery_outputs
+from page_chrome import normalize_page_chrome
+
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FIELDS = {"schemaVersion", "title", "issueTitle", "description", "assetType", "manufacturer", "model", "slug", "dateAdded", "taxonomyMode", "ccr", "helpfulDetails"}
 OPTIONAL_FIELDS = {"newAsset", "newManufacturer", "newModel"}
@@ -192,7 +195,7 @@ def canonical_template(root: Path, guides: list[tuple[str, dict[str, Any]]]) -> 
     raise InputError("no complete troubleshooting-guide page is available as the canonical template")
 
 
-def render_html(plan: Plan, template: str) -> str:
+def render_html(plan: Plan, template: str, hubs=None) -> str:
     meta = plan.meta; canonical = f"https://jaketroubleshoots.com/guides/{meta['slug']}.html"
     head = template[:template.index('<section class="hero">')]
     tail = template[template.index('\n<section style="padding:40px; text-align:center;"', template.index("</main>")):]
@@ -208,7 +211,9 @@ def render_html(plan: Plan, template: str) -> str:
     if not replacements:
         head = head.replace("</head>", description_tag + "\n</head>", 1)
     head = re.sub(r'<link rel="canonical" href="[^"]+"\s*/>', f'<link rel="canonical" href="{canonical}" />', head, count=1)
-    body = [f'<section class="hero">\n  <h2>{html.escape(str(meta["manufacturer"]))} {html.escape(str(meta["model"]))}</h2>\n  <p>{html.escape(str(meta["issueTitle"]))}</p>\n</section>', '<main style="max-width:900px; margin:40px auto; padding:0 20px;">']
+    hero_heading = re.search(r'<section class="hero">\s*<(h[12])\b', template)
+    heading_tag = hero_heading.group(1) if hero_heading else "h1"
+    body = [f'<section class="hero">\n  <{heading_tag}>{html.escape(str(meta["manufacturer"]))} {html.escape(str(meta["model"]))}</{heading_tag}>\n  <p>{html.escape(str(meta["issueTitle"]))}</p>\n</section>', '<main style="max-width:900px; margin:40px auto; padding:0 20px;">']
     for label, key in (("Asset Type", "assetType"), ("Manufacturer", "manufacturer"), ("Model", "model")): body += [f"<h3>{label}</h3>", f"<p>{html.escape(str(meta[key]))}</p>"]
     body += [f"<h2>{SECTIONS[0]}</h2>", markdown_blocks(plan.sections[SECTIONS[0]]), f"<h2>{SECTIONS[1]}</h2>"]
     for step in plan.steps: body += [f'<h4>{step["number"]}. {html.escape(step["title"])}</h4>', markdown_blocks(step["body"])]
@@ -217,7 +222,7 @@ def render_html(plan: Plan, template: str) -> str:
     for label, key, explanation in (("Complaint", "complaint", "What was reported by the clinical staff."), ("Cause", "cause", "What was observed during troubleshooting."), ("Resolution", "resolution", "What action was taken.")):
         body += [f"<h4>{label}</h4>", f"<p>{explanation}</p>", f'<p><em>Example:</em><br>"{html.escape(str(meta["ccr"][key]))}"</p>']
     body += [f"<h2>{SECTIONS[5]}</h2>", markdown_blocks(plan.sections[SECTIONS[5]]), "<ul>\n" + "\n".join(f"  <li>{html.escape(str(x))}</li>" for x in meta["helpfulDetails"]) + "\n</ul>", f"<h2>{SECTIONS[6]}</h2>", markdown_blocks(plan.sections[SECTIONS[6]]), "</main>"]
-    return head + "\n\n".join(body) + tail
+    return normalize_page_chrome(head + "\n\n".join(body) + tail, detail=True, hubs=hubs)
 
 
 def build_plan(meta: dict[str, Any], root: Path = ROOT, sections: dict[str, str] | None = None, steps: list[dict[str, str]] | None = None, input_bytes: bytes = b"") -> Plan:
@@ -254,7 +259,7 @@ def build_plan(meta: dict[str, Any], root: Path = ROOT, sections: dict[str, str]
     manufacturer_slug = re.sub(r"^-|-$", "", re.sub(r"[^a-z0-9]+", "-", str(plan.resolved.get("manufacturer", meta["manufacturer"])).casefold()))
     plan.target_shard = f"data/guides-{manufacturer_slug}.json"; plan.new_shard = plan.target_shard not in manifest
     if plan.new_shard and not plan.new_records.get("manufacturer"): plan.errors.append("creating a manufacturer shard requires a complete, explicitly supplied newManufacturer record")
-    plan.files = [html_path, plan.target_shard] + (["data/guides.json"] if plan.new_shard else []) + [REGISTRIES[n][0] for n in REGISTRIES if plan.new_records.get(n)] + ["sitemap.xml"]
+    plan.files = [html_path, plan.target_shard] + (["data/guides.json"] if plan.new_shard else []) + [REGISTRIES[n][0] for n in REGISTRIES if plan.new_records.get(n)] + ["sitemap.xml", *INDEX_PATHS]
     for shard, guide in guides:
         reasons=[]; title=str(guide.get("title", "")); url=str(guide.get("url", ""))
         if title == meta["title"]: reasons.append("title")
@@ -274,7 +279,9 @@ def build_plan(meta: dict[str, Any], root: Path = ROOT, sections: dict[str, str]
     if plan.duplicates: plan.errors.append("duplicate resolution is uncertain; review the reported candidates")
     if not plan.errors and sections is not None:
         template_path = canonical_template(root, guides); template = template_path.read_text(encoding="utf-8"); plan.sources[template_path.relative_to(root).as_posix()] = sha(template.encode())
-        plan.outputs[html_path] = render_html(plan, template).encode()
+        chrome_hubs = {label: registries[key] + ([meta[REGISTRIES[key][1]]] if plan.new_records.get(key) else [])
+                       for label, key in (("Asset Type", "assetType"), ("Manufacturer", "manufacturer"), ("Model", "model"))}
+        plan.outputs[html_path] = render_html(plan, template, chrome_hubs).encode()
         record = {"title": meta["title"], "description": meta["description"], "assetType": meta["assetType"], "manufacturer": meta["manufacturer"], "model": meta["model"], "url": html_path, "dateAdded": meta["dateAdded"], "steps": [{"title": f'{s["number"]}. {s["title"]}', "instructions": flatten(s["body"])} for s in plan.steps], "documentation": {"CCR": {"Complaint": ccr["complaint"], "Cause": ccr["cause"], "Resolution": ccr["resolution"]}}, "helpfulDetails": meta["helpfulDetails"]}
         shard_data = [] if plan.new_shard else load_json(root / plan.target_shard); plan.outputs[plan.target_shard] = json_bytes(shard_data + [record])
         if plan.new_shard: plan.outputs["data/guides.json"] = json_bytes(manifest + [plan.target_shard])
@@ -284,7 +291,8 @@ def build_plan(meta: dict[str, Any], root: Path = ROOT, sections: dict[str, str]
         urls=sorted((n.find(ns+"loc").text for n in tree.getroot().findall(ns+"url"))); root_node=ET.Element(ns+"urlset")
         for url in urls: u=ET.SubElement(root_node, ns+"url"); ET.SubElement(u, ns+"loc").text=url
         ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9"); plan.outputs["sitemap.xml"] = (ET.tostring(root_node, encoding="unicode", xml_declaration=True) + "\n").encode(); plan.sitemap_additions=[canonical]
-    relevant = ["data/guides.json", "data/hub-asset.json", "data/hub-manufacturer.json", "data/hub-model.json", "sitemap.xml"] + list(manifest)
+        plan.outputs.update(build_discovery_outputs(root, plan.outputs))
+    relevant = ["data/guides.json", "data/hub-asset.json", "data/hub-manufacturer.json", "data/hub-model.json", "sitemap.xml", *INDEX_PATHS] + list(manifest)
     for rel in relevant:
         if (root/rel).is_file(): plan.sources[rel] = sha((root/rel).read_bytes())
     payload={"input":sha(input_bytes), "sources":dict(sorted(plan.sources.items())), "outputs":{k:sha(v) for k,v in sorted(plan.outputs.items())}, "meta":meta}

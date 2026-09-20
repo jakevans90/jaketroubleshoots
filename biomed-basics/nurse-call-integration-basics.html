@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nurse Call Integration Basics | Jake Troubleshoots</title>
   <meta name="datePublished" content="2026-08-11">
   <meta name="dateModified" content="2026-09-06">
   <meta name="description" content="A practical introduction to nurse call interfaces, contact closures, alarm signals, cables, room connections, and common failure patterns.">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css?v=20260919">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
@@ -15,6 +16,7 @@
   <script src="../social-links.js" defer></script>
 </head>
 <body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
 <header>
   <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
   <nav class="site-primary-nav" aria-label="Primary navigation">
@@ -35,15 +37,46 @@
   </nav>
 </header>
 <section class="hero">
-  <h2>Nurse Call Integration Basics</h2>
+  <h1 id="page-heading" tabindex="-1">Nurse Call Integration Basics</h1>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 11, 2026 · Revised September 6, 2026</p>
   <p>How medical equipment sends alarms and calls into a hospital nurse call system</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Nurse call integration can look deceptively simple.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
-  <section class="content-box" id="what-this-page-explains">
-    <h3>What This Page Explains</h3>
+<!-- page-navigation:start -->
+<details class="page-toc">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">
+    <ul>
+      <li><a href="#section-what-this-page-explains">What This Page Explains</a></li>
+      <li><a href="#section-the-simple-version">The Simple Version</a></li>
+      <li><a href="#section-the-device-is-often-just-providing-a-signal">The Device Is Often Just Providing a Signal</a></li>
+      <li><a href="#section-contact-closure-basics">Contact Closure Basics</a></li>
+      <li><a href="#section-why-normally-closed-may-be-useful">Why Normally Closed May Be Useful</a></li>
+      <li><a href="#section-the-cable-matters">The Cable Matters</a></li>
+      <li><a href="#section-the-medical-device-side">The Medical Device Side</a></li>
+      <li><a href="#section-not-every-alarm-may-be-sent">Not Every Alarm May Be Sent</a></li>
+      <li><a href="#section-the-wall-side">The Wall Side</a></li>
+      <li><a href="#section-a-basic-signal-path">A Basic Signal Path</a></li>
+      <li><a href="#section-start-at-the-device">Start at the Device</a></li>
+      <li><a href="#section-swap-known-good-components">Swap Known-Good Components</a></li>
+      <li><a href="#section-beds-and-nurse-call">Beds and Nurse Call</a></li>
+      <li><a href="#section-alarm-devices-and-nurse-call">Alarm Devices and Nurse Call</a></li>
+      <li><a href="#section-do-not-forget-the-clear-condition">Do Not Forget the Clear Condition</a></li>
+      <li><a href="#section-common-failure-patterns">Common Failure Patterns</a></li>
+      <li><a href="#section-clinical-risk-matters">Clinical Risk Matters</a></li>
+      <li><a href="#section-document-what-you-actually-tested">Document What You Actually Tested</a></li>
+      <li><a href="#section-common-mistakes">Common Mistakes</a></li>
+      <li><a href="#section-a-useful-troubleshooting-question">A Useful Troubleshooting Question</a></li>
+      <li><a href="#section-final-thoughts-for-biomeds">Final Thoughts for Biomeds</a></li>
+      <li><a href="#section-important-note">Important Note</a></li>
+    </ul>
+  </nav>
+</details>
+<!-- page-navigation:end -->
+<section class="content-box" id="what-this-page-explains">
+    <h3 id="section-what-this-page-explains" tabindex="-1">What This Page Explains</h3>
     <p>This page covers:</p>
     <ul>
       <li>What nurse call integration does</li>
@@ -61,13 +94,13 @@
   </section>
 
   <section class="content-box" id="the-simple-version">
-    <h3>The Simple Version</h3>
+    <h3 id="section-the-simple-version" tabindex="-1">The Simple Version</h3>
     <p>Many medical devices signal nurse call through a relay or isolated contact that changes state during an alarm. The nurse-call input watches that electrical state and turns it into the notification configured by the hospital. The source device may be acting like a switch rather than sending a detailed digital message, so the downstream system may know that an alarm exists without knowing its clinical priority or text.</p>
     <p>Successful integration depends on the device configuration, correct cable and pinout, normally open or normally closed behavior, nurse-call input programming, alarm conditions, and the facility's response workflow. Test the complete path with clinical and IT stakeholders: create an approved test alarm, confirm the expected annunciation and reset behavior, and document any alarm types that are intentionally excluded. Never assume a connector fit proves electrical or functional compatibility.</p>
   </section>
 
   <section class="content-box" id="the-device-is-often-just-providing-a-signal">
-    <h3>The Device Is Often Just Providing a Signal</h3>
+    <h3 id="section-the-device-is-often-just-providing-a-signal" tabindex="-1">The Device Is Often Just Providing a Signal</h3>
     <p>Imagine a switch connected to a nurse call system.</p>
     <p>When the switch changes position:</p>
     <blockquote><p>Call the nurse.</p></blockquote>
@@ -79,7 +112,7 @@
   </section>
 
   <section class="content-box" id="contact-closure-basics">
-    <h3>Contact Closure Basics</h3>
+    <h3 id="section-contact-closure-basics" tabindex="-1">Contact Closure Basics</h3>
     <p>A relay output may have contacts labeled something like:</p>
     <ul>
       <li>COM</li>
@@ -105,7 +138,7 @@
   </section>
 
   <section class="content-box" id="why-normally-closed-may-be-useful">
-    <h3>Why Normally Closed May Be Useful</h3>
+    <h3 id="section-why-normally-closed-may-be-useful" tabindex="-1">Why Normally Closed May Be Useful</h3>
     <p>A normally closed circuit can sometimes provide a degree of supervision.</p>
     <p>If the cable is unplugged or broken, the circuit opens.</p>
     <p>Depending on the system design, that may generate a fault or alarm rather than silently losing communication.</p>
@@ -114,7 +147,7 @@
   </section>
 
   <section class="content-box" id="the-cable-matters">
-    <h3>The Cable Matters</h3>
+    <h3 id="section-the-cable-matters" tabindex="-1">The Cable Matters</h3>
     <p>Nurse call cables may look simple.</p>
     <p>They are not always interchangeable.</p>
     <p>Differences may include:</p>
@@ -140,7 +173,7 @@
   </section>
 
   <section class="content-box" id="the-medical-device-side">
-    <h3>The Medical Device Side</h3>
+    <h3 id="section-the-medical-device-side" tabindex="-1">The Medical Device Side</h3>
     <p>A medical device may have settings controlling nurse call behavior.</p>
     <p>These may include:</p>
     <ul>
@@ -157,7 +190,7 @@
   </section>
 
   <section class="content-box" id="not-every-alarm-may-be-sent">
-    <h3>Not Every Alarm May Be Sent</h3>
+    <h3 id="section-not-every-alarm-may-be-sent" tabindex="-1">Not Every Alarm May Be Sent</h3>
     <p>This causes confusion.</p>
     <p>A device may display many alarms locally but only send certain alarm priorities to nurse call.</p>
     <p>For example:</p>
@@ -173,7 +206,7 @@
   </section>
 
   <section class="content-box" id="the-wall-side">
-    <h3>The Wall Side</h3>
+    <h3 id="section-the-wall-side" tabindex="-1">The Wall Side</h3>
     <p>The wall connector may lead to:</p>
     <ul>
       <li>A nurse call room controller</li>
@@ -195,7 +228,7 @@
   </section>
 
   <section class="content-box" id="a-basic-signal-path">
-    <h3>A Basic Signal Path</h3>
+    <h3 id="section-a-basic-signal-path" tabindex="-1">A Basic Signal Path</h3>
     <p>Think of the system as:</p>
     <p><strong>Medical Device Alarm</strong></p>
     <p>↓</p>
@@ -221,7 +254,7 @@
   </section>
 
   <section class="content-box" id="start-at-the-device">
-    <h3>Start at the Device</h3>
+    <h3 id="section-start-at-the-device" tabindex="-1">Start at the Device</h3>
     <p>Before blaming the wall system, verify that the medical device actually activates its nurse call output.</p>
     <p>Depending on the equipment and your approved test method, you may be able to:</p>
     <ul>
@@ -238,7 +271,7 @@
   </section>
 
   <section class="content-box" id="swap-known-good-components">
-    <h3>Swap Known-Good Components</h3>
+    <h3 id="section-swap-known-good-components" tabindex="-1">Swap Known-Good Components</h3>
     <p>If possible:</p>
     <p>Use the suspect device and cable in a known-good room.</p>
     <p>Use a known-good device and cable in the suspect room.</p>
@@ -255,7 +288,7 @@
   </section>
 
   <section class="content-box" id="beds-and-nurse-call">
-    <h3>Beds and Nurse Call</h3>
+    <h3 id="section-beds-and-nurse-call" tabindex="-1">Beds and Nurse Call</h3>
     <p>Beds often add additional complexity.</p>
     <p>The bed may provide:</p>
     <ul>
@@ -280,7 +313,7 @@
   </section>
 
   <section class="content-box" id="alarm-devices-and-nurse-call">
-    <h3>Alarm Devices and Nurse Call</h3>
+    <h3 id="section-alarm-devices-and-nurse-call" tabindex="-1">Alarm Devices and Nurse Call</h3>
     <p>With devices such as ventilators or monitors, determine exactly which alarms should activate the external output.</p>
     <p>Test the correct condition.</p>
     <p>Verify:</p>
@@ -295,7 +328,7 @@
   </section>
 
   <section class="content-box" id="do-not-forget-the-clear-condition">
-    <h3>Do Not Forget the Clear Condition</h3>
+    <h3 id="section-do-not-forget-the-clear-condition" tabindex="-1">Do Not Forget the Clear Condition</h3>
     <p>Testing only activation is incomplete.</p>
     <p>Make sure the nurse call clears when expected.</p>
     <p>A relay that activates but never resets is still a problem.</p>
@@ -304,7 +337,7 @@
   </section>
 
   <section class="content-box" id="common-failure-patterns">
-    <h3>Common Failure Patterns</h3>
+    <h3 id="section-common-failure-patterns" tabindex="-1">Common Failure Patterns</h3>
     <h4>Cable damaged</h4>
     <p>Very common.</p>
     <p>Inspect connectors and strain relief.</p>
@@ -325,7 +358,7 @@
   </section>
 
   <section class="content-box" id="clinical-risk-matters">
-    <h3>Clinical Risk Matters</h3>
+    <h3 id="section-clinical-risk-matters" tabindex="-1">Clinical Risk Matters</h3>
     <p>Nurse call integration can be a safety-related function.</p>
     <p>Do not dismiss the failure because:</p>
     <blockquote><p>The device itself still alarms.</p></blockquote>
@@ -344,7 +377,7 @@
   </section>
 
   <section class="content-box" id="document-what-you-actually-tested">
-    <h3>Document What You Actually Tested</h3>
+    <h3 id="section-document-what-you-actually-tested" tabindex="-1">Document What You Actually Tested</h3>
     <p>Weak:</p>
     <blockquote><p>Nurse call checked.</p></blockquote>
     <p>Better:</p>
@@ -353,7 +386,7 @@
   </section>
 
   <section class="content-box" id="common-mistakes">
-    <h3>Common Mistakes</h3>
+    <h3 id="section-common-mistakes" tabindex="-1">Common Mistakes</h3>
     <h4>Testing Any Random Alarm</h4>
     <p>Verify the alarm should activate nurse call.</p>
     <h4>Assuming the Cable Is Universal</h4>
@@ -369,7 +402,7 @@
   </section>
 
   <section class="content-box" id="a-useful-troubleshooting-question">
-    <h3>A Useful Troubleshooting Question</h3>
+    <h3 id="section-a-useful-troubleshooting-question" tabindex="-1">A Useful Troubleshooting Question</h3>
     <p>Ask:</p>
     <p><strong>Can I prove the medical device is changing its nurse call output?</strong></p>
     <p>If yes, you have significantly narrowed the problem.</p>
@@ -379,7 +412,7 @@
   </section>
 
   <section class="content-box" id="final-thoughts-for-biomeds">
-    <h3>Final Thoughts for Biomeds</h3>
+    <h3 id="section-final-thoughts-for-biomeds" tabindex="-1">Final Thoughts for Biomeds</h3>
     <p>Nurse call integration becomes much easier when you stop thinking about it as one giant system.</p>
     <p>Break it apart.</p>
     <p>The medical device generates an alarm.</p>
@@ -396,12 +429,12 @@
   </section>
 
   <section class="content-box" id="important-note">
-    <h3>Important Note</h3>
+    <h3 id="section-important-note" tabindex="-1">Important Note</h3>
     <p>Nurse call interfaces vary significantly between equipment manufacturers and nurse call systems. Follow manufacturer documentation, facility policy, approved wiring, and clinical alarm-management requirements. Never bypass alarm or nurse call safety functions to keep equipment in service.</p>
   </section>
 
   <section class="content-box">
-    <h3>Related Biomed Basics</h3>
+    <h3 id="section-related-biomed-basics" tabindex="-1">Related Biomed Basics</h3>
     <ul>
       <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
       <li><a href="relays-and-contact-closures-in-plain-english.html">Relays and Contact Closures in Plain English</a></li>

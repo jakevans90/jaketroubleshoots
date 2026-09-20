@@ -14,6 +14,7 @@ import tempfile
 from pathlib import Path
 
 from analyze_biomed_basic import ROOT, SITE_URL, parse_input, slugify
+from page_chrome import normalize_page_chrome
 
 
 RELATED = {
@@ -974,7 +975,7 @@ def page_html(title: str, subtitle: str, description: str, hero_intro: str, sect
         rendered.append(f'  <section class="content-box" id="{slugify(heading)}">\n    <h3>{html.escape(heading)}</h3>\n{render_lines(lines)}\n  </section>')
     rendered.append(related_section(slug, titles))
     body = "\n\n".join(rendered)
-    return f'''<!DOCTYPE html>
+    return normalize_page_chrome(f'''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1009,14 +1010,14 @@ def page_html(title: str, subtitle: str, description: str, hero_intro: str, sect
 </footer>
 </body>
 </html>
-'''
+''', detail=True)
 
 
 def title_map(root: Path, new_titles: list[str]) -> dict[str, str]:
     titles = {slugify(title): title for title in new_titles}
     for path in (root / "biomed-basics").glob("*.html"):
         source = path.read_text(encoding="utf-8")
-        match = re.search(r"<h2\b[^>]*>(.*?)</h2>", source, re.I | re.S)
+        match = re.search(r"<h[12]\b[^>]*>(.*?)</h[12]>", source, re.I | re.S)
         titles[path.stem] = re.sub(r"<[^>]+>", "", match.group(1)).strip() if match else path.stem.replace("-", " ").title()
     return titles
 
@@ -1041,7 +1042,7 @@ def parse_batch(path: Path) -> list:
 
 
 def replace_related(source: str, replacement: str) -> str:
-    pattern = re.compile(r'\s*<section class="content-box">\s*<h3>Related Biomed Basics</h3>.*?</section>', re.I | re.S)
+    pattern = re.compile(r'\s*<section class="content-box">\s*<h3\b[^>]*>Related Biomed Basics</h3>.*?</section>', re.I | re.S)
     updated, count = pattern.subn("\n\n" + replacement, source, count=1)
     if count != 1:
         raise ValueError("expected exactly one Related Biomed Basics section")

@@ -96,7 +96,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
             path = ROOT / "biomed-basics" / f"{slug}.html"
             source = path.read_text(encoding="utf-8")
             section = re.search(
-                r'<h3>Related Biomed Basics</h3>\s*<ul>(.*?)</ul>', source, re.S
+                r'<h3\b[^>]*>Related Biomed Basics</h3>\s*<ul>(.*?)</ul>', source, re.S
             )
             self.assertIsNotNone(section, slug)
             hrefs = re.findall(r'href="([^"]+\.html)"', section.group(1))

@@ -10,6 +10,8 @@ from urllib.parse import urlparse, unquote
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from generate_sitemap import production_html_files
 BASE_URL = "https://jaketroubleshoots.com"
 REQ = {"title", "description", "assetType", "manufacturer", "model", "url", "dateAdded", "steps"}
 GUIDE_HEADINGS = ["Asset Type", "Manufacturer", "Model", "What This Guide Helps With", "Step-by-Step Troubleshooting"]
@@ -32,18 +34,18 @@ class LinkParser(HTMLParser):
     def handle_endtag(self, tag):
         self._tag=None
 
-def html_files(): return sorted(p for p in ROOT.rglob('*.html') if '.git' not in p.parts)
+def html_files(): return production_html_files(ROOT)
 def data_files(): return sorted((ROOT/'data').glob('guides-*.json'))
 def norm_url(u): return u[:-5] if u.endswith('.html') else u
 
 def load_records(errors):
     records=[]; listed=[]
-    try: listed=json.load(open(ROOT/'data/guides.json'))
+    try: listed=json.loads((ROOT/'data/guides.json').read_text(encoding='utf-8'))
     except Exception as e: errors.append(f"data/guides.json invalid JSON: {e}")
     for rel in listed:
         p=ROOT/rel
         if not p.exists(): errors.append(f"data/guides.json references missing file: {rel}"); continue
-        try: data=json.load(open(p))
+        try: data=json.loads(p.read_text(encoding='utf-8'))
         except Exception as e: errors.append(f"{rel} invalid JSON: {e}"); continue
         if not isinstance(data,list): errors.append(f"{rel} is not a list"); continue
         for i,r in enumerate(data): records.append((rel,i,r))
@@ -88,7 +90,7 @@ def local_target(src, href):
 
 def validate_links(errors):
     for f in html_files():
-        lp=LinkParser(); lp.feed(f.read_text(errors='ignore'))
+        lp=LinkParser(); lp.feed(f.read_text(encoding='utf-8'))
         for tag,href in lp.links:
             t=local_target(f,href)
             if not t: continue
@@ -96,7 +98,7 @@ def validate_links(errors):
             if target.is_dir(): target=target/'index.html'
             if not target.exists(): errors.append(f"Broken local {tag} link in {f.relative_to(ROOT)}: {href}")
             elif frag and target.suffix=='.html':
-                lp2=LinkParser(); lp2.feed(target.read_text(errors='ignore'))
+                lp2=LinkParser(); lp2.feed(target.read_text(encoding='utf-8'))
                 if frag not in lp2.ids: errors.append(f"Broken fragment in {f.relative_to(ROOT)}: {href}")
 
 def validate_sitemap(records, errors, warnings):
@@ -113,7 +115,7 @@ def validate_templates(records, warnings):
     record_paths={ROOT/r['url'] for _,_,r in records if isinstance(r,dict) and 'url' in r}
     for f in sorted(record_paths):
         if not f.exists(): continue
-        lp=LinkParser(); lp.feed(f.read_text(errors='ignore'))
+        lp=LinkParser(); lp.feed(f.read_text(encoding='utf-8'))
         missing=[h for h in GUIDE_HEADINGS if h not in lp.headings]
         if missing: warnings.append(f"Guide template deviation in {f.relative_to(ROOT)}: missing headings {missing}")
 

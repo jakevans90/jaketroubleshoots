@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>What HL7 Means in Plain English | Jake Troubleshoots</title>
   <meta name="datePublished" content="2026-08-11">
   <meta name="dateModified" content="2026-09-06">
   <meta name="description" content="A practical introduction to HL7 messages, ADT and ORU workflows, interface engines, acknowledgements, and medical-device data exchange.">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css?v=20260919">
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
@@ -15,6 +16,7 @@
   <script src="../social-links.js" defer></script>
 </head>
 <body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
 <header>
   <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
   <nav class="site-primary-nav" aria-label="Primary navigation">
@@ -35,15 +37,45 @@
   </nav>
 </header>
 <section class="hero">
-  <h2>What HL7 Means in Plain English</h2>
+  <h1 id="page-heading" tabindex="-1">What HL7 Means in Plain English</h1>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published August 11, 2026 · Revised September 6, 2026</p>
   <p>A practical introduction to how medical devices and hospital systems exchange patient information</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">HL7 can sound much more complicated than it needs to.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
 </section>
 <main>
-  <section class="content-box" id="what-this-page-explains">
-    <h3>What This Page Explains</h3>
+<!-- page-navigation:start -->
+<details class="page-toc">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">
+    <ul>
+      <li><a href="#section-what-this-page-explains">What This Page Explains</a></li>
+      <li><a href="#section-the-simple-version">The Simple Version</a></li>
+      <li><a href="#section-hl7-is-not-the-network">HL7 Is Not the Network</a></li>
+      <li><a href="#section-think-of-hl7-as-a-structured-sentence">Think of HL7 as a Structured Sentence</a></li>
+      <li><a href="#section-messages-are-made-of-segments">Messages Are Made of Segments</a></li>
+      <li><a href="#section-what-adt-means">What ADT Means</a></li>
+      <li><a href="#section-why-adt-matters-to-biomeds">Why ADT Matters to Biomeds</a></li>
+      <li><a href="#section-what-oru-means">What ORU Means</a></li>
+      <li><a href="#section-a-simplified-device-integration-path">A Simplified Device Integration Path</a></li>
+      <li><a href="#section-what-an-interface-engine-does">What an Interface Engine Does</a></li>
+      <li><a href="#section-what-ack-means">What ACK Means</a></li>
+      <li><a href="#section-patient-matching-is-critical">Patient Matching Is Critical</a></li>
+      <li><a href="#section-location-mapping-matters-too">Location Mapping Matters Too</a></li>
+      <li><a href="#section-an-hl7-problem-may-not-be-an-hl7-problem">An HL7 Problem May Not Be an HL7 Problem</a></li>
+      <li><a href="#section-start-by-asking-what-direction-is-broken">Start by Asking What Direction Is Broken</a></li>
+      <li><a href="#section-real-world-example-monitor-has-no-patient-list">Real-World Example: Monitor Has No Patient List</a></li>
+      <li><a href="#section-real-world-example-vital-signs-not-reaching-epic">Real-World Example: Vital Signs Not Reaching Epic</a></li>
+      <li><a href="#section-common-mistakes">Common Mistakes</a></li>
+      <li><a href="#section-a-useful-troubleshooting-question">A Useful Troubleshooting Question</a></li>
+      <li><a href="#section-final-thoughts-for-biomeds">Final Thoughts for Biomeds</a></li>
+      <li><a href="#section-important-note">Important Note</a></li>
+    </ul>
+  </nav>
+</details>
+<!-- page-navigation:end -->
+<section class="content-box" id="what-this-page-explains">
+    <h3 id="section-what-this-page-explains" tabindex="-1">What This Page Explains</h3>
     <p>This page covers:</p>
     <ul>
       <li>What HL7 is</li>
@@ -64,13 +96,13 @@
   </section>
 
   <section class="content-box" id="the-simple-version">
-    <h3>The Simple Version</h3>
+    <h3 id="section-the-simple-version" tabindex="-1">The Simple Version</h3>
     <p>HL7 is a family of standards that gives healthcare systems a shared structure for exchanging information. In a common Version 2 workflow, one system sends a message about an event or result—such as an admission, room transfer, patient update, observation, or laboratory result—and the receiving system interprets defined fields instead of guessing what each piece of text means.</p>
     <p>HL7 does not make every vendor's database identical, and a sent message is not automatically a charted result. Interfaces still map fields, associate the correct patient and encounter, validate content, and return acknowledgements or errors. For a biomed, the useful troubleshooting question is where the transaction stopped: the device, middleware, interface engine, receiving application, or patient-association workflow.</p>
   </section>
 
   <section class="content-box" id="hl7-is-not-the-network">
-    <h3>HL7 Is Not the Network</h3>
+    <h3 id="section-hl7-is-not-the-network" tabindex="-1">HL7 Is Not the Network</h3>
     <p>This distinction is important.</p>
     <p>HL7 is data communication.</p>
     <p>Ethernet and Wi-Fi are network communication.</p>
@@ -89,7 +121,7 @@
   </section>
 
   <section class="content-box" id="think-of-hl7-as-a-structured-sentence">
-    <h3>Think of HL7 as a Structured Sentence</h3>
+    <h3 id="section-think-of-hl7-as-a-structured-sentence" tabindex="-1">Think of HL7 as a Structured Sentence</h3>
     <p>An HL7 message is basically a very organized block of text.</p>
     <p>Different pieces of information are placed into specific locations.</p>
     <p>One section may identify the patient.</p>
@@ -101,7 +133,7 @@
   </section>
 
   <section class="content-box" id="messages-are-made-of-segments">
-    <h3>Messages Are Made of Segments</h3>
+    <h3 id="section-messages-are-made-of-segments" tabindex="-1">Messages Are Made of Segments</h3>
     <p>HL7 messages are divided into sections called segments.</p>
     <p>You may see abbreviations such as:</p>
     <ul>
@@ -161,7 +193,7 @@
   </section>
 
   <section class="content-box" id="what-adt-means">
-    <h3>What ADT Means</h3>
+    <h3 id="section-what-adt-means" tabindex="-1">What ADT Means</h3>
     <p>ADT generally refers to:</p>
     <p><strong>Admission, Discharge, and Transfer.</strong></p>
     <p>An ADT interface tells other systems who the patient is and where they are.</p>
@@ -184,7 +216,7 @@
   </section>
 
   <section class="content-box" id="why-adt-matters-to-biomeds">
-    <h3>Why ADT Matters to Biomeds</h3>
+    <h3 id="section-why-adt-matters-to-biomeds" tabindex="-1">Why ADT Matters to Biomeds</h3>
     <p>Imagine a bedside monitor that displays waveforms and vital signs correctly.</p>
     <p>But the patient list is empty.</p>
     <p>Staff cannot select the patient.</p>
@@ -207,7 +239,7 @@
   </section>
 
   <section class="content-box" id="what-oru-means">
-    <h3>What ORU Means</h3>
+    <h3 id="section-what-oru-means" tabindex="-1">What ORU Means</h3>
     <p>ORU messages are commonly used to send observation results.</p>
     <p>For a biomed, you can think of this as:</p>
     <p><strong>results going toward the chart.</strong></p>
@@ -227,7 +259,7 @@
   </section>
 
   <section class="content-box" id="a-simplified-device-integration-path">
-    <h3>A Simplified Device Integration Path</h3>
+    <h3 id="section-a-simplified-device-integration-path" tabindex="-1">A Simplified Device Integration Path</h3>
     <p>A common path might look something like:</p>
     <p><strong>Patient Monitor</strong></p>
     <p>↓</p>
@@ -252,7 +284,7 @@
   </section>
 
   <section class="content-box" id="what-an-interface-engine-does">
-    <h3>What an Interface Engine Does</h3>
+    <h3 id="section-what-an-interface-engine-does" tabindex="-1">What an Interface Engine Does</h3>
     <p>Hospitals usually have many systems communicating with each other.</p>
     <p>An interface engine helps manage those connections.</p>
     <p>You may hear names such as:</p>
@@ -281,7 +313,7 @@
   </section>
 
   <section class="content-box" id="what-ack-means">
-    <h3>What ACK Means</h3>
+    <h3 id="section-what-ack-means" tabindex="-1">What ACK Means</h3>
     <p>ACK means acknowledgment.</p>
     <p>One system sends a message.</p>
     <p>The receiving system sends something back saying, essentially:</p>
@@ -295,7 +327,7 @@
   </section>
 
   <section class="content-box" id="patient-matching-is-critical">
-    <h3>Patient Matching Is Critical</h3>
+    <h3 id="section-patient-matching-is-critical" tabindex="-1">Patient Matching Is Critical</h3>
     <p>Getting a vital sign into the EMR is not enough.</p>
     <p>It has to go into the <strong>correct patient's chart</strong>.</p>
     <p>That means systems need reliable patient identifiers.</p>
@@ -316,7 +348,7 @@
   </section>
 
   <section class="content-box" id="location-mapping-matters-too">
-    <h3>Location Mapping Matters Too</h3>
+    <h3 id="section-location-mapping-matters-too" tabindex="-1">Location Mapping Matters Too</h3>
     <p>Hospitals often have their own naming conventions.</p>
     <p>The EMR may call a location:</p>
     <blockquote><p>4W-412-A</p></blockquote>
@@ -329,7 +361,7 @@
   </section>
 
   <section class="content-box" id="an-hl7-problem-may-not-be-an-hl7-problem">
-    <h3>An HL7 Problem May Not Be an HL7 Problem</h3>
+    <h3 id="section-an-hl7-problem-may-not-be-an-hl7-problem" tabindex="-1">An HL7 Problem May Not Be an HL7 Problem</h3>
     <p>This is worth remembering.</p>
     <p>People often use:</p>
     <blockquote><p>HL7 issue</p></blockquote>
@@ -354,7 +386,7 @@
   </section>
 
   <section class="content-box" id="start-by-asking-what-direction-is-broken">
-    <h3>Start by Asking What Direction Is Broken</h3>
+    <h3 id="section-start-by-asking-what-direction-is-broken" tabindex="-1">Start by Asking What Direction Is Broken</h3>
     <p>A very useful first question is:</p>
     <p><strong>Is information failing on the way to the device or on the way from the device?</strong></p>
     <h4>If patient demographics are missing</h4>
@@ -379,7 +411,7 @@
   </section>
 
   <section class="content-box" id="real-world-example-monitor-has-no-patient-list">
-    <h3>Real-World Example: Monitor Has No Patient List</h3>
+    <h3 id="section-real-world-example-monitor-has-no-patient-list" tabindex="-1">Real-World Example: Monitor Has No Patient List</h3>
     <p>The bedside monitor is online.</p>
     <p>Waveforms work.</p>
     <p>Central monitoring works.</p>
@@ -400,7 +432,7 @@
   </section>
 
   <section class="content-box" id="real-world-example-vital-signs-not-reaching-epic">
-    <h3>Real-World Example: Vital Signs Not Reaching Epic</h3>
+    <h3 id="section-real-world-example-vital-signs-not-reaching-epic" tabindex="-1">Real-World Example: Vital Signs Not Reaching Epic</h3>
     <p>The bedside monitor displays:</p>
     <ul>
       <li>HR</li>
@@ -425,7 +457,7 @@
   </section>
 
   <section class="content-box" id="common-mistakes">
-    <h3>Common Mistakes</h3>
+    <h3 id="section-common-mistakes" tabindex="-1">Common Mistakes</h3>
     <h4>Treating HL7 Like a Cable</h4>
     <p>HL7 is not a physical connection.</p>
     <p>It is a message standard.</p>
@@ -446,7 +478,7 @@
   </section>
 
   <section class="content-box" id="a-useful-troubleshooting-question">
-    <h3>A Useful Troubleshooting Question</h3>
+    <h3 id="section-a-useful-troubleshooting-question" tabindex="-1">A Useful Troubleshooting Question</h3>
     <p>When working on integration, ask:</p>
     <p><strong>Where was the last place the information was known to be correct?</strong></p>
     <p>If the monitor displays the right patient and the right vital signs, those pieces are correct at the monitor.</p>
@@ -458,7 +490,7 @@
   </section>
 
   <section class="content-box" id="final-thoughts-for-biomeds">
-    <h3>Final Thoughts for Biomeds</h3>
+    <h3 id="section-final-thoughts-for-biomeds" tabindex="-1">Final Thoughts for Biomeds</h3>
     <p>HL7 does not need to be mysterious.</p>
     <p>At the basic level, it is simply a structured way for healthcare systems to exchange information.</p>
     <p>Patient information often travels toward the medical device.</p>
@@ -487,12 +519,12 @@
   </section>
 
   <section class="content-box" id="important-note">
-    <h3>Important Note</h3>
+    <h3 id="section-important-note" tabindex="-1">Important Note</h3>
     <p>This page is an educational overview. HL7 implementations vary widely between healthcare organizations, vendors, EMR systems, integration platforms, and device manufacturers. Follow your facility's network, cybersecurity, patient-data, and integration procedures when troubleshooting connected medical equipment.</p>
   </section>
 
   <section class="content-box">
-    <h3>Related Biomed Basics</h3>
+    <h3 id="section-related-biomed-basics" tabindex="-1">Related Biomed Basics</h3>
     <ul>
       <li><a href="hospital-emrs-and-medical-device-integration.html">Hospital EMRs and Medical Device Integration</a></li>
       <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>

@@ -22,6 +22,9 @@
   const modelEl = getValueAfterHeading('Model');
 
   if (!assetEl && !mfrEl && !modelEl) return;
+  // Published pages already contain exact catalog links. Only older or
+  // unmatched pages need this progressive enhancement and its three requests.
+  if ([assetEl, mfrEl, modelEl].every(el => !el || el.querySelector('a'))) return;
 
   const assetName = assetEl ? assetEl.textContent.trim() : null;
   const mfrName = mfrEl ? mfrEl.textContent.trim() : null;

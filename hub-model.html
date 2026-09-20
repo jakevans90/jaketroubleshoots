@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="page-title">Model Hub – Jake Troubleshoots</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Troubleshooting guides and preventive maintenance procedures for this model.">
+  <link rel="stylesheet" href="style.css?v=20260919">
 
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
@@ -21,6 +23,7 @@
 </head>
 
 <body>
+<a class="skip-link" href="#hub-name">Skip to content</a>
 
 <header>
   <a href="index.html" class="site-logo">
@@ -47,7 +50,7 @@
 </header>
 
 <section class="hero">
-  <h2 id="hub-name">Loading…</h2>
+  <h1 id="hub-name" tabindex="-1">Loading…</h1>
 
   <div class="asset-hero-icon" id="model-hero-icon" style="display:none;">
     <img id="model-hero-img" src="" alt="">
@@ -92,7 +95,7 @@
     <div id="pm-grid" class="guides-grid" style="padding:20px 0;"></div>
   </div>
 
-  <div style="max-width:1100px; margin:0 auto; padding:0 20px;">
+  <div id="troubleshooting-section" style="max-width:1100px; margin:0 auto; padding:0 20px;">
     <h3 style="border-bottom:3px solid #8fff00; padding-bottom:8px;">Troubleshooting Guides</h3>
     <div id="guides-grid" class="guides-grid" style="padding:20px 0;"></div>
   </div>
@@ -114,7 +117,7 @@
   <p>© 2026 Jake Troubleshoots</p>
 </footer>
 
-<script src="guides.js"></script>
+<script src="guides.js?v=20260919"></script>
 <script src="learning-recommendations.js" defer></script>
 
 <script>
@@ -160,10 +163,11 @@
     if (el) el.innerHTML = '';
   }
 
-  function addMetaPill(text) {
+  function addMetaPill(text, href) {
     if (!text) return;
 
-    const span = document.createElement('span');
+    const span = document.createElement(href ? 'a' : 'span');
+    if (href) span.href = href;
     span.textContent = text;
     span.style.cssText = 'background:#000;color:#8fff00;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:bold;';
     hubMetaEl.appendChild(span);
@@ -322,7 +326,7 @@
   }
 
   try {
-    const [allGuides, allPmProcedures, hubData, assetHubData] = await Promise.all([
+    const [allGuides, allPmProcedures, hubData, assetHubData, manufacturerHubData] = await Promise.all([
       fetchGuides(),
 
       fetch('data/preventive-maintenance.json')
@@ -337,7 +341,8 @@
       fetch('data/hub-asset.json').then(r => {
         if (!r.ok) throw new Error('Failed to load hub-asset.json');
         return r.json();
-      })
+      }),
+      fetch('data/hub-manufacturer.json').then(r => r.ok ? r.json() : []).catch(() => [])
     ]);
 
     const hub = hubData.find(h => h.slug === slug);
@@ -371,18 +376,18 @@
 
     clearElement(hubMetaEl);
 
-    addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`);
+    addMetaPill(`${guides.length} troubleshooting guide${guides.length !== 1 ? 's' : ''}`, '#troubleshooting-section');
 
     if (pmProcedures.length) {
-      addMetaPill(`${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}`);
+      addMetaPill(`${pmProcedures.length} PM procedure${pmProcedures.length !== 1 ? 's' : ''}`, '#pm-section-wrap');
     }
 
     if (manufacturer) {
-      addMetaPill(manufacturer);
+      addMetaPill(manufacturer, manufacturerHubData.find(item => item.name === manufacturer && item.flags?.exists)?.url);
     }
 
     if (assetType) {
-      addMetaPill(assetType);
+      addMetaPill(assetType, findAssetHub(assetType, assetHubData)?.url);
     }
 
     const assetHub = findAssetHub(assetType, assetHubData);
