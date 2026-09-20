@@ -11,25 +11,17 @@ function loadPmRelatedGuides() {
   }
 
   function loadAllGuides() {
-    return fetch('/data/guides.json?v=' + Date.now())
-      .then(response => response.json())
-      .then(manifest => {
-        if (!Array.isArray(manifest) || typeof manifest[0] !== 'string') {
-          return manifest;
-        }
-
-        return Promise.all(
-          manifest.map(file =>
-            fetch('/' + file + '?v=' + Date.now()).then(response => response.json())
-          )
-        ).then(shards => shards.flat());
+    return fetch('/data/guide-discovery.json')
+      .then(response => {
+        if (!response.ok) throw new Error('Could not load guide discovery index');
+        return response.json();
       });
   }
 
   Promise.all([
     loadAllGuides(),
-    fetch('/data/preventive-maintenance.json?v=' + Date.now()).then(response => response.json()),
-    fetch('/data/hub-asset.json?v=' + Date.now()).then(response => response.json())
+    fetch('/data/preventive-maintenance.json').then(response => response.json()),
+    fetch('/data/hub-asset.json').then(response => response.json())
   ])
     .then(([allGuides, pmProcedures, assetHubData]) => {
       const currentPm = pmProcedures.find(pm =>

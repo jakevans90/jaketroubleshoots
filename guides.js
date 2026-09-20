@@ -1,31 +1,51 @@
 // guides.js
 
 let assetHubDataCache = null;
+let guideDiscoveryPromise = null;
+let guideSearchPromise = null;
 
-// Fetch all guides (handles JSON array or list of JSON filenames)
-async function fetchGuides() {
+// Listing pages need metadata, not every guide's troubleshooting instructions.
+// Search opts into the separate full-content vocabulary. Failed requests can be
+// retried, and strict callers can distinguish a failed library from no matches.
+async function fetchGuides({ strict = false, search = false } = {}) {
   try {
-    const res = await fetch('data/guides.json');
-    if (!res.ok) throw new Error('Could not load guides.json');
-
-    const jsonData = await res.json();
-
-    // If jsonData is a list of JSON files, fetch all of them
-    const isFileList = Array.isArray(jsonData) && typeof jsonData[0] === 'string';
-    if (isFileList) {
-      const allData = await Promise.all(
-        jsonData.map(file =>
-          fetch(file).then(res => {
-            if (!res.ok) throw new Error('Could not load ' + file);
-            return res.json();
-          })
-        )
-      );
-      return allData.flat();
+    if (!guideDiscoveryPromise) {
+      guideDiscoveryPromise = fetch('/data/guide-discovery.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Could not load guide discovery index');
+          return response.json();
+        })
+        .then(records => {
+          if (!Array.isArray(records)) throw new Error('Invalid guide discovery index');
+          return records;
+        })
+        .catch(error => {
+          guideDiscoveryPromise = null;
+          throw error;
+        });
     }
-
-    return jsonData;
+    if (!search) return await guideDiscoveryPromise;
+    if (!guideSearchPromise) {
+      guideSearchPromise = fetch('/data/guide-search-terms.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Could not load guide search vocabulary');
+          return response.json();
+        })
+        .then(vocabulary => {
+          if (!vocabulary || typeof vocabulary !== 'object' || Array.isArray(vocabulary)) {
+            throw new Error('Invalid guide search vocabulary');
+          }
+          return vocabulary;
+        })
+        .catch(error => {
+          guideSearchPromise = null;
+          throw error;
+        });
+    }
+    const [records, vocabulary] = await Promise.all([guideDiscoveryPromise, guideSearchPromise]);
+    return records.map(record => ({ ...record, searchText: vocabulary[record.url] || '' }));
   } catch (err) {
+    if (strict) throw err;
     console.error('Guide load error:', err);
     return [];
   }
@@ -36,7 +56,7 @@ async function fetchAssetHubData() {
   if (assetHubDataCache) return assetHubDataCache;
 
   try {
-    const res = await fetch('data/hub-asset.json');
+    const res = await fetch('/data/hub-asset.json');
     if (!res.ok) throw new Error('Could not load hub-asset.json');
     assetHubDataCache = await res.json();
     return assetHubDataCache;

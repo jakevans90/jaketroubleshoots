@@ -104,20 +104,12 @@ function loadRelatedGuides() {
   }
 
   Promise.all([
-    fetch("/data/guides.json?v=" + Date.now())
-      .then(res => res.json())
-      .then(fileList => {
-        if (Array.isArray(fileList) && typeof fileList[0] === "string") {
-          return Promise.all(
-            fileList.map(file =>
-              fetch("/" + file + "?v=" + Date.now()).then(r => r.json())
-            )
-          ).then(data => data.flat());
-        }
-        return fileList;
-      }),
-    fetch("/data/hub-asset.json?v=" + Date.now()).then(res => res.json()),
-    fetch("/data/preventive-maintenance.json?v=" + Date.now())
+    fetch("/data/guide-discovery.json").then(res => {
+      if (!res.ok) throw new Error('Could not load guide discovery index');
+      return res.json();
+    }),
+    fetch("/data/hub-asset.json").then(res => res.json()),
+    fetch("/data/preventive-maintenance.json")
       .then(res => res.ok ? res.json() : [])
       .catch(() => [])
   ])
@@ -145,6 +137,7 @@ function loadRelatedGuides() {
       );
 
       const related = allGuides.filter(g =>
+        g.manufacturer === currentGuide.manufacturer &&
         g.model === currentGuide.model &&
         g.url.split("/").pop().replace(".html", "") !== currentPage
       );

@@ -17,6 +17,8 @@ import tempfile
 from dataclasses import dataclass, field, asdict
 from typing import Any
 
+from build_guide_discovery import INDEX_PATHS, build_outputs as build_discovery_outputs
+
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = Path(__file__).with_name("guide_enhancement_config.json")
 BEGIN = "<!-- GUIDE-ENHANCEMENTS:BEGIN -->"
@@ -394,7 +396,8 @@ def render_block(enh: dict[str,Any], rels: dict[str,list[dict[str,Any]]], refs: 
 def insert_block(page: str, block: str) -> str:
     if BEGIN in page and END in page:
         return re.sub(re.escape(BEGIN)+r".*?"+re.escape(END),block,page,flags=re.S)
-    positions=[page.find(x) for x in ('<h2>Work Order Documentation','<h2>Final Thought','</main>')]
+    positions=[match.start() if (match := re.search(pattern, page)) else -1
+               for pattern in (r'<h2\b[^>]*>Work Order Documentation', r'<h2\b[^>]*>Final Thought', r'</main>')]
     pos=next((x for x in positions if x>=0),-1)
     if pos<0: raise EnhancementError("HTML has no </main> insertion point")
     return page[:pos]+block+"\n"+page[pos:]
@@ -464,6 +467,11 @@ def build_plan(root: Path=ROOT, *, guide: str|None=None, manufacturer: str|None=
             if page!=ref.html_text: outputs[ref.html_path]=page.encode()
     for shard,data in shard_updates.items(): outputs[shard]=json_bytes(data)
     source_paths={"tools/guide_enhancement_config.json"}
+    if shard_updates:
+        outputs.update(build_discovery_outputs(root, outputs))
+        source_paths.add("data/guides.json")
+        source_paths.update(ref.shard for ref in refs)
+        source_paths.update(relative for relative in INDEX_PATHS if (root/relative).is_file())
     for p in proposals: source_paths.update((p.ref.shard,p.ref.html_path))
     sources={rel:sha((root/rel).read_bytes()) for rel in sorted(source_paths)}
     payload={"sources":sources,"outputs":{k:sha(v) for k,v in sorted(outputs.items())},"analyzerVersion":cfg["analyzerVersion"]}

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!yesBtn || !noBtn) return;
 
   // Grab both hero lines
-  const heroTitle = document.querySelector(".hero h2")?.textContent || "";
+  const heroTitle = document.querySelector(".hero h1, .hero h2")?.textContent || "";
   const heroDesc = document.querySelector(".hero p")?.textContent || "";
   const guideName = (heroTitle + " - " + heroDesc).trim() || "Unknown Guide";
 

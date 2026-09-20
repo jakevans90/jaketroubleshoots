@@ -160,7 +160,7 @@ def load_existing(root: Path) -> list[ExistingArticle]:
     articles = []
     for path in sorted((root / "biomed-basics").glob("*.html")):
         source = path.read_text(encoding="utf-8")
-        heading = re.search(r"<h2\b[^>]*>(.*?)</h2>", source, re.I | re.S)
+        heading = re.search(r"<h[12]\b[^>]*>(.*?)</h[12]>", source, re.I | re.S)
         title = html_text(heading.group(1)) if heading else path.stem.replace("-", " ").title()
         articles.append(ExistingArticle(path, title, html_text(source), f"biomed-basics/{path.name}"))
     return articles

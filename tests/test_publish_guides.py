@@ -70,6 +70,8 @@ class BatchPublisherTests(unittest.TestCase):
             self.assertEqual(result["guideCount"], 10)
             shard = json.loads((root / "data/guides-acme.json").read_text(encoding="utf-8"))
             self.assertEqual(len(shard), 11)
+            discovery = json.loads((root / "data/guide-discovery.json").read_text(encoding="utf-8"))
+            self.assertEqual({record["url"] for record in discovery}, {record["url"] for record in shard})
             sitemap = (root / "sitemap.xml").read_text(encoding="utf-8")
             for index in range(1, 11):
                 issue = self.ISSUES[index - 1]
