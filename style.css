@@ -39,6 +39,7 @@
   --transition: 0.2s ease;
   --content-width: 1100px;
   --card-min: 280px;
+  --collection-columns: 3;
 }
 
 html {
@@ -561,7 +562,7 @@ footer a:hover {
   flex-direction: column;
   width: 100%;
   height: 100%;            /* important */
-  min-height: 400px;
+  min-height: 330px;
   text-decoration: none;
   color: inherit;
   box-sizing: border-box;
@@ -665,7 +666,7 @@ footer a:hover {
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 400px;
+  min-height: 330px;
   text-decoration: none;
   color: inherit;
   box-sizing: border-box;
@@ -2187,42 +2188,6 @@ footer a:hover {
 }
 
 /* =========================
-   Biomed Basics Article Cards
-   ========================= */
-
-.guide-card.basics-card {
-  min-height: 320px;
-}
-
-.guide-card.basics-card .card-content {
-  text-align: left;
-  justify-content: flex-start;
-}
-
-.guide-card.basics-card .card-content h3 {
-  text-align: center;
-  margin-bottom: 14px;
-}
-
-.guide-card.basics-card .card-content p:not(.date) {
-  display: block !important;
-  -webkit-line-clamp: unset !important;
-  -webkit-box-orient: unset !important;
-  overflow: visible !important;
-  max-height: none !important;
-  line-height: 1.5;
-}
-
-.guide-card.basics-card .badges {
-  margin-top: auto;
-  padding-top: 14px;
-}
-
-.guide-card.basics-card .date {
-  text-align: center;
-}
-
-/* =========================
    Biomed Basics article roadmap
    ========================= */
 
@@ -2687,6 +2652,8 @@ footer a:hover {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
+.pm-card-label { display: none; }
+
 /* No repeated "Troubleshooting Guide" pill — cleaner and less busy */
 .guide-card .card-content::before {
   content: none;
@@ -2701,24 +2668,6 @@ footer a:hover {
   justify-content: flex-start;
 }
 
-/* Keep PM cards centered while regular guide cards use field-reference layout */
-.pm-card .card-content {
-  text-align: center;
-}
-
-.pm-card .badges {
-  justify-content: center;
-}
-
-.pm-card .card-content h3 {
-  text-align: center;
-}
-
-.pm-card .pm-card-label {
-  align-self: center;
-  text-align: center;
-}
-
 .guide-card .date {
   width: 100%;
   border-top: 1px solid var(--border-soft);
@@ -2728,26 +2677,6 @@ footer a:hover {
 
 .guide-card:hover .card-content {
   border-left-color: var(--pink);
-}
-
-
-/* PM cards already have their own "PM Procedure" label and gradient border */
-.pm-card .card-content {
-  border-left: 1px solid var(--border-soft);
-}
-
-.pm-card .card-content::before {
-  content: none;
-}
-
-
-/* Keep Biomed Basics cards calmer */
-.guide-card.basics-card .card-content {
-  border-left-color: var(--border-soft);
-}
-
-.guide-card.basics-card .card-content h3 {
-  text-align: center;
 }
 
 
@@ -3074,17 +3003,8 @@ footer p:nth-last-child(2) {
 .article-category-heading[data-group-heading="troubleshooting-safety"] { order: 40; }
 .guide-card[data-biomed-group="troubleshooting-safety"] { order: 41; }
 
-.biomed-article-library .guide-card.basics-card {
-  min-height: 285px;
-}
 
-.biomed-article-library .guide-card.basics-card .card-content {
-  padding: 24px;
-}
 
-.biomed-article-library .guide-card[data-biomed-group="start-here"] .card-content {
-  border-top: 1px solid var(--border-soft);
-}
 
 .biomed-library-links {
   padding: clamp(24px, 4vw, 36px);
@@ -3117,155 +3037,11 @@ footer p:nth-last-child(2) {
     text-align: left;
   }
 
-  .biomed-article-library .guide-card.basics-card {
-    min-height: 0;
-  }
 
   .biomed-footer-grid {
     grid-template-columns: 1fr;
   }
 }
-
-/* Organized guide sections: prevent short model groups from stretching */
-.search-results-section .guides-grid,
-.recent-guides-section #guides-organized .guides-grid {
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
-}
-
-/* =========================
-   Preventive Maintenance Cards
-   Gradient border with hover flip
-   Must stay at bottom of CSS
-   ========================= */
-
-.guide-card.pm-card .card-content {
-  position: relative;
-  text-align: left;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
-}
-
-.guide-card.pm-card:hover .card-content {
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
-  box-shadow: var(--shadow-md);
-}
-
-/* PM cards should not inherit troubleshooting guide left-stripe behavior */
-.guide-card.pm-card:hover .card-content {
-  border-left-color: transparent;
-}
-
-.guide-card.pm-card .card-content::before {
-  content: none;
-}
-
-.guide-card.pm-card .pm-card-label {
-  display: inline-block;
-  align-self: flex-start;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--black-soft);
-  color: white;
-  font-size: 0.72rem;
-  font-weight: bold;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-/* =========================================================
-   Final Card Type Overrides
-   Keep this at the very bottom of style.css
-   ========================================================= */
-
-
-/* =========================
-   PM Cards: gradient only, no PM badge
-   ========================= */
-
-.guide-card.pm-card .card-content {
-  position: relative;
-  text-align: left;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--pink), var(--lime)) border-box;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition), background 0.25s ease;
-}
-
-.guide-card.pm-card:hover .card-content {
-  border: 3px solid transparent;
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    linear-gradient(90deg, var(--lime), var(--pink)) border-box;
-  box-shadow: var(--shadow-md);
-}
-
-/* Hide redundant PM Procedure pill */
-.guide-card.pm-card .pm-card-label {
-  display: none;
-}
-
-/* PM cards should not inherit troubleshooting left-stripe behavior */
-.guide-card.pm-card .card-content::before {
-  content: none;
-}
-
-
-/* =========================
-   Biomed Basics Cards: calm/original article look
-   ========================= */
-
-.guide-card.basics-card {
-  min-height: 320px;
-}
-
-.guide-card.basics-card .card-content {
-  text-align: center;
-  border: 1px solid var(--border-soft);
-  border-left: 1px solid var(--border-soft);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-  justify-content: flex-start;
-}
-
-.guide-card.basics-card:hover .card-content {
-  border-left-color: var(--border-soft);
-  border-color: var(--border-soft);
-}
-
-.guide-card.basics-card .card-content h3 {
-  text-align: center;
-  margin-bottom: 14px;
-}
-
-.guide-card.basics-card .card-content p:not(.date) {
-  display: block !important;
-  -webkit-line-clamp: unset !important;
-  -webkit-box-orient: unset !important;
-  overflow: visible !important;
-  max-height: none !important;
-  line-height: 1.5;
-}
-
-.guide-card.basics-card .badges {
-  justify-content: center;
-  margin-top: auto;
-  padding-top: 14px;
-}
-
-.guide-card.basics-card .date {
-  text-align: center;
-}
-
 
 /* =========================
    Vendor Cards: force original vendor look
@@ -3574,12 +3350,6 @@ footer p:nth-last-child(2) {
   border-radius: 16px;
 }
 
-.featured-guides-section .guide-card,
-.recent-guides-section .guide-card,
-.pm-aem-section .guide-card,
-.featured-biomed-section .guide-card {
-  min-height: 330px;
-}
 
 .featured-biomed-section {
   background: linear-gradient(180deg, rgba(143, 255, 0, 0.045), rgba(255, 255, 255, 0));
@@ -4228,47 +3998,23 @@ footer p:nth-last-child(2) {
 
 .universal-empty-state h3 { margin-top: 0; }
 
-html body .universal-pm-results-grid:has(> .pm-card:only-child) {
-  max-width: none;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-html body .universal-pm-results-grid:has(> .pm-card:nth-child(2):last-child) {
-  max-width: none;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 /* =========================
    Sitewide Collection Grid
    Three cards on desktop, two on tablet, one on mobile.
-   Short rows stay centered instead of stretching cards.
+   Short rows retain the same column width as full rows.
    ========================= */
-html body .guides-grid,
-html body.pm-library-page #pm-organized .guides-grid,
-html body .search-results-section .guides-grid,
-html body .recent-guides-section #guides-organized .guides-grid,
-html body .biomed-article-group .guides-grid {
+html body #guides-grid,
+html body #related-guides-grid,
+html body #featured-grid,
+html body .guides-grid {
   width: 100%;
   max-width: var(--content-width);
   margin-right: auto;
   margin-left: auto;
-  grid-template-columns: repeat(var(--collection-columns, 3), minmax(0, 1fr));
+  /* Override legacy inline track widths on related-resource grids too. */
+  grid-template-columns: repeat(var(--collection-columns), minmax(0, 1fr)) !important;
   align-items: stretch;
   justify-content: center;
-}
-
-html body .guides-grid:has(> .guide-card:only-child),
-html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:only-child),
-html body .search-results-section .guides-grid:has(> .guide-card:only-child) {
-  grid-template-columns: minmax(0, calc((100% - var(--collection-gap-space, 40px)) / var(--collection-columns, 3)));
-  justify-content: start;
-}
-
-html body .guides-grid:has(> .guide-card:nth-child(2):last-child),
-html body.pm-library-page #pm-organized .guides-grid:has(> .guide-card:nth-child(2):last-child),
-html body .search-results-section .guides-grid:has(> .guide-card:nth-child(2):last-child) {
-  grid-template-columns: repeat(var(--short-row-columns, 2), minmax(0, calc((100% - var(--collection-gap-space, 40px)) / var(--collection-columns, 3))));
-  justify-content: start;
 }
 
 .library-results-shell {
@@ -4279,42 +4025,16 @@ html body .search-results-section .guides-grid:has(> .guide-card:nth-child(2):la
   padding: 0;
 }
 
-/* Exact-model PM recommendations are contextual features, not collection results. */
-html body .model-specific-pm-grid,
-html body .model-specific-pm-grid:has(> .guide-card:only-child) {
-  max-width: none;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-/* Hub PM rows retain their useful full-width treatment for one or two matches. */
-html body #pm-grid:has(> .pm-card:only-child) {
-  max-width: none;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-html body #pm-grid:has(> .pm-card:nth-child(2):last-child) {
-  max-width: none;
-  grid-template-columns: repeat(var(--short-row-columns, 2), minmax(0, 1fr));
-}
-
-/* Preserve useful reading widths, including short result rows. */
-@media (max-width: 980px) {
+/* Keep three columns in desktop windows; reduce only at smaller widths. */
+@media (max-width: 899px) {
   :root {
     --collection-columns: 2;
-    --collection-gap-space: 20px;
   }
 }
 
 @media (max-width: 640px) {
   :root {
     --collection-columns: 1;
-    --collection-gap-space: 0px;
-    --short-row-columns: 1;
-  }
-
-  /* Older guide HTML has an inline fixed minimum track width. */
-  #related-guides-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
   }
 
   #section-tips {
