@@ -17,6 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DETAIL_DIRS = ("guides", "preventive-maintenance", "biomed-basics")
 TOC = re.compile(r'<!-- page-navigation:start -->.*?<!-- page-navigation:end -->\s*', re.S)
+ASSET_VERSIONS = {"style.css": "20260920", "site-search.js": "20260919-2"}
 
 
 def production_pages(root):
@@ -34,7 +35,7 @@ def normalize_page_chrome(source, detail=False, hubs=None):
     # Version changed shared assets so cached pages cannot mix old JS/CSS with
     # new semantic markup. Keep this stable until the next shared-asset release.
     source = re.sub(r'(href|src)="((?:\.\./|/)?)(style\.css|guides\.js|site-search\.js|related-guides\.js|feedback\.js|guide-icons\.js|hub-links\.js)(?:\?[^\"]*)?"',
-                    lambda match: f'{match[1]}="{match[2]}{match[3]}?v={"20260919-2" if match[3] == "site-search.js" else "20260919"}"', source)
+                    lambda match: f'{match[1]}="{match[2]}{match[3]}?v={ASSET_VERSIONS.get(match[3], "20260919")}"', source)
     source = re.sub(r'<html(?![^>]*\blang=)(\b[^>]*)>', r'<html lang="en"\1>', source, count=1, flags=re.I)
     if not re.search(r'<meta\s+[^>]*charset=', source, re.I):
         source = re.sub(r'(<head\b[^>]*>)', r'\1' + newline + '  <meta charset="UTF-8">', source, count=1, flags=re.I)
