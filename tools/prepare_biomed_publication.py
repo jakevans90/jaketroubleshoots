@@ -145,6 +145,8 @@ RELATED = {
     "how-to-build-a-useful-escalation-package": ["how-to-think-before-calling-a-vendor", "how-to-work-with-it-as-a-biomed", "how-to-read-and-use-medical-device-event-logs", "how-to-document-an-intermittent-problem", "how-to-use-equipment-history-during-troubleshooting"],
     "service-mode-and-built-in-diagnostics-what-to-trust": ["how-to-troubleshoot-failed-self-tests", "when-to-trust-the-device-s-internal-self-test", "how-to-read-and-use-medical-device-event-logs", "error-codes-what-they-tell-you-and-what-they-don-t", "how-to-choose-the-right-test-equipment"],
     "how-to-investigate-repeat-failures": ["how-to-use-equipment-history-during-troubleshooting", "root-cause-troubleshooting-basics", "how-to-document-an-intermittent-problem", "how-to-build-a-useful-escalation-package", "how-to-avoid-confirmation-bias-while-troubleshooting"],
+    "what-should-actually-happen-during-a-pm": ["incoming-inspection-basics", "functional-testing-vs-calibration-vs-verification", "electrical-safety-analyzer-basics", "calibration-stickers-what-they-do-and-dont-mean", "how-to-choose-the-right-test-equipment"],
+    "pm-documentation-basics": ["what-should-actually-happen-during-a-pm", "biomed-work-order-notes-ccr-method", "how-to-use-equipment-history-during-troubleshooting", "calibration-stickers-what-they-do-and-dont-mean", "incoming-inspection-basics"],
 }
 
 ARTICLE_CONFIG = {
@@ -860,6 +862,18 @@ ARTICLE_CONFIG = {
         "category": "Troubleshooting",
         "badge": "Pattern Analysis",
         "cardNote": "Timelines, fleet patterns, shared causes, and controlled comparisons",
+    },
+    "what-should-actually-happen-during-a-pm": {
+        "description": "A practical guide to what preventive maintenance should include: correct procedures, inspection, functional and performance testing, batteries, alarms, safety systems, scheduled items, and documentation.",
+        "category": "Testing & Verification",
+        "badge": "Preventive Maintenance",
+        "cardNote": "Inspection, function, performance, safety, maintenance items, and verification",
+    },
+    "pm-documentation-basics": {
+        "description": "A practical guide to documenting preventive maintenance with meaningful findings, measurements, as-found and as-left results, adjustments, parts, test equipment, and failed inspections.",
+        "category": "Testing & Verification",
+        "badge": "Documentation",
+        "cardNote": "Clear PM findings, measurements, adjustments, parts, and verification",
     },
 }
 
