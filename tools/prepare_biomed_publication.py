@@ -147,6 +147,8 @@ RELATED = {
     "how-to-investigate-repeat-failures": ["how-to-use-equipment-history-during-troubleshooting", "root-cause-troubleshooting-basics", "how-to-document-an-intermittent-problem", "how-to-build-a-useful-escalation-package", "how-to-avoid-confirmation-bias-while-troubleshooting"],
     "what-should-actually-happen-during-a-pm": ["incoming-inspection-basics", "functional-testing-vs-calibration-vs-verification", "electrical-safety-analyzer-basics", "calibration-stickers-what-they-do-and-dont-mean", "how-to-choose-the-right-test-equipment"],
     "pm-documentation-basics": ["what-should-actually-happen-during-a-pm", "biomed-work-order-notes-ccr-method", "how-to-use-equipment-history-during-troubleshooting", "calibration-stickers-what-they-do-and-dont-mean", "incoming-inspection-basics"],
+    "recall-and-safety-notice-basics": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "incoming-inspection-basics", "how-to-use-equipment-history-during-troubleshooting", "medical-device-cybersecurity-basics"],
+    "medical-device-cybersecurity-basics": ["how-to-work-with-it-as-a-biomed", "ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "basic-networking-for-medical-equipment", "software-firmware-and-configuration-problems-in-medical-equipment", "recall-and-safety-notice-basics"],
 }
 
 ARTICLE_CONFIG = {
@@ -875,6 +877,18 @@ ARTICLE_CONFIG = {
         "badge": "Documentation",
         "cardNote": "Clear PM findings, measurements, adjustments, parts, and verification",
     },
+    "recall-and-safety-notice-basics": {
+        "description": "A practical guide to identifying affected medical equipment, interpreting recall and safety-notice actions, tracking fleet status, documenting corrections, and closing the loop.",
+        "category": "Safety & Risk",
+        "badge": "Recall Management",
+        "cardNote": "Affected assets, required actions, verification, and closed-loop tracking",
+    },
+    "medical-device-cybersecurity-basics": {
+        "description": "A practical introduction to medical-device cybersecurity for biomeds, including inventory, software versions, network exposure, access, updates, vulnerabilities, data, logs, and collaboration with IT.",
+        "category": "Networking & Integration",
+        "badge": "Cybersecurity",
+        "cardNote": "Inventory, access, updates, exposure, data, and IT collaboration",
+    },
 }
 
 
@@ -1057,7 +1071,20 @@ def parse_batch(path: Path) -> list:
 
 def replace_related(source: str, replacement: str) -> str:
     pattern = re.compile(r'\s*<section class="content-box">\s*<h3\b[^>]*>Related Biomed Basics</h3>.*?</section>', re.I | re.S)
-    updated, count = pattern.subn("\n\n" + replacement, source, count=1)
+    def preserve_heading(match: re.Match[str]) -> str:
+        heading = re.search(r'<h3\b[^>]*>Related Biomed Basics</h3>', match.group(0), re.I)
+        rendered = replacement
+        if heading:
+            rendered = re.sub(
+                r'<h3\b[^>]*>Related Biomed Basics</h3>',
+                heading.group(0),
+                rendered,
+                count=1,
+                flags=re.I,
+            )
+        return "\n\n" + rendered
+
+    updated, count = pattern.subn(preserve_heading, source, count=1)
     if count != 1:
         raise ValueError("expected exactly one Related Biomed Basics section")
     return updated

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medical Device Cybersecurity Basics | Jake Troubleshoots</title>
+  <meta name="description" content="A practical introduction to medical-device cybersecurity for biomeds, including inventory, software versions, network exposure, access, updates, vulnerabilities, data, logs, and collaboration with IT.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/medical-device-cybersecurity-basics.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">Medical Device Cybersecurity Basics</h1>
+  <p>What biomeds actually need to understand about cybersecurity without pretending every BMET needs to become a network-security engineer</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Modern medical equipment is increasingly a computer with a clinical purpose.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What medical-device cybersecurity means</li>
+      <li>Why cybersecurity is different from ordinary IT security</li>
+      <li>Assets and inventory</li>
+      <li>Software versions</li>
+      <li>Network exposure</li>
+      <li>Authentication</li>
+      <li>Passwords</li>
+      <li>Ports and services</li>
+      <li>Encryption and certificates</li>
+      <li>Updates and patches</li>
+      <li>Unsupported operating systems</li>
+      <li>Vulnerabilities</li>
+      <li>Segmentation</li>
+      <li>Logging</li>
+      <li>USB media</li>
+      <li>Remote service</li>
+      <li>Patient data</li>
+      <li>What biomeds should handle and when to involve IT/security</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Cybersecurity protects the device and the systems around it from unauthorized or unintended:</p>
+    <ul>
+      <li>Access</li>
+      <li>Change</li>
+      <li>Communication</li>
+      <li>Disruption</li>
+    </ul>
+    <p>For biomeds, that usually means understanding:</p>
+    <p><strong>What device is this?</strong></p>
+    <p><strong>What software is it running?</strong></p>
+    <p><strong>How is it connected?</strong></p>
+    <p><strong>What systems does it communicate with?</strong></p>
+    <p><strong>How is access controlled?</strong></p>
+    <p><strong>Is there a known security issue that needs action?</strong></p>
+    <p>You do not need to personally solve every one of those problems.</p>
+    <p>You do need to know they exist.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-is-part-of-device-reliability">
+    <h3>Cybersecurity Is Part of Device Reliability</h3>
+    <p>People sometimes treat cybersecurity as:</p>
+    <blockquote><p>IT stuff.</p></blockquote>
+    <p>But consider what happens if a security problem causes:</p>
+    <ul>
+      <li>Device unavailable</li>
+      <li>Data unavailable</li>
+      <li>Configuration changed</li>
+      <li>Communication interrupted</li>
+    </ul>
+    <p>Those become clinical-engineering problems very quickly.</p>
+  </section>
+
+  <section class="content-box" id="safety-and-security-can-overlap">
+    <h3>Safety and Security Can Overlap</h3>
+    <p>Traditional medical-device safety asks:</p>
+    <blockquote><p>Can the device hurt someone because something failed?</p></blockquote>
+    <p>Cybersecurity adds:</p>
+    <blockquote><p>Can unauthorized or unintended access cause the device or its data to behave differently?</p></blockquote>
+    <p>The underlying risk may still affect patient care.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-is-not-just-hackers-taking-over-a-ventilator">
+    <h3>Cybersecurity Is Not Just “Hackers Taking Over a Ventilator”</h3>
+    <p>That dramatic scenario gets attention, but many real security problems are much less cinematic.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Old operating system</li>
+      <li>Shared default password</li>
+      <li>Expired certificate</li>
+      <li>Vulnerable network service</li>
+      <li>Lost USB drive</li>
+      <li>Uncontrolled remote access</li>
+    </ul>
+    <p>These can still matter.</p>
+  </section>
+
+  <section class="content-box" id="start-with-inventory">
+    <h3>Start With Inventory</h3>
+    <p>You cannot protect equipment you do not know you have.</p>
+    <p>A useful cybersecurity inventory may need more than:</p>
+    <ul>
+      <li>Manufacturer</li>
+      <li>Model</li>
+      <li>Serial number</li>
+    </ul>
+    <p>It may also include:</p>
+    <ul>
+      <li>Software version</li>
+      <li>Network status</li>
+      <li>MAC address</li>
+      <li>IP address or addressing method</li>
+      <li>Operating system</li>
+      <li>Support status</li>
+    </ul>
+    <p>Not every device needs every field.</p>
+    <p>The principle is:</p>
+    <p><strong>Know what is connected and what it is running.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-software-version-matters">
+    <h3>Why Software Version Matters</h3>
+    <p>Suppose a manufacturer announces a vulnerability affecting:</p>
+    <p>Version 2.4 and earlier.</p>
+    <p>If you have no record of software versions, you now have to physically inspect every device.</p>
+    <p>Good version inventory makes response faster.</p>
+  </section>
+
+  <section class="content-box" id="version-drift">
+    <h3>Version Drift</h3>
+    <p>A fleet may look identical but contain:</p>
+    <ul>
+      <li>Different firmware</li>
+      <li>Different configurations</li>
+      <li>Different security posture</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="hardware-asset-vs-software-asset">
+    <h3>Hardware Asset vs Software Asset</h3>
+    <p>Traditional CMMS thinking focuses on:</p>
+    <blockquote><p>What physical box do we own?</p></blockquote>
+    <p>Cybersecurity also asks:</p>
+    <blockquote><p>What software components exist inside that box?</p></blockquote>
+  </section>
+
+  <section class="content-box" id="sbom">
+    <h3>SBOM</h3>
+    <p>You may hear the term:</p>
+    <p><strong>Software Bill of Materials</strong>, or SBOM.</p>
+    <p>Conceptually, an SBOM is a list of software components used in a product.</p>
+    <p>Why does that matter?</p>
+    <p>Because a vulnerability may exist in:</p>
+    <ul>
+      <li>Library</li>
+      <li>Operating-system component</li>
+      <li>Third-party software</li>
+    </ul>
+    <p>used by many different products.</p>
+  </section>
+
+  <section class="content-box" id="you-do-not-need-to-memorize-every-software-library">
+    <h3>You Do Not Need to Memorize Every Software Library</h3>
+    <p>The important concept is:</p>
+    <p>A medical device can inherit security risk from software components the hospital did not directly install.</p>
+  </section>
+
+  <section class="content-box" id="network-connection-changes-the-risk-surface">
+    <h3>Network Connection Changes the Risk Surface</h3>
+    <p>A completely standalone device and a network-connected device face different cybersecurity risks.</p>
+    <p>A connected device may communicate with:</p>
+    <ul>
+      <li>Central station</li>
+      <li>EMR interface</li>
+      <li>Vendor server</li>
+      <li>PACS</li>
+      <li>NTP server</li>
+    </ul>
+    <p>Each connection creates a path.</p>
+  </section>
+
+  <section class="content-box" id="that-does-not-mean-networked-devices-are-bad">
+    <h3>That Does Not Mean Networked Devices Are Bad</h3>
+    <p>Connectivity creates enormous clinical value.</p>
+    <p>The goal is to understand and control the connections.</p>
+  </section>
+
+  <section class="content-box" id="network-segmentation">
+    <h3>Network Segmentation</h3>
+    <p>Healthcare networks often use techniques such as:</p>
+    <ul>
+      <li>VLANs</li>
+      <li>Firewalls</li>
+    </ul>
+    <p>to limit which systems can communicate.</p>
+    <p>The concept is simple:</p>
+    <p><strong>A device should not necessarily be able to talk to everything just because it is plugged into the hospital network.</strong></p>
+  </section>
+
+  <section class="content-box" id="least-necessary-access">
+    <h3>Least Necessary Access</h3>
+    <p>If a medical device needs to communicate only with:</p>
+    <ul>
+      <li>Central server</li>
+    </ul>
+    <p>then unnecessary communication paths can often be restricted by network controls.</p>
+    <p>That is usually coordinated with IT/security.</p>
+  </section>
+
+  <section class="content-box" id="ports-and-services">
+    <h3>Ports and Services</h3>
+    <p>Networked software communicates using ports and services.</p>
+    <p>A medical device may legitimately need:</p>
+    <ul>
+      <li>HTTPS</li>
+      <li>DICOM</li>
+      <li>HL7-related services</li>
+      <li>Manufacturer-specific ports</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="open-does-not-automatically-mean-vulnerable">
+    <h3>Open Does Not Automatically Mean Vulnerable</h3>
+    <p>A port may be open because the application requires it.</p>
+    <p>The question is:</p>
+    <p><strong>Does this service need to be exposed to the systems that can reach it?</strong></p>
+  </section>
+
+  <section class="content-box" id="do-not-randomly-close-ports-on-medical-devices">
+    <h3>Do Not Randomly Close Ports on Medical Devices</h3>
+    <p>You can break clinical functionality.</p>
+    <p>Network restrictions should be coordinated and tested.</p>
+  </section>
+
+  <section class="content-box" id="authentication">
+    <h3>Authentication</h3>
+    <p>Authentication answers:</p>
+    <p><strong>Who are you?</strong></p>
+    <p>A system may authenticate with:</p>
+    <ul>
+      <li>Username/password</li>
+      <li>Certificate</li>
+      <li>Token</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="default-passwords">
+    <h3>Default Passwords</h3>
+    <p>Manufacturer default credentials can be a security concern if they remain unchanged when change is supported and appropriate.</p>
+  </section>
+
+  <section class="content-box" id="but-be-careful">
+    <h3>But Be Careful</h3>
+    <p>Some medical-device service credentials may be:</p>
+    <ul>
+      <li>Manufacturer-controlled</li>
+      <li>Required for support</li>
+    </ul>
+    <p>Follow approved procedures.</p>
+    <p>Do not change hidden service passwords casually and make the device unserviceable.</p>
+  </section>
+
+  <section class="content-box" id="shared-accounts">
+    <h3>Shared Accounts</h3>
+    <p>Shared accounts reduce accountability because multiple people use the same identity.</p>
+    <p>Where the device supports individual accounts and your organization requires them, that can improve traceability.</p>
+  </section>
+
+  <section class="content-box" id="authorization">
+    <h3>Authorization</h3>
+    <p>Authentication is:</p>
+    <blockquote><p>Who are you?</p></blockquote>
+    <p>Authorization is:</p>
+    <blockquote><p>What are you allowed to do?</p></blockquote>
+    <p>A clinician, biomed, and administrator may need different access.</p>
+  </section>
+
+  <section class="content-box" id="administrator-access">
+    <h3>Administrator Access</h3>
+    <p>Admin-level access can often:</p>
+    <ul>
+      <li>Change configuration</li>
+      <li>Install software</li>
+      <li>Modify networking</li>
+    </ul>
+    <p>Protect it accordingly.</p>
+  </section>
+
+  <section class="content-box" id="password-hygiene">
+    <h3>Password Hygiene</h3>
+    <p>Basic principles still apply:</p>
+    <ul>
+      <li>Avoid weak passwords</li>
+      <li>Avoid unnecessary sharing</li>
+      <li>Do not store passwords in obvious places</li>
+    </ul>
+    <p>Follow organizational policy.</p>
+  </section>
+
+  <section class="content-box" id="physical-security-matters">
+    <h3>Physical Security Matters</h3>
+    <p>Cybersecurity is not only network traffic.</p>
+    <p>Someone with physical access may be able to:</p>
+    <ul>
+      <li>Connect USB media</li>
+      <li>Access service ports</li>
+      <li>Remove storage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="usb-ports">
+    <h3>USB Ports</h3>
+    <p>USB can be used for:</p>
+    <ul>
+      <li>Software updates</li>
+      <li>Exporting logs</li>
+    </ul>
+    <p>It can also introduce security risk.</p>
+  </section>
+
+  <section class="content-box" id="do-not-plug-random-usb-drives-into-medical-equipment">
+    <h3>Do Not Plug Random USB Drives Into Medical Equipment</h3>
+    <p>Use approved media and procedures.</p>
+  </section>
+
+  <section class="content-box" id="removable-media">
+    <h3>Removable Media</h3>
+    <p>A USB drive moving between:</p>
+    <ul>
+      <li>Personal computer</li>
+      <li>Medical device</li>
+    </ul>
+    <p>can carry malware.</p>
+  </section>
+
+  <section class="content-box" id="encryption">
+    <h3>Encryption</h3>
+    <p>Encryption protects information so unauthorized parties cannot easily read it.</p>
+    <p>You may encounter encryption in:</p>
+    <ul>
+      <li>Network communication</li>
+      <li>Stored data</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="https">
+    <h3>HTTPS</h3>
+    <p>When a device uses secure web communication, encryption may rely on certificates.</p>
+  </section>
+
+  <section class="content-box" id="certificates">
+    <h3>Certificates</h3>
+    <p>Digital certificates help systems establish:</p>
+    <ul>
+      <li>Identity</li>
+      <li>Trusted encrypted communication</li>
+    </ul>
+    <p>They also expire.</p>
+  </section>
+
+  <section class="content-box" id="expired-certificate">
+    <h3>Expired Certificate</h3>
+    <p>A medical device may suddenly lose connectivity even though:</p>
+    <ul>
+      <li>Ethernet link works</li>
+      <li>IP configuration correct</li>
+      <li>Server reachable</li>
+    </ul>
+    <p>The secure connection can still fail because the certificate is expired.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-and-troubleshooting-overlap">
+    <h3>Cybersecurity and Troubleshooting Overlap</h3>
+    <p>That makes certificate knowledge useful to biomeds.</p>
+  </section>
+
+  <section class="content-box" id="time-matters-for-certificates">
+    <h3>Time Matters for Certificates</h3>
+    <p>If device date/time is badly wrong, a valid certificate can appear:</p>
+    <ul>
+      <li>Not yet valid</li>
+      <li>Expired</li>
+    </ul>
+    <p>Another reason time synchronization matters.</p>
+  </section>
+
+  <section class="content-box" id="software-updates">
+    <h3>Software Updates</h3>
+    <p>Security patches may arrive as part of manufacturer software updates.</p>
+    <p>But medical devices are not ordinary office PCs.</p>
+  </section>
+
+  <section class="content-box" id="do-not-apply-random-operating-system-patches">
+    <h3>Do Not Apply Random Operating-System Patches</h3>
+    <p>The manufacturer may validate only specific software configurations.</p>
+    <p>An unapproved patch could affect:</p>
+    <ul>
+      <li>Drivers</li>
+      <li>Clinical software</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="manufacturer-validated-updates">
+    <h3>Manufacturer-Validated Updates</h3>
+    <p>Follow the supported update path.</p>
+    <p>Cybersecurity and clinical reliability both matter.</p>
+  </section>
+
+  <section class="content-box" id="delayed-patching">
+    <h3>Delayed Patching</h3>
+    <p>Sometimes a security update cannot be installed immediately.</p>
+    <p>That does not mean:</p>
+    <p>Do nothing.</p>
+    <p>Other mitigations might include:</p>
+    <ul>
+      <li>Network segmentation</li>
+      <li>Access restriction</li>
+    </ul>
+    <p>Those decisions typically involve cybersecurity/IT and the manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="unsupported-operating-systems">
+    <h3>Unsupported Operating Systems</h3>
+    <p>Medical equipment can remain clinically useful longer than the commercial operating system underneath it.</p>
+    <p>You may encounter systems running older versions of:</p>
+    <ul>
+      <li>Windows</li>
+      <li>Linux</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="unsupported-does-not-automatically-mean-throw-the-device-away-tomorrow">
+    <h3>Unsupported Does Not Automatically Mean “Throw the Device Away Tomorrow”</h3>
+    <p>But it changes the security conversation.</p>
+    <p>Ask:</p>
+    <ul>
+      <li>Is OEM support available?</li>
+      <li>Is upgrade possible?</li>
+      <li>Can exposure be reduced?</li>
+      <li>Is replacement planning needed?</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="end-of-support">
+    <h3>End of Support</h3>
+    <p>A device can become more difficult to secure once the manufacturer stops providing:</p>
+    <ul>
+      <li>Security patches</li>
+      <li>Software updates</li>
+    </ul>
+    <p>This is one reason cybersecurity belongs in lifecycle planning.</p>
+  </section>
+
+  <section class="content-box" id="vulnerability">
+    <h3>Vulnerability</h3>
+    <p>A vulnerability is a weakness that could potentially be exploited.</p>
+    <p>It does not automatically mean:</p>
+    <blockquote><p>Someone is actively attacking our device.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="exposure-and-risk-matter">
+    <h3>Exposure and Risk Matter</h3>
+    <p>The same vulnerability can present different practical risk depending on:</p>
+    <ul>
+      <li>Network access</li>
+      <li>Existing controls</li>
+      <li>Clinical impact</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-panic-at-every-vulnerability-score">
+    <h3>Do Not Panic at Every Vulnerability Score</h3>
+    <p>Use the organization's cybersecurity process.</p>
+  </section>
+
+  <section class="content-box" id="cve">
+    <h3>CVE</h3>
+    <p>You may encounter identifiers such as:</p>
+    <p><strong>CVE</strong></p>
+    <p>These provide standardized references for known cybersecurity vulnerabilities.</p>
+    <p>A vendor notice may say a medical device contains software affected by a particular CVE.</p>
+  </section>
+
+  <section class="content-box" id="the-biomed-question">
+    <h3>The Biomed Question</h3>
+    <p>Do we have:</p>
+    <ul>
+      <li>That model</li>
+      <li>That software</li>
+    </ul>
+    <p>and if so:</p>
+    <p>What action does the manufacturer recommend?</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-security-advisories">
+    <h3>Manufacturer Security Advisories</h3>
+    <p>Device manufacturers may release cybersecurity notices that identify:</p>
+    <ul>
+      <li>Affected versions</li>
+      <li>Mitigation</li>
+      <li>Update path</li>
+    </ul>
+    <p>Treat these like other technical field information.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-recall-vs-general-vulnerability">
+    <h3>Cybersecurity Recall vs General Vulnerability</h3>
+    <p>Some vulnerabilities become formal safety actions.</p>
+    <p>Others are managed through security advisories.</p>
+    <p>Follow organizational processes for each.</p>
+  </section>
+
+  <section class="content-box" id="remote-service">
+    <h3>Remote Service</h3>
+    <p>Vendors may need remote access for support.</p>
+    <p>This can be useful.</p>
+    <p>It can also create a pathway into hospital systems.</p>
+  </section>
+
+  <section class="content-box" id="remote-access-should-be-controlled">
+    <h3>Remote Access Should Be Controlled</h3>
+    <p>Typical concerns include:</p>
+    <ul>
+      <li>Who can connect?</li>
+      <li>How access is authorized?</li>
+      <li>How long it remains active?</li>
+    </ul>
+    <p>Follow hospital policy.</p>
+  </section>
+
+  <section class="content-box" id="permanent-unknown-remote-connections">
+    <h3>Permanent Unknown Remote Connections</h3>
+    <p>Do not casually allow a vendor to install:</p>
+    <blockquote><p>Something so we can always get in.</p></blockquote>
+    <p>without IT/security involvement.</p>
+  </section>
+
+  <section class="content-box" id="vendor-laptops">
+    <h3>Vendor Laptops</h3>
+    <p>Vendor service computers may connect directly to equipment.</p>
+    <p>Hospitals may have requirements governing those connections.</p>
+  </section>
+
+  <section class="content-box" id="do-not-make-up-local-security-rules">
+    <h3>Do Not Make Up Local Security Rules</h3>
+    <p>Coordinate.</p>
+  </section>
+
+  <section class="content-box" id="patient-data">
+    <h3>Patient Data</h3>
+    <p>Some medical devices store:</p>
+    <ul>
+      <li>Patient identifiers</li>
+      <li>Studies</li>
+      <li>Logs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="service-can-expose-data">
+    <h3>Service Can Expose Data</h3>
+    <p>When:</p>
+    <ul>
+      <li>Shipping device to depot</li>
+      <li>Replacing storage drive</li>
+      <li>Decommissioning equipment</li>
+    </ul>
+    <p>consider stored information.</p>
+  </section>
+
+  <section class="content-box" id="a-failed-hard-drive-is-still-data-bearing-media">
+    <h3>A Failed Hard Drive Is Still Data-Bearing Media</h3>
+    <p>Do not throw it in ordinary trash.</p>
+    <p>Follow approved data-destruction processes.</p>
+  </section>
+
+  <section class="content-box" id="decommissioning">
+    <h3>Decommissioning</h3>
+    <p>Retiring a networked medical device should consider:</p>
+    <ul>
+      <li>Local patient data</li>
+      <li>Network credentials</li>
+      <li>Certificates</li>
+      <li>Storage media</li>
+    </ul>
+    <p>Equipment disposal is not just:</p>
+    <blockquote><p>Remove asset sticker.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="backups">
+    <h3>Backups</h3>
+    <p>Some devices support configuration backup.</p>
+    <p>That is useful.</p>
+    <p>But backup files may contain:</p>
+    <ul>
+      <li>Network configuration</li>
+      <li>Credentials</li>
+      <li>Patient data</li>
+    </ul>
+    <p>Protect them accordingly.</p>
+  </section>
+
+  <section class="content-box" id="logging">
+    <h3>Logging</h3>
+    <p>Security-related logs may show:</p>
+    <ul>
+      <li>Failed login attempts</li>
+      <li>Remote connections</li>
+    </ul>
+    <p>Do not confuse normal service activity with malicious activity without evidence.</p>
+  </section>
+
+  <section class="content-box" id="preserve-logs-during-an-incident">
+    <h3>Preserve Logs During an Incident</h3>
+    <p>If cybersecurity is suspected, involve the appropriate security team before:</p>
+    <ul>
+      <li>Factory reset</li>
+      <li>Wiping the device</li>
+    </ul>
+    <p>Those actions may destroy useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="do-not-play-cyber-detective-alone">
+    <h3>Do Not Play Cyber Detective Alone</h3>
+    <p>If you see something unusual such as:</p>
+    <ul>
+      <li>Unknown login</li>
+      <li>Unexpected software</li>
+      <li>Strange network behavior</li>
+    </ul>
+    <p>preserve the condition and escalate through your organization's cybersecurity process.</p>
+  </section>
+
+  <section class="content-box" id="biomeds-and-it-need-each-other">
+    <h3>Biomeds and IT Need Each Other</h3>
+    <p>Clinical Engineering knows:</p>
+    <ul>
+      <li>Device function</li>
+      <li>Manufacturer</li>
+      <li>Clinical impact</li>
+      <li>Service history</li>
+    </ul>
+    <p>IT/security knows:</p>
+    <ul>
+      <li>Network</li>
+      <li>Firewall</li>
+      <li>Authentication infrastructure</li>
+    </ul>
+    <p>The strongest medical-device cybersecurity programs combine both perspectives.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Security says:</p>
+    <blockquote><p>Block all communication to this device.</p></blockquote>
+    <p>Biomed may know:</p>
+    <blockquote><p>That will disconnect central monitoring.</p></blockquote>
+    <p>Neither side should act in isolation.</p>
+  </section>
+
+  <section class="content-box" id="clinical-impact-matters">
+    <h3>Clinical Impact Matters</h3>
+    <p>Security controls cannot ignore patient-care requirements.</p>
+    <p>At the same time:</p>
+    <p>Clinical usefulness does not justify ignoring a known cybersecurity risk.</p>
+    <p>The goal is:</p>
+    <p><strong>Safe clinical function with appropriate security controls.</strong></p>
+  </section>
+
+  <section class="content-box" id="availability-is-a-cybersecurity-concept">
+    <h3>Availability Is a Cybersecurity Concept</h3>
+    <p>Cybersecurity is often described through three goals:</p>
+    <ul>
+      <li>Confidentiality</li>
+      <li>Integrity</li>
+      <li>Availability</li>
+    </ul>
+    <p>For medical devices, availability is especially easy for biomeds to understand.</p>
+    <p>If a cyber event makes:</p>
+    <ul>
+      <li>Monitoring unavailable</li>
+      <li>Imaging inaccessible</li>
+    </ul>
+    <p>that is operationally significant.</p>
+  </section>
+
+  <section class="content-box" id="integrity">
+    <h3>Integrity</h3>
+    <p>Integrity means information or behavior is not improperly altered.</p>
+    <p>Example:</p>
+    <p>A configuration value should not change without authorization.</p>
+  </section>
+
+  <section class="content-box" id="confidentiality">
+    <h3>Confidentiality</h3>
+    <p>Confidentiality protects information from inappropriate disclosure.</p>
+    <p>Example:</p>
+    <p>Stored patient information should not be exposed unnecessarily.</p>
+  </section>
+
+  <section class="content-box" id="you-do-not-need-to-memorize-the-terms">
+    <h3>You Do Not Need to Memorize the Terms</h3>
+    <p>But they help explain why cybersecurity is not only about privacy.</p>
+    <p>A security event can affect:</p>
+    <ul>
+      <li>Device operation</li>
+      <li>Data correctness</li>
+      <li>Availability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cybersecurity-during-incoming-inspection">
+    <h3>Cybersecurity During Incoming Inspection</h3>
+    <p>For connected devices, incoming deployment may include:</p>
+    <ul>
+      <li>Recording software version</li>
+      <li>Coordinating network setup</li>
+    </ul>
+    <p>This creates a baseline.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-during-pm">
+    <h3>Cybersecurity During PM</h3>
+    <p>PM may be an opportunity to observe:</p>
+    <ul>
+      <li>Software version</li>
+      <li>Security notices</li>
+    </ul>
+    <p>depending on facility process.</p>
+  </section>
+
+  <section class="content-box" id="do-not-turn-every-pm-into-a-full-cybersecurity-audit">
+    <h3>Do Not Turn Every PM Into a Full Cybersecurity Audit</h3>
+    <p>Use the established workflow.</p>
+  </section>
+
+  <section class="content-box" id="cybersecurity-inventory">
+    <h3>Cybersecurity Inventory</h3>
+    <p>A good inventory can connect:</p>
+    <p><strong>Device</strong></p>
+    <p>to:</p>
+    <p><strong>Software</strong></p>
+    <p>to:</p>
+    <p><strong>Network</strong></p>
+    <p>to:</p>
+    <p><strong>Support status.</strong></p>
+    <p>That becomes extremely valuable when a new vulnerability is announced.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-unsupported-os">
+    <h3>Real-World Example: Unsupported OS</h3>
+    <p>A medical system still performs perfectly.</p>
+    <p>Underlying OS is no longer supported.</p>
+    <p>The technical response might involve:</p>
+    <ul>
+      <li>OEM upgrade path</li>
+      <li>Network controls</li>
+      <li>Replacement planning</li>
+    </ul>
+    <p>rather than pretending the issue does not exist.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-certificate-expiration">
+    <h3>Real-World Example: Certificate Expiration</h3>
+    <p>Device:</p>
+    <ul>
+      <li>Has network link</li>
+      <li>Pings server</li>
+    </ul>
+    <p>But encrypted application connection fails.</p>
+    <p>Certificate expired.</p>
+    <p>Traditional connectivity looks normal.</p>
+    <p>Security layer is the failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-vulnerable-software-version">
+    <h3>Real-World Example: Vulnerable Software Version</h3>
+    <p>Manufacturer notice affects:</p>
+    <p>Firmware 2.0–2.3.</p>
+    <p>Hospital inventory shows:</p>
+    <p>18 devices on 2.2.</p>
+    <p>Now the cybersecurity inventory directly drives the corrective action.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-usb">
+    <h3>Real-World Example: USB</h3>
+    <p>Device begins behaving abnormally after unauthorized USB media is inserted.</p>
+    <p>Do not immediately:</p>
+    <p>Factory reset everything.</p>
+    <p>Preserve evidence and involve appropriate security resources.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-cybersecurity-as-only-an-it-problem">
+    <h3>Treating Cybersecurity as Only an IT Problem</h3>
+    <p>Medical-device operation and clinical impact require HTM knowledge.</p>
+  </section>
+
+  <section class="content-box" id="treating-it-as-only-a-biomed-problem">
+    <h3>Treating It as Only a Biomed Problem</h3>
+    <p>Network security requires IT/security expertise.</p>
+  </section>
+
+  <section class="content-box" id="applying-random-windows-updates">
+    <h3>Applying Random Windows Updates</h3>
+    <p>Use manufacturer-supported procedures.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-software-versions">
+    <h3>Ignoring Software Versions</h3>
+    <p>You cannot manage vulnerabilities effectively without knowing what is installed.</p>
+  </section>
+
+  <section class="content-box" id="leaving-default-credentials-without-reviewing-policy">
+    <h3>Leaving Default Credentials Without Reviewing Policy</h3>
+    <p>Authentication matters.</p>
+  </section>
+
+  <section class="content-box" id="plugging-unknown-usb-media-into-devices">
+    <h3>Plugging Unknown USB Media Into Devices</h3>
+    <p>Physical access is part of security.</p>
+  </section>
+
+  <section class="content-box" id="assuming-ping-means-the-secure-application-should-work">
+    <h3>Assuming Ping Means the Secure Application Should Work</h3>
+    <p>Certificates and authentication exist above basic connectivity.</p>
+  </section>
+
+  <section class="content-box" id="factory-resetting-a-potentially-compromised-device-immediately">
+    <h3>Factory Resetting a Potentially Compromised Device Immediately</h3>
+    <p>You may destroy useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-cybersecurity-framework">
+    <h3>A Useful Cybersecurity Framework</h3>
+    <p>For a connected medical device, ask:</p>
+    <p><strong>What is it?</strong></p>
+    <p>Then:</p>
+    <p><strong>What software does it run?</strong></p>
+    <p>Then:</p>
+    <p><strong>What does it communicate with?</strong></p>
+    <p>Then:</p>
+    <p><strong>Who or what can access it?</strong></p>
+    <p>Then:</p>
+    <p><strong>How is that access controlled?</strong></p>
+    <p>Then:</p>
+    <p><strong>Are there known issues or unsupported components?</strong></p>
+    <p>Finally:</p>
+    <p><strong>Who owns the next step: Biomed, IT, Security, OEM, or a combination?</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>If this device suddenly could not communicate with the network tomorrow, what clinical function or workflow would be affected?</strong></p>
+    <p>That connects cybersecurity and networking back to patient care.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device responds to ping:</p>
+    <p>You proved:</p>
+    <p><strong>Basic IP communication exists between those endpoints under the current conditions.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Application secure</li>
+      <li>Certificate valid</li>
+      <li>Device free of vulnerabilities</li>
+    </ul>
+    <p>If antivirus scan on a connected service computer shows no threats:</p>
+    <p>You proved:</p>
+    <p><strong>That scan did not detect known threats under its current definitions and scope.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>Nothing malicious exists anywhere in the medical-device environment.</strong></p>
+    <p>Cybersecurity conclusions need the same discipline as troubleshooting conclusions.</p>
+    <p>Do not claim more than the evidence supports.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Medical-device cybersecurity can sound intimidating because the vocabulary comes from IT.</p>
+    <p>But the underlying thinking is familiar.</p>
+    <p>Biomeds already ask:</p>
+    <ul>
+      <li>What is connected?</li>
+      <li>What changed?</li>
+      <li>What version is installed?</li>
+      <li>What still works?</li>
+      <li>Where does the failure stop?</li>
+    </ul>
+    <p>Cybersecurity adds new failure paths to the same systems.</p>
+    <p>The goal is not for every BMET to become a security engineer.</p>
+    <p>The goal is for biomeds to understand enough to recognize when:</p>
+    <ul>
+      <li>Software matters</li>
+      <li>Network exposure matters</li>
+      <li>Authentication matters</li>
+      <li>Updates matter</li>
+      <li>Support status matters</li>
+    </ul>
+    <p>and when to bring in the right team.</p>
+    <p>Modern medical equipment is not just hardware anymore.</p>
+    <p>It is:</p>
+    <p><strong>Hardware + Software + Network + Clinical Workflow.</strong></p>
+    <p>Cybersecurity is one more part of keeping that entire system dependable.</p>
+    <p>And as always, when someone says:</p>
+    <blockquote><p>The device is secure.</p></blockquote>
+    <p>ask:</p>
+    <p><strong>What did we actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Medical-device cybersecurity practices, vulnerability response, patching, remote-access controls, network architecture, incident response, data handling, and device-specific mitigations vary by manufacturer and healthcare organization and change over time. Follow current manufacturer security guidance and your organization's approved cybersecurity, IT, privacy, and clinical-engineering processes rather than making unsupported configuration or software changes to medical equipment.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-to-work-with-it-as-a-biomed.html">How to Work With IT as a Biomed</a></li>
+      <li><a href="ports-firewalls-and-why-a-device-can-ping-but-still-not-work.html">Ports, Firewalls, and Why a Device Can Ping but Still Not Work</a></li>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="software-firmware-and-configuration-problems-in-medical-equipment.html">Software, Firmware, and Configuration Problems in Medical Equipment</a></li>
+      <li><a href="recall-and-safety-notice-basics.html">Recall and Safety Notice Basics</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
