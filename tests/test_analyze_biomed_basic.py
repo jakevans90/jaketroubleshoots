@@ -243,8 +243,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("How to Investigate Repeat Failures", planned)
         self.assertNotIn("What Should Actually Happen During a PM?", planned)
         self.assertNotIn("PM Documentation Basics", planned)
-        self.assertIn("Recall and Safety Notice Basics", planned)
-        self.assertIn("<strong>87</strong>", planned)
+        self.assertNotIn("Recall and Safety Notice Basics", planned)
+        self.assertNotIn("Medical Device Cybersecurity Basics", planned)
+        self.assertIn("IP Addresses, Subnets, Gateways, and DNS in Plain English", planned)
+        self.assertIn("<strong>85</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -325,7 +327,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 129)
+        self.assertEqual(len(catalog), 131)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
