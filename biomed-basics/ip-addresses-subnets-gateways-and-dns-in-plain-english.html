@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IP Addresses, Subnets, Gateways, and DNS in Plain English | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of IP addresses, DHCP, subnet masks, default gateways, DNS, duplicate addresses, ping, routing, and application connectivity for biomeds.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/ip-addresses-subnets-gateways-and-dns-in-plain-english.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">IP Addresses, Subnets, Gateways, and DNS in Plain English</h1>
+  <p>What biomeds actually need to understand about IP addresses, subnet masks, default gateways, and DNS when a medical device is on the network but still cannot communicate</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Networking can feel more complicated than it really is because several different ideas get packed into the phrase:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an IP address is</li>
+      <li>Static vs DHCP addressing</li>
+      <li>What a subnet is</li>
+      <li>What a subnet mask does</li>
+      <li>What the default gateway does</li>
+      <li>What DNS does</li>
+      <li>Why devices on the same subnet communicate differently from devices on different subnets</li>
+      <li>Why a device can ping one thing but not another</li>
+      <li>Duplicate IP addresses</li>
+      <li>Wrong gateways</li>
+      <li>Wrong DNS</li>
+      <li>APIPA / self-assigned addresses</li>
+      <li>How to troubleshoot network configuration step by step</li>
+      <li>What common commands and observations actually prove</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of an IP network like a large system of neighborhoods.</p>
+    <p>The <strong>IP address</strong> identifies a specific device.</p>
+    <p>The <strong>subnet</strong> tells the device which addresses are in its local neighborhood.</p>
+    <p>The <strong>default gateway</strong> is the exit used to reach other neighborhoods.</p>
+    <p><strong>DNS</strong> translates names into IP addresses.</p>
+    <p>A simple communication path may look like:</p>
+    <p><strong>Medical Device</strong></p>
+    <p>↓</p>
+    <p><strong>Local Network</strong></p>
+    <p>↓</p>
+    <p><strong>Default Gateway</strong></p>
+    <p>↓</p>
+    <p><strong>Other Network</strong></p>
+    <p>↓</p>
+    <p><strong>Application Server</strong></p>
+    <p>If the application uses a server name instead of a numeric IP address, DNS may also be involved.</p>
+    <p>The goal is to figure out which step fails.</p>
+  </section>
+
+  <section class="content-box" id="what-is-an-ip-address">
+    <h3>What Is an IP Address?</h3>
+    <p>An IP address is a numerical address assigned to a device on an IP network.</p>
+    <p>A common IPv4 address looks like:</p>
+    <p><strong>10.52.51.24</strong></p>
+    <p>or:</p>
+    <p><strong>192.168.1.50</strong></p>
+    <p>The address allows other devices to identify where network traffic should go.</p>
+  </section>
+
+  <section class="content-box" id="an-ip-address-is-not-the-same-thing-as-a-device-identity">
+    <h3>An IP Address Is Not the Same Thing as a Device Identity</h3>
+    <p>A medical device may have:</p>
+    <ul>
+      <li>Serial number</li>
+      <li>Asset number</li>
+      <li>MAC address</li>
+      <li>IP address</li>
+    </ul>
+    <p>These serve different purposes.</p>
+    <p>An IP address can sometimes change.</p>
+    <p>The serial number does not.</p>
+  </section>
+
+  <section class="content-box" id="four-numbers">
+    <h3>Four Numbers</h3>
+    <p>An IPv4 address contains four numbers separated by periods.</p>
+    <p>Example:</p>
+    <p><strong>10.52.51.24</strong></p>
+    <p>Each section can range from:</p>
+    <p>0 to 255.</p>
+    <p>You do not need to memorize binary networking to perform useful first-line troubleshooting.</p>
+    <p>But you do need to understand how the address works with the subnet mask.</p>
+  </section>
+
+  <section class="content-box" id="static-ip-address">
+    <h3>Static IP Address</h3>
+    <p>A static IP is manually assigned or otherwise intentionally fixed.</p>
+    <p>Example:</p>
+    <p>IP:</p>
+    <p>10.52.51.24</p>
+    <p>Subnet mask:</p>
+    <p>255.255.255.0</p>
+    <p>Gateway:</p>
+    <p>10.52.51.1</p>
+  </section>
+
+  <section class="content-box" id="why-use-static-addresses">
+    <h3>Why Use Static Addresses?</h3>
+    <p>Some medical systems need predictable addresses for:</p>
+    <ul>
+      <li>Servers</li>
+      <li>Interfaces</li>
+      <li>Fixed equipment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="static-does-not-mean-permanent-forever">
+    <h3>Static Does Not Mean Permanent Forever</h3>
+    <p>IT can still change the addressing plan.</p>
+    <p>The point is that the device does not automatically request a new address every time it starts.</p>
+  </section>
+
+  <section class="content-box" id="dhcp">
+    <h3>DHCP</h3>
+    <p>DHCP stands for:</p>
+    <p><strong>Dynamic Host Configuration Protocol.</strong></p>
+    <p>DHCP allows a device to request network configuration automatically.</p>
+    <p>It may provide:</p>
+    <ul>
+      <li>IP address</li>
+      <li>Subnet mask</li>
+      <li>Gateway</li>
+      <li>DNS server</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dhcp-simplifies-administration">
+    <h3>DHCP Simplifies Administration</h3>
+    <p>Instead of manually configuring every device, the network assigns settings.</p>
+  </section>
+
+  <section class="content-box" id="but-dhcp-can-fail">
+    <h3>But DHCP Can Fail</h3>
+    <p>If a device cannot reach the DHCP service, it may:</p>
+    <ul>
+      <li>Have no address</li>
+      <li>Keep an old address</li>
+      <li>Assign itself a fallback address</li>
+    </ul>
+    <p>depending on the operating system.</p>
+  </section>
+
+  <section class="content-box" id="self-assigned-addresses">
+    <h3>Self-Assigned Addresses</h3>
+    <p>You may encounter addresses in the:</p>
+    <p><strong>169.254.x.x</strong></p>
+    <p>range.</p>
+    <p>These are commonly self-assigned when a device is configured for automatic addressing but cannot obtain normal DHCP configuration.</p>
+  </section>
+
+  <section class="content-box" id="what-does-that-suggest">
+    <h3>What Does That Suggest?</h3>
+    <p>Possible problems include:</p>
+    <ul>
+      <li>DHCP unavailable</li>
+      <li>Wrong VLAN</li>
+      <li>Network access issue</li>
+      <li>Cable/link path problem</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-treat-169-254-as-the-root-cause">
+    <h3>Do Not Treat 169.254 as the Root Cause</h3>
+    <p>It is a clue.</p>
+    <p>It tells you:</p>
+    <p><strong>The device did not receive the expected network configuration.</strong></p>
+    <p>Now determine why.</p>
+  </section>
+
+  <section class="content-box" id="what-is-a-subnet">
+    <h3>What Is a Subnet?</h3>
+    <p>A subnet is a logical group of IP addresses that can generally communicate locally without first sending traffic through a router.</p>
+    <p>Think:</p>
+    <p><strong>Local neighborhood.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-subnet-mask">
+    <h3>The Subnet Mask</h3>
+    <p>The subnet mask tells the device which portion of the address identifies the network and which portion identifies the individual host.</p>
+    <p>A common subnet mask is:</p>
+    <p><strong>255.255.255.0</strong></p>
+  </section>
+
+  <section class="content-box" id="plain-english-example">
+    <h3>Plain-English Example</h3>
+    <p>Device A:</p>
+    <p>10.52.51.24</p>
+    <p>Device B:</p>
+    <p>10.52.51.30</p>
+    <p>Mask:</p>
+    <p>255.255.255.0</p>
+    <p>These devices are on the same local subnet.</p>
+  </section>
+
+  <section class="content-box" id="another-device">
+    <h3>Another Device</h3>
+    <p>10.52.52.30</p>
+    <p>With the same mask:</p>
+    <p>255.255.255.0</p>
+    <p>That is on a different subnet.</p>
+    <p>To communicate with it, traffic usually has to leave the local subnet through a router.</p>
+  </section>
+
+  <section class="content-box" id="why-the-subnet-mask-matters">
+    <h3>Why the Subnet Mask Matters</h3>
+    <p>Suppose a device has the correct-looking IP address but the wrong subnet mask.</p>
+    <p>It may make the wrong decision about whether another address is:</p>
+    <ul>
+      <li>Local</li>
+      <li>Remote</li>
+    </ul>
+    <p>That can break communication in confusing ways.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Correct configuration:</p>
+    <p>10.52.51.24 255.255.255.0</p>
+    <p>Incorrect mask:</p>
+    <p>255.255.0.0</p>
+    <p>Now the device believes a much larger range of addresses is local.</p>
+    <p>It may try to reach addresses directly that should actually go through the gateway.</p>
+  </section>
+
+  <section class="content-box" id="the-device-makes-a-routing-decision">
+    <h3>The Device Makes a Routing Decision</h3>
+    <p>When the device wants to send traffic, it asks:</p>
+    <p><strong>Is the destination on my subnet?</strong></p>
+    <p>If yes:</p>
+    <p>Send locally.</p>
+    <p>If no:</p>
+    <p>Send to default gateway.</p>
+    <p>That is the basic logic.</p>
+  </section>
+
+  <section class="content-box" id="what-is-the-default-gateway">
+    <h3>What Is the Default Gateway?</h3>
+    <p>The default gateway is the device that routes traffic from the local subnet toward other networks.</p>
+    <p>Think of it as:</p>
+    <p><strong>The exit from the neighborhood.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device:</p>
+    <p>10.52.51.24</p>
+    <p>Gateway:</p>
+    <p>10.52.51.1</p>
+    <p>Server:</p>
+    <p>10.60.20.15</p>
+    <p>The server is on another subnet.</p>
+    <p>The medical device sends the traffic toward:</p>
+    <p>10.52.51.1</p>
+    <p>so the network can route it onward.</p>
+  </section>
+
+  <section class="content-box" id="gateway-must-usually-be-reachable-locally">
+    <h3>Gateway Must Usually Be Reachable Locally</h3>
+    <p>A gateway configured outside the device's local subnet is generally a sign something is wrong with the configuration.</p>
+  </section>
+
+  <section class="content-box" id="what-happens-with-the-wrong-gateway">
+    <h3>What Happens With the Wrong Gateway?</h3>
+    <p>The device may communicate with:</p>
+    <ul>
+      <li>Other local devices</li>
+    </ul>
+    <p>but fail to reach:</p>
+    <ul>
+      <li>Remote servers</li>
+      <li>Internet-based services</li>
+      <li>Central systems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-creates-a-classic-symptom">
+    <h3>This Creates a Classic Symptom</h3>
+    <p>Local communication works.</p>
+    <p>Remote communication does not.</p>
+    <p>That should make you think about:</p>
+    <ul>
+      <li>Gateway</li>
+      <li>Routing</li>
+      <li>Firewall</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-is-dns">
+    <h3>What Is DNS?</h3>
+    <p>DNS stands for:</p>
+    <p><strong>Domain Name System.</strong></p>
+    <p>DNS translates human-readable names into IP addresses.</p>
+    <p>Example:</p>
+    <p>A device may be configured to connect to:</p>
+    <p><strong>monitor-server.hospital.local</strong></p>
+    <p>DNS may resolve that name to:</p>
+    <p><strong>10.60.20.15</strong></p>
+  </section>
+
+  <section class="content-box" id="why-dns-exists">
+    <h3>Why DNS Exists</h3>
+    <p>Humans prefer names.</p>
+    <p>Networks route using IP addresses.</p>
+    <p>DNS connects the two.</p>
+  </section>
+
+  <section class="content-box" id="dns-failure-can-look-like-a-network-failure">
+    <h3>DNS Failure Can Look Like a Network Failure</h3>
+    <p>Suppose:</p>
+    <ul>
+      <li>Device has valid IP</li>
+      <li>Gateway reachable</li>
+      <li>Server reachable by numeric IP</li>
+    </ul>
+    <p>But application configured using server name cannot connect.</p>
+    <p>DNS becomes a strong suspect.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Ping:</p>
+    <p>10.60.20.15</p>
+    <p>works.</p>
+    <p>Ping:</p>
+    <p>monitor-server.hospital.local</p>
+    <p>fails.</p>
+    <p>That suggests:</p>
+    <p>Name resolution</p>
+    <p>rather than basic IP connectivity.</p>
+  </section>
+
+  <section class="content-box" id="dns-does-not-carry-the-clinical-data">
+    <h3>DNS Does Not Carry the Clinical Data</h3>
+    <p>It helps locate the server.</p>
+    <p>Once the name resolves, the application still has to establish its own connection.</p>
+  </section>
+
+  <section class="content-box" id="ip-address-does-not-tell-you-the-whole-network-path">
+    <h3>IP Address Does Not Tell You the Whole Network Path</h3>
+    <p>A valid IP does not automatically mean:</p>
+    <ul>
+      <li>Correct VLAN</li>
+      <li>Correct route</li>
+      <li>Correct DNS</li>
+      <li>Application working</li>
+    </ul>
+    <p>It proves only that the device currently has an address.</p>
+  </section>
+
+  <section class="content-box" id="link-light-vs-ip-address">
+    <h3>Link Light vs IP Address</h3>
+    <p>Ethernet link light proves:</p>
+    <p><strong>Physical link exists between the interfaces at that level.</strong></p>
+    <p>It does not prove:</p>
+    <p><strong>The device has valid IP configuration.</strong></p>
+  </section>
+
+  <section class="content-box" id="ip-configuration-vs-application-connection">
+    <h3>IP Configuration vs Application Connection</h3>
+    <p>Think in layers.</p>
+    <p><strong>Physical link</strong></p>
+    <p>↓</p>
+    <p><strong>IP configuration</strong></p>
+    <p>↓</p>
+    <p><strong>Gateway / routing</strong></p>
+    <p>↓</p>
+    <p><strong>DNS if needed</strong></p>
+    <p>↓</p>
+    <p><strong>Application service</strong></p>
+    <p>Each layer can work while the next fails.</p>
+  </section>
+
+  <section class="content-box" id="ping">
+    <h3>Ping</h3>
+    <p>Ping is one of the most common troubleshooting tools.</p>
+    <p>It tests whether ICMP traffic can travel between endpoints and return.</p>
+  </section>
+
+  <section class="content-box" id="what-successful-ping-proves">
+    <h3>What Successful Ping Proves</h3>
+    <p>If a medical device can ping the gateway:</p>
+    <p>You have evidence that:</p>
+    <ul>
+      <li>Local IP communication works</li>
+      <li>Gateway is reachable</li>
+    </ul>
+    <p>under those conditions.</p>
+  </section>
+
+  <section class="content-box" id="what-ping-does-not-prove">
+    <h3>What Ping Does Not Prove</h3>
+    <p>It does not prove:</p>
+    <ul>
+      <li>Application port open</li>
+      <li>Server application running</li>
+      <li>DICOM working</li>
+      <li>HL7 working</li>
+      <li>Certificate valid</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ping-may-be-blocked-intentionally">
+    <h3>Ping May Be Blocked Intentionally</h3>
+    <p>Some networks or systems block ICMP.</p>
+    <p>Failure to ping does not always mean the host is unreachable for the actual application.</p>
+  </section>
+
+  <section class="content-box" id="use-ping-as-one-piece-of-evidence">
+    <h3>Use Ping as One Piece of Evidence</h3>
+    <p>Not the final answer.</p>
+  </section>
+
+  <section class="content-box" id="duplicate-ip-address">
+    <h3>Duplicate IP Address</h3>
+    <p>Two devices should not generally use the same IP address simultaneously.</p>
+    <p>A duplicate can cause:</p>
+    <ul>
+      <li>Intermittent communication</li>
+      <li>Connections moving between devices</li>
+      <li>Random disconnects</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-duplicate-ip-problems-can-be-weird">
+    <h3>Why Duplicate IP Problems Can Be Weird</h3>
+    <p>The network may alternately associate the IP with different MAC addresses.</p>
+    <p>The symptom may come and go.</p>
+  </section>
+
+  <section class="content-box" id="common-cause">
+    <h3>Common Cause</h3>
+    <p>A static-IP device is replaced and the old device remains connected somewhere else.</p>
+    <p>Now both use the same address.</p>
+  </section>
+
+  <section class="content-box" id="another-cause">
+    <h3>Another Cause</h3>
+    <p>Someone manually copies the configuration from one device to another and forgets to change the IP.</p>
+  </section>
+
+  <section class="content-box" id="if-the-problem-began-after-device-replacement">
+    <h3>If the Problem Began After Device Replacement</h3>
+    <p>Duplicate IP should be on your list.</p>
+  </section>
+
+  <section class="content-box" id="ip-address-conflict-messages">
+    <h3>IP Address Conflict Messages</h3>
+    <p>Some operating systems detect duplicate addresses and display a warning.</p>
+    <p>Others may simply behave badly.</p>
+  </section>
+
+  <section class="content-box" id="mac-address">
+    <h3>MAC Address</h3>
+    <p>A MAC address identifies a network interface at the local network level.</p>
+    <p>It usually looks something like:</p>
+    <p><strong>AA:BB:CC:DD:EE:FF</strong></p>
+    <p>IT can use the MAC address to locate:</p>
+    <ul>
+      <li>Switch port</li>
+      <li>Network registration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mac-and-ip-are-different">
+    <h3>MAC and IP Are Different</h3>
+    <p>MAC:</p>
+    <p>Interface identity.</p>
+    <p>IP:</p>
+    <p>Logical network address.</p>
+  </section>
+
+  <section class="content-box" id="arp">
+    <h3>ARP</h3>
+    <p>You may hear about ARP.</p>
+    <p>ARP helps devices determine which MAC address corresponds to an IP address on the local subnet.</p>
+    <p>You do not need deep ARP knowledge for routine work.</p>
+    <p>But it explains why duplicate IP addresses can create strange behavior.</p>
+  </section>
+
+  <section class="content-box" id="wrong-ip-address">
+    <h3>Wrong IP Address</h3>
+    <p>If the device is assigned to the wrong network range, it may:</p>
+    <ul>
+      <li>Lose server access</li>
+      <li>Fail to reach gateway</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="compare-against-known-good-configuration">
+    <h3>Compare Against Known-Good Configuration</h3>
+    <p>A nearby working device can help.</p>
+    <p>Compare:</p>
+    <ul>
+      <li>Subnet</li>
+      <li>Gateway</li>
+      <li>DNS</li>
+    </ul>
+    <p>But do not copy its unique IP address.</p>
+  </section>
+
+  <section class="content-box" id="this-is-important">
+    <h3>This Is Important</h3>
+    <p>Copying the entire network configuration from a working device can create:</p>
+    <p>A duplicate IP.</p>
+    <p>Compare the structure.</p>
+    <p>Do not duplicate the identity.</p>
+  </section>
+
+  <section class="content-box" id="wrong-subnet-mask">
+    <h3>Wrong Subnet Mask</h3>
+    <p>This can produce partial communication.</p>
+    <p>Some destinations may work.</p>
+    <p>Others fail.</p>
+  </section>
+
+  <section class="content-box" id="wrong-gateway">
+    <h3>Wrong Gateway</h3>
+    <p>Local destinations may work while remote destinations fail.</p>
+  </section>
+
+  <section class="content-box" id="wrong-dns">
+    <h3>Wrong DNS</h3>
+    <p>Numeric IP communication may work while hostname-based communication fails.</p>
+  </section>
+
+  <section class="content-box" id="this-pattern-is-very-useful">
+    <h3>This Pattern Is Very Useful</h3>
+    <p><strong>IP works, name fails</strong></p>
+    <p>Think:</p>
+    <p>DNS.</p>
+  </section>
+
+  <section class="content-box" id="no-gateway-needed-for-local-communication">
+    <h3>No Gateway Needed for Local Communication</h3>
+    <p>If two systems are on the same subnet, they may communicate without using the default gateway.</p>
+    <p>That is why a device can have a wrong gateway and still communicate with some local systems.</p>
+  </section>
+
+  <section class="content-box" id="routes-can-be-more-complicated">
+    <h3>Routes Can Be More Complicated</h3>
+    <p>Large medical systems may use:</p>
+    <ul>
+      <li>Static routes</li>
+      <li>Multiple interfaces</li>
+    </ul>
+    <p>That is where IT involvement becomes important.</p>
+  </section>
+
+  <section class="content-box" id="multiple-network-interfaces">
+    <h3>Multiple Network Interfaces</h3>
+    <p>Some equipment has separate ports for:</p>
+    <ul>
+      <li>Hospital LAN</li>
+      <li>Internal device network</li>
+      <li>Service</li>
+    </ul>
+    <p>Do not assume every Ethernet jack serves the same purpose.</p>
+  </section>
+
+  <section class="content-box" id="internal-network">
+    <h3>Internal Network</h3>
+    <p>Complex systems may use private internal IP networks between:</p>
+    <ul>
+      <li>Gantry</li>
+      <li>Console</li>
+      <li>Acquisition computer</li>
+      <li>Reconstruction system</li>
+    </ul>
+    <p>These may have nothing to do with the hospital network.</p>
+  </section>
+
+  <section class="content-box" id="do-not-reconfigure-internal-addresses-casually">
+    <h3>Do Not Reconfigure Internal Addresses Casually</h3>
+    <p>They may be fixed by the manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="vlans">
+    <h3>VLANs</h3>
+    <p>A device can have correct IP settings and physical link while still being placed on the wrong VLAN.</p>
+    <p>That can prevent it from reaching the expected systems.</p>
+    <p>VLANs deserve their own article.</p>
+    <p>For now remember:</p>
+    <p><strong>Correct IP information does not prove the network switch has placed the device in the correct logical network.</strong></p>
+  </section>
+
+  <section class="content-box" id="firewall">
+    <h3>Firewall</h3>
+    <p>Even with:</p>
+    <ul>
+      <li>Correct IP</li>
+      <li>Correct gateway</li>
+      <li>Correct DNS</li>
+      <li>Working routing</li>
+    </ul>
+    <p>an application may still fail if required traffic is blocked.</p>
+  </section>
+
+  <section class="content-box" id="device-can-ping-but-application-still-fail">
+    <h3>Device Can Ping but Application Still Fail</h3>
+    <p>This is one of the most common networking lessons for biomeds.</p>
+    <p>Ping uses one type of traffic.</p>
+    <p>The application may use a completely different:</p>
+    <ul>
+      <li>Protocol</li>
+      <li>Port</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>ECG cart:</p>
+    <p>Can ping MUSE server.</p>
+    <p>Cannot transmit ECG.</p>
+    <p>The network path exists at the IP level.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Application</li>
+      <li>Port</li>
+      <li>Firewall</li>
+      <li>Service</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dns-server-configuration">
+    <h3>DNS Server Configuration</h3>
+    <p>A device may have:</p>
+    <ul>
+      <li>Primary DNS</li>
+      <li>Secondary DNS</li>
+    </ul>
+    <p>If both are wrong, hostname resolution may fail.</p>
+  </section>
+
+  <section class="content-box" id="dns-cache">
+    <h3>DNS Cache</h3>
+    <p>Some operating systems cache previous DNS results.</p>
+    <p>That can make troubleshooting confusing after server changes.</p>
+  </section>
+
+  <section class="content-box" id="hostname-vs-fqdn">
+    <h3>Hostname vs FQDN</h3>
+    <p>You may encounter:</p>
+    <ul>
+      <li>Short hostname</li>
+      <li>Fully qualified domain name</li>
+    </ul>
+    <p>Different environments handle these differently.</p>
+    <p>Do not assume a short name will resolve everywhere.</p>
+  </section>
+
+  <section class="content-box" id="time-and-dns">
+    <h3>Time and DNS</h3>
+    <p>Time problems do not usually stop basic DNS resolution.</p>
+    <p>But time can affect:</p>
+    <ul>
+      <li>Secure connections</li>
+      <li>Certificates</li>
+    </ul>
+    <p>after name resolution succeeds.</p>
+  </section>
+
+  <section class="content-box" id="static-configuration-documentation">
+    <h3>Static Configuration Documentation</h3>
+    <p>If a device has static network settings, document them somewhere controlled.</p>
+    <p>At minimum, your organization should be able to recover:</p>
+    <ul>
+      <li>IP</li>
+      <li>Subnet</li>
+      <li>Gateway</li>
+      <li>DNS</li>
+    </ul>
+    <p>if the device is replaced or reset.</p>
+  </section>
+
+  <section class="content-box" id="do-not-store-passwords-in-unsecured-notes">
+    <h3>Do Not Store Passwords in Unsecured Notes</h3>
+    <p>Network configuration and credentials should be handled according to facility policy.</p>
+  </section>
+
+  <section class="content-box" id="network-changes">
+    <h3>Network Changes</h3>
+    <p>If IT changes:</p>
+    <ul>
+      <li>Gateway</li>
+      <li>DNS</li>
+      <li>VLAN</li>
+    </ul>
+    <p>static medical devices may need coordinated updates.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-device-inventories-matter">
+    <h3>This Is Why Device Inventories Matter</h3>
+    <p>IT needs to know what is out there.</p>
+    <p>Biomed needs to know which devices depend on the old settings.</p>
+  </section>
+
+  <section class="content-box" id="troubleshooting-workflow">
+    <h3>Troubleshooting Workflow</h3>
+    <p>When a networked device cannot communicate, start simple.</p>
+  </section>
+
+  <section class="content-box" id="step-1-physical-link">
+    <h3>Step 1: Physical Link</h3>
+    <p>Is Ethernet link present?</p>
+    <p>If no:</p>
+    <p>Investigate:</p>
+    <ul>
+      <li>Cable</li>
+      <li>Jack</li>
+      <li>Switch port</li>
+      <li>NIC</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="step-2-ip-configuration">
+    <h3>Step 2: IP Configuration</h3>
+    <p>Check:</p>
+    <ul>
+      <li>IP</li>
+      <li>Subnet</li>
+      <li>Gateway</li>
+      <li>DNS</li>
+    </ul>
+    <p>Does it match the expected network?</p>
+  </section>
+
+  <section class="content-box" id="step-3-local-communication">
+    <h3>Step 3: Local Communication</h3>
+    <p>Can the device reach something on the local subnet?</p>
+    <p>Often the gateway is a useful target if allowed.</p>
+  </section>
+
+  <section class="content-box" id="step-4-remote-communication">
+    <h3>Step 4: Remote Communication</h3>
+    <p>Can it reach the destination network?</p>
+  </section>
+
+  <section class="content-box" id="step-5-name-resolution">
+    <h3>Step 5: Name Resolution</h3>
+    <p>If the application uses a hostname:</p>
+    <p>Does the name resolve correctly?</p>
+  </section>
+
+  <section class="content-box" id="step-6-application">
+    <h3>Step 6: Application</h3>
+    <p>Can the required service connect?</p>
+    <p>Now think:</p>
+    <ul>
+      <li>Port</li>
+      <li>Firewall</li>
+      <li>Server application</li>
+      <li>Authentication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-gateway">
+    <h3>Real-World Example: Wrong Gateway</h3>
+    <p>Monitor gets:</p>
+    <p>10.52.51.24</p>
+    <p>Mask:</p>
+    <p>255.255.255.0</p>
+    <p>Gateway accidentally configured:</p>
+    <p>10.52.50.1</p>
+    <p>It can communicate with another 10.52.51.x device.</p>
+    <p>It cannot reach the central server on another network.</p>
+    <p>The local NIC is fine.</p>
+    <p>The routing configuration is not.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-dns">
+    <h3>Real-World Example: Wrong DNS</h3>
+    <p>Device can ping:</p>
+    <p>10.60.20.15</p>
+    <p>But application configured for:</p>
+    <p>muse01.hospital.local</p>
+    <p>cannot connect.</p>
+    <p>DNS server configuration is wrong.</p>
+    <p>Once corrected, hostname resolves and application works.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-duplicate-ip">
+    <h3>Real-World Example: Duplicate IP</h3>
+    <p>New monitor installed using old monitor's static address.</p>
+    <p>Old monitor later comes back online.</p>
+    <p>Both become intermittently unreachable.</p>
+    <p>Neither monitor necessarily has a hardware problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-self-assigned-address">
+    <h3>Real-World Example: Self-Assigned Address</h3>
+    <p>Device normally receives DHCP.</p>
+    <p>Now shows:</p>
+    <p>169.254.22.91.</p>
+    <p>Link light is on.</p>
+    <p>That suggests the interface sees physical link but did not receive the expected DHCP configuration.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>VLAN</li>
+      <li>DHCP reachability</li>
+      <li>Switch configuration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="assuming-link-light-means-network-is-good">
+    <h3>Assuming Link Light Means Network Is Good</h3>
+    <p>It proves only a low-level connection.</p>
+  </section>
+
+  <section class="content-box" id="copying-a-working-device-s-ip-address">
+    <h3>Copying a Working Device&#x27;s IP Address</h3>
+    <p>You may create a duplicate.</p>
+  </section>
+
+  <section class="content-box" id="assuming-ping-proves-the-application-works">
+    <h3>Assuming Ping Proves the Application Works</h3>
+    <p>Application ports and services are separate.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-dns">
+    <h3>Ignoring DNS</h3>
+    <p>Hostname-based applications can fail while numeric IP works.</p>
+  </section>
+
+  <section class="content-box" id="changing-network-settings-randomly">
+    <h3>Changing Network Settings Randomly</h3>
+    <p>Coordinate with IT.</p>
+  </section>
+
+  <section class="content-box" id="blaming-the-device-before-checking-its-configuration">
+    <h3>Blaming the Device Before Checking Its Configuration</h3>
+    <p>One wrong number can break communication.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-networking-framework">
+    <h3>A Useful Networking Framework</h3>
+    <p>Think:</p>
+    <p><strong>Link</strong></p>
+    <p>↓</p>
+    <p><strong>IP</strong></p>
+    <p>↓</p>
+    <p><strong>Subnet</strong></p>
+    <p>↓</p>
+    <p><strong>Gateway</strong></p>
+    <p>↓</p>
+    <p><strong>DNS</strong></p>
+    <p>↓</p>
+    <p><strong>Application</strong></p>
+    <p>Work through the chain in order.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-question">
+    <h3>Another Useful Question</h3>
+    <p>Ask:</p>
+    <p><strong>Can this device reach something local, something remote, and the actual application service?</strong></p>
+    <p>Those are three different tests.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device has a valid IP:</p>
+    <p>You proved:</p>
+    <p><strong>The interface currently has an IP configuration.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Correct subnet</li>
+      <li>Correct gateway</li>
+    </ul>
+    <p>If it can ping the gateway:</p>
+    <p>You proved:</p>
+    <p><strong>Basic local IP communication to the gateway works under current conditions.</strong></p>
+    <p>If it can ping the server:</p>
+    <p>You still did not prove:</p>
+    <p><strong>The application service is available.</strong></p>
+    <p>Each test narrows the problem.</p>
+    <p>That is the point.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>You do not need to become a network architect to troubleshoot medical-device connectivity well.</p>
+    <p>Start with the basics.</p>
+    <p>Know:</p>
+    <ul>
+      <li>IP address</li>
+      <li>Subnet mask</li>
+      <li>Default gateway</li>
+      <li>DNS</li>
+    </ul>
+    <p>Then think in layers.</p>
+    <p>Can the device see the network?</p>
+    <p>Does it have the right address?</p>
+    <p>Can it reach its gateway?</p>
+    <p>Can it reach the destination?</p>
+    <p>Can it resolve the server name?</p>
+    <p>Can the actual application connect?</p>
+    <p>The phrase:</p>
+    <blockquote><p>Network problem</p></blockquote>
+    <p>is too broad to be useful.</p>
+    <p>Your job is to turn it into something more specific.</p>
+    <p>And before you escalate to IT saying:</p>
+    <blockquote><p>The network is broken,</p></blockquote>
+    <p>ask:</p>
+    <p><strong>What did I actually prove about the network path?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>IP addressing, DHCP, DNS, routing, VLANs, firewall rules, device-network architecture, and application requirements vary by healthcare organization and medical-device manufacturer. Coordinate network changes with authorized IT/network teams and follow manufacturer documentation before modifying medical-device network configuration.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="ethernet-ports-link-lights-and-what-they-tell-you.html">Ethernet Ports, Link Lights, and What They Tell You</a></li>
+      <li><a href="ports-firewalls-and-why-a-device-can-ping-but-still-not-work.html">Ports, Firewalls, and Why a Device Can Ping but Still Not Work</a></li>
+      <li><a href="how-to-troubleshoot-communication-failures.html">How to Troubleshoot Communication Failures</a></li>
+      <li><a href="how-patient-monitors-communicate-with-central-stations.html">How Patient Monitors Communicate With Central Stations</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
