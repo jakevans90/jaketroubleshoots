@@ -149,6 +149,8 @@ RELATED = {
     "pm-documentation-basics": ["what-should-actually-happen-during-a-pm", "biomed-work-order-notes-ccr-method", "how-to-use-equipment-history-during-troubleshooting", "calibration-stickers-what-they-do-and-dont-mean", "incoming-inspection-basics"],
     "recall-and-safety-notice-basics": ["what-to-do-when-a-medical-device-is-involved-in-an-incident", "when-to-remove-medical-equipment-from-service", "incoming-inspection-basics", "how-to-use-equipment-history-during-troubleshooting", "medical-device-cybersecurity-basics"],
     "medical-device-cybersecurity-basics": ["how-to-work-with-it-as-a-biomed", "ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "basic-networking-for-medical-equipment", "software-firmware-and-configuration-problems-in-medical-equipment", "recall-and-safety-notice-basics"],
+    "ip-addresses-subnets-gateways-and-dns-in-plain-english": ["basic-networking-for-medical-equipment", "ethernet-ports-link-lights-and-what-they-tell-you", "ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "how-to-troubleshoot-communication-failures", "how-patient-monitors-communicate-with-central-stations"],
+    "wi-fi-troubleshooting-for-medical-equipment": ["basic-networking-for-medical-equipment", "ip-addresses-subnets-gateways-and-dns-in-plain-english", "ethernet-ports-link-lights-and-what-they-tell-you", "how-to-troubleshoot-communication-failures", "how-to-work-with-it-as-a-biomed"],
 }
 
 ARTICLE_CONFIG = {
@@ -888,6 +890,18 @@ ARTICLE_CONFIG = {
         "category": "Networking & Integration",
         "badge": "Cybersecurity",
         "cardNote": "Inventory, access, updates, exposure, data, and IT collaboration",
+    },
+    "ip-addresses-subnets-gateways-and-dns-in-plain-english": {
+        "description": "A practical explanation of IP addresses, DHCP, subnet masks, default gateways, DNS, duplicate addresses, ping, routing, and application connectivity for biomeds.",
+        "category": "Networking & Integration",
+        "badge": "Networking",
+        "cardNote": "IP configuration, routing, name resolution, and connectivity boundaries",
+    },
+    "wi-fi-troubleshooting-for-medical-equipment": {
+        "description": "A practical guide to separating wireless signal, association, authentication, DHCP, roaming, hardware, and application problems in medical equipment.",
+        "category": "Networking & Integration",
+        "badge": "Wireless",
+        "cardNote": "Signal, association, authentication, roaming, and application connectivity",
     },
 }
 

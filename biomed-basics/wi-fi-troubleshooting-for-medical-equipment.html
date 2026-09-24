@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wi-Fi Troubleshooting for Medical Equipment | Jake Troubleshoots</title>
+  <meta name="description" content="A practical guide to separating wireless signal, association, authentication, DHCP, roaming, hardware, and application problems in medical equipment.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/wi-fi-troubleshooting-for-medical-equipment.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">Wi-Fi Troubleshooting for Medical Equipment</h1>
+  <p>How to troubleshoot wireless medical-device problems by separating signal strength, association, authentication, roaming, IP connectivity, and application communication instead of calling every dropout “bad Wi-Fi”</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Wireless medical equipment creates a special kind of troubleshooting problem.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What Wi-Fi actually does</li>
+      <li>Access points</li>
+      <li>SSIDs</li>
+      <li>Signal strength</li>
+      <li>2.4 GHz, 5 GHz, and newer bands</li>
+      <li>Interference</li>
+      <li>Authentication</li>
+      <li>DHCP</li>
+      <li>Roaming</li>
+      <li>Sticky clients</li>
+      <li>Dead zones</li>
+      <li>Channel congestion</li>
+      <li>Why full bars do not prove application connectivity</li>
+      <li>Why a device can disconnect while moving</li>
+      <li>How to compare stationary and mobile behavior</li>
+      <li>What evidence to collect before escalating to IT</li>
+      <li>Common mistakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Think of wireless connectivity as:</p>
+    <p><strong>Radio Signal</strong></p>
+    <p>↓</p>
+    <p><strong>Association</strong></p>
+    <p>↓</p>
+    <p><strong>Authentication</strong></p>
+    <p>↓</p>
+    <p><strong>IP Address</strong></p>
+    <p>↓</p>
+    <p><strong>Network Routing</strong></p>
+    <p>↓</p>
+    <p><strong>Application Server</strong></p>
+    <p>A problem at the top is not the same as a problem at the bottom.</p>
+    <p>The goal is to figure out whether the device is losing:</p>
+    <ul>
+      <li>Radio connection</li>
+      <li>Network authentication</li>
+      <li>IP connectivity</li>
+      <li>Application session</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="what-is-an-access-point">
+    <h3>What Is an Access Point?</h3>
+    <p>An access point, or AP, is the network device that allows Wi-Fi clients to connect to the wired network.</p>
+    <p>Large hospitals may have:</p>
+    <ul>
+      <li>Hundreds</li>
+      <li>Thousands</li>
+    </ul>
+    <p>of access points.</p>
+    <p>As a mobile device moves, it may need to transition between them.</p>
+  </section>
+
+  <section class="content-box" id="ssid">
+    <h3>SSID</h3>
+    <p>The SSID is the wireless network name.</p>
+    <p>Examples might include:</p>
+    <ul>
+      <li>MedicalDevices</li>
+      <li>Clinical</li>
+      <li>EnterpriseWiFi</li>
+    </ul>
+    <p>The device must be configured for the correct SSID.</p>
+  </section>
+
+  <section class="content-box" id="same-ssid-many-access-points">
+    <h3>Same SSID, Many Access Points</h3>
+    <p>A hospital may broadcast the same SSID from many APs.</p>
+    <p>That allows devices to move throughout the building while appearing to stay on one wireless network.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-signal-strength">
+    <h3>Wi-Fi Signal Strength</h3>
+    <p>Wireless signal strength is often expressed in:</p>
+    <p><strong>dBm.</strong></p>
+    <p>You may also see a simple:</p>
+    <ul>
+      <li>Bars</li>
+      <li>Percentage</li>
+    </ul>
+    <p>display.</p>
+  </section>
+
+  <section class="content-box" id="bars-are-simplified">
+    <h3>Bars Are Simplified</h3>
+    <p>Three bars on one device may not equal three bars on another.</p>
+    <p>For meaningful troubleshooting, actual signal measurements are better when available.</p>
+  </section>
+
+  <section class="content-box" id="stronger-is-not-the-whole-story">
+    <h3>Stronger Is Not the Whole Story</h3>
+    <p>A device can have strong signal and still fail because of:</p>
+    <ul>
+      <li>Authentication</li>
+      <li>DHCP</li>
+      <li>Application server</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="weak-signal">
+    <h3>Weak Signal</h3>
+    <p>Weak signal can cause:</p>
+    <ul>
+      <li>Low data rate</li>
+      <li>Packet loss</li>
+      <li>Disconnects</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="distance-matters">
+    <h3>Distance Matters</h3>
+    <p>Signal generally decreases as distance from the access point increases.</p>
+  </section>
+
+  <section class="content-box" id="walls-matter">
+    <h3>Walls Matter</h3>
+    <p>Radio energy is affected by:</p>
+    <ul>
+      <li>Concrete</li>
+      <li>Metal</li>
+      <li>Lead shielding</li>
+      <li>Equipment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="hospitals-are-difficult-rf-environments">
+    <h3>Hospitals Are Difficult RF Environments</h3>
+    <p>Hospitals contain:</p>
+    <ul>
+      <li>Elevators</li>
+      <li>Dense equipment</li>
+      <li>Imaging suites</li>
+      <li>Thick walls</li>
+      <li>Moving people</li>
+    </ul>
+    <p>All of those can affect wireless performance.</p>
+  </section>
+
+  <section class="content-box" id="frequency-bands">
+    <h3>Frequency Bands</h3>
+    <p>Wi-Fi commonly operates in bands including:</p>
+    <ul>
+      <li>2.4 GHz</li>
+      <li>5 GHz</li>
+    </ul>
+    <p>and newer deployments may also use additional spectrum.</p>
+  </section>
+
+  <section class="content-box" id="2-4-ghz">
+    <h3>2.4 GHz</h3>
+    <p>Often has:</p>
+    <ul>
+      <li>Greater range</li>
+      <li>Better penetration</li>
+    </ul>
+    <p>but also:</p>
+    <ul>
+      <li>More congestion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="5-ghz">
+    <h3>5 GHz</h3>
+    <p>Often provides:</p>
+    <ul>
+      <li>More available channels</li>
+      <li>Higher performance</li>
+    </ul>
+    <p>but may have:</p>
+    <ul>
+      <li>Shorter effective range through some structures</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="device-capability-matters">
+    <h3>Device Capability Matters</h3>
+    <p>Older medical devices may support:</p>
+    <ul>
+      <li>Only certain wireless standards</li>
+      <li>Only certain bands</li>
+    </ul>
+    <p>A network redesign can expose those limitations.</p>
+  </section>
+
+  <section class="content-box" id="interference">
+    <h3>Interference</h3>
+    <p>Other radio sources can interfere with Wi-Fi.</p>
+    <p>Possible sources include:</p>
+    <ul>
+      <li>Other Wi-Fi networks</li>
+      <li>Wireless equipment</li>
+      <li>Bluetooth</li>
+      <li>Certain non-Wi-Fi transmitters</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-blame-interference-without-evidence">
+    <h3>Do Not Blame Interference Without Evidence</h3>
+    <p>It is easy to say:</p>
+    <blockquote><p>Something is interfering.</p></blockquote>
+    <p>Get data if possible.</p>
+  </section>
+
+  <section class="content-box" id="channel-congestion">
+    <h3>Channel Congestion</h3>
+    <p>Even if signal is strong, many clients sharing the same radio resources can reduce performance.</p>
+    <p>This may be more noticeable during:</p>
+    <ul>
+      <li>Busy clinical periods</li>
+      <li>Large events</li>
+      <li>Dense-device areas</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="signal-strength-vs-signal-quality">
+    <h3>Signal Strength vs Signal Quality</h3>
+    <p>A strong signal can still be poor quality if there is:</p>
+    <ul>
+      <li>Noise</li>
+      <li>Interference</li>
+      <li>Congestion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="association">
+    <h3>Association</h3>
+    <p>Association is the process of the client joining an access point.</p>
+    <p>If association fails, the device never gets far enough to communicate normally.</p>
+  </section>
+
+  <section class="content-box" id="authentication">
+    <h3>Authentication</h3>
+    <p>Enterprise hospital Wi-Fi may require:</p>
+    <ul>
+      <li>Username/password</li>
+      <li>Certificate</li>
+      <li>Other enterprise authentication</li>
+    </ul>
+    <p>A client may detect the SSID but still fail to authenticate.</p>
+  </section>
+
+  <section class="content-box" id="wrong-credentials">
+    <h3>Wrong Credentials</h3>
+    <p>Symptoms may include:</p>
+    <ul>
+      <li>Repeated connection attempts</li>
+      <li>Authentication failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="expired-certificate">
+    <h3>Expired Certificate</h3>
+    <p>A certificate-based medical device may suddenly stop connecting when a certificate expires.</p>
+    <p>The radio is fine.</p>
+    <p>The network is visible.</p>
+    <p>Authentication fails.</p>
+  </section>
+
+  <section class="content-box" id="date-and-time">
+    <h3>Date and Time</h3>
+    <p>If the device clock is badly wrong, certificate validation can also fail.</p>
+  </section>
+
+  <section class="content-box" id="dhcp-after-wi-fi-association">
+    <h3>DHCP After Wi-Fi Association</h3>
+    <p>A device may successfully join Wi-Fi but fail to receive an IP address.</p>
+    <p>Now you can have:</p>
+    <p><strong>Wireless association</strong></p>
+    <p>but:</p>
+    <p><strong>No usable IP connectivity.</strong></p>
+  </section>
+
+  <section class="content-box" id="this-distinction-matters">
+    <h3>This Distinction Matters</h3>
+    <p>If service mode says:</p>
+    <p>Wi-Fi connected</p>
+    <p>but IP is:</p>
+    <p>169.254.x.x,</p>
+    <p>the radio association may be fine while DHCP is not.</p>
+  </section>
+
+  <section class="content-box" id="static-wireless-ip">
+    <h3>Static Wireless IP</h3>
+    <p>Some devices use static addressing even on Wi-Fi.</p>
+    <p>Then DHCP is not involved.</p>
+    <p>Check the actual configuration.</p>
+  </section>
+
+  <section class="content-box" id="roaming">
+    <h3>Roaming</h3>
+    <p>Roaming occurs when a wireless device moves from one access point to another.</p>
+    <p>This is critical for:</p>
+    <ul>
+      <li>Transport monitors</li>
+      <li>Mobile ECG carts</li>
+      <li>Other mobile systems</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="roaming-should-usually-be-fast-enough-that-the-application-survives">
+    <h3>Roaming Should Usually Be Fast Enough That the Application Survives</h3>
+    <p>But behavior depends on:</p>
+    <ul>
+      <li>Device radio</li>
+      <li>Network design</li>
+      <li>Application tolerance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="roaming-problem-pattern">
+    <h3>Roaming Problem Pattern</h3>
+    <p>Device works perfectly while stationary.</p>
+    <p>Disconnects only during transport.</p>
+    <p>That should immediately make you think about:</p>
+    <ul>
+      <li>Roaming</li>
+      <li>Coverage transition</li>
+    </ul>
+    <p>rather than general device hardware.</p>
+  </section>
+
+  <section class="content-box" id="sticky-client">
+    <h3>Sticky Client</h3>
+    <p>A wireless client may remain attached to an access point even as the signal becomes weak instead of moving promptly to a better one.</p>
+    <p>This is sometimes described as a:</p>
+    <p><strong>Sticky client.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-this-matters">
+    <h3>Why This Matters</h3>
+    <p>You may walk directly past a strong nearby AP while the device remains connected to a distant one.</p>
+    <p>Performance degrades.</p>
+    <p>Eventually it disconnects.</p>
+  </section>
+
+  <section class="content-box" id="roaming-is-often-client-driven">
+    <h3>Roaming Is Often Client-Driven</h3>
+    <p>The access point infrastructure helps, but the client radio and driver often influence when roaming occurs.</p>
+    <p>That means:</p>
+    <ul>
+      <li>Network</li>
+      <li>Device</li>
+    </ul>
+    <p>both matter.</p>
+  </section>
+
+  <section class="content-box" id="dead-zone">
+    <h3>Dead Zone</h3>
+    <p>A dead zone is an area with inadequate usable coverage.</p>
+  </section>
+
+  <section class="content-box" id="be-precise">
+    <h3>Be Precise</h3>
+    <p>A dead zone is different from:</p>
+    <ul>
+      <li>Application server outage</li>
+      <li>Authentication failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="reproduce-the-route">
+    <h3>Reproduce the Route</h3>
+    <p>If staff says:</p>
+    <blockquote><p>It always drops between ICU and CT,</p></blockquote>
+    <p>walk that route with the device if appropriate.</p>
+    <p>Observe:</p>
+    <ul>
+      <li>Signal</li>
+      <li>AP changes</li>
+      <li>Connection state</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="location-is-data">
+    <h3>Location Is Data</h3>
+    <p>Record where the dropout occurs.</p>
+    <p>Not:</p>
+    <blockquote><p>Hallway.</p></blockquote>
+    <p>Better:</p>
+    <blockquote><p>Connection consistently drops outside elevator bank between ICU and CT.</p></blockquote>
+    <p>That gives IT something useful.</p>
+  </section>
+
+  <section class="content-box" id="compare-a-known-good-device">
+    <h3>Compare a Known-Good Device</h3>
+    <p>If possible, take another identical or similar functioning device through the same area.</p>
+  </section>
+
+  <section class="content-box" id="outcomes">
+    <h3>Outcomes</h3>
+    <p>Suspect device drops.</p>
+    <p>Known-good device stays connected.</p>
+    <p>Think more about:</p>
+    <ul>
+      <li>Device radio</li>
+      <li>Configuration</li>
+    </ul>
+    <p>Both devices drop.</p>
+    <p>Think more about:</p>
+    <ul>
+      <li>Coverage</li>
+      <li>Network infrastructure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="same-device-different-location">
+    <h3>Same Device, Different Location</h3>
+    <p>Move the suspect device to an area with known strong coverage.</p>
+    <p>If it remains stable:</p>
+    <p>The failure may depend on location.</p>
+  </section>
+
+  <section class="content-box" id="failure-follows-the-device">
+    <h3>Failure Follows the Device</h3>
+    <p>If it drops everywhere while other devices remain connected:</p>
+    <p>Device-side problem becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-radio-hardware">
+    <h3>Wi-Fi Radio Hardware</h3>
+    <p>Possible device-side failures include:</p>
+    <ul>
+      <li>Loose antenna</li>
+      <li>Damaged antenna cable</li>
+      <li>Wireless card</li>
+      <li>Connector</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="antenna-damage">
+    <h3>Antenna Damage</h3>
+    <p>A radio can still connect with a damaged antenna but perform poorly.</p>
+    <p>That makes the failure appear:</p>
+    <p>Intermittent.</p>
+  </section>
+
+  <section class="content-box" id="device-after-physical-damage">
+    <h3>Device After Physical Damage</h3>
+    <p>If Wi-Fi performance worsened after:</p>
+    <ul>
+      <li>Drop</li>
+      <li>Repair</li>
+    </ul>
+    <p>inspect antenna paths if service documentation allows.</p>
+  </section>
+
+  <section class="content-box" id="internal-antenna-placement">
+    <h3>Internal Antenna Placement</h3>
+    <p>Metal enclosures and internal mounting make antenna design important.</p>
+    <p>Do not modify antenna position casually.</p>
+  </section>
+
+  <section class="content-box" id="power-saving-behavior">
+    <h3>Power-Saving Behavior</h3>
+    <p>Some wireless clients use power-saving features that affect radio behavior.</p>
+    <p>Manufacturer firmware usually manages this.</p>
+    <p>Do not randomly change advanced adapter settings on medical devices without support.</p>
+  </section>
+
+  <section class="content-box" id="firmware-and-driver">
+    <h3>Firmware and Driver</h3>
+    <p>Wireless behavior may depend heavily on:</p>
+    <ul>
+      <li>Wi-Fi driver</li>
+      <li>Device firmware</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fleet-pattern">
+    <h3>Fleet Pattern</h3>
+    <p>If one software version has roaming problems and another does not:</p>
+    <p>That is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="enterprise-authentication">
+    <h3>Enterprise Authentication</h3>
+    <p>Hospitals commonly use centralized authentication.</p>
+    <p>Possible dependencies include:</p>
+    <ul>
+      <li>Certificates</li>
+      <li>Authentication servers</li>
+    </ul>
+    <p>If those systems have a problem, many devices may fail at once.</p>
+  </section>
+
+  <section class="content-box" id="one-device-vs-many">
+    <h3>One Device vs Many</h3>
+    <p>Again:</p>
+    <p>One device failing suggests local issue.</p>
+    <p>Many devices failing simultaneously suggests infrastructure.</p>
+  </section>
+
+  <section class="content-box" id="application-disconnect-vs-wi-fi-disconnect">
+    <h3>Application Disconnect vs Wi-Fi Disconnect</h3>
+    <p>This is one of the most important distinctions.</p>
+    <p>A device may maintain Wi-Fi connection while the clinical application session fails.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Service screen shows:</p>
+    <p>Wi-Fi connected.</p>
+    <p>Valid IP.</p>
+    <p>Gateway reachable.</p>
+    <p>But central monitor says:</p>
+    <p>Disconnected.</p>
+    <p>Now investigate:</p>
+    <ul>
+      <li>Application server</li>
+      <li>Port</li>
+      <li>Session</li>
+    </ul>
+    <p>not merely signal strength.</p>
+  </section>
+
+  <section class="content-box" id="central-station-behavior">
+    <h3>Central Station Behavior</h3>
+    <p>Sometimes a bedside monitor briefly loses packets but the central station application remains connected.</p>
+    <p>Other systems drop the entire session quickly.</p>
+    <p>Know the behavior of the specific platform.</p>
+  </section>
+
+  <section class="content-box" id="packet-loss">
+    <h3>Packet Loss</h3>
+    <p>Wireless networks can lose some packets without fully disconnecting.</p>
+    <p>Applications vary in how tolerant they are.</p>
+  </section>
+
+  <section class="content-box" id="latency">
+    <h3>Latency</h3>
+    <p>High delay can also affect application performance even when connection remains technically alive.</p>
+  </section>
+
+  <section class="content-box" id="ping-testing-while-moving">
+    <h3>Ping Testing While Moving</h3>
+    <p>If permitted and practical, continuous ping can provide clues during transport.</p>
+    <p>You may observe:</p>
+    <ul>
+      <li>Brief lost packets</li>
+      <li>Long interruption</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="but-remember">
+    <h3>But Remember</h3>
+    <p>Ping does not prove the clinical application behaves identically.</p>
+    <p>Use it as supporting evidence.</p>
+  </section>
+
+  <section class="content-box" id="ap-identity">
+    <h3>AP Identity</h3>
+    <p>Some service screens show:</p>
+    <ul>
+      <li>BSSID</li>
+      <li>AP name</li>
+    </ul>
+    <p>Watching that value can reveal whether roaming occurs.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Device signal falls very weak but stays on same AP.</p>
+    <p>Eventually disconnects.</p>
+    <p>It never roamed to nearby AP.</p>
+    <p>That is valuable evidence.</p>
+  </section>
+
+  <section class="content-box" id="it-wireless-tools">
+    <h3>IT Wireless Tools</h3>
+    <p>Network teams may have tools that show:</p>
+    <ul>
+      <li>Client association history</li>
+      <li>Roaming events</li>
+      <li>Signal</li>
+      <li>Authentication failures</li>
+    </ul>
+    <p>Give them:</p>
+    <ul>
+      <li>MAC address</li>
+      <li>Time</li>
+      <li>Location</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-mac-address-matters">
+    <h3>Why MAC Address Matters</h3>
+    <p>IT can often search wireless infrastructure logs using the device's MAC.</p>
+  </section>
+
+  <section class="content-box" id="timestamp-matters">
+    <h3>Timestamp Matters</h3>
+    <p>Do not report:</p>
+    <blockquote><p>It disconnected this morning.</p></blockquote>
+    <p>Report:</p>
+    <blockquote><p>Drop reproduced at 09:42 outside CT room 2.</p></blockquote>
+    <p>That lets IT correlate logs.</p>
+  </section>
+
+  <section class="content-box" id="check-the-clock">
+    <h3>Check the Clock</h3>
+    <p>Make sure your timestamp is understandable relative to device/network logs.</p>
+  </section>
+
+  <section class="content-box" id="multiple-mac-addresses">
+    <h3>Multiple MAC Addresses</h3>
+    <p>Some equipment may have separate:</p>
+    <ul>
+      <li>Wired MAC</li>
+      <li>Wireless MAC</li>
+    </ul>
+    <p>Give IT the correct one.</p>
+  </section>
+
+  <section class="content-box" id="randomized-mac-addresses">
+    <h3>Randomized MAC Addresses</h3>
+    <p>Many consumer devices can randomize MAC addresses.</p>
+    <p>Medical devices may behave differently, but if supported, it can complicate identification.</p>
+    <p>Use manufacturer-supported configuration.</p>
+  </section>
+
+  <section class="content-box" id="security-profile">
+    <h3>Security Profile</h3>
+    <p>A device may support only certain wireless security modes.</p>
+    <p>Network upgrades may remove older methods.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Hospital upgrades wireless security.</p>
+    <p>Older device can still see SSID but cannot authenticate.</p>
+    <p>Now the issue is compatibility.</p>
+  </section>
+
+  <section class="content-box" id="do-not-weaken-the-whole-network-for-one-old-device">
+    <h3>Do Not Weaken the Whole Network for One Old Device</h3>
+    <p>Work with:</p>
+    <ul>
+      <li>OEM</li>
+      <li>IT/security</li>
+    </ul>
+    <p>to find an approved solution.</p>
+  </section>
+
+  <section class="content-box" id="wireless-certificates">
+    <h3>Wireless Certificates</h3>
+    <p>Certificate replacement may be necessary periodically.</p>
+    <p>Track expiration when your environment depends on device certificates.</p>
+  </section>
+
+  <section class="content-box" id="password-changes">
+    <h3>Password Changes</h3>
+    <p>If an SSID uses credentials that change, devices may need updates.</p>
+  </section>
+
+  <section class="content-box" id="credential-failure-can-look-like-bad-wi-fi">
+    <h3>Credential Failure Can Look Like “Bad Wi-Fi”</h3>
+    <p>Again, exact connection status matters.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-access-points">
+    <h3>Rebooting Access Points</h3>
+    <p>Do not ask IT to reboot APs as the first fix without evidence.</p>
+    <p>A reboot may temporarily hide a problem without explaining it.</p>
+  </section>
+
+  <section class="content-box" id="rebooting-the-device">
+    <h3>Rebooting the Device</h3>
+    <p>Same principle.</p>
+    <p>If reboot reconnects:</p>
+    <p>Useful clue.</p>
+    <p>Not root cause.</p>
+  </section>
+
+  <section class="content-box" id="forget-network-rejoin">
+    <h3>Forget Network / Rejoin</h3>
+    <p>Resetting wireless configuration can erase evidence or settings.</p>
+    <p>Document first.</p>
+  </section>
+
+  <section class="content-box" id="factory-reset-is-not-a-wi-fi-troubleshooting-technique">
+    <h3>Factory Reset Is Not a Wi-Fi Troubleshooting Technique</h3>
+    <p>It may:</p>
+    <ul>
+      <li>Erase configuration</li>
+      <li>Create more work</li>
+    </ul>
+    <p>Use only when justified.</p>
+  </section>
+
+  <section class="content-box" id="wi-fi-and-battery">
+    <h3>Wi-Fi and Battery</h3>
+    <p>Wireless transmit power and scanning consume battery.</p>
+    <p>A device with poor battery performance may behave differently during mobile use.</p>
+  </section>
+
+  <section class="content-box" id="battery-shutdown-vs-wi-fi-drop">
+    <h3>Battery Shutdown vs Wi-Fi Drop</h3>
+    <p>Clinicians may report:</p>
+    <blockquote><p>It disconnected.</p></blockquote>
+    <p>But perhaps the whole device rebooted.</p>
+    <p>Clarify what actually happened.</p>
+  </section>
+
+  <section class="content-box" id="look-at-what-still-worked">
+    <h3>Look at What Still Worked</h3>
+    <p>During the reported disconnect:</p>
+    <ul>
+      <li>Did local ECG continue?</li>
+      <li>Did screen stay on?</li>
+      <li>Did alarms continue?</li>
+    </ul>
+    <p>If yes:</p>
+    <p>Likely communication issue.</p>
+    <p>If whole monitor rebooted:</p>
+    <p>Different problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-coverage-gap">
+    <h3>Real-World Example: Coverage Gap</h3>
+    <p>Transport monitor works everywhere except one hallway.</p>
+    <p>Two known-good monitors reproduce same dropout.</p>
+    <p>Wireless team finds weak coverage between AP zones.</p>
+    <p>Device hardware is fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-bad-wireless-card">
+    <h3>Real-World Example: Bad Wireless Card</h3>
+    <p>One monitor repeatedly drops in multiple departments.</p>
+    <p>Other identical monitors remain stable.</p>
+    <p>Wireless logs show unusually poor signal from that client even next to AP.</p>
+    <p>Internal antenna connection is found loose.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-authentication">
+    <h3>Real-World Example: Authentication</h3>
+    <p>Device sees correct SSID.</p>
+    <p>Signal strong.</p>
+    <p>Cannot connect.</p>
+    <p>Logs show certificate authentication failure.</p>
+    <p>Radio coverage is not the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-application-only">
+    <h3>Real-World Example: Application Only</h3>
+    <p>Monitor remains associated.</p>
+    <p>Valid IP.</p>
+    <p>Ping to server works.</p>
+    <p>Central connection repeatedly drops.</p>
+    <p>Application/server path now deserves investigation.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-roaming">
+    <h3>Real-World Example: Roaming</h3>
+    <p>Monitor remains connected to distant AP as it leaves ICU.</p>
+    <p>Signal falls.</p>
+    <p>Connection drops near elevator.</p>
+    <p>Seconds later, device associates with another AP.</p>
+    <p>That pattern strongly suggests roaming behavior.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="calling-every-wireless-failure-weak-signal">
+    <h3>Calling Every Wireless Failure “Weak Signal”</h3>
+    <p>Wi-Fi has several layers.</p>
+  </section>
+
+  <section class="content-box" id="looking-only-at-bars">
+    <h3>Looking Only at Bars</h3>
+    <p>Signal indicators are incomplete.</p>
+  </section>
+
+  <section class="content-box" id="testing-only-while-stationary">
+    <h3>Testing Only While Stationary</h3>
+    <p>Mobile equipment needs mobile testing.</p>
+  </section>
+
+  <section class="content-box" id="forgetting-authentication-and-certificates">
+    <h3>Forgetting Authentication and Certificates</h3>
+    <p>Radio can work while authentication fails.</p>
+  </section>
+
+  <section class="content-box" id="assuming-associated-means-application-connected">
+    <h3>Assuming Associated Means Application Connected</h3>
+    <p>Those are separate states.</p>
+  </section>
+
+  <section class="content-box" id="giving-it-no-timestamp-or-mac-address">
+    <h3>Giving IT No Timestamp or MAC Address</h3>
+    <p>Make the escalation actionable.</p>
+  </section>
+
+  <section class="content-box" id="factory-resetting-too-early">
+    <h3>Factory Resetting Too Early</h3>
+    <p>Preserve configuration and evidence.</p>
+  </section>
+
+  <section class="content-box" id="blaming-it-before-testing-the-device">
+    <h3>Blaming IT Before Testing the Device</h3>
+    <p>Determine whether the failure follows the device, location, or fleet.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-wireless-troubleshooting-framework">
+    <h3>A Useful Wireless Troubleshooting Framework</h3>
+    <p>Start with:</p>
+    <p><strong>Can the device see the SSID?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it associate?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it authenticate?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it have valid IP configuration?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it reach the required network destination?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the clinical application connect?</strong></p>
+    <p>Then, if mobile:</p>
+    <p><strong>Can it maintain that connection while roaming?</strong></p>
+  </section>
+
+  <section class="content-box" id="for-mobile-failures">
+    <h3>For Mobile Failures</h3>
+    <p>Also ask:</p>
+    <p><strong>Where exactly does it drop?</strong></p>
+    <p><strong>Does it happen on multiple devices?</strong></p>
+    <p><strong>What AP was it connected to?</strong></p>
+    <p><strong>Did local device function continue?</strong></p>
+    <p>These details turn:</p>
+    <blockquote><p>Wi-Fi sucks in the hallway</p></blockquote>
+    <p>into something an engineering or network team can actually investigate.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device shows four Wi-Fi bars:</p>
+    <p>You proved:</p>
+    <p><strong>The device currently reports relatively strong received signal according to its own indicator.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Authentication good</li>
+      <li>IP valid</li>
+      <li>Application connected</li>
+    </ul>
+    <p>If the device can ping the server while stationary:</p>
+    <p>You proved:</p>
+    <p><strong>Basic IP communication works at that moment and location.</strong></p>
+    <p>You did not prove:</p>
+    <p><strong>The connection will survive transport.</strong></p>
+    <p>If multiple known-good devices fail at the same physical point:</p>
+    <p>You now have much stronger evidence for a location or infrastructure issue.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Wireless troubleshooting becomes much easier when you stop treating Wi-Fi as one thing.</p>
+    <p>Break it into:</p>
+    <p><strong>Signal</strong></p>
+    <p>↓</p>
+    <p><strong>Association</strong></p>
+    <p>↓</p>
+    <p><strong>Authentication</strong></p>
+    <p>↓</p>
+    <p><strong>IP</strong></p>
+    <p>↓</p>
+    <p><strong>Routing</strong></p>
+    <p>↓</p>
+    <p><strong>Application</strong></p>
+    <p>↓</p>
+    <p><strong>Roaming</strong></p>
+    <p>Then determine where the failure actually occurs.</p>
+    <p>A monitor dropping from central does not automatically mean:</p>
+    <blockquote><p>Bad antenna.</p></blockquote>
+    <p>A strong signal does not automatically mean:</p>
+    <blockquote><p>Network good.</p></blockquote>
+    <p>And a device that works perfectly on your bench may still fail on the exact transport route where clinicians need it most.</p>
+    <p>So reproduce the real conditions.</p>
+    <p>Capture the time.</p>
+    <p>Capture the location.</p>
+    <p>Know the wireless MAC.</p>
+    <p>Compare with another device.</p>
+    <p>Then escalate with evidence.</p>
+    <p>Because the useful question is not:</p>
+    <blockquote><p>Does the Wi-Fi work?</p></blockquote>
+    <p>It is:</p>
+    <p><strong>Which part of the wireless connection stopped working, and what did we actually prove about it?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Wireless standards, authentication methods, roaming behavior, supported frequency bands, certificates, device radio configuration, access-point architecture, and network-security requirements vary by healthcare organization and medical-device manufacturer. Coordinate Wi-Fi configuration and infrastructure changes with authorized IT/network teams and follow manufacturer-supported settings when troubleshooting wireless medical equipment.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="basic-networking-for-medical-equipment.html">Basic Networking for Medical Equipment</a></li>
+      <li><a href="ip-addresses-subnets-gateways-and-dns-in-plain-english.html">IP Addresses, Subnets, Gateways, and DNS in Plain English</a></li>
+      <li><a href="ethernet-ports-link-lights-and-what-they-tell-you.html">Ethernet Ports, Link Lights, and What They Tell You</a></li>
+      <li><a href="how-to-troubleshoot-communication-failures.html">How to Troubleshoot Communication Failures</a></li>
+      <li><a href="how-to-work-with-it-as-a-biomed.html">How to Work With IT as a Biomed</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
