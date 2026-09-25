@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="datePublished" content="2026-09-24">
+  <meta name="dateModified" content="2026-09-25">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IP Addresses, Subnets, Gateways, and DNS in Plain English | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of IP addresses, DHCP, subnet masks, default gateways, DNS, duplicate addresses, ping, routing, and application connectivity for biomeds.">
@@ -24,6 +26,7 @@
   <p>What biomeds actually need to understand about IP addresses, subnet masks, default gateways, and DNS when a medical device is on the network but still cannot communicate</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Networking can feel more complicated than it really is because several different ideas get packed into the phrase:</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published September 24, 2026 · Revised September 25, 2026</p>
 </section>
 <main>
   <section class="content-box" id="what-this-page-explains">
@@ -50,23 +53,9 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>Think of an IP network like a large system of neighborhoods.</p>
-    <p>The <strong>IP address</strong> identifies a specific device.</p>
-    <p>The <strong>subnet</strong> tells the device which addresses are in its local neighborhood.</p>
-    <p>The <strong>default gateway</strong> is the exit used to reach other neighborhoods.</p>
-    <p><strong>DNS</strong> translates names into IP addresses.</p>
-    <p>A simple communication path may look like:</p>
-    <p><strong>Medical Device</strong></p>
-    <p>↓</p>
-    <p><strong>Local Network</strong></p>
-    <p>↓</p>
-    <p><strong>Default Gateway</strong></p>
-    <p>↓</p>
-    <p><strong>Other Network</strong></p>
-    <p>↓</p>
-    <p><strong>Application Server</strong></p>
-    <p>If the application uses a server name instead of a numeric IP address, DNS may also be involved.</p>
-    <p>The goal is to figure out which step fails.</p>
+    <p>An IP address identifies a network interface, while the subnet mask tells the device which addresses are local. Traffic for a local address can be sent directly; traffic for another network normally goes to the default gateway. DNS has a different job: it translates a server name into an IP address. A device can therefore have a healthy Wi-Fi or cable connection and still fail because one of those settings is wrong.</p>
+    <p>Troubleshoot the path in layers. Confirm whether the device received the expected DHCP address or has the approved static settings. Check the address, mask, gateway, and DNS values against the network assignment, and watch for duplicate or self-assigned addresses. Then determine whether the device can reach something local, the gateway, the remote server by IP, and finally the server by name. Those comparisons separate a local addressing problem from routing, DNS, firewall, or application trouble.</p>
+    <p>Record the exact values and the time and location of the failure before asking IT for help. Avoid changing addresses at random; a “working” address borrowed from another device can create a second outage. A good handoff tells IT what layer works, where communication stops, and whether the problem affects one device or many.</p>
   </section>
 
   <section class="content-box" id="what-is-an-ip-address">
