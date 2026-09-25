@@ -247,8 +247,10 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
         self.assertNotIn("Medical Device Cybersecurity Basics", planned)
         self.assertNotIn("IP Addresses, Subnets, Gateways, and DNS in Plain English", planned)
         self.assertNotIn("Wi-Fi Troubleshooting for Medical Equipment", planned)
-        self.assertIn("How to Think About Medical Device Software Updates", planned)
-        self.assertIn("<strong>83</strong>", planned)
+        self.assertNotIn("How to Think About Medical Device Software Updates", planned)
+        self.assertNotIn("End-of-Life and End-of-Support Basics", planned)
+        self.assertIn("How to Troubleshoot Intermittent Problems", planned)
+        self.assertIn("<strong>81</strong>", planned)
 
     def test_latest_articles_are_registered_once_and_preserve_key_copy(self):
         expected = {
@@ -329,7 +331,7 @@ class BiomedBasicAnalyzerTests(unittest.TestCase):
     def test_biomed_catalog_is_complete_and_landing_loads_it(self):
         catalog = self.biomed_catalog()
         slugs = [item["slug"] for item in catalog]
-        self.assertEqual(len(catalog), 133)
+        self.assertEqual(len(catalog), 135)
         self.assertEqual(len(slugs), len(set(slugs)))
         self.assertEqual(set(slugs), set(RELATED))
         for item in catalog:
