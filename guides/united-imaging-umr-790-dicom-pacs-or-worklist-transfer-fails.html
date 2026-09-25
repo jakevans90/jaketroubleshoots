@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>United Imaging uMR 790 MRI System - DICOM, PACS, or Worklist Transfer Fails</title>
+<meta name="description" content="Troubleshoots failed worklist retrieval, DICOM transfer, and PACS communication caused by network connectivity, destination availability, workflow selection, or external infrastructure.">
+<link rel="stylesheet" href="../style.css?v=20260920-2">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1L34E3TJL6');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://jaketroubleshoots.com/guides/united-imaging-umr-790-dicom-pacs-or-worklist-transfer-fails.html" />
+</head>
+<body>
+<a class="skip-link" href="#page-heading">Skip to content</a>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">United Imaging uMR 790</h1>
+  <p>DICOM, PACS, or Worklist Transfer Fails</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+<!-- page-navigation:start -->
+<details class="page-toc">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">
+    <ul>
+      <li><a href="#section-what-this-guide-helps-with">What This Guide Helps With</a></li>
+      <li><a href="#section-step-by-step-troubleshooting">Step-by-Step Troubleshooting</a></li>
+      <li><a href="#section-if-the-problem-persists">If the Problem Persists</a></li>
+      <li><a href="#section-clinical-use-tip">Clinical Use Tip</a></li>
+      <li><a href="#section-work-order-documentation-ccr-method">Work Order Documentation (CCR Method)</a></li>
+      <li><a href="#section-helpful-details-to-include-if-known">Helpful Details to Include (If Known)</a></li>
+      <li><a href="#section-final-thought">Final Thought</a></li>
+    </ul>
+  </nav>
+</details>
+<!-- page-navigation:end -->
+<h3>Asset Type</h3>
+
+<p><a href="/hub-asset.html?slug=mri-system">MRI System</a></p>
+
+<h3>Manufacturer</h3>
+
+<p><a href="/hub-manufacturer.html?slug=united-imaging">United Imaging</a></p>
+
+<h3>Model</h3>
+
+<p><a href="/hub-model.html?slug=umr-790">uMR 790</a></p>
+
+<h2 id="section-what-this-guide-helps-with" tabindex="-1">What This Guide Helps With</h2>
+
+<p>Troubleshoots failed worklist retrieval, DICOM transfer, and PACS communication caused by network connectivity, destination availability, workflow selection, or external infrastructure.</p>
+
+<h2 id="section-step-by-step-troubleshooting" tabindex="-1">Step-by-Step Troubleshooting</h2>
+
+<h4>1. Protect Clinical Workflow and Prevent Data Loss</h4>
+
+<p>Do not delete, overwrite, or repeatedly recreate studies while troubleshooting communication problems.</p>
+
+<p>Ensure completed imaging data remains safely stored locally until successful transfer is confirmed.</p>
+
+<p><strong>Expected outcome:</strong> Patient imaging data is preserved while communication is investigated.</p>
+
+<h4>2. Identify Which Network Function Has Failed</h4>
+
+<p>Determine whether the problem involves:</p>
+
+<ul>
+  <li>Modality worklist</li>
+  <li>PACS image transfer</li>
+  <li>DICOM destination</li>
+  <li>One destination or all destinations</li>
+  <li>One study or all studies</li>
+  <li>Intermittent communication</li>
+</ul>
+
+<p>Record the exact displayed message when available.</p>
+
+<p><strong>Expected outcome:</strong> The failed communication path is clearly defined.</p>
+
+<h4>3. Verify Local MRI Network Connectivity</h4>
+
+<p>Check accessible network cables, link indicators if present, and workstation connectivity.</p>
+
+<p>Confirm no cable has been disconnected or damaged during equipment movement or room work.</p>
+
+<p><strong>Expected outcome:</strong> The MRI workstation has an intact physical network connection. If restoring the external connection resolves communication, verify transfer and stop.</p>
+
+<h4>4. Determine Whether Other Systems Are Affected</h4>
+
+<p>Check with clinical staff or IT whether PACS, worklist, or network issues are occurring on other modalities.</p>
+
+<p>A broad outage should be treated as an infrastructure problem rather than an MRI hardware failure.</p>
+
+<p><strong>Expected outcome:</strong> The problem is classified as local or enterprise-wide.</p>
+
+<h4>5. Verify the Correct Destination or Workflow Is Selected</h4>
+
+<p>Using normal operator functions, confirm the intended DICOM destination, worklist source, or send workflow is being used.</p>
+
+<p>Do not modify protected network addresses, ports, or DICOM configuration without authorization.</p>
+
+<p><strong>Expected outcome:</strong> The correct configured destination is selected. If workflow selection was incorrect, complete a transfer test and stop.</p>
+
+<h4>6. Test Another Study or Normal Network Function</h4>
+
+<p>When permitted, determine whether the failure affects:</p>
+
+<ul>
+  <li>A single study</li>
+  <li>All studies</li>
+  <li>Worklist only</li>
+  <li>Image transfer only</li>
+</ul>
+
+<p>This helps separate study-specific problems from communication-path problems.</p>
+
+<p><strong>Expected outcome:</strong> The failure scope is narrowed without risking patient data.</p>
+
+<h4>7. Coordinate With PACS or IT Support</h4>
+
+<p>Confirm whether the destination system is online and accepting connections.</p>
+
+<p>Provide:</p>
+
+<ul>
+  <li>Scanner identification</li>
+  <li>Time of failure</li>
+  <li>Destination affected</li>
+  <li>Error wording</li>
+  <li>Whether other modalities are affected</li>
+</ul>
+
+<p><strong>Expected outcome:</strong> PACS or IT confirms whether the infrastructure side is available and correctly routing traffic.</p>
+
+<h4>8. Retry Transfer After the External Cause Is Corrected</h4>
+
+<p>Once network or destination availability is restored, resend an appropriate study using the normal workflow.</p>
+
+<p>Do not create duplicate patient records unnecessarily.</p>
+
+<p><strong>Expected outcome:</strong> The study transfers successfully and is visible at the intended destination. Troubleshooting can stop.</p>
+
+<h4>9. Verify Worklist Operation</h4>
+
+<p>If worklist was affected, confirm new patient orders can be retrieved and matched through the standard workflow.</p>
+
+<p><strong>Expected outcome:</strong> Worklist communication operates normally and patient demographic workflow is restored.</p>
+
+<h4>10. Escalate Persistent Local Communication Failure</h4>
+
+<p>If network infrastructure is confirmed available and external connections are intact but the uMR 790 still cannot communicate, escalate the system.</p>
+
+<p><strong>Expected outcome:</strong> The scanner remains under controlled use or out of service as appropriate until configuration or service evaluation is completed.</p>
+
+<h2 id="section-if-the-problem-persists" tabindex="-1">If the Problem Persists</h2>
+
+<p>Common external network and workflow causes have been ruled out. Remaining categories may include local network configuration, DICOM configuration, workstation software, interface services, system firewall rules, storage services, or other service-level communication problems.</p>
+
+<p>The device should be:</p>
+
+<ul>
+  <li>Removed from service when dependable image transfer or patient-data workflow cannot be assured</li>
+  <li>Labeled <strong>Out of Service</strong> when clinical use is not safe or appropriate</li>
+  <li>Sent for repair or service evaluation</li>
+  <li>Evaluated using United Imaging documentation and approved network diagnostic tools</li>
+  <li>Configured or repaired only by qualified Clinical Engineering, IT, PACS, or vendor personnel</li>
+</ul>
+
+<p>Do not change network or DICOM parameters without approved values and change control.</p>
+
+<p>Knowing when to stop external troubleshooting is proper troubleshooting. Confirm the complete path from modality to destination before return to normal workflow.</p>
+
+<h2 id="section-clinical-use-tip" tabindex="-1">Clinical Use Tip</h2>
+
+<p>Never assume a successful “send” means the images arrived; verify the study at the receiving PACS or intended destination when troubleshooting transfer failures.</p>
+
+<h2 id="section-work-order-documentation-ccr-method" tabindex="-1">Work Order Documentation (CCR Method)</h2>
+
+
+
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+
+<p>What was reported by the clinical staff.</p>
+
+<p><em>Example:</em><br>"MRI staff reported that completed uMR 790 studies would not transfer to PACS."</p>
+
+<h4>Cause</h4>
+
+<p>What was observed during troubleshooting.</p>
+
+<p><em>Example:</em><br>"Clinical Engineering found the MRI workstation network cable had been disconnected during nearby equipment movement."</p>
+
+<h4>Resolution</h4>
+
+<p>What action was taken.</p>
+
+<p><em>Example:</em><br>"The network connection was restored, a completed study transferred successfully, and receipt at PACS was confirmed."</p>
+
+<h2 id="section-helpful-details-to-include-if-known" tabindex="-1">Helpful Details to Include (If Known)</h2>
+
+
+
+<ul>
+  <li>Function affected</li>
+  <li>Exact communication error</li>
+  <li>Worklist versus image-transfer status</li>
+  <li>Physical network connection</li>
+  <li>Whether other modalities are affected</li>
+  <li>Destination involved</li>
+  <li>Study-specific or system-wide behavior</li>
+  <li>PACS/IT findings</li>
+  <li>Successful transfer verification</li>
+  <li>Final workflow status</li>
+</ul>
+
+<h2 id="section-final-thought" tabindex="-1">Final Thought</h2>
+
+<p>DICOM troubleshooting requires checking the complete communication path rather than assuming the scanner itself has failed. Preserve patient data, verify physical connectivity and infrastructure first, and confirm receipt at the destination before closing the work order.</p>
+
+<p>That is successful troubleshooting.</p>
+
+</main>
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js?v=20260919"></script>
+
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes" aria-label="This guide was helpful">👍</button>
+    <button class="thumb-btn no" aria-label="This guide was not helpful">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+
+<script src="../hub-links.js?v=20260919"></script>
+<script src="../feedback.js?v=20260919"></script>
+<script src="../guide-icons.js?v=20260919"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
