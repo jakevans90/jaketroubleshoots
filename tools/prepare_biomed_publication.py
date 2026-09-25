@@ -151,6 +151,8 @@ RELATED = {
     "medical-device-cybersecurity-basics": ["how-to-work-with-it-as-a-biomed", "ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "basic-networking-for-medical-equipment", "software-firmware-and-configuration-problems-in-medical-equipment", "recall-and-safety-notice-basics"],
     "ip-addresses-subnets-gateways-and-dns-in-plain-english": ["basic-networking-for-medical-equipment", "ethernet-ports-link-lights-and-what-they-tell-you", "ports-firewalls-and-why-a-device-can-ping-but-still-not-work", "how-to-troubleshoot-communication-failures", "how-patient-monitors-communicate-with-central-stations"],
     "wi-fi-troubleshooting-for-medical-equipment": ["basic-networking-for-medical-equipment", "ip-addresses-subnets-gateways-and-dns-in-plain-english", "ethernet-ports-link-lights-and-what-they-tell-you", "how-to-troubleshoot-communication-failures", "how-to-work-with-it-as-a-biomed"],
+    "how-to-think-about-medical-device-software-updates": ["software-firmware-and-configuration-problems-in-medical-equipment", "medical-device-cybersecurity-basics", "how-to-read-and-use-medical-device-event-logs", "service-mode-and-built-in-diagnostics-what-to-trust", "recall-and-safety-notice-basics"],
+    "end-of-life-and-end-of-support-basics": ["when-to-replace-a-cable-battery-board-or-entire-device", "medical-device-cybersecurity-basics", "how-to-think-about-medical-device-software-updates", "recall-and-safety-notice-basics", "how-to-use-equipment-history-during-troubleshooting"],
 }
 
 ARTICLE_CONFIG = {
@@ -902,6 +904,18 @@ ARTICLE_CONFIG = {
         "category": "Networking & Integration",
         "badge": "Wireless",
         "cardNote": "Signal, association, authentication, roaming, and application connectivity",
+    },
+    "how-to-think-about-medical-device-software-updates": {
+        "description": "A practical guide to evaluating, preparing, applying, verifying, documenting, and recovering from medical-device software and firmware updates.",
+        "category": "Software & Diagnostics",
+        "badge": "Software Updates",
+        "cardNote": "Compatibility, backups, recovery, verification, and fleet deployment",
+    },
+    "end-of-life-and-end-of-support-basics": {
+        "description": "A practical guide to medical-equipment end-of-life and end-of-support decisions involving parts, software, cybersecurity, service capability, reliability, cost, and replacement planning.",
+        "category": "Safety & Risk",
+        "badge": "Lifecycle Planning",
+        "cardNote": "Supportability, parts, software, risk, and replacement planning",
     },
 }
 
