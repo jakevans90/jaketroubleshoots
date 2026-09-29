@@ -153,6 +153,8 @@ RELATED = {
     "wi-fi-troubleshooting-for-medical-equipment": ["basic-networking-for-medical-equipment", "ip-addresses-subnets-gateways-and-dns-in-plain-english", "ethernet-ports-link-lights-and-what-they-tell-you", "how-to-troubleshoot-communication-failures", "how-to-work-with-it-as-a-biomed"],
     "how-to-think-about-medical-device-software-updates": ["software-firmware-and-configuration-problems-in-medical-equipment", "medical-device-cybersecurity-basics", "how-to-read-and-use-medical-device-event-logs", "service-mode-and-built-in-diagnostics-what-to-trust", "recall-and-safety-notice-basics"],
     "end-of-life-and-end-of-support-basics": ["when-to-replace-a-cable-battery-board-or-entire-device", "medical-device-cybersecurity-basics", "how-to-think-about-medical-device-software-updates", "recall-and-safety-notice-basics", "how-to-use-equipment-history-during-troubleshooting"],
+    "how-electrosurgical-return-electrode-monitoring-works": ["electrical-safety-testing-medical-equipment", "medical-device-alarm-troubleshooting-fundamentals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-choose-the-right-test-equipment"],
+    "how-medical-scales-and-load-cells-work": ["sensors-and-transducers-basics", "tolerance-vs-accuracy", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-choose-the-right-test-equipment", "analog-vs-digital-signals"],
 }
 
 ARTICLE_CONFIG = {
@@ -916,6 +918,18 @@ ARTICLE_CONFIG = {
         "category": "Safety & Risk",
         "badge": "Lifecycle Planning",
         "cardNote": "Supportability, parts, software, risk, and replacement planning",
+    },
+    "how-electrosurgical-return-electrode-monitoring-works": {
+        "description": "A practical explanation of how electrosurgical generators monitor return-electrode contact, impedance, cables, split pads, alarms, and the monopolar current path.",
+        "category": "How Medical Equipment Works",
+        "badge": "Electrosurgery",
+        "cardNote": "Monopolar current paths, contact monitoring, impedance, and return-pad alarms",
+    },
+    "how-medical-scales-and-load-cells-work": {
+        "description": "A practical explanation of how load cells, strain gauges, bridge circuits, amplifiers, calibration, mechanics, and multiple sensors produce weight measurements in medical equipment.",
+        "category": "How Medical Equipment Works",
+        "badge": "Measurement Systems",
+        "cardNote": "Load cells, bridge signals, calibration, corner loading, and mechanical faults",
     },
 }
 
