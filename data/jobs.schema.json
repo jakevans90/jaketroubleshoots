@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jake Troubleshoots observed HTM jobs, version 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated_at", "coverage_status", "jobs", "observations"],
+  "properties": {
+    "schema_version": {"const": 1, "type": "integer"},
+    "updated_at": {"anyOf": [{"$ref": "#/$defs/timestamp"}, {"type": "null"}]},
+    "coverage_status": {"enum": ["not_started", "collecting", "paused"]},
+    "jobs": {"type": "array", "items": {"$ref": "#/$defs/job"}},
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["job_id", "observed_at", "snapshot"],
+        "properties": {
+          "job_id": {"$ref": "#/$defs/id"},
+          "observed_at": {"$ref": "#/$defs/timestamp"},
+          "snapshot": {"$ref": "#/$defs/job"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "nullableText": {"anyOf": [{"$ref": "#/$defs/text"}, {"type": "null"}]},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"},
+    "httpsUrl": {"type": "string", "format": "uri", "pattern": "^https://[^\\s]+$"},
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source_id", "source_job_id", "employer", "title", "role_type", "level", "location", "workplace_type", "url", "posted_at", "first_seen", "last_seen", "status", "salary"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "source_id": {"$ref": "#/$defs/id"},
+        "source_job_id": {"$ref": "#/$defs/nullableText"},
+        "employer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "name", "type"],
+          "properties": {
+            "id": {"$ref": "#/$defs/id"},
+            "name": {"$ref": "#/$defs/text"},
+            "type": {"enum": ["hospital_health_system", "iso_htm_provider", "oem_manufacturer", "dialysis", "imaging_service", "staffing_recruiter", "government", "other", "unknown"]}
+          }
+        },
+        "title": {"$ref": "#/$defs/text"},
+        "role_type": {"enum": ["bmet", "clinical_engineering", "imaging", "field_service", "management", "other", "unknown"]},
+        "level": {"enum": ["entry", "intermediate", "senior", "lead", "manager", "director", "executive", "unspecified"]},
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["city", "state", "country"],
+          "properties": {
+            "city": {"$ref": "#/$defs/nullableText"},
+            "state": {"$ref": "#/$defs/nullableText"},
+            "country": {"anyOf": [{"type": "string", "pattern": "^[A-Z]{2}$"}, {"type": "null"}]}
+          }
+        },
+        "workplace_type": {"enum": ["onsite", "field", "remote", "hybrid", "unknown"]},
+        "url": {"$ref": "#/$defs/httpsUrl"},
+        "posted_at": {"anyOf": [{"type": "string", "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"}, {"type": "null"}]},
+        "first_seen": {"$ref": "#/$defs/timestamp"},
+        "last_seen": {"$ref": "#/$defs/timestamp"},
+        "status": {"enum": ["active", "closed", "unknown"]},
+        "salary": {
+          "anyOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["min", "max", "currency", "period"],
+              "properties": {
+                "min": {"anyOf": [{"type": "number", "minimum": 0}, {"type": "null"}]},
+                "max": {"anyOf": [{"type": "number", "minimum": 0}, {"type": "null"}]},
+                "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+                "period": {"enum": ["hour", "week", "month", "year"]}
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

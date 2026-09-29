@@ -21,6 +21,10 @@ There is no application server, package-install step, or JavaScript bundle build
   `site-search.js`, `related-guides.js`, `pm-related-guides.js`, and
   `learning-recommendations.js` supply discovery and related-resource behavior.
   Root pages also contain their page-specific rendering scripts.
+- `biomed-jobs.html` uses `data/job-sources.json` for its generated employer
+  directory and search shortcuts. `data/jobs.json` and its schema reserve a
+  separate format for future observed postings and history. See
+  [jobs data and maintenance](docs/jobs-data.md) for editing and validation.
 - `incoming-guides/` and `incoming-biomed-basics/` contain publishing inputs.
   `tools/`, `scripts/`, `tests/`, `docs/`, and `reports/` support maintenance and review.
 
