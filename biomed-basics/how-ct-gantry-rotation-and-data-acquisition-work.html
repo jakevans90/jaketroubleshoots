@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="datePublished" content="2026-09-30">
+  <meta name="dateModified" content="2026-09-30">
   <title>How CT Gantry Rotation and Data Acquisition Work | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of CT gantry rotation, X-ray generation, detector arrays, slip rings, data acquisition, table motion, calibration, reconstruction, cooling, and image artifacts.">
   <link rel="stylesheet" href="../style.css?v=20260920-2">
@@ -21,6 +23,7 @@
 </header>
 <section class="hero">
   <h1 id="page-heading" tabindex="-1">How CT Gantry Rotation and Data Acquisition Work</h1>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published September 30, 2026 · Revised September 30, 2026</p>
   <p>How a CT scanner spins an X-ray tube and detector system around the patient, collects thousands of measurements, and turns those measurements into cross-sectional images</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A CT scanner can look almost simple from the outside.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -52,22 +55,9 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A CT scan is built from many X-ray measurements taken from different angles.</p>
-    <p>The basic process is:</p>
-    <p><strong>X-Ray Tube Generates Beam</strong></p>
-    <p>↓</p>
-    <p><strong>Beam Passes Through Patient</strong></p>
-    <p>↓</p>
-    <p><strong>Detector Measures Remaining X-Rays</strong></p>
-    <p>↓</p>
-    <p><strong>Gantry Rotates</strong></p>
-    <p>↓</p>
-    <p><strong>Same Process Repeats From Many Angles</strong></p>
-    <p>↓</p>
-    <p><strong>Computer Reconstructs Cross-Sectional Image</strong></p>
-    <p>The scanner does not directly “see” a slice.</p>
-    <p>It measures how much X-ray energy reaches the detectors from many directions.</p>
-    <p>Software uses those measurements to calculate what must have been inside the patient to produce them.</p>
+    <p>A CT scanner builds an image from many X-ray measurements taken around the patient. The tube produces a shaped beam while the detector array on the opposite side measures how much radiation remains after passing through the body. As the rotating assembly moves, the system repeats those measurements from many angles and ties every sample to the correct tube position, detector channel, table position, and time.</p>
+    <p>The data-acquisition system converts the detector outputs into digital values that reconstruction software can use. The scanner does not directly photograph a finished slice; it calculates the distribution of attenuation that best explains the collected measurements. In helical scanning, continuous gantry rotation and coordinated table motion create a spiral data path that the computer uses to reconstruct the requested image locations.</p>
+    <p>Good images therefore depend on more than an operating X-ray tube. Rotation speed, table motion, detector calibration, timing, cooling, data transfer, and reconstruction must stay synchronized. Ring artifacts, streaks, missing data, motion errors, or intermittent shutdowns can come from different parts of that chain, so service evidence should include the scan mode, calibration status, artifact pattern, logs, and conditions that reproduce the problem.</p>
   </section>
 
   <section class="content-box" id="what-rotates-inside-the-gantry">
