@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canon Ultimax-i Fluoroscopy / Interventional System - DICOM, PACS, or Worklist Transfer Fails</title>
+<meta name="description" content="Troubleshoots failed worklist retrieval or image transfer caused by network connectivity, destination availability, configuration, workflow, or infrastructure issues.">
+<link rel="stylesheet" href="../style.css?v=20260920-2">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1L34E3TJL6');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://jaketroubleshoots.com/guides/canon-ultimax-i-dicom-pacs-or-worklist-transfer-fails.html" />
+</head>
+<body>
+<a class="skip-link" href="#page-heading">Skip to content</a>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">Canon Ultimax-i</h1>
+  <p>DICOM, PACS, or Worklist Transfer Fails</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+<!-- page-navigation:start -->
+<details class="page-toc">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">
+    <ul>
+      <li><a href="#section-what-this-guide-helps-with">What This Guide Helps With</a></li>
+      <li><a href="#section-step-by-step-troubleshooting">Step-by-Step Troubleshooting</a></li>
+      <li><a href="#section-if-the-problem-persists">If the Problem Persists</a></li>
+      <li><a href="#section-clinical-use-tip">Clinical Use Tip</a></li>
+      <li><a href="#section-work-order-documentation-ccr-method">Work Order Documentation (CCR Method)</a></li>
+      <li><a href="#section-helpful-details-to-include-if-known">Helpful Details to Include (If Known)</a></li>
+      <li><a href="#section-final-thought">Final Thought</a></li>
+    </ul>
+  </nav>
+</details>
+<!-- page-navigation:end -->
+<h3>Asset Type</h3>
+
+<p><a href="/hub-asset.html?slug=fluoroscopy-interventional-system">Fluoroscopy / Interventional System</a></p>
+
+<h3>Manufacturer</h3>
+
+<p><a href="/hub-manufacturer.html?slug=canon">Canon</a></p>
+
+<h3>Model</h3>
+
+<p><a href="/hub-model.html?slug=ultimax-i">Ultimax-i</a></p>
+
+<h2 id="section-what-this-guide-helps-with" tabindex="-1">What This Guide Helps With</h2>
+
+<p>Troubleshoots failed worklist retrieval or image transfer caused by network connectivity, destination availability, configuration, workflow, or infrastructure issues.</p>
+
+<h2 id="section-step-by-step-troubleshooting" tabindex="-1">Step-by-Step Troubleshooting</h2>
+
+<h4>1. Maintain Clinical and Data Continuity</h4>
+
+<p>If network services fail during an active case, ensure images and study information are preserved locally when supported and follow departmental downtime procedures. Do not delete or repeatedly resend studies without understanding their status.</p>
+
+<p><strong>Expected outcome:</strong> Patient imaging data is protected while network troubleshooting is performed.</p>
+
+<h4>2. Confirm Which Function Is Failing</h4>
+
+<p>Determine whether the problem affects modality worklist retrieval, DICOM image transfer, PACS receipt, query/retrieve functions, or all network communication.</p>
+
+<p>Record any displayed network or transfer message and whether the issue affects one study or every study.</p>
+
+<p><strong>Expected outcome:</strong> The specific failing communication path is identified.</p>
+
+<h4>3. Verify Local Network Connectivity</h4>
+
+<p>Check accessible network cables, connectors, and link indications where available. Look for loose, damaged, or recently moved connections.</p>
+
+<p>Do not change network addresses or configuration simply to test connectivity.</p>
+
+<p><strong>Expected outcome:</strong> The physical network connection appears intact. If restoring an external connection resolves communication, verify transfers and stop.</p>
+
+<h4>4. Determine Whether the Issue Is Device-Specific</h4>
+
+<p>Check whether other imaging systems or workstations in the same area can access the affected PACS, worklist, or network service.</p>
+
+<p>Coordinate with IT when appropriate.</p>
+
+<p><strong>Expected outcome:</strong> The problem is narrowed to the Ultimax-i or to a broader network/server outage.</p>
+
+<h4>5. Verify Normal Network Configuration</h4>
+
+<p>Review user-accessible or documented configuration information without changing values. Confirm that no recent approved network change, room move, server migration, or maintenance event could explain the failure.</p>
+
+<p>Do not alter IP, destination, port, or DICOM parameters without authorization and known-good configuration information.</p>
+
+<p><strong>Expected outcome:</strong> The observed configuration is consistent with the expected environment or a discrepancy is identified for authorized correction.</p>
+
+<h4>6. Check Study and Workflow Information</h4>
+
+<p>For a single-study problem, verify that the study is complete enough for transfer and that required patient or examination information is present. Check whether the failure follows one specific record or all records.</p>
+
+<p><strong>Expected outcome:</strong> A workflow-specific issue is distinguished from a general network failure.</p>
+
+<h4>7. Test the Affected Communication Path</h4>
+
+<p>When appropriate, use an approved test study or nonclinical workflow to verify worklist retrieval or DICOM transfer. Confirm receipt at the intended destination rather than relying only on a local "sent" indication.</p>
+
+<p><strong>Expected outcome:</strong> The destination receives the expected data successfully. If confirmed, troubleshooting can stop.</p>
+
+<h4>8. Verify End-to-End Operation</h4>
+
+<p>Confirm the complete path from the Ultimax-i through the network to the intended worklist or PACS destination. Verify that new communication remains reliable.</p>
+
+<p><strong>Expected outcome:</strong> Worklist and/or image transfer functions normally end to end. If successful, troubleshooting can stop.</p>
+
+<h2 id="section-if-the-problem-persists" tabindex="-1">If the Problem Persists</h2>
+
+<p>If physical connectivity, workflow, destination availability, and expected configuration have been checked, the remaining cause may involve network infrastructure, DICOM configuration, server services, workstation software, routing, security controls, or another service-level issue.</p>
+
+<p>If local imaging remains safe but transfer is unavailable, follow hospital downtime and data-retention procedures. If the failure compromises clinical workflow or image availability, remove the system from service as appropriate and label it <strong>Out of Service</strong>.</p>
+
+<p>Coordinate Canon service and hospital IT/PACS support as required. Configuration changes should be performed only by authorized qualified personnel.</p>
+
+<p>Before return to normal workflow, verify the complete worklist and/or DICOM path and confirm image receipt at the destination.</p>
+
+<p>Knowing when to stop external troubleshooting and escalate is proper troubleshooting.</p>
+
+<h2 id="section-clinical-use-tip" tabindex="-1">Clinical Use Tip</h2>
+
+<p>A successful local image does not confirm PACS delivery; verify the receiving system before considering the communication problem resolved.</p>
+
+<h2 id="section-work-order-documentation-ccr-method" tabindex="-1">Work Order Documentation (CCR Method)</h2>
+
+
+
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+
+<p>What was reported by the clinical staff.</p>
+
+<p><em>Example:</em><br>"Staff reported that studies from the Canon Ultimax-i were not transferring to PACS."</p>
+
+<h4>Cause</h4>
+
+<p>What was observed during troubleshooting.</p>
+
+<p><em>Example:</em><br>"Clinical Engineering found the external network cable at the workstation not fully seated."</p>
+
+<h4>Resolution</h4>
+
+<p>What action was taken.</p>
+
+<p><em>Example:</em><br>"Clinical Engineering secured the connection and verified successful transfer and PACS receipt of a nonclinical test study."</p>
+
+<h2 id="section-helpful-details-to-include-if-known" tabindex="-1">Helpful Details to Include (If Known)</h2>
+
+
+
+<ul>
+  <li>Function affected: worklist, PACS, or both</li>
+  <li>Exact transfer message</li>
+  <li>One study or all studies affected</li>
+  <li>Network cable and link status</li>
+  <li>Other modalities affected</li>
+  <li>Recent network changes</li>
+  <li>Configuration observed</li>
+  <li>Destination availability</li>
+  <li>Test study result</li>
+  <li>Confirmation of receipt</li>
+</ul>
+
+<h2 id="section-final-thought" tabindex="-1">Final Thought</h2>
+
+<p>DICOM problems require verification of the entire communication path rather than assuming the imaging system has failed. Start with physical connectivity and workflow, involve IT when infrastructure is implicated, confirm end-to-end receipt, and document the evidence clearly.</p>
+
+<p>That is successful troubleshooting.</p>
+
+</main>
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js?v=20260919"></script>
+
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes" aria-label="This guide was helpful">👍</button>
+    <button class="thumb-btn no" aria-label="This guide was not helpful">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+
+<script src="../hub-links.js?v=20260919"></script>
+<script src="../feedback.js?v=20260919"></script>
+<script src="../guide-icons.js?v=20260919"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>

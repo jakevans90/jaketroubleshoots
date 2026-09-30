@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="datePublished" content="2026-09-29">
+  <meta name="dateModified" content="2026-09-30">
   <title>How Medical Scales and Load Cells Work | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how load cells, strain gauges, bridge circuits, amplifiers, calibration, mechanics, and multiple sensors produce weight measurements in medical equipment.">
   <link rel="stylesheet" href="../style.css?v=20260920-2">
@@ -21,6 +23,7 @@
 </header>
 <section class="hero">
   <h1 id="page-heading" tabindex="-1">How Medical Scales and Load Cells Work</h1>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published September 29, 2026 · Revised September 30, 2026</p>
   <p>How beds, patient lifts, dialysis systems, infant scales, and other medical equipment turn mechanical force into a weight reading — and why a scale can zero correctly and still be inaccurate</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Medical scales often look simple.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -51,30 +54,9 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A common load-cell measurement chain looks like:</p>
-    <p><strong>Weight</strong></p>
-    <p>↓</p>
-    <p><strong>Metal Element Flexes Slightly</strong></p>
-    <p>↓</p>
-    <p><strong>Strain Gauge Resistance Changes</strong></p>
-    <p>↓</p>
-    <p><strong>Wheatstone Bridge Produces Tiny Voltage</strong></p>
-    <p>↓</p>
-    <p><strong>Amplifier Boosts Signal</strong></p>
-    <p>↓</p>
-    <p><strong>ADC Converts Signal to a Number</strong></p>
-    <p>↓</p>
-    <p><strong>Software Converts Number to Weight</strong></p>
-    <p>The mechanical movement is extremely small.</p>
-    <p>The electrical signal can also be extremely small.</p>
-    <p>That is why:</p>
-    <ul>
-      <li>Mechanical binding</li>
-      <li>Cable resistance</li>
-      <li>Electrical noise</li>
-      <li>Calibration errors</li>
-    </ul>
-    <p>can all affect the final reading.</p>
+    <p>A common medical scale uses one or more load cells. Applied weight flexes a metal element by a very small amount, changing the resistance of bonded strain gauges. Those gauges are usually arranged as a bridge circuit that produces a tiny differential voltage proportional to the load. An amplifier and analog-to-digital converter turn that signal into data, and calibration values let the software display weight in the selected units.</p>
+    <p>The measurement depends on the entire mechanical and electrical path. A platform rubbing the frame, debris under a corner, a bent mount, an uneven floor, damaged wiring, moisture, unstable excitation voltage, electrical noise, or a drifting amplifier can all change the result even when the load cell itself is intact. Multi-cell scales also depend on the cells sharing the load correctly across the platform.</p>
+    <p>Start troubleshooting by inspecting the mechanics and confirming zero, repeatability, corner loading, and performance at approved test points with traceable weights. Note whether the error is constant, proportional to load, intermittent, or position-dependent. Calibration may correct a valid measurement chain, but it should not be used to hide binding, damage, instability, or a failure that prevents repeatable readings.</p>
   </section>
 
   <section class="content-box" id="what-is-a-load-cell">

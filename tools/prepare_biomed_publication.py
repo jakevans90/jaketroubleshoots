@@ -155,6 +155,8 @@ RELATED = {
     "end-of-life-and-end-of-support-basics": ["when-to-replace-a-cable-battery-board-or-entire-device", "medical-device-cybersecurity-basics", "how-to-think-about-medical-device-software-updates", "recall-and-safety-notice-basics", "how-to-use-equipment-history-during-troubleshooting"],
     "how-electrosurgical-return-electrode-monitoring-works": ["electrical-safety-testing-medical-equipment", "medical-device-alarm-troubleshooting-fundamentals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-choose-the-right-test-equipment"],
     "how-medical-scales-and-load-cells-work": ["sensors-and-transducers-basics", "tolerance-vs-accuracy", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-choose-the-right-test-equipment", "analog-vs-digital-signals"],
+    "how-ct-gantry-rotation-and-data-acquisition-work": ["what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "service-mode-and-built-in-diagnostics-what-to-trust"],
+    "how-flat-panel-x-ray-detectors-turn-x-rays-into-images": ["what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -930,6 +932,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Measurement Systems",
         "cardNote": "Load cells, bridge signals, calibration, corner loading, and mechanical faults",
+    },
+    "how-ct-gantry-rotation-and-data-acquisition-work": {
+        "description": "A practical explanation of CT gantry rotation, X-ray generation, detector arrays, slip rings, data acquisition, table motion, calibration, reconstruction, cooling, and image artifacts.",
+        "category": "How Medical Equipment Works",
+        "badge": "CT Imaging",
+        "cardNote": "Gantry motion, detectors, data acquisition, reconstruction, and artifacts",
+    },
+    "how-flat-panel-x-ray-detectors-turn-x-rays-into-images": {
+        "description": "A practical explanation of how digital X-ray detectors convert photons into electrical signals and images through scintillators or direct conversion, TFT arrays, calibration, and pixel correction.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Imaging",
+        "cardNote": "Detector conversion, TFT readout, calibration, bad pixels, and artifacts",
     },
 }
 
