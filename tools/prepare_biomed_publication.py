@@ -157,6 +157,8 @@ RELATED = {
     "how-medical-scales-and-load-cells-work": ["sensors-and-transducers-basics", "tolerance-vs-accuracy", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-choose-the-right-test-equipment", "analog-vs-digital-signals"],
     "how-ct-gantry-rotation-and-data-acquisition-work": ["what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "service-mode-and-built-in-diagnostics-what-to-trust"],
     "how-flat-panel-x-ray-detectors-turn-x-rays-into-images": ["what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-mri-gradient-coils-create-an-image": ["how-ct-gantry-rotation-and-data-acquisition-work", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "service-mode-and-built-in-diagnostics-what-to-trust"],
+    "how-pet-detectors-turn-gamma-rays-into-an-image": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-medical-device-cooling-systems-work"],
 }
 
 ARTICLE_CONFIG = {
@@ -944,6 +946,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "X-Ray Imaging",
         "cardNote": "Detector conversion, TFT readout, calibration, bad pixels, and artifacts",
+    },
+    "how-mri-gradient-coils-create-an-image": {
+        "description": "A practical explanation of how MRI gradient coils and amplifiers perform slice selection, frequency and phase encoding, spatial calibration, timing, cooling, and image formation.",
+        "category": "How Medical Equipment Works",
+        "badge": "MRI Imaging",
+        "cardNote": "Gradient axes, spatial encoding, amplifiers, timing, cooling, and artifacts",
+    },
+    "how-pet-detectors-turn-gamma-rays-into-an-image": {
+        "description": "A practical explanation of how PET detector rings identify coincident annihilation photons, measure energy and timing, calibrate detector channels, and reconstruct metabolic images.",
+        "category": "How Medical Equipment Works",
+        "badge": "PET Imaging",
+        "cardNote": "Coincidence detection, scintillators, timing, calibration, and reconstruction",
     },
 }
 

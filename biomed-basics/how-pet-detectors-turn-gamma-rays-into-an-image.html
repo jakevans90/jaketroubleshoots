@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How PET Detectors Turn Gamma Rays Into an Image | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how PET detector rings identify coincident annihilation photons, measure energy and timing, calibrate detector channels, and reconstruct metabolic images.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-pet-detectors-turn-gamma-rays-into-an-image.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How PET Detectors Turn Gamma Rays Into an Image</h1>
+  <p>How PET scanners detect pairs of annihilation photons, determine where radioactive events occurred inside the patient, and build a metabolic image from millions of individual detections</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">PET imaging is very different from conventional X-ray imaging.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a PET radiotracer does</li>
+      <li>Positron emission</li>
+      <li>Positron-electron annihilation</li>
+      <li>511 keV photons</li>
+      <li>Coincidence detection</li>
+      <li>Lines of response</li>
+      <li>Detector rings</li>
+      <li>Scintillation crystals</li>
+      <li>Photodetectors</li>
+      <li>Photomultiplier tubes</li>
+      <li>Silicon photomultipliers</li>
+      <li>Energy discrimination</li>
+      <li>Timing windows</li>
+      <li>Time-of-flight PET</li>
+      <li>Random coincidences</li>
+      <li>Scatter</li>
+      <li>Attenuation correction</li>
+      <li>PET/CT systems</li>
+      <li>Detector calibration</li>
+      <li>Why detector faults create artifacts</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>PET imaging begins inside the patient.</p>
+    <p>A simplified chain looks like:</p>
+    <p><strong>Radiotracer Decays</strong></p>
+    <p>↓</p>
+    <p><strong>Positron Is Emitted</strong></p>
+    <p>↓</p>
+    <p><strong>Positron Meets Electron</strong></p>
+    <p>↓</p>
+    <p><strong>Annihilation Produces Two 511 keV Photons</strong></p>
+    <p>↓</p>
+    <p><strong>Photons Travel in Nearly Opposite Directions</strong></p>
+    <p>↓</p>
+    <p><strong>PET Detector Ring Detects Both</strong></p>
+    <p>↓</p>
+    <p><strong>Scanner Treats Them as One Coincidence Event</strong></p>
+    <p>↓</p>
+    <p><strong>Software Draws a Possible Line Between the Detectors</strong></p>
+    <p>↓</p>
+    <p><strong>Millions of Events Are Reconstructed Into an Image</strong></p>
+    <p>PET does not usually know the exact location of one decay event from one coincidence.</p>
+    <p>Instead, each event provides a possible line.</p>
+    <p>Millions of those lines statistically build the image.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-radiotracer">
+    <h3>Start With the Radiotracer</h3>
+    <p>PET requires a radioactive tracer containing a positron-emitting radionuclide.</p>
+    <p>A familiar example is:</p>
+    <p><strong>Fluorine-18</strong></p>
+    <p>used in FDG imaging.</p>
+    <p>Other tracers use different radionuclides and target different physiological processes.</p>
+  </section>
+
+  <section class="content-box" id="the-tracer-has-biological-behavior">
+    <h3>The Tracer Has Biological Behavior</h3>
+    <p>The scanner is not merely imaging:</p>
+    <p>Radiation.</p>
+    <p>It is imaging where a particular radiopharmaceutical accumulates.</p>
+    <p>That distribution reflects biology.</p>
+  </section>
+
+  <section class="content-box" id="fdg">
+    <h3>FDG</h3>
+    <p>FDG is related to glucose metabolism.</p>
+    <p>Tissues with high glucose utilization may accumulate more tracer.</p>
+    <p>That is one reason PET can show metabolic activity.</p>
+  </section>
+
+  <section class="content-box" id="radioactive-decay">
+    <h3>Radioactive Decay</h3>
+    <p>The radionuclide is unstable.</p>
+    <p>During decay, it may emit a:</p>
+    <p><strong>Positron.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-a-positron">
+    <h3>What Is a Positron?</h3>
+    <p>A positron is the antimatter counterpart of the electron.</p>
+    <p>It has:</p>
+    <ul>
+      <li>Same mass as electron</li>
+      <li>Positive charge instead of negative</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-positron-does-not-travel-very-far">
+    <h3>The Positron Does Not Travel Very Far</h3>
+    <p>After emission, the positron travels through tissue, losing energy through interactions.</p>
+    <p>Eventually it slows enough to interact with an electron.</p>
+  </section>
+
+  <section class="content-box" id="annihilation">
+    <h3>Annihilation</h3>
+    <p>When the positron and electron meet:</p>
+    <p>They annihilate.</p>
+    <p>Their mass is converted into electromagnetic energy.</p>
+    <p>The event typically produces two gamma-ray photons.</p>
+  </section>
+
+  <section class="content-box" id="photon-energy">
+    <h3>Photon Energy</h3>
+    <p>Each photon has approximately:</p>
+    <p><strong>511 keV</strong></p>
+    <p>of energy.</p>
+  </section>
+
+  <section class="content-box" id="why-511-kev">
+    <h3>Why 511 keV?</h3>
+    <p>That corresponds to the rest-mass energy of an electron or positron.</p>
+    <p>The two particles annihilate and produce two photons carrying the energy.</p>
+  </section>
+
+  <section class="content-box" id="opposite-directions">
+    <h3>Opposite Directions</h3>
+    <p>To conserve momentum, the two photons travel in nearly opposite directions.</p>
+    <p>Approximately:</p>
+    <p><strong>180 degrees apart.</strong></p>
+    <p>There are small real-world deviations from perfect 180-degree geometry, but the basic principle is opposite travel.</p>
+  </section>
+
+  <section class="content-box" id="this-is-the-core-pet-trick">
+    <h3>This Is the Core PET Trick</h3>
+    <p>If two detectors on opposite sides of the scanner detect 511 keV photons at nearly the same time:</p>
+    <p>The scanner assumes they may have come from the same annihilation event.</p>
+  </section>
+
+  <section class="content-box" id="coincidence-detection">
+    <h3>Coincidence Detection</h3>
+    <p>This paired detection is called:</p>
+    <p><strong>Coincidence detection.</strong></p>
+  </section>
+
+  <section class="content-box" id="timing-window">
+    <h3>Timing Window</h3>
+    <p>The scanner only considers two detections to be related if they occur within a very short timing window.</p>
+  </section>
+
+  <section class="content-box" id="why-timing-matters">
+    <h3>Why Timing Matters</h3>
+    <p>The scanner is constantly detecting radiation.</p>
+    <p>If any two events were paired regardless of time, unrelated photons would constantly be mistaken for real annihilation pairs.</p>
+  </section>
+
+  <section class="content-box" id="true-coincidence">
+    <h3>True Coincidence</h3>
+    <p>A true coincidence occurs when both detected photons came from the same annihilation event and reached the detectors without being redirected in a way that invalidates the assumed line.</p>
+  </section>
+
+  <section class="content-box" id="line-of-response">
+    <h3>Line of Response</h3>
+    <p>When two detectors register a valid coincidence, the scanner knows the annihilation occurred somewhere along the line connecting those detector locations.</p>
+    <p>That line is called a:</p>
+    <p><strong>Line of Response</strong>, or LOR.</p>
+  </section>
+
+  <section class="content-box" id="one-event-does-not-give-exact-position">
+    <h3>One Event Does Not Give Exact Position</h3>
+    <p>This is important.</p>
+    <p>Without additional timing information, the scanner does not know exactly where along that line the event occurred.</p>
+    <p>It only knows:</p>
+    <p><strong>Somewhere along here.</strong></p>
+  </section>
+
+  <section class="content-box" id="millions-of-lines">
+    <h3>Millions of Lines</h3>
+    <p>As the scan continues, enormous numbers of coincidence events generate many lines of response.</p>
+    <p>Where many statistically consistent lines intersect:</p>
+    <p>Activity is likely concentrated.</p>
+    <p>Reconstruction algorithms use that information to estimate the tracer distribution.</p>
+  </section>
+
+  <section class="content-box" id="detector-ring">
+    <h3>Detector Ring</h3>
+    <p>PET scanners arrange radiation detectors in a ring around the patient.</p>
+    <p>Modern systems may contain many rings along the length of the scanner.</p>
+    <p>This creates a cylindrical detector geometry.</p>
+  </section>
+
+  <section class="content-box" id="why-a-ring">
+    <h3>Why a Ring?</h3>
+    <p>The annihilation photons travel in opposite directions.</p>
+    <p>Surrounding the patient makes it likely both photons can be detected.</p>
+  </section>
+
+  <section class="content-box" id="axial-coverage">
+    <h3>Axial Coverage</h3>
+    <p>More detector rings provide greater coverage along the patient's head-to-foot direction.</p>
+    <p>Modern systems may have substantially wider axial fields of view than older PET systems.</p>
+  </section>
+
+  <section class="content-box" id="detector-crystals">
+    <h3>Detector Crystals</h3>
+    <p>Gamma rays cannot be detected directly by ordinary visible-light sensors.</p>
+    <p>PET systems often use:</p>
+    <p><strong>Scintillation crystals.</strong></p>
+  </section>
+
+  <section class="content-box" id="scintillator">
+    <h3>Scintillator</h3>
+    <p>When a 511 keV gamma photon interacts with the crystal, the crystal produces a flash of visible light.</p>
+  </section>
+
+  <section class="content-box" id="pet-conversion-chain">
+    <h3>PET Conversion Chain</h3>
+    <p><strong>511 keV Gamma Photon</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillator</strong></p>
+    <p>↓</p>
+    <p><strong>Visible-Light Flash</strong></p>
+    <p>↓</p>
+    <p><strong>Photodetector</strong></p>
+    <p>↓</p>
+    <p><strong>Electrical Pulse</strong></p>
+    <p>↓</p>
+    <p><strong>Timing + Energy Measurement</strong></p>
+  </section>
+
+  <section class="content-box" id="scintillation-materials">
+    <h3>Scintillation Materials</h3>
+    <p>PET detector crystals may use materials such as:</p>
+    <ul>
+      <li>LSO</li>
+      <li>LYSO</li>
+    </ul>
+    <p>and other scintillators depending on scanner design.</p>
+  </section>
+
+  <section class="content-box" id="what-makes-a-good-pet-scintillator">
+    <h3>What Makes a Good PET Scintillator?</h3>
+    <p>Important properties include:</p>
+    <ul>
+      <li>High stopping power</li>
+      <li>Fast light output</li>
+      <li>Good energy resolution</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="stopping-power">
+    <h3>Stopping Power</h3>
+    <p>The crystal should have a good probability of interacting with the high-energy gamma photon rather than letting it pass through undetected.</p>
+  </section>
+
+  <section class="content-box" id="fast-scintillation">
+    <h3>Fast Scintillation</h3>
+    <p>Timing matters tremendously in PET.</p>
+    <p>The crystal should produce its light quickly enough to support precise coincidence timing.</p>
+  </section>
+
+  <section class="content-box" id="photodetector">
+    <h3>Photodetector</h3>
+    <p>The visible-light flash must be converted into an electrical signal.</p>
+    <p>Older systems often used:</p>
+    <p><strong>Photomultiplier tubes</strong>, or PMTs.</p>
+    <p>Newer systems may use:</p>
+    <p><strong>Silicon photomultipliers</strong>, or SiPMs.</p>
+  </section>
+
+  <section class="content-box" id="photomultiplier-tube">
+    <h3>Photomultiplier Tube</h3>
+    <p>A PMT is extremely sensitive to small amounts of light.</p>
+    <p>A photon reaching the photocathode releases an electron.</p>
+    <p>A series of internal stages multiplies that signal.</p>
+    <p>The final output is a measurable electrical pulse.</p>
+  </section>
+
+  <section class="content-box" id="pmts-need-high-voltage">
+    <h3>PMTs Need High Voltage</h3>
+    <p>Photomultiplier tubes generally require a high-voltage supply.</p>
+    <p>That is one part of the PET detector electronics that may require monitoring and calibration.</p>
+  </section>
+
+  <section class="content-box" id="magnetic-fields-and-pmts">
+    <h3>Magnetic Fields and PMTs</h3>
+    <p>Traditional PMTs are sensitive to magnetic fields.</p>
+    <p>This becomes especially important in combined:</p>
+    <p><strong>PET/MRI</strong></p>
+    <p>systems.</p>
+  </section>
+
+  <section class="content-box" id="silicon-photomultipliers">
+    <h3>Silicon Photomultipliers</h3>
+    <p>SiPMs are solid-state photodetectors.</p>
+    <p>They contain many tiny avalanche photodiode elements operating in a way that allows single-photon-level sensitivity.</p>
+  </section>
+
+  <section class="content-box" id="why-sipms-are-attractive">
+    <h3>Why SiPMs Are Attractive</h3>
+    <p>They can offer:</p>
+    <ul>
+      <li>Compact size</li>
+      <li>Excellent timing</li>
+      <li>Magnetic-field compatibility</li>
+    </ul>
+    <p>which is particularly helpful for modern PET designs.</p>
+  </section>
+
+  <section class="content-box" id="detector-block">
+    <h3>Detector Block</h3>
+    <p>A PET detector module may contain many scintillator crystal elements coupled to one or more photodetectors.</p>
+    <p>The system must determine:</p>
+    <p><strong>Which crystal was hit?</strong></p>
+  </section>
+
+  <section class="content-box" id="crystal-identification">
+    <h3>Crystal Identification</h3>
+    <p>Depending on detector design, the pattern of light reaching the photodetectors helps identify which crystal received the gamma interaction.</p>
+  </section>
+
+  <section class="content-box" id="energy-measurement">
+    <h3>Energy Measurement</h3>
+    <p>The size of the electrical pulse is related to how much energy was deposited in the scintillator.</p>
+    <p>The scanner uses this to estimate the detected photon energy.</p>
+  </section>
+
+  <section class="content-box" id="why-energy-matters">
+    <h3>Why Energy Matters</h3>
+    <p>The desired annihilation photon energy is:</p>
+    <p>511 keV.</p>
+    <p>If the measured energy is far from the expected range:</p>
+    <p>The event may be rejected.</p>
+  </section>
+
+  <section class="content-box" id="energy-window">
+    <h3>Energy Window</h3>
+    <p>The scanner accepts detected events within a selected energy range around the expected photon energy.</p>
+    <p>This helps reject some unwanted events.</p>
+  </section>
+
+  <section class="content-box" id="scatter">
+    <h3>Scatter</h3>
+    <p>One of the major complications in PET is:</p>
+    <p><strong>Compton scatter.</strong></p>
+    <p>A 511 keV photon may interact inside the patient and change direction before reaching the detector.</p>
+  </section>
+
+  <section class="content-box" id="why-scatter-is-a-problem">
+    <h3>Why Scatter Is a Problem</h3>
+    <p>The scanner assumes the photon traveled approximately straight from annihilation site to detector.</p>
+    <p>If it scattered:</p>
+    <p>The detected line of response is wrong.</p>
+  </section>
+
+  <section class="content-box" id="scatter-also-reduces-photon-energy">
+    <h3>Scatter Also Reduces Photon Energy</h3>
+    <p>That is one reason energy measurement helps identify some scattered events.</p>
+  </section>
+
+  <section class="content-box" id="not-all-scatter-is-rejected-perfectly">
+    <h3>Not All Scatter Is Rejected Perfectly</h3>
+    <p>PET reconstruction also uses scatter-correction methods.</p>
+  </section>
+
+  <section class="content-box" id="random-coincidences">
+    <h3>Random Coincidences</h3>
+    <p>Imagine two unrelated radioactive decay events occur close together in time.</p>
+    <p>One photon from event A hits one detector.</p>
+    <p>One photon from event B hits another detector.</p>
+    <p>If they occur within the coincidence timing window:</p>
+    <p>The scanner may falsely pair them.</p>
+    <p>That is called a:</p>
+    <p><strong>Random coincidence.</strong></p>
+  </section>
+
+  <section class="content-box" id="randoms-add-background-error">
+    <h3>Randoms Add Background Error</h3>
+    <p>Systems estimate and correct for random events.</p>
+  </section>
+
+  <section class="content-box" id="timing-window-tradeoff">
+    <h3>Timing Window Tradeoff</h3>
+    <p>A wider coincidence window catches more true pairs but can also admit more random pairs.</p>
+    <p>A narrower window reduces randoms but demands better timing performance.</p>
+  </section>
+
+  <section class="content-box" id="time-of-flight-pet">
+    <h3>Time-of-Flight PET</h3>
+    <p>Modern PET systems may use:</p>
+    <p><strong>Time-of-flight</strong>, or TOF.</p>
+    <p>This adds another powerful piece of information.</p>
+  </section>
+
+  <section class="content-box" id="the-two-photons-travel-at-the-speed-of-light">
+    <h3>The Two Photons Travel at the Speed of Light</h3>
+    <p>If the annihilation occurs exactly halfway between two detectors:</p>
+    <p>The photons arrive at nearly the same time.</p>
+    <p>If the annihilation occurs closer to one detector:</p>
+    <p>That photon arrives slightly earlier.</p>
+  </section>
+
+  <section class="content-box" id="time-difference-gives-position-information">
+    <h3>Time Difference Gives Position Information</h3>
+    <p>The timing difference allows the scanner to estimate where along the line of response the annihilation occurred.</p>
+  </section>
+
+  <section class="content-box" id="not-exact-position">
+    <h3>Not Exact Position</h3>
+    <p>Timing resolution is not perfect.</p>
+    <p>TOF narrows the likely location along the line rather than determining one exact point.</p>
+  </section>
+
+  <section class="content-box" id="why-tof-helps">
+    <h3>Why TOF Helps</h3>
+    <p>It improves the reconstruction's ability to localize activity and can improve image signal-to-noise characteristics.</p>
+  </section>
+
+  <section class="content-box" id="timing-resolution">
+    <h3>Timing Resolution</h3>
+    <p>Better detector and electronics timing means:</p>
+    <p>More precise localization along the line of response.</p>
+    <p>This is one reason fast scintillators and SiPMs are important in modern PET.</p>
+  </section>
+
+  <section class="content-box" id="detector-timing-calibration">
+    <h3>Detector Timing Calibration</h3>
+    <p>All detector channels must agree on time extremely accurately.</p>
+    <p>If one detector's timing is offset:</p>
+    <p>Coincidence localization can be affected.</p>
+  </section>
+
+  <section class="content-box" id="energy-calibration">
+    <h3>Energy Calibration</h3>
+    <p>Detector channels also need proper energy calibration.</p>
+    <p>A crystal or channel that reports incorrect energy may:</p>
+    <ul>
+      <li>Reject valid events</li>
+      <li>Accept inappropriate events</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="gain">
+    <h3>Gain</h3>
+    <p>Photodetector gain can vary.</p>
+    <p>The system calibrates detector response so channels behave consistently.</p>
+  </section>
+
+  <section class="content-box" id="temperature">
+    <h3>Temperature</h3>
+    <p>Detector electronics and SiPM gain can be temperature-sensitive.</p>
+    <p>Modern systems monitor and compensate for this.</p>
+  </section>
+
+  <section class="content-box" id="why-cooling-matters">
+    <h3>Why Cooling Matters</h3>
+    <p>Stable detector temperature helps maintain:</p>
+    <ul>
+      <li>Gain</li>
+      <li>Timing</li>
+      <li>Energy response</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-temperature-fault">
+    <h3>Detector Temperature Fault</h3>
+    <p>A scanner may still physically detect events while calibration becomes unreliable.</p>
+    <p>The system may therefore inhibit acquisition or fail QC rather than produce questionable data.</p>
+  </section>
+
+  <section class="content-box" id="normalization">
+    <h3>Normalization</h3>
+    <p>Not every detector pair has exactly the same sensitivity.</p>
+    <p>PET systems use normalization corrections to compensate for differences.</p>
+  </section>
+
+  <section class="content-box" id="why-detector-sensitivity-varies">
+    <h3>Why Detector Sensitivity Varies</h3>
+    <p>Possible reasons include:</p>
+    <ul>
+      <li>Crystal efficiency</li>
+      <li>Photodetector gain</li>
+      <li>Geometry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="normalization-calibration">
+    <h3>Normalization Calibration</h3>
+    <p>A known source or calibration procedure helps determine relative detector sensitivity.</p>
+    <p>The reconstruction then corrects those differences.</p>
+  </section>
+
+  <section class="content-box" id="bad-detector-element">
+    <h3>Bad Detector Element</h3>
+    <p>A failing crystal or photodetector channel may produce:</p>
+    <ul>
+      <li>Reduced counts</li>
+      <li>Incorrect timing</li>
+      <li>Bad energy measurement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-failed-channel-can-affect-many-lines-of-response">
+    <h3>One Failed Channel Can Affect Many Lines of Response</h3>
+    <p>Because each detector participates in coincidence pairs with many detectors around the ring.</p>
+    <p>That means a localized detector problem can create characteristic patterns in the data.</p>
+  </section>
+
+  <section class="content-box" id="sinogram">
+    <h3>Sinogram</h3>
+    <p>PET coincidence data can be represented in forms such as a:</p>
+    <p><strong>Sinogram.</strong></p>
+    <p>This is not the final clinical image.</p>
+    <p>It organizes projection/coincidence data in a way useful for reconstruction and diagnostics.</p>
+  </section>
+
+  <section class="content-box" id="detector-gaps-can-be-visible-in-raw-data">
+    <h3>Detector Gaps Can Be Visible in Raw Data</h3>
+    <p>A bad detector block may create:</p>
+    <ul>
+      <li>Missing bands</li>
+      <li>Abnormal regions</li>
+    </ul>
+    <p>in sinogram or QC data.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction">
+    <h3>Reconstruction</h3>
+    <p>PET reconstruction estimates the spatial distribution of radioactive activity.</p>
+    <p>Modern systems commonly use iterative reconstruction methods.</p>
+  </section>
+
+  <section class="content-box" id="the-final-image-is-heavily-corrected">
+    <h3>The Final Image Is Heavily Corrected</h3>
+    <p>The scanner does not simply count coincidence events and display them directly.</p>
+    <p>Corrections may include:</p>
+    <ul>
+      <li>Normalization</li>
+      <li>Scatter</li>
+      <li>Random coincidences</li>
+      <li>Attenuation</li>
+      <li>Dead time</li>
+      <li>Decay</li>
+    </ul>
+    <p>depending on system design.</p>
+  </section>
+
+  <section class="content-box" id="attenuation">
+    <h3>Attenuation</h3>
+    <p>Gamma photons can be absorbed or scattered inside the body before reaching the detectors.</p>
+    <p>Therefore activity deep inside the body may be undercounted unless attenuation is corrected.</p>
+  </section>
+
+  <section class="content-box" id="pet-ct">
+    <h3>PET/CT</h3>
+    <p>Most modern clinical PET systems are combined with CT.</p>
+    <p>The CT portion provides:</p>
+    <ul>
+      <li>Anatomical image</li>
+      <li>Attenuation information</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="attenuation-correction">
+    <h3>Attenuation Correction</h3>
+    <p>CT data can be used to estimate how strongly different tissues attenuate the PET photons.</p>
+    <p>The PET reconstruction then compensates for expected losses.</p>
+  </section>
+
+  <section class="content-box" id="pet-and-ct-must-be-spatially-aligned">
+    <h3>PET and CT Must Be Spatially Aligned</h3>
+    <p>This is crucial.</p>
+    <p>If PET and CT images do not line up correctly:</p>
+    <p>Attenuation correction can be applied to the wrong locations.</p>
+    <p>That can create artifacts or inaccurate uptake appearance.</p>
+  </section>
+
+  <section class="content-box" id="patient-motion-between-pet-and-ct">
+    <h3>Patient Motion Between PET and CT</h3>
+    <p>Because the CT and PET portions are acquired at different times, patient motion can cause misregistration.</p>
+  </section>
+
+  <section class="content-box" id="breathing-motion">
+    <h3>Breathing Motion</h3>
+    <p>Chest and diaphragm position can differ between:</p>
+    <ul>
+      <li>Fast CT</li>
+      <li>Longer PET acquisition</li>
+    </ul>
+    <p>This may produce apparent mismatch.</p>
+  </section>
+
+  <section class="content-box" id="not-every-pet-ct-misregistration-is-hardware-failure">
+    <h3>Not Every PET/CT Misregistration Is Hardware Failure</h3>
+    <p>Patient motion and respiratory differences are important causes.</p>
+  </section>
+
+  <section class="content-box" id="ct-is-not-only-there-for-pretty-anatomy">
+    <h3>CT Is Not Only There for Pretty Anatomy</h3>
+    <p>It can directly influence corrected PET data.</p>
+    <p>This is important for troubleshooting.</p>
+    <p>A CT calibration or alignment problem can affect PET attenuation correction.</p>
+  </section>
+
+  <section class="content-box" id="pet-without-ct">
+    <h3>PET Without CT</h3>
+    <p>Some systems may use other attenuation-correction approaches.</p>
+    <p>But PET/CT is very common clinically.</p>
+  </section>
+
+  <section class="content-box" id="count-rate">
+    <h3>Count Rate</h3>
+    <p>The scanner records many events per second.</p>
+    <p>If activity is very high:</p>
+    <p>Detector/electronic processing can become saturated or experience:</p>
+    <p><strong>Dead time.</strong></p>
+  </section>
+
+  <section class="content-box" id="dead-time">
+    <h3>Dead Time</h3>
+    <p>After processing one event, detector electronics may need a very short recovery period before accurately processing another.</p>
+    <p>At very high event rates:</p>
+    <p>Some events may be lost.</p>
+  </section>
+
+  <section class="content-box" id="dead-time-correction">
+    <h3>Dead-Time Correction</h3>
+    <p>The system estimates and corrects for this behavior within supported ranges.</p>
+  </section>
+
+  <section class="content-box" id="radioactive-decay">
+    <h3>Radioactive Decay</h3>
+    <p>Tracer activity decreases over time according to its physical half-life.</p>
+    <p>The scanner can correct measured activity for radioactive decay when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="quantitative-pet">
+    <h3>Quantitative PET</h3>
+    <p>PET can provide quantitative measures such as:</p>
+    <p><strong>SUV</strong>, standardized uptake value.</p>
+    <p>Accurate quantitation depends on more than the detector.</p>
+    <p>It can involve:</p>
+    <ul>
+      <li>Dose measurement</li>
+      <li>Patient information</li>
+      <li>Timing</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dose-calibrator-relationship">
+    <h3>Dose Calibrator Relationship</h3>
+    <p>PET scanner calibration and the dose-calibration system need consistency for accurate quantitative measurements.</p>
+  </section>
+
+  <section class="content-box" id="cross-calibration">
+    <h3>Cross-Calibration</h3>
+    <p>Quality programs may compare:</p>
+    <ul>
+      <li>PET scanner</li>
+      <li>Dose calibrator</li>
+    </ul>
+    <p>to ensure quantitative agreement.</p>
+  </section>
+
+  <section class="content-box" id="why-this-matters-to-biomeds">
+    <h3>Why This Matters to Biomeds</h3>
+    <p>A PET image can look visually reasonable while quantitative values are wrong.</p>
+    <p>That is similar to many other medical devices:</p>
+    <p><strong>Function is not the same as accuracy.</strong></p>
+  </section>
+
+  <section class="content-box" id="daily-qc">
+    <h3>Daily QC</h3>
+    <p>PET systems commonly perform regular quality-control procedures.</p>
+    <p>These may evaluate:</p>
+    <ul>
+      <li>Detector stability</li>
+      <li>Energy</li>
+      <li>Timing</li>
+      <li>Normalization-related performance</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="qc-trend-matters">
+    <h3>QC Trend Matters</h3>
+    <p>A gradual decline can reveal detector issues before obvious clinical image problems appear.</p>
+  </section>
+
+  <section class="content-box" id="calibration-source">
+    <h3>Calibration Source</h3>
+    <p>Systems may use radioactive calibration sources or other built-in methods depending on model.</p>
+    <p>Radioactive-source handling has specific safety requirements.</p>
+  </section>
+
+  <section class="content-box" id="pet-detector-ring-does-not-physically-rotate-like-ct">
+    <h3>PET Detector Ring Does Not Physically Rotate Like CT</h3>
+    <p>This is a useful distinction.</p>
+    <p>The PET detector ring generally surrounds the patient and remains stationary.</p>
+    <p>The events come from all around the patient.</p>
+  </section>
+
+  <section class="content-box" id="ct-portion-may-rotate">
+    <h3>CT Portion May Rotate</h3>
+    <p>In a PET/CT scanner:</p>
+    <p>CT has a rotating X-ray acquisition system.</p>
+    <p>PET has a surrounding detector ring.</p>
+    <p>Two very different imaging systems share one platform.</p>
+  </section>
+
+  <section class="content-box" id="pet-ct-gantry-contains-two-imaging-modalities">
+    <h3>PET/CT Gantry Contains Two Imaging Modalities</h3>
+    <p>This means a complaint like:</p>
+    <blockquote><p>Scanner image problem</p></blockquote>
+    <p>needs to be narrowed.</p>
+    <p>Is it:</p>
+    <ul>
+      <li>CT image</li>
+      <li>PET image</li>
+      <li>Registration between them</li>
+      <li>Reconstruction</li>
+      <li>Patient table positioning</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="table-position-matters">
+    <h3>Table Position Matters</h3>
+    <p>PET and CT need accurate spatial relationship.</p>
+    <p>If table position information is wrong:</p>
+    <p>Image fusion and registration can be affected.</p>
+  </section>
+
+  <section class="content-box" id="bed-deflection">
+    <h3>Bed Deflection</h3>
+    <p>Patient table loading can also influence alignment.</p>
+    <p>Manufacturers account for expected table behavior, but mechanical problems can matter.</p>
+  </section>
+
+  <section class="content-box" id="detector-electronics">
+    <h3>Detector Electronics</h3>
+    <p>A PET detector module may contain:</p>
+    <ul>
+      <li>Bias supply</li>
+      <li>Amplification</li>
+      <li>Timing circuitry</li>
+      <li>ADCs</li>
+      <li>Communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="module-communication-failure">
+    <h3>Module Communication Failure</h3>
+    <p>If a detector block cannot communicate with the acquisition system:</p>
+    <p>Events from that region may be missing.</p>
+  </section>
+
+  <section class="content-box" id="does-the-scanner-keep-scanning">
+    <h3>Does the Scanner Keep Scanning?</h3>
+    <p>Depending on severity and design, the scanner may:</p>
+    <ul>
+      <li>Continue with warnings</li>
+      <li>Fail QC</li>
+      <li>Inhibit scan</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-voltage-on-pmt-systems">
+    <h3>High Voltage on PMT Systems</h3>
+    <p>Older PMT-based systems require stable high voltage.</p>
+    <p>If HV changes:</p>
+    <p>PMT gain changes.</p>
+    <p>That can alter:</p>
+    <ul>
+      <li>Energy response</li>
+    </ul>
+    <p>and detector calibration.</p>
+  </section>
+
+  <section class="content-box" id="sipm-bias">
+    <h3>SiPM Bias</h3>
+    <p>SiPM systems also require carefully controlled bias voltage.</p>
+    <p>Small changes can affect gain.</p>
+  </section>
+
+  <section class="content-box" id="temperature-compensation">
+    <h3>Temperature Compensation</h3>
+    <p>Because SiPM behavior varies with temperature, bias control may compensate based on detector temperature.</p>
+  </section>
+
+  <section class="content-box" id="cooling-failure-can-become-detector-failure">
+    <h3>Cooling Failure Can Become Detector Failure</h3>
+    <p>Again, cooling is part of the measurement system.</p>
+    <p>Not merely a comfort feature.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-detector-block-failure">
+    <h3>Real-World Example: Detector Block Failure</h3>
+    <p>Daily QC shows a persistent region with reduced counts.</p>
+    <p>Repeat calibration does not correct it.</p>
+    <p>Detector diagnostics identify one block with abnormal gain.</p>
+    <p>Clinical images may show corresponding nonuniformity.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-timing-calibration">
+    <h3>Real-World Example: Timing Calibration</h3>
+    <p>TOF performance degrades.</p>
+    <p>Energy response appears normal.</p>
+    <p>Timing calibration identifies channel offset.</p>
+    <p>The detector still detects gamma photons, but its timing information is no longer accurate enough.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pet-ct-misregistration">
+    <h3>Real-World Example: PET/CT Misregistration</h3>
+    <p>Fused image shows PET uptake shifted relative to CT anatomy.</p>
+    <p>PET and CT QC are individually acceptable.</p>
+    <p>Patient movement occurred between acquisitions.</p>
+    <p>This is not necessarily detector failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-attenuation-correction-artifact">
+    <h3>Real-World Example: Attenuation-Correction Artifact</h3>
+    <p>Metal implant produces unusual CT attenuation values.</p>
+    <p>Corrected PET image shows corresponding artifact.</p>
+    <p>Reviewing non-attenuation-corrected PET data can help distinguish the effect.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-cooling-problem">
+    <h3>Real-World Example: Cooling Problem</h3>
+    <p>PET system passes QC when cold.</p>
+    <p>After extended operation:</p>
+    <p>Detector temperature rises and gain shifts.</p>
+    <p>System generates calibration or detector-stability warning.</p>
+    <p>Cooling, not the scintillator itself, may be the root problem.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="thinking-pet-detects-the-positron-directly">
+    <h3>Thinking PET Detects the Positron Directly</h3>
+    <p>The scanner primarily detects the gamma photons produced after positron-electron annihilation.</p>
+  </section>
+
+  <section class="content-box" id="thinking-one-coincidence-gives-the-exact-decay-location">
+    <h3>Thinking One Coincidence Gives the Exact Decay Location</h3>
+    <p>Without TOF, it provides a line of possible locations.</p>
+    <p>Even TOF narrows rather than perfectly identifies the point.</p>
+  </section>
+
+  <section class="content-box" id="assuming-every-pet-image-artifact-is-detector-failure">
+    <h3>Assuming Every PET Image Artifact Is Detector Failure</h3>
+    <p>Attenuation correction, motion, scatter, and CT misregistration can also matter.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-temperature">
+    <h3>Ignoring Temperature</h3>
+    <p>Detector gain and timing can depend on thermal stability.</p>
+  </section>
+
+  <section class="content-box" id="treating-pet-and-ct-as-one-imaging-chain">
+    <h3>Treating PET and CT as One Imaging Chain</h3>
+    <p>They are separate modalities that interact.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-calibration-because-the-scanner-still-produces-images">
+    <h3>Ignoring Calibration Because the Scanner Still Produces Images</h3>
+    <p>Quantitative accuracy requires stable calibration.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-pet-detector-framework">
+    <h3>A Useful PET Detector Framework</h3>
+    <p>Think:</p>
+    <p><strong>Radiotracer</strong></p>
+    <p>↓</p>
+    <p><strong>Positron Emission</strong></p>
+    <p>↓</p>
+    <p><strong>Annihilation</strong></p>
+    <p>↓</p>
+    <p><strong>Two 511 keV Photons</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillator</strong></p>
+    <p>↓</p>
+    <p><strong>Photodetector</strong></p>
+    <p>↓</p>
+    <p><strong>Energy + Timing Measurement</strong></p>
+    <p>↓</p>
+    <p><strong>Coincidence Detection</strong></p>
+    <p>↓</p>
+    <p><strong>Line of Response</strong></p>
+    <p>↓</p>
+    <p><strong>Corrections</strong></p>
+    <p>↓</p>
+    <p><strong>Reconstruction</strong></p>
+    <p>↓</p>
+    <p><strong>PET Image</strong></p>
+    <p>Every step contributes to the final result.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask whether the problem involves:</p>
+    <p><strong>Tracer / Patient</strong></p>
+    <p><strong>Detection</strong></p>
+    <p><strong>Energy Measurement</strong></p>
+    <p><strong>Timing</strong></p>
+    <p><strong>Coincidence Processing</strong></p>
+    <p><strong>Attenuation Correction</strong></p>
+    <p><strong>Reconstruction</strong></p>
+    <p><strong>PET/CT Registration</strong></p>
+    <p>That is much more precise than:</p>
+    <blockquote><p>PET looks bad.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If every detector module communicates:</p>
+    <p>You proved:</p>
+    <p><strong>The acquisition system currently recognizes those modules.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Energy calibration correct</li>
+      <li>Timing calibration correct</li>
+      <li>Quantitative PET accurate</li>
+    </ul>
+    <p>If daily QC passes:</p>
+    <p>You have stronger evidence that the detector system meets the tested stability and calibration requirements under those conditions.</p>
+    <p>If PET and CT images are misaligned:</p>
+    <p>You proved:</p>
+    <p><strong>The fused datasets do not currently line up correctly.</strong></p>
+    <p>You have not yet proven whether the cause is:</p>
+    <ul>
+      <li>Patient motion</li>
+      <li>Table positioning</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>PET is one of the best examples of how medical imaging turns statistics into anatomy and physiology.</p>
+    <p>The scanner never sees the positron.</p>
+    <p>It never directly watches a glucose molecule moving through the body.</p>
+    <p>Instead it detects pairs of gamma photons.</p>
+    <p>From those pairs, it builds lines of response.</p>
+    <p>From millions of those lines, it estimates where radioactive activity exists.</p>
+    <p>Then it corrects for:</p>
+    <ul>
+      <li>Scatter</li>
+      <li>Randoms</li>
+      <li>Attenuation</li>
+      <li>Detector differences</li>
+    </ul>
+    <p>and reconstructs an image that clinicians can use.</p>
+    <p>That means a PET problem can originate in:</p>
+    <ul>
+      <li>Detector crystal</li>
+      <li>Photodetector</li>
+      <li>Timing electronics</li>
+      <li>Calibration</li>
+      <li>Cooling</li>
+      <li>CT attenuation correction</li>
+      <li>Reconstruction</li>
+    </ul>
+    <p>The final image may look like one thing.</p>
+    <p>But underneath it is an enormous chain of measurements and corrections.</p>
+    <p>And that is exactly why understanding how the system works helps when something goes wrong.</p>
+    <p>Instead of saying:</p>
+    <blockquote><p>The PET image looks weird,</p></blockquote>
+    <p>you can start asking:</p>
+    <p><strong>Is this detection, timing, correction, registration, or reconstruction?</strong></p>
+    <p>That is a much better troubleshooting question.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>PET detector materials, photodetectors, timing resolution, energy windows, coincidence processing, time-of-flight implementation, attenuation correction, calibration procedures, QC requirements, radioactive-source handling, and service boundaries vary significantly by manufacturer and scanner model. PET systems involve ionizing radiation and radioactive materials. Follow current OEM documentation, radiation-safety procedures, nuclear-medicine requirements, and authorized service scope when troubleshooting PET or PET/CT equipment.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-medical-device-cooling-systems-work.html">How Medical Device Cooling Systems Work</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
