@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="datePublished" content="2026-10-02">
+  <meta name="dateModified" content="2026-10-02">
   <title>How Fluoroscopy Automatic Exposure Rate Control Works | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how fluoroscopy systems use detector feedback to adjust kVp, mA, pulse width, pulse rate, and filtration as imaging conditions change.">
   <link rel="stylesheet" href="../style.css?v=20260920-2">
@@ -21,6 +23,7 @@
 </header>
 <section class="hero">
   <h1 id="page-heading" tabindex="-1">How Fluoroscopy Automatic Exposure Rate Control Works</h1>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published October 2, 2026 · Revised October 2, 2026</p>
   <p>How a fluoroscopy system continuously adjusts X-ray output to maintain usable image quality while patient thickness, gantry angle, collimation, magnification, and clinical conditions keep changing</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Fluoroscopy is different from ordinary radiography because the imaging conditions can change constantly while the system is actively producing images.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -55,24 +58,9 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>A simplified fluoroscopy control loop looks like:</p>
-    <p><strong>X-Ray Tube Produces Radiation</strong></p>
-    <p>↓</p>
-    <p><strong>Radiation Passes Through Patient</strong></p>
-    <p>↓</p>
-    <p><strong>Detector Measures What Reaches It</strong></p>
-    <p>↓</p>
-    <p><strong>Image System Evaluates Signal / Brightness / Exposure</strong></p>
-    <p>↓</p>
-    <p><strong>Control System Decides Whether More or Less X-Ray Is Needed</strong></p>
-    <p>↓</p>
-    <p><strong>Generator Adjusts kVp, mA, Pulse Width, or Other Parameters</strong></p>
-    <p>↓</p>
-    <p><strong>Next Fluoro Image Is Acquired</strong></p>
-    <p>↓</p>
-    <p><strong>Loop Repeats</strong></p>
-    <p>This can happen many times per second.</p>
-    <p>The system is constantly correcting itself.</p>
+    <p>Automatic exposure-rate control is a feedback loop that tries to maintain usable fluoroscopic image quality as patient thickness, angle, magnification, collimation, and attenuation change. The detector and image chain measure the signal from one acquisition, the controller compares it with the target for the selected mode, and the generator adjusts later pulses. Depending on the system, it may change kVp, tube current, pulse width, pulse rate, filtration, or a combination of them.</p>
+    <p>The loop can respond many times per second, but it operates within programmed priorities and equipment limits. A low-dose mode may accept more noise, while another mode may permit higher output for a demanding procedure. If the beam encounters thicker anatomy or added attenuation, the system may increase technique until it reaches a limit; it cannot always preserve the same image quality indefinitely.</p>
+    <p>When image brightness, noise, or dose behavior seems wrong, inspect the whole feedback path rather than adjusting the generator blindly. Confirm the selected mode, geometry, patient-equivalent attenuator, detector calibration, collimation, filtration, displayed technique, dose indicators, and whether the detector signal is valid. Record how the system responds as attenuation changes, because a detector or calibration problem can drive inappropriate output even when the X-ray generator obeys the commands it receives.</p>
   </section>
 
   <section class="content-box" id="start-with-the-basic-imaging-chain">
