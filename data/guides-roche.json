@@ -1490,5 +1490,697 @@
     "Indicator lights, link/activity lights, interface adapter status, or rejection messages",
     "Final device status, including whether results were stored locally, transmitted successfully, placed in downtime workflow, or removed from service"
   ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Analyzer Will Not Power On or Complete Initialization",
+  "description": "Troubleshoots no-power, incomplete startup, initialization hangs, and startup failures caused by external power, accessories, consumables, configuration, or environmental conditions.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-analyzer-will-not-power-on-or-complete-initialization.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Confirm the Reported Condition",
+      "instructions": "Do not rely on an analyzer that cannot complete startup or initialization for patient testing. Redirect specimens to another verified analyzer or follow the laboratory downtime procedure. Confirm whether the analyzer: Has no visible power Powers on but stops during initialization Displays a startup message or alarm Reboots unexpectedly Initializes some modules but not others Record the exact displayed message and the point at which initialization stops. Expected outcome: The exact failure mode is established and patient testing is safely redirected. If the analyzer subsequently initializes normally and passes required readiness checks, troubleshooting can stop after final verification."
+    },
+    {
+      "title": "2. Check External Power",
+      "instructions": "Verify that the analyzer's normal facility power source is available and that no obvious upstream power interruption has occurred. Inspect accessible: Power cords Plugs Approved power distribution equipment Facility receptacles External disconnects or breakers intended for normal operator or facility access Look for loose connections, physical damage, heat, discoloration, or evidence of a recent outage. Do not repeatedly reset a breaker that trips again. Expected outcome: Stable facility power is present and external power connections are secure. If restoring a verified external power source allows normal initialization, the issue is resolved and troubleshooting can stop after verification."
+    },
+    {
+      "title": "3. Inspect the Analyzer for Unsafe Conditions",
+      "instructions": "Before additional startup attempts, inspect for: Liquid leakage Chemical spills Unusual odor Smoke or overheating Damaged covers Loose external components Obstructed ventilation Evidence of fluid intrusion If any unsafe condition is present, disconnect or isolate the equipment as appropriate and remove it from service. Expected outcome: No unsafe physical or environmental condition is present before continued troubleshooting."
+    },
+    {
+      "title": "4. Verify Required External Modules and Connections",
+      "instructions": "Confirm that externally connected modules, control computers, peripherals, and communications connections required for normal operation are powered and securely connected. Inspect accessible cables for: Loose connectors Pinched or damaged sections Partially seated plugs Accidental disconnection during cleaning, relocation, or nearby work Do not open internal electrical compartments. Expected outcome: Required external modules and connections are present, powered, and secure. If reseating an accessible connection restores normal initialization, troubleshooting can stop after verification."
+    },
+    {
+      "title": "5. Check Covers, Doors, Consumables, and Accessible Positions",
+      "instructions": "Verify that externally accessible covers and doors are fully closed and that required racks, reservoirs, consumables, or removable components are properly seated where applicable. Look for anything left displaced after: Cleaning Consumable replacement Maintenance Spill response Analyzer relocation Do not defeat interlocks. Expected outcome: All externally accessible components required for initialization are correctly positioned."
+    },
+    {
+      "title": "6. Evaluate the Startup Sequence",
+      "instructions": "Perform only the normal approved startup or restart process available to laboratory or Clinical Engineering personnel. Observe: Whether the controller starts Whether all modules are recognized Whether initialization consistently stops at the same stage Any messages presented before the failure Avoid repeated power cycling when the same fault immediately returns. Expected outcome: The analyzer completes its normal startup sequence and reaches a ready state. If it does, proceed to final verification and stop troubleshooting."
+    },
+    {
+      "title": "7. Check Environmental Conditions",
+      "instructions": "Verify that the analyzer area has: Normal room temperature Unobstructed airflow No obvious excessive heat No active water leak No recent electrical or construction activity affecting the installation Adequate clearance around external ventilation areas Expected outcome: No environmental or infrastructure condition is preventing normal operation."
+    },
+    {
+      "title": "8. Perform Final Functional Verification",
+      "instructions": "After the analyzer initializes successfully: Confirm all expected modules report ready Verify no unresolved startup alarms remain Confirm required consumables and reagents are recognized Verify normal specimen handling interfaces are available Perform laboratory-required control or readiness checks before patient use Expected outcome: The analyzer is fully initialized and passes required operational checks. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate if Initialization Still Fails",
+      "instructions": "If verified power, connections, external components, and environmental conditions are normal but initialization still fails, stop external troubleshooting. Do not proceed into internal power supplies, control electronics, motors, boards, or unauthorized service functions. Expected outcome: The analyzer remains unavailable and is escalated for qualified service evaluation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the cobas pro powered on but repeatedly stopped before completing initialization.",
+      "Cause": "Clinical Engineering found an externally connected analyzer communication cable partially disconnected following nearby equipment movement.",
+      "Resolution": "Reseated and secured the connection, restarted the analyzer, verified successful initialization, and confirmed the system returned to ready status for laboratory QC."
+    }
+  },
+  "helpfulDetails": [
+    "Exact startup message or alarm",
+    "Stage where initialization stopped",
+    "Whether all modules powered on",
+    "Recent outage or power event",
+    "Facility power verification",
+    "Condition of external power and communication cables",
+    "Recent cleaning, maintenance, or relocation",
+    "Doors, covers, and removable components checked",
+    "Unusual heat, odor, leakage, or noise",
+    "Results before and after restart",
+    "Final analyzer status",
+    "QC or readiness verification performed"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Barcode, LIS, or Network Communication Fails",
+  "description": "Troubleshoots barcode, LIS, and network failures caused by label quality, cables, ports, connectivity, interface status, configuration, or upstream systems.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-barcode-lis-or-network-communication-fails.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Identification and Establish Downtime Workflow",
+      "instructions": "Do not bypass positive patient identification or manually alter orders merely to work around an unresolved communication problem. Follow laboratory downtime procedures when: Orders are not received Patient identifiers cannot be verified Results cannot transmit Barcode identification is unreliable Expected outcome: Patient identification and result reporting remain controlled while communication is unavailable."
+    },
+    {
+      "title": "2. Determine Which Communication Function Failed",
+      "instructions": "Separate the problem into: Barcode read failure LIS order-download failure Result-upload failure Analyzer network connectivity loss Bidirectional interface failure One workstation or multiple systems affected Record the exact message and time of failure. Expected outcome: The failure domain is narrowed before configuration changes are considered."
+    },
+    {
+      "title": "3. Inspect the Barcode and Sample Label",
+      "instructions": "For barcode-specific failures, check: Label is present Print is clear Barcode is not wrinkled or damaged Label is not covered with condensation Placement does not interfere with tube seating The same barcode can be read through an approved alternate workflow if available Expected outcome: A readable, correctly positioned barcode is presented. If relabeling according to laboratory procedure restores identification, troubleshooting can stop after verification."
+    },
+    {
+      "title": "4. Inspect External Network and Interface Connections",
+      "instructions": "Check accessible: Ethernet cables Network jacks External interface connections Connected middleware or interface devices Link/activity indicators where normally visible Reseat loose accessible connections and look for cable damage. Expected outcome: Physical network connections are secure and expected link indications are present."
+    },
+    {
+      "title": "5. Check Scope of the Network Problem",
+      "instructions": "Determine whether: Only the cobas pro is affected Other laboratory analyzers have also lost LIS connectivity The associated workstation has network access A recent switch, VLAN, firewall, interface-engine, or server change occurred Coordinate with hospital IT or laboratory middleware support when infrastructure is involved. Expected outcome: The problem is separated into analyzer-local or infrastructure-wide categories."
+    },
+    {
+      "title": "6. Verify Normal Interface Status Without Unauthorized Changes",
+      "instructions": "Review normal user-accessible communication status displays. Document: Connected/disconnected state Queued transactions Failed orders or results Interface messages visible to authorized users Do not change IP addresses, host definitions, ports, interface mappings, or other validated configuration unless authorized and documented. Expected outcome: Communication status is known without introducing configuration drift."
+    },
+    {
+      "title": "7. Test the Communication Path",
+      "instructions": "Using approved procedures, verify the complete path as appropriate: Barcode to analyzer Analyzer to middleware Middleware to LIS LIS order back to analyzer Analyzer result transmission Coordinate testing with LIS/IT personnel so duplicate or test records are handled correctly. Expected outcome: The point where communication stops is identified."
+    },
+    {
+      "title": "8. Verify Recovery",
+      "instructions": "After correcting an external cable, network, label, or upstream problem: Confirm orders populate correctly Confirm sample identifiers match Confirm an approved test result reaches the intended destination Check any queued data according to laboratory procedure Expected outcome: Bidirectional communication functions normally and specimen/result identity is preserved. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate Persistent Communication Failure",
+      "instructions": "If physical connections and upstream systems are verified but communication remains unavailable, escalate to the appropriate Roche, LIS, middleware, or hospital-network support team. Avoid trial-and-error configuration changes on a production analyzer. Expected outcome: The communication fault is handed off with enough evidence to identify the responsible support domain."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the cobas pro stopped receiving LIS orders while the analyzer otherwise remained operational.",
+      "Cause": "Clinical Engineering found the analyzer network cable partially disconnected at the external network jack.",
+      "Resolution": "Reseated the network connection, verified link restoration, and confirmed with laboratory staff that test orders and results transmitted correctly through the LIS interface."
+    }
+  },
+  "helpfulDetails": [
+    "Exact barcode or interface message",
+    "Orders, results, or both affected",
+    "Whether other analyzers are affected",
+    "Barcode label condition",
+    "Network cable condition",
+    "Link/activity indication",
+    "Network jack or port used",
+    "Recent IT or switch changes",
+    "Middleware/LIS status",
+    "Communication path tested",
+    "Test order/result outcome",
+    "Final interface status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Calibration Fails or Will Not Complete",
+  "description": "Troubleshoots calibration failures caused by calibrator handling, reagent status, sample loading, consumables, fluidics, settings, or analyzer readiness.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-calibration-fails-or-will-not-complete.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Confirm the Calibration Failure",
+      "instructions": "Do not release patient results for an assay requiring successful calibration when calibration has failed or remains incomplete. Confirm: Which assay is affected Whether calibration starts Whether it aborts or completes unsuccessfully Whether one or multiple assays are involved The exact displayed message Expected outcome: The failed calibration and affected testing are clearly identified and held from clinical reporting as appropriate."
+    },
+    {
+      "title": "2. Verify Analyzer Readiness",
+      "instructions": "Confirm the analyzer and required module are fully initialized and not showing unresolved faults involving: Reagents Samples Fluidics Waste Temperature Consumables Probe or aspiration functions Do not proceed with calibration while another unresolved analyzer fault could invalidate the process. Expected outcome: The analyzer is otherwise ready for the calibration attempt."
+    },
+    {
+      "title": "3. Verify the Reagent Status",
+      "instructions": "With laboratory staff, confirm the appropriate reagent is: Present Recognized Available Correctly loaded Not displaying another unresolved status that prevents calibration Do not make laboratory reagent-validity decisions outside established laboratory procedures. Expected outcome: The required reagent is correctly loaded and available."
+    },
+    {
+      "title": "4. Verify Calibrator Preparation and Identification",
+      "instructions": "Have authorized laboratory personnel confirm: Correct calibrator selection Proper preparation Correct labeling Appropriate handling Correct placement Required volume is available Clinical Engineering should focus on analyzer function rather than independently validating laboratory chemistry preparation. Expected outcome: No obvious calibrator handling or loading problem is present."
+    },
+    {
+      "title": "5. Inspect Sample and Carrier Loading",
+      "instructions": "Check that the calibrator container and carrier are: Properly seated Correctly oriented Detectable by the analyzer Free of obvious physical obstruction Use a known-good carrier if a rack or carrier issue is suspected. Expected outcome: The calibrator is physically presented to the analyzer correctly."
+    },
+    {
+      "title": "6. Check Accessible Consumables and Fluid Conditions",
+      "instructions": "Verify externally accessible: Wash supplies Water or system fluid status Waste status Disposable consumables Required containers Address only conditions covered by normal technical or laboratory procedures. Expected outcome: No external supply or waste condition is preventing successful calibration."
+    },
+    {
+      "title": "7. Repeat Calibration Only After a Correctable Cause Is Addressed",
+      "instructions": "Do not repeatedly rerun calibration without identifying a reason for the prior failure. After correcting a documented external issue, have laboratory personnel initiate the appropriate calibration again and observe the process. Expected outcome: Calibration completes successfully. If it does, proceed to required QC and stop troubleshooting once laboratory acceptance is confirmed."
+    },
+    {
+      "title": "8. Determine Whether the Failure Is Assay-Specific or System-Wide",
+      "instructions": "Compare the affected calibration with other assays or modules. A single-assay failure may point toward: Reagent/calibrator issues Assay-specific conditions Multiple unrelated calibration failures may indicate: Fluidics Pipetting Environmental Analyzer readiness Service-level problems Expected outcome: The failure scope is clearly established before escalation."
+    },
+    {
+      "title": "9. Perform Final Verification",
+      "instructions": "After successful calibration: Confirm calibration is accepted by the analyzer Confirm no calibration-related alarms remain Have laboratory personnel run required QC Do not return the assay to patient testing until laboratory acceptance criteria are met Expected outcome: Calibration and subsequent required QC are accepted. Troubleshooting is complete."
+    },
+    {
+      "title": "10. Escalate Persistent Calibration Failure",
+      "instructions": "If appropriate reagent, calibrator handling, sample loading, supplies, and analyzer readiness have been verified but calibration continues to fail, stop external troubleshooting. Expected outcome: The affected assay or analyzer is withheld from patient testing and escalated for qualified evaluation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported calibration for an assay repeatedly stopped before completion on the cobas pro.",
+      "Cause": "Clinical Engineering found the calibrator tube was not fully seated in the sample carrier and was not being presented correctly for aspiration.",
+      "Resolution": "Corrected the tube seating, verified normal sample detection, and laboratory staff completed calibration and acceptable QC before returning the assay to service."
+    }
+  },
+  "helpfulDetails": [
+    "Assay affected",
+    "Exact calibration message",
+    "Whether calibration started or aborted",
+    "Reagent status",
+    "Calibrator preparation and placement",
+    "Rack or carrier condition",
+    "Wash and waste status",
+    "Other analyzer alarms",
+    "Whether other assays calibrate normally",
+    "Calibration result after correction",
+    "QC result after calibration",
+    "Final testing status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Clot, Bubble, or Sample-Volume Error Repeats",
+  "description": "Troubleshoots repeated sample-quality or volume errors caused by specimen condition, tube selection, placement, aspiration access, or recurring analyzer sampling problems.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-clot-bubble-or-sample-volume-error-repeats.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Results and Identify the Affected Specimen",
+      "instructions": "Do not repeatedly aspirate a patient specimen when the analyzer is reporting clot, bubble, or insufficient-volume conditions. Determine: Which specimen is affected Whether the problem follows one tube Whether multiple specimens are affected The exact analyzer message Whether any result was generated before the error Follow laboratory procedure for questionable or partially processed samples. Expected outcome: The affected specimen is identified and unsafe repeat processing is avoided."
+    },
+    {
+      "title": "2. Inspect the Specimen Externally",
+      "instructions": "Have laboratory personnel evaluate the specimen for: Visible clot Fibrin Foam Air bubbles Insufficient volume Abnormal separation Container damage Leakage Clinical Engineering should not independently alter or reprocess patient specimens outside laboratory procedure. Expected outcome: Obvious specimen-related causes are identified or ruled out."
+    },
+    {
+      "title": "3. Verify Tube Type and Placement",
+      "instructions": "Confirm with laboratory staff that: The appropriate specimen container is being used The tube is correctly seated The tube is not tilted Labels are not interfering with seating The sample is accessible to the analyzer's aspiration path Expected outcome: The sample container is positioned correctly and can be accessed normally."
+    },
+    {
+      "title": "4. Compare With Another Approved Sample",
+      "instructions": "Determine whether a different verified specimen or laboratory-approved test sample runs normally in the same rack or loading path. Expected outcome: Normal processing of another sample suggests the original specimen or container is the primary cause."
+    },
+    {
+      "title": "5. Inspect the Rack or Carrier",
+      "instructions": "Check for: Cracks Deformation Contamination Poor tube retention Incorrect orientation Replace a suspect rack with a known-good compatible rack if appropriate. Expected outcome: The carrier maintains the sample in the correct aspiration position."
+    },
+    {
+      "title": "6. Check for Repeated Errors Across Multiple Samples",
+      "instructions": "If multiple unrelated specimens show similar errors, verify: Probe/aspiration alarms Wash and fluid status Waste status Accessible probe cleanliness Analyzer readiness A broader pattern makes a single specimen problem less likely. Expected outcome: The issue is correctly classified as specimen-specific or analyzer-wide."
+    },
+    {
+      "title": "7. Inspect Accessible Sampling Areas",
+      "instructions": "With the analyzer safely stopped according to normal procedures, inspect visible sampling areas for: Dried specimen material Debris Evidence of a spill Obvious probe damage Use only approved cleaning procedures. Expected outcome: Accessible sampling areas are clean and visibly intact."
+    },
+    {
+      "title": "8. Verify Corrected Operation",
+      "instructions": "After the laboratory has corrected or replaced the specimen as appropriate: Confirm normal sample detection Confirm aspiration occurs without repeat errors Verify the analyzer completes expected processing Have laboratory staff determine whether repeat or confirmatory testing is required Expected outcome: The replacement or corrected sample processes normally. Troubleshooting can stop when consistent aspiration is demonstrated."
+    },
+    {
+      "title": "9. Escalate Analyzer-Wide Repeated Errors",
+      "instructions": "If properly prepared samples with sufficient volume repeatedly trigger the same type of error, stop external troubleshooting. Do not adjust internal pressure, sensing, aspiration, or probe calibration systems without authorized procedures. Expected outcome: A potential analyzer sampling or sensing problem is escalated."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported repeated low-volume errors on one specimen despite multiple loading attempts.",
+      "Cause": "Clinical Engineering found the tube contained insufficient accessible sample volume for reliable aspiration.",
+      "Resolution": "Laboratory staff provided an appropriate replacement specimen, Clinical Engineering verified normal sample handling, and the analyzer completed processing without repeat aspiration errors."
+    }
+  },
+  "helpfulDetails": [
+    "Exact clot, bubble, or volume message",
+    "Specimen type",
+    "Tube condition",
+    "Visible clot, fibrin, foam, or bubbles",
+    "Approximate available sample volume",
+    "Tube seating and label placement",
+    "Rack condition",
+    "Whether other samples process normally",
+    "Probe or fluidics alarms",
+    "Cleaning performed",
+    "Result after replacement specimen",
+    "Final analyzer status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Probe, Pipettor, or Aspiration Error Occurs",
+  "description": "Troubleshoots probe, pipetting, and aspiration errors caused by sample condition, positioning, consumables, obstruction, contamination, or fluid-supply problems.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-probe-pipettor-or-aspiration-error-occurs.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Stop Repeated Aspiration Attempts",
+      "instructions": "Do not continue patient testing when reliable sample or reagent aspiration cannot be assured. Identify: Sample or reagent involved Probe or module identified by the analyzer Whether the fault is isolated or repeated Whether an unusual sound or collision occurred If there is evidence of a probe collision, bent component, spill, or fluid leak, stop operation and remove the affected module from service. Expected outcome: Testing is safely paused and the exact aspiration-related condition is identified."
+    },
+    {
+      "title": "2. Inspect the Sample or Reagent Container",
+      "instructions": "Check for: Insufficient accessible volume Incorrect tube or container placement Excessive foam Visible bubbles Clot or particulate material Damaged container Improper cap removal where applicable to the approved workflow Expected outcome: The fluid being aspirated is physically suitable for normal analyzer access."
+    },
+    {
+      "title": "3. Verify Rack and Container Seating",
+      "instructions": "Confirm: Tube is fully seated Carrier is correctly positioned Container height and placement are consistent with the approved workflow Nothing is interfering with the normal sampling path Use a known-good carrier when appropriate. Expected outcome: The probe has an unobstructed path to a correctly positioned container."
+    },
+    {
+      "title": "4. Inspect Accessible Probe Areas",
+      "instructions": "With the analyzer safely stopped according to normal procedures, visually inspect accessible probe areas for: Visible residue Dried material Obvious contamination Signs of contact with a tube or rack Apparent bending or damage Do not manually straighten, realign, or disassemble a damaged probe unless specifically authorized and trained under approved service procedures. Expected outcome: No obvious external damage or contamination is present. Visible damage requires removal from service and escalation."
+    },
+    {
+      "title": "5. Check Wash and System Fluid Conditions",
+      "instructions": "Verify externally accessible: Wash solution availability System fluid availability Waste capacity Tubing or containers accessible to normal service inspection Any active fluidics alarms Correct only approved external conditions. Expected outcome: Required external fluid supplies and waste pathways are available."
+    },
+    {
+      "title": "6. Determine Whether the Problem Follows One Sample",
+      "instructions": "When appropriate, compare the affected specimen with a verified test sample or laboratory-approved known-good specimen presentation. If only one specimen repeatedly fails, have laboratory personnel evaluate: Clotting Viscosity Foam Volume Container suitability Expected outcome: Sample-specific conditions are separated from analyzer-wide aspiration problems."
+    },
+    {
+      "title": "7. Verify Operation After Correcting the External Cause",
+      "instructions": "After correcting a legitimate external problem, run the analyzer's normal approved workflow. Observe for: Smooth probe movement Successful aspiration No repeat collision or aspiration message Normal sample progression Expected outcome: Aspiration completes without repeat errors. If normal operation is restored, proceed to final verification."
+    },
+    {
+      "title": "8. Perform Final Functional Verification",
+      "instructions": "Confirm: No active aspiration alarms Sample handling is normal No leakage is present Required calibration or QC is completed if the event could affect analytical performance Expected outcome: Reliable pipetting and aspiration are demonstrated and laboratory acceptance requirements are met. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate Repeated or Mechanical Errors",
+      "instructions": "Stop troubleshooting if: A probe appears bent or damaged A collision repeats Aspiration failures occur with known-good samples Fluid leakage is present Multiple unrelated specimens fail Normal external supplies are verified but the error remains Expected outcome: Potential internal mechanical or fluidic problems are escalated before further damage or unreliable testing occurs."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported repeated aspiration errors when the cobas pro attempted to process specimens from one rack.",
+      "Cause": "Clinical Engineering found one sample tube was not fully seated and was positioned abnormally in the rack.",
+      "Resolution": "Corrected the tube position, inspected the accessible probe area for damage, verified normal aspiration, and confirmed acceptable laboratory QC before return to service."
+    }
+  },
+  "helpfulDetails": [
+    "Exact aspiration or probe message",
+    "Sample, reagent, or module involved",
+    "Tube or container condition",
+    "Rack seating",
+    "Sample volume",
+    "Bubbles, foam, clot, or debris",
+    "Probe appearance",
+    "Collision or unusual sound",
+    "Wash and waste status",
+    "Whether known-good samples run normally",
+    "Leakage observed",
+    "Verification and QC results",
+    "Final analyzer status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Quality-Control Results Are Out of Range",
+  "description": "Troubleshoots out-of-range QC by separating control-material, reagent, calibration, handling, environmental, and analyzer-performance causes before service escalation.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-quality-control-results-are-out-of-range.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Results and Confirm the QC Failure",
+      "instructions": "Do not release affected patient results contrary to laboratory policy when QC is unacceptable. Confirm: Assay involved QC level involved Whether one or multiple levels fail Whether the failure is new or recurring Whether multiple assays are affected The direction and pattern of the QC shift Clinical Engineering should preserve the distinction between analyzer troubleshooting and the laboratory's clinical interpretation of QC. Expected outcome: Affected testing is identified and appropriately held while the failure is investigated."
+    },
+    {
+      "title": "2. Confirm Analyzer Status",
+      "instructions": "Check for active analyzer faults involving: Reagent recognition Calibration Pipetting Aspiration Fluidics Wash systems Temperature Consumables Resolve any legitimate analyzer readiness fault before interpreting repeated QC attempts. Expected outcome: No unresolved analyzer alarm explains the QC failure."
+    },
+    {
+      "title": "3. Have Laboratory Staff Verify QC Material",
+      "instructions": "Authorized laboratory personnel should confirm: Correct QC material Correct level Proper preparation Appropriate storage and handling Correct identification Sufficient volume No obvious contamination Do not independently override laboratory QC handling requirements. Expected outcome: QC material handling is verified before analyzer failure is suspected."
+    },
+    {
+      "title": "4. Verify Reagent and Calibration Status",
+      "instructions": "Confirm the affected assay's reagent is recognized and that required calibration status is acceptable. Look for recent: Reagent replacement Lot change Calibration Maintenance Extended analyzer downtime Document these factors for laboratory review. Expected outcome: Reagent and calibration conditions are known and consistent with normal testing."
+    },
+    {
+      "title": "5. Check Sample Presentation and Aspiration Conditions",
+      "instructions": "Inspect the QC tube and carrier for: Correct seating Adequate accessible volume Bubbles or foam Obvious clot or debris Damaged carrier Improper placement Expected outcome: QC material can be aspirated normally without an obvious physical sampling problem."
+    },
+    {
+      "title": "6. Repeat QC Only After Appropriate Review",
+      "instructions": "If laboratory policy supports repeating QC, use freshly prepared or verified QC material when appropriate and avoid repeated reruns without investigating the underlying cause. Compare whether the result: Returns to acceptable range Remains consistently shifted Varies widely between repeats Expected outcome: A handling-related or transient issue is either corrected or ruled out."
+    },
+    {
+      "title": "7. Determine Whether the Pattern Is Assay-Specific",
+      "instructions": "Compare unaffected assays and other QC levels. A single-assay problem may involve assay-specific: Reagent Calibration Control material Broad QC shifts may suggest: Pipetting Fluidics Temperature Wash performance Environmental conditions Common analyzer functions Expected outcome: The scope of the QC issue is defined without claiming a failed internal component."
+    },
+    {
+      "title": "8. Inspect External Environmental and Supply Conditions",
+      "instructions": "Verify: Normal analyzer operating environment No obvious temperature excursion in the room No active leakage Adequate wash or system fluid supply Waste handling is normal No recent facility event affecting the analyzer Expected outcome: No external environmental or supply condition explains the abnormal QC."
+    },
+    {
+      "title": "9. Perform Final Verification",
+      "instructions": "When the identified cause has been corrected: Confirm analyzer readiness Have laboratory staff repeat required QC Confirm results meet laboratory acceptance criteria Verify no unresolved analyzer faults remain Expected outcome: Required QC is acceptable and the laboratory authorizes return to patient testing. Troubleshooting is complete."
+    },
+    {
+      "title": "10. Escalate Persistent QC Failure",
+      "instructions": "If QC remains unacceptable after verified controls, reagent status, calibration, sample presentation, supplies, and environment are checked, stop external troubleshooting. Expected outcome: Affected testing remains suspended and the analyzer is escalated for qualified evaluation."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported QC for one chemistry assay shifted out of the laboratory's acceptable range.",
+      "Cause": "Clinical Engineering and laboratory staff found the QC tube contained visible bubbles that interfered with consistent aspiration.",
+      "Resolution": "Laboratory staff prepared a verified replacement QC sample, Clinical Engineering confirmed normal aspiration, and repeat QC met laboratory acceptance criteria."
+    }
+  },
+  "helpfulDetails": [
+    "Assay and QC level affected",
+    "Direction or pattern of QC shift",
+    "Number of failed QC runs",
+    "Reagent and calibration status",
+    "Recent lot or reagent change",
+    "QC tube condition",
+    "Bubble, foam, clot, or volume observations",
+    "Other assays affected",
+    "Active analyzer alarms",
+    "Environmental or supply conditions",
+    "QC result after correction",
+    "Final testing status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Reagent Is Not Recognized or Inventory Is Incorrect",
+  "description": "Troubleshoots unrecognized reagents and incorrect inventory caused by loading, identification, container condition, positioning, workflow status, or communication errors.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-reagent-is-not-recognized-or-inventory-is-incorrect.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Confirm the Reagent Problem",
+      "instructions": "Do not report patient results from an assay when required reagent identity, availability, or inventory status is uncertain. Determine whether: One reagent is affected One assay is affected Multiple reagents are affected Inventory quantity is wrong The reagent is physically present but shown as unavailable Recognition failed after replacement or loading Record the exact analyzer message and reagent status. Expected outcome: The specific reagent-recognition or inventory discrepancy is defined and affected testing is withheld."
+    },
+    {
+      "title": "2. Verify the Correct Reagent Was Loaded",
+      "instructions": "Confirm with laboratory staff that the reagent: Is intended for the required assay Is appropriate for the analyzer workflow Has not been accidentally exchanged with another container Was loaded in the expected position and orientation Clinical Engineering should not make reagent-selection decisions that belong to laboratory procedure. Expected outcome: The correct reagent is confirmed to be loaded in the appropriate location."
+    },
+    {
+      "title": "3. Inspect the Reagent Container",
+      "instructions": "Check the affected reagent container externally for: Damage Leakage Deformation Contamination Improper seating Obstruction around identification features Do not manipulate sealed reagent components beyond approved handling. Expected outcome: The container is intact and seated normally. If reseating an otherwise valid container restores recognition, troubleshooting can stop after verification."
+    },
+    {
+      "title": "4. Check Reagent Identification Surfaces",
+      "instructions": "Inspect accessible barcode, RFID, label, or other identification areas used by the laboratory workflow for: Damage Contamination Moisture Obstruction Poor positioning Do not alter reagent identification information. Expected outcome: The reagent's identification features are unobstructed and intact."
+    },
+    {
+      "title": "5. Compare With a Known-Good Reagent",
+      "instructions": "When laboratory policy permits, have authorized laboratory staff load a verified compatible reagent or reagent pack. Determine whether: The replacement is recognized normally The problem follows the original reagent Multiple valid reagents fail in the same location Expected outcome: The problem is isolated to the original reagent/container or to the analyzer's recognition path."
+    },
+    {
+      "title": "6. Verify Inventory Updates After Normal Loading",
+      "instructions": "Allow the analyzer to complete its normal reagent loading and inventory process. Observe whether: The reagent appears in inventory The correct status is displayed The quantity or availability updates Duplicate or stale entries remain Avoid unauthorized inventory edits or service-level configuration changes. Expected outcome: Analyzer inventory matches the physically loaded reagent status."
+    },
+    {
+      "title": "7. Check for Widespread Recognition Problems",
+      "instructions": "Determine whether other reagent positions are recognized normally. If many reagents become unrecognized simultaneously, consider: Recent analyzer restart Communication fault Module not initialized Identification subsystem issue Recent service or configuration event Expected outcome: The scope is established as isolated or system-wide."
+    },
+    {
+      "title": "8. Perform Final Verification",
+      "instructions": "After correction: Confirm reagent recognition Confirm appropriate inventory status Confirm affected assay becomes available when all laboratory conditions are met Have laboratory staff perform required calibration or QC before releasing patient results when appropriate Expected outcome: Reagent recognition and inventory are correct and laboratory verification is satisfactory. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate if Recognition Remains Unreliable",
+      "instructions": "If known-good reagents are not reliably recognized after loading, seating, identification surfaces, and normal inventory processing are checked, stop external troubleshooting. Expected outcome: The analyzer is prevented from producing results dependent on uncertain reagent identification and the issue is escalated."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported a newly loaded reagent was physically present but remained unavailable in the cobas pro inventory.",
+      "Cause": "Clinical Engineering found the reagent container was not fully seated in its loading position.",
+      "Resolution": "Reseated the container, verified correct analyzer recognition and inventory update, and had laboratory staff complete required assay verification before reuse."
+    }
+  },
+  "helpfulDetails": [
+    "Reagent or assay affected",
+    "Exact displayed status",
+    "Whether one or multiple reagents were affected",
+    "Container condition",
+    "Identification surface condition",
+    "Loading position",
+    "Known-good reagent comparison",
+    "Inventory status before and after correction",
+    "Recent analyzer restart or service",
+    "Calibration or QC required afterward",
+    "Final analyzer status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Result Is Delayed, Missing, or Inconsistent",
+  "description": "Troubleshoots delayed, missing, or inconsistent results caused by sample status, analyzer holds, QC, calibration, communication, workflow, or repeat-processing conditions.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-result-is-delayed-missing-or-inconsistent.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Care and Define the Result Problem",
+      "instructions": "Determine whether the result is: Still processing Held Missing from the analyzer Present on the analyzer but missing from the LIS Repeatedly inconsistent Associated with an analyzer error Notify laboratory personnel of any potentially significant reporting delay and follow established critical-result or downtime procedures. Do not release or reconstruct a result based on assumption. Expected outcome: The missing or inconsistent result is traced to a specific specimen, assay, and workflow stage."
+    },
+    {
+      "title": "2. Verify Positive Specimen Identification",
+      "instructions": "Confirm: Patient/sample identifier Tube barcode Rack position Requested assay Specimen currently loaded Whether the sample was rerun or moved Resolve identification discrepancies before further troubleshooting. Expected outcome: The specimen being investigated is unquestionably matched to the correct order and patient record."
+    },
+    {
+      "title": "3. Check Analyzer Sample Status",
+      "instructions": "Review normal analyzer workflow information to determine whether the specimen is: Waiting In process Completed Held Rejected Requiring repeat testing Associated with an error Record any message rather than repeatedly resubmitting the sample. Expected outcome: The analyzer's current handling state is known."
+    },
+    {
+      "title": "4. Check Reagent, Calibration, and QC Status",
+      "instructions": "Determine whether the assay is delayed or withheld because of: Reagent unavailable Reagent not recognized Calibration required or failed QC not acceptable Another analyzer readiness condition Clinical Engineering should not override laboratory controls designed to prevent release of potentially invalid results. Expected outcome: Any legitimate analytical hold is identified."
+    },
+    {
+      "title": "5. Inspect the Specimen and Sample Handling",
+      "instructions": "Check with laboratory staff for: Insufficient volume Clot Fibrin Bubble or foam Damaged tube Incorrect placement Aspiration error Review whether the analyzer logged a sampling-related fault. Expected outcome: Sample-specific causes of delay or inconsistency are identified or ruled out."
+    },
+    {
+      "title": "6. Determine Whether the Result Exists Locally",
+      "instructions": "If the result is missing from the LIS, verify whether it is visible and finalized at the analyzer. This separates: Analytical failure Result-processing delay Interface transmission failure Do not manually recreate or transmit a result unless authorized by laboratory procedure. Expected outcome: The problem is localized to analysis, analyzer data handling, or downstream communication."
+    },
+    {
+      "title": "7. Check LIS and Network Communication",
+      "instructions": "If the result is complete on the analyzer but absent downstream: Verify interface status Check accessible network connections Determine whether other results are transmitting Coordinate with LIS, middleware, or IT support Review queued or failed transmissions using authorized functions Expected outcome: The communication pathway is confirmed or the point of failure is identified."
+    },
+    {
+      "title": "8. Evaluate Inconsistent Results Carefully",
+      "instructions": "For inconsistent results, have laboratory staff determine whether repeat testing is clinically and procedurally appropriate. Clinical Engineering should investigate associated: Aspiration errors Calibration status QC performance Reagent status Fluidics faults Analyzer alarms Do not conclude that the first or second result is correct based solely on which appears more plausible. Expected outcome: Analyzer-related conditions that could affect consistency are identified without independently interpreting clinical validity."
+    },
+    {
+      "title": "9. Verify Complete Recovery",
+      "instructions": "After correcting the identified cause: Confirm the specimen processes normally Confirm the expected result is generated Confirm the result reaches the intended LIS destination when applicable Confirm required QC remains acceptable Have laboratory staff verify the result workflow before normal testing resumes Expected outcome: Results are produced, associated, and transmitted consistently. Troubleshooting is complete."
+    },
+    {
+      "title": "10. Escalate Unresolved or Unreliable Results",
+      "instructions": "Stop external troubleshooting if: Results remain inconsistent Samples repeatedly disappear from workflow Results cannot be reliably associated with specimens Analytical output remains unavailable despite normal external conditions Analyzer and LIS records disagree without a clear communication cause Expected outcome: Potential result-integrity problems are prevented from affecting patient reporting and are escalated."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported completed cobas pro results were visible on the analyzer but were not appearing in the LIS.",
+      "Cause": "Clinical Engineering found the analyzer's external network connection loose, interrupting result transmission while local analysis continued normally.",
+      "Resolution": "Secured the network connection, verified interface restoration, and confirmed an approved test result transmitted successfully to the LIS before normal reporting resumed."
+    }
+  },
+  "helpfulDetails": [
+    "Specimen and assay affected",
+    "Whether result is delayed, missing, or inconsistent",
+    "Analyzer sample status",
+    "Reagent status",
+    "Calibration status",
+    "QC status",
+    "Sample condition",
+    "Aspiration or fluidics alarms",
+    "Whether result exists locally",
+    "LIS/interface status",
+    "Network condition",
+    "Repeat-processing behavior",
+    "Result transmission after correction",
+    "Final analyzer status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Sample, Rack, or Carrier Is Not Detected",
+  "description": "Troubleshoots missing sample, rack, or carrier detection caused by positioning, identification, loading, obstruction, contamination, or external transport-path conditions.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-sample-rack-or-carrier-is-not-detected.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Confirm the Failure",
+      "instructions": "Do not repeatedly process a specimen when sample identity or carrier tracking is uncertain. Remove affected specimens from the active workflow and follow laboratory procedures for maintaining positive sample identification. Confirm whether the problem affects: One sample One rack or carrier Several racks All sample loading A specific loading position Record any displayed message and whether the analyzer physically accepts the carrier but fails to recognize it. Expected outcome: The affected sample-handling scope is clearly identified without risking specimen misidentification."
+    },
+    {
+      "title": "2. Verify the Correct Rack, Carrier, and Sample Placement",
+      "instructions": "Confirm that the rack or carrier being used is appropriate for the analyzer workflow and is loaded in the correct orientation. Check that: Tubes are fully seated Nothing protrudes or interferes with movement Rack identification features are unobstructed The carrier is not visibly bent, cracked, or damaged The sample is positioned according to the laboratory's approved workflow Expected outcome: The sample and carrier are correctly positioned and mechanically compatible. If correcting placement restores detection, troubleshooting can stop after verification."
+    },
+    {
+      "title": "3. Inspect the Sample and Rack Identification Area",
+      "instructions": "Check sample labels and rack identification surfaces for: Wrinkles Peeling labels Excessive overlap Smudging Condensation Contamination Damaged identifiers Ensure labels do not interfere with tube seating or movement. Expected outcome: Identification surfaces are clean, intact, readable, and appropriately positioned."
+    },
+    {
+      "title": "4. Inspect the Accessible Loading Path",
+      "instructions": "With the analyzer in a safe state, inspect externally accessible loading and transport areas for: Misloaded racks Foreign material Caps or debris Spilled specimen material Obvious mechanical obstruction Carriers positioned outside their normal track Do not reach into moving mechanisms or bypass guards or interlocks. Expected outcome: No visible obstruction prevents rack entry, movement, or sensing."
+    },
+    {
+      "title": "5. Try a Known-Good Rack or Carrier",
+      "instructions": "If laboratory procedure permits, transfer an appropriate nonpatient test setup or known-good specimen container to a known-good compatible rack or carrier. Observe whether the analyzer detects it normally. Expected outcome: A known-good carrier is detected normally. If replacing a damaged or contaminated rack resolves the issue, troubleshooting can stop after final verification."
+    },
+    {
+      "title": "6. Determine Whether the Problem Follows the Sample or the Position",
+      "instructions": "Compare: The affected sample in another approved carrier A known-good sample or carrier in the affected loading location Do not compromise specimen identity while performing comparisons. Expected outcome: The fault is isolated to the sample/label, carrier, or analyzer loading path rather than being assumed to be an internal failure."
+    },
+    {
+      "title": "7. Check Accessible Sensors and Reading Areas for Contamination",
+      "instructions": "Inspect only externally accessible areas associated with sample or rack detection. Follow approved cleaning procedures for visible contamination. Do not open protected covers or adjust sensor alignment. Expected outcome: Accessible detection areas are clean and unobstructed. If cleaning restores consistent detection, proceed to final verification."
+    },
+    {
+      "title": "8. Verify Normal Transport and Detection",
+      "instructions": "Run an approved test carrier or laboratory-defined verification sequence and observe: Carrier acceptance Correct movement Correct identification No repeated detection alarm Correct sample position recognition Expected outcome: Sample and carrier detection operate normally throughout the expected handling path. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate Repeated Detection Failures",
+      "instructions": "If known-good samples and carriers are not reliably detected after external conditions are ruled out, stop troubleshooting. Persistent failures may involve transport sensing, identification hardware, positioning mechanisms, or analyzer control systems that require qualified service. Expected outcome: Unreliable sample tracking is removed from clinical use and escalated."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported one sample rack repeatedly entered the cobas pro but was not recognized.",
+      "Cause": "Clinical Engineering found the affected rack visibly damaged and not seating correctly in the loading path.",
+      "Resolution": "Replaced the rack with a verified compatible rack, confirmed normal detection and transport, and returned the analyzer for laboratory verification."
+    }
+  },
+  "helpfulDetails": [
+    "Samples or racks affected",
+    "Whether the failure follows one rack",
+    "Tube and label condition",
+    "Rack orientation",
+    "Loading position involved",
+    "Visible obstruction or contamination",
+    "Known-good rack test",
+    "Detection behavior before and after correction",
+    "Any displayed message",
+    "Final sample-tracking status"
+  ]
+},
+{
+  "title": "Roche cobas pro Clinical Chemistry Analyzer - Wash, Waste, or Fluidics System Fault Occurs",
+  "description": "Troubleshoots wash, waste, and fluidics faults caused by supply depletion, full waste containers, tubing issues, leaks, blocked drainage, or external utilities.",
+  "assetType": "Clinical Chemistry Analyzer",
+  "manufacturer": "Roche",
+  "model": "cobas pro",
+  "url": "guides/roche-cobas-pro-wash-waste-or-fluidics-system-fault-occurs.html",
+  "dateAdded": "2026-10-02",
+  "steps": [
+    {
+      "title": "1. Protect Patient Testing and Assess for Leakage",
+      "instructions": "Pause affected testing immediately when fluid handling is unreliable. Inspect around the analyzer for: Liquid on the floor Chemical leakage Overflow Unusual odor Wet tubing or connections Evidence of uncontrolled fluid discharge If active leakage creates an electrical, chemical, slip, or contamination hazard, isolate the analyzer and remove it from service. Expected outcome: Immediate hazards are controlled and affected testing is redirected."
+    },
+    {
+      "title": "2. Confirm the Exact Fluidics Fault",
+      "instructions": "Record: Exact analyzer message Whether the problem involves wash supply, system water, drain, waste, or another fluid pathway Whether it occurred during startup, maintenance, or testing Whether the fault clears and returns Expected outcome: The affected external fluid function is identified before components are disturbed."
+    },
+    {
+      "title": "3. Check Accessible Supply Containers",
+      "instructions": "Verify applicable external supplies are: Present Adequately filled Correctly connected Correctly seated Not visibly damaged or leaking Confirm caps, pickup connections, and externally accessible tubing are positioned normally. Expected outcome: Required fluids are available to the analyzer. If correcting an empty or poorly seated supply resolves the fault, proceed to verification."
+    },
+    {
+      "title": "4. Check Waste Containers and Drainage",
+      "instructions": "Inspect accessible waste handling for: Full containers Improperly seated containers Kinked external drain tubing Blocked or disconnected accessible drain connections Evidence of backup or overflow Use proper PPE and follow laboratory biohazard procedures. Expected outcome: Waste can leave the analyzer normally without leakage or backup."
+    },
+    {
+      "title": "5. Inspect Accessible Tubing and Connections",
+      "instructions": "Check only externally accessible fluid lines for: Kinks Compression Loose fittings Disconnection Visible leaks Pinching from nearby equipment Do not open protected internal fluidics assemblies. Expected outcome: Accessible tubing has a clear physical path and secure connections."
+    },
+    {
+      "title": "6. Check Facility Utilities When Applicable",
+      "instructions": "If the analyzer depends on facility-provided water, drain, power, or other infrastructure, verify that the corresponding service is available. Consider recent: Plumbing work Utility interruption Facilities maintenance Analyzer relocation Water shutdown Drain backup Expected outcome: Required facility utilities are available and functioning."
+    },
+    {
+      "title": "7. Use the Normal Approved Recovery Sequence",
+      "instructions": "After correcting the external cause, allow the analyzer to perform only its normal approved prime, wash, startup, or recovery process. Watch for: Repeat alarms Leakage Abnormal fluid movement Failure to complete the sequence Expected outcome: The analyzer completes its normal fluidics recovery without alarms or leaks."
+    },
+    {
+      "title": "8. Perform Final Verification",
+      "instructions": "Confirm: No active wash or waste alarms No visible leakage Supplies and waste levels update appropriately Analyzer reaches ready status Required maintenance, calibration, or QC checks are completed before patient testing Expected outcome: Fluid handling is stable and required laboratory verification is successful. Troubleshooting is complete."
+    },
+    {
+      "title": "9. Escalate Persistent Fluidics Faults",
+      "instructions": "Stop external troubleshooting if: Leakage persists Known-good supplies do not restore operation Drainage repeatedly backs up Internal tubing or components appear involved Pumps, valves, pressure systems, or internal sensors are suspected Expected outcome: The analyzer remains out of clinical service until qualified repair is completed."
+    }
+  ],
+  "documentation": {
+    "CCR": {
+      "Complaint": "Laboratory staff reported the cobas pro stopped testing and displayed a waste-related fault.",
+      "Cause": "Clinical Engineering found the external waste container full and not allowing normal waste handling.",
+      "Resolution": "Laboratory staff emptied and correctly reseated the waste container using required PPE, Clinical Engineering verified normal fluidics operation with no leakage, and laboratory QC was acceptable."
+    }
+  },
+  "helpfulDetails": [
+    "Exact fluidics message",
+    "Supply involved",
+    "Fluid levels",
+    "Waste level",
+    "External tubing condition",
+    "Drain condition",
+    "Leakage location",
+    "Facility utility status",
+    "Recent plumbing or maintenance activity",
+    "Recovery sequence result",
+    "Calibration or QC performed",
+    "Final analyzer status"
+  ]
 }
 ]
