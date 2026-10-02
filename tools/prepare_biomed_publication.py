@@ -159,6 +159,8 @@ RELATED = {
     "how-flat-panel-x-ray-detectors-turn-x-rays-into-images": ["what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals", "sensors-and-transducers-basics", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-mri-gradient-coils-create-an-image": ["how-ct-gantry-rotation-and-data-acquisition-work", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "service-mode-and-built-in-diagnostics-what-to-trust"],
     "how-pet-detectors-turn-gamma-rays-into-an-image": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-medical-device-cooling-systems-work"],
+    "how-fluoroscopy-automatic-exposure-rate-control-works": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-digital-mammography-creates-and-processes-an-image": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "how-to-compare-your-test-result-to-manufacturer-specification", "how-ct-gantry-rotation-and-data-acquisition-work"],
 }
 
 ARTICLE_CONFIG = {
@@ -958,6 +960,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "PET Imaging",
         "cardNote": "Coincidence detection, scintillators, timing, calibration, and reconstruction",
+    },
+    "how-fluoroscopy-automatic-exposure-rate-control-works": {
+        "description": "A practical explanation of how fluoroscopy systems use detector feedback to adjust kVp, mA, pulse width, pulse rate, and filtration as imaging conditions change.",
+        "category": "How Medical Equipment Works",
+        "badge": "Fluoroscopy",
+        "cardNote": "Exposure feedback, detector signal, dose control, calibration, and troubleshooting",
+    },
+    "how-digital-mammography-creates-and-processes-an-image": {
+        "description": "A practical explanation of how compression, automatic exposure control, specialized X-ray spectra, digital detectors, calibration, processing, and tomosynthesis create mammography images.",
+        "category": "How Medical Equipment Works",
+        "badge": "Mammography",
+        "cardNote": "Compression, exposure control, detector calibration, processing, and tomosynthesis",
     },
 }
 

@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Digital Mammography Creates and Processes an Image | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how compression, automatic exposure control, specialized X-ray spectra, digital detectors, calibration, processing, and tomosynthesis create mammography images.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-digital-mammography-creates-and-processes-an-image.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How Digital Mammography Creates and Processes an Image</h1>
+  <p>How breast compression, a specialized X-ray spectrum, a high-resolution detector, precise automatic exposure control, and image processing all work together to produce a mammogram — and why mammography problems can be far subtler than a simple “X-ray image looks bad”</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Mammography uses the same basic physical phenomenon as ordinary radiography:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Why mammography is different from general radiography</li>
+      <li>Breast compression</li>
+      <li>Compression force</li>
+      <li>Breast thickness measurement</li>
+      <li>X-ray tube design</li>
+      <li>Target materials</li>
+      <li>Filtration</li>
+      <li>Low-energy X-ray spectra</li>
+      <li>Automatic exposure control</li>
+      <li>Detector design</li>
+      <li>Pixel size</li>
+      <li>Spatial resolution</li>
+      <li>Scatter</li>
+      <li>Anti-scatter grids</li>
+      <li>Image processing</li>
+      <li>Exposure indicators</li>
+      <li>Detector calibration</li>
+      <li>Flat-field correction</li>
+      <li>Tomosynthesis basics</li>
+      <li>Why mechanical and imaging faults are connected</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A simplified digital mammography chain looks like:</p>
+    <p><strong>Breast Is Positioned and Compressed</strong></p>
+    <p>↓</p>
+    <p><strong>System Measures / Estimates Breast Thickness</strong></p>
+    <p>↓</p>
+    <p><strong>X-Ray Spectrum and Exposure Technique Are Selected</strong></p>
+    <p>↓</p>
+    <p><strong>X-Rays Pass Through Breast Tissue</strong></p>
+    <p>↓</p>
+    <p><strong>Detector Measures the Remaining Radiation</strong></p>
+    <p>↓</p>
+    <p><strong>Detector Data Is Corrected and Digitized</strong></p>
+    <p>↓</p>
+    <p><strong>Image Processing Enhances Clinically Useful Detail</strong></p>
+    <p>↓</p>
+    <p><strong>Mammographic Image Is Displayed</strong></p>
+    <p>Every part of this chain matters.</p>
+  </section>
+
+  <section class="content-box" id="why-mammography-needs-specialization">
+    <h3>Why Mammography Needs Specialization</h3>
+    <p>Most of the breast is composed of soft tissues with relatively small differences in X-ray attenuation.</p>
+    <p>Those tissues are harder to distinguish than:</p>
+    <p>Bone vs air.</p>
+  </section>
+
+  <section class="content-box" id="general-radiography-has-strong-natural-contrast">
+    <h3>General Radiography Has Strong Natural Contrast</h3>
+    <p>A chest X-ray contains:</p>
+    <ul>
+      <li>Air-filled lung</li>
+      <li>Soft tissue</li>
+      <li>Bone</li>
+    </ul>
+    <p>These structures attenuate X-rays very differently.</p>
+  </section>
+
+  <section class="content-box" id="mammography-is-more-subtle">
+    <h3>Mammography Is More Subtle</h3>
+    <p>Breast tissues may have much smaller attenuation differences.</p>
+    <p>The system therefore needs excellent:</p>
+    <ul>
+      <li>Contrast</li>
+      <li>Noise performance</li>
+      <li>Spatial resolution</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="microcalcifications">
+    <h3>Microcalcifications</h3>
+    <p>Mammography may need to show extremely small calcifications.</p>
+    <p>That creates strict demands on:</p>
+    <ul>
+      <li>Detector resolution</li>
+      <li>Motion control</li>
+      <li>Geometry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="breast-compression">
+    <h3>Breast Compression</h3>
+    <p>Compression is one of the most recognizable parts of mammography.</p>
+    <p>It can be uncomfortable.</p>
+    <p>But it serves several important imaging purposes.</p>
+  </section>
+
+  <section class="content-box" id="compression-reduces-tissue-thickness">
+    <h3>Compression Reduces Tissue Thickness</h3>
+    <p>Thinner tissue means:</p>
+    <ul>
+      <li>Less attenuation</li>
+      <li>Less scatter</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="less-scatter">
+    <h3>Less Scatter</h3>
+    <p>Scatter reduces image contrast.</p>
+    <p>Compressing the breast decreases the volume of tissue in the X-ray path and can reduce scatter.</p>
+  </section>
+
+  <section class="content-box" id="compression-reduces-motion">
+    <h3>Compression Reduces Motion</h3>
+    <p>Holding tissue firmly helps prevent motion during exposure.</p>
+    <p>This improves sharpness.</p>
+  </section>
+
+  <section class="content-box" id="compression-spreads-tissue">
+    <h3>Compression Spreads Tissue</h3>
+    <p>Compression separates overlapping structures.</p>
+    <p>That can make abnormalities easier to visualize.</p>
+  </section>
+
+  <section class="content-box" id="compression-can-reduce-radiation-requirement">
+    <h3>Compression Can Reduce Radiation Requirement</h3>
+    <p>A thinner compressed breast generally requires less radiation to obtain the desired detector exposure than the same tissue at greater thickness.</p>
+  </section>
+
+  <section class="content-box" id="compression-is-part-of-the-imaging-system">
+    <h3>Compression Is Part of the Imaging System</h3>
+    <p>It is not just a positioning accessory.</p>
+    <p>Its performance affects:</p>
+    <ul>
+      <li>Image quality</li>
+      <li>Exposure</li>
+      <li>Patient experience</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="compression-paddle">
+    <h3>Compression Paddle</h3>
+    <p>The paddle presses the breast against the detector support surface.</p>
+    <p>Different paddles may be used for:</p>
+    <ul>
+      <li>Standard imaging</li>
+      <li>Spot compression</li>
+      <li>Magnification</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="compression-force">
+    <h3>Compression Force</h3>
+    <p>The system measures or controls the applied compression force.</p>
+  </section>
+
+  <section class="content-box" id="force-sensor">
+    <h3>Force Sensor</h3>
+    <p>Depending on design, force may be measured using:</p>
+    <ul>
+      <li>Load cell</li>
+      <li>Force sensor</li>
+      <li>Motor current relationship</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-force-accuracy-matters">
+    <h3>Why Force Accuracy Matters</h3>
+    <p>If the displayed compression force is wrong:</p>
+    <p>The technologist may believe the patient is receiving one amount of compression when the actual force is different.</p>
+  </section>
+
+  <section class="content-box" id="too-little-compression">
+    <h3>Too Little Compression</h3>
+    <p>May result in:</p>
+    <ul>
+      <li>More tissue thickness</li>
+      <li>More motion</li>
+      <li>More scatter</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="excessive-compression">
+    <h3>Excessive Compression</h3>
+    <p>Can create:</p>
+    <ul>
+      <li>Patient discomfort</li>
+      <li>Safety concern</li>
+    </ul>
+    <p>The system therefore has controlled limits.</p>
+  </section>
+
+  <section class="content-box" id="compression-motor">
+    <h3>Compression Motor</h3>
+    <p>Motorized systems use a drive mechanism to lower or raise the paddle.</p>
+    <p>This may include:</p>
+    <ul>
+      <li>Motor</li>
+      <li>Gearbox</li>
+      <li>Position sensor</li>
+      <li>Force feedback</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="foot-controls">
+    <h3>Foot Controls</h3>
+    <p>Technologists may control compression using:</p>
+    <ul>
+      <li>Foot pedals</li>
+      <li>Hand controls</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="compression-fault-is-often-a-feedback-fault">
+    <h3>Compression Fault Is Often a Feedback Fault</h3>
+    <p>If the system does not agree with:</p>
+    <ul>
+      <li>Paddle position</li>
+      <li>Force</li>
+      <li>Motor response</li>
+    </ul>
+    <p>it may stop motion or display an error.</p>
+  </section>
+
+  <section class="content-box" id="breast-thickness">
+    <h3>Breast Thickness</h3>
+    <p>Many systems determine compressed breast thickness.</p>
+    <p>This may come from:</p>
+    <ul>
+      <li>Paddle position</li>
+      <li>Geometry calibration</li>
+      <li>Position sensors</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-thickness-matters">
+    <h3>Why Thickness Matters</h3>
+    <p>Breast thickness can help the system choose:</p>
+    <ul>
+      <li>kVp</li>
+      <li>Target/filter combination</li>
+      <li>Exposure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wrong-thickness-measurement">
+    <h3>Wrong Thickness Measurement</h3>
+    <p>Can cause the AEC system to select an inappropriate technique.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-error-becomes-exposure-error">
+    <h3>Mechanical Error Becomes Exposure Error</h3>
+    <p>This is a recurring mammography theme.</p>
+    <p>A position sensor can indirectly affect image quality.</p>
+  </section>
+
+  <section class="content-box" id="the-x-ray-tube">
+    <h3>The X-Ray Tube</h3>
+    <p>Mammography uses a specialized X-ray tube.</p>
+    <p>Like other X-ray tubes:</p>
+    <p>Electrons travel from cathode to anode.</p>
+    <p>Their interaction with the target produces X-rays.</p>
+  </section>
+
+  <section class="content-box" id="but-the-desired-spectrum-is-different">
+    <h3>But the Desired Spectrum Is Different</h3>
+    <p>Mammography typically uses lower-energy X-rays than many general radiographic applications.</p>
+    <p>Why?</p>
+    <p>Because lower-energy X-rays provide better contrast between similar soft tissues.</p>
+  </section>
+
+  <section class="content-box" id="too-high-energy">
+    <h3>Too High Energy</h3>
+    <p>The beam becomes very penetrating.</p>
+    <p>More photons pass through with less attenuation difference between tissues.</p>
+    <p>Image contrast may decrease.</p>
+  </section>
+
+  <section class="content-box" id="too-low-energy">
+    <h3>Too Low Energy</h3>
+    <p>The radiation may be absorbed heavily by the breast without contributing efficiently to the detector image.</p>
+    <p>That can increase dose unnecessarily.</p>
+  </section>
+
+  <section class="content-box" id="therefore-the-system-shapes-the-spectrum-carefully">
+    <h3>Therefore the System Shapes the Spectrum Carefully</h3>
+    <p>It uses combinations of:</p>
+    <ul>
+      <li>Tube target material</li>
+      <li>Filtration</li>
+      <li>kVp</li>
+    </ul>
+    <p>to produce a clinically useful spectrum.</p>
+  </section>
+
+  <section class="content-box" id="target-materials">
+    <h3>Target Materials</h3>
+    <p>Mammography systems have historically used target materials such as:</p>
+    <ul>
+      <li>Molybdenum</li>
+      <li>Rhodium</li>
+    </ul>
+    <p>Modern digital systems may also use:</p>
+    <ul>
+      <li>Tungsten</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="why-target-material-matters">
+    <h3>Why Target Material Matters</h3>
+    <p>Different target materials produce different X-ray spectra.</p>
+    <p>Mammography uses those spectral characteristics to balance:</p>
+    <ul>
+      <li>Penetration</li>
+      <li>Contrast</li>
+      <li>Dose</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="filtration">
+    <h3>Filtration</h3>
+    <p>Filters remove portions of the X-ray spectrum that are less useful.</p>
+  </section>
+
+  <section class="content-box" id="target-filter-combinations">
+    <h3>Target / Filter Combinations</h3>
+    <p>The system may select a target/filter combination appropriate for:</p>
+    <ul>
+      <li>Breast thickness</li>
+      <li>Breast composition</li>
+    </ul>
+    <p>depending on equipment design.</p>
+  </section>
+
+  <section class="content-box" id="modern-tungsten-systems">
+    <h3>Modern Tungsten Systems</h3>
+    <p>Some modern systems use tungsten targets with specialized filters to produce suitable mammographic spectra.</p>
+    <p>The exact implementation varies.</p>
+  </section>
+
+  <section class="content-box" id="kvp">
+    <h3>kVp</h3>
+    <p>Mammographic kVp is typically lower than general radiographic kVp.</p>
+    <p>The selected value strongly influences:</p>
+    <ul>
+      <li>Penetration</li>
+      <li>Contrast</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="automatic-exposure-control">
+    <h3>Automatic Exposure Control</h3>
+    <p>AEC is central to mammography.</p>
+    <p>The system needs enough detector exposure for low-noise imaging without using unnecessary radiation.</p>
+  </section>
+
+  <section class="content-box" id="aec-goal">
+    <h3>AEC Goal</h3>
+    <p>A simplified goal is:</p>
+    <p><strong>Produce adequate detector signal for diagnostic image quality using an appropriate exposure for the breast and selected mode.</strong></p>
+  </section>
+
+  <section class="content-box" id="older-systems">
+    <h3>Older Systems</h3>
+    <p>Film-screen mammography used physical AEC detectors positioned relative to the film receptor.</p>
+  </section>
+
+  <section class="content-box" id="digital-systems">
+    <h3>Digital Systems</h3>
+    <p>Modern systems may use detector information and sophisticated pre-exposure or acquisition algorithms.</p>
+  </section>
+
+  <section class="content-box" id="pre-exposure">
+    <h3>Pre-Exposure</h3>
+    <p>Some systems perform a brief preliminary exposure.</p>
+    <p>The system analyzes how much radiation passes through the breast.</p>
+    <p>Then it selects the final technique.</p>
+  </section>
+
+  <section class="content-box" id="why-this-helps">
+    <h3>Why This Helps</h3>
+    <p>The machine can estimate:</p>
+    <ul>
+      <li>Breast attenuation</li>
+      <li>Density</li>
+    </ul>
+    <p>before committing to the main exposure.</p>
+  </section>
+
+  <section class="content-box" id="aec-may-select">
+    <h3>AEC May Select</h3>
+    <p>Depending on system design:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mAs</li>
+      <li>Target/filter</li>
+      <li>Other parameters</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-system-is-optimizing-more-than-brightness">
+    <h3>The System Is Optimizing More Than Brightness</h3>
+    <p>With digital imaging, final display brightness can be altered by processing.</p>
+    <p>AEC is therefore more about achieving appropriate detector exposure and image quality than simply making the image look bright.</p>
+  </section>
+
+  <section class="content-box" id="digital-processing-can-hide-underexposure-or-overexposure">
+    <h3>Digital Processing Can Hide Underexposure or Overexposure</h3>
+    <p>This is important.</p>
+    <p>The final image can be normalized for display.</p>
+    <p>A poorly exposed image may still appear:</p>
+    <p>Reasonably bright.</p>
+  </section>
+
+  <section class="content-box" id="but-noise-still-exists">
+    <h3>But Noise Still Exists</h3>
+    <p>If too few photons were detected:</p>
+    <p>Quantum noise increases.</p>
+    <p>Processing cannot completely recover the missing information.</p>
+  </section>
+
+  <section class="content-box" id="excess-exposure">
+    <h3>Excess Exposure</h3>
+    <p>Similarly, a high exposure may still produce a normal-looking image because display processing compensates.</p>
+    <p>That is why mammography QC relies on controlled measurements rather than just visual appearance.</p>
+  </section>
+
+  <section class="content-box" id="detector">
+    <h3>Detector</h3>
+    <p>Digital mammography generally uses high-resolution flat-panel detectors.</p>
+    <p>These may use technologies such as:</p>
+    <ul>
+      <li>Amorphous selenium direct conversion</li>
+      <li>Other detector architectures</li>
+    </ul>
+    <p>depending on manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="direct-conversion">
+    <h3>Direct Conversion</h3>
+    <p>As discussed in flat-panel basics:</p>
+    <p>X-rays create electrical charge directly in a photoconductive layer.</p>
+  </section>
+
+  <section class="content-box" id="why-direct-conversion-is-attractive-for-mammography">
+    <h3>Why Direct Conversion Is Attractive for Mammography</h3>
+    <p>Avoiding visible-light spread can support high spatial resolution.</p>
+    <p>That can be valuable when imaging tiny details.</p>
+  </section>
+
+  <section class="content-box" id="pixel-size">
+    <h3>Pixel Size</h3>
+    <p>Mammography detector pixels are typically designed to be relatively small.</p>
+    <p>Smaller pixels can improve ability to resolve fine detail.</p>
+  </section>
+
+  <section class="content-box" id="but-smaller-pixels-collect-fewer-photons">
+    <h3>But Smaller Pixels Collect Fewer Photons</h3>
+    <p>For the same detector area and exposure, a smaller pixel receives fewer photons.</p>
+    <p>That can increase noise.</p>
+  </section>
+
+  <section class="content-box" id="resolution-vs-noise">
+    <h3>Resolution vs Noise</h3>
+    <p>This is another imaging tradeoff.</p>
+    <p>Better spatial resolution requires careful management of:</p>
+    <ul>
+      <li>Detector efficiency</li>
+      <li>Exposure</li>
+      <li>Processing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="modulation-transfer-function">
+    <h3>Modulation Transfer Function</h3>
+    <p>You may hear:</p>
+    <p><strong>MTF</strong>, modulation transfer function.</p>
+    <p>MTF describes how well an imaging system preserves contrast for structures of different spatial sizes.</p>
+  </section>
+
+  <section class="content-box" id="plain-english-version">
+    <h3>Plain-English Version</h3>
+    <p>It is one way of describing:</p>
+    <p><strong>How well the system reproduces fine detail.</strong></p>
+  </section>
+
+  <section class="content-box" id="detective-quantum-efficiency">
+    <h3>Detective Quantum Efficiency</h3>
+    <p>You may also hear:</p>
+    <p><strong>DQE</strong>, detective quantum efficiency.</p>
+    <p>DQE describes how efficiently the detector turns incoming X-ray information into useful image signal relative to noise.</p>
+  </section>
+
+  <section class="content-box" id="high-dqe">
+    <h3>High DQE</h3>
+    <p>Means the detector uses available X-ray information efficiently.</p>
+    <p>This can help achieve good image quality without unnecessary dose.</p>
+  </section>
+
+  <section class="content-box" id="you-do-not-need-to-calculate-dqe-on-the-bench">
+    <h3>You Do Not Need to Calculate DQE on the Bench</h3>
+    <p>But the concept explains why:</p>
+    <p>Two detectors with similar pixel size may not produce identical image quality.</p>
+  </section>
+
+  <section class="content-box" id="scatter">
+    <h3>Scatter</h3>
+    <p>Scattered radiation carries less useful spatial information.</p>
+    <p>It reaches the detector from the wrong directions.</p>
+    <p>This reduces contrast.</p>
+  </section>
+
+  <section class="content-box" id="compression-reduces-scatter">
+    <h3>Compression Reduces Scatter</h3>
+    <p>Again:</p>
+    <p>This is one reason breast compression is so important.</p>
+  </section>
+
+  <section class="content-box" id="anti-scatter-grid">
+    <h3>Anti-Scatter Grid</h3>
+    <p>Many mammography systems also use a grid.</p>
+    <p>The grid preferentially absorbs scattered radiation.</p>
+  </section>
+
+  <section class="content-box" id="grid-motion">
+    <h3>Grid Motion</h3>
+    <p>Some systems move the grid during exposure to blur out grid lines.</p>
+  </section>
+
+  <section class="content-box" id="grid-failure">
+    <h3>Grid Failure</h3>
+    <p>If the grid does not move correctly:</p>
+    <p>You may see:</p>
+    <ul>
+      <li>Grid-line artifact</li>
+      <li>Image nonuniformity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="grid-removes-some-primary-radiation-too">
+    <h3>Grid Removes Some Primary Radiation Too</h3>
+    <p>Therefore using a grid requires additional exposure compared with no grid.</p>
+    <p>AEC accounts for that.</p>
+  </section>
+
+  <section class="content-box" id="magnification-mammography">
+    <h3>Magnification Mammography</h3>
+    <p>Magnification views may use geometric magnification.</p>
+    <p>The breast is positioned farther from the detector.</p>
+  </section>
+
+  <section class="content-box" id="air-gap">
+    <h3>Air Gap</h3>
+    <p>The increased distance can reduce scatter reaching the detector.</p>
+    <p>Magnification imaging may therefore use:</p>
+    <ul>
+      <li>Different geometry</li>
+      <li>Different exposure technique</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="focal-spot">
+    <h3>Focal Spot</h3>
+    <p>Magnification usually requires a small focal spot to reduce geometric blur.</p>
+  </section>
+
+  <section class="content-box" id="focal-spot-size-matters">
+    <h3>Focal Spot Size Matters</h3>
+    <p>A larger focal spot creates more penumbra.</p>
+    <p>At magnification, that blur becomes more obvious.</p>
+  </section>
+
+  <section class="content-box" id="tube-focal-spot">
+    <h3>Tube Focal Spot</h3>
+    <p>This is another reason mammography tube performance matters.</p>
+    <p>The tube is not just:</p>
+    <p>Producing enough X-rays.</p>
+    <p>It must also maintain suitable focal-spot characteristics.</p>
+  </section>
+
+  <section class="content-box" id="detector-calibration">
+    <h3>Detector Calibration</h3>
+    <p>As with other flat-panel systems, detector pixels do not respond identically.</p>
+    <p>The system needs calibration.</p>
+  </section>
+
+  <section class="content-box" id="offset-correction">
+    <h3>Offset Correction</h3>
+    <p>Measures detector baseline signal without exposure.</p>
+  </section>
+
+  <section class="content-box" id="gain-correction">
+    <h3>Gain Correction</h3>
+    <p>Corrects differences in pixel sensitivity under uniform radiation.</p>
+  </section>
+
+  <section class="content-box" id="flat-field-calibration">
+    <h3>Flat-Field Calibration</h3>
+    <p>A uniform exposure helps the system characterize detector response.</p>
+  </section>
+
+  <section class="content-box" id="mammography-is-very-sensitive-to-nonuniformity">
+    <h3>Mammography Is Very Sensitive to Nonuniformity</h3>
+    <p>Subtle shading or fixed-pattern noise can interfere with interpretation.</p>
+  </section>
+
+  <section class="content-box" id="bad-pixel-correction">
+    <h3>Bad Pixel Correction</h3>
+    <p>Isolated bad pixels can be mapped and corrected from neighboring information.</p>
+  </section>
+
+  <section class="content-box" id="clustered-pixel-defects">
+    <h3>Clustered Pixel Defects</h3>
+    <p>Larger groups of bad pixels can become more problematic.</p>
+  </section>
+
+  <section class="content-box" id="detector-artifact">
+    <h3>Detector Artifact</h3>
+    <p>A repeatable artifact at the same detector coordinates is a useful clue.</p>
+  </section>
+
+  <section class="content-box" id="phantom-qc">
+    <h3>Phantom QC</h3>
+    <p>Mammography QC commonly uses dedicated phantoms.</p>
+    <p>These are designed to evaluate aspects of system performance in a standardized way.</p>
+  </section>
+
+  <section class="content-box" id="phantom-tests-may-evaluate">
+    <h3>Phantom Tests May Evaluate</h3>
+    <p>Depending on program:</p>
+    <ul>
+      <li>Resolution</li>
+      <li>Contrast</li>
+      <li>Artifact</li>
+      <li>Detector uniformity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-a-phantom-matters">
+    <h3>Why a Phantom Matters</h3>
+    <p>It creates a known test object.</p>
+    <p>Patient anatomy changes every time.</p>
+    <p>A phantom does not.</p>
+  </section>
+
+  <section class="content-box" id="reproducibility">
+    <h3>Reproducibility</h3>
+    <p>If the same phantom suddenly looks worse:</p>
+    <p>Something in the imaging system likely changed.</p>
+  </section>
+
+  <section class="content-box" id="image-processing">
+    <h3>Image Processing</h3>
+    <p>The raw mammography detector image is not necessarily what the radiologist sees.</p>
+    <p>The system applies specialized image processing.</p>
+  </section>
+
+  <section class="content-box" id="processing-may-adjust">
+    <h3>Processing May Adjust</h3>
+    <ul>
+      <li>Contrast</li>
+      <li>Edge characteristics</li>
+      <li>Tissue equalization</li>
+    </ul>
+    <p>depending on platform.</p>
+  </section>
+
+  <section class="content-box" id="thick-and-thin-tissue-in-same-image">
+    <h3>Thick and Thin Tissue in Same Image</h3>
+    <p>Breast thickness can vary across the field.</p>
+    <p>Processing helps display useful detail across those differences.</p>
+  </section>
+
+  <section class="content-box" id="do-not-confuse-processing-with-acquisition">
+    <h3>Do Not Confuse Processing With Acquisition</h3>
+    <p>A beautiful processed image can still originate from poor acquisition.</p>
+    <p>The system may compensate visually.</p>
+  </section>
+
+  <section class="content-box" id="raw-vs-processed-image">
+    <h3>Raw vs Processed Image</h3>
+    <p>When available to authorized service personnel, raw or less-processed images can be very useful in determining whether an artifact originates from:</p>
+    <ul>
+      <li>Detector</li>
+      <li>Processing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-raw-image-is-normal-but-processed-image-is-wrong">
+    <h3>If Raw Image Is Normal but Processed Image Is Wrong</h3>
+    <p>Processing becomes more suspicious.</p>
+  </section>
+
+  <section class="content-box" id="if-artifact-exists-in-raw-data">
+    <h3>If Artifact Exists in Raw Data</h3>
+    <p>Acquisition/detector becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="image-review-workstation">
+    <h3>Image Review Workstation</h3>
+    <p>Mammography interpretation also depends heavily on:</p>
+    <ul>
+      <li>Diagnostic displays</li>
+      <li>Calibration</li>
+      <li>Ambient lighting</li>
+    </ul>
+    <p>That is downstream of acquisition but still part of the clinical imaging chain.</p>
+  </section>
+
+  <section class="content-box" id="a-perfect-detector-can-look-bad-on-a-bad-display">
+    <h3>A Perfect Detector Can Look Bad on a Bad Display</h3>
+    <p>Likewise:</p>
+    <p>A good display cannot recover image information that the detector never captured.</p>
+  </section>
+
+  <section class="content-box" id="tomosynthesis">
+    <h3>Tomosynthesis</h3>
+    <p>Modern mammography systems may include:</p>
+    <p><strong>Digital Breast Tomosynthesis</strong>, or DBT.</p>
+  </section>
+
+  <section class="content-box" id="how-tomosynthesis-differs">
+    <h3>How Tomosynthesis Differs</h3>
+    <p>Instead of making only one projection:</p>
+    <p>The X-ray tube moves through an angular range and acquires multiple low-dose projections.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction">
+    <h3>Reconstruction</h3>
+    <p>Software reconstructs those projections into a series of thin slices or planes.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>This reduces the problem of tissue overlap.</p>
+    <p>Structures that overlap in a standard projection can be separated by depth.</p>
+  </section>
+
+  <section class="content-box" id="tomosynthesis-is-not-ct">
+    <h3>Tomosynthesis Is Not CT</h3>
+    <p>There are similarities:</p>
+    <ul>
+      <li>Multiple projections</li>
+      <li>Reconstruction</li>
+    </ul>
+    <p>But geometry, angular range, acquisition, and reconstruction are different.</p>
+  </section>
+
+  <section class="content-box" id="tube-motion">
+    <h3>Tube Motion</h3>
+    <p>During DBT, the X-ray tube moves precisely through the programmed arc.</p>
+    <p>Position accuracy matters.</p>
+  </section>
+
+  <section class="content-box" id="if-tube-position-is-wrong">
+    <h3>If Tube Position Is Wrong</h3>
+    <p>Reconstruction geometry becomes wrong.</p>
+    <p>This can produce:</p>
+    <ul>
+      <li>Blur</li>
+      <li>Misregistration</li>
+      <li>Reconstruction artifact</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="motion-system">
+    <h3>Motion System</h3>
+    <p>Tomosynthesis therefore adds another important subsystem:</p>
+    <ul>
+      <li>Tube-drive motor</li>
+      <li>Position encoder</li>
+      <li>Motion control</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-remains-part-of-the-same-chain">
+    <h3>Detector Remains Part of the Same Chain</h3>
+    <p>Each low-dose projection must still be acquired correctly.</p>
+  </section>
+
+  <section class="content-box" id="exposure-is-distributed">
+    <h3>Exposure Is Distributed</h3>
+    <p>Instead of one standard exposure, the total acquisition is divided among multiple projections.</p>
+  </section>
+
+  <section class="content-box" id="dbt-reconstruction">
+    <h3>DBT Reconstruction</h3>
+    <p>The computer uses known projection angles and detector data to estimate structures at different depths.</p>
+  </section>
+
+  <section class="content-box" id="patient-motion">
+    <h3>Patient Motion</h3>
+    <p>Because tomosynthesis acquisition takes time:</p>
+    <p>Patient motion can affect multiple projections.</p>
+    <p>That can become reconstruction artifact.</p>
+  </section>
+
+  <section class="content-box" id="compression-still-matters">
+    <h3>Compression Still Matters</h3>
+    <p>Even more so because:</p>
+    <ul>
+      <li>Motion</li>
+      <li>Geometry</li>
+      <li>Exposure</li>
+    </ul>
+    <p>all depend on stable positioning.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-and-image-quality-systems-are-connected">
+    <h3>Mechanical and Image Quality Systems Are Connected</h3>
+    <p>This is probably one of the biggest lessons in mammography.</p>
+    <p>A mechanical problem may become:</p>
+    <p>An imaging problem.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Compression thickness sensor reads too high.</p>
+    <p>AEC believes breast is thicker.</p>
+    <p>System selects higher technique.</p>
+    <p>Dose and image characteristics change.</p>
+    <p>The detector may be perfectly healthy.</p>
+  </section>
+
+  <section class="content-box" id="another-example">
+    <h3>Another Example</h3>
+    <p>Paddle position is not reproducible.</p>
+    <p>Compression force varies.</p>
+    <p>Patient positioning becomes inconsistent.</p>
+  </section>
+
+  <section class="content-box" id="generator-accuracy">
+    <h3>Generator Accuracy</h3>
+    <p>The X-ray generator still must produce accurate:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mAs</li>
+    </ul>
+    <p>Mammography depends on precise low-kVp performance.</p>
+  </section>
+
+  <section class="content-box" id="small-errors-matter">
+    <h3>Small Errors Matter</h3>
+    <p>Because the useful X-ray spectrum is deliberately narrow and optimized.</p>
+  </section>
+
+  <section class="content-box" id="tube-output">
+    <h3>Tube Output</h3>
+    <p>Output consistency is critical.</p>
+    <p>AEC assumes the generator responds predictably to commanded settings.</p>
+  </section>
+
+  <section class="content-box" id="if-generator-output-changes">
+    <h3>If Generator Output Changes</h3>
+    <p>AEC may compensate.</p>
+    <p>Again:</p>
+    <p>A feedback system can hide drift.</p>
+  </section>
+
+  <section class="content-box" id="aec-compensation-can-mask-tube-aging">
+    <h3>AEC Compensation Can Mask Tube Aging</h3>
+    <p>As tube output falls:</p>
+    <p>The system may increase mAs.</p>
+    <p>Images still look acceptable.</p>
+    <p>Exposure times lengthen.</p>
+    <p>Eventually the trend becomes obvious.</p>
+  </section>
+
+  <section class="content-box" id="historical-qc-trends-matter">
+    <h3>Historical QC Trends Matter</h3>
+    <p>This is why trending:</p>
+    <ul>
+      <li>mAs</li>
+      <li>Exposure</li>
+      <li>Detector response</li>
+    </ul>
+    <p>can identify degradation before a dramatic failure.</p>
+  </section>
+
+  <section class="content-box" id="compression-calibration">
+    <h3>Compression Calibration</h3>
+    <p>Compression-force measurement must be calibrated according to OEM and regulatory procedures.</p>
+  </section>
+
+  <section class="content-box" id="a-passing-display-is-not-enough">
+    <h3>A Passing Display Is Not Enough</h3>
+    <p>If the screen says:</p>
+    <p>100 N,</p>
+    <p>that does not prove actual force is 100 N.</p>
+    <p>A calibrated force measurement is needed when verification is required.</p>
+  </section>
+
+  <section class="content-box" id="breast-thickness-calibration">
+    <h3>Breast Thickness Calibration</h3>
+    <p>Likewise, displayed thickness may need independent verification.</p>
+  </section>
+
+  <section class="content-box" id="why-thickness-accuracy-matters-beyond-positioning">
+    <h3>Why Thickness Accuracy Matters Beyond Positioning</h3>
+    <p>It can influence:</p>
+    <ul>
+      <li>AEC</li>
+      <li>Dose calculations</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="detector-temperature">
+    <h3>Detector Temperature</h3>
+    <p>Detector response can depend on temperature.</p>
+    <p>Systems may have warm-up or calibration requirements.</p>
+  </section>
+
+  <section class="content-box" id="calibration-timing">
+    <h3>Calibration Timing</h3>
+    <p>Performing flat-field calibration before the detector reaches proper operating state can create bad calibration data.</p>
+  </section>
+
+  <section class="content-box" id="cleanliness">
+    <h3>Cleanliness</h3>
+    <p>Mammography imaging surfaces need careful cleaning.</p>
+    <p>Debris can appear as image artifacts.</p>
+  </section>
+
+  <section class="content-box" id="detector-surface-artifact">
+    <h3>Detector Surface Artifact</h3>
+    <p>Something physically present between breast and detector may show in the image.</p>
+  </section>
+
+  <section class="content-box" id="dust-and-debris">
+    <h3>Dust and Debris</h3>
+    <p>Depending on location, contamination may mimic:</p>
+    <ul>
+      <li>Fixed image defect</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="before-condemning-the-detector">
+    <h3>Before Condemning the Detector</h3>
+    <p>Inspect:</p>
+    <ul>
+      <li>Paddle</li>
+      <li>Detector cover</li>
+      <li>Compression surface</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="repeated-artifact-at-same-location">
+    <h3>Repeated Artifact at Same Location</h3>
+    <p>First determine whether it follows:</p>
+    <ul>
+      <li>Detector coordinates</li>
+      <li>Physical accessory</li>
+      <li>Patient</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="rotate-or-change-accessory-when-appropriate">
+    <h3>Rotate or Change Accessory When Appropriate</h3>
+    <p>QC procedures can help isolate the source.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-noisy-images">
+    <h3>Real-World Example: Noisy Images</h3>
+    <p>Technologists report more noise than usual.</p>
+    <p>Phantom testing confirms increased noise.</p>
+    <p>AEC is already using higher mAs than historical baseline.</p>
+    <p>Detector calibration is normal.</p>
+    <p>Generator output test shows reduced output.</p>
+    <p>The image complaint began downstream, but the cause is the X-ray source.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-high-dose-with-good-images">
+    <h3>Real-World Example: High Dose With Good Images</h3>
+    <p>Clinical images look fine.</p>
+    <p>QC shows AEC exposure has gradually increased.</p>
+    <p>Detector gain has decreased.</p>
+    <p>The AEC is compensating for a detector-response change.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-compression-problem">
+    <h3>Real-World Example: Compression Problem</h3>
+    <p>Displayed force appears normal.</p>
+    <p>Independent test shows actual compression force is substantially lower.</p>
+    <p>Images show increased thickness and occasional motion.</p>
+    <p>The mechanical calibration problem affects the imaging chain.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-fixed-artifact">
+    <h3>Real-World Example: Fixed Artifact</h3>
+    <p>Same small artifact appears in every phantom image at the same detector location.</p>
+    <p>Cleaning and paddle changes do not move it.</p>
+    <p>Detector bad-pixel map or local detector issue becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-tomosynthesis-blur">
+    <h3>Real-World Example: Tomosynthesis Blur</h3>
+    <p>2D mammography looks normal.</p>
+    <p>DBT reconstructions show consistent blur.</p>
+    <p>Tube-motion encoder calibration is abnormal.</p>
+    <p>The detector and basic X-ray generator are fine.</p>
+    <p>The tomosynthesis geometry is not.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+
+  </section>
+
+  <section class="content-box" id="treating-mammography-like-a-small-general-x-ray-system">
+    <h3>Treating Mammography Like a Small General X-Ray System</h3>
+    <p>Its resolution, spectrum, AEC, and QC requirements are much more specialized.</p>
+  </section>
+
+  <section class="content-box" id="assuming-a-good-looking-image-means-the-system-is-properly-exposed">
+    <h3>Assuming a Good-Looking Image Means the System Is Properly Exposed</h3>
+    <p>Digital processing can hide exposure drift.</p>
+  </section>
+
+  <section class="content-box" id="treating-compression-as-only-a-mechanical-function">
+    <h3>Treating Compression as Only a Mechanical Function</h3>
+    <p>Compression directly affects image quality and exposure.</p>
+  </section>
+
+  <section class="content-box" id="recalibrating-aec-before-understanding-why-technique-changed">
+    <h3>Recalibrating AEC Before Understanding Why Technique Changed</h3>
+    <p>A failing detector or tube may be driving the change.</p>
+  </section>
+
+  <section class="content-box" id="blaming-the-detector-for-every-fixed-artifact">
+    <h3>Blaming the Detector for Every Fixed Artifact</h3>
+    <p>Paddles, debris, grids, and processing can contribute.</p>
+  </section>
+
+  <section class="content-box" id="ignoring-historical-qc-trends">
+    <h3>Ignoring Historical QC Trends</h3>
+    <p>Gradual degradation often appears there first.</p>
+  </section>
+
+  <section class="content-box" id="assuming-2d-performance-proves-tomosynthesis-performance">
+    <h3>Assuming 2D Performance Proves Tomosynthesis Performance</h3>
+    <p>DBT adds tube-motion and reconstruction requirements.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-mammography-framework">
+    <h3>A Useful Mammography Framework</h3>
+    <p>Think:</p>
+    <p><strong>Patient Positioning</strong></p>
+    <p>↓</p>
+    <p><strong>Compression</strong></p>
+    <p>↓</p>
+    <p><strong>Thickness Measurement</strong></p>
+    <p>↓</p>
+    <p><strong>AEC / Technique Selection</strong></p>
+    <p>↓</p>
+    <p><strong>Specialized X-Ray Spectrum</strong></p>
+    <p>↓</p>
+    <p><strong>Breast Attenuation</strong></p>
+    <p>↓</p>
+    <p><strong>Detector</strong></p>
+    <p>↓</p>
+    <p><strong>Detector Calibration</strong></p>
+    <p>↓</p>
+    <p><strong>Image Processing</strong></p>
+    <p>↓</p>
+    <p><strong>Diagnostic Display</strong></p>
+    <p>For tomosynthesis, add:</p>
+    <p><strong>Tube Motion + Projection Geometry + Reconstruction</strong></p>
+    <p>to the chain.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask whether the problem is mainly:</p>
+    <p><strong>Mechanical</strong></p>
+    <p><strong>X-Ray Generation</strong></p>
+    <p><strong>Exposure Control</strong></p>
+    <p><strong>Detector</strong></p>
+    <p><strong>Processing</strong></p>
+    <p><strong>Tomosynthesis Geometry</strong></p>
+    <p>That is much more useful than:</p>
+    <blockquote><p>Mammography image bad.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the compression paddle moves normally:</p>
+    <p>You proved:</p>
+    <p><strong>The compression drive can move under the conditions tested.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Force accuracy</li>
+      <li>Thickness accuracy</li>
+    </ul>
+    <p>If the phantom image looks acceptable:</p>
+    <p>You have evidence of overall imaging performance.</p>
+    <p>But depending on the required QC program, you may still need objective measurements of:</p>
+    <ul>
+      <li>Exposure</li>
+      <li>Detector performance</li>
+      <li>Mechanical accuracy</li>
+    </ul>
+    <p>If AEC produces the expected image appearance:</p>
+    <p>You have not necessarily proven:</p>
+    <p><strong>Radiation output has not drifted.</strong></p>
+    <p>The control system may be compensating.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Mammography is a good example of why understanding the whole system matters more than memorizing individual components.</p>
+    <p>The detector does not work alone.</p>
+    <p>The generator does not work alone.</p>
+    <p>The compression system does not work alone.</p>
+    <p>They all influence one another.</p>
+    <p>Compression changes thickness.</p>
+    <p>Thickness changes attenuation.</p>
+    <p>Attenuation changes AEC behavior.</p>
+    <p>AEC changes tube output.</p>
+    <p>Tube output changes detector exposure.</p>
+    <p>Detector response affects image noise.</p>
+    <p>Processing changes how the final image looks.</p>
+    <p>And in tomosynthesis:</p>
+    <p>Tube motion and geometry become part of the reconstruction too.</p>
+    <p>That means a mammography problem can easily appear in a different subsystem from the one that actually caused it.</p>
+    <p>The image may be noisy because of the tube.</p>
+    <p>Dose may rise because of the detector.</p>
+    <p>Exposure may change because the thickness sensor is wrong.</p>
+    <p>Reconstruction may blur because tube position is inaccurate.</p>
+    <p>Once you understand those relationships, the system becomes much easier to reason through.</p>
+    <p>Not necessarily easier to repair.</p>
+    <p>But much easier to ask the right question.</p>
+    <p>And that is what these articles are supposed to build.</p>
+    <p>Not:</p>
+    <blockquote><p>I know the component names.</p></blockquote>
+    <p>But:</p>
+    <blockquote><p>I understand what each subsystem contributes to the final clinical result.</p></blockquote>
+    <p>Then, when something changes, you can ask:</p>
+    <p><strong>Which part of the imaging chain would have to change to produce what I am seeing?</strong></p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Mammography tube design, target/filter combinations, compression-force requirements, breast-thickness measurement, automatic exposure control, detector architecture, tomosynthesis geometry, quality-control procedures, acceptance limits, and service boundaries vary significantly by manufacturer, model, jurisdiction, and facility program. Follow current OEM documentation and applicable mammography quality, radiation-safety, medical-physics, and regulatory requirements when servicing or evaluating mammography systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+      <li><a href="how-optical-sensors-work-in-medical-equipment.html">How Optical Sensors Work in Medical Equipment</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
