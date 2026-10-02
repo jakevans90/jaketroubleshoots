@@ -93,6 +93,56 @@ class HiringPulseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "absolute HTTP"):
             MODULE.upsert_records(store, [broken], "test-source", "2026-10-02T12:00:00Z", False)
 
+    def test_operator_workflow_dry_run_then_finish(self):
+        begin = MODULE.main([
+            "--root", str(self.root), "operator", "begin",
+            "--source", "example-careers", "--started-at", "2026-10-02T10:00:00Z",
+        ])
+        self.assertEqual(0, begin)
+        add = MODULE.main([
+            "--root", str(self.root), "operator", "add",
+            "--employer", "Example Health", "--employer-type", "health-system",
+            "--title", "Biomedical Equipment Technician II",
+            "--location", "Pittsburgh, PA",
+            "--url", "https://jobs.example.org/123?utm_source=manual",
+            "--salary", "$60,000-$70,000", "--posted-date", "2026-10-01",
+            "--non-interactive",
+        ])
+        self.assertEqual(0, add)
+        dry_run = MODULE.main([
+            "--root", str(self.root), "operator", "finish",
+            "--checked-at", "2026-10-02T12:00:00Z", "--dry-run",
+        ])
+        self.assertEqual(0, dry_run)
+        self.assertTrue((self.root / MODULE.OPERATOR_SESSION).exists())
+        self.assertEqual([], MODULE.load_store(self.root)["postings"]["records"])
+        finish = MODULE.main([
+            "--root", str(self.root), "operator", "finish",
+            "--checked-at", "2026-10-02T12:00:00Z",
+        ])
+        self.assertEqual(0, finish)
+        self.assertFalse((self.root / MODULE.OPERATOR_SESSION).exists())
+        store = MODULE.load_store(self.root)
+        self.assertEqual(1, len(store["postings"]["records"]))
+        self.assertEqual("2026-10-01", store["postings"]["records"][0]["posted_date"])
+        self.assertEqual([], MODULE.validate_store(store))
+
+    def test_complete_operator_check_requires_close_confirmation(self):
+        self.assertEqual(0, MODULE.main([
+            "--root", str(self.root), "operator", "begin", "--source", "example-careers",
+            "--complete-source-check", "--started-at", "2026-10-02T10:00:00Z",
+        ]))
+        self.assertEqual(1, MODULE.main([
+            "--root", str(self.root), "operator", "finish", "--checked-at", "2026-10-02T12:00:00Z",
+        ]))
+        self.assertTrue((self.root / MODULE.OPERATOR_SESSION).exists())
+        self.assertEqual(0, MODULE.main([
+            "--root", str(self.root), "operator", "finish", "--checked-at", "2026-10-02T12:00:00Z",
+            "--confirm-close-missing",
+        ]))
+        self.assertTrue(MODULE.load_store(self.root)["observations"]["checks"][0]["complete"])
+        self.assertFalse((self.root / MODULE.OPERATOR_SESSION).exists())
+
 
 if __name__ == "__main__":
     unittest.main()

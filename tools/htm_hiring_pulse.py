@@ -9,6 +9,7 @@ maintenance environment.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -25,6 +26,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = Path("data/htm-hiring-pulse")
+OPERATOR_SESSION = Path(".htm-hiring-pulse-session.json")
 FILES = {
     "employers": "employers.json",
     "postings": "postings.json",
@@ -37,6 +39,7 @@ TRACKING_QUERY_KEYS = {
 EMPLOYER_TYPES = {"health-system", "hospital", "oem", "iso", "vendor", "dialysis", "government", "education", "other"}
 POSTING_STATUSES = {"active", "closed"}
 OBSERVATION_STATUSES = {"seen", "reopened", "closed"}
+SCHEMA_VERSIONS = {"employers": 1, "postings": 2, "observations": 1, "taxonomy": 1}
 
 
 def utc_now() -> str:
@@ -53,6 +56,16 @@ def normalize_timestamp(value: str | None) -> str:
     if not value:
         return utc_now()
     return parse_timestamp(value).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def normalize_date(value: Any) -> str | None:
+    cleaned = clean_optional(value)
+    if not cleaned:
+        return None
+    try:
+        return datetime.strptime(cleaned, "%Y-%m-%d").date().isoformat()
+    except ValueError as exc:
+        raise ValueError(f"posted date must use YYYY-MM-DD: {cleaned}") from exc
 
 
 def normalize_text(value: str) -> str:
@@ -295,6 +308,7 @@ def make_posting_payload(raw: dict[str, Any], source: str, timestamp: str, store
         "employment_type": clean_optional(raw.get("employmentType")),
         "experience_level": clean_optional(raw.get("experienceLevel")),
         "salary_text": clean_optional(raw.get("salaryText")),
+        "posted_date": normalize_date(raw.get("postedDate")),
         "description_snippet": clean_optional(raw.get("descriptionSnippet")),
     }
     if existing:
@@ -410,8 +424,8 @@ def validate_store(store: dict[str, dict[str, Any]]) -> list[str]:
             errors.append(f"{name}: missing root fields {', '.join(sorted(missing))}")
         if extra:
             errors.append(f"{name}: unexpected root fields {', '.join(sorted(extra))}")
-        if value.get("schemaVersion") != 1:
-            errors.append(f"{name}: schemaVersion must be 1")
+        if value.get("schemaVersion") != SCHEMA_VERSIONS[name]:
+            errors.append(f"{name}: schemaVersion must be {SCHEMA_VERSIONS[name]}")
         if value.get("updatedAt") is not None:
             validate_timestamps(value, ("updatedAt",), name, errors)
     employers = store.get("employers", {}).get("records")
@@ -466,7 +480,7 @@ def validate_store(store: dict[str, dict[str, Any]]) -> list[str]:
     posting_ids, posting_urls, posting_keys = set(), set(), set()
     for index, item in enumerate(postings):
         where = f"postings.records[{index}]"
-        required = {"id", "employer_id", "title", "normalized_title", "role_category_id", "location", "canonical_url", "source", "source_posting_id", "employment_type", "experience_level", "salary_text", "description_snippet", "dedupe_key", "first_seen", "last_seen", "status", "closed_at", "created_at", "updated_at"}
+        required = {"id", "employer_id", "title", "normalized_title", "role_category_id", "location", "canonical_url", "source", "source_posting_id", "employment_type", "experience_level", "salary_text", "posted_date", "description_snippet", "dedupe_key", "first_seen", "last_seen", "status", "closed_at", "created_at", "updated_at"}
         check_required(item, required, where, errors)
         if not isinstance(item, dict):
             continue
@@ -492,6 +506,11 @@ def validate_store(store: dict[str, dict[str, Any]]) -> list[str]:
             errors.append(f"{where}: active posting cannot have closed_at")
         if item.get("status") == "closed" and not item.get("closed_at"):
             errors.append(f"{where}: closed posting needs closed_at")
+        if item.get("posted_date") is not None:
+            try:
+                normalize_date(item.get("posted_date"))
+            except ValueError:
+                errors.append(f"{where}.posted_date must be null or YYYY-MM-DD")
         if not isinstance(item.get("location"), dict):
             errors.append(f"{where}.location must be an object")
         else:
@@ -644,7 +663,7 @@ def command_update(args: argparse.Namespace) -> int:
     posting = next((item for item in store["postings"]["records"] if item["id"] == args.id), None)
     if not posting:
         raise ValueError(f"Unknown posting id: {args.id}")
-    allowed = {"title", "roleCategoryId", "location", "url", "employmentType", "experienceLevel", "salaryText", "descriptionSnippet"}
+    allowed = {"title", "roleCategoryId", "location", "url", "employmentType", "experienceLevel", "salaryText", "postedDate", "descriptionSnippet"}
     unknown = set(patch) - allowed
     if unknown:
         raise ValueError("Unsupported update fields: " + ", ".join(sorted(unknown)))
@@ -666,6 +685,8 @@ def command_update(args: argparse.Namespace) -> int:
     for input_key, record_key in (("employmentType", "employment_type"), ("experienceLevel", "experience_level"), ("salaryText", "salary_text"), ("descriptionSnippet", "description_snippet")):
         if input_key in patch:
             posting[record_key] = clean_optional(patch[input_key])
+    if "postedDate" in patch:
+        posting["posted_date"] = normalize_date(patch["postedDate"])
     posting["dedupe_key"] = dedupe_key(posting["employer_id"], posting["title"], posting["location"], posting["canonical_url"])
     posting["updated_at"] = timestamp
     store["postings"]["updatedAt"] = timestamp
@@ -721,6 +742,238 @@ def command_summary(args: argparse.Namespace) -> int:
     return 0
 
 
+def operator_session_path(root: Path) -> Path:
+    return root / OPERATOR_SESSION
+
+
+def load_operator_session(root: Path) -> dict[str, Any]:
+    path = operator_session_path(root)
+    if not path.exists():
+        raise ValueError("No source check is in progress. Run operator begin first.")
+    session = load_json(path)
+    required = {"sessionVersion", "source", "startedAt", "completeSourceCheck", "entries"}
+    if set(session) != required or session.get("sessionVersion") != 1 or not isinstance(session.get("entries"), list):
+        raise ValueError(f"Invalid operator session: {path}")
+    return session
+
+
+def save_operator_session(root: Path, session: dict[str, Any]) -> None:
+    atomic_write(operator_session_path(root), render_json(session))
+
+
+def prompt_value(label: str, default: str | None = None, required: bool = False) -> str | None:
+    suffix = f" [{default}]" if default else ""
+    while True:
+        value = input(f"{label}{suffix}: ").strip()
+        if value:
+            return value
+        if default is not None:
+            return default
+        if not required:
+            return None
+        print(f"{label} is required.")
+
+
+def prompt_boolean(label: str, default: bool = False) -> bool:
+    hint = "Y/n" if default else "y/N"
+    while True:
+        value = input(f"{label} [{hint}]: ").strip().casefold()
+        if not value:
+            return default
+        if value in {"y", "yes"}:
+            return True
+        if value in {"n", "no"}:
+            return False
+        print("Enter y or n.")
+
+
+def resolve_employer(store: dict[str, dict[str, Any]], choice: str) -> dict[str, Any] | None:
+    normalized = normalize_text(choice)
+    records = store["employers"]["records"]
+    if choice.isdigit() and 1 <= int(choice) <= len(records):
+        return records[int(choice) - 1]
+    return next(
+        (
+            item
+            for item in records
+            if choice == item["id"]
+            or normalized == item["normalized_name"]
+            or normalized in item.get("normalized_aliases", [])
+        ),
+        None,
+    )
+
+
+def choose_employer(store: dict[str, dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
+    records = sorted(store["employers"]["records"], key=lambda item: item["name"].casefold())
+    selection_store = copy.deepcopy(store)
+    selection_store["employers"]["records"] = records
+    supplied = clean_optional(args.employer)
+    if supplied:
+        existing = resolve_employer(selection_store, supplied)
+        if existing:
+            return {"name": existing["name"]}
+        return {
+            "name": supplied,
+            "employerType": args.employer_type or "other",
+            "careerUrl": clean_optional(args.career_url),
+        }
+    if records:
+        print("\nEmployers:")
+        for index, employer in enumerate(records, 1):
+            print(f"  {index}. {employer['name']}")
+        print("  N. Add a new employer")
+        choice = prompt_value("Select employer number or N", required=True)
+        if choice and choice.casefold() != "n":
+            existing = resolve_employer(selection_store, choice)
+            if not existing:
+                raise ValueError(f"Unknown employer selection: {choice}")
+            return {"name": existing["name"]}
+    name = prompt_value("New employer name", required=True)
+    employer_type = prompt_value("Employer type", args.employer_type or "other")
+    if employer_type not in EMPLOYER_TYPES:
+        raise ValueError("Employer type must be one of: " + ", ".join(sorted(EMPLOYER_TYPES)))
+    career_url = prompt_value("Employer career page URL", args.career_url)
+    return {"name": name, "employerType": employer_type, "careerUrl": career_url}
+
+
+def operator_location(value: str | None, remote: bool) -> dict[str, Any]:
+    text = clean_optional(value) or ("Remote" if remote else "Location not listed")
+    city = None
+    state = None
+    parts = [part.strip() for part in text.split(",")]
+    if len(parts) >= 2 and re.fullmatch(r"[A-Za-z]{2}", parts[-1]):
+        city, state = ", ".join(parts[:-1]), parts[-1].upper()
+    return {"text": text, "city": city, "state": state, "country": "US", "remote": remote}
+
+
+def command_operator_begin(args: argparse.Namespace) -> int:
+    path = operator_session_path(args.root)
+    if path.exists():
+        session = load_operator_session(args.root)
+        raise ValueError(
+            f"A check for '{session['source']}' is already in progress. Finish it or run operator cancel first."
+        )
+    source = clean_optional(args.source)
+    if not source:
+        source = prompt_value("Stable source name", required=True)
+    session = {
+        "sessionVersion": 1,
+        "source": source,
+        "startedAt": normalize_timestamp(args.started_at),
+        "completeSourceCheck": bool(args.complete_source_check),
+        "entries": [],
+    }
+    save_operator_session(args.root, session)
+    scope = "COMPLETE snapshot" if session["completeSourceCheck"] else "partial check"
+    print(f"Started {scope} for '{source}'.")
+    if session["completeSourceCheck"]:
+        print("Only jobs entered in this check will remain active for this source when it is finalized.")
+    print("Next: operator add")
+    return 0
+
+
+def preview_session_store(root: Path, session: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    store = copy.deepcopy(load_store(root))
+    for entry in session["entries"]:
+        make_posting_payload(entry["posting"], session["source"], session["startedAt"], store)
+    return store
+
+
+def command_operator_add(args: argparse.Namespace) -> int:
+    session = load_operator_session(args.root)
+    store = preview_session_store(args.root, session)
+    employer = choose_employer(store, args)
+    title = clean_optional(args.title) or prompt_value("Job title", required=True)
+    url = clean_optional(args.url) or prompt_value("Job URL", required=True)
+    location_text = clean_optional(args.location)
+    if location_text is None:
+        location_text = None if args.non_interactive else prompt_value("Location (for example Pittsburgh, PA)")
+    remote = bool(args.remote)
+    if args.remote is None:
+        remote = False if args.non_interactive else prompt_boolean("Remote role", default=False)
+    salary = clean_optional(args.salary)
+    if salary is None and not args.non_interactive:
+        salary = prompt_value("Salary, if listed")
+    posted_date = clean_optional(args.posted_date)
+    if posted_date is None and not args.non_interactive:
+        posted_date = prompt_value("Posted date YYYY-MM-DD, if listed")
+    posting_input = {
+        "employer": employer,
+        "title": title,
+        "location": operator_location(location_text, remote),
+        "url": url,
+        "sourcePostingId": clean_optional(args.source_posting_id),
+        "employmentType": clean_optional(args.employment_type),
+        "salaryText": salary,
+        "postedDate": normalize_date(posted_date),
+    }
+    existing_ids = {item["id"] for item in load_store(args.root)["postings"]["records"]}
+    preview, _, _ = make_posting_payload(posting_input, session["source"], session["startedAt"], store)
+    preview_id = preview["id"]
+    replacement = next((entry for entry in session["entries"] if entry["previewPostingId"] == preview_id), None)
+    entry = {"previewPostingId": preview_id, "posting": posting_input}
+    if replacement:
+        session["entries"][session["entries"].index(replacement)] = entry
+        result = "replaced duplicate entry already staged in this check"
+    else:
+        session["entries"].append(entry)
+        result = "matches an existing posting and will update it" if preview_id in existing_ids else "new posting"
+    save_operator_session(args.root, session)
+    print(f"Staged: {preview['title']} | {preview['location']['text']}")
+    print(f"Result: {result}")
+    print(f"Canonical URL: {preview['canonical_url']}")
+    print(f"Role category: {preview['role_category_id']}")
+    return 0
+
+
+def command_operator_status(args: argparse.Namespace) -> int:
+    session = load_operator_session(args.root)
+    print(f"Source: {session['source']}")
+    print(f"Started: {session['startedAt']}")
+    print(f"Scope: {'complete source snapshot' if session['completeSourceCheck'] else 'partial check'}")
+    print(f"Jobs staged: {len(session['entries'])}")
+    for index, entry in enumerate(session["entries"], 1):
+        posting = entry["posting"]
+        employer = posting["employer"]["name"] if isinstance(posting["employer"], dict) else posting["employer"]
+        print(f"  {index}. {employer} | {posting['title']} | {posting['location']['text']}")
+    return 0
+
+
+def command_operator_finish(args: argparse.Namespace) -> int:
+    session = load_operator_session(args.root)
+    if session["completeSourceCheck"] and not args.confirm_close_missing:
+        raise ValueError(
+            "This is a complete source check. Re-run finish with --confirm-close-missing to allow absent jobs from this source to close."
+        )
+    store = load_store(args.root)
+    timestamp = normalize_timestamp(args.checked_at)
+    raw_records = [entry["posting"] for entry in session["entries"]]
+    check = upsert_records(store, raw_records, session["source"], timestamp, complete=session["completeSourceCheck"])
+    changed = {"employers", "postings", "observations"}
+    stamp_changed(store, changed, timestamp)
+    errors = validate_store(store)
+    if errors:
+        raise ValueError("Validation failed before writing:\n" + "\n".join(errors))
+    print_check(check)
+    save_store(args.root, store, changed, args.dry_run)
+    if args.dry_run:
+        print("Session preserved. Run finish again without --dry-run when ready.")
+    else:
+        operator_session_path(args.root).unlink()
+        print("Source check finalized and operator session cleared.")
+    return 0
+
+
+def command_operator_cancel(args: argparse.Namespace) -> int:
+    session = load_operator_session(args.root)
+    if not args.confirm:
+        raise ValueError("Re-run cancel with --confirm to discard the staged check.")
+    operator_session_path(args.root).unlink()
+    print(f"Discarded the staged check for '{session['source']}'. No dataset files were changed.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT, help="Repository root")
@@ -757,6 +1010,43 @@ def build_parser() -> argparse.ArgumentParser:
     summary.add_argument("--output", type=Path)
     summary.add_argument("--dry-run", action="store_true")
     summary.set_defaults(func=command_summary)
+
+    operator = subparsers.add_parser("operator", help="Guided workflow for entering and finalizing a source check")
+    operator_commands = operator.add_subparsers(dest="operator_command", required=True)
+
+    begin = operator_commands.add_parser("begin", help="Begin a partial or explicitly complete source check")
+    begin.add_argument("--source", help="Stable name used for every check of this career-page source")
+    begin.add_argument("--started-at")
+    begin.add_argument("--complete-source-check", action="store_true", help="Treat this as a complete snapshot eligible to close missing jobs")
+    begin.set_defaults(func=command_operator_begin)
+
+    add = operator_commands.add_parser("add", help="Interactively stage one job in the active source check")
+    add.add_argument("--employer", help="Existing employer name/id or a new employer name")
+    add.add_argument("--employer-type", choices=sorted(EMPLOYER_TYPES))
+    add.add_argument("--career-url")
+    add.add_argument("--url")
+    add.add_argument("--title")
+    add.add_argument("--location")
+    add.add_argument("--remote", action="store_true", default=None)
+    add.add_argument("--salary")
+    add.add_argument("--posted-date")
+    add.add_argument("--source-posting-id")
+    add.add_argument("--employment-type")
+    add.add_argument("--non-interactive", action="store_true", help="Do not prompt for optional values")
+    add.set_defaults(func=command_operator_add)
+
+    status = operator_commands.add_parser("status", help="Review the active source check")
+    status.set_defaults(func=command_operator_status)
+
+    finish = operator_commands.add_parser("finish", help="Validate and finalize the active source check")
+    finish.add_argument("--checked-at")
+    finish.add_argument("--confirm-close-missing", action="store_true", help="Required for a complete source check")
+    finish.add_argument("--dry-run", action="store_true")
+    finish.set_defaults(func=command_operator_finish)
+
+    cancel = operator_commands.add_parser("cancel", help="Discard the active staged check without changing datasets")
+    cancel.add_argument("--confirm", action="store_true")
+    cancel.set_defaults(func=command_operator_cancel)
     return parser
 
 

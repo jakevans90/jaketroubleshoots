@@ -12,11 +12,13 @@ The authoritative files live in `data/htm-hiring-pulse/`:
 - `observations.json`
 - `role-taxonomy.json`
 
-Every file is a JSON object with `schemaVersion: 1`. Any breaking field or
-meaning change requires a new schema version and a migration. Timestamps are
-UTC ISO-8601 strings. Nullable fields are present with `null`; they are not
-silently omitted. IDs are deterministic SHA-256-derived identifiers, so the
-same normalized entity receives the same ID across runs.
+Every file is a versioned JSON object. Employers, observations, and taxonomy
+currently use schema version 1; postings use version 2, which added the optional
+posted date. Any further breaking field or meaning change requires a new schema
+version and a migration. Timestamps are UTC ISO-8601 strings. Nullable fields
+are present with `null`; they are not silently omitted. IDs are deterministic
+SHA-256-derived identifiers, so the same normalized entity receives the same ID
+across runs.
 
 ## Stable schemas
 
@@ -50,6 +52,7 @@ The root contains `schemaVersion`, `updatedAt`, and `records`. Each posting has:
 | `source` | string | Name of the checked source |
 | `source_posting_id` | string or null | Source-native job identifier |
 | `employment_type`, `experience_level`, `salary_text`, `description_snippet` | string or null | Optional discovery metadata |
+| `posted_date` | `YYYY-MM-DD` or null | Employer-provided posting date when available |
 | `dedupe_key` | string | Hash of employer, title, location, and canonical URL |
 | `first_seen` / `last_seen` | timestamp | Discovery window |
 | `status` | enum | `active` or `closed` |
@@ -116,6 +119,60 @@ python tools/htm_hiring_pulse.py summary --since-days 7 --output reports/htm-hir
 Mutation commands and summary output support `--dry-run`. A dry run performs the
 full transformation and validation but writes no files.
 
+## Operator workflow
+
+The operator commands maintain one local source check at a time. The temporary
+session is ignored by Git and does not change the four authoritative datasets
+until the check is finalized.
+
+### Partial check
+
+Use a partial check when entering one or several jobs but not reviewing every
+currently listed job from that source:
+
+```sh
+python tools/htm_hiring_pulse.py operator begin --source example-health-careers
+python tools/htm_hiring_pulse.py operator add
+python tools/htm_hiring_pulse.py operator status
+python tools/htm_hiring_pulse.py operator finish --dry-run
+python tools/htm_hiring_pulse.py operator finish
+```
+
+`operator add` displays known employers for selection and prompts for employer,
+job URL, title, location, remote status, salary, and posted date. Optional values
+may be left blank. It immediately reports whether the entry is new, matches an
+existing posting, or replaces a duplicate already staged in the current check.
+URLs, locations, role categories, and dates are normalized before staging.
+
+Run `operator add` once per job. `operator status` can be used at any point to
+review the current source and staged jobs. A dry-run performs the exact final
+deduplication, observation, and validation steps without writing or clearing the
+session.
+
+### Complete source check
+
+Only use a complete check after reviewing the entire current result set from a
+single source. Begin it explicitly:
+
+```sh
+python tools/htm_hiring_pulse.py operator begin --source example-health-careers --complete-source-check
+python tools/htm_hiring_pulse.py operator add
+python tools/htm_hiring_pulse.py operator status
+python tools/htm_hiring_pulse.py operator finish --dry-run --confirm-close-missing
+python tools/htm_hiring_pulse.py operator finish --confirm-close-missing
+```
+
+Complete checks require the closure flag again at finish. Only then are active
+postings from that same source marked closed when absent from the staged list.
+Partial checks never close missing jobs. The finish command validates the entire
+cross-linked store before any write occurs.
+
+To abandon a staged check without changing authoritative data:
+
+```sh
+python tools/htm_hiring_pulse.py operator cancel --confirm
+```
+
 ## Ingest format
 
 Input may be an array or an object with a `postings` array:
@@ -142,6 +199,7 @@ Input may be an array or an object with a `postings` array:
       "employmentType": "Full-time",
       "experienceLevel": "Mid-level",
       "salaryText": null,
+      "postedDate": "2026-10-01",
       "descriptionSnippet": "Supports inspection, maintenance, and repair."
     }
   ]
