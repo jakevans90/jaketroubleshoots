@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="datePublished" content="2026-10-01">
+  <meta name="dateModified" content="2026-10-02">
   <title>How MRI Gradient Coils Create an Image | Jake Troubleshoots</title>
   <meta name="description" content="A practical explanation of how MRI gradient coils and amplifiers perform slice selection, frequency and phase encoding, spatial calibration, timing, cooling, and image formation.">
   <link rel="stylesheet" href="../style.css?v=20260920-2">
@@ -21,6 +23,7 @@
 </header>
 <section class="hero">
   <h1 id="page-heading" tabindex="-1">How MRI Gradient Coils Create an Image</h1>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.9em;">Published October 1, 2026 · Revised October 2, 2026</p>
   <p>How an MRI scanner uses carefully controlled magnetic-field changes to figure out where signals came from inside the patient — and why gradient problems can become image distortion, positioning errors, noise, or scan aborts</p>
   <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">MRI is one of those technologies that can feel almost magical from the outside.</p>
   <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
@@ -52,25 +55,9 @@
 
   <section class="content-box" id="the-simple-version">
     <h3>The Simple Version</h3>
-    <p>MRI first creates a signal from hydrogen inside the patient.</p>
-    <p>Then it needs to determine where that signal originated.</p>
-    <p>The gradient system does that by slightly changing magnetic-field strength across space.</p>
-    <p>A simplified chain looks like:</p>
-    <p><strong>Main Magnetic Field</strong></p>
-    <p>↓</p>
-    <p><strong>RF Excites Hydrogen</strong></p>
-    <p>↓</p>
-    <p><strong>Gradient Changes Magnetic Field by Position</strong></p>
-    <p>↓</p>
-    <p><strong>Hydrogen at Different Locations Behaves Slightly Differently</strong></p>
-    <p>↓</p>
-    <p><strong>Receiver Detects Combined Signal</strong></p>
-    <p>↓</p>
-    <p><strong>Computer Uses Encoded Differences to Determine Position</strong></p>
-    <p>↓</p>
-    <p><strong>Image Is Reconstructed</strong></p>
-    <p>The gradient coils are therefore not primarily creating the MR signal.</p>
-    <p>They are helping label that signal with spatial information.</p>
+    <p>The MRI’s main magnet and RF system create and detect signals from hydrogen, but those signals do not arrive with location labels. Gradient coils add small, precisely controlled changes to the magnetic field along three physical axes. Because the hydrogen response depends on local field strength, the scanner can make signal frequency and phase vary with position and use those differences to determine where the received signal originated.</p>
+    <p>During a sequence, the gradient system helps select a slice and encode position within that slice. Powerful gradient amplifiers drive rapidly changing current through the coils while the sequence controller coordinates those changes with RF transmission, signal reception, and data sampling. Reconstruction software then uses the encoded data to calculate the image rather than treating the receiver signal as a direct picture.</p>
+    <p>Image quality depends on accurate gradient strength, timing, linearity, axis orientation, cooling, and calibration. A gradient-related problem may appear as geometric distortion, incorrect slice position, ghosting, unusual acoustic noise, overheating, or an aborted scan. Troubleshooting should preserve the sequence, affected orientation, repeatability, error logs, calibration results, and whether the symptom changes with gradient demand instead of assuming every artifact comes from the RF coil.</p>
   </section>
 
   <section class="content-box" id="start-with-the-main-magnetic-field">
