@@ -161,6 +161,8 @@ RELATED = {
     "how-pet-detectors-turn-gamma-rays-into-an-image": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-medical-device-cooling-systems-work"],
     "how-fluoroscopy-automatic-exposure-rate-control-works": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-medical-device-cooling-systems-work", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-digital-mammography-creates-and-processes-an-image": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "how-to-compare-your-test-result-to-manufacturer-specification", "how-ct-gantry-rotation-and-data-acquisition-work"],
+    "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image", "how-ct-gantry-rotation-and-data-acquisition-work", "fuses-breakers-and-power-supplies-in-medical-equipment"],
+    "how-mri-rf-coils-transmit-and-receive-signal": ["how-mri-gradient-coils-create-an-image", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-medical-device-cooling-systems-work"],
 }
 
 ARTICLE_CONFIG = {
@@ -973,6 +975,18 @@ ARTICLE_CONFIG = {
         "badge": "Mammography",
         "cardNote": "Compression, exposure control, detector calibration, processing, and tomosynthesis",
     },
+    "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure": {
+        "description": "A practical explanation of how an X-ray generator converts ordinary electrical power into controlled high voltage and tube current while coordinating filament heating, rotor operation, exposure timing, and protection.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Generation",
+        "cardNote": "High voltage, tube current, filament control, exposure timing, and protection",
+    },
+    "how-mri-rf-coils-transmit-and-receive-signal": {
+        "description": "A practical explanation of how MRI RF coils transmit radiofrequency energy, receive the returning signal, route coil channels, suppress noise, and contribute to image quality.",
+        "category": "How Medical Equipment Works",
+        "badge": "MRI Imaging",
+        "cardNote": "RF transmission, receive coils, channel paths, signal quality, and noise",
+    },
 }
 
 
@@ -994,7 +1008,7 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
         lines.pop(0)
     intro = ""
     intro_lines = []
-    while lines and not re.match(r"^#{1,2} ", lines[0]):
+    while lines and not re.match(r"^#{1,3} ", lines[0]):
         if lines[0].strip():
             intro_lines.append(lines[0].strip())
         elif intro_lines:
@@ -1005,7 +1019,7 @@ def split_article(body: str) -> tuple[str, str, list[tuple[str, list[str]]]]:
     current_title = ""
     current_lines: list[str] = []
     for line in lines:
-        match = re.match(r"^#{1,2} (.+)$", line)
+        match = re.match(r"^#{1,3} (.+)$", line)
         if match:
             if current_title:
                 sections.append((current_title, current_lines))
