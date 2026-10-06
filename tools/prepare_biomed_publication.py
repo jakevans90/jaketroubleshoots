@@ -163,6 +163,8 @@ RELATED = {
     "how-digital-mammography-creates-and-processes-an-image": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "how-optical-sensors-work-in-medical-equipment", "how-to-compare-your-test-result-to-manufacturer-specification", "how-ct-gantry-rotation-and-data-acquisition-work"],
     "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image", "how-ct-gantry-rotation-and-data-acquisition-work", "fuses-breakers-and-power-supplies-in-medical-equipment"],
     "how-mri-rf-coils-transmit-and-receive-signal": ["how-mri-gradient-coils-create-an-image", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-medical-device-cooling-systems-work"],
+    "how-ct-detectors-and-hounsfield-units-work": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-mri-shimming-keeps-the-magnetic-field-uniform": ["how-mri-gradient-coils-create-an-image", "how-mri-rf-coils-transmit-and-receive-signal", "analog-vs-digital-signals", "sensors-and-transducers-basics", "service-mode-and-built-in-diagnostics-what-to-trust"],
 }
 
 ARTICLE_CONFIG = {
@@ -986,6 +988,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "MRI Imaging",
         "cardNote": "RF transmission, receive coils, channel paths, signal quality, and noise",
+    },
+    "how-ct-detectors-and-hounsfield-units-work": {
+        "description": "A practical explanation of how CT detector channels measure X-ray attenuation, undergo calibration and correction, and produce Hounsfield Units used to distinguish tissue types.",
+        "category": "How Medical Equipment Works",
+        "badge": "CT Imaging",
+        "cardNote": "Detector channels, attenuation data, calibration, correction, and Hounsfield Units",
+    },
+    "how-mri-shimming-keeps-the-magnetic-field-uniform": {
+        "description": "A practical explanation of how MRI systems measure and correct magnetic-field nonuniformity through passive and active shimming, and how poor shimming affects image quality.",
+        "category": "How Medical Equipment Works",
+        "badge": "MRI Imaging",
+        "cardNote": "Field uniformity, passive and active shimming, calibration, and image artifacts",
     },
 }
 

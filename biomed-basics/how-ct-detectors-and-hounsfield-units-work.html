@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How CT Detectors and Hounsfield Units Work | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how CT detector channels measure X-ray attenuation, undergo calibration and correction, and produce Hounsfield Units used to distinguish tissue types.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-ct-detectors-and-hounsfield-units-work.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How CT Detectors and Hounsfield Units Work</h1>
+  <p>How a CT scanner measures X-ray attenuation, corrects thousands of detector channels, and turns those measurements into Hounsfield Units that can distinguish air, fat, water, soft tissue, and bone</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A CT detector does not actually see organs, blood, bone, or a tumor. It sees X-rays.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a CT detector actually measures</li>
+      <li>X-ray attenuation</li>
+      <li>Detector arrays and channels</li>
+      <li>Scintillation detectors</li>
+      <li>Photodiodes</li>
+      <li>Detector electronics</li>
+      <li>Data acquisition systems</li>
+      <li>Offset and gain</li>
+      <li>Air calibration</li>
+      <li>Detector normalization</li>
+      <li>Projection data</li>
+      <li>Reconstruction</li>
+      <li>CT numbers</li>
+      <li>Hounsfield Units</li>
+      <li>Water and air reference values</li>
+      <li>Window and level</li>
+      <li>Uniformity</li>
+      <li>Noise</li>
+      <li>Ring artifacts</li>
+      <li>Detector drift</li>
+      <li>Why a scanner can make images and still fail QC</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A CT detector measures the amount of X-ray energy reaching it after the beam passes through the patient. Tissue that attenuates more radiation allows fewer photons to reach the detector. Tissue that attenuates less allows more to pass. The scanner repeats these measurements from a huge number of angles as the gantry rotates, creating projection data that describes how strongly different paths through the body attenuated the beam.</p>
+    <p>Those raw detector measurements cannot be turned directly into a clinical image. Individual detector channels have slightly different electronic offsets and sensitivities, so the scanner uses calibration data to normalize their responses. The reconstruction system then mathematically combines the corrected projection data and estimates the attenuation coefficient of the material represented by each reconstructed voxel. Those attenuation values are converted into CT numbers, commonly expressed as Hounsfield Units.</p>
+    <p>A CT image can therefore be wrong even when the detector is online and the scan completes. A drifting detector channel, stale calibration, unstable X-ray output, incorrect correction data, or reconstruction problem can change the final CT values or create artifacts. Preserve whether the problem is visible in a phantom, whether it stays fixed relative to the detector, whether water CT number or uniformity has shifted, whether recalibration changes the symptom, and whether the issue follows acquisition or reconstruction. Those clues are much more useful than treating every abnormal CT image as a bad tube or bad detector.</p>
+  </section>
+
+  <section class="content-box" id="start-with-x-ray-attenuation">
+    <h3>Start With X-Ray Attenuation</h3>
+    <p>CT depends on the fact that different materials weaken an X-ray beam by different amounts.</p>
+    <p>This weakening is called:</p>
+    <p><strong>Attenuation.</strong></p>
+    <p>As X-rays pass through matter, photons can be:</p>
+    <ul>
+      <li>Absorbed</li>
+      <li>Scattered</li>
+    </ul>
+    <p>The amount remaining in the original beam decreases.</p>
+  </section>
+
+  <section class="content-box" id="different-materials-attenuate-differently">
+    <h3>Different Materials Attenuate Differently</h3>
+    <p>Air attenuates very little.</p>
+    <p>Soft tissue attenuates more.</p>
+    <p>Bone attenuates much more.</p>
+    <p>That difference contains the information CT needs.</p>
+  </section>
+
+  <section class="content-box" id="the-detector-measures-what-survives">
+    <h3>The Detector Measures What Survives</h3>
+    <p>Imagine an X-ray beam with a known intensity entering the patient.</p>
+    <p>The detector measures the intensity that exits.</p>
+    <p>If a large fraction disappears:</p>
+    <p>The material along that path had relatively high attenuation.</p>
+    <p>If most of it survives:</p>
+    <p>Attenuation was lower.</p>
+  </section>
+
+  <section class="content-box" id="ct-is-not-measuring-density-directly">
+    <h3>CT Is Not Measuring Density Directly</h3>
+    <p>People often describe CT as showing:</p>
+    <p>Density.</p>
+    <p>That is a useful clinical shortcut.</p>
+    <p>Technically, CT is reconstructing X-ray attenuation.</p>
+    <p>Physical density influences attenuation, but so do:</p>
+    <ul>
+      <li>Atomic composition</li>
+      <li>X-ray energy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="beer-lambert-relationship">
+    <h3>Beer-Lambert Relationship</h3>
+    <p>X-ray attenuation can be described mathematically by an exponential relationship between:</p>
+    <ul>
+      <li>Initial X-ray intensity</li>
+      <li>Material thickness</li>
+      <li>Attenuation coefficient</li>
+    </ul>
+    <p>A working biomed does not need to calculate this by hand during routine service.</p>
+    <p>The important concept is:</p>
+    <p><strong>The detector measures transmitted radiation, and the scanner works backward to estimate what attenuation must have occurred.</strong></p>
+  </section>
+
+  <section class="content-box" id="one-measurement-is-not-enough">
+    <h3>One Measurement Is Not Enough</h3>
+    <p>Suppose the detector reports:</p>
+    <p>50% of the original beam remained.</p>
+    <p>That does not tell the scanner exactly where along that path the attenuation occurred.</p>
+    <p>It only describes the total effect along the entire beam path.</p>
+  </section>
+
+  <section class="content-box" id="rotation-solves-the-location-problem">
+    <h3>Rotation Solves the Location Problem</h3>
+    <p>The scanner measures the patient from many angles.</p>
+    <p>Each new angle provides another set of paths through the anatomy.</p>
+    <p>The reconstruction computer combines those intersecting measurements to estimate attenuation at individual locations inside the patient.</p>
+  </section>
+
+  <section class="content-box" id="detector-array">
+    <h3>Detector Array</h3>
+    <p>CT scanners use arrays containing many detector elements.</p>
+    <p>The exact geometry varies by scanner generation and design.</p>
+    <p>Modern scanners may have many detector rows extending along the patient's head-to-foot direction.</p>
+  </section>
+
+  <section class="content-box" id="each-detector-element-is-a-measurement-channel">
+    <h3>Each Detector Element Is a Measurement Channel</h3>
+    <p>Every channel contributes information about one portion of the X-ray beam.</p>
+    <p>That means consistency between channels matters enormously.</p>
+  </section>
+
+  <section class="content-box" id="if-one-channel-reads-differently">
+    <h3>If One Channel Reads Differently</h3>
+    <p>The reconstruction system may interpret that difference as:</p>
+    <p>Real patient attenuation.</p>
+    <p>Unless calibration corrects it.</p>
+  </section>
+
+  <section class="content-box" id="ct-detector-construction">
+    <h3>CT Detector Construction</h3>
+    <p>Modern CT detectors commonly use scintillation materials coupled to photodiodes.</p>
+    <p>The basic conversion chain is:</p>
+    <p><strong>X-Ray Photon</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillator</strong></p>
+    <p>↓</p>
+    <p><strong>Visible Light</strong></p>
+    <p>↓</p>
+    <p><strong>Photodiode</strong></p>
+    <p>↓</p>
+    <p><strong>Electrical Signal</strong></p>
+  </section>
+
+  <section class="content-box" id="scintillator">
+    <h3>Scintillator</h3>
+    <p>The scintillator absorbs X-ray energy and converts it into visible light.</p>
+    <p>Detector materials are chosen for properties such as:</p>
+    <ul>
+      <li>High X-ray absorption</li>
+      <li>Efficient light production</li>
+      <li>Fast response</li>
+      <li>Low afterglow</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-fast-response-matters">
+    <h3>Why Fast Response Matters</h3>
+    <p>CT acquires data very quickly.</p>
+    <p>The detector must respond to one measurement and be ready for the next without excessive residual signal.</p>
+  </section>
+
+  <section class="content-box" id="afterglow">
+    <h3>Afterglow</h3>
+    <p>Some scintillation materials continue producing a small amount of light after the original X-ray interaction.</p>
+    <p>This residual response is called:</p>
+    <p><strong>Afterglow.</strong></p>
+    <p>Too much could contaminate following measurements.</p>
+  </section>
+
+  <section class="content-box" id="photodiode">
+    <h3>Photodiode</h3>
+    <p>The photodiode converts scintillator light into electrical charge.</p>
+    <p>More detected X-ray energy generally produces:</p>
+    <p>More light</p>
+    <p>and therefore:</p>
+    <p>More electrical signal.</p>
+  </section>
+
+  <section class="content-box" id="detector-electronics">
+    <h3>Detector Electronics</h3>
+    <p>The photodiode signal is small.</p>
+    <p>Electronics must:</p>
+    <ul>
+      <li>Integrate it</li>
+      <li>Amplify it</li>
+      <li>Convert it to digital data</li>
+    </ul>
+    <p>with very high stability.</p>
+  </section>
+
+  <section class="content-box" id="data-acquisition-system">
+    <h3>Data Acquisition System</h3>
+    <p>The detector outputs feed into the:</p>
+    <p><strong>Data Acquisition System</strong>, or DAS.</p>
+    <p>The DAS converts detector signals into digital values the reconstruction system can use.</p>
+  </section>
+
+  <section class="content-box" id="the-das-has-a-huge-job">
+    <h3>The DAS Has a Huge Job</h3>
+    <p>During a scan it must process:</p>
+    <ul>
+      <li>Many detector channels</li>
+      <li>Many angular positions</li>
+      <li>Rapid acquisitions</li>
+    </ul>
+    <p>with precise timing.</p>
+  </section>
+
+  <section class="content-box" id="channel-offset">
+    <h3>Channel Offset</h3>
+    <p>Even with no X-rays hitting a detector channel, the electronics may not produce a perfect zero.</p>
+    <p>There can be a small baseline signal.</p>
+    <p>This is:</p>
+    <p><strong>Offset.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-offset-needs-correction">
+    <h3>Why Offset Needs Correction</h3>
+    <p>Suppose two channels receive no radiation.</p>
+    <p>Channel A reports:</p>
+    <p>10 counts.</p>
+    <p>Channel B reports:</p>
+    <p>14 counts.</p>
+    <p>If those baselines are not corrected, the system may interpret the four-count difference as real signal.</p>
+  </section>
+
+  <section class="content-box" id="gain">
+    <h3>Gain</h3>
+    <p>Different detector channels can also respond differently to the same amount of radiation.</p>
+    <p>That difference is often described as:</p>
+    <p><strong>Gain variation.</strong></p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Expose two channels equally.</p>
+    <p>Channel A produces:</p>
+    <p>10,000 counts.</p>
+    <p>Channel B:</p>
+    <p>9,700 counts.</p>
+    <p>Neither channel must necessarily be defective.</p>
+    <p>Manufacturing and electronic differences exist.</p>
+    <p>The scanner calibrates them.</p>
+  </section>
+
+  <section class="content-box" id="detector-normalization">
+    <h3>Detector Normalization</h3>
+    <p>Calibration allows the scanner to normalize individual detector responses so a uniform X-ray field produces a uniform interpreted response.</p>
+  </section>
+
+  <section class="content-box" id="air-calibration">
+    <h3>Air Calibration</h3>
+    <p>CT systems commonly perform calibration with no patient or phantom in the beam.</p>
+    <p>The X-ray beam passes through:</p>
+    <p>Air.</p>
+    <p>The scanner measures how each detector channel responds.</p>
+  </section>
+
+  <section class="content-box" id="why-use-air">
+    <h3>Why Use Air?</h3>
+    <p>Air provides a predictable low-attenuation reference condition.</p>
+    <p>It lets the scanner characterize:</p>
+    <ul>
+      <li>Detector channel response</li>
+      <li>X-ray source characteristics</li>
+      <li>Electronic offset/gain relationships</li>
+    </ul>
+    <p>depending on calibration design.</p>
+  </section>
+
+  <section class="content-box" id="the-system-builds-correction-data">
+    <h3>The System Builds Correction Data</h3>
+    <p>When future scans occur, the scanner can compensate for known channel differences.</p>
+  </section>
+
+  <section class="content-box" id="calibration-does-not-repair-a-bad-detector">
+    <h3>Calibration Does Not Repair a Bad Detector</h3>
+    <p>This is important.</p>
+    <p>Calibration can correct stable differences.</p>
+    <p>It cannot necessarily compensate for a detector channel that is:</p>
+    <ul>
+      <li>Intermittent</li>
+      <li>Noisy</li>
+      <li>Unstable</li>
+      <li>Drifting rapidly</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="stable-error-vs-unstable-error">
+    <h3>Stable Error vs Unstable Error</h3>
+    <p>A detector that is always 2% low may be correctable.</p>
+    <p>A detector that randomly changes between:</p>
+    <p>Normal</p>
+    <p>and:</p>
+    <p>20% low</p>
+    <p>is much harder to correct.</p>
+  </section>
+
+  <section class="content-box" id="drift">
+    <h3>Drift</h3>
+    <p>Detector response can change over time because of:</p>
+    <ul>
+      <li>Temperature</li>
+      <li>Aging</li>
+      <li>Electronics</li>
+      <li>Radiation exposure</li>
+    </ul>
+    <p>That is why periodic calibration and QC matter.</p>
+  </section>
+
+  <section class="content-box" id="detector-temperature">
+    <h3>Detector Temperature</h3>
+    <p>Detector output can be temperature-dependent.</p>
+    <p>Modern CT systems control or compensate for detector temperature.</p>
+  </section>
+
+  <section class="content-box" id="warm-up-and-stability">
+    <h3>Warm-Up and Stability</h3>
+    <p>A scanner that has been off for an extended time may require:</p>
+    <ul>
+      <li>Warm-up</li>
+      <li>Calibration</li>
+    </ul>
+    <p>before stable quantitative imaging.</p>
+    <p>Follow OEM procedures.</p>
+  </section>
+
+  <section class="content-box" id="projection-data">
+    <h3>Projection Data</h3>
+    <p>After correction, the detector readings become part of the raw projection dataset.</p>
+    <p>Each projection describes X-ray attenuation along many paths through the patient at one tube angle.</p>
+  </section>
+
+  <section class="content-box" id="sinogram">
+    <h3>Sinogram</h3>
+    <p>CT projection data can be represented in a form called a:</p>
+    <p><strong>Sinogram.</strong></p>
+    <p>This is not a clinical image.</p>
+    <p>It is a representation of projection measurements arranged by detector position and angle.</p>
+  </section>
+
+  <section class="content-box" id="why-raw-data-can-be-useful">
+    <h3>Why Raw Data Can Be Useful</h3>
+    <p>Certain detector defects become easier to recognize before reconstruction.</p>
+    <p>A bad detector channel may create a recognizable pattern in raw projection or sinogram data.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction">
+    <h3>Reconstruction</h3>
+    <p>The computer mathematically reconstructs attenuation values from the projection measurements.</p>
+    <p>Historically, methods such as:</p>
+    <p><strong>Filtered back projection</strong></p>
+    <p>were widely used.</p>
+    <p>Modern CT also uses various forms of:</p>
+    <ul>
+      <li>Iterative reconstruction</li>
+      <li>Model-based reconstruction</li>
+      <li>AI-assisted reconstruction</li>
+    </ul>
+    <p>depending on scanner.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-produces-voxels">
+    <h3>Reconstruction Produces Voxels</h3>
+    <p>A CT image is made of pixels, but each reconstructed pixel represents a volume element with a finite slice thickness.</p>
+    <p>That three-dimensional element is called a:</p>
+    <p><strong>Voxel.</strong></p>
+  </section>
+
+  <section class="content-box" id="each-voxel-gets-an-attenuation-estimate">
+    <h3>Each Voxel Gets an Attenuation Estimate</h3>
+    <p>The reconstruction system estimates the linear attenuation coefficient for the material represented by that voxel.</p>
+  </section>
+
+  <section class="content-box" id="but-raw-attenuation-coefficients-are-not-convenient-clinically">
+    <h3>But Raw Attenuation Coefficients Are Not Convenient Clinically</h3>
+    <p>The numbers would be less intuitive and vary with measurement units.</p>
+    <p>CT therefore converts them to:</p>
+    <p><strong>Hounsfield Units.</strong></p>
+  </section>
+
+  <section class="content-box" id="hounsfield-units">
+    <h3>Hounsfield Units</h3>
+    <p>Hounsfield Units, or:</p>
+    <p><strong>HU</strong></p>
+    <p>place reconstructed attenuation on a standardized scale relative to water.</p>
+  </section>
+
+  <section class="content-box" id="water">
+    <h3>Water</h3>
+    <p>Water is defined approximately as:</p>
+    <p><strong>0 HU.</strong></p>
+  </section>
+
+  <section class="content-box" id="air">
+    <h3>Air</h3>
+    <p>Air is approximately:</p>
+    <p><strong>-1000 HU.</strong></p>
+  </section>
+
+  <section class="content-box" id="bone">
+    <h3>Bone</h3>
+    <p>Dense bone has strongly positive HU values.</p>
+    <p>Exact values vary substantially based on:</p>
+    <ul>
+      <li>Bone type</li>
+      <li>Scan technique</li>
+      <li>Reconstruction</li>
+      <li>Scanner</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fat">
+    <h3>Fat</h3>
+    <p>Fat commonly has negative CT numbers.</p>
+  </section>
+
+  <section class="content-box" id="soft-tissue">
+    <h3>Soft Tissue</h3>
+    <p>Many soft tissues cluster around modest positive values.</p>
+    <p>The exact numbers vary.</p>
+  </section>
+
+  <section class="content-box" id="why-water-is-so-important">
+    <h3>Why Water Is So Important</h3>
+    <p>Water provides a convenient reproducible reference material.</p>
+    <p>That is why CT QC often pays close attention to reconstructed water value.</p>
+  </section>
+
+  <section class="content-box" id="water-ct-number-shift">
+    <h3>Water CT Number Shift</h3>
+    <p>Suppose a water phantom should reconstruct near:</p>
+    <p>0 HU</p>
+    <p>but now measures:</p>
+    <p>+20 HU.</p>
+    <p>The image may still look like a uniform circle of water.</p>
+    <p>But quantitatively something has shifted.</p>
+  </section>
+
+  <section class="content-box" id="that-matters">
+    <h3>That Matters</h3>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Detector response</li>
+      <li>X-ray spectrum</li>
+      <li>Reconstruction correction</li>
+    </ul>
+    <p>depending on the system.</p>
+  </section>
+
+  <section class="content-box" id="hounsfield-unit-formula">
+    <h3>Hounsfield Unit Formula</h3>
+    <p>Conceptually, CT number compares the attenuation of a material with the attenuation of water.</p>
+    <p>You do not need to calculate it manually in routine service.</p>
+    <p>The important point is:</p>
+    <p><strong>HU is derived from measured attenuation.</strong></p>
+    <p>It is not simply an arbitrary grayscale number.</p>
+  </section>
+
+  <section class="content-box" id="pixel-value-vs-display-brightness">
+    <h3>Pixel Value vs Display Brightness</h3>
+    <p>A common source of confusion:</p>
+    <p>The underlying CT number is not the same as how bright the pixel appears on the monitor.</p>
+    <p>Display brightness depends on:</p>
+    <p><strong>Window and level.</strong></p>
+  </section>
+
+  <section class="content-box" id="window-level">
+    <h3>Window Level</h3>
+    <p>The level determines the center of the displayed HU range.</p>
+  </section>
+
+  <section class="content-box" id="window-width">
+    <h3>Window Width</h3>
+    <p>The width determines how large an HU range is displayed across the grayscale.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A narrow window can emphasize small differences in soft tissue.</p>
+    <p>A wide window can display a broader range useful for structures such as lung or bone.</p>
+  </section>
+
+  <section class="content-box" id="same-ct-data-different-appearance">
+    <h3>Same CT Data, Different Appearance</h3>
+    <p>The same reconstructed scan can look dramatically different with different window settings.</p>
+    <p>Nothing about the actual detector measurement changed.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-image-looks-too-bright-needs-clarification">
+    <h3>This Is Why “Image Looks Too Bright” Needs Clarification</h3>
+    <p>Is the problem:</p>
+    <ul>
+      <li>CT number?</li>
+      <li>Windowing?</li>
+      <li>Monitor?</li>
+      <li>Reconstruction?</li>
+    </ul>
+    <p>Those are different systems.</p>
+  </section>
+
+  <section class="content-box" id="ct-number-accuracy">
+    <h3>CT Number Accuracy</h3>
+    <p>QC may use known materials to verify reconstructed CT numbers.</p>
+    <p>If known material consistently reconstructs incorrectly:</p>
+    <p>That indicates a quantitative imaging problem.</p>
+  </section>
+
+  <section class="content-box" id="ct-number-uniformity">
+    <h3>CT Number Uniformity</h3>
+    <p>A uniform water phantom should produce reasonably consistent CT numbers across the image.</p>
+  </section>
+
+  <section class="content-box" id="center-vs-edge">
+    <h3>Center vs Edge</h3>
+    <p>Measurements may be taken at:</p>
+    <ul>
+      <li>Center</li>
+      <li>Peripheral locations</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="why-uniformity-matters">
+    <h3>Why Uniformity Matters</h3>
+    <p>If the same material appears:</p>
+    <p>0 HU in the center</p>
+    <p>but:</p>
+    <p>+15 HU at one edge,</p>
+    <p>the system is not treating identical material uniformly.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes-of-nonuniformity">
+    <h3>Possible Causes of Nonuniformity</h3>
+    <p>Depending on pattern:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Beam hardening correction</li>
+      <li>Detector</li>
+      <li>Bowtie/filter issue</li>
+      <li>Reconstruction</li>
+    </ul>
+    <p>may be considered.</p>
+  </section>
+
+  <section class="content-box" id="noise">
+    <h3>Noise</h3>
+    <p>Even a perfectly uniform phantom does not produce exactly the same CT value in every pixel.</p>
+    <p>Random statistical variation exists.</p>
+    <p>This appears as:</p>
+    <p><strong>Image noise.</strong></p>
+  </section>
+
+  <section class="content-box" id="quantum-noise">
+    <h3>Quantum Noise</h3>
+    <p>X-rays arrive as discrete photons.</p>
+    <p>The number detected has natural statistical variation.</p>
+    <p>Fewer photons generally mean:</p>
+    <p>More relative quantum noise.</p>
+  </section>
+
+  <section class="content-box" id="higher-dose">
+    <h3>Higher Dose</h3>
+    <p>More detected photons can reduce quantum noise.</p>
+    <p>That is why image quality and dose are linked.</p>
+  </section>
+
+  <section class="content-box" id="but-noise-has-other-sources">
+    <h3>But Noise Has Other Sources</h3>
+    <p>Noise can also involve:</p>
+    <ul>
+      <li>Detector electronics</li>
+      <li>Reconstruction settings</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="measuring-noise">
+    <h3>Measuring Noise</h3>
+    <p>QC commonly measures the standard deviation of CT numbers in a uniform region.</p>
+    <p>A larger standard deviation means:</p>
+    <p>More variability.</p>
+  </section>
+
+  <section class="content-box" id="noise-trend">
+    <h3>Noise Trend</h3>
+    <p>If the same phantom and technique suddenly produce substantially higher noise:</p>
+    <p>Something changed.</p>
+  </section>
+
+  <section class="content-box" id="do-not-blame-the-detector-immediately">
+    <h3>Do Not Blame the Detector Immediately</h3>
+    <p>Possible changes include:</p>
+    <ul>
+      <li>Tube output</li>
+      <li>mA</li>
+      <li>Reconstruction algorithm</li>
+      <li>Detector</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ring-artifacts">
+    <h3>Ring Artifacts</h3>
+    <p>Ring artifacts are one of the most classic CT detector-related patterns.</p>
+    <p>They appear as:</p>
+    <p>Circular or concentric rings.</p>
+  </section>
+
+  <section class="content-box" id="why-rings-form">
+    <h3>Why Rings Form</h3>
+    <p>Imagine one detector channel reads slightly wrong during every projection.</p>
+    <p>As the gantry rotates, that same detector channel traces a circular path around the reconstructed image.</p>
+    <p>Its repeated error becomes a ring.</p>
+  </section>
+
+  <section class="content-box" id="this-is-geometry-giving-you-a-clue">
+    <h3>This Is Geometry Giving You a Clue</h3>
+    <p>The shape of the artifact reflects how the acquisition system moved.</p>
+  </section>
+
+  <section class="content-box" id="ring-artifact-does-not-automatically-mean-replace-detector">
+    <h3>Ring Artifact Does Not Automatically Mean Replace Detector</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Detector calibration</li>
+      <li>Channel drift</li>
+      <li>Contamination</li>
+      <li>Hardware</li>
+    </ul>
+    <p>Run the appropriate OEM diagnostics.</p>
+  </section>
+
+  <section class="content-box" id="calibration-may-correct-a-stable-ring">
+    <h3>Calibration May Correct a Stable Ring</h3>
+    <p>If the problem is stable channel-response drift:</p>
+    <p>Approved recalibration may correct it.</p>
+  </section>
+
+  <section class="content-box" id="ring-returns-quickly">
+    <h3>Ring Returns Quickly</h3>
+    <p>If the same ring repeatedly comes back after calibration:</p>
+    <p>A detector channel may be unstable rather than simply miscalibrated.</p>
+  </section>
+
+  <section class="content-box" id="bad-detector-channel">
+    <h3>Bad Detector Channel</h3>
+    <p>A severely defective channel may:</p>
+    <ul>
+      <li>Produce incorrect signal</li>
+      <li>Produce no signal</li>
+      <li>Become excessively noisy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-redundancy-and-correction">
+    <h3>Detector Redundancy and Correction</h3>
+    <p>Modern systems may have sophisticated correction methods.</p>
+    <p>A small detector defect does not always produce a dramatic clinical artifact.</p>
+  </section>
+
+  <section class="content-box" id="hidden-degradation">
+    <h3>Hidden Degradation</h3>
+    <p>This is why QC can find problems before clinicians report them.</p>
+  </section>
+
+  <section class="content-box" id="beam-hardening">
+    <h3>Beam Hardening</h3>
+    <p>X-ray attenuation depends on photon energy.</p>
+    <p>Lower-energy photons are absorbed more strongly than higher-energy photons.</p>
+    <p>As a polychromatic beam passes through the patient:</p>
+    <p>Its average energy increases.</p>
+    <p>This is:</p>
+    <p><strong>Beam hardening.</strong></p>
+  </section>
+
+  <section class="content-box" id="beam-hardening-correction">
+    <h3>Beam-Hardening Correction</h3>
+    <p>The CT reconstruction system applies corrections based on expected behavior.</p>
+  </section>
+
+  <section class="content-box" id="calibration-and-beam-spectrum-are-linked">
+    <h3>Calibration and Beam Spectrum Are Linked</h3>
+    <p>If tube output or filtration differs substantially from expected conditions:</p>
+    <p>Corrections may not work as intended.</p>
+  </section>
+
+  <section class="content-box" id="bowtie-filter">
+    <h3>Bowtie Filter</h3>
+    <p>CT uses shaped filtration to alter X-ray intensity across the fan beam.</p>
+    <p>The filter reduces unnecessary peripheral exposure and helps manage detector dynamic range.</p>
+  </section>
+
+  <section class="content-box" id="wrong-filter-position">
+    <h3>Wrong Filter Position</h3>
+    <p>A filter-position or identification problem can therefore influence:</p>
+    <ul>
+      <li>Detector exposure</li>
+      <li>Calibration</li>
+      <li>Uniformity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="scatter">
+    <h3>Scatter</h3>
+    <p>Scatter also changes detector measurements.</p>
+    <p>CT geometry and reconstruction corrections reduce its impact, but it remains part of the physical system.</p>
+  </section>
+
+  <section class="content-box" id="detector-saturation">
+    <h3>Detector Saturation</h3>
+    <p>Detector and DAS electronics have a finite measurable range.</p>
+    <p>Too much signal can exceed that range.</p>
+  </section>
+
+  <section class="content-box" id="photon-starvation">
+    <h3>Photon Starvation</h3>
+    <p>The opposite can occur through extremely attenuating anatomy or metal.</p>
+    <p>Too few photons reach some detector channels.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>The projection data becomes noisy or unreliable.</p>
+    <p>This can cause:</p>
+    <ul>
+      <li>Streaking</li>
+      <li>Noise</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="metal-artifact">
+    <h3>Metal Artifact</h3>
+    <p>Metal can produce a combination of:</p>
+    <ul>
+      <li>Severe attenuation</li>
+      <li>Beam hardening</li>
+      <li>Scatter</li>
+      <li>Photon starvation</li>
+    </ul>
+    <p>Modern correction methods help, but not all artifact means equipment failure.</p>
+  </section>
+
+  <section class="content-box" id="patient-vs-equipment-artifact">
+    <h3>Patient vs Equipment Artifact</h3>
+    <p>This distinction matters.</p>
+    <p>An artifact caused by:</p>
+    <ul>
+      <li>Metal</li>
+      <li>Motion</li>
+    </ul>
+    <p>may vary with the patient.</p>
+    <p>A detector-related ring may repeat on:</p>
+    <ul>
+      <li>Phantom</li>
+      <li>Multiple patients</li>
+    </ul>
+    <p>in the same detector coordinates.</p>
+  </section>
+
+  <section class="content-box" id="phantom-testing-removes-patient-variables">
+    <h3>Phantom Testing Removes Patient Variables</h3>
+    <p>That is why QC phantoms are so valuable.</p>
+  </section>
+
+  <section class="content-box" id="water-phantom">
+    <h3>Water Phantom</h3>
+    <p>A simple uniform phantom can tell you a surprising amount.</p>
+    <p>It can help evaluate:</p>
+    <ul>
+      <li>CT number</li>
+      <li>Uniformity</li>
+      <li>Noise</li>
+      <li>Artifact</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="a-scanner-can-pass-startup-and-still-fail-the-water-phantom">
+    <h3>A Scanner Can Pass Startup and Still Fail the Water Phantom</h3>
+    <p>Startup proves the system can initialize.</p>
+    <p>It does not prove quantitative image performance.</p>
+  </section>
+
+  <section class="content-box" id="detector-communication-fault">
+    <h3>Detector Communication Fault</h3>
+    <p>The system may directly report a detector or DAS communication error.</p>
+    <p>That is different from subtle image degradation.</p>
+  </section>
+
+  <section class="content-box" id="hard-failure">
+    <h3>Hard Failure</h3>
+    <p>A detector module does not communicate.</p>
+    <p>Scan may be:</p>
+    <ul>
+      <li>Aborted</li>
+      <li>Inhibited</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="soft-failure">
+    <h3>Soft Failure</h3>
+    <p>All modules communicate.</p>
+    <p>One channel is drifting.</p>
+    <p>Scan completes.</p>
+    <p>Image quality slowly deteriorates.</p>
+    <p>Soft failures are often more interesting.</p>
+  </section>
+
+  <section class="content-box" id="das-failure">
+    <h3>DAS Failure</h3>
+    <p>Do not assume every detector-related symptom originates in the scintillator itself.</p>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>Detector electronics</li>
+      <li>DAS</li>
+      <li>Power</li>
+      <li>Communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="rotating-side-power">
+    <h3>Rotating-Side Power</h3>
+    <p>The detector system rides on the rotating gantry.</p>
+    <p>It depends on stable power.</p>
+    <p>A power problem can therefore affect:</p>
+    <ul>
+      <li>Detector modules</li>
+      <li>Acquisition electronics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="data-transfer">
+    <h3>Data Transfer</h3>
+    <p>Digital projection data must move from the rotating gantry to the stationary reconstruction system.</p>
+    <p>Communication failure can produce:</p>
+    <ul>
+      <li>Acquisition abort</li>
+      <li>Missing raw data</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="raw-data-vs-image-data">
+    <h3>Raw Data vs Image Data</h3>
+    <p>If raw acquisition completes correctly but images reconstruct incorrectly:</p>
+    <p>Look farther downstream.</p>
+    <p>If raw data itself is abnormal:</p>
+    <p>Look farther upstream.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-kernel">
+    <h3>Reconstruction Kernel</h3>
+    <p>The selected reconstruction kernel can strongly change image:</p>
+    <ul>
+      <li>Sharpness</li>
+      <li>Noise</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="sharp-kernel">
+    <h3>Sharp Kernel</h3>
+    <p>May improve edge detail but increase visible noise.</p>
+  </section>
+
+  <section class="content-box" id="smooth-kernel">
+    <h3>Smooth Kernel</h3>
+    <p>Can reduce noise but soften detail.</p>
+  </section>
+
+  <section class="content-box" id="do-not-compare-qc-images-using-different-reconstruction-settings">
+    <h3>Do Not Compare QC Images Using Different Reconstruction Settings</h3>
+    <p>The test conditions need to match.</p>
+  </section>
+
+  <section class="content-box" id="iterative-reconstruction">
+    <h3>Iterative Reconstruction</h3>
+    <p>Modern algorithms can significantly change noise appearance.</p>
+    <p>If software or protocol changes:</p>
+    <p>Historical image appearance may change without hardware degradation.</p>
+  </section>
+
+  <section class="content-box" id="software-update">
+    <h3>Software Update</h3>
+    <p>After a reconstruction-software update:</p>
+    <p>Do not immediately assume hardware failure if image texture changes.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Protocol</li>
+      <li>Algorithm</li>
+      <li>Release behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="ct-number-can-be-energy-dependent">
+    <h3>CT Number Can Be Energy-Dependent</h3>
+    <p>Materials other than water can produce different HU values at different kVp because attenuation characteristics change with photon energy.</p>
+  </section>
+
+  <section class="content-box" id="this-is-normal-physics">
+    <h3>This Is Normal Physics</h3>
+    <p>It is another reason QC should use the specified:</p>
+    <ul>
+      <li>Technique</li>
+      <li>Phantom</li>
+      <li>Acceptance range</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="dual-energy-and-spectral-ct">
+    <h3>Dual-Energy and Spectral CT</h3>
+    <p>Some modern scanners intentionally acquire or separate information at different X-ray energies.</p>
+    <p>These systems can derive information beyond conventional single-energy CT numbers.</p>
+  </section>
+
+  <section class="content-box" id="detector-technology-is-evolving">
+    <h3>Detector Technology Is Evolving</h3>
+    <p>Some systems use:</p>
+    <p>Energy-integrating detectors.</p>
+    <p>Newer systems may use:</p>
+    <p>Photon-counting detector technology.</p>
+  </section>
+
+  <section class="content-box" id="energy-integrating-detector">
+    <h3>Energy-Integrating Detector</h3>
+    <p>Traditional CT detectors measure the total deposited energy over an acquisition interval.</p>
+  </section>
+
+  <section class="content-box" id="photon-counting-detector">
+    <h3>Photon-Counting Detector</h3>
+    <p>A photon-counting detector can detect individual photon events and may separate them by energy range.</p>
+  </section>
+
+  <section class="content-box" id="why-that-matters">
+    <h3>Why That Matters</h3>
+    <p>It changes detector architecture and allows additional spectral information.</p>
+    <p>But the core principle remains:</p>
+    <p><strong>Measure transmitted X-rays accurately enough to reconstruct anatomy.</strong></p>
+  </section>
+
+  <section class="content-box" id="calibration-is-still-fundamental">
+    <h3>Calibration Is Still Fundamental</h3>
+    <p>Different detector technology does not eliminate:</p>
+    <ul>
+      <li>Gain</li>
+      <li>Threshold</li>
+      <li>Uniformity</li>
+    </ul>
+    <p>calibration needs.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-ring-artifact">
+    <h3>Real-World Example: Ring Artifact</h3>
+    <p>Technologists report a faint circular artifact.</p>
+    <p>Water phantom reproduces it at the same radius.</p>
+    <p>Air calibration reduces the ring temporarily.</p>
+    <p>It returns the next day.</p>
+    <p>One detector channel shows unstable response.</p>
+    <p>Now the issue is no longer simply:</p>
+    <blockquote><p>CT artifact.</p></blockquote>
+    <p>You have a repeatable detector-channel pattern.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-water-ct-number-shift">
+    <h3>Real-World Example: Water CT Number Shift</h3>
+    <p>Image looks generally normal.</p>
+    <p>QC water measurement changes from:</p>
+    <p>0 HU</p>
+    <p>to:</p>
+    <p>+16 HU.</p>
+    <p>Noise remains normal.</p>
+    <p>Detector calibration or beam/reconstruction correction now deserves investigation.</p>
+    <p>Clinical appearance alone would not have caught it.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-increased-noise">
+    <h3>Real-World Example: Increased Noise</h3>
+    <p>Routine phantom historically measures:</p>
+    <p>5 HU standard deviation.</p>
+    <p>Now:</p>
+    <p>9 HU.</p>
+    <p>Technique appears unchanged.</p>
+    <p>Further testing shows X-ray tube output is reduced.</p>
+    <p>The detector was accurately reporting fewer photons.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-edge-nonuniformity">
+    <h3>Real-World Example: Edge Nonuniformity</h3>
+    <p>Water center measures close to 0 HU.</p>
+    <p>Peripheral measurements shift progressively positive.</p>
+    <p>Detector communication is normal.</p>
+    <p>This pattern directs troubleshooting toward:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Beam-shaping/correction</li>
+    </ul>
+    <p>rather than one dead detector channel.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-scan-completes-but-reconstruction-fails">
+    <h3>Real-World Example: Scan Completes but Reconstruction Fails</h3>
+    <p>Detector acquisition completes.</p>
+    <p>Raw data exists.</p>
+    <p>No clinical images are produced.</p>
+    <p>Now the detector may have done its job.</p>
+    <p>The failure lies farther downstream in:</p>
+    <ul>
+      <li>Reconstruction</li>
+      <li>Storage</li>
+      <li>Software</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Assuming every CT image artifact is a detector failure.</strong> Patient motion, metal, beam hardening, tube output, calibration, and reconstruction can all create artifacts.</p>
+    <p><strong>Assuming a detector that communicates is a good detector.</strong> Communication does not prove calibration, stability, or channel accuracy.</p>
+    <p><strong>Recalibrating repeatedly without asking why calibration will not hold.</strong> A drifting detector channel may need repair rather than another normalization.</p>
+    <p><strong>Looking only at image appearance.</strong> CT-number accuracy, noise, and uniformity can fail before the image looks obviously bad.</p>
+    <p><strong>Comparing images reconstructed with different kernels.</strong> Reconstruction settings strongly influence noise and sharpness.</p>
+    <p><strong>Treating Hounsfield Units as display brightness.</strong> HU is reconstructed attenuation information. Window and level determine how those values are displayed.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-ct-detector-framework">
+    <h3>A Useful CT Detector Framework</h3>
+    <p>Think:</p>
+    <p><strong>X-Ray Output</strong></p>
+    <p>↓</p>
+    <p><strong>Patient / Phantom Attenuation</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillator</strong></p>
+    <p>↓</p>
+    <p><strong>Photodiode</strong></p>
+    <p>↓</p>
+    <p><strong>Detector Electronics</strong></p>
+    <p>↓</p>
+    <p><strong>DAS</strong></p>
+    <p>↓</p>
+    <p><strong>Offset / Gain Correction</strong></p>
+    <p>↓</p>
+    <p><strong>Projection Data</strong></p>
+    <p>↓</p>
+    <p><strong>Reconstruction</strong></p>
+    <p>↓</p>
+    <p><strong>Hounsfield Units</strong></p>
+    <p>↓</p>
+    <p><strong>Window / Level Display</strong></p>
+    <p>That chain helps separate acquisition, calibration, reconstruction, and display.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-question">
+    <h3>Another Useful Troubleshooting Question</h3>
+    <p>When a CT image is abnormal, ask:</p>
+    <p><strong>Is the measurement wrong, or is the measurement being displayed differently?</strong></p>
+    <p>Then ask:</p>
+    <p><strong>Is the problem present in raw acquisition, reconstructed CT numbers, or only the displayed image?</strong></p>
+    <p>Those questions can save a lot of random parts replacement.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If all detector modules report:</p>
+    <p>Online,</p>
+    <p>you proved:</p>
+    <p><strong>The scanner can currently communicate with those detector modules.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Channel gain correct</li>
+      <li>CT-number accuracy correct</li>
+      <li>Uniformity correct</li>
+    </ul>
+    <p>If a water phantom measures near:</p>
+    <p>0 HU</p>
+    <p>at the center:</p>
+    <p>You proved:</p>
+    <p><strong>The reconstructed water value at that location met the expected condition under that technique.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <ul>
+      <li>Peripheral uniformity</li>
+      <li>Noise performance</li>
+      <li>Every detector channel healthy</li>
+    </ul>
+    <p>If the full applicable QC procedure passes:</p>
+    <p>You have much stronger evidence that the acquisition and reconstruction chain is functioning properly under those controlled conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>CT detectors are not cameras.</p>
+    <p>They are precision measurement systems.</p>
+    <p>Each detector element measures X-ray energy.</p>
+    <p>The DAS turns those signals into numbers.</p>
+    <p>Calibration corrects channel differences.</p>
+    <p>Reconstruction turns thousands of measurements from different angles into estimated attenuation values.</p>
+    <p>Then those values become Hounsfield Units.</p>
+    <p>Only after all of that does the scanner turn them into the grayscale image the clinician sees.</p>
+    <p>That is why:</p>
+    <blockquote><p>It makes an image</p></blockquote>
+    <p>is such a weak test of CT performance.</p>
+    <p>The better questions are:</p>
+    <p><strong>Does known material reconstruct to the correct CT number?</strong></p>
+    <p><strong>Is uniform material actually uniform?</strong></p>
+    <p><strong>Has image noise changed?</strong></p>
+    <p><strong>Does an artifact remain fixed relative to detector geometry?</strong></p>
+    <p><strong>Does calibration correct the problem and stay corrected?</strong></p>
+    <p>Once you understand that chain, a ring artifact is not just a weird circle.</p>
+    <p>It is evidence.</p>
+    <p>A water-value shift is not just:</p>
+    <blockquote><p>QC being picky.</p></blockquote>
+    <p>It tells you the scanner's relationship between physical attenuation and reconstructed number has changed.</p>
+    <p>That is where CT troubleshooting becomes less about staring at pictures and more about understanding the measurements that created them.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>CT detector materials, detector geometry, DAS architecture, calibration routines, acceptable Hounsfield Unit values, uniformity limits, image-noise requirements, reconstruction algorithms, QC procedures, and service boundaries vary significantly by manufacturer, scanner model, protocol, and jurisdiction. Follow current OEM documentation, approved CT quality-control procedures, radiation-safety requirements, and qualified medical-physics guidance when evaluating quantitative CT image performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+      <li><a href="how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure.html">How an X-Ray Generator Creates High Voltage and Controls an Exposure</a></li>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
