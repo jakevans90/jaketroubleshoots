@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How a Gamma Camera and SPECT Create an Image | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how gamma cameras use collimators, scintillation crystals, photodetectors, energy windows, and rotating projections to create planar and SPECT images.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-a-gamma-camera-and-spect-create-an-image.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How a Gamma Camera and SPECT Create an Image</h1>
+  <p>How a gamma camera locates radiation coming from inside the patient, why the collimator does most of the directional work, and how rotating that detector turns nuclear-medicine projections into 3D SPECT images</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A gamma camera looks almost backwards compared with an X-ray machine.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What a radiopharmaceutical does</li>
+      <li>Gamma-ray emission</li>
+      <li>Why gamma cameras need collimators</li>
+      <li>Parallel-hole collimators</li>
+      <li>High-resolution vs high-sensitivity tradeoffs</li>
+      <li>Scintillation crystals</li>
+      <li>Sodium iodide crystals</li>
+      <li>Light production</li>
+      <li>Photomultiplier tubes</li>
+      <li>Position calculation</li>
+      <li>Energy measurement</li>
+      <li>Energy windows</li>
+      <li>Pulse-height analysis</li>
+      <li>Uniformity</li>
+      <li>Energy peaking</li>
+      <li>Flood-field calibration</li>
+      <li>SPECT rotation</li>
+      <li>Projection data</li>
+      <li>Reconstruction</li>
+      <li>Attenuation correction</li>
+      <li>Scatter correction</li>
+      <li>SPECT/CT</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A gamma camera detects photons emitted by a radioactive tracer inside the patient. Because the detector itself cannot tell which direction a gamma photon traveled from, a collimator sits in front of the detector and allows only certain trajectories to reach the scintillation crystal. When an accepted photon interacts with the crystal, the crystal produces a flash of visible light. Several photodetectors see different amounts of that light, allowing the camera to estimate where the event occurred and how much energy was deposited.</p>
+    <p>The system then applies an energy window so events near the expected gamma-ray energy are accepted while many scattered or unwanted events are rejected. Repeating that process thousands or millions of times creates a planar image showing where radiotracer activity is concentrated. Detector uniformity, energy calibration, photodetector gain, collimator condition, and electronics all influence whether those events are localized consistently across the field of view.</p>
+    <p>SPECT adds rotational geometry. One or more gamma-camera heads move around the patient and acquire planar projections from many angles. Reconstruction software uses those projections to estimate the three-dimensional tracer distribution. A SPECT problem can therefore originate in the detector itself, in detector calibration, in gantry motion, in center-of-rotation calibration, or in reconstruction and correction data. Preserve whether the artifact appears on planar imaging, whether it rotates with the detector, whether flood-field QC is abnormal, whether energy peaking shifted, and whether only reconstructed SPECT images are affected. Those clues immediately narrow the failure domain.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-radiopharmaceutical">
+    <h3>Start With the Radiopharmaceutical</h3>
+    <p>Nuclear medicine begins with a radioactive tracer.</p>
+    <p>The tracer is chosen so it participates in or localizes according to a biological process.</p>
+  </section>
+
+  <section class="content-box" id="examples-of-what-nuclear-medicine-can-show">
+    <h3>Examples of What Nuclear Medicine Can Show</h3>
+    <p>Depending on tracer and study:</p>
+    <ul>
+      <li>Bone metabolism</li>
+      <li>Myocardial perfusion</li>
+      <li>Renal function</li>
+      <li>Hepatobiliary function</li>
+      <li>Thyroid activity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-scanner-is-imaging-physiology">
+    <h3>The Scanner Is Imaging Physiology</h3>
+    <p>This is one of the major differences between nuclear medicine and many anatomical modalities.</p>
+    <p>The tracer distribution reflects:</p>
+    <p>Biological function.</p>
+  </section>
+
+  <section class="content-box" id="the-radiation-is-inside-the-patient">
+    <h3>The Radiation Is Inside the Patient</h3>
+    <p>The radioactive isotope emits gamma photons.</p>
+    <p>The camera surrounds or approaches the patient and waits for those photons to reach the detector.</p>
+  </section>
+
+  <section class="content-box" id="gamma-photons-are-highly-penetrating">
+    <h3>Gamma Photons Are Highly Penetrating</h3>
+    <p>That allows some emitted photons to escape the body and be detected.</p>
+  </section>
+
+  <section class="content-box" id="but-the-camera-has-a-direction-problem">
+    <h3>But the Camera Has a Direction Problem</h3>
+    <p>Imagine one photon hits the center of the detector.</p>
+    <p>Where did it originate?</p>
+    <p>It could have come from:</p>
+    <ul>
+      <li>Directly beneath the detector</li>
+      <li>An angle from the left</li>
+      <li>An angle from the right</li>
+    </ul>
+    <p>The impact position alone does not tell you.</p>
+  </section>
+
+  <section class="content-box" id="ordinary-lenses-do-not-work-for-gamma-rays">
+    <h3>Ordinary Lenses Do Not Work for Gamma Rays</h3>
+    <p>Visible light can be focused using glass lenses.</p>
+    <p>Gamma photons are too penetrating for ordinary optical focusing.</p>
+  </section>
+
+  <section class="content-box" id="the-collimator-solves-the-problem-mechanically">
+    <h3>The Collimator Solves the Problem Mechanically</h3>
+    <p>A gamma-camera collimator is a thick plate containing many channels.</p>
+    <p>It is typically made from a dense material such as:</p>
+    <p>Lead.</p>
+  </section>
+
+  <section class="content-box" id="parallel-hole-collimator">
+    <h3>Parallel-Hole Collimator</h3>
+    <p>A common design contains many small parallel holes.</p>
+  </section>
+
+  <section class="content-box" id="what-happens-to-a-straight-photon">
+    <h3>What Happens to a Straight Photon?</h3>
+    <p>A photon traveling approximately parallel to the hole can pass through and reach the detector.</p>
+  </section>
+
+  <section class="content-box" id="what-happens-to-an-angled-photon">
+    <h3>What Happens to an Angled Photon?</h3>
+    <p>It strikes the lead septa and is absorbed.</p>
+  </section>
+
+  <section class="content-box" id="in-plain-english">
+    <h3>In Plain English</h3>
+    <p>The collimator acts like millions of tiny directional tunnels.</p>
+  </section>
+
+  <section class="content-box" id="the-collimator-creates-spatial-information">
+    <h3>The Collimator Creates Spatial Information</h3>
+    <p>If a photon passes through a hole and hits a certain detector location:</p>
+    <p>The system has a better idea of where the photon originated.</p>
+  </section>
+
+  <section class="content-box" id="the-detector-alone-could-not-do-this">
+    <h3>The Detector Alone Could Not Do This</h3>
+    <p>This is one of the most important gamma-camera concepts.</p>
+    <p>The collimator is a major part of the imaging geometry.</p>
+  </section>
+
+  <section class="content-box" id="collimator-tradeoff">
+    <h3>Collimator Tradeoff</h3>
+    <p>A collimator cannot maximize both:</p>
+    <ul>
+      <li>Resolution</li>
+      <li>Sensitivity</li>
+    </ul>
+    <p>at the same time.</p>
+  </section>
+
+  <section class="content-box" id="high-resolution-collimator">
+    <h3>High-Resolution Collimator</h3>
+    <p>Narrower and/or longer holes improve directional discrimination.</p>
+    <p>Fewer photons get through.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Better spatial resolution.</p>
+    <p>Lower sensitivity.</p>
+  </section>
+
+  <section class="content-box" id="high-sensitivity-collimator">
+    <h3>High-Sensitivity Collimator</h3>
+    <p>Larger or shorter holes allow more photons through.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>More counts.</p>
+    <p>But poorer directional discrimination.</p>
+  </section>
+
+  <section class="content-box" id="there-is-always-a-tradeoff">
+    <h3>There Is Always a Tradeoff</h3>
+    <p>The collimator is selected based on:</p>
+    <ul>
+      <li>Isotope energy</li>
+      <li>Clinical application</li>
+      <li>Desired resolution</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="septa">
+    <h3>Septa</h3>
+    <p>The walls separating collimator holes are called:</p>
+    <p><strong>Septa.</strong></p>
+  </section>
+
+  <section class="content-box" id="septal-penetration">
+    <h3>Septal Penetration</h3>
+    <p>High-energy gamma photons can sometimes penetrate the lead septa instead of traveling through the intended hole.</p>
+  </section>
+
+  <section class="content-box" id="that-degrades-directional-accuracy">
+    <h3>That Degrades Directional Accuracy</h3>
+    <p>This is why collimators are designed for particular photon-energy ranges.</p>
+  </section>
+
+  <section class="content-box" id="wrong-collimator">
+    <h3>Wrong Collimator</h3>
+    <p>Using a collimator inappropriate for the radionuclide energy can produce poor imaging performance.</p>
+  </section>
+
+  <section class="content-box" id="collimator-damage">
+    <h3>Collimator Damage</h3>
+    <p>Collimators are heavy.</p>
+    <p>They can be physically damaged by:</p>
+    <ul>
+      <li>Impact</li>
+      <li>Dropping</li>
+      <li>Collision</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="bent-or-damaged-septa">
+    <h3>Bent or Damaged Septa</h3>
+    <p>A damaged region may create:</p>
+    <ul>
+      <li>Fixed image artifact</li>
+      <li>Local sensitivity change</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="collimator-face-can-look-fine">
+    <h3>Collimator Face Can Look Fine</h3>
+    <p>Internal septal damage may not always be obvious from casual external inspection.</p>
+  </section>
+
+  <section class="content-box" id="collimator-handling-matters">
+    <h3>Collimator Handling Matters</h3>
+    <p>These are precision imaging components, not just protective covers.</p>
+  </section>
+
+  <section class="content-box" id="after-the-collimator-the-crystal">
+    <h3>After the Collimator: The Crystal</h3>
+    <p>Gamma photons that pass through the collimator reach the:</p>
+    <p><strong>Scintillation crystal.</strong></p>
+  </section>
+
+  <section class="content-box" id="traditional-gamma-camera-crystal">
+    <h3>Traditional Gamma Camera Crystal</h3>
+    <p>A common material is:</p>
+    <p><strong>Sodium iodide activated with thallium</strong>, often written:</p>
+    <p>NaI(Tl).</p>
+  </section>
+
+  <section class="content-box" id="what-does-the-crystal-do">
+    <h3>What Does the Crystal Do?</h3>
+    <p>When a gamma photon deposits energy in the crystal:</p>
+    <p>A flash of visible light is produced.</p>
+  </section>
+
+  <section class="content-box" id="conversion-chain">
+    <h3>Conversion Chain</h3>
+    <p><strong>Gamma Photon</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillation Crystal</strong></p>
+    <p>↓</p>
+    <p><strong>Visible Light</strong></p>
+  </section>
+
+  <section class="content-box" id="crystal-thickness">
+    <h3>Crystal Thickness</h3>
+    <p>The crystal needs to be thick enough to efficiently absorb the gamma photons used for imaging.</p>
+  </section>
+
+  <section class="content-box" id="but-thickness-can-affect-resolution">
+    <h3>But Thickness Can Affect Resolution</h3>
+    <p>A very thick crystal can allow greater spread in interaction position.</p>
+    <p>Detector design balances:</p>
+    <ul>
+      <li>Sensitivity</li>
+      <li>Spatial resolution</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="crystal-is-hygroscopic">
+    <h3>Crystal Is Hygroscopic</h3>
+    <p>Sodium iodide absorbs moisture.</p>
+  </section>
+
+  <section class="content-box" id="that-is-a-big-deal">
+    <h3>That Is a Big Deal</h3>
+    <p>The crystal must remain sealed from the environment.</p>
+  </section>
+
+  <section class="content-box" id="crystal-seal-failure">
+    <h3>Crystal Seal Failure</h3>
+    <p>Moisture intrusion can damage the crystal.</p>
+    <p>Possible effects include:</p>
+    <ul>
+      <li>Clouding</li>
+      <li>Yellowing</li>
+      <li>Nonuniform response</li>
+    </ul>
+    <p>depending on damage.</p>
+  </section>
+
+  <section class="content-box" id="crystal-crack">
+    <h3>Crystal Crack</h3>
+    <p>The crystal can also crack.</p>
+  </section>
+
+  <section class="content-box" id="why-would-it-crack">
+    <h3>Why Would It Crack?</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Mechanical shock</li>
+      <li>Thermal stress</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="gamma-cameras-do-not-like-sudden-temperature-changes">
+    <h3>Gamma Cameras Do Not Like Sudden Temperature Changes</h3>
+    <p>Large rapid temperature changes can place stress on the crystal and housing.</p>
+  </section>
+
+  <section class="content-box" id="crystal-damage-can-produce-major-fixed-artifacts">
+    <h3>Crystal Damage Can Produce Major Fixed Artifacts</h3>
+    <p>The detector may still produce counts, but spatial response can be severely affected.</p>
+  </section>
+
+  <section class="content-box" id="light-guide">
+    <h3>Light Guide</h3>
+    <p>Between the crystal and photodetectors may be a:</p>
+    <p><strong>Light guide.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-it-does">
+    <h3>What It Does</h3>
+    <p>The light guide helps distribute scintillation light to multiple photodetectors.</p>
+  </section>
+
+  <section class="content-box" id="photomultiplier-tubes">
+    <h3>Photomultiplier Tubes</h3>
+    <p>Traditional gamma cameras use arrays of:</p>
+    <p><strong>Photomultiplier tubes</strong>, or PMTs.</p>
+  </section>
+
+  <section class="content-box" id="each-pmt-sees-some-of-the-light">
+    <h3>Each PMT Sees Some of the Light</h3>
+    <p>An event near one PMT:</p>
+    <p>That PMT receives more light.</p>
+    <p>Nearby PMTs receive less.</p>
+  </section>
+
+  <section class="content-box" id="the-pattern-reveals-position">
+    <h3>The Pattern Reveals Position</h3>
+    <p>The system compares the relative signal from multiple PMTs.</p>
+    <p>Using that distribution:</p>
+    <p>It calculates where the scintillation event occurred.</p>
+  </section>
+
+  <section class="content-box" id="this-is-sometimes-called-anger-logic">
+    <h3>This Is Sometimes Called Anger Logic</h3>
+    <p>The traditional gamma camera design is based on work by Hal Anger.</p>
+    <p>You may hear:</p>
+    <p><strong>Anger camera</strong></p>
+    <p>or:</p>
+    <p><strong>Anger logic.</strong></p>
+  </section>
+
+  <section class="content-box" id="position-calculation">
+    <h3>Position Calculation</h3>
+    <p>Conceptually:</p>
+    <p>More light on the left PMTs means the event probably occurred toward the left.</p>
+    <p>More light on the top PMTs means it probably occurred toward the top.</p>
+  </section>
+
+  <section class="content-box" id="the-actual-math-is-more-precise">
+    <h3>The Actual Math Is More Precise</h3>
+    <p>But that is the essential idea.</p>
+  </section>
+
+  <section class="content-box" id="pmt-also-provides-energy-information">
+    <h3>PMT Also Provides Energy Information</h3>
+    <p>The total amount of light produced depends on how much energy the gamma photon deposited.</p>
+  </section>
+
+  <section class="content-box" id="more-deposited-energy">
+    <h3>More Deposited Energy</h3>
+    <p>More scintillation light.</p>
+    <p>Larger combined PMT signal.</p>
+  </section>
+
+  <section class="content-box" id="energy-measurement">
+    <h3>Energy Measurement</h3>
+    <p>The camera therefore estimates:</p>
+    <p><strong>Photon energy</strong></p>
+    <p>from the total pulse amplitude.</p>
+  </section>
+
+  <section class="content-box" id="why-energy-matters">
+    <h3>Why Energy Matters</h3>
+    <p>The desired tracer emits photons at known energies.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Technetium-99m emits a prominent gamma photon around:</p>
+    <p>140 keV.</p>
+  </section>
+
+  <section class="content-box" id="scatter-changes-energy">
+    <h3>Scatter Changes Energy</h3>
+    <p>A photon that scatters inside the patient may lose energy before reaching the detector.</p>
+  </section>
+
+  <section class="content-box" id="compton-scatter">
+    <h3>Compton Scatter</h3>
+    <p>This is a major source of unwanted events in nuclear imaging.</p>
+  </section>
+
+  <section class="content-box" id="scattered-photon-direction-is-wrong">
+    <h3>Scattered Photon Direction Is Wrong</h3>
+    <p>The photon may enter the collimator from a direction that no longer points back to its original source.</p>
+  </section>
+
+  <section class="content-box" id="that-reduces-image-accuracy">
+    <h3>That Reduces Image Accuracy</h3>
+    <p>The system therefore tries to reject many scattered photons using:</p>
+    <p><strong>Energy discrimination.</strong></p>
+  </section>
+
+  <section class="content-box" id="pulse-height-analyzer">
+    <h3>Pulse-Height Analyzer</h3>
+    <p>The electronics measure pulse amplitude.</p>
+    <p>That corresponds approximately to deposited energy.</p>
+  </section>
+
+  <section class="content-box" id="energy-spectrum">
+    <h3>Energy Spectrum</h3>
+    <p>If you plotted all detected event energies:</p>
+    <p>You would see a distribution.</p>
+  </section>
+
+  <section class="content-box" id="photopeak">
+    <h3>Photopeak</h3>
+    <p>Events depositing the expected full photon energy form a peak known as the:</p>
+    <p><strong>Photopeak.</strong></p>
+  </section>
+
+  <section class="content-box" id="energy-window">
+    <h3>Energy Window</h3>
+    <p>The camera accepts events within a selected range around the photopeak.</p>
+  </section>
+
+  <section class="content-box" id="example-concept">
+    <h3>Example Concept</h3>
+    <p>For a 140 keV photon:</p>
+    <p>The camera may accept an energy range around 140 keV.</p>
+    <p>Exact clinical windows vary.</p>
+  </section>
+
+  <section class="content-box" id="events-outside-the-window">
+    <h3>Events Outside the Window</h3>
+    <p>May be rejected.</p>
+    <p>This helps reduce:</p>
+    <ul>
+      <li>Scatter</li>
+      <li>Electronic noise</li>
+      <li>Unwanted radionuclide events</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="energy-peaking">
+    <h3>Energy Peaking</h3>
+    <p>The camera must know where the photopeak appears in its electronics.</p>
+  </section>
+
+  <section class="content-box" id="pmt-gain-drift">
+    <h3>PMT Gain Drift</h3>
+    <p>If PMT gain changes:</p>
+    <p>The measured pulse amplitude changes.</p>
+    <p>The photopeak appears to shift.</p>
+  </section>
+
+  <section class="content-box" id="energy-calibration">
+    <h3>Energy Calibration</h3>
+    <p>The camera adjusts or calibrates channel gain so the correct photon energy corresponds to the expected electronic response.</p>
+  </section>
+
+  <section class="content-box" id="energy-peak-shift">
+    <h3>Energy Peak Shift</h3>
+    <p>If the system expects:</p>
+    <p>140 keV</p>
+    <p>but the electronics interpret those events incorrectly:</p>
+    <p>Counts may fall outside the selected window.</p>
+  </section>
+
+  <section class="content-box" id="symptom">
+    <h3>Symptom</h3>
+    <p>Image may have:</p>
+    <ul>
+      <li>Reduced count rate</li>
+      <li>Nonuniformity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pmts-must-work-together">
+    <h3>PMTs Must Work Together</h3>
+    <p>One PMT with abnormal gain can distort:</p>
+    <ul>
+      <li>Position calculation</li>
+      <li>Energy measurement</li>
+    </ul>
+    <p>in its region.</p>
+  </section>
+
+  <section class="content-box" id="pmt-high-voltage">
+    <h3>PMT High Voltage</h3>
+    <p>Photomultiplier tubes require high-voltage bias.</p>
+  </section>
+
+  <section class="content-box" id="high-voltage-must-be-stable">
+    <h3>High Voltage Must Be Stable</h3>
+    <p>Changes can affect PMT gain.</p>
+  </section>
+
+  <section class="content-box" id="pmt-gain-calibration">
+    <h3>PMT Gain Calibration</h3>
+    <p>The system uses calibration procedures to equalize detector response.</p>
+  </section>
+
+  <section class="content-box" id="a-gamma-camera-has-many-correction-layers">
+    <h3>A Gamma Camera Has Many Correction Layers</h3>
+    <p>Raw PMT signals are not uniform enough by themselves for high-quality imaging.</p>
+  </section>
+
+  <section class="content-box" id="energy-correction">
+    <h3>Energy Correction</h3>
+    <p>Compensates for energy-response variation.</p>
+  </section>
+
+  <section class="content-box" id="linearity-correction">
+    <h3>Linearity Correction</h3>
+    <p>Corrects spatial distortion in position calculation.</p>
+  </section>
+
+  <section class="content-box" id="uniformity-correction">
+    <h3>Uniformity Correction</h3>
+    <p>Compensates for variations in detector sensitivity across the field of view.</p>
+  </section>
+
+  <section class="content-box" id="flood-field">
+    <h3>Flood Field</h3>
+    <p>One of the most important gamma-camera QC images is the:</p>
+    <p><strong>Flood field.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-a-flood">
+    <h3>What Is a Flood?</h3>
+    <p>The detector is exposed to a uniform radiation field.</p>
+    <p>Ideally:</p>
+    <p>Every part of the detector should receive equivalent opportunity to detect events.</p>
+  </section>
+
+  <section class="content-box" id="the-final-image-should-be-uniform">
+    <h3>The Final Image Should Be Uniform</h3>
+    <p>If one region appears:</p>
+    <p>Hot</p>
+    <p>or:</p>
+    <p>Cold,</p>
+    <p>something may be wrong with:</p>
+    <ul>
+      <li>PMT gain</li>
+      <li>Crystal</li>
+      <li>Electronics</li>
+      <li>Calibration</li>
+      <li>Collimator</li>
+    </ul>
+    <p>depending on test setup.</p>
+  </section>
+
+  <section class="content-box" id="intrinsic-flood">
+    <h3>Intrinsic Flood</h3>
+    <p>An intrinsic flood tests the detector without the collimator.</p>
+  </section>
+
+  <section class="content-box" id="why-remove-the-collimator">
+    <h3>Why Remove the Collimator?</h3>
+    <p>It isolates:</p>
+    <ul>
+      <li>Crystal</li>
+      <li>PMTs</li>
+      <li>Detector electronics</li>
+    </ul>
+    <p>from collimator effects.</p>
+  </section>
+
+  <section class="content-box" id="extrinsic-flood">
+    <h3>Extrinsic Flood</h3>
+    <p>An extrinsic flood is performed with the collimator installed.</p>
+  </section>
+
+  <section class="content-box" id="that-tests-more-of-the-imaging-chain">
+    <h3>That Tests More of the Imaging Chain</h3>
+    <p>Including:</p>
+    <ul>
+      <li>Collimator</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="intrinsic-vs-extrinsic-is-a-powerful-isolation-tool">
+    <h3>Intrinsic vs Extrinsic Is a Powerful Isolation Tool</h3>
+    <p>Extrinsic bad.</p>
+    <p>Intrinsic good.</p>
+    <p>Now the collimator becomes much more interesting.</p>
+  </section>
+
+  <section class="content-box" id="both-bad">
+    <h3>Both Bad</h3>
+    <p>Look more toward:</p>
+    <ul>
+      <li>Detector</li>
+      <li>Calibration</li>
+      <li>Source setup</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="uniformity-correction-map">
+    <h3>Uniformity Correction Map</h3>
+    <p>The system may store correction data to compensate for stable sensitivity differences.</p>
+  </section>
+
+  <section class="content-box" id="correction-can-hide-small-imperfections">
+    <h3>Correction Can Hide Small Imperfections</h3>
+    <p>But only if they are stable.</p>
+  </section>
+
+  <section class="content-box" id="drift-breaks-correction">
+    <h3>Drift Breaks Correction</h3>
+    <p>If PMT gain changes after correction data was created:</p>
+    <p>Uniformity can worsen.</p>
+  </section>
+
+  <section class="content-box" id="daily-qc-matters">
+    <h3>Daily QC Matters</h3>
+    <p>Many nuclear-medicine departments perform regular detector QC because gain and energy response can drift.</p>
+  </section>
+
+  <section class="content-box" id="qc-trend-is-more-useful-than-one-pass">
+    <h3>QC Trend Is More Useful Than One Pass</h3>
+    <p>A detector slowly becoming worse may be visible in:</p>
+    <ul>
+      <li>Uniformity trend</li>
+      <li>Energy-peak trend</li>
+    </ul>
+    <p>before clinical images look obviously abnormal.</p>
+  </section>
+
+  <section class="content-box" id="planar-imaging">
+    <h3>Planar Imaging</h3>
+    <p>In basic gamma-camera imaging:</p>
+    <p>The detector stays in one position relative to the patient.</p>
+  </section>
+
+  <section class="content-box" id="the-result-is-a-projection-image">
+    <h3>The Result Is a Projection Image</h3>
+    <p>Activity throughout depth is superimposed onto a two-dimensional image.</p>
+  </section>
+
+  <section class="content-box" id="similar-problem-to-plain-x-ray">
+    <h3>Similar Problem to Plain X-Ray</h3>
+    <p>Depth information is compressed.</p>
+    <p>But the physics is entirely different.</p>
+  </section>
+
+  <section class="content-box" id="spect">
+    <h3>SPECT</h3>
+    <p>SPECT stands for:</p>
+    <p><strong>Single Photon Emission Computed Tomography.</strong></p>
+  </section>
+
+  <section class="content-box" id="computed-tomography">
+    <h3>Computed Tomography</h3>
+    <p>The scanner collects multiple projections and reconstructs slices.</p>
+  </section>
+
+  <section class="content-box" id="single-photon">
+    <h3>Single Photon</h3>
+    <p>Unlike PET coincidence imaging:</p>
+    <p>SPECT detects individual gamma photons.</p>
+  </section>
+
+  <section class="content-box" id="detector-rotation">
+    <h3>Detector Rotation</h3>
+    <p>The gamma-camera head rotates around the patient.</p>
+  </section>
+
+  <section class="content-box" id="one-or-more-heads">
+    <h3>One or More Heads</h3>
+    <p>Systems may use:</p>
+    <ul>
+      <li>One detector head</li>
+      <li>Two detector heads</li>
+      <li>More specialized configurations</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="each-angle-produces-a-projection">
+    <h3>Each Angle Produces a Projection</h3>
+    <p>For example:</p>
+    <p>0°</p>
+    <p>then:</p>
+    <p>3°</p>
+    <p>then:</p>
+    <p>6°</p>
+    <p>and so on.</p>
+    <p>The exact acquisition depends on protocol.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-uses-all-projections">
+    <h3>Reconstruction Uses All Projections</h3>
+    <p>Software determines the tracer distribution that could have produced the measured views.</p>
+  </section>
+
+  <section class="content-box" id="this-is-similar-conceptually-to-ct-reconstruction">
+    <h3>This Is Similar Conceptually to CT Reconstruction</h3>
+    <p>But the signal source and detector physics are different.</p>
+  </section>
+
+  <section class="content-box" id="ct">
+    <h3>CT</h3>
+    <p>External X-ray source.</p>
+    <p>Measures transmitted radiation.</p>
+  </section>
+
+  <section class="content-box" id="spect">
+    <h3>SPECT</h3>
+    <p>Internal radioactive source.</p>
+    <p>Measures emitted radiation.</p>
+  </section>
+
+  <section class="content-box" id="center-of-rotation">
+    <h3>Center of Rotation</h3>
+    <p>For reconstruction to work correctly:</p>
+    <p>The software needs to know the exact relationship between the detector and the mechanical center of rotation.</p>
+  </section>
+
+  <section class="content-box" id="center-of-rotation-calibration">
+    <h3>Center-of-Rotation Calibration</h3>
+    <p>This is a major SPECT quality parameter.</p>
+  </section>
+
+  <section class="content-box" id="if-center-of-rotation-is-wrong">
+    <h3>If Center of Rotation Is Wrong</h3>
+    <p>Projection geometry is incorrect.</p>
+  </section>
+
+  <section class="content-box" id="possible-result">
+    <h3>Possible Result</h3>
+    <ul>
+      <li>Blur</li>
+      <li>Ring-like artifact</li>
+      <li>Distortion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="planar-images-may-still-look-fine">
+    <h3>Planar Images May Still Look Fine</h3>
+    <p>This is an important clue.</p>
+    <p>The detector can produce excellent static planar images but poor SPECT if mechanical geometry is wrong.</p>
+  </section>
+
+  <section class="content-box" id="gantry-encoder">
+    <h3>Gantry Encoder</h3>
+    <p>The system needs accurate detector-angle information.</p>
+  </section>
+
+  <section class="content-box" id="angle-error">
+    <h3>Angle Error</h3>
+    <p>If the actual detector position differs from reported position:</p>
+    <p>Reconstruction geometry is wrong.</p>
+  </section>
+
+  <section class="content-box" id="detector-distance">
+    <h3>Detector Distance</h3>
+    <p>The detector is often positioned close to the patient.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Collimator resolution degrades as the source moves farther from the collimator.</p>
+  </section>
+
+  <section class="content-box" id="close-is-better-for-resolution">
+    <h3>Close Is Better for Resolution</h3>
+    <p>Within safe mechanical limits.</p>
+  </section>
+
+  <section class="content-box" id="automatic-body-contouring">
+    <h3>Automatic Body Contouring</h3>
+    <p>Some systems move detectors closer to the patient's body during rotation.</p>
+  </section>
+
+  <section class="content-box" id="motion-control">
+    <h3>Motion Control</h3>
+    <p>Now imaging performance depends on:</p>
+    <ul>
+      <li>Position sensors</li>
+      <li>Collision protection</li>
+      <li>Gantry motion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mechanical-failure-can-become-image-failure">
+    <h3>Mechanical Failure Can Become Image Failure</h3>
+    <p>Just like other radiology systems.</p>
+  </section>
+
+  <section class="content-box" id="patient-motion">
+    <h3>Patient Motion</h3>
+    <p>SPECT acquisitions can take significant time.</p>
+    <p>Patient motion between projections causes inconsistency.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-tries-to-combine-inconsistent-views">
+    <h3>Reconstruction Tries to Combine Inconsistent Views</h3>
+    <p>Result:</p>
+    <ul>
+      <li>Blur</li>
+      <li>Artifact</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-diagnose-patient-motion-as-detector-failure">
+    <h3>Do Not Diagnose Patient Motion as Detector Failure</h3>
+    <p>Check whether the artifact pattern and acquisition history support motion.</p>
+  </section>
+
+  <section class="content-box" id="attenuation">
+    <h3>Attenuation</h3>
+    <p>Gamma photons can be absorbed or scattered before leaving the patient.</p>
+  </section>
+
+  <section class="content-box" id="deep-activity-is-under-detected">
+    <h3>Deep Activity Is Under-Detected</h3>
+    <p>If uncorrected:</p>
+    <p>Structures deeper inside the body can appear artificially less active.</p>
+  </section>
+
+  <section class="content-box" id="attenuation-correction">
+    <h3>Attenuation Correction</h3>
+    <p>SPECT systems may apply attenuation correction.</p>
+  </section>
+
+  <section class="content-box" id="spect-ct">
+    <h3>SPECT/CT</h3>
+    <p>Many modern SPECT systems include CT.</p>
+    <p>CT data can provide:</p>
+    <ul>
+      <li>Anatomical localization</li>
+      <li>Attenuation map</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="same-concept-as-pet-ct">
+    <h3>Same Concept as PET/CT</h3>
+    <p>But applied to SPECT photon energies and geometry.</p>
+  </section>
+
+  <section class="content-box" id="spect-and-ct-need-alignment">
+    <h3>SPECT and CT Need Alignment</h3>
+    <p>If the two modalities are misregistered:</p>
+    <p>Attenuation correction can be applied incorrectly.</p>
+  </section>
+
+  <section class="content-box" id="table-position-matters">
+    <h3>Table Position Matters</h3>
+    <p>Accurate table positioning helps maintain:</p>
+    <ul>
+      <li>SPECT/CT registration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="scatter-correction">
+    <h3>Scatter Correction</h3>
+    <p>Scattered photons can be estimated using additional energy windows.</p>
+  </section>
+
+  <section class="content-box" id="example-concept">
+    <h3>Example Concept</h3>
+    <p>One window collects the main photopeak.</p>
+    <p>Another measures nearby scatter-dominated counts.</p>
+    <p>Software estimates scatter contamination.</p>
+  </section>
+
+  <section class="content-box" id="energy-calibration-affects-scatter-correction-too">
+    <h3>Energy Calibration Affects Scatter Correction Too</h3>
+    <p>If photopeak positioning is wrong:</p>
+    <p>The correction windows may also be wrong.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-algorithms">
+    <h3>Reconstruction Algorithms</h3>
+    <p>Older SPECT commonly used:</p>
+    <p><strong>Filtered back projection.</strong></p>
+    <p>Modern systems often use:</p>
+    <p><strong>Iterative reconstruction.</strong></p>
+  </section>
+
+  <section class="content-box" id="iterative-reconstruction">
+    <h3>Iterative Reconstruction</h3>
+    <p>The software starts with an estimate of activity distribution.</p>
+    <p>It predicts what projections that distribution would create.</p>
+    <p>Then it compares prediction with measured data and updates the estimate repeatedly.</p>
+  </section>
+
+  <section class="content-box" id="corrections-can-be-incorporated">
+    <h3>Corrections Can Be Incorporated</h3>
+    <p>Iterative methods can model:</p>
+    <ul>
+      <li>Attenuation</li>
+      <li>Scatter</li>
+      <li>Collimator response</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="image-processing-can-change-appearance-dramatically">
+    <h3>Image Processing Can Change Appearance Dramatically</h3>
+    <p>Filter selection and reconstruction parameters influence:</p>
+    <ul>
+      <li>Noise</li>
+      <li>Resolution</li>
+      <li>Contrast</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-compare-two-spect-studies-with-different-processing-and-assume-hardware-changed">
+    <h3>Do Not Compare Two SPECT Studies With Different Processing and Assume Hardware Changed</h3>
+    <p>First compare acquisition and reconstruction settings.</p>
+  </section>
+
+  <section class="content-box" id="count-statistics">
+    <h3>Count Statistics</h3>
+    <p>Nuclear imaging depends heavily on how many valid photons are detected.</p>
+  </section>
+
+  <section class="content-box" id="more-counts">
+    <h3>More Counts</h3>
+    <p>Generally improve statistical image quality.</p>
+  </section>
+
+  <section class="content-box" id="fewer-counts">
+    <h3>Fewer Counts</h3>
+    <p>Increase noise.</p>
+  </section>
+
+  <section class="content-box" id="count-rate-can-change-because-of">
+    <h3>Count Rate Can Change Because Of</h3>
+    <ul>
+      <li>Dose</li>
+      <li>Time after injection</li>
+      <li>Patient size</li>
+      <li>Energy window</li>
+      <li>Detector sensitivity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="low-counts-do-not-automatically-mean-camera-failure">
+    <h3>Low Counts Do Not Automatically Mean Camera Failure</h3>
+    <p>Clinical context matters.</p>
+  </section>
+
+  <section class="content-box" id="detector-dead-time">
+    <h3>Detector Dead Time</h3>
+    <p>At high count rates:</p>
+    <p>Detector electronics need finite time to process each event.</p>
+    <p>Some events may be lost.</p>
+  </section>
+
+  <section class="content-box" id="dead-time-correction">
+    <h3>Dead-Time Correction</h3>
+    <p>Systems may compensate within supported ranges.</p>
+  </section>
+
+  <section class="content-box" id="too-high-a-count-rate">
+    <h3>Too High a Count Rate</h3>
+    <p>Can cause:</p>
+    <ul>
+      <li>Nonlinearity</li>
+      <li>Count loss</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-uniformity-can-change-with-count-rate">
+    <h3>Detector Uniformity Can Change With Count Rate</h3>
+    <p>Some faults appear more strongly at particular count rates.</p>
+  </section>
+
+  <section class="content-box" id="crystal-temperature">
+    <h3>Crystal Temperature</h3>
+    <p>Scintillation and PMT response can be temperature-sensitive.</p>
+  </section>
+
+  <section class="content-box" id="stable-environment-matters">
+    <h3>Stable Environment Matters</h3>
+    <p>Large rapid temperature changes can be especially undesirable for NaI crystals.</p>
+  </section>
+
+  <section class="content-box" id="hvac-matters">
+    <h3>HVAC Matters</h3>
+    <p>Again:</p>
+    <p>Facilities conditions can become imaging conditions.</p>
+  </section>
+
+  <section class="content-box" id="detector-head-electronics">
+    <h3>Detector Head Electronics</h3>
+    <p>A gamma-camera head contains more than:</p>
+    <p>Crystal and PMTs.</p>
+    <p>It may include:</p>
+    <ul>
+      <li>High-voltage supplies</li>
+      <li>Preamplifiers</li>
+      <li>Position logic</li>
+      <li>Energy electronics</li>
+      <li>ADCs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="head-specific-problem">
+    <h3>Head-Specific Problem</h3>
+    <p>In a dual-head SPECT system:</p>
+    <p>Head 1 may perform normally.</p>
+    <p>Head 2 may show poor uniformity.</p>
+  </section>
+
+  <section class="content-box" id="that-is-useful-isolation">
+    <h3>That Is Useful Isolation</h3>
+    <p>If both heads suddenly show identical abnormality:</p>
+    <p>Look for shared factors such as:</p>
+    <ul>
+      <li>Source</li>
+      <li>Calibration process</li>
+      <li>Environment</li>
+      <li>Software</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-head-swap-is-not-usually-simple">
+    <h3>Detector Head Swap Is Not Usually Simple</h3>
+    <p>But comparing head QC is a powerful diagnostic method.</p>
+  </section>
+
+  <section class="content-box" id="head-collision">
+    <h3>Head Collision</h3>
+    <p>Detector heads can be mechanically damaged through collision.</p>
+  </section>
+
+  <section class="content-box" id="collimator-is-especially-vulnerable">
+    <h3>Collimator Is Especially Vulnerable</h3>
+    <p>Because it is heavy and positioned near the patient/table.</p>
+  </section>
+
+  <section class="content-box" id="collision-sensor">
+    <h3>Collision Sensor</h3>
+    <p>Systems include collision-detection mechanisms.</p>
+  </section>
+
+  <section class="content-box" id="failed-collision-sensor">
+    <h3>Failed Collision Sensor</h3>
+    <p>May inhibit gantry movement even when there is no physical obstruction.</p>
+  </section>
+
+  <section class="content-box" id="that-is-a-motion-problem-not-a-detector-problem">
+    <h3>That Is a Motion Problem, Not a Detector Problem</h3>
+    <p>Yet it can stop SPECT acquisition entirely.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-extrinsic-flood-fails-intrinsic-passes">
+    <h3>Real-World Example: Extrinsic Flood Fails, Intrinsic Passes</h3>
+    <p>Daily extrinsic flood shows a fixed cold region.</p>
+    <p>Intrinsic flood without collimator is uniform.</p>
+    <p>Collimator inspection reveals physical damage.</p>
+    <p>The crystal and PMTs are fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-both-floods-fail">
+    <h3>Real-World Example: Both Floods Fail</h3>
+    <p>Intrinsic and extrinsic floods both show the same broad nonuniformity.</p>
+    <p>Energy peaking is shifted.</p>
+    <p>One group of PMTs shows gain drift.</p>
+    <p>Now the problem follows the detector electronics rather than the collimator.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-planar-good-spect-bad">
+    <h3>Real-World Example: Planar Good, SPECT Bad</h3>
+    <p>Static planar images look normal.</p>
+    <p>Flood uniformity passes.</p>
+    <p>SPECT phantom shows circular blur.</p>
+    <p>Center-of-rotation calibration is outside tolerance.</p>
+    <p>The detector itself is working.</p>
+    <p>The acquisition geometry is not.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-counts-suddenly-low">
+    <h3>Real-World Example: Counts Suddenly Low</h3>
+    <p>Gamma camera images become noisy.</p>
+    <p>Uniformity is acceptable.</p>
+    <p>Energy spectrum shows the photopeak shifted partly outside the acquisition window.</p>
+    <p>After appropriate energy calibration:</p>
+    <p>Count rate returns.</p>
+    <p>No crystal replacement was needed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-detector-head-is-different">
+    <h3>Real-World Example: One Detector Head Is Different</h3>
+    <p>Dual-head camera performs QC.</p>
+    <p>Head 1:</p>
+    <p>Normal.</p>
+    <p>Head 2:</p>
+    <p>Persistent regional nonuniformity.</p>
+    <p>Same source.</p>
+    <p>Same environment.</p>
+    <p>Same software.</p>
+    <p>The asymmetry points much more strongly toward Head 2's own detector chain.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Thinking the scintillation crystal determines photon direction.</strong> The collimator does most of the directional selection.</p>
+    <p><strong>Ignoring the collimator during artifact troubleshooting.</strong> Intrinsic and extrinsic flood testing can help separate collimator from detector problems.</p>
+    <p><strong>Assuming low counts mean detector failure.</strong> Energy-window setup, tracer activity, timing, patient size, and acquisition parameters also matter.</p>
+    <p><strong>Treating planar and SPECT performance as the same thing.</strong> SPECT adds gantry motion, angle accuracy, center-of-rotation, and reconstruction.</p>
+    <p><strong>Repeatedly recalibrating PMT gain without asking why it drifts.</strong> Stable correction is different from unstable hardware.</p>
+    <p><strong>Ignoring room temperature.</strong> Gamma-camera crystals and electronics benefit from environmental stability.</p>
+    <p><strong>Assuming a good-looking clinical image proves uniformity.</strong> Routine QC can detect gradual degradation earlier.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-gamma-camera-framework">
+    <h3>A Useful Gamma-Camera Framework</h3>
+    <p>Think:</p>
+    <p><strong>Radiopharmaceutical</strong></p>
+    <p>↓</p>
+    <p><strong>Gamma Photon</strong></p>
+    <p>↓</p>
+    <p><strong>Collimator</strong></p>
+    <p>↓</p>
+    <p><strong>Scintillation Crystal</strong></p>
+    <p>↓</p>
+    <p><strong>Light</strong></p>
+    <p>↓</p>
+    <p><strong>PMT Array</strong></p>
+    <p>↓</p>
+    <p><strong>Position + Energy Calculation</strong></p>
+    <p>↓</p>
+    <p><strong>Energy Window</strong></p>
+    <p>↓</p>
+    <p><strong>Correction Maps</strong></p>
+    <p>↓</p>
+    <p><strong>Planar Image</strong></p>
+    <p>For SPECT, add:</p>
+    <p><strong>Detector Rotation</strong></p>
+    <p>↓</p>
+    <p><strong>Projection Geometry</strong></p>
+    <p>↓</p>
+    <p><strong>Center-of-Rotation</strong></p>
+    <p>↓</p>
+    <p><strong>Reconstruction</strong></p>
+    <p>↓</p>
+    <p><strong>SPECT Volume</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Is the problem planar, or only SPECT?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it appear on intrinsic flood, extrinsic flood, or only patient imaging?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the problem follow one detector head or affect all heads?</strong></p>
+    <p>Those three questions can narrow the system dramatically.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the detector counts radiation:</p>
+    <p>You proved:</p>
+    <p><strong>The system can detect at least some events under the current conditions.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Energy calibration correct</li>
+      <li>Uniformity correct</li>
+      <li>Position calculation accurate</li>
+    </ul>
+    <p>If intrinsic flood passes:</p>
+    <p>You have evidence that:</p>
+    <p><strong>The detector crystal/PMT/electronic chain performs acceptably under that intrinsic test condition.</strong></p>
+    <p>You have not necessarily proven:</p>
+    <p>The collimator is healthy.</p>
+    <p>If planar QC passes but SPECT phantom fails:</p>
+    <p>You have evidence the problem may involve:</p>
+    <ul>
+      <li>Rotation geometry</li>
+      <li>Center-of-rotation</li>
+      <li>Reconstruction</li>
+    </ul>
+    <p>rather than basic planar detector performance.</p>
+    <p>If all applicable energy, uniformity, spatial, and SPECT QC tests pass:</p>
+    <p>You have much stronger evidence that the complete imaging chain is operating within the tested requirements.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A gamma camera does not take a picture of radiation.</p>
+    <p>It solves a localization problem.</p>
+    <p>A radioactive atom emits a photon somewhere inside the patient.</p>
+    <p>The collimator decides whether that photon's direction is useful.</p>
+    <p>The crystal converts the photon into light.</p>
+    <p>The PMTs determine where the flash occurred.</p>
+    <p>The electronics decide whether the energy is acceptable.</p>
+    <p>Thousands or millions of accepted events become a planar image.</p>
+    <p>Then SPECT makes the problem even more interesting.</p>
+    <p>The entire detector moves around the patient.</p>
+    <p>Every projection has to be acquired at the correct angle.</p>
+    <p>The center of rotation has to be accurate.</p>
+    <p>The detector has to remain calibrated.</p>
+    <p>And reconstruction software has to combine all those views into a three-dimensional estimate of tracer distribution.</p>
+    <p>That is why:</p>
+    <blockquote><p>Gamma camera image looks bad</p></blockquote>
+    <p>is not enough.</p>
+    <p>Ask:</p>
+    <p><strong>Is the collimator affecting it?</strong></p>
+    <p><strong>Does the intrinsic flood reproduce it?</strong></p>
+    <p><strong>Did the energy peak move?</strong></p>
+    <p><strong>Is one detector head different?</strong></p>
+    <p><strong>Does it appear only after SPECT reconstruction?</strong></p>
+    <p>Once you ask those questions, the system stops looking like one giant nuclear-medicine detector and starts breaking into understandable pieces.</p>
+    <p>And that is exactly where useful troubleshooting starts.</p>
+    <p>As always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Gamma-camera detector materials, collimator designs, photomultiplier configurations, energy windows, flood-field procedures, uniformity limits, center-of-rotation calibration, SPECT reconstruction, attenuation/scatter correction, radioactive-source QC, and service boundaries vary significantly by manufacturer, radionuclide, system model, and regulatory program. Nuclear-medicine equipment involves ionizing radiation and radioactive materials. Follow current OEM documentation, facility radiation-safety procedures, nuclear-medicine QC requirements, and authorized service scope when evaluating gamma-camera or SPECT performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-pet-detectors-turn-gamma-rays-into-an-image.html">How PET Detectors Turn Gamma Rays Into an Image</a></li>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-optical-sensors-work-in-medical-equipment.html">How Optical Sensors Work in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

@@ -165,6 +165,8 @@ RELATED = {
     "how-mri-rf-coils-transmit-and-receive-signal": ["how-mri-gradient-coils-create-an-image", "analog-vs-digital-signals", "sensors-and-transducers-basics", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-medical-device-cooling-systems-work"],
     "how-ct-detectors-and-hounsfield-units-work": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "what-dicom-means-in-plain-english", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-mri-shimming-keeps-the-magnetic-field-uniform": ["how-mri-gradient-coils-create-an-image", "how-mri-rf-coils-transmit-and-receive-signal", "analog-vs-digital-signals", "sensors-and-transducers-basics", "service-mode-and-built-in-diagnostics-what-to-trust"],
+    "how-an-mri-superconducting-magnet-and-cryogenic-system-work": ["how-mri-shimming-keeps-the-magnetic-field-uniform", "how-mri-gradient-coils-create-an-image", "how-mri-rf-coils-transmit-and-receive-signal", "how-medical-device-cooling-systems-work", "environmental-causes-of-medical-equipment-failures"],
+    "how-a-gamma-camera-and-spect-create-an-image": ["how-pet-detectors-turn-gamma-rays-into-an-image", "how-ct-gantry-rotation-and-data-acquisition-work", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-optical-sensors-work-in-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -1000,6 +1002,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "MRI Imaging",
         "cardNote": "Field uniformity, passive and active shimming, calibration, and image artifacts",
+    },
+    "how-an-mri-superconducting-magnet-and-cryogenic-system-work": {
+        "description": "A practical explanation of how an MRI superconducting magnet creates and maintains its magnetic field, why cryogenic cooling and helium are required, and how the protection systems work.",
+        "category": "How Medical Equipment Works",
+        "badge": "MRI Systems",
+        "cardNote": "Superconducting windings, cryogenics, helium, field stability, and magnet protection",
+    },
+    "how-a-gamma-camera-and-spect-create-an-image": {
+        "description": "A practical explanation of how gamma cameras use collimators, scintillation crystals, photodetectors, energy windows, and rotating projections to create planar and SPECT images.",
+        "category": "How Medical Equipment Works",
+        "badge": "Nuclear Imaging",
+        "cardNote": "Collimators, scintillation detection, energy windows, rotation, and SPECT reconstruction",
     },
 }
 
