@@ -39,7 +39,6 @@ LEGACY_MANUFACTURER_SHARDS = {
 }
 TAXONOMY_ALIASES = {
     "manufacturer": {
-        "Dräger": "Drager",
         "Hamilton Medical": "Hamilton",
         "VYAIRE": "Vyaire",
     },
