@@ -167,6 +167,8 @@ RELATED = {
     "how-mri-shimming-keeps-the-magnetic-field-uniform": ["how-mri-gradient-coils-create-an-image", "how-mri-rf-coils-transmit-and-receive-signal", "analog-vs-digital-signals", "sensors-and-transducers-basics", "service-mode-and-built-in-diagnostics-what-to-trust"],
     "how-an-mri-superconducting-magnet-and-cryogenic-system-work": ["how-mri-shimming-keeps-the-magnetic-field-uniform", "how-mri-gradient-coils-create-an-image", "how-mri-rf-coils-transmit-and-receive-signal", "how-medical-device-cooling-systems-work", "environmental-causes-of-medical-equipment-failures"],
     "how-a-gamma-camera-and-spect-create-an-image": ["how-pet-detectors-turn-gamma-rays-into-an-image", "how-ct-gantry-rotation-and-data-acquisition-work", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-optical-sensors-work-in-medical-equipment"],
+    "how-ultrasound-beamforming-creates-an-image": ["sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-compare-your-test-result-to-manufacturer-specification", "how-optical-sensors-work-in-medical-equipment"],
+    "how-doppler-ultrasound-measures-blood-flow": ["how-ultrasound-beamforming-creates-an-image", "how-medical-equipment-measures-flow", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -1014,6 +1016,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Nuclear Imaging",
         "cardNote": "Collimators, scintillation detection, energy windows, rotation, and SPECT reconstruction",
+    },
+    "how-ultrasound-beamforming-creates-an-image": {
+        "description": "A practical explanation of how ultrasound systems use piezoelectric elements, timed transmit pulses, receive delays, focusing, steering, echo timing, and signal processing to create real-time images.",
+        "category": "How Medical Equipment Works",
+        "badge": "Ultrasound Imaging",
+        "cardNote": "Transducer elements, transmit timing, receive delays, focusing, steering, and image formation",
+    },
+    "how-doppler-ultrasound-measures-blood-flow": {
+        "description": "A practical explanation of how Doppler ultrasound measures frequency shifts from moving blood and converts them into direction, velocity, spectral Doppler, color flow, and audible signals.",
+        "category": "How Medical Equipment Works",
+        "badge": "Doppler Ultrasound",
+        "cardNote": "Frequency shifts, flow direction, velocity, spectral Doppler, and color flow",
     },
 }
 

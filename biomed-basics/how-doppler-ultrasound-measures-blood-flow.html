@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Doppler Ultrasound Measures Blood Flow | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how Doppler ultrasound measures frequency shifts from moving blood and converts them into direction, velocity, spectral Doppler, color flow, and audible signals.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-doppler-ultrasound-measures-blood-flow.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How Doppler Ultrasound Measures Blood Flow</h1>
+  <p>How an ultrasound scanner detects tiny frequency changes caused by moving blood, determines direction and velocity, and turns those measurements into spectral Doppler, color flow, and audible flow signals</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A normal ultrasound image tells you where structures are.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>The Doppler effect</li>
+      <li>Moving red blood cells</li>
+      <li>Doppler frequency shift</li>
+      <li>Direction of flow</li>
+      <li>Velocity estimation</li>
+      <li>Doppler angle</li>
+      <li>Pulsed-wave Doppler</li>
+      <li>Continuous-wave Doppler</li>
+      <li>Range gating</li>
+      <li>Pulse repetition frequency</li>
+      <li>Nyquist limit</li>
+      <li>Aliasing</li>
+      <li>Spectral Doppler</li>
+      <li>Fast Fourier transform</li>
+      <li>Color Doppler</li>
+      <li>Power Doppler</li>
+      <li>Wall filters</li>
+      <li>Baseline</li>
+      <li>Scale</li>
+      <li>Gain</li>
+      <li>Beam steering</li>
+      <li>Common artifacts</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Doppler ultrasound begins with the same transducer used for ordinary imaging, but instead of using the returning echo mainly to determine structure and brightness, the scanner looks closely at frequency. Sound is transmitted at a known frequency. When that sound reflects from moving red blood cells, the returned frequency is shifted slightly. Motion toward the transducer and motion away from the transducer produce shifts in opposite directions.</p>
+    <p>The size of the frequency shift depends on the blood velocity, transmitted frequency, speed of sound, and angle between the ultrasound beam and the direction of flow. The scanner uses those relationships to estimate velocity. In pulsed-wave Doppler, the system listens only during a specific time window after each transmit pulse, which lets it select a particular depth. In continuous-wave Doppler, transmission and reception occur continuously, allowing very high velocities to be measured without the same aliasing limit but sacrificing precise depth localization.</p>
+    <p>Spectral Doppler displays the range of measured velocities over time. Color Doppler performs similar measurements across many locations and overlays a simplified map of average velocity and direction on the B-mode image. Power Doppler emphasizes the amount of Doppler signal rather than direction. A poor Doppler study can therefore come from the probe, scanner electronics, beamforming, angle, scale, PRF, gain, filters, patient motion, or actual hemodynamics. Preserve which Doppler mode fails, whether B-mode is normal, whether the problem follows the probe, whether the spectral waveform is present but mis-scaled, and whether a flow phantom reproduces the issue before assuming the Doppler hardware is defective.</p>
+  </section>
+
+  <section class="content-box" id="the-doppler-effect">
+    <h3>The Doppler Effect</h3>
+    <p>The Doppler effect occurs when there is relative motion between:</p>
+    <ul>
+      <li>Wave source</li>
+      <li>Reflector</li>
+      <li>Observer.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="familiar-example">
+    <h3>Familiar Example</h3>
+    <p>An ambulance siren sounds higher in pitch as it approaches.</p>
+    <p>Then lower as it moves away.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The wavefronts are effectively compressed in one direction and stretched in the other.</p>
+  </section>
+
+  <section class="content-box" id="ultrasound-uses-the-same-principle">
+    <h3>Ultrasound Uses the Same Principle</h3>
+    <p>The transducer sends a known frequency into the body.</p>
+    <p>Moving red blood cells scatter some of that energy back.</p>
+  </section>
+
+  <section class="content-box" id="moving-toward-the-transducer">
+    <h3>Moving Toward the Transducer</h3>
+    <p>Returned frequency increases.</p>
+  </section>
+
+  <section class="content-box" id="moving-away">
+    <h3>Moving Away</h3>
+    <p>Returned frequency decreases.</p>
+  </section>
+
+  <section class="content-box" id="doppler-shift">
+    <h3>Doppler Shift</h3>
+    <p>The difference between:</p>
+    <p>Transmitted frequency</p>
+    <p>and:</p>
+    <p>Received frequency</p>
+    <p>is called the:</p>
+    <p><strong>Doppler frequency shift.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-shift-is-much-smaller-than-the-carrier-frequency">
+    <h3>The Shift Is Much Smaller Than the Carrier Frequency</h3>
+    <p>For example:</p>
+    <p>A transducer may operate in megahertz.</p>
+    <p>The Doppler shifts of interest may be:</p>
+    <p>Kilohertz.</p>
+  </section>
+
+  <section class="content-box" id="the-scanner-must-separate-that-tiny-difference">
+    <h3>The Scanner Must Separate That Tiny Difference</h3>
+    <p>This is a signal-processing problem.</p>
+  </section>
+
+  <section class="content-box" id="the-basic-doppler-relationship">
+    <h3>The Basic Doppler Relationship</h3>
+    <p>The measured frequency shift depends on:</p>
+    <ul>
+      <li>Transmitted frequency</li>
+      <li>Blood velocity</li>
+      <li>Cosine of insonation angle</li>
+      <li>Speed of sound.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-famous-angle-problem">
+    <h3>The Famous Angle Problem</h3>
+    <p>Velocity estimation depends strongly on the angle between:</p>
+    <ul>
+      <li>Ultrasound beam</li>
+      <li>Direction of blood flow.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="zero-degrees">
+    <h3>Zero Degrees</h3>
+    <p>Beam directly along flow.</p>
+    <p>Doppler shift is largest.</p>
+  </section>
+
+  <section class="content-box" id="ninety-degrees">
+    <h3>Ninety Degrees</h3>
+    <p>Beam exactly perpendicular to flow.</p>
+    <p>The theoretical Doppler shift approaches:</p>
+    <p>Zero.</p>
+  </section>
+
+  <section class="content-box" id="this-is-critical">
+    <h3>This Is Critical</h3>
+    <p>Blood can be moving very quickly.</p>
+    <p>But if the beam crosses it at 90°:</p>
+    <p>The scanner may measure almost no Doppler shift.</p>
+  </section>
+
+  <section class="content-box" id="no-doppler-signal-does-not-automatically-mean-no-flow">
+    <h3>No Doppler Signal Does Not Automatically Mean No Flow</h3>
+    <p>Always consider geometry.</p>
+  </section>
+
+  <section class="content-box" id="angle-correction">
+    <h3>Angle Correction</h3>
+    <p>The operator can align an angle cursor with the expected direction of flow.</p>
+    <p>The scanner then uses that angle in its velocity calculation.</p>
+  </section>
+
+  <section class="content-box" id="small-angle-error-can-become-large-velocity-error">
+    <h3>Small Angle Error Can Become Large Velocity Error</h3>
+    <p>Especially at larger insonation angles.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The cosine relationship becomes increasingly sensitive as the angle approaches 90°.</p>
+  </section>
+
+  <section class="content-box" id="clinical-doppler-often-avoids-very-high-angles">
+    <h3>Clinical Doppler Often Avoids Very High Angles</h3>
+    <p>Exact practice follows clinical protocol.</p>
+    <p>The engineering lesson is:</p>
+    <p><strong>Velocity accuracy depends on angle accuracy.</strong></p>
+  </section>
+
+  <section class="content-box" id="b-mode-guides-doppler">
+    <h3>B-Mode Guides Doppler</h3>
+    <p>The grayscale image helps the sonographer locate:</p>
+    <ul>
+      <li>Vessel</li>
+      <li>Heart structure</li>
+    </ul>
+    <p>and orient the Doppler beam.</p>
+  </section>
+
+  <section class="content-box" id="doppler-is-built-on-top-of-imaging-geometry">
+    <h3>Doppler Is Built On Top of Imaging Geometry</h3>
+    <p>If B-mode geometry is wrong:</p>
+    <p>Doppler sample placement may also be wrong.</p>
+  </section>
+
+  <section class="content-box" id="pulsed-wave-doppler">
+    <h3>Pulsed-Wave Doppler</h3>
+    <p>Pulsed-wave, or:</p>
+    <p><strong>PW Doppler</strong></p>
+    <p>uses repeated transmit pulses.</p>
+  </section>
+
+  <section class="content-box" id="pulse">
+    <h3>Pulse</h3>
+    <p>Then listen.</p>
+    <p>Pulse again.</p>
+  </section>
+
+  <section class="content-box" id="range-gating">
+    <h3>Range Gating</h3>
+    <p>Because echoes from shallow structures return earlier than echoes from deep structures:</p>
+    <p>The scanner can listen during a specific time interval corresponding to a chosen depth.</p>
+  </section>
+
+  <section class="content-box" id="sample-volume">
+    <h3>Sample Volume</h3>
+    <p>The selected region is called the:</p>
+    <p><strong>Sample volume</strong></p>
+    <p>or:</p>
+    <p><strong>Range gate.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-this-is-useful">
+    <h3>Why This Is Useful</h3>
+    <p>The operator can select:</p>
+    <p>A particular vessel or cardiac location.</p>
+  </section>
+
+  <section class="content-box" id="pw-doppler-knows-where-the-signal-came-from">
+    <h3>PW Doppler Knows Where the Signal Came From</h3>
+    <p>Approximately.</p>
+    <p>That is its major advantage.</p>
+  </section>
+
+  <section class="content-box" id="but-pw-has-a-limit">
+    <h3>But PW Has a Limit</h3>
+    <p>It cannot measure arbitrarily high Doppler shifts without ambiguity.</p>
+  </section>
+
+  <section class="content-box" id="pulse-repetition-frequency">
+    <h3>Pulse Repetition Frequency</h3>
+    <p>PRF is how often Doppler pulses are transmitted.</p>
+  </section>
+
+  <section class="content-box" id="after-each-pulse">
+    <h3>After Each Pulse</h3>
+    <p>The scanner needs time to receive echoes before transmitting again.</p>
+  </section>
+
+  <section class="content-box" id="deeper-sample-volume">
+    <h3>Deeper Sample Volume</h3>
+    <p>Longer travel time.</p>
+    <p>Therefore:</p>
+    <p>Lower maximum PRF.</p>
+  </section>
+
+  <section class="content-box" id="this-creates-a-depth-velocity-tradeoff">
+    <h3>This Creates a Depth-Velocity Tradeoff</h3>
+    <p>Deep vessels make high-velocity PW Doppler harder.</p>
+  </section>
+
+  <section class="content-box" id="sampling">
+    <h3>Sampling</h3>
+    <p>The system is repeatedly sampling the Doppler signal.</p>
+    <p>Like other sampled signals, there is a maximum frequency that can be represented unambiguously.</p>
+  </section>
+
+  <section class="content-box" id="nyquist-limit">
+    <h3>Nyquist Limit</h3>
+    <p>The Nyquist limit is approximately:</p>
+    <p><strong>PRF / 2.</strong></p>
+  </section>
+
+  <section class="content-box" id="if-doppler-shift-exceeds-that-limit">
+    <h3>If Doppler Shift Exceeds That Limit</h3>
+    <p>Aliasing occurs.</p>
+  </section>
+
+  <section class="content-box" id="aliasing">
+    <h3>Aliasing</h3>
+    <p>The system can no longer uniquely determine the true sampled frequency.</p>
+    <p>The displayed waveform may wrap around the baseline.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>High positive velocity reaches the top of the display.</p>
+    <p>Then appears on the negative side.</p>
+  </section>
+
+  <section class="content-box" id="that-does-not-mean-blood-reversed-direction">
+    <h3>That Does Not Mean Blood Reversed Direction</h3>
+    <p>It may simply be aliasing.</p>
+  </section>
+
+  <section class="content-box" id="increasing-scale">
+    <h3>Increasing Scale</h3>
+    <p>Increasing PRF / velocity scale can raise the Nyquist limit.</p>
+  </section>
+
+  <section class="content-box" id="but-prf-is-limited-by-depth">
+    <h3>But PRF Is Limited by Depth</h3>
+    <p>Again:</p>
+    <p>Tradeoffs.</p>
+  </section>
+
+  <section class="content-box" id="move-baseline">
+    <h3>Move Baseline</h3>
+    <p>Changing the baseline can provide more display space in one direction.</p>
+  </section>
+
+  <section class="content-box" id="does-baseline-change-nyquist-physics">
+    <h3>Does Baseline Change Nyquist Physics?</h3>
+    <p>No.</p>
+    <p>It changes how the available range is displayed.</p>
+  </section>
+
+  <section class="content-box" id="lower-transmit-frequency">
+    <h3>Lower Transmit Frequency</h3>
+    <p>A lower transmitted frequency produces a smaller Doppler shift for the same velocity.</p>
+    <p>That can help reduce aliasing.</p>
+  </section>
+
+  <section class="content-box" id="but-frequency-also-affects-imaging-performance">
+    <h3>But Frequency Also Affects Imaging Performance</h3>
+    <p>Nothing is free.</p>
+  </section>
+
+  <section class="content-box" id="continuous-wave-doppler">
+    <h3>Continuous-Wave Doppler</h3>
+    <p>Continuous-wave, or:</p>
+    <p><strong>CW Doppler</strong></p>
+    <p>transmits and receives ultrasound continuously.</p>
+  </section>
+
+  <section class="content-box" id="usually-requires-separate-transmit-and-receive-elements">
+    <h3>Usually Requires Separate Transmit and Receive Elements</h3>
+    <p>One part transmits while another listens.</p>
+  </section>
+
+  <section class="content-box" id="no-waiting-between-pulses">
+    <h3>No Waiting Between Pulses</h3>
+    <p>Therefore CW is not constrained by the same pulsed sampling limit.</p>
+  </section>
+
+  <section class="content-box" id="major-advantage">
+    <h3>Major Advantage</h3>
+    <p>Very high velocities can be measured without PW-style aliasing.</p>
+  </section>
+
+  <section class="content-box" id="major-disadvantage">
+    <h3>Major Disadvantage</h3>
+    <p>No precise range resolution.</p>
+  </section>
+
+  <section class="content-box" id="cw-hears-along-the-entire-beam">
+    <h3>CW Hears Along the Entire Beam</h3>
+    <p>If several moving structures lie along that beam:</p>
+    <p>Their Doppler signals can all contribute.</p>
+  </section>
+
+  <section class="content-box" id="cardiac-application">
+    <h3>Cardiac Application</h3>
+    <p>This is useful for measuring high velocities across:</p>
+    <ul>
+      <li>Stenotic valves</li>
+      <li>Regurgitant jets</li>
+    </ul>
+    <p>where depth may already be understood from imaging.</p>
+  </section>
+
+  <section class="content-box" id="pw-vs-cw">
+    <h3>PW vs CW</h3>
+    <p>PW answers:</p>
+    <p><strong>What is the velocity here?</strong></p>
+    <p>CW answers more like:</p>
+    <p><strong>What velocities exist anywhere along this beam?</strong></p>
+  </section>
+
+  <section class="content-box" id="duplex-ultrasound">
+    <h3>Duplex Ultrasound</h3>
+    <p>When B-mode imaging and spectral Doppler are used together:</p>
+    <p>The exam is often called:</p>
+    <p><strong>Duplex.</strong></p>
+  </section>
+
+  <section class="content-box" id="triplex">
+    <h3>Triplex</h3>
+    <p>B-mode + color Doppler + spectral Doppler may be described as:</p>
+    <p><strong>Triplex</strong></p>
+    <p>depending on context.</p>
+  </section>
+
+  <section class="content-box" id="spectral-doppler">
+    <h3>Spectral Doppler</h3>
+    <p>Blood does not usually move at one single velocity.</p>
+  </section>
+
+  <section class="content-box" id="across-a-vessel">
+    <h3>Across a Vessel</h3>
+    <p>Flow velocity varies.</p>
+    <p>Cells near the center may move differently from cells near the vessel wall.</p>
+  </section>
+
+  <section class="content-box" id="the-scanner-receives-many-doppler-frequencies">
+    <h3>The Scanner Receives Many Doppler Frequencies</h3>
+    <p>Rather than one clean tone.</p>
+  </section>
+
+  <section class="content-box" id="frequency-analysis">
+    <h3>Frequency Analysis</h3>
+    <p>The system separates the composite signal into its frequency components.</p>
+  </section>
+
+  <section class="content-box" id="fast-fourier-transform">
+    <h3>Fast Fourier Transform</h3>
+    <p>A common method is the:</p>
+    <p><strong>FFT</strong>, or Fast Fourier Transform.</p>
+  </section>
+
+  <section class="content-box" id="what-fft-does">
+    <h3>What FFT Does</h3>
+    <p>It converts a time-varying signal into information about:</p>
+    <p>Which frequencies are present.</p>
+  </section>
+
+  <section class="content-box" id="frequency-becomes-velocity">
+    <h3>Frequency Becomes Velocity</h3>
+    <p>Using Doppler relationships and angle correction:</p>
+    <p>The frequency spectrum is displayed as velocity.</p>
+  </section>
+
+  <section class="content-box" id="spectral-display">
+    <h3>Spectral Display</h3>
+    <p>Horizontal axis:</p>
+    <p>Time.</p>
+    <p>Vertical axis:</p>
+    <p>Velocity or frequency.</p>
+    <p>Brightness:</p>
+    <p>Relative strength of signal at that velocity.</p>
+  </section>
+
+  <section class="content-box" id="waveform">
+    <h3>Waveform</h3>
+    <p>The resulting pattern gives clinicians information about:</p>
+    <ul>
+      <li>Peak velocity</li>
+      <li>Flow direction</li>
+      <li>Pulsatility</li>
+      <li>Resistance</li>
+    </ul>
+    <p>depending on study.</p>
+  </section>
+
+  <section class="content-box" id="spectral-broadening">
+    <h3>Spectral Broadening</h3>
+    <p>A wide range of velocities produces a thicker spectrum.</p>
+  </section>
+
+  <section class="content-box" id="can-be-physiological">
+    <h3>Can Be Physiological</h3>
+    <p>Turbulent or disturbed flow can produce broadening.</p>
+  </section>
+
+  <section class="content-box" id="can-also-be-technical">
+    <h3>Can Also Be Technical</h3>
+    <p>Excessive gain or large sample volume may broaden the display.</p>
+  </section>
+
+  <section class="content-box" id="doppler-audio">
+    <h3>Doppler Audio</h3>
+    <p>The frequency shifts are often converted into audible sound.</p>
+  </section>
+
+  <section class="content-box" id="why-can-humans-hear-it">
+    <h3>Why Can Humans Hear It?</h3>
+    <p>The original ultrasound carrier is in MHz and inaudible.</p>
+    <p>The Doppler difference frequencies fall into an audible range.</p>
+  </section>
+
+  <section class="content-box" id="the-speaker-is-not-playing-the-ultrasound-beam">
+    <h3>The Speaker Is Not Playing the Ultrasound Beam</h3>
+    <p>It is playing the processed Doppler-frequency information.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-experienced-sonographers-recognize-flow-by-sound">
+    <h3>This Is Why Experienced Sonographers Recognize Flow by Sound</h3>
+    <p>The audio is real signal information.</p>
+  </section>
+
+  <section class="content-box" id="color-doppler">
+    <h3>Color Doppler</h3>
+    <p>Color Doppler applies Doppler processing across many sample locations.</p>
+  </section>
+
+  <section class="content-box" id="instead-of-one-sample-volume">
+    <h3>Instead of One Sample Volume</h3>
+    <p>The scanner evaluates a region called the:</p>
+    <p><strong>Color box.</strong></p>
+  </section>
+
+  <section class="content-box" id="each-small-region">
+    <h3>Each Small Region</h3>
+    <p>The system estimates characteristics such as:</p>
+    <ul>
+      <li>Mean Doppler shift</li>
+      <li>Direction</li>
+      <li>Variance</li>
+    </ul>
+    <p>depending on mode.</p>
+  </section>
+
+  <section class="content-box" id="color-is-an-overlay">
+    <h3>Color Is an Overlay</h3>
+    <p>The underlying B-mode image remains.</p>
+    <p>Color information is placed on top.</p>
+  </section>
+
+  <section class="content-box" id="common-color-convention">
+    <h3>Common Color Convention</h3>
+    <p>One direction may be displayed:</p>
+    <p>Red.</p>
+    <p>The other:</p>
+    <p>Blue.</p>
+  </section>
+
+  <section class="content-box" id="red-does-not-mean-artery">
+    <h3>Red Does Not Mean Artery</h3>
+    <p>And blue does not mean vein.</p>
+  </section>
+
+  <section class="content-box" id="color-represents-direction-relative-to-the-transducer">
+    <h3>Color Represents Direction Relative to the Transducer</h3>
+    <p>The color map can also be reversed.</p>
+  </section>
+
+  <section class="content-box" id="remember">
+    <h3>Remember:</h3>
+    <p><strong>BART</strong></p>
+    <p>is sometimes taught clinically:</p>
+    <p>Blue Away, Red Toward.</p>
+    <p>But the displayed map settings ultimately determine the convention.</p>
+  </section>
+
+  <section class="content-box" id="color-scale">
+    <h3>Color Scale</h3>
+    <p>Like PW Doppler:</p>
+    <p>Color Doppler has a velocity scale related to PRF.</p>
+  </section>
+
+  <section class="content-box" id="too-low-a-scale">
+    <h3>Too Low a Scale</h3>
+    <p>Fast flow aliases.</p>
+    <p>Colors may reverse or form a mosaic.</p>
+  </section>
+
+  <section class="content-box" id="too-high-a-scale">
+    <h3>Too High a Scale</h3>
+    <p>Slow flow may disappear.</p>
+  </section>
+
+  <section class="content-box" id="color-gain">
+    <h3>Color Gain</h3>
+    <p>Controls amplification of the Doppler signal.</p>
+  </section>
+
+  <section class="content-box" id="too-little-gain">
+    <h3>Too Little Gain</h3>
+    <p>Real flow may be missed.</p>
+  </section>
+
+  <section class="content-box" id="too-much-gain">
+    <h3>Too Much Gain</h3>
+    <p>Color can spill outside the vessel.</p>
+  </section>
+
+  <section class="content-box" id="color-bleeding">
+    <h3>Color Bleeding</h3>
+    <p>Excessive gain may make color appear in tissue where no true blood flow exists.</p>
+  </section>
+
+  <section class="content-box" id="that-is-not-necessarily-hardware-failure">
+    <h3>That Is Not Necessarily Hardware Failure</h3>
+    <p>Check gain.</p>
+  </section>
+
+  <section class="content-box" id="wall-filter">
+    <h3>Wall Filter</h3>
+    <p>Tissue itself moves.</p>
+    <p>Examples include:</p>
+    <ul>
+      <li>Vessel walls</li>
+      <li>Heart wall</li>
+      <li>Patient motion.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="tissue-motion-produces-doppler-shifts-too">
+    <h3>Tissue Motion Produces Doppler Shifts Too</h3>
+    <p>Usually lower frequency than blood-flow signals.</p>
+  </section>
+
+  <section class="content-box" id="wall-filter">
+    <h3>Wall Filter</h3>
+    <p>The scanner suppresses low-frequency Doppler components.</p>
+  </section>
+
+  <section class="content-box" id="goal">
+    <h3>Goal</h3>
+    <p>Remove:</p>
+    <ul>
+      <li>Wall motion</li>
+      <li>Clutter</li>
+    </ul>
+    <p>while preserving blood-flow information.</p>
+  </section>
+
+  <section class="content-box" id="filter-too-high">
+    <h3>Filter Too High</h3>
+    <p>Slow blood flow can be removed along with the clutter.</p>
+  </section>
+
+  <section class="content-box" id="clinical-complaint">
+    <h3>Clinical Complaint</h3>
+    <blockquote><p>No venous flow.</p></blockquote>
+    <p>May actually be:</p>
+    <p>Wall filter set too aggressively.</p>
+  </section>
+
+  <section class="content-box" id="filter-too-low">
+    <h3>Filter Too Low</h3>
+    <p>Excessive tissue-motion clutter may appear.</p>
+  </section>
+
+  <section class="content-box" id="power-doppler">
+    <h3>Power Doppler</h3>
+    <p>Power Doppler uses the strength or power of the Doppler signal rather than primarily displaying mean frequency direction.</p>
+  </section>
+
+  <section class="content-box" id="advantage">
+    <h3>Advantage</h3>
+    <p>Very sensitive to:</p>
+    <p>Slow flow.</p>
+  </section>
+
+  <section class="content-box" id="it-usually-does-not-show-direction-the-same-way-standard-color-doppler-does">
+    <h3>It Usually Does Not Show Direction the Same Way Standard Color Doppler Does</h3>
+    <p>The focus is:</p>
+    <p>Signal presence.</p>
+  </section>
+
+  <section class="content-box" id="useful-for-low-flow-situations">
+    <h3>Useful for Low-Flow Situations</h3>
+    <p>But also sensitive to motion.</p>
+  </section>
+
+  <section class="content-box" id="flash-artifact">
+    <h3>Flash Artifact</h3>
+    <p>Patient or probe movement can create large Doppler signals.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>A burst of color across the image.</p>
+  </section>
+
+  <section class="content-box" id="this-is-called-flash-artifact">
+    <h3>This Is Called Flash Artifact</h3>
+    <p>Especially noticeable in power Doppler.</p>
+  </section>
+
+  <section class="content-box" id="motion-is-not-blood-flow">
+    <h3>Motion Is Not Blood Flow</h3>
+    <p>The system sees frequency shifts.</p>
+    <p>It does not automatically know whether the scatterers were:</p>
+    <ul>
+      <li>Red blood cells</li>
+      <li>Moving tissue</li>
+      <li>Entire probe.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="clutter-filters-help">
+    <h3>Clutter Filters Help</h3>
+    <p>But cannot eliminate every motion artifact.</p>
+  </section>
+
+  <section class="content-box" id="beam-steering-in-linear-probes">
+    <h3>Beam Steering in Linear Probes</h3>
+    <p>A vessel may run parallel to a linear transducer face.</p>
+  </section>
+
+  <section class="content-box" id="without-steering">
+    <h3>Without Steering</h3>
+    <p>The beam may cross the vessel close to:</p>
+    <p>90°.</p>
+    <p>Poor Doppler shift.</p>
+  </section>
+
+  <section class="content-box" id="electronic-steering">
+    <h3>Electronic Steering</h3>
+    <p>The scanner can angle the Doppler beam electronically.</p>
+  </section>
+
+  <section class="content-box" id="this-improves-insonation-angle">
+    <h3>This Improves Insonation Angle</h3>
+    <p>Without physically tilting the entire probe as much.</p>
+  </section>
+
+  <section class="content-box" id="beam-steering-uses-the-same-array-physics-as-imaging-beamforming">
+    <h3>Beam Steering Uses the Same Array Physics as Imaging Beamforming</h3>
+    <p>Element timing delays change beam direction.</p>
+  </section>
+
+  <section class="content-box" id="doppler-beamformer-fault">
+    <h3>Doppler Beamformer Fault</h3>
+    <p>A beam-steering or channel problem could therefore affect Doppler even when some basic imaging remains possible.</p>
+  </section>
+
+  <section class="content-box" id="color-doppler-frame-rate">
+    <h3>Color Doppler Frame Rate</h3>
+    <p>Color processing adds additional transmit/receive sequences.</p>
+  </section>
+
+  <section class="content-box" id="bigger-color-box">
+    <h3>Bigger Color Box</h3>
+    <p>More lines must be evaluated.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Lower frame rate.</p>
+  </section>
+
+  <section class="content-box" id="narrow-color-box">
+    <h3>Narrow Color Box</h3>
+    <p>Can improve temporal resolution.</p>
+  </section>
+
+  <section class="content-box" id="depth-also-matters">
+    <h3>Depth Also Matters</h3>
+    <p>Deeper Doppler acquisition requires longer echo-return time.</p>
+    <p>Again:</p>
+    <p>Frame rate and PRF are linked to depth.</p>
+  </section>
+
+  <section class="content-box" id="packet-size">
+    <h3>Packet Size</h3>
+    <p>Color Doppler often sends multiple pulses along each line to estimate motion reliably.</p>
+  </section>
+
+  <section class="content-box" id="more-pulses">
+    <h3>More Pulses</h3>
+    <p>Better Doppler estimate.</p>
+    <p>But slower frame rate.</p>
+  </section>
+
+  <section class="content-box" id="ensemble-length">
+    <h3>Ensemble Length</h3>
+    <p>You may hear terms referring to how many pulses contribute to each color estimate.</p>
+    <p>The same tradeoff exists:</p>
+    <p>Accuracy vs speed.</p>
+  </section>
+
+  <section class="content-box" id="doppler-frequency-depends-on-transmit-frequency">
+    <h3>Doppler Frequency Depends on Transmit Frequency</h3>
+    <p>Higher transmit frequency:</p>
+    <p>Larger Doppler shift for the same blood velocity.</p>
+  </section>
+
+  <section class="content-box" id="that-can-improve-sensitivity">
+    <h3>That Can Improve Sensitivity</h3>
+    <p>But may increase aliasing risk and reduce penetration.</p>
+  </section>
+
+  <section class="content-box" id="doppler-also-depends-on-angle">
+    <h3>Doppler Also Depends on Angle</h3>
+    <p>This is why comparing velocity measurements requires consistent technique.</p>
+  </section>
+
+  <section class="content-box" id="equipment-verification">
+    <h3>Equipment Verification</h3>
+    <p>A Doppler flow phantom can provide:</p>
+    <ul>
+      <li>Known flow</li>
+      <li>Known vessel geometry</li>
+    </ul>
+    <p>for performance evaluation.</p>
+  </section>
+
+  <section class="content-box" id="flow-phantom">
+    <h3>Flow Phantom</h3>
+    <p>May use a blood-mimicking fluid moving at controlled velocities.</p>
+  </section>
+
+  <section class="content-box" id="why-it-helps">
+    <h3>Why It Helps</h3>
+    <p>Patient physiology is variable.</p>
+    <p>A phantom provides a repeatable condition.</p>
+  </section>
+
+  <section class="content-box" id="doppler-accuracy-test">
+    <h3>Doppler Accuracy Test</h3>
+    <p>Depending on system and procedure, testing may evaluate:</p>
+    <ul>
+      <li>Velocity measurement</li>
+      <li>Flow detection</li>
+      <li>Spectral performance.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-use-a-random-moving-object-as-calibration">
+    <h3>Do Not Use a Random Moving Object as Calibration</h3>
+    <p>You may demonstrate that Doppler responds to motion.</p>
+    <p>You have not verified velocity accuracy.</p>
+  </section>
+
+  <section class="content-box" id="b-mode-good-doppler-bad">
+    <h3>B-Mode Good, Doppler Bad</h3>
+    <p>This is an important troubleshooting pattern.</p>
+  </section>
+
+  <section class="content-box" id="possible-areas">
+    <h3>Possible Areas</h3>
+    <ul>
+      <li>Doppler processing</li>
+      <li>Probe channels</li>
+      <li>Mode-specific transmit/receive path</li>
+      <li>Settings.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="doppler-bad-on-one-probe-only">
+    <h3>Doppler Bad on One Probe Only</h3>
+    <p>Probe becomes more suspicious.</p>
+  </section>
+
+  <section class="content-box" id="doppler-bad-on-every-probe">
+    <h3>Doppler Bad on Every Probe</h3>
+    <p>Look more toward:</p>
+    <ul>
+      <li>Scanner electronics</li>
+      <li>Software</li>
+      <li>Configuration.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-doppler-mode-bad">
+    <h3>One Doppler Mode Bad</h3>
+    <p>Color works.</p>
+    <p>PW does not.</p>
+    <p>That is more specific than:</p>
+    <blockquote><p>Doppler broken.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="cw-works-pw-does-not">
+    <h3>CW Works, PW Does Not</h3>
+    <p>Again:</p>
+    <p>Different acquisition architecture.</p>
+  </section>
+
+  <section class="content-box" id="probe-support-matters">
+    <h3>Probe Support Matters</h3>
+    <p>Not every probe supports every Doppler mode.</p>
+  </section>
+
+  <section class="content-box" id="probe-elements-can-be-mode-specific">
+    <h3>Probe Elements Can Be Mode-Specific</h3>
+    <p>Some cardiac probes may contain dedicated CW elements or use specific configurations.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-every-element-participates-identically-in-every-mode">
+    <h3>Do Not Assume Every Element Participates Identically in Every Mode</h3>
+    <p>Probe design varies.</p>
+  </section>
+
+  <section class="content-box" id="angle-cursor-does-not-move-the-beam-by-itself">
+    <h3>Angle Cursor Does Not Move the Beam by Itself</h3>
+    <p>Important distinction.</p>
+    <p>Angle correction may simply change the velocity calculation.</p>
+  </section>
+
+  <section class="content-box" id="beam-steering">
+    <h3>Beam Steering</h3>
+    <p>Actually changes the acoustic beam direction.</p>
+  </section>
+
+  <section class="content-box" id="incorrect-angle-correction">
+    <h3>Incorrect Angle Correction</h3>
+    <p>Can produce a perfectly clean spectral waveform with the wrong calculated velocity.</p>
+  </section>
+
+  <section class="content-box" id="this-is-a-measurement-error-not-image-artifact">
+    <h3>This Is a Measurement Error, Not Image Artifact</h3>
+    <p>The machine is calculating exactly what it was told.</p>
+  </section>
+
+  <section class="content-box" id="scale-error-vs-velocity-error">
+    <h3>Scale Error vs Velocity Error</h3>
+    <p>If a waveform wraps:</p>
+    <p>Could be aliasing.</p>
+    <p>That does not mean the actual blood velocity changed abruptly.</p>
+  </section>
+
+  <section class="content-box" id="spectral-inversion">
+    <h3>Spectral Inversion</h3>
+    <p>Changing display orientation can flip the waveform above or below baseline.</p>
+  </section>
+
+  <section class="content-box" id="again-display-setting">
+    <h3>Again: Display Setting</h3>
+    <p>Not physiology.</p>
+  </section>
+
+  <section class="content-box" id="calibration-and-clock-accuracy">
+    <h3>Calibration and Clock Accuracy</h3>
+    <p>Doppler velocity depends partly on accurate frequency and timing measurement.</p>
+    <p>Modern systems derive this electronically with very precise clocks.</p>
+  </section>
+
+  <section class="content-box" id="system-level-timing-failure">
+    <h3>System-Level Timing Failure</h3>
+    <p>Would likely affect more than one probe or mode.</p>
+  </section>
+
+  <section class="content-box" id="receive-sensitivity">
+    <h3>Receive Sensitivity</h3>
+    <p>Weak probe receive sensitivity can reduce Doppler signal.</p>
+  </section>
+
+  <section class="content-box" id="operator-may-compensate-with-gain">
+    <h3>Operator May Compensate With Gain</h3>
+    <p>Eventually noise rises.</p>
+  </section>
+
+  <section class="content-box" id="this-can-hide-gradual-probe-failure">
+    <h3>This Can Hide Gradual Probe Failure</h3>
+    <p>Same concept as other medical systems:</p>
+    <p>Feedback and user adjustment can mask degradation.</p>
+  </section>
+
+  <section class="content-box" id="historical-comparison-helps">
+    <h3>Historical Comparison Helps</h3>
+    <p>If one probe suddenly requires much more:</p>
+    <ul>
+      <li>Doppler gain</li>
+      <li>Acoustic output</li>
+    </ul>
+    <p>than similar probes:</p>
+    <p>Investigate.</p>
+  </section>
+
+  <section class="content-box" id="acoustic-output">
+    <h3>Acoustic Output</h3>
+    <p>Doppler modes can use different acoustic-output patterns than B-mode.</p>
+  </section>
+
+  <section class="content-box" id="spectral-doppler-can-have-higher-time-averaged-output">
+    <h3>Spectral Doppler Can Have Higher Time-Averaged Output</h3>
+    <p>Because pulses may repeatedly interrogate one location.</p>
+  </section>
+
+  <section class="content-box" id="thermal-index-and-mechanical-index">
+    <h3>Thermal Index and Mechanical Index</h3>
+    <p>Ultrasound systems may display indices related to acoustic-output considerations.</p>
+  </section>
+
+  <section class="content-box" id="the-scanner-enforces-output-limits">
+    <h3>The Scanner Enforces Output Limits</h3>
+    <p>Do not bypass or alter these safety controls.</p>
+  </section>
+
+  <section class="content-box" id="doppler-and-contrast-agents">
+    <h3>Doppler and Contrast Agents</h3>
+    <p>Some ultrasound applications use contrast agents consisting of microbubbles.</p>
+    <p>These interact strongly with ultrasound.</p>
+    <p>This creates specialized imaging modes.</p>
+  </section>
+
+  <section class="content-box" id="not-ordinary-blood-cell-doppler">
+    <h3>Not Ordinary Blood-Cell Doppler</h3>
+    <p>Different physics and processing may be involved.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-no-flow-with-good-probe">
+    <h3>Real-World Example: “No Flow” With Good Probe</h3>
+    <p>B-mode image is normal.</p>
+    <p>Color shows little venous flow.</p>
+    <p>Color scale is set unusually high and wall filter is elevated.</p>
+    <p>Appropriate settings restore slow-flow visualization.</p>
+    <p>Nothing is wrong with the scanner.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-aliasing">
+    <h3>Real-World Example: Aliasing</h3>
+    <p>Arterial spectral waveform wraps below baseline during peak systole.</p>
+    <p>Velocity scale is low.</p>
+    <p>Increasing appropriate PRF/scale removes the wrap.</p>
+    <p>Flow did not reverse.</p>
+    <p>The measurement exceeded the pulsed sampling limit.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-doppler-fails-on-one-probe">
+    <h3>Real-World Example: Doppler Fails on One Probe</h3>
+    <p>Linear probe shows weak color and poor spectral signal.</p>
+    <p>B-mode also has subtle lateral dropout.</p>
+    <p>Known-good probe performs normally on same port.</p>
+    <p>Element/cable testing shows degraded channels in the original probe.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-doppler-fails-across-multiple-probes">
+    <h3>Real-World Example: Doppler Fails Across Multiple Probes</h3>
+    <p>B-mode imaging appears normal.</p>
+    <p>PW Doppler on multiple probes has unstable frequency display.</p>
+    <p>Flow phantom reproduces problem.</p>
+    <p>Scanner diagnostics identify a Doppler processing/receive-path fault.</p>
+    <p>The probes are not the shared failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wrong-velocity-from-wrong-angle">
+    <h3>Real-World Example: Wrong Velocity From Wrong Angle</h3>
+    <p>Waveform is clean and repeatable.</p>
+    <p>Displayed velocity seems unrealistically high.</p>
+    <p>Angle cursor is misaligned with vessel direction.</p>
+    <p>Correcting the angle produces expected values.</p>
+    <p>The equipment was measuring and calculating correctly from incorrect input.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Treating red and blue as artery and vein.</strong> Color usually indicates direction relative to the transducer, not vessel type.</p>
+    <p><strong>Diagnosing aliasing as reversed blood flow.</strong> PW and color Doppler can wrap when the Nyquist limit is exceeded.</p>
+    <p><strong>Assuming no Doppler signal means no blood flow.</strong> Angle, gain, scale, filters, and probe sensitivity matter.</p>
+    <p><strong>Using angle correction without understanding the actual beam direction.</strong> The velocity calculation can be wrong even with a clean waveform.</p>
+    <p><strong>Replacing a probe before testing another mode or known-good probe.</strong> Doppler problems can be scanner-side.</p>
+    <p><strong>Turning gain up until flow appears and assuming the measurement is valid.</strong> Excessive gain can create color bleed and spectral noise.</p>
+    <p><strong>Ignoring a flow phantom.</strong> A controlled moving target is much stronger evidence than an unpredictable patient.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-doppler-framework">
+    <h3>A Useful Doppler Framework</h3>
+    <p>Think:</p>
+    <p><strong>Known Transmit Frequency</strong></p>
+    <p>↓</p>
+    <p><strong>Sound Reaches Moving Blood Cells</strong></p>
+    <p>↓</p>
+    <p><strong>Blood Motion Changes Returned Frequency</strong></p>
+    <p>↓</p>
+    <p><strong>Probe Receives Shifted Signal</strong></p>
+    <p>↓</p>
+    <p><strong>Beamformer / Receiver</strong></p>
+    <p>↓</p>
+    <p><strong>Frequency Analysis</strong></p>
+    <p>↓</p>
+    <p><strong>Angle Correction</strong></p>
+    <p>↓</p>
+    <p><strong>Velocity Estimate</strong></p>
+    <p>↓</p>
+    <p><strong>Spectral / Color / Power Display</strong></p>
+    <p>For pulsed Doppler, also include:</p>
+    <p><strong>Pulse Timing</strong></p>
+    <p>↓</p>
+    <p><strong>Range Gate</strong></p>
+    <p>↓</p>
+    <p><strong>PRF / Nyquist Limit</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Is B-mode normal?</strong></p>
+    <p>Then:</p>
+    <p><strong>Which Doppler mode fails: PW, CW, color, or power?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the failure follow the probe or every probe?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can a controlled flow phantom reproduce it?</strong></p>
+    <p>Those questions separate settings, probe behavior, system electronics, and patient physiology.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If color appears in a vessel:</p>
+    <p>You proved:</p>
+    <p><strong>The system detected Doppler signal meeting the current color-processing criteria.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Absolute velocity accurate</li>
+      <li>Flow direction interpreted correctly</li>
+      <li>Angle correction correct.</li>
+    </ul>
+    <p>If a spectral waveform is clean:</p>
+    <p>You proved:</p>
+    <p><strong>The scanner is detecting and processing a Doppler frequency distribution.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <p>The displayed velocity is accurate.</p>
+    <p>If a calibrated or appropriate flow phantom with known conditions produces measurements within required tolerance:</p>
+    <p>You have much stronger evidence that the Doppler measurement chain is working properly under those conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Doppler ultrasound does not directly measure blood speed.</p>
+    <p>It measures:</p>
+    <p><strong>Frequency change.</strong></p>
+    <p>Everything else is calculated from that.</p>
+    <p>Blood moves.</p>
+    <p>The reflected ultrasound frequency changes.</p>
+    <p>The scanner measures that change.</p>
+    <p>Geometry tells the system how to convert it into velocity.</p>
+    <p>Timing tells pulsed Doppler what depth it came from.</p>
+    <p>Frequency analysis turns a complicated mixture of moving blood cells into a spectral waveform.</p>
+    <p>Color processing repeats similar measurements across a large part of the image.</p>
+    <p>Once you understand that, many Doppler complaints become easier to sort out.</p>
+    <p>A wrapped waveform may simply be aliasing.</p>
+    <p>No color may be a scale or angle problem.</p>
+    <p>Slow flow may disappear because of the wall filter.</p>
+    <p>A perfect waveform can still report the wrong velocity if angle correction is wrong.</p>
+    <p>And a probe with degraded elements may still create an acceptable grayscale image while becoming noticeably worse in Doppler.</p>
+    <p>The goal is not to memorize every sonography control.</p>
+    <p>It is to understand what the scanner is actually measuring.</p>
+    <p>Because when someone says:</p>
+    <blockquote><p>Doppler isn't reading right,</p></blockquote>
+    <p>the useful question becomes:</p>
+    <p><strong>Is the system failing to detect the frequency shift, or are we interpreting that shift incorrectly?</strong></p>
+    <p>That is a much better place to start.</p>
+    <p>And, as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Doppler processing methods, transmit frequencies, beam-steering limits, angle-correction implementation, PRF ranges, wall filters, spectral processing, color maps, probe architecture, flow-phantom procedures, acoustic-output limits, and acceptable measurement tolerances vary significantly by manufacturer, probe, scanner model, and clinical application. Follow current OEM documentation, approved ultrasound QC procedures, clinical protocols, and authorized service scope when evaluating Doppler performance or velocity accuracy.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-ultrasound-beamforming-creates-an-image.html">How Ultrasound Beamforming Creates an Image</a></li>
+      <li><a href="how-medical-equipment-measures-flow.html">How Medical Equipment Measures Flow</a></li>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="analog-vs-digital-signals.html">Analog vs Digital Signals</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
