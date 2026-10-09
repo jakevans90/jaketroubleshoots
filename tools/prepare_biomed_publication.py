@@ -169,6 +169,8 @@ RELATED = {
     "how-a-gamma-camera-and-spect-create-an-image": ["how-pet-detectors-turn-gamma-rays-into-an-image", "how-ct-gantry-rotation-and-data-acquisition-work", "what-dicom-means-in-plain-english", "sensors-and-transducers-basics", "how-optical-sensors-work-in-medical-equipment"],
     "how-ultrasound-beamforming-creates-an-image": ["sensors-and-transducers-basics", "analog-vs-digital-signals", "medical-equipment-cables-and-connectors-inspection-and-isolation", "how-to-compare-your-test-result-to-manufacturer-specification", "how-optical-sensors-work-in-medical-equipment"],
     "how-doppler-ultrasound-measures-blood-flow": ["how-ultrasound-beamforming-creates-an-image", "how-medical-equipment-measures-flow", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-nuclear-medicine-dose-calibrators-measure-radioactivity": ["how-a-gamma-camera-and-spect-create-an-image", "how-pet-detectors-turn-gamma-rays-into-an-image", "sensors-and-transducers-basics", "tolerance-vs-accuracy", "measurement-uncertainty-in-plain-english"],
+    "how-a-fluoroscopy-image-intensifier-works": ["how-fluoroscopy-automatic-exposure-rate-control-works", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals"],
 }
 
 ARTICLE_CONFIG = {
@@ -1028,6 +1030,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Doppler Ultrasound",
         "cardNote": "Frequency shifts, flow direction, velocity, spectral Doppler, and color flow",
+    },
+    "how-nuclear-medicine-dose-calibrators-measure-radioactivity": {
+        "description": "A practical explanation of how nuclear medicine dose calibrators use ionization chambers to measure radiopharmaceutical activity and why isotope selection, geometry, background, and calibration matter.",
+        "category": "How Medical Equipment Works",
+        "badge": "Nuclear Medicine",
+        "cardNote": "Ionization chambers, isotope settings, geometry, background, calibration, and activity readings",
+    },
+    "how-a-fluoroscopy-image-intensifier-works": {
+        "description": "A practical explanation of how a fluoroscopy image intensifier converts an X-ray pattern into a bright visible image through its input phosphor, photocathode, electron optics, and output phosphor.",
+        "category": "How Medical Equipment Works",
+        "badge": "Fluoroscopy",
+        "cardNote": "Input phosphor, photocathode, electron optics, output image, distortion, and brightness",
     },
 }
 
