@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How a Fluoroscopy Image Intensifier Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how a fluoroscopy image intensifier converts an X-ray pattern into a bright visible image through its input phosphor, photocathode, electron optics, and output phosphor.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-a-fluoroscopy-image-intensifier-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How a Fluoroscopy Image Intensifier Works</h1>
+  <p>How an image intensifier converts a dim X-ray pattern into a bright visible image, why the input phosphor and electron optics matter, and how distortion, brightness loss, or high-dose behavior can originate inside the imaging chain</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Before flat-panel detectors became common in fluoroscopy, many systems used:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an image intensifier does</li>
+      <li>Input phosphor</li>
+      <li>Cesium iodide</li>
+      <li>Photocathode</li>
+      <li>Electron optics</li>
+      <li>Electrostatic focusing</li>
+      <li>Accelerating potential</li>
+      <li>Output phosphor</li>
+      <li>Minification gain</li>
+      <li>Flux gain</li>
+      <li>Brightness gain</li>
+      <li>Multi-field image intensifiers</li>
+      <li>Magnification mode</li>
+      <li>Vignetting</li>
+      <li>Pincushion distortion</li>
+      <li>S-distortion</li>
+      <li>Veiling glare</li>
+      <li>Burn-in</li>
+      <li>Image lag</li>
+      <li>Automatic brightness control</li>
+      <li>Camera coupling</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>An image intensifier takes a relatively dim X-ray image at a large input surface and converts it into a much brighter, smaller visible-light image at the output. X-rays first strike the input phosphor, commonly a cesium-iodide structure, which converts the X-ray pattern into light. A photocathode directly behind the phosphor converts that light into electrons while preserving the spatial pattern of the original image.</p>
+    <p>Electrostatic focusing lenses guide those electrons through the vacuum tube toward a much smaller output phosphor. A high accelerating potential gives the electrons additional energy before they strike the output phosphor, where they are converted back into visible light. Because the same image information is concentrated from a large input area onto a much smaller output area and because the electrons gain energy during acceleration, the final image is far brighter than the original input phosphor image.</p>
+    <p>A degraded image intensifier can therefore create both image-quality and exposure-control problems. If the input phosphor, photocathode, electron optics, or output phosphor loses efficiency, the automatic brightness-control system may respond by increasing X-ray technique. Distortion can come from electron-optics geometry or external magnetic fields. Preserve whether the problem changes with field size, whether it occurs in every C-arm position, whether dose or kVp/mA has increased from baseline, whether the distortion moves with the detector, and whether the video chain is normal before treating every poor fluoroscopy image as an X-ray generator problem.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-problem-image-intensifiers-solved">
+    <h3>Start With the Problem Image Intensifiers Solved</h3>
+    <p>A fluoroscopic X-ray image is inherently dim.</p>
+  </section>
+
+  <section class="content-box" id="x-rays-are-not-visible">
+    <h3>X-Rays Are Not Visible</h3>
+    <p>The first step is turning the radiation pattern into light.</p>
+  </section>
+
+  <section class="content-box" id="could-you-just-look-at-a-fluorescent-screen">
+    <h3>Could You Just Look at a Fluorescent Screen?</h3>
+    <p>Early fluoroscopy did essentially that.</p>
+    <p>A radiologist viewed a dim fluorescent image directly.</p>
+  </section>
+
+  <section class="content-box" id="the-problem">
+    <h3>The Problem</h3>
+    <p>The image was:</p>
+    <ul>
+      <li>Very dim</li>
+      <li>Difficult to see</li>
+      <li>Limited in viewing conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="image-intensifiers-changed-fluoroscopy">
+    <h3>Image Intensifiers Changed Fluoroscopy</h3>
+    <p>They made the fluoroscopic image dramatically brighter.</p>
+    <p>That allowed:</p>
+    <ul>
+      <li>TV cameras</li>
+      <li>Remote viewing</li>
+      <li>Improved clinical usability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-image-intensifier-is-a-vacuum-tube">
+    <h3>The Image Intensifier Is a Vacuum Tube</h3>
+    <p>In a broad sense, an image intensifier is a large specialized vacuum tube.</p>
+  </section>
+
+  <section class="content-box" id="inside-the-housing">
+    <h3>Inside the Housing</h3>
+    <p>The basic chain is:</p>
+    <p><strong>X-Rays</strong></p>
+    <p>↓</p>
+    <p><strong>Input Phosphor</strong></p>
+    <p>↓</p>
+    <p><strong>Light</strong></p>
+    <p>↓</p>
+    <p><strong>Photocathode</strong></p>
+    <p>↓</p>
+    <p><strong>Electrons</strong></p>
+    <p>↓</p>
+    <p><strong>Electron Focusing</strong></p>
+    <p>↓</p>
+    <p><strong>Electron Acceleration</strong></p>
+    <p>↓</p>
+    <p><strong>Output Phosphor</strong></p>
+    <p>↓</p>
+    <p><strong>Bright Visible Image</strong></p>
+  </section>
+
+  <section class="content-box" id="input-window">
+    <h3>Input Window</h3>
+    <p>The X-rays first enter through the:</p>
+    <p><strong>Input window.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-input-window-must-be-thin">
+    <h3>The Input Window Must Be Thin</h3>
+    <p>It should absorb as little useful X-ray energy as practical.</p>
+  </section>
+
+  <section class="content-box" id="but-it-also-has-to-be-structurally-strong">
+    <h3>But It Also Has to Be Structurally Strong</h3>
+    <p>The tube contains a vacuum.</p>
+    <p>The window must withstand atmospheric pressure.</p>
+  </section>
+
+  <section class="content-box" id="curved-input-surface">
+    <h3>Curved Input Surface</h3>
+    <p>Image-intensifier input surfaces are commonly curved.</p>
+  </section>
+
+  <section class="content-box" id="why-curved">
+    <h3>Why Curved?</h3>
+    <p>It improves:</p>
+    <ul>
+      <li>Mechanical strength</li>
+      <li>Electron focusing geometry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-curvature-contributes-to-characteristic-distortion">
+    <h3>The Curvature Contributes to Characteristic Distortion</h3>
+    <p>More on that later.</p>
+  </section>
+
+  <section class="content-box" id="input-phosphor">
+    <h3>Input Phosphor</h3>
+    <p>Behind the input window is the:</p>
+    <p><strong>Input phosphor.</strong></p>
+  </section>
+
+  <section class="content-box" id="its-job">
+    <h3>Its Job</h3>
+    <p>Convert X-ray photons into visible light.</p>
+  </section>
+
+  <section class="content-box" id="cesium-iodide">
+    <h3>Cesium Iodide</h3>
+    <p>Many image intensifiers use:</p>
+    <p><strong>Cesium iodide</strong>, often CsI.</p>
+  </section>
+
+  <section class="content-box" id="needle-like-crystals">
+    <h3>Needle-Like Crystals</h3>
+    <p>Cesium iodide can be grown in tiny columnar structures.</p>
+  </section>
+
+  <section class="content-box" id="why-that-helps">
+    <h3>Why That Helps</h3>
+    <p>The columns guide light toward the photocathode.</p>
+  </section>
+
+  <section class="content-box" id="less-sideways-light-spread">
+    <h3>Less Sideways Light Spread</h3>
+    <p>Improves spatial resolution.</p>
+  </section>
+
+  <section class="content-box" id="x-ray-to-light">
+    <h3>X-Ray to Light</h3>
+    <p>At this stage:</p>
+    <p>The image information exists as a dim visible-light pattern.</p>
+  </section>
+
+  <section class="content-box" id="photocathode">
+    <h3>Photocathode</h3>
+    <p>The photocathode sits directly behind the input phosphor.</p>
+  </section>
+
+  <section class="content-box" id="its-job">
+    <h3>Its Job</h3>
+    <p>Convert light into electrons.</p>
+  </section>
+
+  <section class="content-box" id="photoemission">
+    <h3>Photoemission</h3>
+    <p>When light strikes the photocathode:</p>
+    <p>Electrons are released.</p>
+  </section>
+
+  <section class="content-box" id="more-light">
+    <h3>More Light</h3>
+    <p>More electrons.</p>
+  </section>
+
+  <section class="content-box" id="so-brightness-information-is-preserved">
+    <h3>So Brightness Information Is Preserved</h3>
+    <p>A region receiving more X-ray exposure produces:</p>
+    <p>More light</p>
+    <p>and therefore:</p>
+    <p>More emitted electrons.</p>
+  </section>
+
+  <section class="content-box" id="spatial-information-is-preserved-too">
+    <h3>Spatial Information Is Preserved Too</h3>
+    <p>The electron pattern corresponds to the original X-ray image pattern.</p>
+  </section>
+
+  <section class="content-box" id="but-now-the-image-exists-as-electrons">
+    <h3>But Now the Image Exists as Electrons</h3>
+    <p>That means the system can use electric fields to manipulate it.</p>
+  </section>
+
+  <section class="content-box" id="vacuum">
+    <h3>Vacuum</h3>
+    <p>The electrons travel through a vacuum inside the intensifier.</p>
+  </section>
+
+  <section class="content-box" id="why-vacuum">
+    <h3>Why Vacuum?</h3>
+    <p>Air molecules would interfere with electron travel.</p>
+  </section>
+
+  <section class="content-box" id="electrostatic-focusing-lenses">
+    <h3>Electrostatic Focusing Lenses</h3>
+    <p>The intensifier contains electrodes arranged to create electric fields.</p>
+  </section>
+
+  <section class="content-box" id="these-fields-focus-the-electron-image">
+    <h3>These Fields Focus the Electron Image</h3>
+    <p>Think of optical lenses focusing light.</p>
+    <p>Here:</p>
+    <p>Electric fields focus electrons.</p>
+  </section>
+
+  <section class="content-box" id="electron-optics">
+    <h3>Electron Optics</h3>
+    <p>This is why the term:</p>
+    <p><strong>Electron optics</strong></p>
+    <p>is used.</p>
+  </section>
+
+  <section class="content-box" id="the-electron-image-must-shrink">
+    <h3>The Electron Image Must Shrink</h3>
+    <p>The input phosphor may be:</p>
+    <p>Many centimeters wide.</p>
+    <p>The output phosphor is much smaller.</p>
+  </section>
+
+  <section class="content-box" id="yet-the-image-must-stay-focused">
+    <h3>Yet the Image Must Stay Focused</h3>
+    <p>The electron lenses guide electrons from corresponding input locations to corresponding output locations.</p>
+  </section>
+
+  <section class="content-box" id="inverting-image">
+    <h3>Inverting Image</h3>
+    <p>The electron-optics geometry can invert the image.</p>
+    <p>The downstream video system accounts for final display orientation.</p>
+  </section>
+
+  <section class="content-box" id="accelerating-anode">
+    <h3>Accelerating Anode</h3>
+    <p>Electrons are attracted toward a positively charged anode near the output.</p>
+  </section>
+
+  <section class="content-box" id="high-potential-difference">
+    <h3>High Potential Difference</h3>
+    <p>The electrons accelerate as they move across the tube.</p>
+  </section>
+
+  <section class="content-box" id="they-gain-kinetic-energy">
+    <h3>They Gain Kinetic Energy</h3>
+    <p>That energy is important for:</p>
+    <p><strong>Brightness gain.</strong></p>
+  </section>
+
+  <section class="content-box" id="output-phosphor">
+    <h3>Output Phosphor</h3>
+    <p>The accelerated electrons strike the:</p>
+    <p><strong>Output phosphor.</strong></p>
+  </section>
+
+  <section class="content-box" id="output-conversion">
+    <h3>Output Conversion</h3>
+    <p>Electron energy becomes:</p>
+    <p>Visible light.</p>
+  </section>
+
+  <section class="content-box" id="much-brighter-light">
+    <h3>Much Brighter Light</h3>
+    <p>The output image is dramatically brighter than the original light created at the input.</p>
+  </section>
+
+  <section class="content-box" id="brightness-gain-comes-from-two-major-effects">
+    <h3>Brightness Gain Comes From Two Major Effects</h3>
+    <ul>
+      <li>Flux gain</li>
+      <li>Minification gain</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="flux-gain">
+    <h3>Flux Gain</h3>
+    <p>Electrons gain energy as they are accelerated.</p>
+    <p>When they hit the output phosphor:</p>
+    <p>They generate more light photons.</p>
+  </section>
+
+  <section class="content-box" id="this-is-flux-gain">
+    <h3>This is Flux Gain</h3>
+    <p>The electron image has been energetically amplified.</p>
+  </section>
+
+  <section class="content-box" id="minification-gain">
+    <h3>Minification Gain</h3>
+    <p>The input image is large.</p>
+    <p>The output image is small.</p>
+  </section>
+
+  <section class="content-box" id="same-image-information-concentrated-into-smaller-area">
+    <h3>Same Image Information Concentrated Into Smaller Area</h3>
+    <p>Brightness increases.</p>
+  </section>
+
+  <section class="content-box" id="conceptually">
+    <h3>Conceptually</h3>
+    <p>Minification gain relates strongly to the square of the ratio between:</p>
+    <p>Input diameter</p>
+    <p>and:</p>
+    <p>Output diameter.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>If an input diameter is:</p>
+    <p>25 cm</p>
+    <p>and output is:</p>
+    <p>2.5 cm,</p>
+    <p>the diameter ratio is:</p>
+    <p>10:1.</p>
+    <p>Area concentration is much greater.</p>
+  </section>
+
+  <section class="content-box" id="brightness-gain">
+    <h3>Brightness Gain</h3>
+    <p>Total brightness gain is related to:</p>
+    <p><strong>Flux gain × minification gain.</strong></p>
+  </section>
+
+  <section class="content-box" id="this-is-why-it-is-called-an-intensifier">
+    <h3>This Is Why It Is Called an Intensifier</h3>
+    <p>It does not create new anatomical information.</p>
+    <p>It makes the existing X-ray image bright enough to use effectively.</p>
+  </section>
+
+  <section class="content-box" id="output-image">
+    <h3>Output Image</h3>
+    <p>The output phosphor creates a small bright image.</p>
+    <p>That image still needs to get into the display system.</p>
+  </section>
+
+  <section class="content-box" id="optical-coupling">
+    <h3>Optical Coupling</h3>
+    <p>Possible methods historically include:</p>
+    <ul>
+      <li>Lens coupling</li>
+      <li>Fiber-optic coupling</li>
+    </ul>
+    <p>to a camera.</p>
+  </section>
+
+  <section class="content-box" id="television-camera">
+    <h3>Television Camera</h3>
+    <p>Older systems may use:</p>
+    <ul>
+      <li>Vidicon</li>
+      <li>Plumbicon</li>
+      <li>CCD</li>
+    </ul>
+    <p>or other camera technologies depending on generation.</p>
+  </section>
+
+  <section class="content-box" id="modernized-systems">
+    <h3>Modernized Systems</h3>
+    <p>Some image-intensifier fluoroscopy systems were later paired with digital cameras and digital image processing.</p>
+  </section>
+
+  <section class="content-box" id="image-intensifier-vs-camera">
+    <h3>Image Intensifier vs Camera</h3>
+    <p>These are separate components.</p>
+  </section>
+
+  <section class="content-box" id="important-troubleshooting-lesson">
+    <h3>Important Troubleshooting Lesson</h3>
+    <p>Poor image could come from:</p>
+    <ul>
+      <li>Image intensifier</li>
+      <li>Optical coupling</li>
+      <li>Camera</li>
+      <li>Video electronics</li>
+      <li>Display</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-condemn-the-intensifier-before-isolating-the-video-chain">
+    <h3>Do Not Condemn the Intensifier Before Isolating the Video Chain</h3>
+
+  </section>
+
+  <section class="content-box" id="multi-field-image-intensifier">
+    <h3>Multi-Field Image Intensifier</h3>
+    <p>Some intensifiers support more than one field of view.</p>
+    <p>For example:</p>
+    <ul>
+      <li>9 inch</li>
+      <li>6 inch</li>
+      <li>4.5 inch</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="magnification-mode">
+    <h3>Magnification Mode</h3>
+    <p>When a smaller input field is selected:</p>
+    <p>The electron focusing geometry changes.</p>
+  </section>
+
+  <section class="content-box" id="only-the-central-input-region-is-used">
+    <h3>Only the Central Input Region Is Used</h3>
+    <p>That region is expanded to fill the output image.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>The displayed anatomy appears magnified.</p>
+  </section>
+
+  <section class="content-box" id="resolution-can-improve">
+    <h3>Resolution Can Improve</h3>
+    <p>Because a smaller input area is mapped onto the full output.</p>
+  </section>
+
+  <section class="content-box" id="but-dose-usually-increases">
+    <h3>But Dose Usually Increases</h3>
+    <p>Why?</p>
+    <p>The system needs more X-ray exposure to maintain image brightness when fewer input-phosphor areas contribute to the output.</p>
+  </section>
+
+  <section class="content-box" id="automatic-brightness-control-responds">
+    <h3>Automatic Brightness Control Responds</h3>
+    <p>It may increase:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mA</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-magnification-mode-is-not-free">
+    <h3>This Is Why Magnification Mode Is Not Free</h3>
+    <p>Better detail can cost:</p>
+    <p>Higher patient exposure.</p>
+  </section>
+
+  <section class="content-box" id="minification-gain-decreases-in-magnification-mode">
+    <h3>Minification Gain Decreases in Magnification Mode</h3>
+    <p>The diameter ratio between active input field and output changes.</p>
+  </section>
+
+  <section class="content-box" id="less-minification-gain">
+    <h3>Less Minification Gain</h3>
+    <p>The output would become dimmer if X-ray exposure stayed the same.</p>
+  </section>
+
+  <section class="content-box" id="abc-compensates">
+    <h3>ABC Compensates</h3>
+    <p>It raises exposure.</p>
+  </section>
+
+  <section class="content-box" id="automatic-brightness-control">
+    <h3>Automatic Brightness Control</h3>
+    <p>Older fluoro systems often use:</p>
+    <p><strong>Automatic Brightness Control</strong>, or ABC.</p>
+  </section>
+
+  <section class="content-box" id="the-goal">
+    <h3>The Goal</h3>
+    <p>Maintain roughly consistent image brightness despite changes in:</p>
+    <ul>
+      <li>Patient thickness</li>
+      <li>C-arm angle</li>
+      <li>Magnification</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="feedback">
+    <h3>Feedback</h3>
+    <p>The system evaluates output brightness or video signal.</p>
+  </section>
+
+  <section class="content-box" id="too-dark">
+    <h3>Too Dark</h3>
+    <p>Increase X-ray output.</p>
+  </section>
+
+  <section class="content-box" id="too-bright">
+    <h3>Too Bright</h3>
+    <p>Decrease output.</p>
+  </section>
+
+  <section class="content-box" id="image-intensifier-aging-can-hide-behind-abc">
+    <h3>Image Intensifier Aging Can Hide Behind ABC</h3>
+    <p>This is extremely important.</p>
+  </section>
+
+  <section class="content-box" id="intensifier-sensitivity-declines">
+    <h3>Intensifier Sensitivity Declines</h3>
+    <p>Over time:</p>
+    <ul>
+      <li>Phosphor efficiency</li>
+      <li>Photocathode efficiency</li>
+    </ul>
+    <p>can degrade.</p>
+  </section>
+
+  <section class="content-box" id="what-does-abc-do">
+    <h3>What Does ABC Do?</h3>
+    <p>It compensates.</p>
+  </section>
+
+  <section class="content-box" id="clinical-image-may-still-look-fine">
+    <h3>Clinical Image May Still Look Fine</h3>
+    <p>But X-ray output rises.</p>
+  </section>
+
+  <section class="content-box" id="dose-trend-becomes-a-clue">
+    <h3>Dose Trend Becomes a Clue</h3>
+    <p>If the same phantom and geometry require increasingly high:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mA</li>
+    </ul>
+    <p>to maintain image brightness:</p>
+    <p>The image receptor may be losing sensitivity.</p>
+  </section>
+
+  <section class="content-box" id="this-is-another-feedback-system-lesson">
+    <h3>This Is Another Feedback-System Lesson</h3>
+    <p>The machine can work harder to hide a weakening component.</p>
+  </section>
+
+  <section class="content-box" id="input-phosphor-aging">
+    <h3>Input Phosphor Aging</h3>
+    <p>Repeated radiation exposure can reduce efficiency.</p>
+  </section>
+
+  <section class="content-box" id="photocathode-aging">
+    <h3>Photocathode Aging</h3>
+    <p>Can also reduce electron emission for the same light input.</p>
+  </section>
+
+  <section class="content-box" id="output-phosphor-aging">
+    <h3>Output Phosphor Aging</h3>
+    <p>Can reduce visible-light output.</p>
+  </section>
+
+  <section class="content-box" id="any-of-these-can-reduce-conversion-gain">
+    <h3>Any of These Can Reduce Conversion Gain</h3>
+
+  </section>
+
+  <section class="content-box" id="the-symptom-may-be">
+    <h3>The Symptom May Be</h3>
+    <ul>
+      <li>Dim image if ABC cannot compensate</li>
+      <li>Increased patient dose if it can</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="vignetting">
+    <h3>Vignetting</h3>
+    <p>Vignetting refers to decreased brightness toward the edges of the image.</p>
+  </section>
+
+  <section class="content-box" id="why-can-it-happen">
+    <h3>Why Can It Happen?</h3>
+    <p>Electron focusing and input/output geometry are not equally perfect across the whole field.</p>
+  </section>
+
+  <section class="content-box" id="center-often-brighter">
+    <h3>Center Often Brighter</h3>
+    <p>Edges may receive less effective electron focusing.</p>
+  </section>
+
+  <section class="content-box" id="some-vignetting-is-characteristic">
+    <h3>Some Vignetting Is Characteristic</h3>
+    <p>Excessive vignetting is a performance problem.</p>
+  </section>
+
+  <section class="content-box" id="pincushion-distortion">
+    <h3>Pincushion Distortion</h3>
+    <p>A classic image-intensifier artifact is:</p>
+    <p><strong>Pincushion distortion.</strong></p>
+  </section>
+
+  <section class="content-box" id="appearance">
+    <h3>Appearance</h3>
+    <p>Straight lines near the image edge bow outward.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The curved input surface is projected onto a flat output/display geometry.</p>
+    <p>The magnification is not perfectly uniform from center to edge.</p>
+  </section>
+
+  <section class="content-box" id="this-is-largely-geometric">
+    <h3>This Is Largely Geometric</h3>
+    <p>Not necessarily a failing component.</p>
+  </section>
+
+  <section class="content-box" id="correction">
+    <h3>Correction</h3>
+    <p>Some systems apply electronic or digital correction.</p>
+  </section>
+
+  <section class="content-box" id="s-distortion">
+    <h3>S-Distortion</h3>
+    <p>Image intensifiers can also be affected by external magnetic fields.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Electrons traveling through the tube can be deflected by magnetic fields.</p>
+  </section>
+
+  <section class="content-box" id="external-magnetic-field">
+    <h3>External Magnetic Field</h3>
+    <p>Changes the electron trajectories.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>The image can distort in an S-shaped pattern.</p>
+  </section>
+
+  <section class="content-box" id="this-is-called">
+    <h3>This Is Called</h3>
+    <p><strong>S-distortion.</strong></p>
+  </section>
+
+  <section class="content-box" id="earths-magnetic-field-can-contribute">
+    <h3>Earth’s Magnetic Field Can Contribute</h3>
+    <p>So can nearby magnetic sources.</p>
+  </section>
+
+  <section class="content-box" id="magnetic-shielding">
+    <h3>Magnetic Shielding</h3>
+    <p>Image intensifiers may include shielding designed to reduce this effect.</p>
+  </section>
+
+  <section class="content-box" id="orientation-matters">
+    <h3>Orientation Matters</h3>
+    <p>Because the surrounding magnetic-field relationship can change as a C-arm rotates.</p>
+  </section>
+
+  <section class="content-box" id="distortion-changes-with-c-arm-angle">
+    <h3>Distortion Changes With C-Arm Angle</h3>
+    <p>That can suggest:</p>
+    <p>Magnetic influence</p>
+    <p>rather than a fixed camera defect.</p>
+  </section>
+
+  <section class="content-box" id="new-equipment-nearby">
+    <h3>New Equipment Nearby</h3>
+    <p>A strong magnetic source introduced near the imaging system could change distortion.</p>
+  </section>
+
+  <section class="content-box" id="ask-what-changed">
+    <h3>Ask What Changed</h3>
+    <p>Environmental changes matter in radiology too.</p>
+  </section>
+
+  <section class="content-box" id="veiling-glare">
+    <h3>Veiling Glare</h3>
+    <p>Another image-intensifier characteristic is:</p>
+    <p><strong>Veiling glare.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-is-it">
+    <h3>What Is It?</h3>
+    <p>Light or X-ray scatter inside the intensifier can reduce image contrast.</p>
+  </section>
+
+  <section class="content-box" id="bright-area-can-wash-into-dark-area">
+    <h3>Bright Area Can Wash Into Dark Area</h3>
+    <p>The boundary between high- and low-intensity regions becomes less distinct.</p>
+  </section>
+
+  <section class="content-box" id="contrast-degrades">
+    <h3>Contrast Degrades</h3>
+
+  </section>
+
+  <section class="content-box" id="sources-include">
+    <h3>Sources Include</h3>
+    <ul>
+      <li>Light spread</li>
+      <li>X-ray scatter</li>
+      <li>Electron scatter</li>
+    </ul>
+    <p>within the intensifier.</p>
+  </section>
+
+  <section class="content-box" id="contrast-ratio">
+    <h3>Contrast Ratio</h3>
+    <p>Image intensifier performance can be evaluated using contrast measurements.</p>
+  </section>
+
+  <section class="content-box" id="poor-contrast-does-not-automatically-mean-x-ray-technique-is-wrong">
+    <h3>Poor Contrast Does Not Automatically Mean X-Ray Technique Is Wrong</h3>
+    <p>The intensifier itself may contribute.</p>
+  </section>
+
+  <section class="content-box" id="image-lag">
+    <h3>Image Lag</h3>
+    <p>Image lag means some signal from a previous frame remains visible in following frames.</p>
+  </section>
+
+  <section class="content-box" id="possible-sources">
+    <h3>Possible Sources</h3>
+    <ul>
+      <li>Phosphor persistence</li>
+      <li>Camera lag</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-why-you-need-to-separate-intensifier-from-video-camera">
+    <h3>This Is Why You Need to Separate Intensifier From Video Camera</h3>
+    <p>The visible symptom may be identical.</p>
+  </section>
+
+  <section class="content-box" id="burn-in">
+    <h3>Burn-In</h3>
+    <p>Repeated or prolonged imaging of similar high-contrast structures can produce persistent image patterns in some older systems.</p>
+  </section>
+
+  <section class="content-box" id="this-may-appear-as">
+    <h3>This May Appear As</h3>
+    <ul>
+      <li>Ghost image</li>
+      <li>Fixed pattern</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="distinguish-from-detector-damage">
+    <h3>Distinguish From Detector Damage</h3>
+    <p>Look at:</p>
+    <ul>
+      <li>Pattern</li>
+      <li>History</li>
+      <li>Camera chain</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="output-phosphor-inspection">
+    <h3>Output Phosphor Inspection</h3>
+    <p>Specialized service procedures may evaluate the output image directly.</p>
+  </section>
+
+  <section class="content-box" id="if-output-image-is-good">
+    <h3>If Output Image Is Good</h3>
+    <p>But displayed image is bad:</p>
+    <p>Camera/video chain becomes more suspicious.</p>
+  </section>
+
+  <section class="content-box" id="if-output-image-itself-is-bad">
+    <h3>If Output Image Itself Is Bad</h3>
+    <p>The problem is upstream.</p>
+  </section>
+
+  <section class="content-box" id="optical-coupling">
+    <h3>Optical Coupling</h3>
+    <p>Lens-coupled systems rely on:</p>
+    <ul>
+      <li>Lens focus</li>
+      <li>Alignment</li>
+      <li>Aperture</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="misalignment">
+    <h3>Misalignment</h3>
+    <p>Can cause:</p>
+    <ul>
+      <li>Blur</li>
+      <li>Uneven illumination</li>
+      <li>Cropping</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fiber-optic-coupling">
+    <h3>Fiber Optic Coupling</h3>
+    <p>Avoids some lens issues but has its own mechanical considerations.</p>
+  </section>
+
+  <section class="content-box" id="camera-focus">
+    <h3>Camera Focus</h3>
+    <p>An out-of-focus TV camera can mimic poor intensifier resolution.</p>
+  </section>
+
+  <section class="content-box" id="resolution-test">
+    <h3>Resolution Test</h3>
+    <p>A line-pair phantom can help evaluate spatial resolution.</p>
+  </section>
+
+  <section class="content-box" id="where-is-resolution-lost">
+    <h3>Where Is Resolution Lost?</h3>
+    <p>Could be:</p>
+    <ul>
+      <li>X-ray focal spot</li>
+      <li>Patient geometry</li>
+      <li>Image intensifier</li>
+      <li>Optical coupling</li>
+      <li>Camera</li>
+      <li>Display</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="again-entire-chain">
+    <h3>Again: Entire Chain</h3>
+    <p>Do not blame the first component you recognize.</p>
+  </section>
+
+  <section class="content-box" id="image-intensifier-entrance-exposure">
+    <h3>Image Intensifier Entrance Exposure</h3>
+    <p>Performance evaluation may compare:</p>
+    <ul>
+      <li>Input exposure</li>
+      <li>Output brightness</li>
+    </ul>
+    <p>or equivalent system measures.</p>
+  </section>
+
+  <section class="content-box" id="conversion-factor">
+    <h3>Conversion Factor</h3>
+    <p>Image-intensifier performance may be characterized by the relationship between input X-ray exposure and output luminance.</p>
+  </section>
+
+  <section class="content-box" id="declining-conversion-factor">
+    <h3>Declining Conversion Factor</h3>
+    <p>Suggests less output brightness for the same input exposure.</p>
+  </section>
+
+  <section class="content-box" id="abc-then-compensates-with-more-dose">
+    <h3>ABC Then Compensates With More Dose</h3>
+    <p>This is why quantitative testing matters.</p>
+  </section>
+
+  <section class="content-box" id="a-nice-looking-image-can-hide-degradation">
+    <h3>A Nice-Looking Image Can Hide Degradation</h3>
+    <p>Same principle seen throughout medical imaging.</p>
+  </section>
+
+  <section class="content-box" id="collimation">
+    <h3>Collimation</h3>
+    <p>The X-ray field should be aligned appropriately with the image receptor.</p>
+  </section>
+
+  <section class="content-box" id="field-too-large">
+    <h3>Field Too Large</h3>
+    <p>Creates unnecessary radiation and scatter.</p>
+  </section>
+
+  <section class="content-box" id="field-too-small-or-misaligned">
+    <h3>Field Too Small or Misaligned</h3>
+    <p>May clip anatomy.</p>
+  </section>
+
+  <section class="content-box" id="image-intensifier-input-field">
+    <h3>Image Intensifier Input Field</h3>
+    <p>Collimator blades may automatically track selected field size.</p>
+  </section>
+
+  <section class="content-box" id="magnification-mode-coordination">
+    <h3>Magnification Mode Coordination</h3>
+    <p>The collimation system may change when the intensifier changes field size.</p>
+  </section>
+
+  <section class="content-box" id="misregistration">
+    <h3>Misregistration</h3>
+    <p>Can cause unusual field edges or exposure-control behavior.</p>
+  </section>
+
+  <section class="content-box" id="automatic-exposure-sensor">
+    <h3>Automatic Exposure Sensor</h3>
+    <p>ABC may derive its signal from:</p>
+    <ul>
+      <li>Video level</li>
+      <li>Image-intensifier output</li>
+      <li>Dedicated sensor</li>
+    </ul>
+    <p>depending on system design.</p>
+  </section>
+
+  <section class="content-box" id="if-feedback-sensor-fails">
+    <h3>If Feedback Sensor Fails</h3>
+    <p>Generator output can become inappropriate even if the intensifier itself is good.</p>
+  </section>
+
+  <section class="content-box" id="do-not-adjust-abc-to-compensate-for-a-worn-intensifier">
+    <h3>Do Not Adjust ABC to Compensate for a Worn Intensifier</h3>
+    <p>That can hide the problem and increase dose.</p>
+  </section>
+
+  <section class="content-box" id="measure-before-adjusting">
+    <h3>Measure Before Adjusting</h3>
+    <p>Determine:</p>
+    <ul>
+      <li>Input exposure</li>
+      <li>Output response</li>
+      <li>Generator output</li>
+    </ul>
+    <p>according to OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="c-arm-mechanical-position">
+    <h3>C-Arm Mechanical Position</h3>
+    <p>Image-intensifier systems are often mounted on movable C-arms.</p>
+  </section>
+
+  <section class="content-box" id="mass-matters">
+    <h3>Mass Matters</h3>
+    <p>Image intensifiers are relatively bulky and heavy.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-balance">
+    <h3>Mechanical Balance</h3>
+    <p>C-arm design must support that mass.</p>
+  </section>
+
+  <section class="content-box" id="collision">
+    <h3>Collision</h3>
+    <p>A damaged image-intensifier housing can affect:</p>
+    <ul>
+      <li>Alignment</li>
+      <li>Vacuum tube</li>
+      <li>Input window</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="input-window-damage">
+    <h3>Input Window Damage</h3>
+    <p>Can be serious.</p>
+    <p>The intensifier maintains an internal vacuum.</p>
+  </section>
+
+  <section class="content-box" id="loss-of-vacuum">
+    <h3>Loss of Vacuum</h3>
+    <p>The tube cannot operate correctly.</p>
+  </section>
+
+  <section class="content-box" id="high-voltage-inside-the-intensifier">
+    <h3>High Voltage Inside the Intensifier</h3>
+    <p>Electron acceleration requires a substantial electrostatic potential.</p>
+  </section>
+
+  <section class="content-box" id="internal-hv-supply">
+    <h3>Internal HV Supply</h3>
+    <p>The intensifier system may include high-voltage circuitry for:</p>
+    <ul>
+      <li>Electrostatic focusing</li>
+      <li>Acceleration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="failure">
+    <h3>Failure</h3>
+    <p>Can cause:</p>
+    <ul>
+      <li>No output image</li>
+      <li>Defocus</li>
+      <li>Distortion</li>
+    </ul>
+    <p>depending on circuit.</p>
+  </section>
+
+  <section class="content-box" id="focus-electrodes">
+    <h3>Focus Electrodes</h3>
+    <p>Correct voltages are required for electron focusing.</p>
+  </section>
+
+  <section class="content-box" id="focus-voltage-wrong">
+    <h3>Focus Voltage Wrong</h3>
+    <p>Image can become:</p>
+    <ul>
+      <li>Blurred</li>
+      <li>Distorted</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="again-not-x-ray-tube-blur">
+    <h3>Again: Not X-Ray Tube Blur</h3>
+    <p>The X-ray source could be perfectly sharp.</p>
+    <p>Electron optics can blur the final image.</p>
+  </section>
+
+  <section class="content-box" id="gain-and-brightness-testing">
+    <h3>Gain and Brightness Testing</h3>
+    <p>The entire fluoroscopy chain should be tested under controlled conditions.</p>
+  </section>
+
+  <section class="content-box" id="use-a-phantom">
+    <h3>Use a Phantom</h3>
+    <p>Known attenuation helps remove patient variability.</p>
+  </section>
+
+  <section class="content-box" id="historical-baseline">
+    <h3>Historical Baseline</h3>
+    <p>If the same phantom historically requires:</p>
+    <p>70 kVp</p>
+    <p>and now requires:</p>
+    <p>90 kVp</p>
+    <p>something changed.</p>
+  </section>
+
+  <section class="content-box" id="check-more-than-the-intensifier">
+    <h3>Check More Than the Intensifier</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>X-ray tube output</li>
+      <li>Generator</li>
+      <li>Intensifier sensitivity</li>
+      <li>ABC calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="real-world-example-dose-rising-with-normal-image">
+    <h3>Real-World Example: Dose Rising With Normal Image</h3>
+    <p>Technologists report images still look normal.</p>
+    <p>QC shows the system requires progressively higher mA for the same phantom.</p>
+    <p>Generator output is correct.</p>
+    <p>Image-intensifier conversion efficiency has declined.</p>
+    <p>ABC has been hiding the degradation by increasing exposure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-distortion-changes-with-c-arm-angle">
+    <h3>Real-World Example: Distortion Changes With C-Arm Angle</h3>
+    <p>Straight grid appears normal in one orientation.</p>
+    <p>As the C-arm rotates:</p>
+    <p>Image bends into an S-shaped pattern.</p>
+    <p>Electron paths are being influenced by external magnetic fields.</p>
+    <p>Camera replacement would not fix the cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-pincushion-pattern">
+    <h3>Real-World Example: Pincushion Pattern</h3>
+    <p>Grid phantom shows straight lines bowing outward toward edges.</p>
+    <p>Pattern is symmetric and stable.</p>
+    <p>This is characteristic image-intensifier geometric behavior, not necessarily a sudden detector failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-good-output-bad-display">
+    <h3>Real-World Example: Good Output, Bad Display</h3>
+    <p>Direct evaluation of intensifier output image is sharp.</p>
+    <p>Monitor image is blurry.</p>
+    <p>Optical coupling/camera focus is incorrect.</p>
+    <p>The image intensifier itself is not the failing component.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-magnification-dose-increase">
+    <h3>Real-World Example: Magnification Dose Increase</h3>
+    <p>Technologist selects smaller field-of-view magnification mode.</p>
+    <p>Image becomes larger and sharper.</p>
+    <p>Generator technique rises.</p>
+    <p>This is expected because minification gain decreases and ABC compensates.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Treating an image intensifier like a flat-panel detector.</strong> The conversion physics and characteristic artifacts are very different.</p>
+    <p><strong>Assuming a normal-looking image means receptor sensitivity is normal.</strong> ABC may compensate by increasing X-ray output.</p>
+    <p><strong>Blaming the X-ray tube for every dim image.</strong> Input phosphor, photocathode, output phosphor, optics, camera, or ABC can contribute.</p>
+    <p><strong>Blaming the intensifier for every blurry image.</strong> Camera focus, optics, focal spot, or geometry can also reduce resolution.</p>
+    <p><strong>Calling all edge distortion a failure.</strong> Pincushion distortion is characteristic of image-intensifier geometry.</p>
+    <p><strong>Ignoring magnetic fields.</strong> Electron trajectories inside the intensifier can be distorted by external fields.</p>
+    <p><strong>Adjusting ABC before understanding why exposure changed.</strong> Compensation can hide detector degradation.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-image-intensifier-framework">
+    <h3>A Useful Image-Intensifier Framework</h3>
+    <p>Think:</p>
+    <p><strong>X-Ray Output</strong></p>
+    <p>↓</p>
+    <p><strong>Patient Attenuation</strong></p>
+    <p>↓</p>
+    <p><strong>Input Phosphor</strong></p>
+    <p>↓</p>
+    <p><strong>Visible Light</strong></p>
+    <p>↓</p>
+    <p><strong>Photocathode</strong></p>
+    <p>↓</p>
+    <p><strong>Electron Image</strong></p>
+    <p>↓</p>
+    <p><strong>Electrostatic Focusing</strong></p>
+    <p>↓</p>
+    <p><strong>Acceleration</strong></p>
+    <p>↓</p>
+    <p><strong>Output Phosphor</strong></p>
+    <p>↓</p>
+    <p><strong>Optical Coupling</strong></p>
+    <p>↓</p>
+    <p><strong>Video / Digital Camera</strong></p>
+    <p>↓</p>
+    <p><strong>Image Processing</strong></p>
+    <p>↓</p>
+    <p><strong>Display</strong></p>
+    <p>And around that chain:</p>
+    <p><strong>Automatic Brightness Control</strong></p>
+    <p>monitors the result and changes X-ray output.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Is the problem exposure, intensifier conversion, electron optics, camera, or display?</strong></p>
+    <p>Then ask:</p>
+    <p><strong>Did the required X-ray technique change from historical baseline?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does the artifact change when the C-arm orientation or field size changes?</strong></p>
+    <p>Those questions are much more useful than:</p>
+    <blockquote><p>Fluoro image bad.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the monitor image looks normal:</p>
+    <p>You proved:</p>
+    <p><strong>The complete chain can currently produce an acceptable-looking displayed image under that condition.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Image-intensifier sensitivity normal</li>
+      <li>Patient dose unchanged</li>
+      <li>ABC calibration correct</li>
+    </ul>
+    <p>If a grid phantom shows geometric distortion:</p>
+    <p>You proved:</p>
+    <p><strong>The displayed imaging chain is distorting geometry under that setup.</strong></p>
+    <p>You have not yet proven whether the source is:</p>
+    <ul>
+      <li>Intensifier</li>
+      <li>Optical chain</li>
+      <li>Camera</li>
+      <li>Processing</li>
+    </ul>
+    <p>If input exposure, output response, generator technique, spatial resolution, contrast, and required fluoroscopy QC all meet their specified limits:</p>
+    <p>You have much stronger evidence that the complete image-intensifier fluoroscopy chain is performing appropriately under those test conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>An image intensifier is a remarkable piece of analog imaging technology.</p>
+    <p>It takes X-rays.</p>
+    <p>Turns them into light.</p>
+    <p>Turns that light into electrons.</p>
+    <p>Accelerates and focuses the electrons.</p>
+    <p>Turns them back into light.</p>
+    <p>Then hands that bright little image to another imaging system.</p>
+    <p>Every conversion can affect the final result.</p>
+    <p>That is why older fluoroscopy has its own characteristic failure patterns.</p>
+    <p>Pincushion distortion comes from geometry.</p>
+    <p>S-distortion comes from electron paths interacting with magnetic fields.</p>
+    <p>Brightness loss can be hidden by automatic exposure control.</p>
+    <p>Blur can come from electron optics or the downstream camera.</p>
+    <p>A fixed artifact can originate in several places along the chain.</p>
+    <p>The best troubleshooting approach is therefore not:</p>
+    <blockquote><p>Is the image intensifier bad?</p></blockquote>
+    <p>It is:</p>
+    <p><strong>Where does the image first stop looking the way it should?</strong></p>
+    <p>Did the X-ray exposure change?</p>
+    <p>Did conversion gain change?</p>
+    <p>Did the output image remain sharp?</p>
+    <p>Did the camera preserve it?</p>
+    <p>Did ABC start compensating harder?</p>
+    <p>Those questions turn an old piece of radiology equipment from a mysterious giant vacuum tube into a logical imaging chain.</p>
+    <p>And as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Image-intensifier construction, input phosphor materials, photocathode characteristics, focusing voltages, output phosphors, field sizes, optical coupling, camera systems, automatic brightness control, conversion-gain specifications, radiation-output limits, QC procedures, and service boundaries vary significantly by manufacturer and fluoroscopy system generation. Follow current OEM documentation, applicable radiation-safety and imaging-QC requirements, and authorized service scope when evaluating or servicing image-intensifier fluoroscopy systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-fluoroscopy-automatic-exposure-rate-control-works.html">How Fluoroscopy Automatic Exposure Rate Control Works</a></li>
+      <li><a href="how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure.html">How an X-Ray Generator Creates High Voltage and Controls an Exposure</a></li>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="how-optical-sensors-work-in-medical-equipment.html">How Optical Sensors Work in Medical Equipment</a></li>
+      <li><a href="analog-vs-digital-signals.html">Analog vs Digital Signals</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
