@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from generate_sitemap import production_html_files
+from generate_sitemap import _filesystem_path, production_html_files
 BASE_URL = "https://jaketroubleshoots.com"
 REQ = {"title", "description", "assetType", "manufacturer", "model", "url", "dateAdded", "steps"}
 GUIDE_HEADINGS = ["Asset Type", "Manufacturer", "Model", "What This Guide Helps With", "Step-by-Step Troubleshooting"]
@@ -66,7 +66,7 @@ def validate_records(records, errors, warnings):
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get('dateAdded',''))): errors.append(f"{where}.dateAdded is not YYYY-MM-DD")
         if 'url' in r:
             urls.append((r['url'],where)); path=ROOT/r['url']
-            if not path.exists(): errors.append(f"{where}.url target missing: {r['url']}")
+            if not _filesystem_path(path).exists(): errors.append(f"{where}.url target missing: {r['url']}")
             if not str(r['url']).endswith('.html'): warnings.append(f"{where}.url does not end in .html: {r['url']}")
         steps=r.get('steps')
         if not isinstance(steps,list) or not steps: errors.append(f"{where}.steps must be a non-empty list")
@@ -90,15 +90,15 @@ def local_target(src, href):
 
 def validate_links(errors):
     for f in html_files():
-        lp=LinkParser(); lp.feed(f.read_text(encoding='utf-8'))
+        lp=LinkParser(); lp.feed(_filesystem_path(f).read_text(encoding='utf-8'))
         for tag,href in lp.links:
             t=local_target(f,href)
             if not t: continue
             target,frag=t
-            if target.is_dir(): target=target/'index.html'
-            if not target.exists(): errors.append(f"Broken local {tag} link in {f.relative_to(ROOT)}: {href}")
+            if _filesystem_path(target).is_dir(): target=target/'index.html'
+            if not _filesystem_path(target).exists(): errors.append(f"Broken local {tag} link in {f.relative_to(ROOT)}: {href}")
             elif frag and target.suffix=='.html':
-                lp2=LinkParser(); lp2.feed(target.read_text(encoding='utf-8'))
+                lp2=LinkParser(); lp2.feed(_filesystem_path(target).read_text(encoding='utf-8'))
                 if frag not in lp2.ids: errors.append(f"Broken fragment in {f.relative_to(ROOT)}: {href}")
 
 def validate_sitemap(records, errors, warnings):
@@ -114,8 +114,8 @@ def validate_sitemap(records, errors, warnings):
 def validate_templates(records, warnings):
     record_paths={ROOT/r['url'] for _,_,r in records if isinstance(r,dict) and 'url' in r}
     for f in sorted(record_paths):
-        if not f.exists(): continue
-        lp=LinkParser(); lp.feed(f.read_text(encoding='utf-8'))
+        if not _filesystem_path(f).exists(): continue
+        lp=LinkParser(); lp.feed(_filesystem_path(f).read_text(encoding='utf-8'))
         missing=[h for h in GUIDE_HEADINGS if h not in lp.headings]
         if missing: warnings.append(f"Guide template deviation in {f.relative_to(ROOT)}: missing headings {missing}")
 
