@@ -7,7 +7,14 @@ from xml.etree import ElementTree
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from generate_sitemap import BASE_URL, main, production_html_files, render_sitemap, sitemap_urls
+from generate_sitemap import (
+    BASE_URL,
+    SITEMAP_EXCLUDED_PATHS,
+    main,
+    production_html_files,
+    render_sitemap,
+    sitemap_urls,
+)
 
 
 class SitemapTests(unittest.TestCase):
@@ -15,7 +22,8 @@ class SitemapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             public = ["index.html", "search.html", "guides/device-error.html",
-                      "preventive-maintenance/device.html", "biomed-basics/networking.html"]
+                      "preventive-maintenance/device.html", "biomed-basics/networking.html",
+                      "directory/troubleshooting-guides-001.html"]
             private = ["tests/fixtures/guide.html", "reports/preview.html",
                        "incoming-guides/draft.html", ".publish-stage/guide.html",
                        "node_modules/example/index.html", "guides/.draft.html",
@@ -45,6 +53,19 @@ class SitemapTests(unittest.TestCase):
         robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
         self.assertIn(f"Sitemap: {BASE_URL}/sitemap.xml", robots)
         self.assertTrue((ROOT / "sitemap.xml").is_file())
+
+    def test_legacy_redirect_remains_public_but_is_not_in_sitemap(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            legacy = next(iter(SITEMAP_EXCLUDED_PATHS))
+            for relative in (legacy, "guides/ge-mac-vu360-leads-noisy.html"):
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("<!doctype html><title>Fixture</title>", encoding="utf-8")
+            published = {path.relative_to(root).as_posix() for path in production_html_files(root)}
+            self.assertIn(legacy, published)
+            self.assertNotIn(f"{BASE_URL}/{legacy}", sitemap_urls(root))
+            self.assertIn(f"{BASE_URL}/guides/ge-mac-vu360-leads-noisy.html", sitemap_urls(root))
 
 
 if __name__ == "__main__":

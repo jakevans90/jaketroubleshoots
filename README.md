@@ -53,15 +53,18 @@ After manual changes to published pages or guide catalogs, rebuild derived files
 
 ```sh
 python tools/build_guide_discovery.py
+python tools/build_content_directory.py
 python tools/page_chrome.py --write
 python generate_sitemap.py
 ```
 
 The first command generates `data/guide-discovery.json` and the separate
 `data/guide-search-terms.json`; edit the source shards instead of these files.
-The second maintains static viewport metadata, page headings, skip links,
+The second generates the paginated static HTML directory from the authoritative
+guide shards and the PM and Biomed Basics catalogs. The third maintains static viewport metadata, page headings, skip links,
 section navigation, and exact taxonomy links. The sitemap includes published
-root pages and the three content libraries, excluding drafts and test fixtures.
+root pages, the three content libraries, and the generated directory, excluding
+drafts and test fixtures.
 
 The guide publishers already include discovery output in their transactions,
 apply page chrome to new guides, and update the sitemap. The enhancement engine
@@ -77,6 +80,7 @@ temporary Git repositories. Run:
 python -m unittest discover -s tests
 node --test tests/test_guide_loader.js tests/test_site_search.js
 python tools/build_guide_discovery.py --check
+python tools/build_content_directory.py --check
 python tools/page_chrome.py --check
 python scripts/validate_site.py
 python tools/crawl_site.py --output reports/production-crawl.json

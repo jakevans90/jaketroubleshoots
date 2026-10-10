@@ -17,6 +17,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DETAIL_DIRS = ("guides", "preventive-maintenance", "biomed-basics")
 TOC = re.compile(r'<!-- page-navigation:start -->.*?<!-- page-navigation:end -->\s*', re.S)
+BROKEN_ICON_LINKS = re.compile(
+    r'<link\s+rel="icon"\s+type="image/png"\s+href="\.\./images/favicon-96x96\.png"\s+sizes="96x96">\s*'
+    r'<link\s+rel="icon"\s+type="image/svg\+xml"\s+href="\.\./images/favicon\.svg">\s*'
+    r'<link\s+rel="shortcut icon"\s+href="\.\./favicon\.ico">\s*'
+    r'<link\s+rel="apple-touch-icon"\s+sizes="180x180"\s+href="\.\./images/apple-touch-icon\.png">',
+    re.I,
+)
+
+
+def normalize_icon_links(source):
+    """Replace the known broken PM icon bundle with the site's existing icon."""
+    return BROKEN_ICON_LINKS.sub(
+        '<link rel="icon" type="image/x-icon" href="../images/favicon.ico">',
+        source,
+    )
+
+
 ASSET_VERSIONS = {"style.css": "20260920-2", "site-search.js": "20260919-2"}
 
 
@@ -32,6 +49,7 @@ def plain_text(value):
 
 def normalize_page_chrome(source, detail=False, hubs=None):
     newline = "\r\n" if "\r\n" in source else "\n"
+    source = normalize_icon_links(source)
     # Version changed shared assets so cached pages cannot mix old JS/CSS with
     # new semantic markup. Keep this stable until the next shared-asset release.
     source = re.sub(r'(href|src)="((?:\.\./|/)?)(style\.css|guides\.js|site-search\.js|related-guides\.js|feedback\.js|guide-icons\.js|hub-links\.js)(?:\?[^\"]*)?"',
@@ -125,16 +143,19 @@ def main(argv=None):
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--write', action='store_true')
     mode.add_argument('--check', action='store_true')
+    mode.add_argument('--write-icon-links', action='store_true',
+                      help='Only replace the known broken PM favicon bundle')
     args = parser.parse_args(argv)
     hubs = {label: json.loads((args.root / 'data' / filename).read_text(encoding='utf-8'))
             for label, filename in [('Asset Type', 'hub-asset.json'), ('Manufacturer', 'hub-manufacturer.json'), ('Model', 'hub-model.json')]}
     changed = 0
     for path in production_pages(args.root):
         original = path.read_bytes().decode('utf-8')
-        updated = normalize_page_chrome(original, path.parent.name in DETAIL_DIRS, hubs)
+        updated = (normalize_icon_links(original) if args.write_icon_links else
+                   normalize_page_chrome(original, path.parent.name in DETAIL_DIRS, hubs))
         if updated != original:
             changed += 1
-            if args.write:
+            if args.write or args.write_icon_links:
                 with tempfile.NamedTemporaryFile(dir=path.parent, suffix='.tmp', delete=False) as output:
                     temporary = Path(output.name)
                     output.write(updated.encode('utf-8'))
@@ -142,7 +163,8 @@ def main(argv=None):
                     os.replace(temporary, path)
                 finally:
                     temporary.unlink(missing_ok=True)
-    print(f'{changed} production pages {"updated" if args.write else "need chrome updates"}.')
+    label = 'icon links updated' if args.write_icon_links else ('updated' if args.write else 'need chrome updates')
+    print(f'{changed} production pages {label}.')
     return 1 if args.check and changed else 0
 
 
