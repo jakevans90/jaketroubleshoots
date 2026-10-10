@@ -7,11 +7,15 @@ from xml.sax.saxutils import escape
 
 BASE_URL = "https://jaketroubleshoots.com"
 ROOT = Path(__file__).resolve().parent
-CONTENT_DIRECTORIES = ("guides", "preventive-maintenance", "biomed-basics")
+CONTENT_DIRECTORIES = ("guides", "preventive-maintenance", "biomed-basics", "directory")
+CANONICAL_OVERRIDES = {
+    "ge-mac-vu360-leads-noisy-ecg.html": f"{BASE_URL}/guides/ge-mac-vu360-leads-noisy.html",
+}
+SITEMAP_EXCLUDED_PATHS = frozenset(CANONICAL_OVERRIDES)
 
 
 def production_html_files(root: Path = ROOT) -> list[Path]:
-    """The deployed site uses flat root pages and three flat content libraries.
+    """The deployed site uses flat root pages and four flat content libraries.
 
     Keep this explicit: recursive discovery can publish temporary transaction
     output, review reports, incoming drafts, or fixtures in a public sitemap.
@@ -27,6 +31,8 @@ def sitemap_urls(root: Path = ROOT) -> list[str]:
     urls = []
     for path in production_html_files(root):
         relative = path.relative_to(root).as_posix()
+        if relative in SITEMAP_EXCLUDED_PATHS:
+            continue
         urls.append(f"{BASE_URL}/" if relative == "index.html" else f"{BASE_URL}/{relative}")
     return sorted(urls, key=lambda url: (url != f"{BASE_URL}/", url))
 

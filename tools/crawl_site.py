@@ -16,7 +16,7 @@ from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from generate_sitemap import BASE_URL, production_html_files
+from generate_sitemap import BASE_URL, CANONICAL_OVERRIDES, production_html_files, sitemap_urls
 
 
 class Page(HTMLParser):
@@ -88,7 +88,9 @@ def crawl(root: Path) -> dict:
             findings["missing_description"].append(relative)
         if not page.viewport:
             findings["missing_viewport"].append(relative)
-        expected = BASE_URL + "/" + ("" if relative == "index.html" else relative)
+        expected = CANONICAL_OVERRIDES.get(
+            relative, BASE_URL + "/" + ("" if relative == "index.html" else relative)
+        )
         if page.canonical != [expected]:
             findings["canonical_mismatch"].append({"page": relative, "canonical": page.canonical})
         if any("noindex" in robots.lower() for robots in page.robots):
@@ -134,7 +136,7 @@ def crawl(root: Path) -> dict:
                                      for title, paths in titles.items() if title and len(paths) > 1]
     sitemap = ElementTree.parse(root / "sitemap.xml")
     locations = [entry.text or "" for entry in sitemap.findall(".//{*}loc")]
-    expected = {BASE_URL + "/" + ("" if path == "index.html" else path) for path in pages}
+    expected = set(sitemap_urls(root))
     findings["missing_sitemap_entries"] = sorted(expected - set(locations))
     findings["unexpected_sitemap_entries"] = sorted(set(locations) - expected)
     findings["duplicate_sitemap_entries"] = [url for url, count in Counter(locations).items() if count > 1]

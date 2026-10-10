@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from page_chrome import normalize_page_chrome
+from page_chrome import normalize_icon_links, normalize_page_chrome
 
 
 class PageChromeTests(unittest.TestCase):
@@ -57,3 +57,15 @@ class PageChromeTests(unittest.TestCase):
         source = self.page().replace('<main>', '<main><h3>Jump to a Section</h3>')
         result = normalize_page_chrome(source, detail=True)
         self.assertNotIn('class="page-toc"', result)
+
+    def test_broken_pm_icon_bundle_uses_existing_site_icon(self):
+        source = ('<head><link rel="icon" type="image/png" href="../images/favicon-96x96.png" sizes="96x96">'
+                  '<link rel="icon" type="image/svg+xml" href="../images/favicon.svg">'
+                  '<link rel="shortcut icon" href="../favicon.ico">'
+                  '<link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png"></head>')
+        result = normalize_icon_links(source)
+        self.assertIn('<link rel="icon" type="image/x-icon" href="../images/favicon.ico">', result)
+        self.assertNotIn('favicon-96x96.png', result)
+        self.assertNotIn('favicon.svg', result)
+        self.assertNotIn('apple-touch-icon.png', result)
+        self.assertEqual(result, normalize_icon_links(result))
