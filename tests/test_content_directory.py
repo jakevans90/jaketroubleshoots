@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -32,6 +33,13 @@ class LinkParser(HTMLParser):
 
 
 class ContentDirectoryTests(unittest.TestCase):
+    @staticmethod
+    def _write_path(path, text):
+        resolved = path.resolve()
+        if os.name == "nt":
+            resolved = Path("\\\\?\\" + str(resolved))
+        resolved.write_text(text, encoding="utf-8")
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
@@ -140,6 +148,22 @@ class ContentDirectoryTests(unittest.TestCase):
         (self.root / self.basics[0]["url"]).unlink()
         with self.assertRaisesRegex(DirectoryBuildError, "does not exist"):
             build_outputs(self.root)
+
+    def test_long_windows_published_path_is_accepted(self):
+        filename = "guide-" + ("long-name-" * 20) + ".html"
+        url = f"guides/{filename}"
+        self.guides.append({"title": "Long Path Guide", "url": url})
+        self._write_json("data/guides-b.json", self.guides[2:])
+        target = self.root / url
+        self._write_path(target, "<!doctype html><title>Published</title>")
+        try:
+            outputs = build_outputs(self.root)
+            self.assertTrue(any(url in output for output in outputs.values()))
+        finally:
+            resolved = target.resolve()
+            if os.name == "nt":
+                resolved = Path("\\\\?\\" + str(resolved))
+            resolved.unlink()
 
     def test_unsafe_urls_and_unmarked_directory_files_are_rejected(self):
         self.guides[0]["url"] = "guides/../secrets.html"

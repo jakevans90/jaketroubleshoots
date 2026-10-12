@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -14,6 +15,30 @@ CANONICAL_OVERRIDES = {
 SITEMAP_EXCLUDED_PATHS = frozenset(CANONICAL_OVERRIDES)
 
 
+def _filesystem_path(path: Path) -> Path:
+    """Return a Windows extended-length path when the checkout path requires it."""
+    resolved = path.resolve()
+    value = str(resolved)
+    if os.name == "nt" and not value.startswith("\\\\?\\"):
+        return Path("\\\\?\\" + value)
+    return resolved
+
+
+def _flat_html_files(directory: Path) -> list[Path]:
+    """List direct HTML children without dropping valid long Windows paths."""
+    try:
+        with os.scandir(_filesystem_path(directory)) as entries:
+            return [
+                directory / entry.name
+                for entry in entries
+                if entry.name.lower().endswith(".html")
+                and not entry.name.startswith(".")
+                and entry.is_file()
+            ]
+    except FileNotFoundError:
+        return []
+
+
 def production_html_files(root: Path = ROOT) -> list[Path]:
     """The deployed site uses flat root pages and four flat content libraries.
 
@@ -21,10 +46,10 @@ def production_html_files(root: Path = ROOT) -> list[Path]:
     output, review reports, incoming drafts, or fixtures in a public sitemap.
     Add a directory here when intentionally introducing a new public library.
     """
-    pages = list(root.glob("*.html"))
+    pages = _flat_html_files(root)
     for directory in CONTENT_DIRECTORIES:
-        pages.extend((root / directory).glob("*.html"))
-    return sorted(path for path in pages if path.is_file() and not path.name.startswith("."))
+        pages.extend(_flat_html_files(root / directory))
+    return sorted(pages)
 
 
 def sitemap_urls(root: Path = ROOT) -> list[str]:

@@ -1,3 +1,4 @@
+import os
 import sys
 import tempfile
 import unittest
@@ -18,6 +19,13 @@ from generate_sitemap import (
 
 
 class SitemapTests(unittest.TestCase):
+    @staticmethod
+    def _write_path(path, text):
+        resolved = path.resolve()
+        if os.name == "nt":
+            resolved = Path("\\\\?\\" + str(resolved))
+        resolved.write_text(text, encoding="utf-8")
+
     def test_only_published_libraries_are_discovered(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -48,6 +56,23 @@ class SitemapTests(unittest.TestCase):
             self.assertIn("device&amp;accessory.html", xml)
             self.assertEqual(main(["--root", directory]), 0)
             self.assertEqual((root / "sitemap.xml").read_text(encoding="utf-8"), xml)
+
+    def test_long_windows_guide_path_is_not_omitted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            guides = root / "guides"
+            guides.mkdir()
+            filename = "guide-" + ("long-name-" * 20) + ".html"
+            target = guides / filename
+            self._write_path(target, "<!doctype html><title>Long path</title>")
+            try:
+                self.assertIn(target, production_html_files(root))
+                self.assertIn(f"{BASE_URL}/guides/{filename}", sitemap_urls(root))
+            finally:
+                resolved = target.resolve()
+                if os.name == "nt":
+                    resolved = Path("\\\\?\\" + str(resolved))
+                resolved.unlink()
 
     def test_robots_points_to_existing_sitemap(self):
         robots = (ROOT / "robots.txt").read_text(encoding="utf-8")

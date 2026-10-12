@@ -44,6 +44,15 @@ class InputError(ValueError): pass
 class TransactionError(RuntimeError): pass
 
 
+def filesystem_path(path: Path) -> Path:
+    """Return a Windows extended-length path for guide filenames when needed."""
+    resolved = path.resolve()
+    value = str(resolved)
+    if os.name == "nt" and not value.startswith("\\\\?\\"):
+        return Path("\\\\?\\" + value)
+    return resolved
+
+
 def scalar(value: str) -> Any:
     value = value.strip()
     if not value: return {}
@@ -271,10 +280,10 @@ def build_plan(meta: dict[str, Any], root: Path = ROOT, sections: dict[str, str]
         if reasons: plan.duplicates.append(f"{title} [{shard}]: {', '.join(dict.fromkeys(reasons))}")
     sitemap_urls = {n.text for n in ET.parse(root / "sitemap.xml").iter() if n.tag.endswith("loc")}
     if canonical in sitemap_urls: plan.duplicates.append(f"sitemap already contains {canonical}")
-    if (root / html_path).exists(): plan.duplicates.append(f"HTML file already exists: {html_path}")
+    if filesystem_path(root / html_path).exists(): plan.duplicates.append(f"HTML file already exists: {html_path}")
     canonical_pattern = re.compile(r'<link\s+rel=["\']canonical["\']\s+href=["\']([^"\']+)', re.I)
     for existing in (root / "guides").glob("*.html"):
-        found = canonical_pattern.search(existing.read_text(encoding="utf-8", errors="replace"))
+        found = canonical_pattern.search(filesystem_path(existing).read_text(encoding="utf-8", errors="replace"))
         if found and found.group(1) == canonical: plan.duplicates.append(f"canonical URL is already used by: {existing.relative_to(root).as_posix()}")
     if plan.duplicates: plan.errors.append("duplicate resolution is uncertain; review the reported candidates")
     if not plan.errors and sections is not None:
