@@ -171,6 +171,8 @@ RELATED = {
     "how-doppler-ultrasound-measures-blood-flow": ["how-ultrasound-beamforming-creates-an-image", "how-medical-equipment-measures-flow", "sensors-and-transducers-basics", "analog-vs-digital-signals", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-nuclear-medicine-dose-calibrators-measure-radioactivity": ["how-a-gamma-camera-and-spect-create-an-image", "how-pet-detectors-turn-gamma-rays-into-an-image", "sensors-and-transducers-basics", "tolerance-vs-accuracy", "measurement-uncertainty-in-plain-english"],
     "how-a-fluoroscopy-image-intensifier-works": ["how-fluoroscopy-automatic-exposure-rate-control-works", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals"],
+    "how-ct-automatic-tube-current-modulation-works": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-ct-detectors-and-hounsfield-units-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-anti-scatter-grids-work-in-x-ray-imaging": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-a-fluoroscopy-image-intensifier-works", "how-digital-mammography-creates-and-processes-an-image"],
 }
 
 ARTICLE_CONFIG = {
@@ -1043,6 +1045,22 @@ ARTICLE_CONFIG = {
         "badge": "Fluoroscopy",
         "cardNote": "Input phosphor, photocathode, electron optics, output image, distortion, and brightness",
     },
+    "how-ct-automatic-tube-current-modulation-works": {
+        "description": "A practical explanation of how CT scanners vary tube current by patient attenuation, anatomy, angle, and image-quality target to balance image noise, radiation output, and tube loading.",
+        "category": "How Medical Equipment Works",
+        "badge": "CT Imaging",
+        "cardNote": "Scout data, attenuation, angular and longitudinal modulation, image noise, and dose",
+    },
+    "how-anti-scatter-grids-work-in-x-ray-imaging": {
+        "description": "A practical explanation of how anti-scatter grids improve X-ray image contrast and how grid ratio, focus, alignment, orientation, and Bucky motion affect exposure and artifacts.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Imaging",
+        "cardNote": "Scatter rejection, grid geometry, Bucky motion, cutoff, exposure, and artifacts",
+    },
+}
+
+GROUP_OVERRIDES = {
+    "biomed-bmet-clinical-engineering-htm": "start-here",
 }
 
 
@@ -1246,7 +1264,7 @@ def replace_related(source: str, replacement: str) -> str:
 
 def biomed_group(category: str) -> str:
     normalized = category.casefold()
-    if "how it works" in normalized:
+    if "how it works" in normalized or normalized == "how medical equipment works":
         return "how-it-works"
     if any(word in normalized for word in ("network", "integration", "imaging", "dicom")):
         return "connected-systems"
@@ -1365,6 +1383,11 @@ def main() -> int:
         catalog_by_slug[article.slug] = catalog_entry(
             article.title, article.slug, configs[article.slug], catalog_by_slug.get(article.slug)
         )
+    for item in catalog_by_slug.values():
+        if item["category"].casefold() == "how medical equipment works":
+            item["group"] = biomed_group(item["category"])
+        if item["slug"] in GROUP_OVERRIDES:
+            item["group"] = GROUP_OVERRIDES[item["slug"]]
     catalog = sorted(catalog_by_slug.values(), key=lambda item: (item["group"], item["title"].casefold()))
     outputs[catalog_path] = json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
 
