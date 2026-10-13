@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How X-Ray Collimators and Light Fields Work | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how X-ray collimators shape the radiation field, project the light field, provide filtration, and reveal shutter, alignment, and field-size problems.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-x-ray-collimators-and-light-fields-work.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How X-Ray Collimators and Light Fields Work</h1>
+  <p>How an X-ray system shapes the radiation field, uses visible light to show where the invisible beam should go, and why field-size, alignment, shutter motion, filtration, and positioning can affect both image quality and patient exposure</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">One of the most basic actions in radiography is also one of the easiest to underestimate:</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What an X-ray collimator does</li>
+      <li>Why field size matters</li>
+      <li>Primary collimation</li>
+      <li>Adjustable shutters</li>
+      <li>Visible light fields</li>
+      <li>Mirrors</li>
+      <li>X-ray focal spot geometry</li>
+      <li>Field centering</li>
+      <li>Light/X-ray field coincidence</li>
+      <li>Source-to-image distance</li>
+      <li>Field-size indicators</li>
+      <li>Automatic collimation</li>
+      <li>Positive beam limitation</li>
+      <li>Detector-size sensing</li>
+      <li>Collimator motors</li>
+      <li>Shutter position sensors</li>
+      <li>Added filtration</li>
+      <li>Collimator alignment</li>
+      <li>Digital cropping</li>
+      <li>Scatter reduction</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>An X-ray collimator uses adjustable radiation-absorbing shutters to limit the size and shape of the X-ray beam leaving the tube housing. The shutters are positioned downstream from the focal spot so moving them inward narrows the field and moving them outward enlarges it. Restricting the beam reduces the amount of tissue irradiated and also reduces the amount of scattered radiation created inside the patient.</p>
+    <p>Because X-rays are invisible, the collimator also creates a visible light field that is intended to represent the radiation field. A lamp or LED shines onto a mirror positioned in the beam geometry so the reflected visible light appears to originate from approximately the same location as the X-ray focal spot. When the light-field components and X-ray shutters are correctly aligned, the edge of the visible field predicts where the X-ray field will fall at the selected distance.</p>
+    <p>A collimator can therefore fail mechanically, optically, or geometrically. The lamp can fail while X-ray collimation remains correct. The mirror can shift and make the light field inaccurate even though the radiation shutters move normally. A shutter motor or position sensor can fail and create a true X-ray field-size error. Digital cropping can make an oversized exposure look properly collimated after acquisition. Preserve the light-field size, actual radiation-field size, SID, detector position, shutter indication, automatic-collimation behavior, and whether the displayed image has been electronically cropped before deciding where the problem is.</p>
+  </section>
+
+  <section class="content-box" id="start-with-why-collimation-matters">
+    <h3>Start With Why Collimation Matters</h3>
+    <p>An X-ray tube naturally produces radiation over a broader region than the exact anatomy being imaged.</p>
+  </section>
+
+  <section class="content-box" id="you-usually-do-not-want-the-entire-beam">
+    <h3>You Usually Do Not Want the Entire Beam</h3>
+    <p>Only the required anatomy should be irradiated.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Two major reasons:</p>
+    <ol>
+      <li>Reduce unnecessary patient exposure.</li>
+      <li>Reduce scatter.</li>
+    </ol>
+  </section>
+
+  <section class="content-box" id="smaller-field">
+    <h3>Smaller Field</h3>
+    <p>Less tissue is irradiated.</p>
+  </section>
+
+  <section class="content-box" id="less-tissue-irradiated">
+    <h3>Less Tissue Irradiated</h3>
+    <p>Fewer scattered photons are produced.</p>
+  </section>
+
+  <section class="content-box" id="less-scatter-reaches-detector">
+    <h3>Less Scatter Reaches Detector</h3>
+    <p>Image contrast can improve.</p>
+  </section>
+
+  <section class="content-box" id="collimation-is-therefore-both-a-safety-and-image-quality-function">
+    <h3>Collimation Is Therefore Both a Safety and Image-Quality Function</h3>
+
+  </section>
+
+  <section class="content-box" id="primary-beam">
+    <h3>Primary Beam</h3>
+    <p>Radiation traveling directly from the focal spot toward the patient is part of the:</p>
+    <p><strong>Primary beam.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-collimator-shapes-that-beam">
+    <h3>The Collimator Shapes That Beam</h3>
+    <p>It does not remove scatter after the patient.</p>
+    <p>That is the job of devices such as:</p>
+    <p>Anti-scatter grids.</p>
+  </section>
+
+  <section class="content-box" id="grid-vs-collimator">
+    <h3>Grid vs Collimator</h3>
+    <p>Collimator:</p>
+    <p>Prevents unnecessary radiation from entering tissue.</p>
+    <p>Grid:</p>
+    <p>Removes some scattered radiation after it leaves the patient.</p>
+  </section>
+
+  <section class="content-box" id="collimation-is-better-than-trying-to-clean-up-scatter-later">
+    <h3>Collimation Is Better Than Trying to Clean Up Scatter Later</h3>
+    <p>If tissue is not irradiated:</p>
+    <p>It cannot create scatter from that beam.</p>
+  </section>
+
+  <section class="content-box" id="x-ray-tube-housing">
+    <h3>X-Ray Tube Housing</h3>
+    <p>The X-ray tube sits inside a protective housing.</p>
+  </section>
+
+  <section class="content-box" id="fixed-opening">
+    <h3>Fixed Opening</h3>
+    <p>The housing directs radiation through an exit port.</p>
+  </section>
+
+  <section class="content-box" id="collimator-mounts-below-that-port">
+    <h3>Collimator Mounts Below That Port</h3>
+    <p>The collimator further restricts the field.</p>
+  </section>
+
+  <section class="content-box" id="multiple-shutter-stages">
+    <h3>Multiple Shutter Stages</h3>
+    <p>Many collimators use more than one set of lead shutters.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>A single shutter plane may not control:</p>
+    <ul>
+      <li>Penumbra</li>
+      <li>Off-focus radiation</li>
+    </ul>
+    <p>as effectively.</p>
+  </section>
+
+  <section class="content-box" id="upper-shutters">
+    <h3>Upper Shutters</h3>
+    <p>Close to the focal spot.</p>
+  </section>
+
+  <section class="content-box" id="lower-shutters">
+    <h3>Lower Shutters</h3>
+    <p>Farther downstream.</p>
+  </section>
+
+  <section class="content-box" id="together">
+    <h3>Together</h3>
+    <p>They define a cleaner field.</p>
+  </section>
+
+  <section class="content-box" id="off-focus-radiation">
+    <h3>Off-Focus Radiation</h3>
+    <p>Not every useful or unwanted X-ray originates from the ideal focal-spot area.</p>
+    <p>Electrons may interact outside the intended focal track.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Radiation can originate from locations other than the nominal focal spot.</p>
+  </section>
+
+  <section class="content-box" id="additional-shutters-help-control-it">
+    <h3>Additional Shutters Help Control It</h3>
+    <p>This reduces radiation outside the intended field.</p>
+  </section>
+
+  <section class="content-box" id="lead-shutters">
+    <h3>Lead Shutters</h3>
+    <p>Collimator blades commonly use a highly attenuating material such as:</p>
+    <p><strong>Lead.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-lead">
+    <h3>Why Lead?</h3>
+    <p>High atomic number and density make it effective at absorbing diagnostic X-rays.</p>
+  </section>
+
+  <section class="content-box" id="two-dimensions">
+    <h3>Two Dimensions</h3>
+    <p>The collimator needs to control:</p>
+    <ul>
+      <li>Width</li>
+      <li>Length</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="therefore">
+    <h3>Therefore</h3>
+    <p>There are shutter pairs oriented in different directions.</p>
+  </section>
+
+  <section class="content-box" id="move-one-pair">
+    <h3>Move One Pair</h3>
+    <p>Field narrows left-to-right.</p>
+  </section>
+
+  <section class="content-box" id="move-other-pair">
+    <h3>Move Other Pair</h3>
+    <p>Field narrows head-to-foot.</p>
+  </section>
+
+  <section class="content-box" id="manual-collimator">
+    <h3>Manual Collimator</h3>
+    <p>Older or simpler systems may use knobs.</p>
+  </section>
+
+  <section class="content-box" id="operator-turns-knob">
+    <h3>Operator Turns Knob</h3>
+    <p>Mechanical linkage moves shutters.</p>
+  </section>
+
+  <section class="content-box" id="motorized-collimator">
+    <h3>Motorized Collimator</h3>
+    <p>Modern systems may use motors.</p>
+  </section>
+
+  <section class="content-box" id="motor-control-allows">
+    <h3>Motor Control Allows</h3>
+    <ul>
+      <li>Automatic field sizing</li>
+      <li>Remote adjustment</li>
+      <li>Detector tracking</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="position-feedback">
+    <h3>Position Feedback</h3>
+    <p>Motorized shutters may have sensors that report:</p>
+    <p>Where the blades are.</p>
+  </section>
+
+  <section class="content-box" id="commanded-vs-actual">
+    <h3>Commanded vs Actual</h3>
+    <p>Again:</p>
+    <p>The system may command a field size.</p>
+    <p>The shutters must physically achieve it.</p>
+  </section>
+
+  <section class="content-box" id="position-sensor-wrong">
+    <h3>Position Sensor Wrong</h3>
+    <p>System can display:</p>
+    <p>Correct field</p>
+    <p>while the physical blade position is wrong.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-binding">
+    <h3>Mechanical Binding</h3>
+    <p>A shutter can:</p>
+    <ul>
+      <li>Stick</li>
+      <li>Move slowly</li>
+      <li>Stop partway</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="possible-symptom">
+    <h3>Possible Symptom</h3>
+    <p>One edge of field does not respond correctly.</p>
+  </section>
+
+  <section class="content-box" id="asymmetric-field">
+    <h3>Asymmetric Field</h3>
+    <p>Could indicate one blade or linkage problem.</p>
+  </section>
+
+  <section class="content-box" id="light-field">
+    <h3>Light Field</h3>
+    <p>Because the radiation field is invisible:</p>
+    <p>The collimator projects visible light onto the patient.</p>
+  </section>
+
+  <section class="content-box" id="the-light-is-a-preview">
+    <h3>The Light Is a Preview</h3>
+    <p>It should indicate:</p>
+    <p>Where the X-rays will go.</p>
+  </section>
+
+  <section class="content-box" id="lamp">
+    <h3>Lamp</h3>
+    <p>Traditional systems often use a bright lamp.</p>
+    <p>Modern systems may use:</p>
+    <p>LED illumination.</p>
+  </section>
+
+  <section class="content-box" id="why-not-leave-the-light-on-constantly">
+    <h3>Why Not Leave the Light On Constantly?</h3>
+    <p>Lamp heat and life historically mattered.</p>
+    <p>Some systems use timed illumination.</p>
+  </section>
+
+  <section class="content-box" id="light-timer">
+    <h3>Light Timer</h3>
+    <p>Press button.</p>
+    <p>Field illuminates.</p>
+    <p>After a set period:</p>
+    <p>Turns off.</p>
+  </section>
+
+  <section class="content-box" id="light-failure-does-not-mean-x-ray-beam-is-gone">
+    <h3>Light Failure Does Not Mean X-Ray Beam Is Gone</h3>
+    <p>The radiation shutters may still be functioning.</p>
+  </section>
+
+  <section class="content-box" id="separate-functions">
+    <h3>Separate Functions</h3>
+
+  </section>
+
+  <section class="content-box" id="mirror">
+    <h3>Mirror</h3>
+    <p>Inside the collimator is a mirror positioned in relation to:</p>
+    <ul>
+      <li>Lamp</li>
+      <li>Focal spot</li>
+      <li>Beam axis.</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-mirror-reflects-visible-light-downward">
+    <h3>The Mirror Reflects Visible Light Downward</h3>
+    <p>The goal is to make the light appear to originate from an equivalent geometric point to the X-ray focal spot.</p>
+  </section>
+
+  <section class="content-box" id="x-rays-must-pass-through-the-mirror-assembly">
+    <h3>X-Rays Must Pass Through the Mirror Assembly</h3>
+    <p>Therefore the mirror must be made from material thin enough not to absorb excessive useful radiation.</p>
+  </section>
+
+  <section class="content-box" id="mirror-angle">
+    <h3>Mirror Angle</h3>
+    <p>Common geometry uses a mirror placed at an angle to redirect the light.</p>
+  </section>
+
+  <section class="content-box" id="if-mirror-shifts">
+    <h3>If Mirror Shifts</h3>
+    <p>The light field can move.</p>
+  </section>
+
+  <section class="content-box" id="but-actual-x-ray-field-may-stay-correct">
+    <h3>But Actual X-Ray Field May Stay Correct</h3>
+    <p>This creates a classic:</p>
+    <p><strong>Light/X-ray field coincidence failure.</strong></p>
+  </section>
+
+  <section class="content-box" id="operator-centers-using-light">
+    <h3>Operator Centers Using Light</h3>
+    <p>But X-ray exposure appears shifted.</p>
+  </section>
+
+  <section class="content-box" id="do-not-immediately-move-the-tube">
+    <h3>Do Not Immediately Move the Tube</h3>
+    <p>First determine whether:</p>
+    <ul>
+      <li>Light</li>
+      <li>X-ray</li>
+      <li>Detector</li>
+    </ul>
+    <p>is actually misaligned.</p>
+  </section>
+
+  <section class="content-box" id="coincidence">
+    <h3>Coincidence</h3>
+    <p>The light-field edges should correspond to the radiation-field edges within the applicable tolerance.</p>
+  </section>
+
+  <section class="content-box" id="how-do-you-test-that">
+    <h3>How Do You Test That?</h3>
+    <p>Use a controlled field-alignment test.</p>
+  </section>
+
+  <section class="content-box" id="common-tools">
+    <h3>Common Tools</h3>
+    <ul>
+      <li>Radiographic test template</li>
+      <li>Markers</li>
+      <li>Image receptor</li>
+    </ul>
+    <p>according to facility procedure.</p>
+  </section>
+
+  <section class="content-box" id="mark-light-field-edges">
+    <h3>Mark Light-Field Edges</h3>
+    <p>Then make an exposure.</p>
+    <p>Compare:</p>
+    <p>Light boundary</p>
+    <p>with:</p>
+    <p>Radiation boundary.</p>
+  </section>
+
+  <section class="content-box" id="if-x-ray-field-is-correct-but-light-is-wrong">
+    <h3>If X-Ray Field Is Correct but Light Is Wrong</h3>
+    <p>Optical alignment problem.</p>
+  </section>
+
+  <section class="content-box" id="if-both-are-shifted">
+    <h3>If Both Are Shifted</h3>
+    <p>Mechanical tube/collimator alignment may be involved.</p>
+  </section>
+
+  <section class="content-box" id="beam-center">
+    <h3>Beam Center</h3>
+    <p>The central ray should be appropriately aligned with:</p>
+    <ul>
+      <li>Collimator</li>
+      <li>Detector</li>
+      <li>Bucky</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="central-ray-alignment">
+    <h3>Central-Ray Alignment</h3>
+    <p>Especially important with:</p>
+    <ul>
+      <li>Focused grids</li>
+      <li>AEC chambers</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="miscentered-beam-can-create-several-problems-at-once">
+    <h3>Miscentered Beam Can Create Several Problems at Once</h3>
+    <ul>
+      <li>Grid cutoff</li>
+      <li>AEC behavior changes</li>
+      <li>Anatomy cut off</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-why-geometry-problems-can-look-like-several-systems-failing">
+    <h3>This Is Why Geometry Problems Can Look Like Several Systems Failing</h3>
+
+  </section>
+
+  <section class="content-box" id="source-to-image-distance">
+    <h3>Source-to-Image Distance</h3>
+    <p>SID affects projected field size.</p>
+  </section>
+
+  <section class="content-box" id="beam-diverges">
+    <h3>Beam Diverges</h3>
+    <p>The farther from the focal spot:</p>
+    <p>The larger a given shutter opening projects.</p>
+  </section>
+
+  <section class="content-box" id="similar-triangles">
+    <h3>Similar Triangles</h3>
+    <p>Collimator field-size indicators use geometric relationships to estimate field size at a selected distance.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Same shutter opening:</p>
+    <p>Smaller field at short distance.</p>
+    <p>Larger field at long distance.</p>
+  </section>
+
+  <section class="content-box" id="sid-indicator">
+    <h3>SID Indicator</h3>
+    <p>Some collimators allow the operator to select or enter:</p>
+    <ul>
+      <li>100 cm</li>
+      <li>180 cm</li>
+    </ul>
+    <p>or other distances.</p>
+  </section>
+
+  <section class="content-box" id="field-scale-changes-accordingly">
+    <h3>Field Scale Changes Accordingly</h3>
+
+  </section>
+
+  <section class="content-box" id="wrong-sid-setting">
+    <h3>Wrong SID Setting</h3>
+    <p>Light-field size indication may be wrong.</p>
+  </section>
+
+  <section class="content-box" id="modern-systems">
+    <h3>Modern Systems</h3>
+    <p>May receive SID electronically from:</p>
+    <ul>
+      <li>Tube-position sensors</li>
+      <li>Bucky geometry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="incorrect-position-feedback">
+    <h3>Incorrect Position Feedback</h3>
+    <p>Can therefore influence automatic collimation.</p>
+  </section>
+
+  <section class="content-box" id="automatic-collimation">
+    <h3>Automatic Collimation</h3>
+    <p>Some systems automatically adjust the X-ray field based on:</p>
+    <ul>
+      <li>Detector size</li>
+      <li>Selected image receptor</li>
+      <li>SID</li>
+      <li>Exam protocol</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="positive-beam-limitation">
+    <h3>Positive Beam Limitation</h3>
+    <p>Historically, systems have used:</p>
+    <p><strong>Positive beam limitation</strong>, or PBL.</p>
+  </section>
+
+  <section class="content-box" id="concept">
+    <h3>Concept</h3>
+    <p>Limit X-ray field automatically so it does not significantly exceed the active image receptor area.</p>
+  </section>
+
+  <section class="content-box" id="detector-size">
+    <h3>Detector Size</h3>
+    <p>If the system knows:</p>
+    <p>14 × 17 detector</p>
+    <p>it can position shutters appropriately.</p>
+  </section>
+
+  <section class="content-box" id="detector-orientation">
+    <h3>Detector Orientation</h3>
+    <p>Portrait vs landscape matters.</p>
+  </section>
+
+  <section class="content-box" id="system-must-know-which-way-the-receptor-is-positioned">
+    <h3>System Must Know Which Way the Receptor Is Positioned</h3>
+
+  </section>
+
+  <section class="content-box" id="wrong-receptor-information">
+    <h3>Wrong Receptor Information</h3>
+    <p>Can create incorrect field size.</p>
+  </section>
+
+  <section class="content-box" id="detector-not-centered">
+    <h3>Detector Not Centered</h3>
+    <p>Even perfect automatic collimation can miss the detector if physical centering is wrong.</p>
+  </section>
+
+  <section class="content-box" id="detector-tracking">
+    <h3>Detector Tracking</h3>
+    <p>Some systems know:</p>
+    <ul>
+      <li>Table detector position</li>
+      <li>Wall detector position</li>
+      <li>Tube position</li>
+    </ul>
+    <p>and coordinate them.</p>
+  </section>
+
+  <section class="content-box" id="alignment-sensors">
+    <h3>Alignment Sensors</h3>
+    <p>Can include:</p>
+    <ul>
+      <li>Encoders</li>
+      <li>Potentiometers</li>
+      <li>Position switches</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="bad-sensor">
+    <h3>Bad Sensor</h3>
+    <p>Can create a beam limitation problem that looks like a mechanical shutter fault.</p>
+  </section>
+
+  <section class="content-box" id="manual-override">
+    <h3>Manual Override</h3>
+    <p>Systems may allow the operator to narrow the field manually.</p>
+  </section>
+
+  <section class="content-box" id="automatic-limit-does-not-mean-maximum-required-field">
+    <h3>Automatic Limit Does Not Mean Maximum Required Field</h3>
+    <p>Operator can often collimate tighter.</p>
+  </section>
+
+  <section class="content-box" id="larger-than-detector-should-be-restricted">
+    <h3>Larger Than Detector Should Be Restricted</h3>
+    <p>according to system and regulatory design.</p>
+  </section>
+
+  <section class="content-box" id="shutter-motion">
+    <h3>Shutter Motion</h3>
+    <p>Motorized shutters require:</p>
+    <ul>
+      <li>Motor</li>
+      <li>Gear train</li>
+      <li>Position sensor</li>
+      <li>Control board</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="one-axis-fails">
+    <h3>One Axis Fails</h3>
+    <p>Field changes correctly in one direction but not the other.</p>
+  </section>
+
+  <section class="content-box" id="that-is-valuable-evidence">
+    <h3>That Is Valuable Evidence</h3>
+
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Longitudinal shutters move.</p>
+    <p>Transverse shutters do not.</p>
+  </section>
+
+  <section class="content-box" id="now-you-have-an-axis-specific-collimator-problem">
+    <h3>Now You Have an Axis-Specific Collimator Problem</h3>
+    <p>not:</p>
+    <blockquote><p>Collimator broken.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="shutter-potentiometer">
+    <h3>Shutter Potentiometer</h3>
+    <p>Some systems use position-feedback potentiometers.</p>
+  </section>
+
+  <section class="content-box" id="worn-track">
+    <h3>Worn Track</h3>
+    <p>Could produce:</p>
+    <ul>
+      <li>Jumping field-size indication</li>
+      <li>Incorrect automatic position</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="encoder-failure">
+    <h3>Encoder Failure</h3>
+    <p>Same general concept.</p>
+  </section>
+
+  <section class="content-box" id="position-is-a-measurement">
+    <h3>Position Is a Measurement</h3>
+    <p>Do not assume commanded position equals physical position.</p>
+  </section>
+
+  <section class="content-box" id="light-field-brightness">
+    <h3>Light-Field Brightness</h3>
+    <p>The visible field must be bright enough for practical positioning.</p>
+  </section>
+
+  <section class="content-box" id="weak-light">
+    <h3>Weak Light</h3>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Aging lamp</li>
+      <li>LED issue</li>
+      <li>Dirty optics</li>
+      <li>Low supply voltage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="that-does-not-necessarily-affect-x-ray-field">
+    <h3>That Does Not Necessarily Affect X-Ray Field</h3>
+
+  </section>
+
+  <section class="content-box" id="light-field-focus">
+    <h3>Light-Field Focus</h3>
+    <p>Edges should be sufficiently defined for alignment.</p>
+  </section>
+
+  <section class="content-box" id="blurry-edge">
+    <h3>Blurry Edge</h3>
+    <p>Possible optical issue.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-focus-adjustment">
+    <h3>Mechanical Focus Adjustment</h3>
+    <p>Depends on collimator design.</p>
+  </section>
+
+  <section class="content-box" id="crosshair">
+    <h3>Crosshair</h3>
+    <p>Some collimators project:</p>
+    <ul>
+      <li>Crosshair</li>
+      <li>Center marker</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="indicates-central-ray">
+    <h3>Indicates Central Ray</h3>
+
+  </section>
+
+  <section class="content-box" id="crosshair-wrong">
+    <h3>Crosshair Wrong</h3>
+    <p>Could come from:</p>
+    <ul>
+      <li>Optical insert</li>
+      <li>Alignment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>Crosshair is not the X-ray beam itself.</p>
+  </section>
+
+  <section class="content-box" id="field-lamp-heat">
+    <h3>Field Lamp Heat</h3>
+    <p>Older high-intensity lamps produce heat.</p>
+  </section>
+
+  <section class="content-box" id="cooling-timing">
+    <h3>Cooling / Timing</h3>
+    <p>Collimator design manages this.</p>
+  </section>
+
+  <section class="content-box" id="lamp-replacement">
+    <h3>Lamp Replacement</h3>
+    <p>May require:</p>
+    <ul>
+      <li>Correct bulb</li>
+      <li>Alignment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wrong-lamp-position">
+    <h3>Wrong Lamp Position</h3>
+    <p>Can shift light field.</p>
+  </section>
+
+  <section class="content-box" id="replacing-bulb-is-not-always-plug-and-play">
+    <h3>Replacing Bulb Is Not Always Plug-and-Play</h3>
+    <p>Optical geometry may need verification afterward.</p>
+  </section>
+
+  <section class="content-box" id="mirror-contamination">
+    <h3>Mirror Contamination</h3>
+    <p>Dust or residue can reduce field brightness.</p>
+  </section>
+
+  <section class="content-box" id="mirror-damage">
+    <h3>Mirror Damage</h3>
+    <p>Can distort or shift illumination.</p>
+  </section>
+
+  <section class="content-box" id="do-not-clean-with-random-solvents">
+    <h3>Do Not Clean With Random Solvents</h3>
+    <p>Follow OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="added-filtration">
+    <h3>Added Filtration</h3>
+    <p>Collimator assemblies may contain:</p>
+    <ul>
+      <li>Added filtration</li>
+      <li>Compensating filters</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="why-filtration">
+    <h3>Why Filtration?</h3>
+    <p>Low-energy X-rays are more likely to be absorbed by the patient without contributing useful detector information.</p>
+  </section>
+
+  <section class="content-box" id="filtration-removes-them">
+    <h3>Filtration Removes Them</h3>
+    <p>This hardens the beam.</p>
+  </section>
+
+  <section class="content-box" id="inherent-added-filtration">
+    <h3>Inherent + Added Filtration</h3>
+    <p>Total filtration includes contributions from:</p>
+    <ul>
+      <li>Tube envelope</li>
+      <li>Housing</li>
+      <li>Window</li>
+      <li>Added filters</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="collimator-can-be-part-of-that-chain">
+    <h3>Collimator Can Be Part of That Chain</h3>
+
+  </section>
+
+  <section class="content-box" id="filter-selection">
+    <h3>Filter Selection</h3>
+    <p>Some systems automatically insert filters.</p>
+  </section>
+
+  <section class="content-box" id="examples">
+    <h3>Examples</h3>
+    <p>Different filters for:</p>
+    <ul>
+      <li>Fluoroscopy</li>
+      <li>Pediatric mode</li>
+      <li>Certain procedures</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="filter-motor-failure">
+    <h3>Filter Motor Failure</h3>
+    <p>Can affect:</p>
+    <ul>
+      <li>Dose</li>
+      <li>Beam quality</li>
+      <li>Image quality</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-not-the-same-as-shutter-failure">
+    <h3>This Is Not the Same as Shutter Failure</h3>
+    <p>But both may live in the collimator assembly.</p>
+  </section>
+
+  <section class="content-box" id="wedge-filters">
+    <h3>Wedge Filters</h3>
+    <p>Some systems use shaped filters to reduce exposure in thinner parts of the field.</p>
+  </section>
+
+  <section class="content-box" id="compensation">
+    <h3>Compensation</h3>
+    <p>Balances detector exposure across anatomy.</p>
+  </section>
+
+  <section class="content-box" id="filter-misposition">
+    <h3>Filter Misposition</h3>
+    <p>Can create:</p>
+    <ul>
+      <li>Uneven image</li>
+      <li>Unexpected AEC behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="collimator-interlock">
+    <h3>Collimator Interlock</h3>
+    <p>The system may monitor collimator state.</p>
+  </section>
+
+  <section class="content-box" id="certain-conditions-may-inhibit-exposure">
+    <h3>Certain Conditions May Inhibit Exposure</h3>
+    <p>depending on modality.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The system may require:</p>
+    <ul>
+      <li>Filter position confirmed</li>
+      <li>Field condition valid</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="exposure-failure-can-therefore-originate-in-collimator-feedback">
+    <h3>Exposure Failure Can Therefore Originate in Collimator Feedback</h3>
+    <p>Again:</p>
+    <blockquote><p>X-ray won't shoot</p></blockquote>
+    <p>does not always mean generator.</p>
+  </section>
+
+  <section class="content-box" id="automatic-beam-limitation-and-aec">
+    <h3>Automatic Beam Limitation and AEC</h3>
+    <p>These systems interact.</p>
+  </section>
+
+  <section class="content-box" id="selected-aec-chamber-must-be-irradiated">
+    <h3>Selected AEC Chamber Must Be Irradiated</h3>
+    <p>If collimation excludes the selected chamber:</p>
+    <p>AEC may not terminate normally.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Backup exposure.</p>
+  </section>
+
+  <section class="content-box" id="this-can-look-like-aec-failure">
+    <h3>This Can Look Like AEC Failure</h3>
+    <p>The AEC chamber is fine.</p>
+    <p>The beam never reached it.</p>
+  </section>
+
+  <section class="content-box" id="grid-and-collimator-alignment">
+    <h3>Grid and Collimator Alignment</h3>
+    <p>Focused grid expects beam center and angle to be correct.</p>
+  </section>
+
+  <section class="content-box" id="misaligned-collimator-assembly">
+    <h3>Misaligned Collimator Assembly</h3>
+    <p>Can contribute to:</p>
+    <p>Grid cutoff.</p>
+  </section>
+
+  <section class="content-box" id="one-geometry-error-multiple-symptoms">
+    <h3>One Geometry Error, Multiple Symptoms</h3>
+    <p>This is why system thinking matters.</p>
+  </section>
+
+  <section class="content-box" id="digital-cropping">
+    <h3>Digital Cropping</h3>
+    <p>Digital radiography can electronically crop the displayed image.</p>
+  </section>
+
+  <section class="content-box" id="this-is-sometimes-called">
+    <h3>This Is Sometimes Called</h3>
+    <ul>
+      <li>Shuttering</li>
+      <li>Masking</li>
+      <li>Electronic collimation</li>
+    </ul>
+    <p>depending on context.</p>
+  </section>
+
+  <section class="content-box" id="it-does-not-change-the-original-radiation-field">
+    <h3>It Does Not Change the Original Radiation Field</h3>
+    <p>This is critical.</p>
+  </section>
+
+  <section class="content-box" id="exposure-already-happened">
+    <h3>Exposure Already Happened</h3>
+    <p>Removing the outer region from display does not:</p>
+    <ul>
+      <li>Reduce patient dose</li>
+      <li>Reduce scatter that was created</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="electronic-shuttering-is-not-physical-collimation">
+    <h3>Electronic Shuttering Is Not Physical Collimation</h3>
+
+  </section>
+
+  <section class="content-box" id="a-beautifully-cropped-image-can-hide-poor-beam-collimation">
+    <h3>A Beautifully Cropped Image Can Hide Poor Beam Collimation</h3>
+
+  </section>
+
+  <section class="content-box" id="look-at-raw-exposure-field-when-evaluating-collimation">
+    <h3>Look at Raw Exposure Field When Evaluating Collimation</h3>
+    <p>QC modes or service images may be needed.</p>
+  </section>
+
+  <section class="content-box" id="exposure-field-recognition">
+    <h3>Exposure Field Recognition</h3>
+    <p>Digital systems may automatically identify the collimated field edges.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>To optimize:</p>
+    <ul>
+      <li>Histogram analysis</li>
+      <li>Image processing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="field-recognition-failure">
+    <h3>Field-Recognition Failure</h3>
+    <p>Can cause:</p>
+    <ul>
+      <li>Strange brightness</li>
+      <li>Processing errors</li>
+    </ul>
+    <p>even when physical collimation is correct.</p>
+  </section>
+
+  <section class="content-box" id="this-is-a-software-image-processing-problem">
+    <h3>This Is a Software/Image-Processing Problem</h3>
+    <p>not necessarily a collimator problem.</p>
+  </section>
+
+  <section class="content-box" id="large-exposed-field">
+    <h3>Large Exposed Field</h3>
+    <p>More scatter reaches detector.</p>
+  </section>
+
+  <section class="content-box" id="histogram-changes">
+    <h3>Histogram Changes</h3>
+    <p>Image processing may also be affected.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>Physical beam size influences downstream digital processing.</p>
+  </section>
+
+  <section class="content-box" id="detector-coverage">
+    <h3>Detector Coverage</h3>
+    <p>The X-ray field should generally stay within the relevant receptor area.</p>
+  </section>
+
+  <section class="content-box" id="beam-beyond-detector">
+    <h3>Beam Beyond Detector</h3>
+    <p>Adds patient exposure without creating useful recorded image.</p>
+  </section>
+
+  <section class="content-box" id="smaller-field-than-needed">
+    <h3>Smaller Field Than Needed</h3>
+    <p>Cuts anatomy off.</p>
+  </section>
+
+  <section class="content-box" id="repeat-exposure">
+    <h3>Repeat Exposure</h3>
+    <p>Can increase total patient dose more than the original poor collimation.</p>
+  </section>
+
+  <section class="content-box" id="repeat-analysis">
+    <h3>Repeat Analysis</h3>
+    <p>Frequent cut-off images may point toward:</p>
+    <ul>
+      <li>Positioning</li>
+      <li>Light-field alignment</li>
+      <li>Automatic collimation fault</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="trend-those-complaints">
+    <h3>Trend Those Complaints</h3>
+
+  </section>
+
+  <section class="content-box" id="field-size-readout">
+    <h3>Field-Size Readout</h3>
+    <p>Some systems display numerical field dimensions.</p>
+  </section>
+
+  <section class="content-box" id="that-display-is-based-on-position-sensors-and-geometry">
+    <h3>That Display Is Based on Position Sensors and geometry</h3>
+    <p>not direct measurement of X-rays.</p>
+  </section>
+
+  <section class="content-box" id="display-can-be-wrong">
+    <h3>Display Can Be Wrong</h3>
+    <p>If:</p>
+    <ul>
+      <li>Sensor calibration</li>
+      <li>SID data</li>
+    </ul>
+    <p>is wrong.</p>
+  </section>
+
+  <section class="content-box" id="physical-verification-matters">
+    <h3>Physical Verification Matters</h3>
+
+  </section>
+
+  <section class="content-box" id="collimator-calibration">
+    <h3>Collimator Calibration</h3>
+    <p>Service procedures may calibrate:</p>
+    <ul>
+      <li>Shutter zero</li>
+      <li>Field size</li>
+      <li>Light/X-ray coincidence</li>
+      <li>Center alignment</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="calibration-should-not-hide-binding">
+    <h3>Calibration Should Not Hide Binding</h3>
+    <p>If the shutter mechanically sticks:</p>
+    <p>Re-zeroing the position sensor is not a real repair.</p>
+  </section>
+
+  <section class="content-box" id="watch-physical-motion">
+    <h3>Watch Physical Motion</h3>
+
+  </section>
+
+  <section class="content-box" id="both-directions-should-move-smoothly">
+    <h3>Both Directions Should Move Smoothly</h3>
+    <p>No hesitation.</p>
+    <p>No sudden jump.</p>
+  </section>
+
+  <section class="content-box" id="reproducibility">
+    <h3>Reproducibility</h3>
+    <p>Command same field several times.</p>
+    <p>Physical field should return consistently.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-backlash">
+    <h3>Mechanical Backlash</h3>
+    <p>Worn gears can create:</p>
+    <p>Different final positions depending on direction of approach.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Open to 20 cm:</p>
+    <p>Correct.</p>
+    <p>Close to 20 cm:</p>
+    <p>Different.</p>
+  </section>
+
+  <section class="content-box" id="that-suggests-mechanical-play">
+    <h3>That Suggests Mechanical play</h3>
+    <p>rather than simple calibration offset.</p>
+  </section>
+
+  <section class="content-box" id="test-at-multiple-field-sizes">
+    <h3>Test At Multiple Field Sizes</h3>
+    <p>One field size passing does not prove full-range performance.</p>
+  </section>
+
+  <section class="content-box" id="small-field">
+    <h3>Small Field</h3>
+    <p>May reveal different mechanical behavior.</p>
+  </section>
+
+  <section class="content-box" id="large-field">
+    <h3>Large Field</h3>
+    <p>May expose travel-limit issues.</p>
+  </section>
+
+  <section class="content-box" id="test-at-relevant-sid">
+    <h3>Test At Relevant SID</h3>
+    <p>Because projected field depends on distance.</p>
+  </section>
+
+  <section class="content-box" id="light-x-ray-coincidence-must-be-tested-under-defined-geometry">
+    <h3>Light/X-Ray Coincidence Must Be Tested Under Defined Geometry</h3>
+
+  </section>
+
+  <section class="content-box" id="beam-alignment-tool">
+    <h3>Beam Alignment Tool</h3>
+    <p>Some QC tools test central-ray perpendicularity or alignment.</p>
+  </section>
+
+  <section class="content-box" id="why-perpendicularity-matters">
+    <h3>Why Perpendicularity Matters</h3>
+    <p>Especially for:</p>
+    <ul>
+      <li>Grid</li>
+      <li>Geometric accuracy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="tube-angulation">
+    <h3>Tube Angulation</h3>
+    <p>Intentional angulation is common.</p>
+  </section>
+
+  <section class="content-box" id="collimator-rotates-with-tube">
+    <h3>Collimator Rotates With Tube</h3>
+    <p>The light field should remain consistent with the X-ray beam.</p>
+  </section>
+
+  <section class="content-box" id="collimator-rotation">
+    <h3>Collimator Rotation</h3>
+    <p>Some systems allow rotating the collimator itself.</p>
+  </section>
+
+  <section class="content-box" id="rotational-alignment">
+    <h3>Rotational Alignment</h3>
+    <p>If mechanical assembly is loose:</p>
+    <p>Field can rotate unexpectedly.</p>
+  </section>
+
+  <section class="content-box" id="lock-mechanism">
+    <h3>Lock Mechanism</h3>
+    <p>Must hold position.</p>
+  </section>
+
+  <section class="content-box" id="mobile-x-ray">
+    <h3>Mobile X-Ray</h3>
+    <p>Portable systems rely heavily on the light field.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>There is less fixed mechanical alignment between:</p>
+    <ul>
+      <li>Tube</li>
+      <li>Patient</li>
+      <li>Detector</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="light-field-accuracy-is-therefore-particularly-useful">
+    <h3>Light-Field Accuracy Is Therefore Particularly Useful</h3>
+
+  </section>
+
+  <section class="content-box" id="battery-powered-mobile-units">
+    <h3>Battery-Powered Mobile Units</h3>
+    <p>Lamp/LED operation may depend on system battery or low-voltage supplies.</p>
+  </section>
+
+  <section class="content-box" id="weak-light-is-not-an-x-ray-output-problem">
+    <h3>Weak Light Is Not an X-Ray Output Problem</h3>
+    <p>Keep the circuits separate.</p>
+  </section>
+
+  <section class="content-box" id="c-arm-collimation">
+    <h3>C-Arm Collimation</h3>
+    <p>Fluoroscopy systems often use:</p>
+    <ul>
+      <li>Iris</li>
+      <li>Rectangular shutters</li>
+      <li>Blades</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="dynamic-collimation">
+    <h3>Dynamic Collimation</h3>
+    <p>Field may change with:</p>
+    <ul>
+      <li>Magnification</li>
+      <li>C-arm geometry</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="last-image-hold">
+    <h3>Last-Image Hold</h3>
+    <p>Allows operators to collimate using stored image on some systems.</p>
+  </section>
+
+  <section class="content-box" id="dose-sparing-feature">
+    <h3>Dose-Sparing Feature</h3>
+    <p>But the physical shutters still need to move correctly.</p>
+  </section>
+
+  <section class="content-box" id="ct-collimation-is-different">
+    <h3>CT Collimation Is Different</h3>
+    <p>CT uses collimation too, but its geometry and role are different.</p>
+  </section>
+
+  <section class="content-box" id="ct-collimator">
+    <h3>CT Collimator</h3>
+    <p>Controls beam width relative to detector rows.</p>
+  </section>
+
+  <section class="content-box" id="do-not-apply-general-radiography-shutter-concepts-directly-to-ct">
+    <h3>Do Not Apply General-Radiography Shutter Concepts Directly to CT</h3>
+    <p>Same word.</p>
+    <p>Different implementation.</p>
+  </section>
+
+  <section class="content-box" id="mammography-collimation">
+    <h3>Mammography Collimation</h3>
+    <p>Also specialized.</p>
+  </section>
+
+  <section class="content-box" id="detector-and-compression-geometry-matter">
+    <h3>Detector and compression geometry matter.</h3>
+    <p>Again:</p>
+    <p>Read modality-specific documentation.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-light-field-shifted">
+    <h3>Real-World Example: Light Field Shifted</h3>
+    <p>Technologists report anatomy is consistently cut off even though positioning follows the light.</p>
+    <p>Radiation-field test shows X-ray beam is centered correctly.</p>
+    <p>Light field is shifted 2 cm.</p>
+    <p>Mirror alignment is incorrect.</p>
+    <p>Generator and detector are fine.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-shutter-sticks">
+    <h3>Real-World Example: One Shutter Sticks</h3>
+    <p>Field width changes normally.</p>
+    <p>Field length remains almost fixed.</p>
+    <p>Motor command changes but one shutter axis does not physically move.</p>
+    <p>The failure is localized to one mechanical/control axis.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-aec-hits-backup">
+    <h3>Real-World Example: AEC Hits Backup</h3>
+    <p>AEC chamber tests normally.</p>
+    <p>Selected chamber lies outside the physically collimated X-ray field due to incorrect automatic shutter position.</p>
+    <p>AEC never receives enough radiation.</p>
+    <p>Backup timer stops exposure.</p>
+    <p>The problem began in collimation, not AEC.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-digital-image-looks-properly-collimated">
+    <h3>Real-World Example: Digital Image Looks Properly Collimated</h3>
+    <p>Processed image displays a tight field around the anatomy.</p>
+    <p>Raw acquisition shows radiation extended far outside that region.</p>
+    <p>Electronic cropping has hidden poor physical collimation.</p>
+    <p>Patient exposure and scatter occurred before the crop.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-field-size-wrong-only-at-one-sid">
+    <h3>Real-World Example: Field Size Wrong Only at One SID</h3>
+    <p>Light/X-ray coincidence is acceptable at 100 cm.</p>
+    <p>At 180 cm:</p>
+    <p>Displayed field-size indication is wrong.</p>
+    <p>SID input or field-size geometry calibration deserves investigation.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Treating electronic cropping as physical collimation.</strong> Cropping occurs after exposure and does not reduce patient radiation or scatter.</p>
+    <p><strong>Assuming the light field and X-ray field are inherently identical.</strong> Their alignment depends on optical and mechanical calibration.</p>
+    <p><strong>Replacing the lamp and skipping coincidence verification.</strong> Lamp position can affect optical geometry.</p>
+    <p><strong>Ignoring SID.</strong> Projected field size changes with source distance.</p>
+    <p><strong>Blaming AEC for backup exposures when the selected chamber was collimated out.</strong> The chamber cannot measure radiation it never receives.</p>
+    <p><strong>Calling every asymmetric field a detector problem.</strong> One stuck shutter can create a very clean geometric cutoff.</p>
+    <p><strong>Calibrating around mechanical binding.</strong> A sensor adjustment does not repair a shutter that physically does not move consistently.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-collimator-framework">
+    <h3>A Useful Collimator Framework</h3>
+    <p>Think:</p>
+    <p><strong>X-Ray Focal Spot</strong></p>
+    <p>↓</p>
+    <p><strong>Tube Housing Port</strong></p>
+    <p>↓</p>
+    <p><strong>Upper Shutters</strong></p>
+    <p>↓</p>
+    <p><strong>Added Filtration / Mirror Region</strong></p>
+    <p>↓</p>
+    <p><strong>Lower Shutters</strong></p>
+    <p>↓</p>
+    <p><strong>Patient</strong></p>
+    <p>↓</p>
+    <p><strong>Detector</strong></p>
+    <p>And separately:</p>
+    <p><strong>Lamp / LED</strong></p>
+    <p>↓</p>
+    <p><strong>Mirror</strong></p>
+    <p>↓</p>
+    <p><strong>Visible Light Field</strong></p>
+    <p>The two paths should represent the same geometry at the patient plane.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Is the visible light field wrong, the actual radiation field wrong, or only the displayed digital crop wrong?</strong></p>
+    <p>Then ask:</p>
+    <p><strong>Does the problem occur in one shutter axis or both?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it change with SID, detector, or automatic mode?</strong></p>
+    <p>Those questions separate:</p>
+    <ul>
+      <li>Optical alignment</li>
+      <li>Mechanical shutters</li>
+      <li>Position sensing</li>
+      <li>Detector/display processing</li>
+    </ul>
+    <p>very quickly.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the light field looks correct:</p>
+    <p>You proved:</p>
+    <p><strong>The optical system projected the expected visible field.</strong></p>
+    <p>You did not prove:</p>
+    <p>The actual X-ray field matches it.</p>
+    <p>If the processed image appears tightly cropped:</p>
+    <p>You proved:</p>
+    <p><strong>The display software showed only that region.</strong></p>
+    <p>You did not prove:</p>
+    <p>The patient was exposed only within that region.</p>
+    <p>If a controlled light/X-ray coincidence test, central-ray alignment test, shutter-position test, and field-size verification all pass at the required distances:</p>
+    <p>You have much stronger evidence that the collimator is correctly defining and indicating the radiation field.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>An X-ray collimator is more than four pieces of lead opening and closing.</p>
+    <p>It is a geometry system.</p>
+    <p>The shutters define where radiation goes.</p>
+    <p>The light field tells the technologist where that invisible beam should land.</p>
+    <p>Position sensors tell the scanner where the shutters supposedly are.</p>
+    <p>Automatic controls may size the field to the detector.</p>
+    <p>AEC depends on the selected chamber being inside that field.</p>
+    <p>Focused grids depend on the beam being properly centered.</p>
+    <p>Digital processing may then crop the final image and hide what actually happened.</p>
+    <p>That is why one collimator problem can show up as:</p>
+    <ul>
+      <li>Anatomy cutoff</li>
+      <li>AEC backup</li>
+      <li>Grid cutoff</li>
+      <li>Excessive scatter</li>
+      <li>Increased exposure</li>
+      <li>Light/X-ray mismatch</li>
+    </ul>
+    <p>depending on which part of the geometry is wrong.</p>
+    <p>The most important distinction is simple:</p>
+    <p><strong>The light field is a prediction.</strong></p>
+    <p><strong>The radiation field is the real exposure.</strong></p>
+    <p><strong>The displayed crop is only what software chooses to show afterward.</strong></p>
+    <p>Do not confuse the three.</p>
+    <p>When something looks wrong, determine which one actually moved.</p>
+    <p>That is where the troubleshooting starts.</p>
+    <p>And, as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>X-ray collimator construction, shutter geometry, light-source design, mirror alignment, filtration, automatic beam limitation, positive beam limitation, detector tracking, SID feedback, field-size indicators, interlocks, acceptable light/X-ray coincidence limits, and QC procedures vary significantly by manufacturer, modality, system generation, and jurisdiction. Follow current OEM documentation, approved radiographic QC procedures, radiation-safety requirements, qualified medical-physics guidance, and facility protocols when evaluating X-ray field alignment or collimator performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure.html">How an X-Ray Generator Creates High Voltage and Controls an Exposure</a></li>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="how-anti-scatter-grids-work-in-x-ray-imaging.html">How Anti-Scatter Grids Work in X-Ray Imaging</a></li>
+      <li><a href="how-fluoroscopy-automatic-exposure-rate-control-works.html">How Fluoroscopy Automatic Exposure Rate Control Works</a></li>
+      <li><a href="how-digital-mammography-creates-and-processes-an-image.html">How Digital Mammography Creates and Processes an Image</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

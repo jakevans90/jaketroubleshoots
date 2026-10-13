@@ -173,6 +173,8 @@ RELATED = {
     "how-a-fluoroscopy-image-intensifier-works": ["how-fluoroscopy-automatic-exposure-rate-control-works", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-optical-sensors-work-in-medical-equipment", "analog-vs-digital-signals"],
     "how-ct-automatic-tube-current-modulation-works": ["how-ct-gantry-rotation-and-data-acquisition-work", "how-ct-detectors-and-hounsfield-units-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-anti-scatter-grids-work-in-x-ray-imaging": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-a-fluoroscopy-image-intensifier-works", "how-digital-mammography-creates-and-processes-an-image"],
+    "how-x-ray-automatic-exposure-control-works": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image"],
+    "how-x-ray-collimators-and-light-fields-work": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image"],
 }
 
 ARTICLE_CONFIG = {
@@ -1056,6 +1058,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "X-Ray Imaging",
         "cardNote": "Scatter rejection, grid geometry, Bucky motion, cutoff, exposure, and artifacts",
+    },
+    "how-x-ray-automatic-exposure-control-works": {
+        "description": "A practical explanation of how X-ray automatic exposure control uses selected detector chambers, calibration, and backup limits to terminate an exposure at the intended receptor signal.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Imaging",
+        "cardNote": "AEC chambers, exposure termination, calibration, backup limits, positioning, and troubleshooting",
+    },
+    "how-x-ray-collimators-and-light-fields-work": {
+        "description": "A practical explanation of how X-ray collimators shape the radiation field, project the light field, provide filtration, and reveal shutter, alignment, and field-size problems.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Imaging",
+        "cardNote": "Shutters, light fields, filtration, beam alignment, field size, and positioning",
     },
 }
 
