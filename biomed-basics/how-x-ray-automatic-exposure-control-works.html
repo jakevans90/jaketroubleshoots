@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How X-Ray Automatic Exposure Control Works | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how X-ray automatic exposure control uses selected detector chambers, calibration, and backup limits to terminate an exposure at the intended receptor signal.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-x-ray-automatic-exposure-control-works.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How X-Ray Automatic Exposure Control Works</h1>
+  <p>How an X-ray system decides when enough radiation has reached the detector — and why chamber selection, patient positioning, backup limits, calibration, and detector conditions can turn a simple exposure into a feedback problem</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">Automatic exposure control can make radiography look deceptively easy.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What automatic exposure control actually does</li>
+      <li>Why AEC controls exposure time rather than image appearance</li>
+      <li>Ionization-chamber AEC</li>
+      <li>Detector-based AEC concepts</li>
+      <li>Chamber selection</li>
+      <li>Exposure termination</li>
+      <li>kVp and mAs</li>
+      <li>Density controls</li>
+      <li>Backup time and backup mAs</li>
+      <li>Minimum response time</li>
+      <li>Patient positioning</li>
+      <li>Anatomy over the chamber</li>
+      <li>Prostheses and contrast</li>
+      <li>Scatter</li>
+      <li>Grid interaction</li>
+      <li>Detector exposure</li>
+      <li>Digital exposure index</li>
+      <li>AEC calibration</li>
+      <li>Chamber-specific failures</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Automatic exposure control measures radiation during an X-ray exposure and terminates the exposure when a calibrated amount has reached the selected sensing area. In many traditional systems, one or more ionization chambers are located between the patient and image receptor. Radiation passing through the patient ionizes gas inside the selected chamber, creating a tiny electrical signal. When the integrated signal reaches the calibrated target, the AEC tells the generator to stop the exposure.</p>
+    <p>The final exposure therefore depends on more than just the selected kVp. The tissue directly above the active AEC chamber determines how much radiation reaches it. Thin or low-attenuation anatomy lets the chamber accumulate signal quickly, causing an earlier exposure termination. Thick or highly attenuating anatomy slows that accumulation, causing the exposure to continue longer and increasing mAs. This is why positioning, chamber selection, collimation, prostheses, grids, and patient anatomy directly affect AEC behavior.</p>
+    <p>An AEC problem can therefore originate from the chamber, calibration, generator termination path, positioning, detector configuration, or simple misuse. Preserve which chamber was selected, whether the exposure terminated on AEC or backup, final mAs and exposure time, kVp, patient or phantom positioning, detector exposure index, and whether the same chamber behaves abnormally with a repeatable phantom. Those clues are far more useful than judging the system only by whether the processed digital image looks acceptable.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-problem-aec-solves">
+    <h3>Start With the Problem AEC Solves</h3>
+    <p>Without automatic exposure control, the technologist must estimate how much radiation is needed before the exposure begins.</p>
+  </section>
+
+  <section class="content-box" id="manual-technique">
+    <h3>Manual Technique</h3>
+    <p>The operator selects:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mA</li>
+      <li>Exposure time</li>
+    </ul>
+    <p>or:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mAs</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-exposure-runs-for-the-selected-amount">
+    <h3>The Exposure Runs for the Selected Amount</h3>
+    <p>If technique was too low:</p>
+    <p>Detector receives too little radiation.</p>
+    <p>If technique was too high:</p>
+    <p>Detector receives more than necessary.</p>
+  </section>
+
+  <section class="content-box" id="patient-size-makes-this-harder">
+    <h3>Patient Size Makes This Harder</h3>
+    <p>Two patients receiving the same exam may have very different:</p>
+    <ul>
+      <li>Thickness</li>
+      <li>Tissue composition</li>
+      <li>Attenuation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="same-technique">
+    <h3>Same Technique</h3>
+    <p>Does not necessarily produce the same receptor exposure.</p>
+  </section>
+
+  <section class="content-box" id="aec-adds-feedback">
+    <h3>AEC Adds Feedback</h3>
+    <p>Instead of guessing the exact exposure duration:</p>
+    <p>The system watches the radiation reaching the receptor.</p>
+  </section>
+
+  <section class="content-box" id="when-enough-arrives">
+    <h3>When Enough Arrives</h3>
+    <p>It stops.</p>
+  </section>
+
+  <section class="content-box" id="what-aec-is-really-controlling">
+    <h3>What AEC Is Really Controlling</h3>
+    <p>AEC primarily controls:</p>
+    <p><strong>Exposure termination.</strong></p>
+    <p>It is not directly controlling:</p>
+    <ul>
+      <li>Diagnosis</li>
+      <li>Anatomy positioning</li>
+      <li>Final window/level</li>
+      <li>Image-processing appearance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-important-in-digital-imaging">
+    <h3>This Is Important in Digital Imaging</h3>
+    <p>Processing can change brightness after acquisition.</p>
+    <p>AEC is controlling the physical exposure that produced the detector data.</p>
+  </section>
+
+  <section class="content-box" id="traditional-ionization-chamber-aec">
+    <h3>Traditional Ionization-Chamber AEC</h3>
+    <p>A common radiographic AEC design uses:</p>
+    <p><strong>Ionization chambers.</strong></p>
+  </section>
+
+  <section class="content-box" id="where-are-they">
+    <h3>Where Are They?</h3>
+    <p>Often positioned between:</p>
+    <ul>
+      <li>Patient</li>
+      <li>Detector</li>
+    </ul>
+    <p>or otherwise integrated into the imaging chain.</p>
+  </section>
+
+  <section class="content-box" id="chamber-construction">
+    <h3>Chamber Construction</h3>
+    <p>The chamber contains:</p>
+    <ul>
+      <li>Gas</li>
+      <li>Electrodes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="x-rays-enter">
+    <h3>X-Rays Enter</h3>
+    <p>Radiation ionizes the gas.</p>
+  </section>
+
+  <section class="content-box" id="ion-pairs-are-created">
+    <h3>Ion Pairs Are Created</h3>
+    <p>Positive and negative charges form.</p>
+  </section>
+
+  <section class="content-box" id="electric-field-collects-those-charges">
+    <h3>Electric Field Collects Those Charges</h3>
+    <p>The resulting current is extremely small.</p>
+  </section>
+
+  <section class="content-box" id="the-signal-is-integrated">
+    <h3>The Signal Is Integrated</h3>
+    <p>The AEC electronics do not usually terminate the exposure based on one instantaneous reading.</p>
+    <p>They accumulate the signal over time.</p>
+  </section>
+
+  <section class="content-box" id="think-of-filling-a-cup">
+    <h3>Think of Filling a Cup</h3>
+    <p>Radiation enters.</p>
+    <p>Signal accumulates.</p>
+    <p>When the cup reaches the target level:</p>
+    <p>Exposure stops.</p>
+  </section>
+
+  <section class="content-box" id="more-radiation-reaches-chamber">
+    <h3>More Radiation Reaches Chamber</h3>
+    <p>Cup fills faster.</p>
+  </section>
+
+  <section class="content-box" id="less-radiation-reaches-chamber">
+    <h3>Less Radiation Reaches Chamber</h3>
+    <p>Cup fills slower.</p>
+  </section>
+
+  <section class="content-box" id="that-is-the-core-aec-principle">
+    <h3>That Is the Core AEC Principle</h3>
+
+  </section>
+
+  <section class="content-box" id="chamber-selection">
+    <h3>Chamber Selection</h3>
+    <p>Many systems have multiple selectable chambers.</p>
+    <p>A common arrangement might include:</p>
+    <ul>
+      <li>Left</li>
+      <li>Center</li>
+      <li>Right</li>
+    </ul>
+    <p>or a similar geometry.</p>
+  </section>
+
+  <section class="content-box" id="why-multiple-chambers">
+    <h3>Why Multiple Chambers?</h3>
+    <p>Different exams place the anatomy of interest over different regions.</p>
+  </section>
+
+  <section class="content-box" id="chest-example">
+    <h3>Chest Example</h3>
+    <p>The operator may select outer chambers for lung fields.</p>
+  </section>
+
+  <section class="content-box" id="abdomen-example">
+    <h3>Abdomen Example</h3>
+    <p>A center chamber may be more appropriate depending on protocol.</p>
+  </section>
+
+  <section class="content-box" id="the-machine-does-not-know-whether-the-selected-chamber-makes-clinical-sense">
+    <h3>The Machine Does Not Know Whether the Selected Chamber Makes Clinical Sense</h3>
+    <p>It assumes the user chose correctly.</p>
+  </section>
+
+  <section class="content-box" id="wrong-chamber">
+    <h3>Wrong Chamber</h3>
+    <p>Can produce the wrong exposure.</p>
+  </section>
+
+  <section class="content-box" id="example-chest">
+    <h3>Example: Chest</h3>
+    <p>Suppose the active chamber is behind a dense mediastinal region.</p>
+    <p>Less radiation reaches it.</p>
+    <p>The exposure continues longer.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Lungs may receive more exposure than intended.</p>
+  </section>
+
+  <section class="content-box" id="opposite-problem">
+    <h3>Opposite Problem</h3>
+    <p>Active chamber lies under very low-attenuation lung.</p>
+    <p>Signal accumulates quickly.</p>
+    <p>Exposure stops early.</p>
+    <p>Dense anatomy may be underexposed.</p>
+  </section>
+
+  <section class="content-box" id="chamber-position-matters">
+    <h3>Chamber Position Matters</h3>
+    <p>AEC is spatial.</p>
+    <p>It responds to:</p>
+    <p>What is directly in front of the selected sensor.</p>
+  </section>
+
+  <section class="content-box" id="this-makes-patient-positioning-critical">
+    <h3>This Makes Patient Positioning Critical</h3>
+    <p>If anatomy is not centered properly over the expected chamber:</p>
+    <p>AEC behavior changes.</p>
+  </section>
+
+  <section class="content-box" id="aec-does-not-see-the-whole-patient">
+    <h3>AEC Does Not See the Whole Patient</h3>
+    <p>Unless the system uses a more advanced detector-based approach.</p>
+    <p>Traditional chambers are relatively localized sensing regions.</p>
+  </section>
+
+  <section class="content-box" id="anatomy-selection-matters">
+    <h3>Anatomy Selection Matters</h3>
+    <p>Clinical protocols are built around:</p>
+    <ul>
+      <li>Particular patient positioning</li>
+      <li>Particular chamber selection</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="density-control">
+    <h3>Density Control</h3>
+    <p>Many systems provide a:</p>
+    <ul>
+      <li>Density</li>
+      <li>Exposure</li>
+      <li>AEC compensation</li>
+    </ul>
+    <p>control.</p>
+  </section>
+
+  <section class="content-box" id="what-it-does">
+    <h3>What It Does</h3>
+    <p>It changes the AEC termination target.</p>
+  </section>
+
+  <section class="content-box" id="positive-setting">
+    <h3>Positive Setting</h3>
+    <p>Allows more radiation to accumulate before termination.</p>
+  </section>
+
+  <section class="content-box" id="negative-setting">
+    <h3>Negative Setting</h3>
+    <p>Terminates earlier.</p>
+  </section>
+
+  <section class="content-box" id="does-it-change-kvp">
+    <h3>Does It Change kVp?</h3>
+    <p>Not necessarily.</p>
+    <p>It changes the exposure target used by the AEC.</p>
+  </section>
+
+  <section class="content-box" id="terminology-varies">
+    <h3>Terminology Varies</h3>
+    <p>Modern digital systems may use different names and steps.</p>
+  </section>
+
+  <section class="content-box" id="calibration-establishes-the-target">
+    <h3>Calibration Establishes the Target</h3>
+    <p>During service or physics testing, AEC is calibrated so the selected target produces the desired receptor exposure under controlled conditions.</p>
+  </section>
+
+  <section class="content-box" id="aec-calibration-is-not-universal">
+    <h3>AEC Calibration Is Not Universal</h3>
+    <p>It depends on:</p>
+    <ul>
+      <li>Receptor</li>
+      <li>Grid</li>
+      <li>Chamber</li>
+      <li>Generator</li>
+      <li>Technique range</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-detector-is-replaced">
+    <h3>If Detector Is Replaced</h3>
+    <p>AEC calibration may require verification.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The desired receptor exposure or detector response relationship may differ.</p>
+  </section>
+
+  <section class="content-box" id="chamber-behind-grid-vs-in-front-of-grid">
+    <h3>Chamber Behind Grid vs In Front of Grid</h3>
+    <p>The location of the AEC chamber relative to the grid matters.</p>
+  </section>
+
+  <section class="content-box" id="grid-absorbs-radiation">
+    <h3>Grid Absorbs Radiation</h3>
+    <p>If the chamber is behind the grid:</p>
+    <p>It sees radiation after grid attenuation.</p>
+  </section>
+
+  <section class="content-box" id="if-chamber-is-before-the-grid">
+    <h3>If Chamber Is Before the Grid</h3>
+    <p>It sees a different radiation condition.</p>
+  </section>
+
+  <section class="content-box" id="the-system-is-designed-around-its-geometry">
+    <h3>The System Is Designed Around Its Geometry</h3>
+    <p>Do not assume all AEC systems are physically arranged the same way.</p>
+  </section>
+
+  <section class="content-box" id="exposure-termination-path">
+    <h3>Exposure Termination Path</h3>
+    <p>When the AEC reaches its target:</p>
+    <p>It sends a termination command to the generator.</p>
+  </section>
+
+  <section class="content-box" id="the-generator-must-respond-quickly">
+    <h3>The Generator Must Respond Quickly</h3>
+    <p>It cannot continue exposing for a long delay after AEC says:</p>
+    <p>Stop.</p>
+  </section>
+
+  <section class="content-box" id="termination-delay">
+    <h3>Termination Delay</h3>
+    <p>Any delay contributes additional exposure.</p>
+  </section>
+
+  <section class="content-box" id="generator-aec-coordination">
+    <h3>Generator-AEC Coordination</h3>
+    <p>AEC therefore depends on both:</p>
+    <ul>
+      <li>Sensing</li>
+      <li>Generator termination</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="aec-can-be-correct-while-generator-is-wrong">
+    <h3>AEC Can Be Correct While Generator Is Wrong</h3>
+    <p>Suppose the chamber sends stop command at the correct time.</p>
+    <p>Generator fails to terminate promptly.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Overexposure.</p>
+  </section>
+
+  <section class="content-box" id="generator-can-be-correct-while-chamber-is-wrong">
+    <h3>Generator Can Be Correct While Chamber Is Wrong</h3>
+    <p>Suppose generator stops exactly when commanded.</p>
+    <p>But chamber calibration is too insensitive.</p>
+  </section>
+
+  <section class="content-box" id="it-takes-too-long-to-reach-threshold">
+    <h3>It takes too long to reach threshold.</h3>
+
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Again:</p>
+    <p>Overexposure.</p>
+  </section>
+
+  <section class="content-box" id="same-symptom-different-failure">
+    <h3>Same Symptom, Different Failure</h3>
+    <p>That is why you need to isolate:</p>
+    <p><strong>Measurement</strong></p>
+    <p>from:</p>
+    <p><strong>Execution.</strong></p>
+  </section>
+
+  <section class="content-box" id="minimum-response-time">
+    <h3>Minimum Response Time</h3>
+    <p>Every AEC system has a finite minimum response time.</p>
+  </section>
+
+  <section class="content-box" id="why-this-matters">
+    <h3>Why This Matters</h3>
+    <p>For very thin anatomy:</p>
+    <p>Enough radiation may reach the detector extremely quickly.</p>
+  </section>
+
+  <section class="content-box" id="if-required-exposure-is-shorter-than-aec-can-respond">
+    <h3>If Required Exposure Is Shorter Than AEC Can Respond</h3>
+    <p>The system cannot terminate fast enough.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Potential overexposure.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-aec-is-not-appropriate-for-every-exam">
+    <h3>This Is Why AEC Is Not Appropriate for Every Exam</h3>
+    <p>Clinical protocols account for system limitations.</p>
+  </section>
+
+  <section class="content-box" id="low-mas-exam">
+    <h3>Low-mAs Exam</h3>
+    <p>May be better controlled manually depending on system and application.</p>
+  </section>
+
+  <section class="content-box" id="backup-time">
+    <h3>Backup Time</h3>
+    <p>AEC systems include:</p>
+    <p><strong>Backup protection.</strong></p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>What if the active chamber never receives enough radiation?</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>A thick metal prosthesis lies directly over the chamber.</p>
+    <p>The chamber waits.</p>
+    <p>And waits.</p>
+  </section>
+
+  <section class="content-box" id="without-backup">
+    <h3>Without Backup</h3>
+    <p>Exposure could continue far too long.</p>
+  </section>
+
+  <section class="content-box" id="backup-timer">
+    <h3>Backup Timer</h3>
+    <p>Stops the exposure after a defined maximum time.</p>
+  </section>
+
+  <section class="content-box" id="backup-mas">
+    <h3>Backup mAs</h3>
+    <p>Some systems limit:</p>
+    <p>Maximum mAs</p>
+    <p>rather than or in addition to time.</p>
+  </section>
+
+  <section class="content-box" id="backup-is-a-safety-limit">
+    <h3>Backup Is a Safety Limit</h3>
+    <p>It is not the normal exposure-control target.</p>
+  </section>
+
+  <section class="content-box" id="if-exposures-frequently-reach-backup">
+    <h3>If Exposures Frequently Reach Backup</h3>
+    <p>Something is wrong.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Wrong chamber</li>
+      <li>Poor positioning</li>
+      <li>Excessively dense object</li>
+      <li>Chamber failure</li>
+      <li>Calibration issue</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-increase-backup-limits-just-to-stop-alarms">
+    <h3>Do Not Increase Backup Limits Just to Stop Alarms</h3>
+    <p>Determine why the AEC cannot reach its target normally.</p>
+  </section>
+
+  <section class="content-box" id="backup-termination-is-evidence">
+    <h3>Backup Termination Is Evidence</h3>
+    <p>Document it.</p>
+    <p>It tells you the normal feedback loop did not terminate the exposure.</p>
+  </section>
+
+  <section class="content-box" id="dense-prosthesis">
+    <h3>Dense Prosthesis</h3>
+    <p>A hip replacement over the active chamber can dramatically increase attenuation.</p>
+  </section>
+
+  <section class="content-box" id="the-chamber-receives-less-radiation">
+    <h3>The Chamber Receives Less Radiation</h3>
+    <p>Exposure continues.</p>
+  </section>
+
+  <section class="content-box" id="this-can-produce-very-high-technique">
+    <h3>This Can Produce Very High Technique</h3>
+
+  </section>
+
+  <section class="content-box" id="metal-is-not-the-only-problem">
+    <h3>Metal Is Not the Only Problem</h3>
+    <p>Other high-attenuation objects can matter:</p>
+    <ul>
+      <li>Contrast</li>
+      <li>External hardware</li>
+      <li>Shielding</li>
+      <li>Positioning devices</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="contrast-media">
+    <h3>Contrast Media</h3>
+    <p>Dense contrast in the active region can delay termination.</p>
+  </section>
+
+  <section class="content-box" id="timing-matters">
+    <h3>Timing Matters</h3>
+    <p>A chamber behaving normally before contrast may behave differently once dense contrast fills the anatomy.</p>
+  </section>
+
+  <section class="content-box" id="clinical-technique-accounts-for-this">
+    <h3>Clinical Technique Accounts for This</h3>
+
+  </section>
+
+  <section class="content-box" id="collimation">
+    <h3>Collimation</h3>
+    <p>Field size can affect AEC indirectly.</p>
+  </section>
+
+  <section class="content-box" id="too-much-collimation">
+    <h3>Too Much Collimation</h3>
+    <p>Could partially cover the active chamber depending on system geometry.</p>
+  </section>
+
+  <section class="content-box" id="if-chamber-is-outside-the-x-ray-field">
+    <h3>If Chamber Is Outside the X-Ray Field</h3>
+    <p>It may receive little or no radiation.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Exposure can continue toward backup.</p>
+  </section>
+
+  <section class="content-box" id="this-is-a-classic-aec-problem">
+    <h3>This Is a Classic AEC Problem</h3>
+
+  </section>
+
+  <section class="content-box" id="light-field-looks-fine">
+    <h3>Light Field Looks Fine</h3>
+    <p>But if the selected chamber is outside the actual irradiated region:</p>
+    <p>AEC will not behave correctly.</p>
+  </section>
+
+  <section class="content-box" id="collimator-aec-coordination">
+    <h3>Collimator-AEC Coordination</h3>
+    <p>Some modern systems may know selected field geometry.</p>
+    <p>Older systems may not.</p>
+  </section>
+
+  <section class="content-box" id="scatter">
+    <h3>Scatter</h3>
+    <p>AEC chambers receive a combination of radiation influenced by:</p>
+    <ul>
+      <li>Primary beam</li>
+      <li>Scatter</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="scatter-changes-with-patient-size-and-field-size">
+    <h3>Scatter Changes With Patient Size and Field Size</h3>
+    <p>That can affect chamber response.</p>
+  </section>
+
+  <section class="content-box" id="calibration-uses-controlled-conditions">
+    <h3>Calibration Uses Controlled Conditions</h3>
+    <p>This is why AEC performance testing should follow the specified phantom and field setup.</p>
+  </section>
+
+  <section class="content-box" id="kvp">
+    <h3>kVp</h3>
+    <p>AEC does not make kVp irrelevant.</p>
+  </section>
+
+  <section class="content-box" id="kvp-still-controls-beam-penetration">
+    <h3>kVp Still Controls Beam Penetration</h3>
+    <p>Higher kVp generally produces a more penetrating beam.</p>
+  </section>
+
+  <section class="content-box" id="more-penetrating-beam">
+    <h3>More Penetrating Beam</h3>
+    <p>More radiation reaches the chamber more quickly.</p>
+  </section>
+
+  <section class="content-box" id="therefore-exposure-time-changes">
+    <h3>Therefore Exposure Time Changes</h3>
+    <p>At higher kVp:</p>
+    <p>AEC may terminate sooner.</p>
+  </section>
+
+  <section class="content-box" id="mas-may-fall">
+    <h3>mAs May Fall</h3>
+
+  </section>
+
+  <section class="content-box" id="but-image-contrast-and-dose-behavior-also-change">
+    <h3>But Image Contrast and Dose Behavior Also Change</h3>
+    <p>AEC cannot compensate for an inappropriate kVp selection in every sense.</p>
+  </section>
+
+  <section class="content-box" id="it-only-controls-the-amount-of-receptor-exposure">
+    <h3>It Only Controls the amount of receptor exposure</h3>
+    <p>not all image-quality physics.</p>
+  </section>
+
+  <section class="content-box" id="ma">
+    <h3>mA</h3>
+    <p>If mA increases:</p>
+    <p>Radiation rate increases.</p>
+  </section>
+
+  <section class="content-box" id="chamber-fills-faster">
+    <h3>Chamber Fills Faster</h3>
+    <p>Exposure time decreases.</p>
+  </section>
+
+  <section class="content-box" id="same-general-receptor-exposure">
+    <h3>Same General Receptor Exposure</h3>
+    <p>But different mA/time combinations may affect:</p>
+    <ul>
+      <li>Motion</li>
+      <li>Tube loading</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="reciprocity">
+    <h3>Reciprocity</h3>
+    <p>Ideal AEC behavior should produce similar receptor exposure across appropriate mA stations.</p>
+  </section>
+
+  <section class="content-box" id="if-it-does-not">
+    <h3>If It Does Not</h3>
+    <p>Calibration or generator behavior may need investigation.</p>
+  </section>
+
+  <section class="content-box" id="aec-reproducibility">
+    <h3>AEC Reproducibility</h3>
+    <p>Repeated exposures under identical conditions should terminate consistently.</p>
+  </section>
+
+  <section class="content-box" id="same-phantom">
+    <h3>Same Phantom</h3>
+    <p>Same kVp.</p>
+    <p>Same chamber.</p>
+    <p>Same geometry.</p>
+  </section>
+
+  <section class="content-box" id="final-mas-should-be-similar">
+    <h3>Final mAs Should Be Similar</h3>
+    <p>Within applicable tolerance.</p>
+  </section>
+
+  <section class="content-box" id="poor-reproducibility">
+    <h3>Poor Reproducibility</h3>
+    <p>Possible areas include:</p>
+    <ul>
+      <li>Chamber electronics</li>
+      <li>Generator</li>
+      <li>Tube output instability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="chamber-balance">
+    <h3>Chamber Balance</h3>
+    <p>If multiple chambers are intended to provide comparable response:</p>
+    <p>Their calibrated behavior should be appropriately matched.</p>
+  </section>
+
+  <section class="content-box" id="one-chamber-different">
+    <h3>One Chamber Different</h3>
+    <p>This is a useful diagnostic pattern.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Center chamber:</p>
+    <p>Normal.</p>
+    <p>Left chamber:</p>
+    <p>Consistently 20% higher mAs.</p>
+    <p>Right chamber:</p>
+    <p>Normal.</p>
+  </section>
+
+  <section class="content-box" id="this-suggests-a-chamber-specific-problem">
+    <h3>This Suggests a Chamber-Specific Problem</h3>
+    <p>rather than the entire generator.</p>
+  </section>
+
+  <section class="content-box" id="chamber-failure-modes">
+    <h3>Chamber Failure Modes</h3>
+    <p>Potential problems can include:</p>
+    <ul>
+      <li>Electronic drift</li>
+      <li>Connection faults</li>
+      <li>Ionization-chamber issue</li>
+      <li>Calibration corruption</li>
+    </ul>
+    <p>depending on architecture.</p>
+  </section>
+
+  <section class="content-box" id="chamber-cable">
+    <h3>Chamber Cable</h3>
+    <p>Signal levels may be small.</p>
+    <p>Shielding and connection integrity matter.</p>
+  </section>
+
+  <section class="content-box" id="electronic-noise">
+    <h3>Electronic Noise</h3>
+    <p>Could interfere with stable integration.</p>
+  </section>
+
+  <section class="content-box" id="but-do-not-jump-straight-to-electronics">
+    <h3>But Do Not Jump Straight to Electronics</h3>
+    <p>Positioning and phantom setup should be confirmed first.</p>
+  </section>
+
+  <section class="content-box" id="digital-radiography-changes-what-users-notice">
+    <h3>Digital Radiography Changes What Users Notice</h3>
+    <p>Film-screen systems gave immediate visual evidence of exposure error.</p>
+  </section>
+
+  <section class="content-box" id="too-much-exposure">
+    <h3>Too Much Exposure</h3>
+    <p>Film became too dark.</p>
+  </section>
+
+  <section class="content-box" id="too-little">
+    <h3>Too Little</h3>
+    <p>Too light.</p>
+  </section>
+
+  <section class="content-box" id="digital-processing-changes-this">
+    <h3>Digital Processing Changes This</h3>
+    <p>The system can rescale the image.</p>
+  </section>
+
+  <section class="content-box" id="underexposed-image">
+    <h3>Underexposed Image</h3>
+    <p>Can still appear normally bright.</p>
+    <p>But:</p>
+    <p>Noise increases.</p>
+  </section>
+
+  <section class="content-box" id="overexposed-image">
+    <h3>Overexposed Image</h3>
+    <p>Can also appear normal.</p>
+    <p>But:</p>
+    <p>Patient received unnecessary radiation.</p>
+  </section>
+
+  <section class="content-box" id="exposure-index">
+    <h3>Exposure Index</h3>
+    <p>Digital systems therefore provide metrics that reflect detector exposure.</p>
+  </section>
+
+  <section class="content-box" id="exposure-index-is-manufacturer-standard-dependent">
+    <h3>Exposure Index Is Manufacturer/Standard Dependent</h3>
+    <p>Do not compare unlike systems casually.</p>
+  </section>
+
+  <section class="content-box" id="deviation-index">
+    <h3>Deviation Index</h3>
+    <p>Some systems provide a value indicating how far receptor exposure differed from a target.</p>
+  </section>
+
+  <section class="content-box" id="useful-for-aec-troubleshooting">
+    <h3>Useful for AEC Troubleshooting</h3>
+    <p>If AEC image appearance is fine but exposure index trends high:</p>
+    <p>The feedback target or system performance may be wrong.</p>
+  </section>
+
+  <section class="content-box" id="detector-based-aec">
+    <h3>Detector-Based AEC</h3>
+    <p>Modern systems may use information from digital detectors rather than traditional separate ionization chambers.</p>
+  </section>
+
+  <section class="content-box" id="general-principle-remains">
+    <h3>General Principle Remains</h3>
+    <p>Measure exposure.</p>
+    <p>Stop when target is reached.</p>
+  </section>
+
+  <section class="content-box" id="implementation-changes">
+    <h3>Implementation Changes</h3>
+    <p>The detector or upstream sensing electronics may perform the measurement differently.</p>
+  </section>
+
+  <section class="content-box" id="do-not-assume-every-flat-panel-uses-traditional-chambers">
+    <h3>Do Not Assume Every Flat Panel Uses Traditional Chambers</h3>
+    <p>Read the system architecture.</p>
+  </section>
+
+  <section class="content-box" id="detector-lag-or-calibration">
+    <h3>Detector Lag or Calibration</h3>
+    <p>If detector-derived information is used for exposure control:</p>
+    <p>Detector performance can influence AEC behavior.</p>
+  </section>
+
+  <section class="content-box" id="aec-and-tomography">
+    <h3>AEC and Tomography</h3>
+    <p>Some imaging modes do not use AEC in the same way as conventional radiography.</p>
+    <p>Always distinguish:</p>
+    <ul>
+      <li>General radiography</li>
+      <li>Fluoroscopy</li>
+      <li>CT</li>
+      <li>Mammography</li>
+    </ul>
+    <p>even though they all use forms of automatic exposure control.</p>
+  </section>
+
+  <section class="content-box" id="aec-does-not-judge-clinical-adequacy">
+    <h3>AEC Does Not Judge Clinical Adequacy</h3>
+    <p>This is important.</p>
+    <p>The system is not deciding:</p>
+    <blockquote><p>This chest image now contains enough diagnostic information.</p></blockquote>
+    <p>It is deciding:</p>
+    <blockquote><p>The selected exposure sensor has reached its calibrated target.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="that-is-a-much-narrower-statement">
+    <h3>That Is a Much Narrower Statement</h3>
+
+  </section>
+
+  <section class="content-box" id="positioning-error-can-defeat-perfect-aec">
+    <h3>Positioning Error Can Defeat Perfect AEC</h3>
+    <p>A perfectly calibrated system can produce poor exposure because the wrong tissue covered the selected chamber.</p>
+  </section>
+
+  <section class="content-box" id="hardware-fine-workflow-wrong">
+    <h3>Hardware Fine, Workflow Wrong</h3>
+    <p>That is common in feedback systems.</p>
+  </section>
+
+  <section class="content-box" id="phantom-testing">
+    <h3>Phantom Testing</h3>
+    <p>A repeatable phantom is one of the best tools for AEC evaluation.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>It removes:</p>
+    <ul>
+      <li>Patient size variation</li>
+      <li>Positioning uncertainty</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="controlled-setup">
+    <h3>Controlled Setup</h3>
+    <p>Use specified:</p>
+    <ul>
+      <li>Thickness</li>
+      <li>SID</li>
+      <li>kVp</li>
+      <li>Chamber</li>
+      <li>Field size</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="measure">
+    <h3>Measure</h3>
+    <ul>
+      <li>Final mAs</li>
+      <li>Exposure time</li>
+      <li>Receptor exposure</li>
+      <li>Dose/output</li>
+    </ul>
+    <p>as required.</p>
+  </section>
+
+  <section class="content-box" id="repeat">
+    <h3>Repeat</h3>
+    <p>Reproducibility matters.</p>
+  </section>
+
+  <section class="content-box" id="chamber-comparison">
+    <h3>Chamber Comparison</h3>
+    <p>Use the same setup over each chamber.</p>
+  </section>
+
+  <section class="content-box" id="if-only-one-chamber-deviates">
+    <h3>If Only One Chamber Deviates</h3>
+    <p>You have much stronger isolation evidence.</p>
+  </section>
+
+  <section class="content-box" id="aec-and-tube-output">
+    <h3>AEC and Tube Output</h3>
+    <p>Suppose tube output decreases.</p>
+  </section>
+
+  <section class="content-box" id="same-commanded-ma">
+    <h3>Same Commanded mA</h3>
+    <p>Produces less radiation.</p>
+  </section>
+
+  <section class="content-box" id="what-does-aec-do">
+    <h3>What Does AEC Do?</h3>
+    <p>It lets exposure continue longer.</p>
+  </section>
+
+  <section class="content-box" id="final-mas-increases">
+    <h3>Final mAs Increases</h3>
+
+  </section>
+
+  <section class="content-box" id="image-may-still-look-normal">
+    <h3>Image May Still Look Normal</h3>
+    <p>because the chamber eventually received its target exposure.</p>
+  </section>
+
+  <section class="content-box" id="this-is-another-hidden-compensation-problem">
+    <h3>This Is Another Hidden-Compensation Problem</h3>
+
+  </section>
+
+  <section class="content-box" id="trending-mas-can-reveal-it">
+    <h3>Trending mAs Can Reveal It</h3>
+    <p>If identical phantom AEC exposures require steadily increasing mAs over months:</p>
+    <p>Investigate.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Tube output decline</li>
+      <li>Generator drift</li>
+      <li>Chamber calibration</li>
+      <li>Detector/AEC response</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="aec-can-hide-generator-degradation">
+    <h3>AEC Can Hide Generator Degradation</h3>
+    <p>Until:</p>
+    <p>Backup limit</p>
+    <p>or:</p>
+    <p>Tube limitation</p>
+    <p>is reached.</p>
+  </section>
+
+  <section class="content-box" id="grid-problems-can-also-increase-aec-exposure">
+    <h3>Grid Problems Can Also Increase AEC Exposure</h3>
+    <p>If the grid absorbs more primary radiation than expected because of:</p>
+    <ul>
+      <li>Misalignment</li>
+      <li>Damage</li>
+    </ul>
+    <p>and the chamber is behind it:</p>
+    <p>AEC may continue exposing longer.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>AEC is responding to what it measures.</p>
+    <p>It does not know why radiation is low.</p>
+  </section>
+
+  <section class="content-box" id="bucky-selection">
+    <h3>Bucky Selection</h3>
+    <p>Wrong Bucky or detector selection can affect which AEC system is active.</p>
+  </section>
+
+  <section class="content-box" id="table-vs-wall-stand">
+    <h3>Table vs Wall Stand</h3>
+    <p>May have separate chamber assemblies.</p>
+  </section>
+
+  <section class="content-box" id="important-isolation-question">
+    <h3>Important Isolation Question</h3>
+    <p>Does the problem occur:</p>
+    <p>Only table?</p>
+    <p>Only wall?</p>
+    <p>Both?</p>
+  </section>
+
+  <section class="content-box" id="wall-aec-bad-table-aec-normal">
+    <h3>Wall AEC Bad, Table AEC Normal</h3>
+    <p>Now shared generator components become less suspicious.</p>
+  </section>
+
+  <section class="content-box" id="same-generator-different-aec-assembly">
+    <h3>Same Generator, Different AEC Assembly</h3>
+    <p>Good clue.</p>
+  </section>
+
+  <section class="content-box" id="exposure-switch-and-aec">
+    <h3>Exposure Switch and AEC</h3>
+    <p>The exposure switch initiates exposure.</p>
+    <p>AEC terminates it.</p>
+  </section>
+
+  <section class="content-box" id="user-may-hold-the-switch">
+    <h3>User May Hold the Switch</h3>
+    <p>The system should still terminate once AEC target is reached.</p>
+  </section>
+
+  <section class="content-box" id="if-operator-releases-early">
+    <h3>If Operator Releases Early</h3>
+    <p>Exposure may terminate manually before AEC completes.</p>
+  </section>
+
+  <section class="content-box" id="that-is-not-aec-failure">
+    <h3>That Is Not AEC Failure</h3>
+    <p>Look at termination status if available.</p>
+  </section>
+
+  <section class="content-box" id="error-logs">
+    <h3>Error Logs</h3>
+    <p>Some systems record:</p>
+    <ul>
+      <li>AEC backup</li>
+      <li>Chamber selection</li>
+      <li>Exposure termination reason</li>
+      <li>Final technique</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="these-logs-are-valuable">
+    <h3>These Logs Are Valuable</h3>
+    <p>Especially for intermittent reports.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-chamber-overexposes">
+    <h3>Real-World Example: One Chamber Overexposes</h3>
+    <p>Center chamber phantom test:</p>
+    <p>Normal.</p>
+    <p>Right chamber:</p>
+    <p>Normal.</p>
+    <p>Left chamber:</p>
+    <p>Consistently requires much higher mAs.</p>
+    <p>Generator output is stable.</p>
+    <p>Problem follows one AEC chamber.</p>
+    <p>Now the complaint has been narrowed substantially.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-image-looks-fine-but-dose-increased">
+    <h3>Real-World Example: Image Looks Fine but Dose Increased</h3>
+    <p>Technologists report no visual problem.</p>
+    <p>Historical AEC exposures used:</p>
+    <p>8 mAs.</p>
+    <p>Now same phantom requires:</p>
+    <p>13 mAs.</p>
+    <p>External output testing shows tube output has decreased.</p>
+    <p>AEC has been compensating.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-frequent-backup-termination">
+    <h3>Real-World Example: Frequent Backup Termination</h3>
+    <p>AEC exposures repeatedly terminate at backup.</p>
+    <p>Chambers test normally.</p>
+    <p>Collimator is positioned so selected chamber lies outside the exposed field.</p>
+    <p>The system is protecting itself exactly as designed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-hip-prosthesis">
+    <h3>Real-World Example: Hip Prosthesis</h3>
+    <p>Pelvis exposure runs unexpectedly long.</p>
+    <p>Dense prosthesis lies over selected AEC chamber.</p>
+    <p>Chamber receives too little radiation.</p>
+    <p>AEC keeps exposure running.</p>
+    <p>No electronics failure exists.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-wall-bucky-only">
+    <h3>Real-World Example: Wall Bucky Only</h3>
+    <p>Table AEC works normally.</p>
+    <p>Wall Bucky consistently underexposes with one chamber.</p>
+    <p>Same X-ray tube and generator.</p>
+    <p>The shared high-voltage system becomes much less likely than the wall AEC chain.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Treating AEC as automatic image quality.</strong> It terminates exposure based on a measured radiation target.</p>
+    <p><strong>Judging AEC only by processed image brightness.</strong> Digital processing can hide over- or underexposure.</p>
+    <p><strong>Ignoring which chamber was selected.</strong> Chamber selection determines what anatomy controls termination.</p>
+    <p><strong>Increasing backup limits to stop nuisance faults.</strong> Backup activation means the normal termination condition was not reached.</p>
+    <p><strong>Blaming the generator before comparing chambers.</strong> A single abnormal chamber strongly suggests a localized AEC problem.</p>
+    <p><strong>Ignoring positioning.</strong> Perfect hardware cannot correct for the wrong anatomy over the selected chamber.</p>
+    <p><strong>Ignoring historical mAs.</strong> AEC can compensate for tube or detector degradation for a long time before image appearance changes.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-aec-framework">
+    <h3>A Useful AEC Framework</h3>
+    <p>Think:</p>
+    <p><strong>Selected kVp / mA</strong></p>
+    <p>↓</p>
+    <p><strong>X-Ray Production</strong></p>
+    <p>↓</p>
+    <p><strong>Patient / Phantom Attenuation</strong></p>
+    <p>↓</p>
+    <p><strong>Grid / Geometry</strong></p>
+    <p>↓</p>
+    <p><strong>Selected AEC Chamber</strong></p>
+    <p>↓</p>
+    <p><strong>Ionization Signal</strong></p>
+    <p>↓</p>
+    <p><strong>Signal Integration</strong></p>
+    <p>↓</p>
+    <p><strong>AEC Threshold Reached</strong></p>
+    <p>↓</p>
+    <p><strong>Termination Command</strong></p>
+    <p>↓</p>
+    <p><strong>Generator Stops Exposure</strong></p>
+    <p>The final image receptor sits downstream of that entire chain.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Did the AEC measure incorrectly, or did the generator fail to respond correctly to the measurement?</strong></p>
+    <p>Then ask:</p>
+    <p><strong>Does the problem follow one chamber, one Bucky, or every AEC exposure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does a controlled phantom reproduce it?</strong></p>
+    <p>Those questions separate:</p>
+    <ul>
+      <li>Positioning</li>
+      <li>Chamber</li>
+      <li>Generator</li>
+      <li>Tube output</li>
+      <li>Calibration</li>
+    </ul>
+    <p>much more efficiently.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If an AEC exposure produces a good-looking image:</p>
+    <p>You proved:</p>
+    <p><strong>The complete imaging chain produced an image that appears acceptable under that condition.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Receptor exposure correct</li>
+      <li>Patient dose appropriate</li>
+      <li>AEC target calibrated</li>
+    </ul>
+    <p>If the exposure terminates normally before backup:</p>
+    <p>You proved:</p>
+    <p><strong>The selected AEC path reached its termination condition.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <p>That condition was calibrated correctly.</p>
+    <p>If controlled phantom testing shows appropriate receptor exposure, reproducibility, chamber balance, kVp behavior, and termination performance:</p>
+    <p>You have much stronger evidence that the AEC system is functioning properly under the tested conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>Automatic exposure control is not magic.</p>
+    <p>It is a radiation feedback system.</p>
+    <p>Radiation passes through the patient.</p>
+    <p>A sensor measures what makes it through.</p>
+    <p>The signal accumulates.</p>
+    <p>When the calibrated target is reached:</p>
+    <p>The exposure stops.</p>
+    <p>That simple loop explains most of the system.</p>
+    <p>It also explains most of the ways it can fool you.</p>
+    <p>If the patient is positioned wrong:</p>
+    <p>The chamber measures the wrong anatomy.</p>
+    <p>If a prosthesis covers the chamber:</p>
+    <p>The system keeps exposing.</p>
+    <p>If tube output drops:</p>
+    <p>AEC compensates with longer exposure.</p>
+    <p>If one chamber drifts:</p>
+    <p>Only exams using that chamber may look wrong.</p>
+    <p>If image processing rescales everything:</p>
+    <p>The image may still look perfectly normal.</p>
+    <p>That is why the most useful AEC question is not:</p>
+    <blockquote><p>Did the image come out?</p></blockquote>
+    <p>It is:</p>
+    <p><strong>What caused the exposure to terminate when it did?</strong></p>
+    <p>Once you know that, the final mAs and exposure time stop being random numbers.</p>
+    <p>They become evidence.</p>
+    <p>And, as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>AEC detector design, chamber location, exposure targets, minimum response time, backup limits, compensation controls, detector-based exposure-control methods, acceptable performance limits, and QC procedures vary significantly by manufacturer, imaging system, detector configuration, and jurisdiction. Follow current OEM documentation, approved radiographic QC procedures, facility protocols, radiation-safety requirements, and qualified medical-physics guidance when evaluating automatic exposure-control performance.</p>
+    <p>---</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure.html">How an X-Ray Generator Creates High Voltage and Controls an Exposure</a></li>
+      <li><a href="how-anti-scatter-grids-work-in-x-ray-imaging.html">How Anti-Scatter Grids Work in X-Ray Imaging</a></li>
+      <li><a href="how-flat-panel-x-ray-detectors-turn-x-rays-into-images.html">How Flat-Panel X-Ray Detectors Turn X-Rays Into Images</a></li>
+      <li><a href="how-fluoroscopy-automatic-exposure-rate-control-works.html">How Fluoroscopy Automatic Exposure Rate Control Works</a></li>
+      <li><a href="how-digital-mammography-creates-and-processes-an-image.html">How Digital Mammography Creates and Processes an Image</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
