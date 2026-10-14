@@ -175,6 +175,8 @@ RELATED = {
     "how-anti-scatter-grids-work-in-x-ray-imaging": ["how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-a-fluoroscopy-image-intensifier-works", "how-digital-mammography-creates-and-processes-an-image"],
     "how-x-ray-automatic-exposure-control-works": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image"],
     "how-x-ray-collimators-and-light-fields-work": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image"],
+    "how-x-ray-tube-focal-spots-and-rotating-anodes-work": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-x-ray-automatic-exposure-control-works", "how-x-ray-collimators-and-light-fields-work", "how-ct-gantry-rotation-and-data-acquisition-work", "how-digital-mammography-creates-and-processes-an-image"],
+    "how-ct-bowtie-filters-and-beam-shaping-work": ["how-ct-automatic-tube-current-modulation-works", "how-ct-gantry-rotation-and-data-acquisition-work", "how-ct-detectors-and-hounsfield-units-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-x-ray-collimators-and-light-fields-work"],
 }
 
 ARTICLE_CONFIG = {
@@ -1070,6 +1072,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "X-Ray Imaging",
         "cardNote": "Shutters, light fields, filtration, beam alignment, field size, and positioning",
+    },
+    "how-x-ray-tube-focal-spots-and-rotating-anodes-work": {
+        "description": "A practical explanation of how X-ray tubes form small and large focal spots, use the line-focus principle and rotating anodes, and balance image sharpness against tube heat.",
+        "category": "How Medical Equipment Works",
+        "badge": "X-Ray Imaging",
+        "cardNote": "Focal spots, filaments, line-focus geometry, rotating anodes, bearings, heat, and image sharpness",
+    },
+    "how-ct-bowtie-filters-and-beam-shaping-work": {
+        "description": "A practical explanation of how CT bowtie filters shape X-ray intensity across the patient to manage detector signal, image noise, dose, calibration, and beam-hardening behavior.",
+        "category": "How Medical Equipment Works",
+        "badge": "CT Imaging",
+        "cardNote": "Beam shaping, patient centering, detector exposure, dose, calibration, and artifacts",
     },
 }
 
