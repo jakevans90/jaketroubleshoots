@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How X-Ray Tube Focal Spots and Rotating Anodes Work | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how X-ray tubes form small and large focal spots, use the line-focus principle and rotating anodes, and balance image sharpness against tube heat.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-x-ray-tube-focal-spots-and-rotating-anodes-work.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How X-Ray Tube Focal Spots and Rotating Anodes Work</h1>
+  <p>How an X-ray tube concentrates an electron beam onto a tiny target, spreads heat with a rotating anode, and balances image sharpness against enormous thermal stress</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">An X-ray tube has to do two things that seem almost contradictory.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What the focal spot is</li>
+      <li>Why focal-spot size affects image sharpness</li>
+      <li>Small vs large focal spots</li>
+      <li>Cathode filaments</li>
+      <li>Focusing cups</li>
+      <li>Electron beams</li>
+      <li>The anode target</li>
+      <li>The line-focus principle</li>
+      <li>Actual vs effective focal spot</li>
+      <li>Anode angle</li>
+      <li>Rotating anodes</li>
+      <li>Rotor and stator</li>
+      <li>Bearing systems</li>
+      <li>Anode speed</li>
+      <li>Tube heat</li>
+      <li>Heat units</li>
+      <li>Anode cooling</li>
+      <li>Focal-spot blooming</li>
+      <li>Heel effect</li>
+      <li>Focal-spot testing</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>Inside an X-ray tube, electrons are released from a heated cathode filament and accelerated toward the anode by a very large electrical potential. The focusing cup shapes those electrons into a narrow beam so they strike a controlled region of the anode target. That impact area is the actual focal spot. X-rays are produced there, but most of the electron energy becomes heat rather than useful radiation.</p>
+    <p>A small focal spot improves geometric sharpness because the X-ray source behaves more like a point source. But a smaller impact area also concentrates heat. To manage that heat, most higher-power diagnostic tubes use a rotating anode. The anode disk spins before exposure, causing successive electrons to strike different portions of a circular focal track instead of repeatedly heating one stationary location. This allows the tube to maintain a relatively small effective X-ray source while spreading the thermal load over a much larger physical area.</p>
+    <p>A focal-spot or rotating-anode problem can therefore appear as image blur, rotor-prep failure, unusual tube noise, technique-specific exposure faults, or restrictions on high-mA exposures. Preserve which focal spot was selected, exposure technique, whether rotor prep completed, whether the problem occurs only under high loading, tube heat status, and whether a focal-spot test reproduces the image-quality issue before assuming the detector or generator is responsible.</p>
+  </section>
+
+  <section class="content-box" id="start-with-the-cathode">
+    <h3>Start With the Cathode</h3>
+    <p>The cathode is the negative side of the X-ray tube.</p>
+    <p>It contains one or more:</p>
+    <p><strong>Filaments.</strong></p>
+  </section>
+
+  <section class="content-box" id="filament-heating">
+    <h3>Filament Heating</h3>
+    <p>Current flows through the filament.</p>
+    <p>The filament becomes extremely hot.</p>
+  </section>
+
+  <section class="content-box" id="thermionic-emission">
+    <h3>Thermionic Emission</h3>
+    <p>At high temperature, electrons gain enough energy to escape the filament surface.</p>
+    <p>This process is called:</p>
+    <p><strong>Thermionic emission.</strong></p>
+  </section>
+
+  <section class="content-box" id="electron-cloud">
+    <h3>Electron Cloud</h3>
+    <p>The released electrons form a cloud near the filament.</p>
+    <p>When high voltage is applied across the tube:</p>
+    <p>They accelerate toward the positively charged anode.</p>
+  </section>
+
+  <section class="content-box" id="the-electrons-need-direction">
+    <h3>The Electrons Need Direction</h3>
+    <p>If they simply spread everywhere:</p>
+    <p>The X-ray source would be large and poorly controlled.</p>
+  </section>
+
+  <section class="content-box" id="focusing-cup">
+    <h3>Focusing Cup</h3>
+    <p>The filament sits inside a focusing structure commonly called the:</p>
+    <p><strong>Focusing cup.</strong></p>
+  </section>
+
+  <section class="content-box" id="what-the-focusing-cup-does">
+    <h3>What the Focusing Cup Does</h3>
+    <p>It creates an electric-field geometry that directs the emitted electrons toward a defined area on the anode.</p>
+  </section>
+
+  <section class="content-box" id="electron-beam">
+    <h3>Electron Beam</h3>
+    <p>The result is a concentrated stream of electrons traveling across the tube vacuum.</p>
+  </section>
+
+  <section class="content-box" id="the-anode">
+    <h3>The Anode</h3>
+    <p>The anode is the positive side of the tube during exposure.</p>
+    <p>It contains the:</p>
+    <p><strong>Target.</strong></p>
+  </section>
+
+  <section class="content-box" id="target-material">
+    <h3>Target Material</h3>
+    <p>Tungsten is commonly used because it has:</p>
+    <ul>
+      <li>High atomic number</li>
+      <li>High melting point</li>
+      <li>Good ability to produce X-rays</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="some-tubes-use-alloyed-targets">
+    <h3>Some Tubes Use Alloyed Targets</h3>
+    <p>Materials such as:</p>
+    <ul>
+      <li>Rhenium</li>
+    </ul>
+    <p>may be used in combination with tungsten depending on design.</p>
+  </section>
+
+  <section class="content-box" id="why-high-atomic-number-matters">
+    <h3>Why High Atomic Number Matters</h3>
+    <p>Higher atomic number increases the efficiency of X-ray production.</p>
+  </section>
+
+  <section class="content-box" id="why-high-melting-point-matters">
+    <h3>Why High Melting Point Matters</h3>
+    <p>The target gets extremely hot.</p>
+  </section>
+
+  <section class="content-box" id="most-energy-becomes-heat">
+    <h3>Most Energy Becomes Heat</h3>
+    <p>A relatively small portion of electron energy becomes X-rays.</p>
+    <p>The majority becomes:</p>
+    <p><strong>Heat.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-focal-spot">
+    <h3>The Focal Spot</h3>
+    <p>The region of the target hit by the electron beam is the:</p>
+    <p><strong>Focal spot.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-focal-spot-size-matters">
+    <h3>Why Focal-Spot Size Matters</h3>
+    <p>X-rays emerge from an area.</p>
+    <p>Not one mathematically perfect point.</p>
+  </section>
+
+  <section class="content-box" id="large-source">
+    <h3>Large Source</h3>
+    <p>Produces more geometric blur.</p>
+  </section>
+
+  <section class="content-box" id="small-source">
+    <h3>Small Source</h3>
+    <p>Produces sharper edges.</p>
+  </section>
+
+  <section class="content-box" id="penumbra">
+    <h3>Penumbra</h3>
+    <p>The blur caused by finite focal-spot size is often called:</p>
+    <p><strong>Geometric unsharpness</strong></p>
+    <p>or:</p>
+    <p><strong>Penumbra.</strong></p>
+  </section>
+
+  <section class="content-box" id="smaller-focal-spot">
+    <h3>Smaller Focal Spot</h3>
+    <p>Generally reduces this blur.</p>
+  </section>
+
+  <section class="content-box" id="but-there-is-a-cost">
+    <h3>But There Is a Cost</h3>
+    <p>Smaller focal area:</p>
+    <p>Higher heat concentration.</p>
+  </section>
+
+  <section class="content-box" id="small-vs-large-focal-spot">
+    <h3>Small vs Large Focal Spot</h3>
+    <p>Many diagnostic X-ray tubes have at least two focal-spot options.</p>
+  </section>
+
+  <section class="content-box" id="small-focal-spot">
+    <h3>Small Focal Spot</h3>
+    <p>Used when:</p>
+    <ul>
+      <li>Fine detail matters</li>
+      <li>Tube loading is lower</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="large-focal-spot">
+    <h3>Large Focal Spot</h3>
+    <p>Used when:</p>
+    <ul>
+      <li>High mA</li>
+      <li>Short exposure time</li>
+      <li>Higher heat load</li>
+    </ul>
+    <p>are required.</p>
+  </section>
+
+  <section class="content-box" id="the-two-focal-spots-usually-come-from-different-filaments">
+    <h3>The Two Focal Spots Usually Come From Different Filaments</h3>
+    <p>A smaller filament creates a smaller electron beam.</p>
+    <p>A larger filament supports more tube current.</p>
+  </section>
+
+  <section class="content-box" id="focal-spot-selection-is-therefore-a-cathode-function-too">
+    <h3>Focal-Spot Selection Is Therefore a Cathode Function Too</h3>
+    <p>If the small filament fails:</p>
+    <p>Large focal-spot exposures may still work.</p>
+  </section>
+
+  <section class="content-box" id="if-the-large-filament-fails">
+    <h3>If the Large Filament Fails</h3>
+    <p>Low-load small-spot exposures may work while higher-mA exposures fail.</p>
+  </section>
+
+  <section class="content-box" id="this-is-a-valuable-troubleshooting-pattern">
+    <h3>This Is a Valuable Troubleshooting Pattern</h3>
+    <p>Do not reduce the complaint to:</p>
+    <blockquote><p>Tube works sometimes.</p></blockquote>
+    <p>Ask:</p>
+    <p><strong>Which filament and focal spot were selected?</strong></p>
+  </section>
+
+  <section class="content-box" id="the-actual-focal-spot">
+    <h3>The Actual Focal Spot</h3>
+    <p>The physical area on the anode where electrons land is called the:</p>
+    <p><strong>Actual focal spot.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-effective-focal-spot">
+    <h3>The Effective Focal Spot</h3>
+    <p>The apparent size of the X-ray source as viewed from the detector is called the:</p>
+    <p><strong>Effective focal spot.</strong></p>
+  </section>
+
+  <section class="content-box" id="why-are-they-different">
+    <h3>Why Are They Different?</h3>
+    <p>Because the anode target is angled.</p>
+  </section>
+
+  <section class="content-box" id="line-focus-principle">
+    <h3>Line-Focus Principle</h3>
+    <p>The target is positioned so the actual electron-impact area can be relatively long while appearing shorter when viewed from the image receptor.</p>
+  </section>
+
+  <section class="content-box" id="this-is-the-line-focus-principle">
+    <h3>This Is the Line-Focus Principle</h3>
+    <p>It allows:</p>
+    <p>Larger heat-distribution area</p>
+    <p>while maintaining:</p>
+    <p>Smaller apparent source size.</p>
+  </section>
+
+  <section class="content-box" id="think-of-looking-at-a-long-rectangle-at-an-angle">
+    <h3>Think of Looking at a Long Rectangle at an Angle</h3>
+    <p>Viewed straight on:</p>
+    <p>It looks long.</p>
+    <p>Viewed from a shallow angle:</p>
+    <p>Its apparent dimension becomes shorter.</p>
+  </section>
+
+  <section class="content-box" id="same-basic-geometry">
+    <h3>Same Basic Geometry</h3>
+
+  </section>
+
+  <section class="content-box" id="anode-angle">
+    <h3>Anode Angle</h3>
+    <p>The target angle helps determine:</p>
+    <ul>
+      <li>Effective focal-spot size</li>
+      <li>X-ray field coverage</li>
+      <li>Heel effect</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="smaller-anode-angle">
+    <h3>Smaller Anode Angle</h3>
+    <p>Can reduce effective focal-spot size.</p>
+    <p>But it also changes usable field geometry and heel effect.</p>
+  </section>
+
+  <section class="content-box" id="tube-design-is-a-tradeoff">
+    <h3>Tube Design Is a Tradeoff</h3>
+    <p>There is no single ideal anode angle for every application.</p>
+  </section>
+
+  <section class="content-box" id="the-rotating-anode">
+    <h3>The Rotating Anode</h3>
+    <p>A stationary target would repeatedly absorb energy in one place.</p>
+  </section>
+
+  <section class="content-box" id="that-limits-tube-loading">
+    <h3>That Limits Tube Loading</h3>
+    <p>High-power diagnostic imaging needs more heat capacity.</p>
+  </section>
+
+  <section class="content-box" id="solution">
+    <h3>Solution</h3>
+    <p>Rotate the target.</p>
+  </section>
+
+  <section class="content-box" id="anode-disk">
+    <h3>Anode Disk</h3>
+    <p>The target is formed around the edge of a rotating disk.</p>
+  </section>
+
+  <section class="content-box" id="focal-track">
+    <h3>Focal Track</h3>
+    <p>Electrons strike a circular path around the disk.</p>
+    <p>This path is called the:</p>
+    <p><strong>Focal track.</strong></p>
+  </section>
+
+  <section class="content-box" id="every-exposure-uses-a-moving-target-surface">
+    <h3>Every Exposure Uses a Moving Target Surface</h3>
+    <p>The electron beam stays in roughly the same spatial location.</p>
+    <p>The anode moves beneath it.</p>
+  </section>
+
+  <section class="content-box" id="heat-is-spread-around-the-track">
+    <h3>Heat Is Spread Around the Track</h3>
+    <p>Instead of one stationary hot spot.</p>
+  </section>
+
+  <section class="content-box" id="this-greatly-increases-tube-capacity">
+    <h3>This Greatly Increases Tube Capacity</h3>
+
+  </section>
+
+  <section class="content-box" id="rotor">
+    <h3>Rotor</h3>
+    <p>Inside the tube envelope is the:</p>
+    <p><strong>Rotor.</strong></p>
+    <p>It is mechanically connected to the anode disk.</p>
+  </section>
+
+  <section class="content-box" id="stator">
+    <h3>Stator</h3>
+    <p>Outside the vacuum envelope are stationary electromagnetic windings called the:</p>
+    <p><strong>Stator.</strong></p>
+  </section>
+
+  <section class="content-box" id="together-they-form-an-induction-motor">
+    <h3>Together They Form an Induction Motor</h3>
+    <p>The stator creates a rotating magnetic field.</p>
+    <p>That field drives the rotor.</p>
+  </section>
+
+  <section class="content-box" id="no-mechanical-shaft-through-the-vacuum-wall-is-needed">
+    <h3>No Mechanical Shaft Through the Vacuum Wall Is Needed</h3>
+    <p>This helps preserve:</p>
+    <p>The tube vacuum.</p>
+  </section>
+
+  <section class="content-box" id="prep-stage">
+    <h3>Prep Stage</h3>
+    <p>When the operator presses:</p>
+    <p><strong>Prep</strong></p>
+    <p>the system may energize the stator.</p>
+  </section>
+
+  <section class="content-box" id="rotor-accelerates">
+    <h3>Rotor Accelerates</h3>
+    <p>The anode reaches its required speed before exposure.</p>
+  </section>
+
+  <section class="content-box" id="why-wait">
+    <h3>Why Wait?</h3>
+    <p>The anode must already be rotating before the high heat load hits the focal track.</p>
+  </section>
+
+  <section class="content-box" id="exposure-before-full-speed">
+    <h3>Exposure Before Full Speed</h3>
+    <p>Could concentrate too much heat in one area.</p>
+  </section>
+
+  <section class="content-box" id="rotor-ready-logic">
+    <h3>Rotor-Ready Logic</h3>
+    <p>The system may monitor whether rotor conditions are acceptable before allowing exposure.</p>
+  </section>
+
+  <section class="content-box" id="if-rotor-prep-fails">
+    <h3>If Rotor Prep Fails</h3>
+    <p>The generator may inhibit the exposure.</p>
+  </section>
+
+  <section class="content-box" id="this-protects-the-tube">
+    <h3>This Protects the Tube</h3>
+
+  </section>
+
+  <section class="content-box" id="common-complaint">
+    <h3>Common Complaint</h3>
+    <blockquote><p>It preps but won't expose.</p></blockquote>
+    <p>That can indicate:</p>
+    <ul>
+      <li>Rotor</li>
+      <li>Stator</li>
+      <li>Rotor-drive electronics</li>
+      <li>Tube</li>
+      <li>Feedback circuit</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="anode-speed">
+    <h3>Anode Speed</h3>
+    <p>Rotating anodes may operate at:</p>
+    <p>Thousands of revolutions per minute.</p>
+    <p>Exact values depend on tube design.</p>
+  </section>
+
+  <section class="content-box" id="high-speed-vs-normal-speed-modes">
+    <h3>High-Speed vs Normal-Speed Modes</h3>
+    <p>Some systems may use different rotor speeds depending on technique or tube.</p>
+  </section>
+
+  <section class="content-box" id="higher-speed">
+    <h3>Higher Speed</h3>
+    <p>Spreads exposure over more track distance during a given time.</p>
+  </section>
+
+  <section class="content-box" id="but-higher-speed-adds-mechanical-stress">
+    <h3>But Higher Speed Adds Mechanical Stress</h3>
+
+  </section>
+
+  <section class="content-box" id="bearings">
+    <h3>Bearings</h3>
+    <p>The rotor assembly needs bearings capable of operating:</p>
+    <ul>
+      <li>At high speed</li>
+      <li>In vacuum</li>
+      <li>At high temperature</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="specialized-bearings">
+    <h3>Specialized Bearings</h3>
+    <p>Tube designs may use:</p>
+    <ul>
+      <li>Ball bearings</li>
+      <li>Other specialized bearing technologies</li>
+    </ul>
+    <p>depending on generation.</p>
+  </section>
+
+  <section class="content-box" id="bearing-wear">
+    <h3>Bearing Wear</h3>
+    <p>Can produce:</p>
+    <ul>
+      <li>Longer spin-up</li>
+      <li>Noise</li>
+      <li>Vibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="characteristic-tube-noise">
+    <h3>Characteristic Tube Noise</h3>
+    <p>Experienced technicians may recognize changes in:</p>
+    <ul>
+      <li>Rotor whine</li>
+      <li>Spin-down sound</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="new-grinding-or-roughness">
+    <h3>New Grinding or Roughness</h3>
+    <p>Can be meaningful.</p>
+  </section>
+
+  <section class="content-box" id="but-do-not-diagnose-tube-failure-from-sound-alone">
+    <h3>But Do Not Diagnose Tube Failure From Sound Alone</h3>
+    <p>Confirm with:</p>
+    <ul>
+      <li>Error logs</li>
+      <li>Rotor diagnostics</li>
+      <li>Exposure behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="rotor-spin-down">
+    <h3>Rotor Spin-Down</h3>
+    <p>After exposure:</p>
+    <p>The anode may continue rotating for some time.</p>
+  </section>
+
+  <section class="content-box" id="bearings-and-friction-eventually-slow-it">
+    <h3>Bearings and friction eventually slow it.</h3>
+
+  </section>
+
+  <section class="content-box" id="abnormal-spin-down">
+    <h3>Abnormal Spin-Down</h3>
+    <p>Can provide clues about mechanical condition.</p>
+  </section>
+
+  <section class="content-box" id="tube-heat">
+    <h3>Tube Heat</h3>
+    <p>Every exposure adds thermal energy to the anode.</p>
+  </section>
+
+  <section class="content-box" id="heat-units">
+    <h3>Heat Units</h3>
+    <p>Tube loading is often represented using:</p>
+    <p><strong>Heat units</strong>, or HU.</p>
+  </section>
+
+  <section class="content-box" id="simplified-concept">
+    <h3>Simplified Concept</h3>
+    <p>Heat input depends on:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mA</li>
+      <li>Exposure time</li>
+      <li>Generator waveform factor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="more-technique">
+    <h3>More Technique</h3>
+    <p>More heat.</p>
+  </section>
+
+  <section class="content-box" id="ct-and-fluoroscopy-can-produce-very-high-thermal-demand">
+    <h3>CT and Fluoroscopy Can Produce Very High Thermal Demand</h3>
+
+  </section>
+
+  <section class="content-box" id="anode-heat-capacity">
+    <h3>Anode Heat Capacity</h3>
+    <p>The anode can absorb only a finite amount of energy before temperature becomes unsafe.</p>
+  </section>
+
+  <section class="content-box" id="tube-rating-chart">
+    <h3>Tube Rating Chart</h3>
+    <p>Manufacturers provide limits showing acceptable combinations of:</p>
+    <ul>
+      <li>kVp</li>
+      <li>mA</li>
+      <li>Time</li>
+    </ul>
+    <p>for particular focal spots.</p>
+  </section>
+
+  <section class="content-box" id="small-focal-spot-has-lower-loading-capacity">
+    <h3>Small Focal Spot Has Lower Loading Capacity</h3>
+    <p>Because heat is concentrated over less area.</p>
+  </section>
+
+  <section class="content-box" id="the-generator-protects-the-tube">
+    <h3>The Generator Protects the Tube</h3>
+    <p>Modern systems may prevent the operator from selecting:</p>
+    <p>An unsafe technique.</p>
+  </section>
+
+  <section class="content-box" id="tube-heat-tracking">
+    <h3>Tube Heat Tracking</h3>
+    <p>The system may estimate current anode heat based on recent exposures.</p>
+  </section>
+
+  <section class="content-box" id="if-too-hot">
+    <h3>If Too Hot</h3>
+    <p>The next exposure may be delayed.</p>
+  </section>
+
+  <section class="content-box" id="this-is-not-a-failure">
+    <h3>This Is Not a Failure</h3>
+    <p>It is tube protection.</p>
+  </section>
+
+  <section class="content-box" id="cooling">
+    <h3>Cooling</h3>
+    <p>After exposure, heat moves from:</p>
+    <p>Anode</p>
+    <p>to:</p>
+    <p>Tube housing and cooling system.</p>
+  </section>
+
+  <section class="content-box" id="thermal-radiation">
+    <h3>Thermal Radiation</h3>
+    <p>A hot anode can radiate heat toward the tube envelope and surrounding structures.</p>
+  </section>
+
+  <section class="content-box" id="tube-housing-oil">
+    <h3>Tube Housing Oil</h3>
+    <p>Many X-ray tube housings use insulating oil.</p>
+  </section>
+
+  <section class="content-box" id="oil-provides">
+    <h3>Oil Provides</h3>
+    <ul>
+      <li>Electrical insulation</li>
+      <li>Heat transfer</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="fans-or-heat-exchangers">
+    <h3>Fans or Heat Exchangers</h3>
+    <p>May remove heat from the housing.</p>
+  </section>
+
+  <section class="content-box" id="high-end-systems">
+    <h3>High-End Systems</h3>
+    <p>Can have sophisticated cooling loops.</p>
+  </section>
+
+  <section class="content-box" id="thermal-limit">
+    <h3>Thermal Limit</h3>
+    <p>If cooling cannot keep up:</p>
+    <p>The system may restrict operation.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>A scan or exposure failure after heavy use can be:</p>
+    <p>Thermal.</p>
+    <p>Not electrical.</p>
+  </section>
+
+  <section class="content-box" id="anode-damage">
+    <h3>Anode Damage</h3>
+    <p>Repeated excessive heating can damage the focal track.</p>
+  </section>
+
+  <section class="content-box" id="possible-effects">
+    <h3>Possible Effects</h3>
+    <ul>
+      <li>Surface roughening</li>
+      <li>Pitting</li>
+      <li>Cracking</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="x-ray-output-can-change">
+    <h3>X-Ray Output Can Change</h3>
+    <p>A damaged target surface may alter:</p>
+    <ul>
+      <li>Output consistency</li>
+      <li>Focal-spot shape</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="focal-spot-blooming">
+    <h3>Focal-Spot Blooming</h3>
+    <p>At higher tube currents, electrostatic repulsion between electrons can spread the electron beam.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>The focal spot becomes effectively larger.</p>
+    <p>This is called:</p>
+    <p><strong>Focal-spot blooming.</strong></p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Electrons repel one another.</p>
+    <p>Higher electron density increases that effect.</p>
+  </section>
+
+  <section class="content-box" id="image-consequence">
+    <h3>Image Consequence</h3>
+    <p>Spatial resolution can decrease at high mA.</p>
+  </section>
+
+  <section class="content-box" id="so-the-nominal-focal-spot-size-is-not-always-the-exact-operating-size">
+    <h3>So the Nominal Focal-Spot Size Is Not Always the Exact Operating Size</h3>
+
+  </section>
+
+  <section class="content-box" id="manufacturer-specifications-account-for-acceptable-behavior">
+    <h3>Manufacturer Specifications Account for Acceptable Behavior</h3>
+
+  </section>
+
+  <section class="content-box" id="focal-spot-testing">
+    <h3>Focal-Spot Testing</h3>
+    <p>Image-quality tests can estimate effective focal-spot performance.</p>
+  </section>
+
+  <section class="content-box" id="common-methods">
+    <h3>Common Methods</h3>
+    <p>May use:</p>
+    <ul>
+      <li>Star pattern</li>
+      <li>Pinhole</li>
+      <li>Slit camera</li>
+      <li>Resolution pattern</li>
+    </ul>
+    <p>depending on procedure.</p>
+  </section>
+
+  <section class="content-box" id="each-method-tests-something-slightly-different">
+    <h3>Each Method Tests Something Slightly Different</h3>
+
+  </section>
+
+  <section class="content-box" id="star-pattern">
+    <h3>Star Pattern</h3>
+    <p>A spoke pattern can reveal focal-spot size through blur behavior.</p>
+  </section>
+
+  <section class="content-box" id="pinhole">
+    <h3>Pinhole</h3>
+    <p>Creates a magnified image of the focal spot.</p>
+  </section>
+
+  <section class="content-box" id="slit-camera">
+    <h3>Slit Camera</h3>
+    <p>Uses a narrow slit to estimate dimensions.</p>
+  </section>
+
+  <section class="content-box" id="follow-the-applicable-procedure">
+    <h3>Follow the Applicable Procedure</h3>
+    <p>These tests depend strongly on geometry.</p>
+  </section>
+
+  <section class="content-box" id="do-not-eyeball-focal-spot-size-from-a-random-clinical-image">
+    <h3>Do Not Eyeball Focal-Spot Size From a Random Clinical Image</h3>
+
+  </section>
+
+  <section class="content-box" id="geometric-magnification">
+    <h3>Geometric Magnification</h3>
+    <p>Focal-spot blur also depends on object position.</p>
+  </section>
+
+  <section class="content-box" id="object-closer-to-x-ray-source">
+    <h3>Object Closer to X-Ray Source</h3>
+    <p>More magnification.</p>
+    <p>More geometric unsharpness.</p>
+  </section>
+
+  <section class="content-box" id="object-closer-to-detector">
+    <h3>Object Closer to Detector</h3>
+    <p>Less magnification.</p>
+  </section>
+
+  <section class="content-box" id="therefore-image-blur-is-not-just-focal-spot">
+    <h3>Therefore Image Blur Is Not Just Focal Spot</h3>
+    <p>It also depends on:</p>
+    <ul>
+      <li>Source-object distance</li>
+      <li>Object-detector distance</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="a-small-focal-spot-helps-magnification-imaging">
+    <h3>A Small Focal Spot Helps Magnification Imaging</h3>
+    <p>This is especially important in modalities such as:</p>
+    <p>Mammography.</p>
+  </section>
+
+  <section class="content-box" id="heel-effect">
+    <h3>Heel Effect</h3>
+    <p>The anode angle creates another phenomenon:</p>
+    <p><strong>The anode heel effect.</strong></p>
+  </section>
+
+  <section class="content-box" id="x-rays-produced-deeper-in-the-target-must-escape-through-the-anode-material">
+    <h3>X-Rays Produced Deeper in the Target Must Escape Through the Anode Material</h3>
+    <p>Toward the anode side:</p>
+    <p>They travel through more target material.</p>
+  </section>
+
+  <section class="content-box" id="more-are-absorbed">
+    <h3>More Are absorbed.</h3>
+
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>X-ray intensity is lower on the:</p>
+    <p><strong>Anode side.</strong></p>
+  </section>
+
+  <section class="content-box" id="cathode-side">
+    <h3>Cathode Side</h3>
+    <p>Usually has greater beam intensity.</p>
+  </section>
+
+  <section class="content-box" id="heel-effect-is-stronger-with">
+    <h3>Heel Effect Is Stronger With</h3>
+    <ul>
+      <li>Smaller anode angle</li>
+      <li>Large field size</li>
+      <li>Shorter SID</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-normal-tube-physics">
+    <h3>This Is Normal Tube Physics</h3>
+    <p>Not automatically a calibration fault.</p>
+  </section>
+
+  <section class="content-box" id="it-can-influence-positioning">
+    <h3>It Can Influence Positioning</h3>
+    <p>Clinical practice may use the intensity difference strategically.</p>
+  </section>
+
+  <section class="content-box" id="but-biomed-perspective">
+    <h3>But Biomed Perspective</h3>
+    <p>Understand that a nonuniform beam does not always mean:</p>
+    <p>Detector shading.</p>
+  </section>
+
+  <section class="content-box" id="bowtie-or-filter-vs-heel-effect">
+    <h3>Bowtie or Filter vs Heel Effect</h3>
+    <p>Different modalities use other beam-shaping methods too.</p>
+    <p>Keep those separate conceptually.</p>
+  </section>
+
+  <section class="content-box" id="focal-track-wear">
+    <h3>Focal Track Wear</h3>
+    <p>The track receives enormous cumulative thermal stress.</p>
+  </section>
+
+  <section class="content-box" id="tube-aging">
+    <h3>Tube Aging</h3>
+    <p>Can eventually change:</p>
+    <ul>
+      <li>Output</li>
+      <li>Noise</li>
+      <li>Arc frequency</li>
+      <li>Rotor behavior</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="high-kvp-failure">
+    <h3>High-kVp Failure</h3>
+    <p>Some aging tubes begin arcing more frequently at higher voltages.</p>
+  </section>
+
+  <section class="content-box" id="high-ma-failure">
+    <h3>High-mA Failure</h3>
+    <p>Other symptoms may relate to:</p>
+    <ul>
+      <li>Filament</li>
+      <li>Emission</li>
+      <li>Focal-spot loading</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="technique-dependence-is-valuable">
+    <h3>Technique Dependence Is Valuable</h3>
+    <p>If failure occurs only at:</p>
+    <ul>
+      <li>Large focal spot</li>
+      <li>High mA</li>
+      <li>High kVp</li>
+    </ul>
+    <p>record it.</p>
+  </section>
+
+  <section class="content-box" id="that-pattern-is-better-than">
+    <h3>That Pattern Is Better Than</h3>
+    <blockquote><p>Intermittent tube fault.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="filament-evaporation">
+    <h3>Filament Evaporation</h3>
+    <p>The hot filament slowly loses material over time.</p>
+  </section>
+
+  <section class="content-box" id="eventually">
+    <h3>Eventually</h3>
+    <p>It can:</p>
+    <ul>
+      <li>Thin</li>
+      <li>Break</li>
+      <li>Change emission characteristics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="open-filament">
+    <h3>Open Filament</h3>
+    <p>One focal spot may become unavailable.</p>
+  </section>
+
+  <section class="content-box" id="generator-may-report">
+    <h3>Generator May Report</h3>
+    <ul>
+      <li>Filament fault</li>
+      <li>mA regulation error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="focusing-cup-fault">
+    <h3>Focusing Cup Fault</h3>
+    <p>If focusing voltage or geometry is wrong:</p>
+    <p>The electron beam can broaden or shift.</p>
+  </section>
+
+  <section class="content-box" id="this-can-affect">
+    <h3>This Can Affect</h3>
+    <ul>
+      <li>Focal-spot size</li>
+      <li>Target loading</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="tube-arcing">
+    <h3>Tube Arcing</h3>
+    <p>High voltage can discharge inside the tube.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Tube aging</li>
+      <li>Gas</li>
+      <li>Internal contamination</li>
+      <li>Surface condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="an-arc-may-interrupt-exposure">
+    <h3>An Arc May Interrupt Exposure</h3>
+
+  </section>
+
+  <section class="content-box" id="repeated-arcing-can-damage-the-tube-further">
+    <h3>Repeated Arcing Can Damage the Tube Further</h3>
+
+  </section>
+
+  <section class="content-box" id="conditioning">
+    <h3>Conditioning</h3>
+    <p>OEMs may specify tube-conditioning routines under certain conditions.</p>
+  </section>
+
+  <section class="content-box" id="purpose">
+    <h3>Purpose</h3>
+    <p>Gradually expose the tube to increasing stress.</p>
+  </section>
+
+  <section class="content-box" id="do-not-improvise">
+    <h3>Do Not Improvise</h3>
+    <p>Follow the OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="tube-warm-up">
+    <h3>Tube Warm-Up</h3>
+    <p>Separate from conditioning.</p>
+  </section>
+
+  <section class="content-box" id="warm-up">
+    <h3>Warm-Up</h3>
+    <p>Gradually raises anode temperature before heavy use.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>A cold anode subjected immediately to a very heavy thermal load experiences larger thermal stress.</p>
+  </section>
+
+  <section class="content-box" id="temperature-gradient">
+    <h3>Temperature Gradient</h3>
+    <p>Rapid uneven heating can promote damage.</p>
+  </section>
+
+  <section class="content-box" id="warm-up-helps-reduce-thermal-shock">
+    <h3>Warm-Up Helps Reduce Thermal Shock</h3>
+
+  </section>
+
+  <section class="content-box" id="ct-tubes">
+    <h3>CT Tubes</h3>
+    <p>CT tubes face especially severe loading because they may produce:</p>
+    <ul>
+      <li>Long exposures</li>
+      <li>High mA</li>
+      <li>Rapid repeats</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="their-anodes-and-cooling-systems-are-highly-engineered">
+    <h3>Their anodes and cooling systems are highly engineered</h3>
+    <p>but the same basic physics applies.</p>
+  </section>
+
+  <section class="content-box" id="mammography-tubes">
+    <h3>Mammography Tubes</h3>
+    <p>Have specialized targets and focal-spot requirements.</p>
+  </section>
+
+  <section class="content-box" id="fluoroscopy-tubes">
+    <h3>Fluoroscopy Tubes</h3>
+    <p>May operate at lower instantaneous loading but for long periods.</p>
+  </section>
+
+  <section class="content-box" id="different-modality-same-core-problem">
+    <h3>Different Modality, Same Core Problem</h3>
+    <p>Generate X-rays.</p>
+    <p>Manage heat.</p>
+    <p>Preserve source geometry.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-large-focal-spot-fails">
+    <h3>Real-World Example: Large Focal Spot Fails</h3>
+    <p>Small focal-spot radiography works normally.</p>
+    <p>High-mA techniques using large focal spot fail with filament regulation errors.</p>
+    <p>The behavior follows focal-spot selection.</p>
+    <p>That points toward:</p>
+    <ul>
+      <li>Large filament</li>
+      <li>Associated cathode circuit</li>
+    </ul>
+    <p>rather than the detector.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-new-image-blur">
+    <h3>Real-World Example: New Image Blur</h3>
+    <p>QC shows spatial resolution has declined.</p>
+    <p>Detector tests normally.</p>
+    <p>Focal-spot test shows effective focal spot has enlarged beyond baseline.</p>
+    <p>Now the blur has a source-side explanation.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-rotor-prep-fault">
+    <h3>Real-World Example: Rotor Prep Fault</h3>
+    <p>System enters prep.</p>
+    <p>Anode sound is abnormal.</p>
+    <p>Generator never reaches rotor-ready state.</p>
+    <p>Exposure is inhibited.</p>
+    <p>The generator may be correctly protecting a tube whose anode cannot reach required speed.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-exposure-delayed-after-heavy-use">
+    <h3>Real-World Example: Exposure Delayed After Heavy Use</h3>
+    <p>Several high-load exposures occur.</p>
+    <p>System then prevents additional exposures and displays tube heat warning.</p>
+    <p>After cooling:</p>
+    <p>Operation returns.</p>
+    <p>Nothing necessarily failed.</p>
+    <p>Thermal protection worked.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-noise-after-tube-replacement">
+    <h3>Real-World Example: Noise After Tube Replacement</h3>
+    <p>New tube produces unfamiliar rotor sound but all rotor diagnostics, exposure tests, focal-spot tests, and output measurements pass.</p>
+    <p>A different acoustic signature alone is not proof of a mechanical problem.</p>
+    <p>Measure before condemning.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Assuming every image blur is detector blur.</strong> The effective focal spot and imaging geometry contribute significantly.</p>
+    <p><strong>Ignoring focal-spot selection.</strong> One filament can fail while another remains usable.</p>
+    <p><strong>Treating rotor-prep failure as a generator failure automatically.</strong> The generator may simply be detecting a tube-side mechanical problem.</p>
+    <p><strong>Overlooking tube heat.</strong> Exposure inhibition after heavy use may be intentional protection.</p>
+    <p><strong>Assuming nominal focal-spot size is identical under every technique.</strong> Blooming and operating conditions can change effective size.</p>
+    <p><strong>Repeatedly stressing an arcing tube.</strong> High-voltage faults deserve controlled testing, not repeated heavy exposures.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-focal-spot-framework">
+    <h3>A Useful Focal-Spot Framework</h3>
+    <p>Think:</p>
+    <p><strong>Filament</strong></p>
+    <p>↓</p>
+    <p><strong>Thermionic Emission</strong></p>
+    <p>↓</p>
+    <p><strong>Focusing Cup</strong></p>
+    <p>↓</p>
+    <p><strong>Electron Beam</strong></p>
+    <p>↓</p>
+    <p><strong>Actual Focal Spot</strong></p>
+    <p>↓</p>
+    <p><strong>Rotating Anode Track</strong></p>
+    <p>↓</p>
+    <p><strong>X-Ray Production</strong></p>
+    <p>↓</p>
+    <p><strong>Effective Focal Spot</strong></p>
+    <p>↓</p>
+    <p><strong>Geometric Image Sharpness</strong></p>
+    <p>Around that chain:</p>
+    <p><strong>Rotor + Stator + Tube Heat + Cooling</strong></p>
+    <p>determine whether the tube can safely keep operating.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Does the problem follow one focal spot or both?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does it depend on mA, kVp, or thermal load?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did rotor prep complete normally?</strong></p>
+    <p>Those questions separate:</p>
+    <ul>
+      <li>Cathode</li>
+      <li>Rotor</li>
+      <li>Target</li>
+      <li>Generator</li>
+      <li>Detector</li>
+    </ul>
+    <p>far better than saying:</p>
+    <blockquote><p>X-ray tube bad.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the tube produces an exposure:</p>
+    <p>You proved:</p>
+    <p><strong>The selected filament, rotor, high-voltage, and tube current path operated well enough to complete that exposure.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Focal-spot size correct</li>
+      <li>Anode mechanically healthy</li>
+      <li>Heat capacity normal</li>
+    </ul>
+    <p>If rotor prep completes:</p>
+    <p>You proved:</p>
+    <p><strong>The rotor system met the readiness condition used by the system.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <p>The bearings have no wear or the anode is mechanically perfect.</p>
+    <p>If appropriate focal-spot, output, reproducibility, and tube-loading tests all pass:</p>
+    <p>You have much stronger evidence that the tube is functioning correctly under those tested conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>An X-ray focal spot is a compromise.</p>
+    <p>Make it smaller:</p>
+    <p>The image gets sharper.</p>
+    <p>But heat becomes harder to manage.</p>
+    <p>Make it larger:</p>
+    <p>The tube can tolerate more loading.</p>
+    <p>But geometric sharpness can suffer.</p>
+    <p>The rotating anode is what makes modern high-power X-ray imaging practical.</p>
+    <p>It allows the electron beam to stay focused while the target surface moves underneath it, spreading heat around an entire track.</p>
+    <p>That means an X-ray tube is not just:</p>
+    <p>A vacuum bottle that makes radiation.</p>
+    <p>It is also:</p>
+    <ul>
+      <li>A high-speed motor</li>
+      <li>A thermal system</li>
+      <li>An electron-optics system</li>
+      <li>A precision image-source geometry</li>
+    </ul>
+    <p>And those systems interact.</p>
+    <p>A failing filament can look technique-specific.</p>
+    <p>A bearing problem can become a prep fault.</p>
+    <p>Focal-spot growth can become image blur.</p>
+    <p>Tube heat can become an exposure lockout.</p>
+    <p>Once you understand those relationships, the useful question stops being:</p>
+    <blockquote><p>Does the tube fire?</p></blockquote>
+    <p>and becomes:</p>
+    <p><strong>Which part of the tube's job is no longer happening the way it should?</strong></p>
+    <p>And, as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>X-ray tube focal-spot sizes, filament arrangements, anode angles, rotor speeds, bearing designs, heat capacities, focal-track materials, tube-rating charts, conditioning procedures, focal-spot test methods, and acceptable limits vary significantly by manufacturer, tube model, modality, and regulatory program. X-ray systems involve lethal high voltage and ionizing radiation. Follow current OEM documentation, approved imaging-QC procedures, radiation-safety requirements, and authorized service scope when evaluating X-ray tube performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure.html">How an X-Ray Generator Creates High Voltage and Controls an Exposure</a></li>
+      <li><a href="how-x-ray-automatic-exposure-control-works.html">How X-Ray Automatic Exposure Control Works</a></li>
+      <li><a href="how-x-ray-collimators-and-light-fields-work.html">How X-Ray Collimators and Light Fields Work</a></li>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+      <li><a href="how-digital-mammography-creates-and-processes-an-image.html">How Digital Mammography Creates and Processes an Image</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
