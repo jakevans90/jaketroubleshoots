@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How PET/CT Combines Functional and Anatomical Imaging | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how PET/CT combines radiotracer distribution with CT anatomy, uses CT-based attenuation correction, and why motion and registration errors affect fused images.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-pet-ct-combines-functional-and-anatomical-imaging.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How PET/CT Combines Functional and Anatomical Imaging</h1>
+  <p>How a PET/CT scanner combines radioactive-tracer distribution with CT anatomy, why attenuation correction matters, and how registration errors can make two healthy imaging systems produce a misleading fused image</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">PET/CT is really two imaging systems sharing one patient table.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>What PET measures</li>
+      <li>What CT measures</li>
+      <li>Why PET and CT are combined</li>
+      <li>Positron annihilation</li>
+      <li>Coincidence detection</li>
+      <li>PET detector rings</li>
+      <li>CT anatomy</li>
+      <li>Patient-table coordination</li>
+      <li>Image registration</li>
+      <li>Attenuation correction</li>
+      <li>CT-based attenuation maps</li>
+      <li>PET reconstruction</li>
+      <li>Standardized uptake values</li>
+      <li>Respiratory mismatch</li>
+      <li>Metal and contrast effects</li>
+      <li>Table positioning</li>
+      <li>Fused images</li>
+      <li>PET-only vs CT-only faults</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>PET/CT combines two different types of imaging. PET detects pairs of 511 keV gamma photons created when a positron emitted by a radiopharmaceutical annihilates with an electron. Those photon pairs are detected in coincidence by opposing PET detector elements, allowing the scanner to estimate where the annihilation occurred. Repeating that process over many events produces a three-dimensional map of radiotracer activity.</p>
+    <p>CT uses an external X-ray source and detector array to measure how strongly tissues attenuate X-rays. That produces a high-resolution anatomical image. The PET and CT datasets are then geometrically aligned so functional uptake can be displayed on top of anatomical structures. The CT data is also commonly converted into an attenuation map used during PET reconstruction so the system can compensate for PET photons that were absorbed or scattered before reaching the detectors.</p>
+    <p>A PET/CT study can therefore be wrong even when both scanners technically acquire images. Motion between CT and PET, table-position error, incorrect attenuation correction, CT artifacts, respiratory mismatch, or reconstruction problems can shift uptake or distort quantitative measurements. Preserve whether the abnormality appears on PET alone, CT alone, attenuation-corrected PET only, or the fused display, and whether a phantom reproduces the issue before assuming one detector system has failed.</p>
+  </section>
+
+  <section class="content-box" id="start-with-what-pet-actually-measures">
+    <h3>Start With What PET Actually Measures</h3>
+    <p>PET stands for:</p>
+    <p><strong>Positron Emission Tomography.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-patient-is-the-radiation-source">
+    <h3>The Patient Is the Radiation Source</h3>
+    <p>A radiopharmaceutical is administered.</p>
+    <p>The radioactive isotope emits:</p>
+    <p><strong>Positrons.</strong></p>
+  </section>
+
+  <section class="content-box" id="positron">
+    <h3>Positron</h3>
+    <p>A positron is the antimatter counterpart of an electron.</p>
+    <p>It has:</p>
+    <ul>
+      <li>Positive charge</li>
+      <li>Same mass as an electron</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-positron-travels-a-short-distance">
+    <h3>The Positron Travels a Short Distance</h3>
+    <p>After emission:</p>
+    <p>It loses energy in tissue.</p>
+  </section>
+
+  <section class="content-box" id="eventually-it-encounters-an-electron">
+    <h3>Eventually It Encounters an Electron</h3>
+    <p>The positron and electron annihilate.</p>
+  </section>
+
+  <section class="content-box" id="annihilation">
+    <h3>Annihilation</h3>
+    <p>Their mass is converted into energy.</p>
+  </section>
+
+  <section class="content-box" id="two-gamma-photons">
+    <h3>Two Gamma Photons</h3>
+    <p>The annihilation usually produces two photons of approximately:</p>
+    <p><strong>511 keV each.</strong></p>
+  </section>
+
+  <section class="content-box" id="they-travel-in-nearly-opposite-directions">
+    <h3>They Travel in Nearly Opposite Directions</h3>
+    <p>This is the key PET event.</p>
+  </section>
+
+  <section class="content-box" id="pet-does-not-need-a-physical-collimator-like-spect">
+    <h3>PET Does Not Need a Physical Collimator Like SPECT</h3>
+    <p>Instead, it uses:</p>
+    <p><strong>Coincidence detection.</strong></p>
+  </section>
+
+  <section class="content-box" id="coincidence-detection">
+    <h3>Coincidence Detection</h3>
+    <p>If two detectors on opposite sides of the scanner detect 511 keV photons nearly simultaneously:</p>
+    <p>The system assumes they came from the same annihilation event.</p>
+  </section>
+
+  <section class="content-box" id="line-of-response">
+    <h3>Line of Response</h3>
+    <p>A line is drawn between those two detector positions.</p>
+    <p>The annihilation likely occurred somewhere along that line.</p>
+  </section>
+
+  <section class="content-box" id="thousands-to-millions-of-events">
+    <h3>Thousands to Millions of Events</h3>
+    <p>Produce enough information to reconstruct the radiotracer distribution.</p>
+  </section>
+
+  <section class="content-box" id="detector-ring">
+    <h3>Detector Ring</h3>
+    <p>PET scanners contain detector elements arranged around the patient.</p>
+  </section>
+
+  <section class="content-box" id="modern-pet-detectors">
+    <h3>Modern PET Detectors</h3>
+    <p>Commonly use scintillation crystals coupled to photodetectors.</p>
+  </section>
+
+  <section class="content-box" id="scintillator">
+    <h3>Scintillator</h3>
+    <p>Gamma photon interacts.</p>
+    <p>↓</p>
+    <p>Light is produced.</p>
+    <p>↓</p>
+    <p>Photodetector converts light into electrical signal.</p>
+  </section>
+
+  <section class="content-box" id="common-scintillator-materials">
+    <h3>Common Scintillator Materials</h3>
+    <p>Depending on scanner generation, materials may include:</p>
+    <ul>
+      <li>LSO</li>
+      <li>LYSO</li>
+    </ul>
+    <p>and other high-density scintillators.</p>
+  </section>
+
+  <section class="content-box" id="silicon-photomultipliers">
+    <h3>Silicon Photomultipliers</h3>
+    <p>Modern systems often use:</p>
+    <p><strong>SiPMs</strong>, or silicon photomultipliers.</p>
+  </section>
+
+  <section class="content-box" id="older-systems">
+    <h3>Older Systems</h3>
+    <p>May use:</p>
+    <p>Photomultiplier tubes.</p>
+  </section>
+
+  <section class="content-box" id="pet-detects-timing-and-energy">
+    <h3>PET Detects Timing and Energy</h3>
+    <p>The detector electronics determine:</p>
+    <ul>
+      <li>Which detector was hit</li>
+      <li>Photon energy</li>
+      <li>Event timing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="energy-window">
+    <h3>Energy Window</h3>
+    <p>Events near the expected 511 keV energy are accepted.</p>
+  </section>
+
+  <section class="content-box" id="scatter">
+    <h3>Scatter</h3>
+    <p>A photon that scatters inside the patient may lose energy and change direction.</p>
+  </section>
+
+  <section class="content-box" id="energy-discrimination-helps-reject-some-scatter">
+    <h3>Energy Discrimination Helps Reject Some Scatter</h3>
+    <p>But correction algorithms are still needed.</p>
+  </section>
+
+  <section class="content-box" id="coincidence-timing">
+    <h3>Coincidence Timing</h3>
+    <p>The two photon detections must occur within a narrow timing window.</p>
+  </section>
+
+  <section class="content-box" id="random-coincidences">
+    <h3>Random Coincidences</h3>
+    <p>Two unrelated photons can sometimes happen to arrive within that window.</p>
+  </section>
+
+  <section class="content-box" id="those-must-be-estimated-and-corrected">
+    <h3>Those Must Be Estimated and Corrected</h3>
+
+  </section>
+
+  <section class="content-box" id="true-coincidence">
+    <h3>True Coincidence</h3>
+    <p>Both photons came from the same annihilation.</p>
+  </section>
+
+  <section class="content-box" id="scatter-coincidence">
+    <h3>Scatter Coincidence</h3>
+    <p>One or both photons changed direction before detection.</p>
+  </section>
+
+  <section class="content-box" id="random-coincidence">
+    <h3>Random Coincidence</h3>
+    <p>Detections came from unrelated events.</p>
+  </section>
+
+  <section class="content-box" id="pet-reconstruction-accounts-for-these-effects">
+    <h3>PET Reconstruction Accounts for These Effects</h3>
+
+  </section>
+
+  <section class="content-box" id="time-of-flight-pet">
+    <h3>Time-of-Flight PET</h3>
+    <p>Modern PET can use:</p>
+    <p><strong>Time of flight.</strong></p>
+  </section>
+
+  <section class="content-box" id="basic-idea">
+    <h3>Basic Idea</h3>
+    <p>The two photons should leave the annihilation at almost the same time.</p>
+    <p>If one detector sees its photon slightly earlier:</p>
+    <p>The annihilation was probably closer to that detector.</p>
+  </section>
+
+  <section class="content-box" id="tiny-timing-difference">
+    <h3>Tiny Timing Difference</h3>
+    <p>Can provide additional localization information.</p>
+  </section>
+
+  <section class="content-box" id="the-scanner-still-uses-a-line-of-response">
+    <h3>The Scanner Still Uses a Line of Response</h3>
+    <p>But time-of-flight narrows where along that line the event probably occurred.</p>
+  </section>
+
+  <section class="content-box" id="this-improves-signal-localization">
+    <h3>This Improves Signal Localization</h3>
+    <p>Especially in larger patients.</p>
+  </section>
+
+  <section class="content-box" id="pet-image">
+    <h3>PET Image</h3>
+    <p>At the end of acquisition:</p>
+    <p>The scanner has a map of radiotracer concentration.</p>
+  </section>
+
+  <section class="content-box" id="but-pet-anatomy-is-relatively-blurry">
+    <h3>But PET Anatomy Is Relatively Blurry</h3>
+    <p>Compared with CT.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-ct-is-so-valuable">
+    <h3>This Is Why CT Is So Valuable</h3>
+    <p>PET may show:</p>
+    <p>A bright area.</p>
+    <p>CT can show:</p>
+    <p>Which anatomical structure occupies that location.</p>
+  </section>
+
+  <section class="content-box" id="ct-side-of-the-system">
+    <h3>CT Side of the System</h3>
+    <p>The CT portion works like other CT scanners.</p>
+  </section>
+
+  <section class="content-box" id="x-ray-tube-rotates">
+    <h3>X-Ray Tube Rotates</h3>
+    <p>Radiation passes through patient.</p>
+    <p>Detector array measures attenuation.</p>
+  </section>
+
+  <section class="content-box" id="reconstruction-produces">
+    <h3>Reconstruction Produces</h3>
+    <p>Anatomical slices.</p>
+  </section>
+
+  <section class="content-box" id="ct-has-much-higher-spatial-resolution">
+    <h3>CT Has Much Higher Spatial Resolution</h3>
+    <p>than PET.</p>
+  </section>
+
+  <section class="content-box" id="fusion">
+    <h3>Fusion</h3>
+    <p>The workstation overlays:</p>
+    <p>PET activity</p>
+    <p>onto:</p>
+    <p>CT anatomy.</p>
+  </section>
+
+  <section class="content-box" id="color-overlay">
+    <h3>Color Overlay</h3>
+    <p>PET may be displayed using a color scale.</p>
+    <p>CT provides grayscale anatomy.</p>
+  </section>
+
+  <section class="content-box" id="but-fusion-only-works-if-coordinates-match">
+    <h3>But Fusion Only Works If Coordinates Match</h3>
+
+  </section>
+
+  <section class="content-box" id="shared-patient-table">
+    <h3>Shared Patient Table</h3>
+    <p>One major advantage of PET/CT is that the patient remains on the same table.</p>
+  </section>
+
+  <section class="content-box" id="ct-acquisition">
+    <h3>CT Acquisition</h3>
+    <p>Table moves through CT field.</p>
+  </section>
+
+  <section class="content-box" id="pet-acquisition">
+    <h3>PET Acquisition</h3>
+    <p>Table then moves to PET bed positions.</p>
+  </section>
+
+  <section class="content-box" id="position-must-be-known-accurately">
+    <h3>Position Must Be Known Accurately</h3>
+
+  </section>
+
+  <section class="content-box" id="table-encoder">
+    <h3>Table Encoder</h3>
+    <p>The scanner tracks table location.</p>
+  </section>
+
+  <section class="content-box" id="registration-depends-on-geometry">
+    <h3>Registration Depends on Geometry</h3>
+    <p>The system knows the relative physical position of:</p>
+    <ul>
+      <li>CT isocenter</li>
+      <li>PET detector center</li>
+      <li>Table coordinate system</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="calibration-establishes-this-relationship">
+    <h3>Calibration Establishes This Relationship</h3>
+
+  </section>
+
+  <section class="content-box" id="pet-ct-alignment-test">
+    <h3>PET/CT Alignment Test</h3>
+    <p>Phantoms can verify whether an object appears in the same physical location in:</p>
+    <p>PET</p>
+    <p>and:</p>
+    <p>CT.</p>
+  </section>
+
+  <section class="content-box" id="misregistration">
+    <h3>Misregistration</h3>
+    <p>If PET uptake appears shifted relative to CT anatomy:</p>
+    <p>The images are:</p>
+    <p><strong>Misregistered.</strong></p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Patient motion</li>
+      <li>Table position</li>
+      <li>Calibration</li>
+      <li>Reconstruction</li>
+      <li>Respiratory motion</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="not-every-misregistration-is-hardware-failure">
+    <h3>Not Every Misregistration Is Hardware Failure</h3>
+    <p>This is critical.</p>
+  </section>
+
+  <section class="content-box" id="ct-is-fast">
+    <h3>CT Is Fast</h3>
+    <p>A CT scan may acquire a region in seconds.</p>
+  </section>
+
+  <section class="content-box" id="pet-is-slow">
+    <h3>PET Is Slow</h3>
+    <p>PET acquisition may spend minutes at each bed position.</p>
+  </section>
+
+  <section class="content-box" id="the-patient-breathes-throughout-pet">
+    <h3>The Patient Breathes Throughout PET</h3>
+
+  </section>
+
+  <section class="content-box" id="respiratory-mismatch">
+    <h3>Respiratory Mismatch</h3>
+    <p>CT may capture the diaphragm at one respiratory phase.</p>
+    <p>PET averages activity over many phases.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Structures near:</p>
+    <ul>
+      <li>Lung bases</li>
+      <li>Liver dome</li>
+      <li>Diaphragm</li>
+    </ul>
+    <p>may appear shifted between PET and CT.</p>
+  </section>
+
+  <section class="content-box" id="this-is-often-physiological-acquisition-mismatch">
+    <h3>This Is Often Physiological Acquisition Mismatch</h3>
+    <p>Not encoder failure.</p>
+  </section>
+
+  <section class="content-box" id="arms-can-move">
+    <h3>Arms Can Move</h3>
+    <p>If the patient changes arm position between acquisitions:</p>
+    <p>Fusion can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="patient-can-slide">
+    <h3>Patient Can Slide</h3>
+    <p>Even a small shift matters.</p>
+  </section>
+
+  <section class="content-box" id="table-sag">
+    <h3>Table Sag</h3>
+    <p>Patient weight can change table deflection.</p>
+  </section>
+
+  <section class="content-box" id="system-calibration-accounts-for-expected-behavior">
+    <h3>System Calibration Accounts for Expected behavior</h3>
+    <p>but excessive or abnormal movement can affect registration.</p>
+  </section>
+
+  <section class="content-box" id="ct-is-also-used-for-attenuation-correction">
+    <h3>CT Is Also Used for Attenuation Correction</h3>
+    <p>This is one of the most important PET/CT concepts.</p>
+  </section>
+
+  <section class="content-box" id="pet-photons-must-escape-the-patient">
+    <h3>PET Photons Must Escape the Patient</h3>
+    <p>A 511 keV photon can be:</p>
+    <ul>
+      <li>Absorbed</li>
+      <li>Scattered</li>
+    </ul>
+    <p>before reaching a detector.</p>
+  </section>
+
+  <section class="content-box" id="deep-events-are-harder-to-detect">
+    <h3>Deep Events Are Harder to Detect</h3>
+    <p>because photons pass through more tissue.</p>
+  </section>
+
+  <section class="content-box" id="without-correction">
+    <h3>Without Correction</h3>
+    <p>Deep tracer activity could appear artificially low.</p>
+  </section>
+
+  <section class="content-box" id="attenuation-map">
+    <h3>Attenuation Map</h3>
+    <p>The scanner needs to estimate how strongly each path attenuates 511 keV photons.</p>
+  </section>
+
+  <section class="content-box" id="ct-already-measures-x-ray-attenuation">
+    <h3>CT Already Measures X-Ray Attenuation</h3>
+    <p>So the system uses CT data to create the PET attenuation map.</p>
+  </section>
+
+  <section class="content-box" id="but-ct-uses-much-lower-photon-energies">
+    <h3>But CT Uses Much Lower Photon Energies</h3>
+    <p>Diagnostic CT may use tube potentials such as:</p>
+    <p>120 kVp.</p>
+    <p>PET photons are:</p>
+    <p>511 keV.</p>
+  </section>
+
+  <section class="content-box" id="the-scanner-must-convert">
+    <h3>The Scanner Must Convert</h3>
+    <p>CT attenuation values are transformed mathematically into estimated attenuation coefficients appropriate for PET photon energy.</p>
+  </section>
+
+  <section class="content-box" id="ct-numbers-become-pet-correction-data">
+    <h3>CT Numbers Become PET Correction Data</h3>
+    <p>This is why a CT problem can change PET values.</p>
+  </section>
+
+  <section class="content-box" id="attenuation-corrected-pet">
+    <h3>Attenuation-Corrected PET</h3>
+    <p>PET reconstruction applies the attenuation map to compensate for lost photons.</p>
+  </section>
+
+  <section class="content-box" id="non-attenuation-corrected-pet">
+    <h3>Non-Attenuation-Corrected PET</h3>
+    <p>The system may also retain or generate:</p>
+    <p><strong>NAC PET</strong></p>
+    <p>data.</p>
+  </section>
+
+  <section class="content-box" id="this-can-be-extremely-useful">
+    <h3>This Can Be Extremely Useful</h3>
+    <p>If an abnormal hotspot appears only on:</p>
+    <p>Attenuation-corrected PET</p>
+    <p>but not on:</p>
+    <p>Non-corrected PET,</p>
+    <p>then attenuation correction deserves investigation.</p>
+  </section>
+
+  <section class="content-box" id="metal">
+    <h3>Metal</h3>
+    <p>Metal can produce extreme CT values and streak artifacts.</p>
+  </section>
+
+  <section class="content-box" id="those-values-feed-the-attenuation-map">
+    <h3>Those Values Feed the Attenuation Map</h3>
+
+  </section>
+
+  <section class="content-box" id="pet-artifact-can-result">
+    <h3>PET Artifact Can Result</h3>
+    <p>Apparent increased or distorted uptake may appear near:</p>
+    <ul>
+      <li>Prostheses</li>
+      <li>Dental hardware</li>
+      <li>Implants</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-does-not-necessarily-mean-real-tracer-uptake">
+    <h3>This Does Not Necessarily Mean Real Tracer Uptake</h3>
+
+  </section>
+
+  <section class="content-box" id="contrast-media">
+    <h3>Contrast Media</h3>
+    <p>CT contrast can also change attenuation values.</p>
+  </section>
+
+  <section class="content-box" id="modern-algorithms-account-for-much-of-this">
+    <h3>Modern Algorithms Account for Much of This</h3>
+    <p>But contrast may influence quantitative PET depending on:</p>
+    <ul>
+      <li>Protocol</li>
+      <li>Concentration</li>
+      <li>Location</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>PET and CT are not independent once attenuation correction is involved.</p>
+  </section>
+
+  <section class="content-box" id="truncation">
+    <h3>Truncation</h3>
+    <p>If a patient's body extends beyond the CT field of view:</p>
+    <p>Part of the anatomy may be missing from the attenuation map.</p>
+  </section>
+
+  <section class="content-box" id="pet-detector-may-see-activity-there">
+    <h3>PET Detector May See Activity There</h3>
+    <p>But CT map does not represent it correctly.</p>
+  </section>
+
+  <section class="content-box" id="truncation-correction">
+    <h3>Truncation Correction</h3>
+    <p>Modern systems use algorithms to reduce this problem.</p>
+  </section>
+
+  <section class="content-box" id="but-severe-truncation-can-still-matter">
+    <h3>But Severe truncation can still matter.</h3>
+
+  </section>
+
+  <section class="content-box" id="pet-bed-positions">
+    <h3>PET Bed Positions</h3>
+    <p>PET often acquires the patient in overlapping axial sections called:</p>
+    <p><strong>Bed positions.</strong></p>
+  </section>
+
+  <section class="content-box" id="table-stops">
+    <h3>Table Stops</h3>
+    <p>Data acquired.</p>
+    <p>Then table moves.</p>
+  </section>
+
+  <section class="content-box" id="adjacent-fields-overlap">
+    <h3>Adjacent Fields Overlap</h3>
+    <p>This helps maintain continuous sensitivity.</p>
+  </section>
+
+  <section class="content-box" id="bed-position-error">
+    <h3>Bed-Position Error</h3>
+    <p>Could create:</p>
+    <ul>
+      <li>Misregistration</li>
+      <li>Axial discontinuity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="detector-sensitivity-is-not-identical-everywhere">
+    <h3>Detector Sensitivity Is Not Identical Everywhere</h3>
+    <p>Normalization corrects differences between detector elements.</p>
+  </section>
+
+  <section class="content-box" id="pet-normalization">
+    <h3>PET Normalization</h3>
+    <p>Similar concept to other detector systems.</p>
+  </section>
+
+  <section class="content-box" id="uniform-source">
+    <h3>Uniform source</h3>
+    <p>or approved calibration procedure is used.</p>
+  </section>
+
+  <section class="content-box" id="detector-response-differences-are-characterized">
+    <h3>Detector Response Differences Are Characterized</h3>
+
+  </section>
+
+  <section class="content-box" id="stable-differences-can-be-corrected">
+    <h3>Stable Differences Can Be Corrected</h3>
+    <p>Unstable ones cannot be corrected reliably.</p>
+  </section>
+
+  <section class="content-box" id="detector-block-failure">
+    <h3>Detector Block Failure</h3>
+    <p>Can produce:</p>
+    <ul>
+      <li>Reduced sensitivity</li>
+      <li>Ring-like or regional artifact</li>
+    </ul>
+    <p>depending on reconstruction and detector architecture.</p>
+  </section>
+
+  <section class="content-box" id="pet-quality-control">
+    <h3>PET Quality Control</h3>
+    <p>May include:</p>
+    <ul>
+      <li>Detector checks</li>
+      <li>Energy calibration</li>
+      <li>Timing calibration</li>
+      <li>Normalization</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="time-of-flight-calibration">
+    <h3>Time-of-Flight Calibration</h3>
+    <p>Timing differences between detector channels must be extremely well controlled.</p>
+  </section>
+
+  <section class="content-box" id="tiny-timing-error">
+    <h3>Tiny Timing Error</h3>
+    <p>Can shift time-of-flight localization.</p>
+  </section>
+
+  <section class="content-box" id="this-may-not-prevent-basic-imaging">
+    <h3>This May Not Prevent Basic Imaging</h3>
+    <p>but can degrade performance.</p>
+  </section>
+
+  <section class="content-box" id="energy-calibration">
+    <h3>Energy Calibration</h3>
+    <p>Each detector needs to identify the 511 keV photopeak correctly.</p>
+  </section>
+
+  <section class="content-box" id="gain-drift">
+    <h3>Gain Drift</h3>
+    <p>Can move accepted events outside the energy window.</p>
+  </section>
+
+  <section class="content-box" id="counts-drop">
+    <h3>Counts Drop</h3>
+
+  </section>
+
+  <section class="content-box" id="scanner-may-still-acquire">
+    <h3>Scanner May Still Acquire</h3>
+    <p>But sensitivity changes.</p>
+  </section>
+
+  <section class="content-box" id="pet-count-rate">
+    <h3>PET Count Rate</h3>
+    <p>The amount of detected activity depends on:</p>
+    <ul>
+      <li>Injected activity</li>
+      <li>Uptake time</li>
+      <li>Decay</li>
+      <li>Patient size</li>
+      <li>Detector sensitivity</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="low-counts">
+    <h3>Low Counts</h3>
+    <p>Increase image noise.</p>
+  </section>
+
+  <section class="content-box" id="not-automatically-hardware-failure">
+    <h3>Not Automatically Hardware Failure</h3>
+    <p>Clinical timing matters.</p>
+  </section>
+
+  <section class="content-box" id="radiopharmaceutical-decay">
+    <h3>Radiopharmaceutical Decay</h3>
+    <p>The isotope's half-life matters.</p>
+  </section>
+
+  <section class="content-box" id="f-18">
+    <h3>F-18</h3>
+    <p>A commonly used PET isotope has a relatively short half-life.</p>
+  </section>
+
+  <section class="content-box" id="delays-matter">
+    <h3>Delays Matter</h3>
+    <p>If acquisition starts much later:</p>
+    <p>Less activity remains.</p>
+  </section>
+
+  <section class="content-box" id="pet-scanner-does-not-control-the-biology">
+    <h3>PET Scanner Does Not Control the Biology</h3>
+    <p>Tracer distribution depends on:</p>
+    <ul>
+      <li>Physiology</li>
+      <li>Uptake</li>
+      <li>Metabolism</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="a-hot-area-is-not-automatically-equipment-artifact">
+    <h3>A Hot Area Is Not Automatically Equipment Artifact</h3>
+
+  </section>
+
+  <section class="content-box" id="conversely">
+    <h3>Conversely</h3>
+    <p>A strange PET pattern is not automatically disease.</p>
+    <p>Equipment and correction artifacts exist.</p>
+  </section>
+
+  <section class="content-box" id="standardized-uptake-value">
+    <h3>Standardized Uptake Value</h3>
+    <p>PET often uses:</p>
+    <p><strong>SUV</strong>, or Standardized Uptake Value.</p>
+  </section>
+
+  <section class="content-box" id="suv-attempts-to-normalize-activity-concentration">
+    <h3>SUV Attempts to Normalize Activity Concentration</h3>
+    <p>Using factors such as:</p>
+    <ul>
+      <li>Administered activity</li>
+      <li>Patient body parameters</li>
+    </ul>
+    <p>depending on calculation method.</p>
+  </section>
+
+  <section class="content-box" id="suv-is-quantitative">
+    <h3>SUV Is Quantitative</h3>
+    <p>That makes calibration important.</p>
+  </section>
+
+  <section class="content-box" id="dose-calibrator-connection">
+    <h3>Dose Calibrator Connection</h3>
+    <p>The administered activity may come from:</p>
+    <p>A dose calibrator measurement.</p>
+  </section>
+
+  <section class="content-box" id="if-that-value-is-wrong">
+    <h3>If That Value Is Wrong</h3>
+    <p>PET SUV can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="patient-weight">
+    <h3>Patient Weight</h3>
+    <p>If entered incorrectly:</p>
+    <p>SUV can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="injection-time">
+    <h3>Injection Time</h3>
+    <p>If incorrect:</p>
+    <p>Decay correction can be wrong.</p>
+  </section>
+
+  <section class="content-box" id="residual-activity">
+    <h3>Residual Activity</h3>
+    <p>If significant activity remains in syringe:</p>
+    <p>Actual delivered dose differs from assumed dose.</p>
+  </section>
+
+  <section class="content-box" id="pet-quantification-is-a-chain">
+    <h3>PET Quantification Is a Chain</h3>
+    <p>Not merely detector counts.</p>
+  </section>
+
+  <section class="content-box" id="cross-calibration">
+    <h3>Cross-Calibration</h3>
+    <p>PET scanner and dose calibrator may need appropriate cross-calibration.</p>
+  </section>
+
+  <section class="content-box" id="if-they-disagree">
+    <h3>If They Disagree</h3>
+    <p>SUV values may shift systematically.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-quantitative-pet-requires-more-than-pretty-images">
+    <h3>This Is Why Quantitative PET Requires More Than Pretty Images</h3>
+
+  </section>
+
+  <section class="content-box" id="ct-based-localization">
+    <h3>CT-Based Localization</h3>
+    <p>Suppose PET shows uptake.</p>
+  </section>
+
+  <section class="content-box" id="fusion-places-it-on">
+    <h3>Fusion places it on:</h3>
+    <p>A lymph node.</p>
+  </section>
+
+  <section class="content-box" id="but-if-registration-is-shifted">
+    <h3>But if registration is shifted:</h3>
+    <p>It may appear on:</p>
+    <p>Adjacent muscle.</p>
+  </section>
+
+  <section class="content-box" id="clinical-interpretation-can-change">
+    <h3>Clinical interpretation can change.</h3>
+
+  </section>
+
+  <section class="content-box" id="registration-accuracy-matters">
+    <h3>Registration Accuracy Matters</h3>
+
+  </section>
+
+  <section class="content-box" id="hardware-registration">
+    <h3>Hardware Registration</h3>
+    <p>Scanner geometry establishes baseline alignment.</p>
+  </section>
+
+  <section class="content-box" id="patient-registration">
+    <h3>Patient Registration</h3>
+    <p>Patient staying still maintains it.</p>
+  </section>
+
+  <section class="content-box" id="software-registration">
+    <h3>Software Registration</h3>
+    <p>Algorithms may make further adjustments.</p>
+  </section>
+
+  <section class="content-box" id="all-three-matter">
+    <h3>All three matter.</h3>
+
+  </section>
+
+  <section class="content-box" id="pet-ct-phantom">
+    <h3>PET/CT Phantom</h3>
+    <p>A phantom containing known structures can test:</p>
+    <ul>
+      <li>PET resolution</li>
+      <li>Quantification</li>
+      <li>CT alignment</li>
+      <li>Fusion</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="known-activity-concentration">
+    <h3>Known activity concentration</h3>
+    <p>allows quantitative checks.</p>
+  </section>
+
+  <section class="content-box" id="phantom-removes-biology">
+    <h3>Phantom Removes Biology</h3>
+    <p>Very important.</p>
+  </section>
+
+  <section class="content-box" id="if-phantom-is-good">
+    <h3>If Phantom Is Good</h3>
+    <p>But one patient study is misregistered:</p>
+    <p>Patient motion/respiration becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="if-every-phantom-and-patient-is-shifted">
+    <h3>If Every Phantom and Patient Is Shifted</h3>
+    <p>System geometry becomes more suspicious.</p>
+  </section>
+
+  <section class="content-box" id="pet-ct-calibration-after-service">
+    <h3>PET/CT Calibration After Service</h3>
+    <p>Replacing or adjusting:</p>
+    <ul>
+      <li>Table</li>
+      <li>Detector</li>
+      <li>Gantry components</li>
+    </ul>
+    <p>may require registration calibration.</p>
+  </section>
+
+  <section class="content-box" id="ct-tube-replacement">
+    <h3>CT Tube Replacement</h3>
+    <p>May require CT calibrations.</p>
+  </section>
+
+  <section class="content-box" id="pet-detector-service">
+    <h3>PET Detector Service</h3>
+    <p>May require:</p>
+    <ul>
+      <li>Energy</li>
+      <li>Timing</li>
+      <li>Normalization</li>
+    </ul>
+    <p>calibration.</p>
+  </section>
+
+  <section class="content-box" id="do-not-treat-hybrid-system-as-one-calibration">
+    <h3>Do Not Treat Hybrid System as One Calibration</h3>
+    <p>Each subsystem has its own needs.</p>
+  </section>
+
+  <section class="content-box" id="ct-failure">
+    <h3>CT Failure</h3>
+    <p>If CT is unavailable:</p>
+    <p>Some systems may not permit normal attenuation-corrected PET workflow.</p>
+  </section>
+
+  <section class="content-box" id="pet-can-sometimes-acquire-without-diagnostic-ct">
+    <h3>PET Can Sometimes Acquire Without Diagnostic CT</h3>
+    <p>depending on configuration and procedure.</p>
+  </section>
+
+  <section class="content-box" id="but-attenuation-correction-still-needs-an-appropriate-method">
+    <h3>But attenuation correction still needs an appropriate method.</h3>
+
+  </section>
+
+  <section class="content-box" id="pet-failure">
+    <h3>PET Failure</h3>
+    <p>CT may still operate independently.</p>
+  </section>
+
+  <section class="content-box" id="important-isolation-clue">
+    <h3>Important Isolation Clue</h3>
+    <p>If CT images normally but PET fails:</p>
+    <p>Shared patient/table systems still matter.</p>
+    <p>But CT detector and generator are less likely to be the PET detector problem.</p>
+  </section>
+
+  <section class="content-box" id="ct-normal-fusion-wrong">
+    <h3>CT Normal, Fusion Wrong</h3>
+    <p>Registration becomes interesting.</p>
+  </section>
+
+  <section class="content-box" id="pet-normal-ct-artifact">
+    <h3>PET Normal, CT Artifact</h3>
+    <p>Attenuation-corrected PET may inherit a problem from CT.</p>
+  </section>
+
+  <section class="content-box" id="check-nac-pet">
+    <h3>Check NAC PET</h3>
+
+  </section>
+
+  <section class="content-box" id="real-world-example-uptake-shifted-at-lung-base">
+    <h3>Real-World Example: Uptake Shifted at Lung Base</h3>
+    <p>PET uptake appears slightly displaced from CT lesion near diaphragm.</p>
+    <p>Phantom registration passes.</p>
+    <p>Other anatomy aligns normally.</p>
+    <p>Patient was breathing freely during PET while CT captured one respiratory phase.</p>
+    <p>This is likely respiratory misregistration, not table encoder failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-hot-artifact-near-hip-prosthesis">
+    <h3>Real-World Example: Hot Artifact Near Hip Prosthesis</h3>
+    <p>Attenuation-corrected PET shows apparent increased uptake near metal.</p>
+    <p>Non-attenuation-corrected PET does not.</p>
+    <p>CT has severe metal streak.</p>
+    <p>The attenuation map is creating or amplifying the apparent abnormality.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-entire-pet-dataset-shifted">
+    <h3>Real-World Example: Entire PET Dataset Shifted</h3>
+    <p>Every phantom shows PET data displaced several millimeters relative to CT.</p>
+    <p>Patient motion is removed from the equation.</p>
+    <p>Hybrid registration calibration is now highly suspicious.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-suv-values-drift">
+    <h3>Real-World Example: SUV Values Drift</h3>
+    <p>Images look normal.</p>
+    <p>Routine quantitative phantom shows activity concentration reads consistently high.</p>
+    <p>PET detector QC passes.</p>
+    <p>Dose calibrator cross-calibration is also checked and found out of agreement.</p>
+    <p>The quantitative problem involves the measurement chain, not obvious image quality.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-detector-region-loses-sensitivity">
+    <h3>Real-World Example: One Detector Region Loses Sensitivity</h3>
+    <p>PET normalization QC shows one detector region consistently low.</p>
+    <p>Clinical images develop a repeatable artifact.</p>
+    <p>CT remains normal.</p>
+    <p>The problem is localized to PET detector response.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Treating PET/CT as one detector system.</strong> It is two modalities sharing geometry, software, and workflow.</p>
+    <p><strong>Blaming hardware for respiratory misregistration.</strong> PET and CT often represent different respiratory moments.</p>
+    <p><strong>Ignoring non-attenuation-corrected PET.</strong> Comparing corrected and uncorrected PET can help identify attenuation-correction artifacts.</p>
+    <p><strong>Assuming CT artifacts stay confined to CT.</strong> CT data commonly drives PET attenuation correction.</p>
+    <p><strong>Treating a normal-looking PET image as proof of quantitative accuracy.</strong> SUV depends on scanner calibration, administered activity, patient data, and decay correction.</p>
+    <p><strong>Ignoring table geometry.</strong> Accurate registration depends on patient and table coordinates.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-pet-ct-framework">
+    <h3>A Useful PET/CT Framework</h3>
+    <p>Think:</p>
+    <p><strong>Radiopharmaceutical</strong></p>
+    <p>↓</p>
+    <p><strong>Positron Emission</strong></p>
+    <p>↓</p>
+    <p><strong>Annihilation</strong></p>
+    <p>↓</p>
+    <p><strong>511 keV Photon Pair</strong></p>
+    <p>↓</p>
+    <p><strong>PET Detector Coincidence</strong></p>
+    <p>↓</p>
+    <p><strong>PET Reconstruction</strong></p>
+    <p>and separately:</p>
+    <p><strong>X-Ray Tube</strong></p>
+    <p>↓</p>
+    <p><strong>Patient Attenuation</strong></p>
+    <p>↓</p>
+    <p><strong>CT Detector</strong></p>
+    <p>↓</p>
+    <p><strong>CT Reconstruction</strong></p>
+    <p>Then the systems meet at:</p>
+    <p><strong>Registration + CT-Based Attenuation Correction</strong></p>
+    <p>↓</p>
+    <p><strong>Fused PET/CT Image</strong></p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Is the problem present on PET alone, CT alone, or only after fusion?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is it present on attenuation-corrected PET and non-corrected PET?</strong></p>
+    <p>Then:</p>
+    <p><strong>Does a phantom reproduce the registration or quantitative error?</strong></p>
+    <p>Those questions can separate:</p>
+    <ul>
+      <li>PET detector</li>
+      <li>CT</li>
+      <li>Attenuation correction</li>
+      <li>Registration</li>
+      <li>Patient motion</li>
+    </ul>
+    <p>very quickly.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the fused PET/CT image appears aligned:</p>
+    <p>You proved:</p>
+    <p><strong>The two datasets appear registered under that viewing condition.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <ul>
+      <li>Quantitative PET calibration correct</li>
+      <li>Attenuation correction accurate everywhere</li>
+    </ul>
+    <p>If CT is normal:</p>
+    <p>You proved:</p>
+    <p><strong>The CT subsystem produced an acceptable CT dataset under that condition.</strong></p>
+    <p>You did not prove:</p>
+    <p>The PET attenuation map generated from it is artifact-free.</p>
+    <p>If quantitative PET phantom testing, detector QC, CT QC, and PET/CT registration all pass:</p>
+    <p>You have much stronger evidence that the hybrid imaging chain is functioning properly under those controlled conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>PET/CT is not simply:</p>
+    <p>PET plus a CT picture.</p>
+    <p>The systems are connected.</p>
+    <p>PET tells you:</p>
+    <p>Where tracer activity is occurring.</p>
+    <p>CT tells you:</p>
+    <p>What anatomy is there.</p>
+    <p>Then CT also helps PET correct for photon attenuation.</p>
+    <p>That makes CT part of PET reconstruction.</p>
+    <p>Patient motion becomes a fusion problem.</p>
+    <p>Metal becomes an attenuation-correction problem.</p>
+    <p>Table position becomes a registration problem.</p>
+    <p>Dose-calibrator accuracy can become an SUV problem.</p>
+    <p>A detector that is technically producing images can still be quantitatively wrong.</p>
+    <p>The useful troubleshooting question is therefore not:</p>
+    <blockquote><p>Is PET broken?</p></blockquote>
+    <p>or:</p>
+    <blockquote><p>Is CT broken?</p></blockquote>
+    <p>It is:</p>
+    <p><strong>At what point do the two imaging chains stop agreeing with each other?</strong></p>
+    <p>Is PET data wrong?</p>
+    <p>Is CT data wrong?</p>
+    <p>Is the attenuation map wrong?</p>
+    <p>Did the patient move?</p>
+    <p>Did the datasets align incorrectly?</p>
+    <p>That is where hybrid imaging starts to make sense.</p>
+    <p>And, as always:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>PET detector materials, coincidence timing, energy windows, normalization, time-of-flight processing, CT protocols, attenuation-correction algorithms, PET/CT registration, SUV calculations, quantitative calibration, radiopharmaceutical handling, and QC procedures vary significantly by manufacturer, scanner model, software version, isotope, and clinical protocol. PET/CT involves ionizing radiation and radioactive materials. Follow current OEM documentation, nuclear-medicine and CT QC procedures, facility radiation-safety requirements, qualified medical-physics guidance, and authorized service scope when evaluating PET/CT performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-pet-detectors-turn-gamma-rays-into-an-image.html">How PET Detectors Turn Gamma Rays Into an Image</a></li>
+      <li><a href="how-ct-detectors-and-hounsfield-units-work.html">How CT Detectors and Hounsfield Units Work</a></li>
+      <li><a href="how-ct-gantry-rotation-and-data-acquisition-work.html">How CT Gantry Rotation and Data Acquisition Work</a></li>
+      <li><a href="what-dicom-means-in-plain-english.html">What DICOM Means in Plain English</a></li>
+      <li><a href="how-a-gamma-camera-and-spect-create-an-image.html">How a Gamma Camera and SPECT Create an Image</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
