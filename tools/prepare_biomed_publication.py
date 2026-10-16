@@ -177,6 +177,8 @@ RELATED = {
     "how-x-ray-collimators-and-light-fields-work": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-fluoroscopy-automatic-exposure-rate-control-works", "how-digital-mammography-creates-and-processes-an-image"],
     "how-x-ray-tube-focal-spots-and-rotating-anodes-work": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-x-ray-automatic-exposure-control-works", "how-x-ray-collimators-and-light-fields-work", "how-ct-gantry-rotation-and-data-acquisition-work", "how-digital-mammography-creates-and-processes-an-image"],
     "how-ct-bowtie-filters-and-beam-shaping-work": ["how-ct-automatic-tube-current-modulation-works", "how-ct-gantry-rotation-and-data-acquisition-work", "how-ct-detectors-and-hounsfield-units-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-x-ray-collimators-and-light-fields-work"],
+    "how-pet-ct-combines-functional-and-anatomical-imaging": ["how-pet-detectors-turn-gamma-rays-into-an-image", "how-ct-detectors-and-hounsfield-units-work", "how-ct-gantry-rotation-and-data-acquisition-work", "what-dicom-means-in-plain-english", "how-a-gamma-camera-and-spect-create-an-image"],
+    "how-bone-densitometry-dexa-works": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-x-ray-automatic-exposure-control-works", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -1084,6 +1086,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "CT Imaging",
         "cardNote": "Beam shaping, patient centering, detector exposure, dose, calibration, and artifacts",
+    },
+    "how-pet-ct-combines-functional-and-anatomical-imaging": {
+        "description": "A practical explanation of how PET/CT combines radiotracer distribution with CT anatomy, uses CT-based attenuation correction, and why motion and registration errors affect fused images.",
+        "category": "How Medical Equipment Works",
+        "badge": "PET/CT Imaging",
+        "cardNote": "Functional imaging, CT anatomy, attenuation correction, registration, motion, and fused-image artifacts",
+    },
+    "how-bone-densitometry-dexa-works": {
+        "description": "A practical explanation of how bone densitometry uses dual-energy X-rays to separate bone from soft tissue, estimate bone mineral content, and calculate bone mineral density.",
+        "category": "How Medical Equipment Works",
+        "badge": "DEXA Imaging",
+        "cardNote": "Dual-energy X-rays, bone mineral content, soft-tissue correction, BMD, calibration, and positioning",
     },
 }
 
