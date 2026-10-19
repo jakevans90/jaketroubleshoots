@@ -179,6 +179,8 @@ RELATED = {
     "how-ct-bowtie-filters-and-beam-shaping-work": ["how-ct-automatic-tube-current-modulation-works", "how-ct-gantry-rotation-and-data-acquisition-work", "how-ct-detectors-and-hounsfield-units-work", "how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-x-ray-collimators-and-light-fields-work"],
     "how-pet-ct-combines-functional-and-anatomical-imaging": ["how-pet-detectors-turn-gamma-rays-into-an-image", "how-ct-detectors-and-hounsfield-units-work", "how-ct-gantry-rotation-and-data-acquisition-work", "what-dicom-means-in-plain-english", "how-a-gamma-camera-and-spect-create-an-image"],
     "how-bone-densitometry-dexa-works": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-x-ray-automatic-exposure-control-works", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-electrosurgical-units-generate-and-monitor-energy": ["how-electrosurgical-return-electrode-monitoring-works", "electrical-safety-testing-medical-equipment", "electrical-safety-analyzer-basics", "how-to-choose-the-right-test-equipment", "medical-device-alarm-troubleshooting-fundamentals"],
+    "how-pneumatic-tourniquet-systems-regulate-pressure": ["how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -1098,6 +1100,18 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "DEXA Imaging",
         "cardNote": "Dual-energy X-rays, bone mineral content, soft-tissue correction, BMD, calibration, and positioning",
+    },
+    "how-electrosurgical-units-generate-and-monitor-energy": {
+        "description": "A practical explanation of how electrosurgical units generate high-frequency cut and coag energy, monitor output and the patient circuit, and stop delivery when unsafe conditions are detected.",
+        "category": "How Medical Equipment Works",
+        "badge": "Surgical Energy",
+        "cardNote": "High-frequency energy, cut and coag waveforms, output monitoring, patient circuits, and safety shutdowns",
+    },
+    "how-pneumatic-tourniquet-systems-regulate-pressure": {
+        "description": "A practical explanation of how pneumatic tourniquet systems fill and regulate cuffs, measure pressure, compensate for leaks, and trigger alarms when pressure control becomes unsafe.",
+        "category": "How Medical Equipment Works",
+        "badge": "Surgical Equipment",
+        "cardNote": "Cuff inflation, pressure regulation, valves, leak compensation, monitoring, and safety alarms",
     },
 }
 
