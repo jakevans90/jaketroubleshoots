@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Pneumatic Tourniquet Systems Regulate Pressure | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how pneumatic tourniquet systems fill and regulate cuffs, measure pressure, compensate for leaks, and trigger alarms when pressure control becomes unsafe.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-pneumatic-tourniquet-systems-regulate-pressure.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How Pneumatic Tourniquet Systems Regulate Pressure</h1>
+  <p>How a surgical tourniquet turns compressed air into controlled cuff pressure, continuously monitors that pressure, compensates for leaks, and decides when a small pneumatic problem has become a safety alarm</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A pneumatic tourniquet system can look almost like a fancy blood-pressure pump.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Why surgical tourniquets use pneumatic pressure</li>
+      <li>Cuffs</li>
+      <li>Bladders</li>
+      <li>Pumps and compressors</li>
+      <li>Reservoirs</li>
+      <li>Inflation valves</li>
+      <li>Deflation valves</li>
+      <li>Pressure sensors</li>
+      <li>Closed-loop regulation</li>
+      <li>Pressure setpoints</li>
+      <li>Leak compensation</li>
+      <li>High-pressure alarms</li>
+      <li>Low-pressure alarms</li>
+      <li>Occlusion and kink detection</li>
+      <li>Dual-cuff systems</li>
+      <li>Limb occlusion pressure concepts</li>
+      <li>Timers</li>
+      <li>Battery operation</li>
+      <li>Calibration</li>
+      <li>Pressure analyzer testing</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A pneumatic tourniquet uses compressed air to inflate a cuff around a limb to a selected pressure. An internal pump or compressed-air source supplies the pressure, valves control whether air enters or leaves the cuff circuit, and a pressure sensor continuously measures the pneumatic pressure. The controller compares the measured pressure with the selected setpoint.</p>
+    <p>If cuff pressure falls slightly below the target, the controller can open an inflation valve or run the pump until pressure returns to the desired range. If the pressure rises too high, a venting path can release air. The system therefore maintains pressure using a closed feedback loop rather than simply inflating once and hoping the cuff remains stable.</p>
+    <p>A tourniquet complaint can originate anywhere in that loop. A leaking cuff or hose may make the pump run repeatedly even though the pump itself is healthy. A sticking valve may cause slow inflation or pressure overshoot. A drifting pressure sensor may make actual cuff pressure disagree with the display. Preserve the selected pressure, independent analyzer pressure, inflation time, leak rate, pump behavior, valve behavior, cuff/hose configuration, and alarm state before deciding which component has failed.</p>
+  </section>
+
+  <section class="content-box" id="why-pressure-is-used">
+    <h3>Why Pressure Is Used</h3>
+    <p>A surgical tourniquet applies circumferential pressure around a limb.</p>
+  </section>
+
+  <section class="content-box" id="purpose">
+    <h3>Purpose</h3>
+    <p>Clinically, the system is used to restrict blood flow to the operative region.</p>
+  </section>
+
+  <section class="content-box" id="biomed-perspective">
+    <h3>Biomed Perspective</h3>
+    <p>Our concern is the equipment's ability to:</p>
+    <ul>
+      <li>Apply the commanded pressure</li>
+      <li>Measure it accurately</li>
+      <li>Maintain it</li>
+      <li>Release it when required</li>
+      <li>Alarm appropriately</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pressure-is-usually-expressed-in">
+    <h3>Pressure Is Usually Expressed in</h3>
+    <p><strong>mmHg.</strong></p>
+    <p>Same unit commonly used for blood pressure.</p>
+  </section>
+
+  <section class="content-box" id="but-this-is-not-an-nibp-system">
+    <h3>But This Is Not an NIBP System</h3>
+    <p>It is not trying to determine:</p>
+    <p>Systolic or diastolic pressure</p>
+    <p>from cuff oscillations.</p>
+  </section>
+
+  <section class="content-box" id="it-is-controlling-cuff-pressure-directly">
+    <h3>It Is Controlling Cuff Pressure Directly</h3>
+
+  </section>
+
+  <section class="content-box" id="the-cuff">
+    <h3>The Cuff</h3>
+    <p>The cuff contains an inflatable bladder or pneumatic structure.</p>
+  </section>
+
+  <section class="content-box" id="air-enters">
+    <h3>Air Enters</h3>
+    <p>Cuff expands.</p>
+  </section>
+
+  <section class="content-box" id="cuff-pushes-against-limb">
+    <h3>Cuff Pushes Against Limb</h3>
+    <p>Pressure develops.</p>
+  </section>
+
+  <section class="content-box" id="cuff-design-matters">
+    <h3>Cuff Design Matters</h3>
+    <p>Cuffs vary by:</p>
+    <ul>
+      <li>Size</li>
+      <li>Shape</li>
+      <li>Bladder design</li>
+      <li>Limb location</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-system-is-calibrated-to-pressure">
+    <h3>The System Is Calibrated to Pressure</h3>
+    <p>Not directly to:</p>
+    <p>Force on tissue.</p>
+  </section>
+
+  <section class="content-box" id="cuff-fit-changes-clinical-effect">
+    <h3>Cuff Fit Changes Clinical Effect</h3>
+    <p>A cuff can be at the correct pneumatic pressure but still be inappropriate for:</p>
+    <ul>
+      <li>Limb size</li>
+      <li>Placement</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="that-is-a-clinical-use-issue">
+    <h3>That Is a Clinical-use issue</h3>
+    <p>not necessarily equipment failure.</p>
+  </section>
+
+  <section class="content-box" id="pneumatic-circuit">
+    <h3>Pneumatic Circuit</h3>
+    <p>A simple tourniquet pneumatic chain looks like:</p>
+    <p><strong>Pump / Pressure Source</strong></p>
+    <p>↓</p>
+    <p><strong>Inflation Valve</strong></p>
+    <p>↓</p>
+    <p><strong>Hose</strong></p>
+    <p>↓</p>
+    <p><strong>Cuff</strong></p>
+    <p>and a monitoring path:</p>
+    <p><strong>Cuff Pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Pump / Valve Adjustment</strong></p>
+  </section>
+
+  <section class="content-box" id="there-is-also-a-deflation-path">
+    <h3>There Is Also a Deflation Path</h3>
+    <p><strong>Cuff</strong></p>
+    <p>↓</p>
+    <p><strong>Exhaust Valve</strong></p>
+    <p>↓</p>
+    <p><strong>Atmosphere</strong></p>
+  </section>
+
+  <section class="content-box" id="pump">
+    <h3>Pump</h3>
+    <p>Many portable tourniquet systems use an internal electric pump.</p>
+  </section>
+
+  <section class="content-box" id="pump-draws-air">
+    <h3>Pump Draws Air</h3>
+    <p>and compresses it into the circuit.</p>
+  </section>
+
+  <section class="content-box" id="pump-does-not-need-to-run-constantly">
+    <h3>Pump Does Not Need to Run Constantly</h3>
+    <p>Once the cuff reaches target pressure:</p>
+    <p>Valves can trap air.</p>
+  </section>
+
+  <section class="content-box" id="if-pressure-is-stable">
+    <h3>If Pressure Is Stable</h3>
+    <p>Pump rests.</p>
+  </section>
+
+  <section class="content-box" id="if-pressure-falls">
+    <h3>If Pressure Falls</h3>
+    <p>Pump runs again.</p>
+  </section>
+
+  <section class="content-box" id="this-on-off-behavior-can-be-normal">
+    <h3>This On/Off Behavior Can Be Normal</h3>
+
+  </section>
+
+  <section class="content-box" id="users-may-report">
+    <h3>Users May Report</h3>
+    <blockquote><p>Pump keeps coming on.</p></blockquote>
+    <p>That may mean:</p>
+    <p>The system is compensating for a leak.</p>
+  </section>
+
+  <section class="content-box" id="the-pump-is-not-necessarily-failing">
+    <h3>The pump is not necessarily failing.</h3>
+
+  </section>
+
+  <section class="content-box" id="reservoir">
+    <h3>Reservoir</h3>
+    <p>Some pneumatic systems may use an internal air reservoir.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The pump can charge the reservoir.</p>
+    <p>Then stored compressed air can provide:</p>
+    <ul>
+      <li>Faster inflation</li>
+      <li>Smoother regulation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="architecture-varies">
+    <h3>Architecture Varies</h3>
+    <p>Not every system uses a separate reservoir.</p>
+  </section>
+
+  <section class="content-box" id="inflation-valve">
+    <h3>Inflation Valve</h3>
+    <p>Controls air flow from the pressure source into the cuff circuit.</p>
+  </section>
+
+  <section class="content-box" id="electrically-controlled-valve">
+    <h3>Electrically Controlled Valve</h3>
+    <p>Often a:</p>
+    <p><strong>Solenoid valve.</strong></p>
+  </section>
+
+  <section class="content-box" id="command-inflate">
+    <h3>Command Inflate</h3>
+    <p>Controller energizes valve.</p>
+    <p>Air enters.</p>
+  </section>
+
+  <section class="content-box" id="target-reached">
+    <h3>Target Reached</h3>
+    <p>Valve closes.</p>
+  </section>
+
+  <section class="content-box" id="valve-leaks-internally">
+    <h3>Valve Leaks Internally</h3>
+    <p>Pressure can continue increasing after command ends.</p>
+  </section>
+
+  <section class="content-box" id="possible-symptom">
+    <h3>Possible Symptom</h3>
+    <p>Pressure overshoot.</p>
+  </section>
+
+  <section class="content-box" id="or-slow-creep-upward">
+    <h3>Or Slow Creep Upward</h3>
+
+  </section>
+
+  <section class="content-box" id="deflation-vent-valve">
+    <h3>Deflation / Vent Valve</h3>
+    <p>Provides controlled path back to atmosphere.</p>
+  </section>
+
+  <section class="content-box" id="command-deflate">
+    <h3>Command Deflate</h3>
+    <p>Valve opens.</p>
+    <p>Cuff pressure falls.</p>
+  </section>
+
+  <section class="content-box" id="vent-valve-stuck-closed">
+    <h3>Vent Valve Stuck Closed</h3>
+    <p>Cuff may:</p>
+    <ul>
+      <li>Deflate slowly</li>
+      <li>Fail to deflate normally</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-is-a-critical-fault">
+    <h3>This Is a Critical fault</h3>
+    <p>because clinicians need reliable pressure release.</p>
+  </section>
+
+  <section class="content-box" id="vent-valve-leaking">
+    <h3>Vent Valve Leaking</h3>
+    <p>Opposite problem.</p>
+    <p>Cuff pressure slowly falls.</p>
+  </section>
+
+  <section class="content-box" id="pump-has-to-compensate">
+    <h3>Pump Has to Compensate</h3>
+
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Frequent cycling.</p>
+  </section>
+
+  <section class="content-box" id="pressure-sensor">
+    <h3>Pressure Sensor</h3>
+    <p>The controller needs to know actual pressure.</p>
+  </section>
+
+  <section class="content-box" id="common-designs">
+    <h3>Common Designs</h3>
+    <p>May use:</p>
+    <ul>
+      <li>Piezoresistive pressure transducers</li>
+      <li>Other electronic pressure sensors</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pressure-acts-on-a-diaphragm">
+    <h3>Pressure Acts on a Diaphragm</h3>
+    <p>The sensor converts mechanical deformation into:</p>
+    <p>Electrical signal.</p>
+  </section>
+
+  <section class="content-box" id="signal-represents-pressure">
+    <h3>Signal Represents Pressure</h3>
+
+  </section>
+
+  <section class="content-box" id="calibration-converts-voltage-into-mmhg">
+    <h3>Calibration Converts Voltage Into mmHg</h3>
+
+  </section>
+
+  <section class="content-box" id="this-is-a-measurement-chain">
+    <h3>This Is a Measurement Chain</h3>
+    <p>Actual cuff pressure</p>
+    <p>↓</p>
+    <p>Sensor deformation</p>
+    <p>↓</p>
+    <p>Electrical signal</p>
+    <p>↓</p>
+    <p>ADC</p>
+    <p>↓</p>
+    <p>Calibration equation</p>
+    <p>↓</p>
+    <p>Displayed pressure.</p>
+  </section>
+
+  <section class="content-box" id="any-error-along-that-chain">
+    <h3>Any Error Along That Chain</h3>
+    <p>Can create inaccurate display.</p>
+  </section>
+
+  <section class="content-box" id="setpoint">
+    <h3>Setpoint</h3>
+    <p>The clinician chooses the desired pressure.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>250 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="controller-stores-the-target">
+    <h3>Controller Stores the Target</h3>
+
+  </section>
+
+  <section class="content-box" id="actual-pressure">
+    <h3>Actual Pressure</h3>
+    <p>Sensor reports:</p>
+    <p>243 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="error">
+    <h3>Error</h3>
+    <p>Target minus actual:</p>
+    <p>7 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="controller-responds">
+    <h3>Controller Responds</h3>
+    <p>Runs pump or opens inflation path.</p>
+  </section>
+
+  <section class="content-box" id="pressure-rises">
+    <h3>Pressure Rises</h3>
+    <p>248.</p>
+    <p>250.</p>
+  </section>
+
+  <section class="content-box" id="controller-stops-adding-air">
+    <h3>Controller Stops Adding Air</h3>
+
+  </section>
+
+  <section class="content-box" id="closed-loop-control">
+    <h3>Closed-Loop Control</h3>
+    <p>This repeats throughout the procedure.</p>
+  </section>
+
+  <section class="content-box" id="regulation-band">
+    <h3>Regulation Band</h3>
+    <p>The pressure may not remain:</p>
+    <p>Exactly 250.000 mmHg.</p>
+  </section>
+
+  <section class="content-box" id="real-systems-allow-a-control-tolerance">
+    <h3>Real systems allow a control tolerance.</h3>
+
+  </section>
+
+  <section class="content-box" id="pressure-may-cycle-slightly-around-target">
+    <h3>Pressure May Cycle Slightly Around Target</h3>
+    <p>That can be normal.</p>
+  </section>
+
+  <section class="content-box" id="excessive-cycling">
+    <h3>Excessive Cycling</h3>
+    <p>Not normal.</p>
+  </section>
+
+  <section class="content-box" id="if-pump-activates-every-few-seconds">
+    <h3>If Pump Activates Every Few Seconds</h3>
+    <p>Look for:</p>
+    <ul>
+      <li>Leak</li>
+      <li>Valve</li>
+      <li>Cuff</li>
+      <li>Connection</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="leak-compensation">
+    <h3>Leak Compensation</h3>
+    <p>A small leak can often be compensated.</p>
+  </section>
+
+  <section class="content-box" id="but-only-to-a-point">
+    <h3>But Only to a Point</h3>
+
+  </section>
+
+  <section class="content-box" id="if-leak-exceeds-pump-capacity">
+    <h3>If Leak Exceeds Pump Capacity</h3>
+    <p>Pressure continues falling.</p>
+  </section>
+
+  <section class="content-box" id="low-pressure-alarm">
+    <h3>Low-Pressure Alarm</h3>
+    <p>System alerts.</p>
+  </section>
+
+  <section class="content-box" id="this-tells-you-something-important">
+    <h3>This Tells You Something Important</h3>
+    <p>A low-pressure alarm does not tell you:</p>
+    <p>Where the leak is.</p>
+  </section>
+
+  <section class="content-box" id="it-tells-you">
+    <h3>It tells you:</h3>
+    <p>The measured cuff pressure cannot be maintained within the expected range.</p>
+  </section>
+
+  <section class="content-box" id="isolate-the-circuit">
+    <h3>Isolate the Circuit</h3>
+
+  </section>
+
+  <section class="content-box" id="start-with-cuff">
+    <h3>Start With Cuff</h3>
+    <p>Swap with known-good approved cuff.</p>
+  </section>
+
+  <section class="content-box" id="then-hose">
+    <h3>Then Hose</h3>
+
+  </section>
+
+  <section class="content-box" id="then-connector">
+    <h3>Then Connector</h3>
+
+  </section>
+
+  <section class="content-box" id="then-internal-pneumatic-circuit">
+    <h3>Then Internal pneumatic circuit</h3>
+
+  </section>
+
+  <section class="content-box" id="known-good-testing-is-powerful-here">
+    <h3>Known-Good Testing Is Powerful Here</h3>
+    <p>Because the pneumatic chain is modular.</p>
+  </section>
+
+  <section class="content-box" id="hose">
+    <h3>Hose</h3>
+    <p>Tourniquet hoses experience:</p>
+    <ul>
+      <li>Bending</li>
+      <li>Crushing</li>
+      <li>Repeated cleaning</li>
+      <li>Connector wear</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="small-crack">
+    <h3>Small Crack</h3>
+    <p>Can cause:</p>
+    <p>Slow leak.</p>
+  </section>
+
+  <section class="content-box" id="larger-split">
+    <h3>Larger Split</h3>
+    <p>Can prevent inflation entirely.</p>
+  </section>
+
+  <section class="content-box" id="hose-kink">
+    <h3>Hose Kink</h3>
+    <p>Different problem.</p>
+  </section>
+
+  <section class="content-box" id="air-may-not-reach-cuff-properly">
+    <h3>Air May Not Reach Cuff Properly</h3>
+
+  </section>
+
+  <section class="content-box" id="depending-on-sensor-location">
+    <h3>Depending on Sensor Location</h3>
+    <p>The device may see:</p>
+    <p>Pressure upstream</p>
+    <p>while the cuff receives something different.</p>
+  </section>
+
+  <section class="content-box" id="sensor-placement-matters">
+    <h3>Sensor Placement Matters</h3>
+    <p>Some systems sense pressure within the same circuit leading to the cuff.</p>
+  </section>
+
+  <section class="content-box" id="others-may-have-more-complex-pneumatic-paths">
+    <h3>Others may have more complex pneumatic paths.</h3>
+
+  </section>
+
+  <section class="content-box" id="if-hose-is-occluded">
+    <h3>If Hose Is Occluded</h3>
+    <p>The measured pressure response may differ from actual cuff behavior.</p>
+  </section>
+
+  <section class="content-box" id="that-is-why-oem-test-procedures-matter">
+    <h3>That is why OEM test procedures matter.</h3>
+
+  </section>
+
+  <section class="content-box" id="connectors">
+    <h3>Connectors</h3>
+    <p>Quick-connect fittings can leak.</p>
+  </section>
+
+  <section class="content-box" id="o-rings">
+    <h3>O-Rings</h3>
+    <p>Can wear or disappear.</p>
+  </section>
+
+  <section class="content-box" id="poorly-seated-connector">
+    <h3>Poorly Seated Connector</h3>
+    <p>May appear attached but leak under pressure.</p>
+  </section>
+
+  <section class="content-box" id="wiggle-test">
+    <h3>Wiggle Test?</h3>
+    <p>Use caution.</p>
+    <p>Better to inspect and test under controlled conditions.</p>
+  </section>
+
+  <section class="content-box" id="cuff-leak">
+    <h3>Cuff Leak</h3>
+    <p>Cuff bladder can develop:</p>
+    <ul>
+      <li>Pinhole leak</li>
+      <li>Seam failure</li>
+      <li>Valve failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="leak-may-depend-on-cuff-position">
+    <h3>Leak May Depend on Cuff Position</h3>
+    <p>Flat on bench:</p>
+    <p>Passes.</p>
+    <p>Wrapped and flexed:</p>
+    <p>Leaks.</p>
+  </section>
+
+  <section class="content-box" id="this-creates-intermittent-complaints">
+    <h3>This Creates Intermittent complaints.</h3>
+
+  </section>
+
+  <section class="content-box" id="pressure-hold-test">
+    <h3>Pressure-Hold Test</h3>
+    <p>A controlled test can measure:</p>
+    <p>How rapidly pressure falls over time.</p>
+  </section>
+
+  <section class="content-box" id="use-defined-volume-or-approved-test-setup">
+    <h3>Use defined volume or approved test setup</h3>
+    <p>because cuff compliance influences results.</p>
+  </section>
+
+  <section class="content-box" id="pressure-analyzer">
+    <h3>Pressure Analyzer</h3>
+    <p>A calibrated pressure analyzer or manometer can verify actual pneumatic pressure.</p>
+  </section>
+
+  <section class="content-box" id="connect-analyzer">
+    <h3>Connect Analyzer</h3>
+    <p>according to OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="compare">
+    <h3>Compare</h3>
+    <p>Device display:</p>
+    <p>250 mmHg.</p>
+    <p>Analyzer:</p>
+    <p>249 mmHg.</p>
+    <p>Good agreement.</p>
+  </section>
+
+  <section class="content-box" id="or">
+    <h3>Or</h3>
+    <p>Device:</p>
+    <p>250.</p>
+    <p>Analyzer:</p>
+    <p>225.</p>
+    <p>Now you have a measurement problem.</p>
+  </section>
+
+  <section class="content-box" id="does-that-immediately-prove-sensor-failure">
+    <h3>Does That Immediately Prove Sensor Failure?</h3>
+    <p>Not necessarily.</p>
+    <p>Could involve:</p>
+    <ul>
+      <li>Calibration</li>
+      <li>Pneumatic restriction</li>
+      <li>Test setup</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="but-you-have-established-display-does-not-match-reference-pressure">
+    <h3>But you have established display does not match reference pressure.</h3>
+
+  </section>
+
+  <section class="content-box" id="pressure-accuracy">
+    <h3>Pressure Accuracy</h3>
+    <p>Tourniquet PM procedures often include checks at multiple setpoints.</p>
+  </section>
+
+  <section class="content-box" id="why-multiple">
+    <h3>Why Multiple?</h3>
+    <p>A sensor can be correct at one pressure and wrong at another.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>100 mmHg:</p>
+    <p>Correct.</p>
+    <p>300 mmHg:</p>
+    <p>20 mmHg high.</p>
+  </section>
+
+  <section class="content-box" id="that-is-a-span-or-linearity-problem">
+    <h3>That is a span or linearity problem.</h3>
+
+  </section>
+
+  <section class="content-box" id="zero-pressure">
+    <h3>Zero Pressure</h3>
+    <p>With cuff circuit vented:</p>
+    <p>Sensor should indicate near zero according to specification.</p>
+  </section>
+
+  <section class="content-box" id="zero-error">
+    <h3>Zero Error</h3>
+    <p>Can shift the entire measurement range.</p>
+  </section>
+
+  <section class="content-box" id="calibration">
+    <h3>Calibration</h3>
+    <p>May include:</p>
+    <ul>
+      <li>Zero adjustment</li>
+      <li>Span adjustment</li>
+    </ul>
+    <p>depending on system.</p>
+  </section>
+
+  <section class="content-box" id="do-not-calibrate-around-a-leak">
+    <h3>Do Not Calibrate Around a Leak</h3>
+    <p>If pneumatic pressure is unstable:</p>
+    <p>Fix the pneumatic problem first.</p>
+  </section>
+
+  <section class="content-box" id="otherwise-you-can-make-calibration-worse">
+    <h3>Otherwise you can make calibration worse.</h3>
+
+  </section>
+
+  <section class="content-box" id="inflation-time">
+    <h3>Inflation Time</h3>
+    <p>The system should reach set pressure within an expected time.</p>
+  </section>
+
+  <section class="content-box" id="slow-inflation">
+    <h3>Slow Inflation</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>Weak pump</li>
+      <li>Leak</li>
+      <li>Restricted hose</li>
+      <li>Valve not opening fully</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="how-do-you-separate-them">
+    <h3>How Do You Separate Them?</h3>
+
+  </section>
+
+  <section class="content-box" id="blocked-output-test">
+    <h3>Blocked Output Test</h3>
+    <p>OEM procedure may allow testing pressure generation against a controlled test volume.</p>
+  </section>
+
+  <section class="content-box" id="if-pump-generates-pressure-normally">
+    <h3>If Pump Generates Pressure Normally</h3>
+    <p>External cuff/hose becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="if-pump-cannot-build-pressure-even-with-known-good-circuit">
+    <h3>If Pump Cannot Build Pressure Even with known-good circuit</h3>
+    <p>Internal pneumatic path deserves attention.</p>
+  </section>
+
+  <section class="content-box" id="weak-pump">
+    <h3>Weak Pump</h3>
+    <p>May still make noise.</p>
+  </section>
+
+  <section class="content-box" id="sound-does-not-equal-performance">
+    <h3>Sound Does Not Equal Performance</h3>
+    <p>Same as every mechanical system.</p>
+  </section>
+
+  <section class="content-box" id="measure-pressure-rise">
+    <h3>Measure pressure rise.</h3>
+
+  </section>
+
+  <section class="content-box" id="pump-diaphragm">
+    <h3>Pump Diaphragm</h3>
+    <p>Small compressors may use:</p>
+    <ul>
+      <li>Diaphragm</li>
+      <li>Piston</li>
+    </ul>
+    <p>or other designs.</p>
+  </section>
+
+  <section class="content-box" id="wear">
+    <h3>Wear</h3>
+    <p>Can reduce:</p>
+    <p>Flow</p>
+    <p>or:</p>
+    <p>Maximum pressure.</p>
+  </section>
+
+  <section class="content-box" id="pump-can-be-strong-enough-to-maintain-pressure">
+    <h3>Pump Can Be Strong Enough to Maintain Pressure</h3>
+    <p>but too weak to inflate quickly.</p>
+  </section>
+
+  <section class="content-box" id="or-vice-versa">
+    <h3>Or Vice Versa</h3>
+    <p>depending on failure.</p>
+  </section>
+
+  <section class="content-box" id="high-pressure-alarm">
+    <h3>High-Pressure Alarm</h3>
+    <p>The system must prevent excessive cuff pressure.</p>
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible Causes</h3>
+    <ul>
+      <li>Sensor reads low</li>
+      <li>Inflation valve sticks</li>
+      <li>Control failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="independent-hardware-protection">
+    <h3>Independent Hardware Protection</h3>
+    <p>Safety-critical systems may include redundant pressure-limit mechanisms.</p>
+  </section>
+
+  <section class="content-box" id="exact-design-varies">
+    <h3>Exact design varies.</h3>
+
+  </section>
+
+  <section class="content-box" id="if-actual-pressure-exceeds-setpoint-significantly">
+    <h3>If Actual Pressure Exceeds Setpoint Significantly</h3>
+    <p>Remove from service and investigate.</p>
+  </section>
+
+  <section class="content-box" id="do-not-simply-recalibrate">
+    <h3>Do Not Simply Recalibrate</h3>
+    <p>until you understand whether control or measurement failed.</p>
+  </section>
+
+  <section class="content-box" id="pressure-relief-valve">
+    <h3>Pressure Relief Valve</h3>
+    <p>Some systems may include a mechanical relief valve.</p>
+  </section>
+
+  <section class="content-box" id="purpose">
+    <h3>Purpose</h3>
+    <p>Limit maximum pressure even if electronic control fails.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-safety-backup">
+    <h3>Mechanical Safety Backup</h3>
+
+  </section>
+
+  <section class="content-box" id="testing">
+    <h3>Testing</h3>
+    <p>Follow OEM instructions.</p>
+  </section>
+
+  <section class="content-box" id="do-not-alter-relief-setting-casually">
+    <h3>Do Not Alter relief setting casually.</h3>
+
+  </section>
+
+  <section class="content-box" id="low-pressure-alarm">
+    <h3>Low-Pressure Alarm</h3>
+    <p>May occur when pressure falls beyond an allowed band.</p>
+  </section>
+
+  <section class="content-box" id="potential-causes">
+    <h3>Potential Causes</h3>
+    <ul>
+      <li>Disconnected hose</li>
+      <li>Cuff leak</li>
+      <li>Valve leak</li>
+      <li>Pump failure</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="alarm-delay">
+    <h3>Alarm Delay</h3>
+    <p>System may wait briefly before alarming.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Tiny transient pressure changes can occur from:</p>
+    <ul>
+      <li>Limb movement</li>
+      <li>Cuff settling</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="immediate-alarm-for-every-tiny-change">
+    <h3>Immediate Alarm for Every Tiny Change</h3>
+    <p>would create nuisance alarms.</p>
+  </section>
+
+  <section class="content-box" id="control-algorithm-filters-normal-variation">
+    <h3>Control Algorithm Filters Normal Variation</h3>
+
+  </section>
+
+  <section class="content-box" id="limb-movement">
+    <h3>Limb Movement</h3>
+    <p>Can temporarily increase or decrease cuff pressure.</p>
+  </section>
+
+  <section class="content-box" id="patient-position-change">
+    <h3>Patient Position Change</h3>
+    <p>Same.</p>
+  </section>
+
+  <section class="content-box" id="system-responds">
+    <h3>System Responds</h3>
+    <p>May vent or reinflate.</p>
+  </section>
+
+  <section class="content-box" id="that-does-not-necessarily-indicate-hardware-failure">
+    <h3>That does not necessarily indicate hardware failure.</h3>
+
+  </section>
+
+  <section class="content-box" id="dual-cuff-systems">
+    <h3>Dual-Cuff Systems</h3>
+    <p>Some tourniquet systems control two pneumatic channels.</p>
+  </section>
+
+  <section class="content-box" id="channel-a">
+    <h3>Channel A</h3>
+    <p>and:</p>
+    <p>Channel B.</p>
+  </section>
+
+  <section class="content-box" id="each-may-have">
+    <h3>Each May Have</h3>
+    <ul>
+      <li>Separate valve path</li>
+      <li>Separate pressure sensor</li>
+    </ul>
+    <p>while sharing:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Power supply</li>
+      <li>Controller</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="this-gives-excellent-troubleshooting-clues">
+    <h3>This Gives Excellent Troubleshooting Clues</h3>
+
+  </section>
+
+  <section class="content-box" id="channel-1-fails">
+    <h3>Channel 1 Fails</h3>
+    <p>Channel 2 works.</p>
+    <p>Shared pump probably has some ability to generate pressure.</p>
+  </section>
+
+  <section class="content-box" id="problem-more-likely-localized-to">
+    <h3>Problem more likely localized to:</h3>
+    <ul>
+      <li>Valve</li>
+      <li>Sensor</li>
+      <li>Connector</li>
+      <li>Channel plumbing</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="both-channels-fail">
+    <h3>Both Channels Fail</h3>
+    <p>Look more toward:</p>
+    <ul>
+      <li>Shared pump</li>
+      <li>Power</li>
+      <li>Controller</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cuff-switching">
+    <h3>Cuff Switching</h3>
+    <p>Some procedures use dual cuffs where one cuff can be inflated while another is deflated.</p>
+  </section>
+
+  <section class="content-box" id="system-must-keep-channels-isolated">
+    <h3>System must keep channels isolated.</h3>
+
+  </section>
+
+  <section class="content-box" id="cross-leak">
+    <h3>Cross-Leak</h3>
+    <p>A valve failure could allow pressure from one channel to affect another.</p>
+  </section>
+
+  <section class="content-box" id="channel-isolation-test">
+    <h3>Channel Isolation Test</h3>
+    <p>Can detect this if specified.</p>
+  </section>
+
+  <section class="content-box" id="limb-occlusion-pressure">
+    <h3>Limb Occlusion Pressure</h3>
+    <p>Some tourniquet systems include features for determining:</p>
+    <p><strong>Limb occlusion pressure</strong>, or LOP.</p>
+  </section>
+
+  <section class="content-box" id="concept">
+    <h3>Concept</h3>
+    <p>Estimate the minimum cuff pressure needed to stop arterial flow in the limb under measured conditions.</p>
+  </section>
+
+  <section class="content-box" id="then-clinical-setpoint">
+    <h3>Then Clinical Setpoint</h3>
+    <p>May be established above that pressure according to protocol.</p>
+  </section>
+
+  <section class="content-box" id="how-is-lop-detected">
+    <h3>How Is LOP Detected?</h3>
+    <p>Implementation varies.</p>
+    <p>May involve:</p>
+    <ul>
+      <li>Pulse sensor</li>
+      <li>Doppler-related accessory</li>
+      <li>Other sensing method</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="biomed-boundary">
+    <h3>Biomed Boundary</h3>
+    <p>We are verifying the equipment function.</p>
+    <p>Clinical pressure selection remains a clinical decision.</p>
+  </section>
+
+  <section class="content-box" id="lop-failure">
+    <h3>LOP Failure</h3>
+    <p>Could involve:</p>
+    <ul>
+      <li>Pressure system</li>
+      <li>Pulse sensor</li>
+      <li>Accessory</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-assume-main-pressure-sensor">
+    <h3>Do Not Assume main pressure sensor.</h3>
+
+  </section>
+
+  <section class="content-box" id="timer">
+    <h3>Timer</h3>
+    <p>Tourniquet systems often include a timer.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Duration of tourniquet inflation matters clinically.</p>
+  </section>
+
+  <section class="content-box" id="timer-begins">
+    <h3>Timer Begins</h3>
+    <p>when cuff is inflated or when activation criteria are met.</p>
+  </section>
+
+  <section class="content-box" id="alarm">
+    <h3>Alarm</h3>
+    <p>May alert at configured intervals.</p>
+  </section>
+
+  <section class="content-box" id="timekeeping-is-separate-from-pressure-regulation">
+    <h3>Timekeeping Is Separate From Pressure Regulation</h3>
+    <p>A device can:</p>
+    <p>Hold perfect pressure</p>
+    <p>while:</p>
+    <p>Timer fails.</p>
+  </section>
+
+  <section class="content-box" id="test-both-functions">
+    <h3>Test both functions.</h3>
+
+  </section>
+
+  <section class="content-box" id="power-loss">
+    <h3>Power Loss</h3>
+    <p>What should happen if line power fails?</p>
+  </section>
+
+  <section class="content-box" id="battery">
+    <h3>Battery</h3>
+    <p>Many surgical tourniquet systems include backup battery capability.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>A cuff cannot simply become uncontrolled because someone unplugged the unit.</p>
+  </section>
+
+  <section class="content-box" id="battery-may-support">
+    <h3>Battery may support</h3>
+    <ul>
+      <li>Pressure regulation</li>
+      <li>Display</li>
+      <li>Alarm</li>
+      <li>Controlled deflation</li>
+    </ul>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="battery-health-matters">
+    <h3>Battery Health Matters</h3>
+
+  </section>
+
+  <section class="content-box" id="device-works-plugged-in">
+    <h3>Device Works Plugged In</h3>
+    <p>But battery fails immediately.</p>
+  </section>
+
+  <section class="content-box" id="that-is-still-a-safety-issue">
+    <h3>That is still a safety issue.</h3>
+
+  </section>
+
+  <section class="content-box" id="battery-pm">
+    <h3>Battery PM</h3>
+    <p>May include:</p>
+    <ul>
+      <li>Runtime</li>
+      <li>Capacity</li>
+      <li>Charging</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-replacement">
+    <h3>Battery Replacement</h3>
+    <p>May require functional pressure testing afterward.</p>
+  </section>
+
+  <section class="content-box" id="startup-self-test">
+    <h3>Startup Self-Test</h3>
+    <p>System may test:</p>
+    <ul>
+      <li>Pressure sensor</li>
+      <li>Valves</li>
+      <li>Pump</li>
+      <li>Battery</li>
+    </ul>
+    <p>to varying degrees.</p>
+  </section>
+
+  <section class="content-box" id="what-does-passing-self-test-prove">
+    <h3>What Does Passing Self-Test Prove?</h3>
+    <p>Only what that self-test actually evaluated.</p>
+  </section>
+
+  <section class="content-box" id="it-does-not-necessarily-prove">
+    <h3>It Does Not necessarily prove:</h3>
+    <ul>
+      <li>Cuff leak-free</li>
+      <li>Pressure calibration accurate under load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="external-testing-still-matters">
+    <h3>External Testing Still Matters.</h3>
+
+  </section>
+
+  <section class="content-box" id="pneumatic-leak-test">
+    <h3>Pneumatic Leak Test</h3>
+    <p>A known sealed test volume can help isolate internal leaks.</p>
+  </section>
+
+  <section class="content-box" id="why-not-just-use-a-real-cuff">
+    <h3>Why Not Just Use a Real Cuff?</h3>
+    <p>Cuffs are compliant.</p>
+    <p>Their volume changes with pressure and wrapping.</p>
+  </section>
+
+  <section class="content-box" id="a-rigid-test-volume-is-more-repeatable">
+    <h3>A rigid test volume is more repeatable</h3>
+    <p>if approved by manufacturer.</p>
+  </section>
+
+  <section class="content-box" id="system-leak-vs-accessory-leak">
+    <h3>System Leak vs Accessory Leak</h3>
+    <p>Known-good test volume:</p>
+    <p>Pressure stable.</p>
+    <p>Clinical cuff:</p>
+    <p>Pressure drops.</p>
+    <p>Now accessory becomes more likely.</p>
+  </section>
+
+  <section class="content-box" id="pressure-transducer-drift">
+    <h3>Pressure Transducer Drift</h3>
+    <p>Electronic pressure sensors can drift over time.</p>
+  </section>
+
+  <section class="content-box" id="calibration-check">
+    <h3>Calibration Check</h3>
+    <p>Detects it.</p>
+  </section>
+
+  <section class="content-box" id="one-channel-drifts">
+    <h3>One Channel Drifts</h3>
+    <p>Other channel normal.</p>
+    <p>Again:</p>
+    <p>Localized sensor path.</p>
+  </section>
+
+  <section class="content-box" id="adc-electronics">
+    <h3>ADC / Electronics</h3>
+    <p>A healthy sensor can still be interpreted incorrectly by:</p>
+    <ul>
+      <li>Amplifier</li>
+      <li>ADC</li>
+      <li>Reference voltage</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-calibration-cannot-be-made-stable">
+    <h3>If Calibration Cannot Be Made Stable</h3>
+    <p>Look beyond the sensor.</p>
+  </section>
+
+  <section class="content-box" id="valve-contamination">
+    <h3>Valve Contamination</h3>
+    <p>Small particles can prevent a pneumatic valve from sealing.</p>
+  </section>
+
+  <section class="content-box" id="fluid-intrusion">
+    <h3>Fluid Intrusion</h3>
+    <p>Especially problematic.</p>
+  </section>
+
+  <section class="content-box" id="tourniquet-systems-are-around">
+    <h3>Tourniquet systems are around:</h3>
+    <ul>
+      <li>Prep solutions</li>
+      <li>Cleaning fluids</li>
+      <li>OR liquids</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="internal-fluid-contamination">
+    <h3>Internal fluid contamination</h3>
+    <p>can damage:</p>
+    <ul>
+      <li>Valves</li>
+      <li>Sensors</li>
+      <li>Pump</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="never-introduce-fluid-into-pneumatic-ports-during-cleaning">
+    <h3>Never introduce fluid into pneumatic ports during cleaning.</h3>
+
+  </section>
+
+  <section class="content-box" id="filters">
+    <h3>Filters</h3>
+    <p>Some systems may include inlet filters.</p>
+  </section>
+
+  <section class="content-box" id="clogged-filter">
+    <h3>Clogged Filter</h3>
+    <p>Can restrict pump airflow.</p>
+  </section>
+
+  <section class="content-box" id="result">
+    <h3>Result</h3>
+    <p>Slow inflation.</p>
+  </section>
+
+  <section class="content-box" id="pump-sounds-normal">
+    <h3>Pump sounds normal</h3>
+    <p>but airflow is limited.</p>
+  </section>
+
+  <section class="content-box" id="exhaust-path">
+    <h3>Exhaust Path</h3>
+    <p>If vent path is restricted:</p>
+    <p>Deflation slows.</p>
+  </section>
+
+  <section class="content-box" id="different-symptom">
+    <h3>Different Symptom</h3>
+    <p>Useful split:</p>
+    <p>Slow inflate</p>
+    <p>vs:</p>
+    <p>Slow deflate.</p>
+  </section>
+
+  <section class="content-box" id="slow-inflate-only">
+    <h3>Slow Inflate Only</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Inflation valve</li>
+      <li>Supply restriction</li>
+      <li>Leak</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="slow-deflate-only">
+    <h3>Slow Deflate Only</h3>
+    <p>Think:</p>
+    <ul>
+      <li>Exhaust valve</li>
+      <li>Exhaust path</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="both-slow">
+    <h3>Both Slow</h3>
+    <p>Could involve:</p>
+    <ul>
+      <li>Hose restriction</li>
+      <li>Connector</li>
+      <li>Common internal path</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="pressure-overshoot">
+    <h3>Pressure Overshoot</h3>
+    <p>Set:</p>
+    <p>250.</p>
+    <p>Pressure rises to:</p>
+    <p>285.</p>
+    <p>Then settles back.</p>
+  </section>
+
+  <section class="content-box" id="could-mean">
+    <h3>Could Mean</h3>
+    <ul>
+      <li>Valve response slow</li>
+      <li>Sensor/control delay</li>
+      <li>Calibration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="a-tiny-overshoot-may-be-normal-within-design">
+    <h3>A tiny overshoot may be normal within design.</h3>
+    <p>Large overshoot is not.</p>
+  </section>
+
+  <section class="content-box" id="pressure-oscillation">
+    <h3>Pressure Oscillation</h3>
+    <p>Pressure repeatedly swings:</p>
+    <p>240 → 260 → 240 → 260.</p>
+  </section>
+
+  <section class="content-box" id="closed-loop-system-is-hunting">
+    <h3>Closed-loop system is hunting.</h3>
+
+  </section>
+
+  <section class="content-box" id="possible-causes">
+    <h3>Possible causes</h3>
+    <ul>
+      <li>Sensor instability</li>
+      <li>Valve response</li>
+      <li>Control problem</li>
+      <li>Excessive leak</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="stable-but-wrong">
+    <h3>Stable but Wrong</h3>
+    <p>Display says:</p>
+    <p>250.</p>
+    <p>Analyzer says:</p>
+    <p>280.</p>
+  </section>
+
+  <section class="content-box" id="regulation-is-stable">
+    <h3>Regulation is stable.</h3>
+    <p>Measurement is wrong.</p>
+  </section>
+
+  <section class="content-box" id="this-is-different-from">
+    <h3>This is different from:</h3>
+    <p>Correct average with unstable pressure.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>Accuracy and regulation are different properties.</p>
+  </section>
+
+  <section class="content-box" id="alarm-audio">
+    <h3>Alarm Audio</h3>
+    <p>Tourniquet alarm is part of safety performance.</p>
+  </section>
+
+  <section class="content-box" id="device-can-regulate-correctly">
+    <h3>Device can regulate correctly</h3>
+    <p>but fail alarm test.</p>
+  </section>
+
+  <section class="content-box" id="verify">
+    <h3>Verify:</h3>
+    <ul>
+      <li>Audible alarm</li>
+      <li>Visual indicator</li>
+    </ul>
+    <p>as required.</p>
+  </section>
+
+  <section class="content-box" id="user-controls">
+    <h3>User Controls</h3>
+    <p>Buttons or touchscreen may set pressure.</p>
+  </section>
+
+  <section class="content-box" id="stuck-key">
+    <h3>Stuck Key</h3>
+    <p>Can make pressure setting difficult.</p>
+  </section>
+
+  <section class="content-box" id="does-not-mean-pneumatic-problem">
+    <h3>Does not mean pneumatic problem.</h3>
+
+  </section>
+
+  <section class="content-box" id="display">
+    <h3>Display</h3>
+    <p>A failed display segment can create dangerous ambiguity.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>250 shown as 200.</p>
+  </section>
+
+  <section class="content-box" id="functional-inspection-matters">
+    <h3>Functional inspection matters.</h3>
+
+  </section>
+
+  <section class="content-box" id="pressure-setpoint-memory">
+    <h3>Pressure Setpoint Memory</h3>
+    <p>Some systems remember previous values.</p>
+  </section>
+
+  <section class="content-box" id="do-not-treat-stored-clinical-settings-as-calibration">
+    <h3>Do Not Treat Stored Clinical Settings as Calibration</h3>
+    <p>They are user configuration.</p>
+  </section>
+
+  <section class="content-box" id="communications">
+    <h3>Communications</h3>
+    <p>Some newer systems may provide:</p>
+    <ul>
+      <li>Data output</li>
+      <li>EMR integration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="communication-failure">
+    <h3>Communication failure</h3>
+    <p>does not necessarily affect pressure regulation.</p>
+  </section>
+
+  <section class="content-box" id="keep-clinical-support-functions-separate-from-core-control">
+    <h3>Keep clinical support functions separate from core control.</h3>
+
+  </section>
+
+  <section class="content-box" id="preventive-maintenance">
+    <h3>Preventive Maintenance</h3>
+    <p>A useful tourniquet PM generally evaluates several independent things:</p>
+    <ul>
+      <li>Pressure accuracy</li>
+      <li>Regulation</li>
+      <li>Leak rate</li>
+      <li>Inflation/deflation</li>
+      <li>Alarms</li>
+      <li>Timer</li>
+      <li>Battery</li>
+      <li>Physical condition</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="passing-pressure-accuracy-alone-is-not-enough">
+    <h3>Passing Pressure Accuracy Alone Is Not Enough</h3>
+
+  </section>
+
+  <section class="content-box" id="real-world-example-pump-runs-constantly">
+    <h3>Real-World Example: Pump Runs Constantly</h3>
+    <p>System reaches 250 mmHg.</p>
+    <p>Then pump runs every few seconds.</p>
+    <p>Pressure analyzer confirms slight continuous pressure loss.</p>
+    <p>Known-good cuff fixes the problem.</p>
+    <p>Original cuff has a small bladder leak.</p>
+    <p>The pump was compensating correctly.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-display-is-wrong-but-pressure-is-stable">
+    <h3>Real-World Example: Display Is Wrong but Pressure Is Stable</h3>
+    <p>Device displays:</p>
+    <p>250 mmHg.</p>
+    <p>Independent analyzer reads:</p>
+    <p>225 mmHg.</p>
+    <p>Pressure remains extremely stable.</p>
+    <p>The regulation loop is controlling to the sensor's incorrect value.</p>
+    <p>This points toward:</p>
+    <p>Pressure measurement/calibration</p>
+    <p>rather than a leak.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-channel-won-t-inflate">
+    <h3>Real-World Example: One Channel Won&#x27;t Inflate</h3>
+    <p>Channel 1 works normally.</p>
+    <p>Channel 2 pump command is present but no air reaches output.</p>
+    <p>Shared pump passes.</p>
+    <p>Channel 2 inflation valve fails to open.</p>
+    <p>The shared compressor is not the problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-slow-deflation">
+    <h3>Real-World Example: Slow Deflation</h3>
+    <p>Inflation is normal.</p>
+    <p>Pressure regulation is normal.</p>
+    <p>When deflate is pressed:</p>
+    <p>Cuff takes much longer than expected to empty.</p>
+    <p>Exhaust valve opens only partially because of contamination.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-low-pressure-only-during-cases">
+    <h3>Real-World Example: Low Pressure Only During Cases</h3>
+    <p>Bench test with rigid volume passes.</p>
+    <p>Clinical complaints continue.</p>
+    <p>Original hose develops leak only when sharply bent near the connector.</p>
+    <p>Reproducing the flex condition finally exposes the failure.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Replacing the pump because it runs frequently.</strong> Frequent cycling can mean the pump is correctly compensating for a leak elsewhere.</p>
+    <p><strong>Calibrating before checking for leaks.</strong> Unstable pneumatic pressure makes calibration unreliable.</p>
+    <p><strong>Trusting the displayed pressure without an independent reference.</strong> A stable display can still be wrong.</p>
+    <p><strong>Testing only one pressure.</strong> Zero, span, and linearity problems may appear elsewhere in the range.</p>
+    <p><strong>Ignoring the hose and cuff.</strong> Accessories are part of the pneumatic system.</p>
+    <p><strong>Treating slow inflation and slow deflation as the same fault.</strong> They involve different flow paths.</p>
+    <p><strong>Assuming passing startup self-test proves pressure accuracy.</strong> External calibrated measurement is stronger evidence.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-tourniquet-framework">
+    <h3>A Useful Tourniquet Framework</h3>
+    <p>Think:</p>
+    <p><strong>Pressure Setpoint</strong></p>
+    <p>↓</p>
+    <p><strong>Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Pump / Pressure Source</strong></p>
+    <p>↓</p>
+    <p><strong>Inflation Valve</strong></p>
+    <p>↓</p>
+    <p><strong>Hose + Cuff</strong></p>
+    <p>↓</p>
+    <p><strong>Actual Pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Pressure Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Measured Pressure</strong></p>
+    <p>↓</p>
+    <p><strong>Controller Correction</strong></p>
+    <p>And separately:</p>
+    <p><strong>Deflation Valve → Atmosphere</strong></p>
+    <p>Around that loop:</p>
+    <p><strong>High/Low Pressure Alarms + Timer + Battery</strong></p>
+    <p>protect the procedure.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Can the system generate pressure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it hold pressure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Is the displayed pressure accurate?</strong></p>
+    <p>Then:</p>
+    <p><strong>Can it release pressure correctly?</strong></p>
+    <p>Those four questions divide the system into:</p>
+    <ul>
+      <li>Pump</li>
+      <li>Leak path</li>
+      <li>Sensor/calibration</li>
+      <li>Exhaust path</li>
+    </ul>
+    <p>very efficiently.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the device reaches:</p>
+    <p>250 mmHg,</p>
+    <p>you proved:</p>
+    <p><strong>The system believes it reached the selected pressure.</strong></p>
+    <p>You did not prove:</p>
+    <p>The actual cuff pressure is 250 mmHg.</p>
+    <p>If an independent calibrated analyzer also reads:</p>
+    <p>250 mmHg,</p>
+    <p>you have much stronger evidence that the pressure measurement is accurate at that test point.</p>
+    <p>If pressure then remains stable for the specified hold period:</p>
+    <p>You additionally have evidence that:</p>
+    <p>The tested pneumatic circuit can maintain pressure.</p>
+    <p>If high/low alarms, inflation, deflation, battery, and pressure accuracy all pass:</p>
+    <p>You have much stronger evidence that the complete tourniquet control system is functioning properly under those test conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A pneumatic tourniquet is a closed-loop pressure-control system.</p>
+    <p>The clinician chooses a target.</p>
+    <p>The pump creates pressure.</p>
+    <p>A valve lets air into the cuff.</p>
+    <p>The pressure sensor measures what happened.</p>
+    <p>The controller compares actual pressure with the target.</p>
+    <p>Then the system decides whether to:</p>
+    <ul>
+      <li>Add air</li>
+      <li>Do nothing</li>
+      <li>Vent air</li>
+      <li>Alarm</li>
+    </ul>
+    <p>That loop runs throughout the procedure.</p>
+    <p>Understanding it makes the common complaints much easier to separate.</p>
+    <p>A constantly running pump may mean:</p>
+    <p>Leak.</p>
+    <p>A stable but inaccurate display may mean:</p>
+    <p>Sensor or calibration.</p>
+    <p>Slow inflation may mean:</p>
+    <p>Pump, supply, or inflation valve.</p>
+    <p>Slow deflation points somewhere else entirely.</p>
+    <p>One bad channel in a dual system tells you much more than:</p>
+    <blockquote><p>Tourniquet isn't working.</p></blockquote>
+    <p>The best approach is to stop treating pressure as one function.</p>
+    <p>Separate it into:</p>
+    <p><strong>Generation.</strong></p>
+    <p><strong>Measurement.</strong></p>
+    <p><strong>Regulation.</strong></p>
+    <p><strong>Containment.</strong></p>
+    <p><strong>Release.</strong></p>
+    <p>Then test each part.</p>
+    <p>And when the display says:</p>
+    <p><strong>250 mmHg,</strong></p>
+    <p>ask the question that matters most:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Pneumatic tourniquet pump designs, valve arrangements, pressure sensors, regulation tolerances, alarm thresholds, pressure-relief mechanisms, dual-cuff operation, limb-occlusion features, battery behavior, calibration procedures, test volumes, and acceptable limits vary significantly by manufacturer and model. Tourniquet pressure directly affects patient safety. Follow current OEM service documentation, approved pressure-analyzer procedures, facility policy, clinical-use instructions, and authorized service scope when evaluating surgical tourniquet systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="how-medical-equipment-measures-pressure.html">How Medical Equipment Measures Pressure</a></li>
+      <li><a href="how-ventilator-pressure-sensors-work.html">How Ventilator Pressure Sensors Work</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
