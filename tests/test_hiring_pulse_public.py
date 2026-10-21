@@ -25,6 +25,8 @@ class HiringPulsePublicTests(unittest.TestCase):
         self.assertEqual(len({item["role_category_id"] for item in active}), snapshot["summary"]["roleCategoriesRepresented"])
         self.assertEqual(len(active), sum(item["activePostings"] for item in snapshot["breakdowns"]["roles"]))
         self.assertEqual(len(active), sum(item["activePostings"] for item in snapshot["breakdowns"]["employers"]))
+        self.assertEqual(len(active), sum(item["activePostings"] for item in snapshot["breakdowns"]["employerTypes"]))
+        self.assertTrue(all(item["employerTypeLabel"] for item in snapshot["postings"]))
 
     def test_public_records_are_unique_canonical_and_omit_descriptions(self):
         postings = MODULE.build_public_snapshot(copy.deepcopy(self.store))["postings"]

@@ -25,6 +25,8 @@ const posting = {
   title: 'Biomedical Equipment Technician II',
   employer: 'Example Health',
   employerId: 'emp_1',
+  employerType: 'health-system',
+  employerTypeLabel: 'Hospital / Health System',
   location: 'Pittsburgh, PA',
   state: 'PA',
   remote: true,
@@ -37,7 +39,8 @@ const posting = {
 };
 
 test('Hiring Pulse filters combine employer, role, state, keyword, and remote', () => {
-  assert.ok(postingMatches(posting, { employer: 'emp_1', role: 'bmet', state: 'PA', keyword: 'equipment pittsburgh', remote: true }));
+  assert.ok(postingMatches(posting, { employer: 'emp_1', employerType: 'health-system', role: 'bmet', state: 'PA', keyword: 'equipment pittsburgh', remote: true }));
+  assert.equal(postingMatches(posting, { employer: '', employerType: 'oem', role: '', state: '', keyword: '', remote: false }), false);
   assert.equal(postingMatches(posting, { employer: '', role: 'imaging-service', state: '', keyword: '', remote: false }), false);
   assert.equal(postingMatches(posting, { employer: '', role: '', state: '', keyword: '', remote: false }), true);
 });

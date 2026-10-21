@@ -1,0 +1,121 @@
+name: HTM Hiring Pulse collection
+
+on:
+  schedule:
+    - cron: "17 7 */3 * *"
+  workflow_dispatch:
+    inputs:
+      confirm_close_missing:
+        description: "Allow guarded closure of missing jobs from verified complete sources"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: htm-hiring-pulse-codex-edits
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      HEALTH_REPORT: reports/htm-hiring-pulse-automation.json
+    steps:
+      - name: Check out the site update branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex-edits
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Initialize run health artifact
+        run: |
+          mkdir -p reports
+          python -c "import datetime,json; print(json.dumps({'schemaVersion':1,'timestamp':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'status':'preflight','summary':{},'sources':[],'warnings':[],'errors':[]}))" > "$HEALTH_REPORT"
+
+      - name: Fast-forward before collection
+        run: git pull --ff-only origin codex-edits
+
+      - name: Preflight collector and public snapshot tests
+        run: |
+          python -m unittest \
+            tests.test_htm_hiring_pulse \
+            tests.test_collect_htm_hiring_pulse \
+            tests.test_hiring_pulse_automation \
+            tests.test_hiring_pulse_public
+          node --test tests/test_jobs_ui.js
+          python tools/build_hiring_pulse_public.py --check
+
+      - name: Collect enabled employer sources
+        env:
+          ALLOW_CLOSURES: ${{ github.event_name == 'schedule' || inputs.confirm_close_missing }}
+        run: |
+          closure_flag=""
+          if [ "$ALLOW_CLOSURES" = "true" ]; then
+            closure_flag="--confirm-close-missing"
+          fi
+          python tools/automate_htm_hiring_pulse.py \
+            --apply \
+            $closure_flag \
+            --report "$HEALTH_REPORT"
+
+      - name: Regenerate the public Hiring Pulse snapshot
+        run: python tools/build_hiring_pulse_public.py
+
+      - name: Run full validation
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py'
+          node --test tests/test_guide_loader.js tests/test_site_search.js tests/test_jobs_ui.js
+          python tools/build_hiring_pulse_public.py --check
+          git diff --check
+
+      - name: Reject unexpected production changes
+        shell: bash
+        run: |
+          unexpected="$(git diff --name-only | grep -Ev '^(biomed-jobs\.html|data/htm-hiring-pulse-public\.json|data/htm-hiring-pulse/(collection-sources|employers|observations|postings)\.json)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected files changed during collection:"
+            echo "$unexpected"
+            exit 1
+          fi
+
+      - name: Upload collection health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: htm-hiring-pulse-health-${{ github.run_id }}
+          path: ${{ env.HEALTH_REPORT }}
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Commit validated data update
+        run: |
+          git config user.name "JakeTroubleshoots Hiring Pulse Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -- \
+            biomed-jobs.html \
+            data/htm-hiring-pulse-public.json \
+            data/htm-hiring-pulse/collection-sources.json \
+            data/htm-hiring-pulse/employers.json \
+            data/htm-hiring-pulse/observations.json \
+            data/htm-hiring-pulse/postings.json
+          if git diff --cached --quiet; then
+            echo "No validated Hiring Pulse changes to commit."
+            exit 0
+          fi
+          git commit -m "Update HTM Hiring Pulse data"
+          git push origin HEAD:codex-edits

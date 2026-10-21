@@ -49,7 +49,8 @@ python tools/build_hiring_pulse_public.py --check
 
 The snapshot publishes active postings only, requires unique IDs and HTTPS
 canonical URLs, and derives all counts from those records. The browser filters
-by employer, normalized role category, state, title/keyword, and remote status.
+by employer, employer type, normalized role category, state, title/keyword, and
+remote status.
 Missing salary and employer-posted dates remain absent rather than inferred.
 If the source data is invalid, the build stops. If there are no active records,
 the page receives an unavailable state rather than a row of misleading zeros.

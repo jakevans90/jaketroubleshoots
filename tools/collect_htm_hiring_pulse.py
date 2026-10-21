@@ -71,14 +71,14 @@ def validate_config(config: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if set(config) != {"schemaVersion", "sources"}:
         errors.append("root must contain exactly schemaVersion and sources")
-    if config.get("schemaVersion") != 1:
-        errors.append("schemaVersion must be 1")
+    if config.get("schemaVersion") != 2:
+        errors.append("schemaVersion must be 2")
     sources = config.get("sources")
     if not isinstance(sources, list) or not sources:
         errors.append("sources must be a non-empty array")
         return errors
     ids: set[str] = set()
-    expected = {"id", "enabled", "employer", "adapter", "queries", "relevancePatterns", "roleOverrides", "adapterConfig"}
+    expected = {"id", "enabled", "employer", "adapter", "queries", "relevancePatterns", "excludePatterns", "roleOverrides", "adapterConfig", "metadata"}
     employer_fields = {"name", "employerType", "careerUrl", "websiteUrl"}
     for index, source in enumerate(sources):
         where = f"sources[{index}]"
@@ -111,6 +111,14 @@ def validate_config(config: dict[str, Any]) -> list[str]:
                 re.compile(pattern, re.IGNORECASE)
             except re.error as exc:
                 errors.append(f"{where}.relevancePatterns contains invalid regex: {exc}")
+        exclusions = source.get("excludePatterns")
+        if not isinstance(exclusions, list) or not all(isinstance(value, str) and value.strip() for value in exclusions):
+            errors.append(f"{where}.excludePatterns must be an array of strings")
+        for pattern in exclusions or []:
+            try:
+                re.compile(pattern, re.IGNORECASE)
+            except re.error as exc:
+                errors.append(f"{where}.excludePatterns contains invalid regex: {exc}")
         overrides = source.get("roleOverrides")
         if not isinstance(overrides, list):
             errors.append(f"{where}.roleOverrides must be an array")
@@ -129,7 +137,9 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             continue
         common = {"publicBaseUrl", "publicSitePath", "robotsUrl", "pageSize", "maxResultsPerQuery"}
         specific = {"apiUrl"} if source.get("adapter") == "workday" else {"searchUrl", "jobIdentifierField", "queryParameter"}
-        if set(adapter_config) != common | specific:
+        allowed_config = common | specific | ({"allowUnknownUsLocation"} if source.get("adapter") == "workday" else set())
+        config_fields = set(adapter_config)
+        if config_fields != common | specific and config_fields != allowed_config:
             errors.append(f"{where}.adapterConfig fields do not match the selected adapter")
         for field in (common | specific) - {"jobIdentifierField", "queryParameter", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
             if field in adapter_config and not pulse.is_web_url(adapter_config.get(field)):
@@ -137,9 +147,34 @@ def validate_config(config: dict[str, Any]) -> list[str]:
         for field in ("pageSize", "maxResultsPerQuery"):
             if not isinstance(adapter_config.get(field), int) or adapter_config.get(field, 0) <= 0:
                 errors.append(f"{where}.adapterConfig.{field} must be a positive integer")
+        if "allowUnknownUsLocation" in adapter_config and not isinstance(adapter_config.get("allowUnknownUsLocation"), bool):
+            errors.append(f"{where}.adapterConfig.allowUnknownUsLocation must be a boolean")
         if source.get("adapter") == "phenom" and adapter_config.get("queryParameter") is not None:
             if not isinstance(adapter_config.get("queryParameter"), str) or not adapter_config["queryParameter"].strip():
                 errors.append(f"{where}.adapterConfig.queryParameter must be null or non-empty text")
+        metadata = source.get("metadata")
+        metadata_fields = {"firstTracked", "lastSuccessfulCheck", "lastSuccessfulPostingCount", "collectionStatus", "fullyAutomated", "notes"}
+        if not isinstance(metadata, dict) or set(metadata) != metadata_fields:
+            errors.append(f"{where}.metadata must contain exactly {', '.join(sorted(metadata_fields))}")
+        else:
+            try:
+                if not isinstance(metadata.get("firstTracked"), str) or pulse.normalize_date(metadata["firstTracked"]) != metadata["firstTracked"]:
+                    raise ValueError
+            except ValueError:
+                errors.append(f"{where}.metadata.firstTracked must use YYYY-MM-DD")
+            if metadata.get("lastSuccessfulCheck") is not None:
+                try:
+                    pulse.parse_timestamp(metadata["lastSuccessfulCheck"])
+                except (TypeError, ValueError):
+                    errors.append(f"{where}.metadata.lastSuccessfulCheck must be null or a timestamp")
+            if metadata.get("lastSuccessfulPostingCount") is not None and (not isinstance(metadata.get("lastSuccessfulPostingCount"), int) or metadata["lastSuccessfulPostingCount"] < 0):
+                errors.append(f"{where}.metadata.lastSuccessfulPostingCount must be null or a non-negative integer")
+            if metadata.get("collectionStatus") not in {"active", "partial", "failed", "not-started", "disabled"}:
+                errors.append(f"{where}.metadata.collectionStatus is invalid")
+            if not isinstance(metadata.get("fullyAutomated"), bool):
+                errors.append(f"{where}.metadata.fullyAutomated must be a boolean")
+            if not isinstance(metadata.get("notes"), str):
+                errors.append(f"{where}.metadata.notes must be text")
     return errors
 
 
@@ -267,12 +302,14 @@ def location_payload(text: Any, country: Any = "US", fallback: str | None = None
     return {"text": display, "city": city, "state": state, "country": country_code, "remote": remote}
 
 
-def is_us_job(location: dict[str, Any]) -> bool:
-    return location.get("country") == "US" and bool(location.get("state") or location.get("remote"))
+def is_us_job(location: dict[str, Any], allow_unknown_location: bool = False) -> bool:
+    return location.get("country") == "US" and bool(location.get("state") or location.get("remote") or allow_unknown_location)
 
 
 def relevant_title(source: dict[str, Any], title: str) -> bool:
-    return any(re.search(pattern, title, re.IGNORECASE) for pattern in source["relevancePatterns"])
+    included = any(re.search(pattern, title, re.IGNORECASE) for pattern in source["relevancePatterns"])
+    excluded = any(re.search(pattern, title, re.IGNORECASE) for pattern in source.get("excludePatterns", []))
+    return included and not excluded
 
 
 def role_override(source: dict[str, Any], title: str) -> str | None:
@@ -319,7 +356,7 @@ def workday_record(source: dict[str, Any], job: dict[str, Any], checked_at: str)
         if fallback_state:
             location["state"] = fallback_state
             location["remote"] = location["remote"] or "anywhere" in fallback.casefold()
-    if not is_us_job(location):
+    if not is_us_job(location, bool(source["adapterConfig"].get("allowUnknownUsLocation"))):
         return None
     requisition = re.search(r"_([A-Za-z]+\d+)$", external_path)
     source_id = requisition.group(1) if requisition else external_path.rstrip("/").split("_")[-1]
@@ -375,7 +412,7 @@ def collect_workday(source: dict[str, Any], checked_at: str, timeout: int,
         total = None
         maximum_total = 0
         query_stable = True
-        query_ids: set[str] = set()
+        page_fingerprints: set[tuple[str, ...]] = set()
         while total is None or offset < maximum_total:
             response = post(adapter["apiUrl"], {"appliedFacets": {}, "limit": page_size, "offset": offset, "searchText": query}, timeout)
             jobs = response.get("jobPostings")
@@ -397,13 +434,15 @@ def collect_workday(source: dict[str, Any], checked_at: str, timeout: int,
                 raise CollectionError(f"{source['id']} returned an empty Workday page before completion")
             retrieved += len(jobs)
             scanned += len(jobs)
+            page_ids = tuple(
+                pulse.clean_optional(job.get("externalPath")) or f"missing-{index}"
+                for index, job in enumerate(jobs) if isinstance(job, dict)
+            )
+            if page_ids and page_ids in page_fingerprints:
+                complete = False
+            page_fingerprints.add(page_ids)
             for job in jobs:
                 if isinstance(job, dict):
-                    identity = pulse.clean_optional(job.get("externalPath"))
-                    if identity:
-                        if identity in query_ids:
-                            complete = False
-                        query_ids.add(identity)
                     record = workday_record(source, job, checked_at)
                     if record:
                         by_id[record["sourcePostingId"]] = record
@@ -412,8 +451,6 @@ def collect_workday(source: dict[str, Any], checked_at: str, timeout: int,
                 break
         if query_stable and retrieved != (total or 0):
             raise CollectionError(f"{source['id']} retrieved {retrieved} of {total} Workday jobs for '{query}'")
-        if len(query_ids) != retrieved:
-            complete = False
     if not by_id:
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
@@ -432,7 +469,7 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
         total = None
         maximum_total = 0
         query_stable = True
-        query_ids: set[str] = set()
+        page_fingerprints: set[tuple[str, ...]] = set()
         while total is None or offset < maximum_total:
             parameters: dict[str, Any] = {"from": offset, "s": 1}
             if adapter.get("queryParameter"):
@@ -454,13 +491,15 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
                 raise CollectionError(f"{source['id']} returned an empty Phenom page before completion")
             retrieved += hits
             scanned += hits
+            page_ids = tuple(
+                pulse.clean_optional(job.get("jobId")) or f"missing-{index}"
+                for index, job in enumerate(jobs) if isinstance(job, dict)
+            )
+            if page_ids and page_ids in page_fingerprints:
+                complete = False
+            page_fingerprints.add(page_ids)
             for job in jobs:
                 if isinstance(job, dict):
-                    identity = pulse.clean_optional(job.get("jobId"))
-                    if identity:
-                        if identity in query_ids:
-                            complete = False
-                        query_ids.add(identity)
                     record = phenom_record(source, job, checked_at)
                     if record:
                         by_id[record["sourcePostingId"]] = record
@@ -469,8 +508,6 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
                 break
         if query_stable and retrieved != (total or 0):
             raise CollectionError(f"{source['id']} retrieved {retrieved} of {total} Phenom jobs for '{query}'")
-        if len(query_ids) != retrieved:
-            complete = False
     if not by_id:
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)

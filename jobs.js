@@ -21,6 +21,7 @@
     const haystack = [posting.title, posting.employer, posting.location, posting.roleCategory].filter(Boolean).join(' ').toLowerCase();
     const words = (filters.keyword || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
     return (!filters.employer || posting.employerId === filters.employer) &&
+      (!filters.employerType || posting.employerType === filters.employerType) &&
       (!filters.role || posting.roleCategoryId === filters.role) &&
       (!filters.state || posting.state === filters.state) &&
       (!filters.remote || posting.remote === true) &&
@@ -144,12 +145,15 @@
       if (!validatePulseSnapshot(snapshot)) throw new Error('Invalid Hiring Pulse snapshot');
       const postings = snapshot.postings;
       const employerFilter = document.getElementById('pulse-employer');
+      const employerTypeFilter = document.getElementById('pulse-employer-type');
       const roleFilter = document.getElementById('pulse-role');
       const stateFilter = document.getElementById('pulse-state');
       const keywordFilter = document.getElementById('pulse-keyword');
       const remoteFilter = document.getElementById('pulse-remote');
       const employers = new Map(postings.map(posting => [posting.employerId, posting.employer]));
       [...employers].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(employerFilter, id, name));
+      const employerTypes = new Map(postings.map(posting => [posting.employerType, posting.employerTypeLabel]));
+      [...employerTypes].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(employerTypeFilter, id, name));
       const roles = new Map(postings.map(posting => [posting.roleCategoryId, posting.roleCategory]));
       [...roles].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(roleFilter, id, name));
       [...new Set(postings.map(posting => posting.state).filter(Boolean))].sort().forEach(state => addOption(stateFilter, state, state));
@@ -159,6 +163,7 @@
         if (resetLimit) visibleLimit = 24;
         const currentFilters = {
           employer: employerFilter.value,
+          employerType: employerTypeFilter.value,
           role: roleFilter.value,
           state: stateFilter.value,
           keyword: keywordFilter.value,
@@ -173,7 +178,7 @@
       }
 
       pulseFilters.addEventListener('submit', event => event.preventDefault());
-      [employerFilter, roleFilter, stateFilter, remoteFilter].forEach(control => control.addEventListener('change', () => renderOpenings(true)));
+      [employerFilter, employerTypeFilter, roleFilter, stateFilter, remoteFilter].forEach(control => control.addEventListener('change', () => renderOpenings(true)));
       keywordFilter.addEventListener('input', () => renderOpenings(true));
       pulseFilters.addEventListener('reset', () => setTimeout(() => renderOpenings(true), 0));
       pulseLoadMore.addEventListener('click', () => { visibleLimit += 24; renderOpenings(false); });

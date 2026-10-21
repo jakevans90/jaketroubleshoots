@@ -42,7 +42,17 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(5, len(config["sources"]))
+        self.assertEqual(7, len(config["sources"]))
+
+    def test_hospital_title_rules_accept_htm_roles_and_reject_false_positives(self):
+        config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
+        cleveland = next(item for item in config["sources"] if item["id"] == "cleveland-clinic-careers")
+        self.assertTrue(MODULE.relevant_title(cleveland, "CE Technician II"))
+        self.assertTrue(MODULE.relevant_title(cleveland, "Clinical Engineering Technician II"))
+        self.assertTrue(MODULE.relevant_title(cleveland, "Biomedical Equipment Technician"))
+        self.assertFalse(MODULE.relevant_title(cleveland, "Research Biomedical Engineer"))
+        self.assertFalse(MODULE.relevant_title(cleveland, "Facilities Engineering Technician"))
+        self.assertFalse(MODULE.relevant_title(cleveland, "Patient Care Equipment Technician"))
 
     def test_phenom_ddo_parser_reads_embedded_jobs(self):
         payload = {"eagerLoadRefineSearch": {"status": 200, "hits": 1, "totalHits": 1, "data": {"jobs": [{"jobId": "R1"}]}}}
@@ -125,6 +135,18 @@ class CollectorTests(unittest.TestCase):
 
         result = MODULE.collect_workday(configured, "2026-10-20T12:00:00Z", 10, post=fake_post)
         self.assertFalse(result.complete)
+        self.assertEqual(1, len(result.postings))
+
+    def test_multi_location_duplicate_on_one_page_deduplicates_without_faking_pagination_failure(self):
+        configured = source("workday")
+        job = {"title": "Biomedical Technician I", "externalPath": "/job/Austin-TX/Tech_R1", "locationsText": "Austin, TX"}
+
+        def fake_post(url, payload, timeout):
+            return {"total": 2, "jobPostings": [job, {**job, "locationsText": "Dallas, TX"}]}
+
+        result = MODULE.collect_workday(configured, "2026-10-20T12:00:00Z", 10, post=fake_post)
+        self.assertTrue(result.complete)
+        self.assertEqual(2, result.scanned)
         self.assertEqual(1, len(result.postings))
 
     def test_dry_run_does_not_write_authoritative_data(self):

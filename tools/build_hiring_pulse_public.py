@@ -25,6 +25,17 @@ PUBLIC_PATH = Path("data/htm-hiring-pulse-public.json")
 PAGE_PATH = Path("biomed-jobs.html")
 START_MARKER = "    <!-- hiring-pulse-static:start -->"
 END_MARKER = "    <!-- hiring-pulse-static:end -->"
+EMPLOYER_TYPE_LABELS = {
+    "health-system": "Hospital / Health System",
+    "hospital": "Hospital / Health System",
+    "oem": "OEM / Manufacturer",
+    "iso": "ISO / HTM Provider",
+    "dialysis": "Dialysis",
+    "government": "Government",
+    "vendor": "Vendor",
+    "education": "Education",
+    "other": "Other",
+}
 
 
 def _valid_public_url(value: Any) -> bool:
@@ -73,6 +84,8 @@ def build_public_snapshot(store: dict[str, dict[str, Any]]) -> dict[str, Any]:
             "title": item["title"],
             "employer": employer["name"],
             "employerId": employer["id"],
+            "employerType": employer["employer_type"],
+            "employerTypeLabel": EMPLOYER_TYPE_LABELS.get(employer["employer_type"], employer["employer_type"]),
             "location": location.get("text") or "Location not listed",
             "state": location.get("state"),
             "remote": bool(location.get("remote")),
@@ -88,6 +101,7 @@ def build_public_snapshot(store: dict[str, dict[str, Any]]) -> dict[str, Any]:
         item["employer"].casefold(), item["title"].casefold(), item["location"].casefold(), item["url"]
     ))
     employer_counts = Counter(item["employer"] for item in public_postings)
+    employer_type_counts = Counter((item["employerType"], item["employerTypeLabel"]) for item in public_postings)
     role_counts = Counter((item["roleCategoryId"], item["roleCategory"]) for item in public_postings)
     state_counts = Counter(item["state"] for item in public_postings if item["state"])
 
@@ -121,6 +135,10 @@ def build_public_snapshot(store: dict[str, dict[str, Any]]) -> dict[str, Any]:
                 {"employer": employer, "activePostings": count}
                 for employer, count in sorted(employer_counts.items(), key=lambda value: (-value[1], value[0].casefold()))
             ],
+            "employerTypes": [
+                {"id": key[0], "label": key[1], "activePostings": count}
+                for key, count in sorted(employer_type_counts.items(), key=lambda value: (-value[1], value[0][1].casefold()))
+            ],
         },
         "postings": public_postings,
     }
@@ -147,7 +165,7 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
 
     summary = snapshot["summary"]
     employers = ", ".join(html.escape(name) for name in snapshot["coverage"]["employers"])
-    last_updated = snapshot["lastUpdated"][:10] if snapshot.get("lastUpdated") else "Not available"
+    last_updated = snapshot["lastUpdated"].replace("T", " ").replace("Z", " UTC") if snapshot.get("lastUpdated") else "Not available"
     role_items = _list_items(snapshot["breakdowns"]["roles"], "label")
     state_items = _list_items(snapshot["breakdowns"]["states"], "state", 10)
     employer_items = _list_items(snapshot["breakdowns"]["employers"], "employer")
@@ -164,7 +182,7 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
         '    <div class="jobs-pulse-coverage">',
         "      <h3>Current coverage</h3>",
         f"      <p><strong>Tracked employers:</strong> {employers}.</p>",
-        "      <p>Openings are collected from these employer career sources, normalized, and deduplicated. A posting remains active until a complete check of its source confirms it is absent. First-observed dates are not employer-posted dates.</p>",
+        "      <p>Openings are collected from these employer career sources, normalized, and deduplicated. Coverage is expanding across employer types and regions. A posting remains active until a complete check of its source confirms it is absent. First-observed dates are not employer-posted dates.</p>",
         "    </div>",
         '    <div class="jobs-breakdown-grid">',
         '      <section aria-labelledby="pulse-role-breakdown"><h3 id="pulse-role-breakdown">Roles in this sample</h3><ul class="jobs-count-list">',
