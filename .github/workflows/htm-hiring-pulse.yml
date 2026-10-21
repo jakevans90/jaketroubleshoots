@@ -86,7 +86,7 @@ jobs:
       - name: Reject unexpected production changes
         shell: bash
         run: |
-          unexpected="$(git diff --name-only | grep -Ev '^(biomed-jobs\.html|data/htm-hiring-pulse-public\.json|data/htm-hiring-pulse/(collection-sources|employers|observations|postings)\.json)$' || true)"
+          unexpected="$(git diff --name-only | grep -Ev '^(index\.html|biomed-jobs\.html|data/htm-hiring-pulse-public\.json|data/htm-hiring-pulse/(collection-sources|employers|observations|postings)\.json)$' || true)"
           if [ -n "$unexpected" ]; then
             echo "Unexpected files changed during collection:"
             echo "$unexpected"
@@ -107,6 +107,7 @@ jobs:
           git config user.name "JakeTroubleshoots Hiring Pulse Bot"
           git config user.email "actions@users.noreply.github.com"
           git add -- \
+            index.html \
             biomed-jobs.html \
             data/htm-hiring-pulse-public.json \
             data/htm-hiring-pulse/collection-sources.json \

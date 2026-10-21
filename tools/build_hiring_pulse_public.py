@@ -8,6 +8,7 @@ import html
 import json
 import sys
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -23,8 +24,11 @@ import htm_hiring_pulse as pulse  # noqa: E402
 
 PUBLIC_PATH = Path("data/htm-hiring-pulse-public.json")
 PAGE_PATH = Path("biomed-jobs.html")
+HOME_PAGE_PATH = Path("index.html")
 START_MARKER = "    <!-- hiring-pulse-static:start -->"
 END_MARKER = "    <!-- hiring-pulse-static:end -->"
+HOME_START_MARKER = "      <!-- hiring-pulse-home:start -->"
+HOME_END_MARKER = "      <!-- hiring-pulse-home:end -->"
 EMPLOYER_TYPE_LABELS = {
     "health-system": "Hospital / Health System",
     "hospital": "Hospital / Health System",
@@ -200,13 +204,43 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
     ])
 
 
-def replace_static_block(page: str, rendered: str) -> str:
-    start = page.find(START_MARKER)
-    end = page.find(END_MARKER)
+def render_homepage_summary(snapshot: dict[str, Any]) -> str:
+    summary = snapshot.get("summary")
+    if snapshot["availability"] != "available" or not summary:
+        active = employers = states = "—"
+        status = "Hiring Pulse snapshot temporarily unavailable"
+    else:
+        active = f'{summary["activePostings"]:,}'
+        employers = f'{summary["employersRepresented"]:,}'
+        states = f'{summary["statesRepresented"]:,}'
+        if snapshot.get("lastUpdated"):
+            updated = datetime.strptime(snapshot["lastUpdated"].split("T", 1)[0], "%Y-%m-%d")
+            status = f"Latest published snapshot · Updated {updated.strftime('%B')} {updated.day}, {updated.year}"
+        else:
+            status = "Latest published Hiring Pulse snapshot"
+    return "\n".join([
+        HOME_START_MARKER,
+        f'      <p class="home-hiring-pulse-status" id="home-hiring-pulse-status">{html.escape(status)}</p>',
+        '      <div class="home-hiring-pulse-metrics" aria-label="HTM Hiring Pulse summary" aria-live="polite">',
+        f'        <div><strong id="home-pulse-active">{active}</strong><span>Active postings</span></div>',
+        f'        <div><strong id="home-pulse-employers">{employers}</strong><span>Tracked employers</span></div>',
+        f'        <div><strong id="home-pulse-states">{states}</strong><span>States represented</span></div>',
+        "      </div>",
+        HOME_END_MARKER,
+    ])
+
+
+def replace_marked_block(page: str, rendered: str, start_marker: str, end_marker: str) -> str:
+    start = page.find(start_marker)
+    end = page.find(end_marker)
     if start < 0 or end < 0 or end < start:
         raise ValueError("Hiring Pulse static markers are missing or out of order")
-    end += len(END_MARKER)
+    end += len(end_marker)
     return page[:start] + rendered + page[end:]
+
+
+def replace_static_block(page: str, rendered: str) -> str:
+    return replace_marked_block(page, rendered, START_MARKER, END_MARKER)
 
 
 def render_json(value: dict[str, Any]) -> bytes:
@@ -218,9 +252,18 @@ def build(root: Path, check: bool = False) -> bool:
     snapshot = build_public_snapshot(store)
     public_path = root / PUBLIC_PATH
     page_path = root / PAGE_PATH
+    home_page_path = root / HOME_PAGE_PATH
     page = page_path.read_text(encoding="utf-8")
+    home_page = home_page_path.read_text(encoding="utf-8")
     updated_page = replace_static_block(page, render_static_summary(snapshot))
-    expected = {public_path: render_json(snapshot), page_path: updated_page.encode("utf-8")}
+    updated_home_page = replace_marked_block(
+        home_page, render_homepage_summary(snapshot), HOME_START_MARKER, HOME_END_MARKER
+    )
+    expected = {
+        public_path: render_json(snapshot),
+        page_path: updated_page.encode("utf-8"),
+        home_page_path: updated_home_page.encode("utf-8"),
+    }
     changed = [path for path, content in expected.items() if not path.exists() or path.read_bytes() != content]
     if check:
         if changed:

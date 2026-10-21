@@ -54,6 +54,18 @@ class HiringPulsePublicTests(unittest.TestCase):
         rendered = MODULE.render_static_summary(snapshot)
         self.assertIn("temporarily unavailable", rendered)
         self.assertNotIn(">0<", rendered)
+        home_rendered = MODULE.render_homepage_summary(snapshot)
+        self.assertIn("temporarily unavailable", home_rendered)
+        self.assertNotIn(">0<", home_rendered)
+
+    def test_homepage_summary_uses_public_snapshot_metrics(self):
+        snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store))
+        rendered = MODULE.render_homepage_summary(snapshot)
+        summary = snapshot["summary"]
+        self.assertIn(f'>{summary["activePostings"]:,}<', rendered)
+        self.assertIn(f'>{summary["employersRepresented"]:,}<', rendered)
+        self.assertIn(f'>{summary["statesRepresented"]:,}<', rendered)
+        self.assertIn('id="home-hiring-pulse-status"', rendered)
 
     def test_invalid_canonical_url_is_rejected(self):
         store = copy.deepcopy(self.store)
