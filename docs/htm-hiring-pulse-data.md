@@ -173,6 +173,61 @@ To abandon a staged check without changing authoritative data:
 python tools/htm_hiring_pulse.py operator cancel --confirm
 ```
 
+## Five-employer pilot collector
+
+`tools/collect_htm_hiring_pulse.py` collects relevant United States HTM jobs
+from the public career sites for TRIMEDX, Agiliti, GE HealthCare, DaVita, and
+Fresenius Medical Care. The versioned source configuration is stored in
+`data/htm-hiring-pulse/collection-sources.json`. The collector uses the public
+Workday search feeds for TRIMEDX and Fresenius and the structured public search
+data rendered by the three Phenom career sites. It honors each site's
+`robots.txt`, paginates every configured query, validates declared result
+counts, filters by explicit HTM title patterns, and deduplicates requisitions
+before using the existing Hiring Pulse ingest logic.
+
+List the configured sources:
+
+```sh
+python tools/collect_htm_hiring_pulse.py list-sources
+```
+
+Preview all five sources without changing authoritative data:
+
+```sh
+python tools/collect_htm_hiring_pulse.py collect
+```
+
+Preview one or more sources:
+
+```sh
+python tools/collect_htm_hiring_pulse.py collect --source trimedx-careers
+python tools/collect_htm_hiring_pulse.py collect --source davita-careers --source fresenius-medical-care-careers
+```
+
+After reviewing a successful preview, write the observations without closing
+any missing jobs:
+
+```sh
+python tools/collect_htm_hiring_pulse.py collect --apply
+```
+
+Only after a later run has retrieved and verified every page for each selected
+source should missing jobs be eligible for closure. Closure requires a separate
+explicit flag:
+
+```sh
+python tools/collect_htm_hiring_pulse.py collect --apply --confirm-close-missing
+```
+
+The command aborts before writing if any selected source is unavailable,
+disallowed by `robots.txt`, malformed, exceeds its configured safety cap, or
+unexpectedly produces zero relevant United States jobs. If a live source's
+declared result count changes during pagination, the retrieved jobs remain
+eligible for a partial update but that source is automatically marked
+incomplete and cannot close missing jobs. Repeated requisitions across pages
+also make a snapshot incomplete, protecting against shifting or unstable sort
+orders. The public jobs page still does not consume these files.
+
 ## Ingest format
 
 Input may be an array or an object with a `postings` array:
