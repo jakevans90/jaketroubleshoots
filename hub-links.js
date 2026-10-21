@@ -3,6 +3,14 @@
 // checks hub JSONs for matching entries with exists: true,
 // and wraps the text in a clickable link to the hub page.
 
+const hubLinksScriptUrl = new URL(document.currentScript.src, document.baseURI);
+if (!document.querySelector('script[data-mobile-header]')) {
+  const mobileHeaderScript = document.createElement('script');
+  mobileHeaderScript.src = new URL('mobile-header.js', hubLinksScriptUrl).href;
+  mobileHeaderScript.dataset.mobileHeader = '';
+  document.head.appendChild(mobileHeaderScript);
+}
+
 (async function () {
   // ── Find the three device info paragraphs ──
   // They follow <h3> tags with these exact text values

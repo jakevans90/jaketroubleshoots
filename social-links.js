@@ -29,6 +29,13 @@
   const scriptUrl = new URL(document.currentScript.src, document.baseURI);
   const iconBaseUrl = new URL('images/social/', scriptUrl);
 
+  if (!document.querySelector('script[data-mobile-header]')) {
+    const mobileHeaderScript = document.createElement('script');
+    mobileHeaderScript.src = new URL('mobile-header.js', scriptUrl).href;
+    mobileHeaderScript.dataset.mobileHeader = '';
+    document.head.appendChild(mobileHeaderScript);
+  }
+
   function addSocialLinks() {
     const footer = document.querySelector('footer');
     if (!footer || footer.querySelector('.footer-social')) return;

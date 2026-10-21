@@ -4222,6 +4222,61 @@ html body #pm-grid:has(> .pm-card:only-child) {
     --collection-columns: 1;
   }
 
+  header {
+    transition:
+      min-height var(--transition),
+      padding var(--transition),
+      gap var(--transition),
+      box-shadow var(--transition);
+  }
+
+  header .site-logo,
+  header .site-icon,
+  header .logo-text,
+  header .site-primary-nav {
+    transition:
+      width var(--transition),
+      max-width var(--transition),
+      max-height var(--transition),
+      gap var(--transition),
+      opacity var(--transition);
+  }
+
+  header .logo-text {
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  header.mobile-header--compact {
+    min-height: 56px;
+    padding: 4px 8px;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+  }
+
+  header.mobile-header--compact .site-logo {
+    flex: 0 0 auto;
+    min-width: 42px;
+    min-height: 44px;
+    gap: 0;
+    justify-content: center;
+  }
+
+  header.mobile-header--compact .site-icon {
+    width: 42px;
+    max-width: 42px;
+    max-height: 28px;
+    object-fit: contain;
+  }
+
+  header.mobile-header--compact .logo-text {
+    max-width: 0;
+    opacity: 0;
+  }
+
   #section-tips {
     grid-template-columns: minmax(0, 1fr) !important;
   }
@@ -4232,6 +4287,14 @@ html body #pm-grid:has(> .pm-card:only-child) {
     justify-content: space-between;
   }
 
+  header.mobile-header--compact .site-primary-nav {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    gap: 2px;
+  }
+
   .site-primary-nav > a,
   .site-nav-more summary {
     display: inline-flex;
@@ -4240,6 +4303,12 @@ html body #pm-grid:has(> .pm-card:only-child) {
     margin: 0;
     padding: 8px 3px;
     font-size: .9rem;
+  }
+
+  header.mobile-header--compact .site-primary-nav > a,
+  header.mobile-header--compact .site-nav-more summary {
+    padding-inline: 2px;
+    font-size: clamp(.72rem, 2.8vw, .82rem);
   }
 
   .universal-search-input-row,
