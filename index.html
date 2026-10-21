@@ -8,7 +8,7 @@
 
   <meta name="description" content="A searchable biomedical equipment troubleshooting guide database and biomed resource site for BMETs, clinical engineers, HTM departments, and healthcare technology staff. Find guides by device, model, manufacturer, alarm, error, or issue.">
 
-  <link rel="stylesheet" href="style.css?v=20260920-2">
+  <link rel="stylesheet" href="style.css?v=20261021-1">
 
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
@@ -44,7 +44,7 @@
       <summary>More</summary>
       <div class="site-nav-menu">
         <a href="biomed-education-certifications.html">Education &amp; Certifications</a>
-        <a href="biomed-jobs.html">Biomed Jobs</a>
+        <a href="biomed-jobs.html">HTM Jobs &amp; Hiring Pulse</a>
         <a href="vendors.html">Vendors</a>
         <a href="index.html#biomed-quiz">Biomed Quiz</a>
         <a href="contact.html">About &amp; Contact</a>
@@ -176,6 +176,28 @@
   </div>
 </section>
 
+<section class="homepage-section home-hiring-pulse-section" aria-labelledby="home-hiring-pulse-heading">
+  <div class="home-hiring-pulse-card">
+    <div class="home-hiring-pulse-copy">
+      <p class="section-kicker">Live Career Snapshot</p>
+      <h3 id="home-hiring-pulse-heading">HTM Hiring Pulse</h3>
+      <p>Current HTM openings and a growing snapshot of the hiring market, collected from tracked employer career sites.</p>
+      <a href="biomed-jobs.html" class="learning-button">Explore HTM Jobs</a>
+    </div>
+
+    <div class="home-hiring-pulse-snapshot">
+      <!-- hiring-pulse-home:start -->
+      <p class="home-hiring-pulse-status" id="home-hiring-pulse-status">Latest published snapshot · Updated October 21, 2026</p>
+      <div class="home-hiring-pulse-metrics" aria-label="HTM Hiring Pulse summary" aria-live="polite">
+        <div><strong id="home-pulse-active">357</strong><span>Active postings</span></div>
+        <div><strong id="home-pulse-employers">7</strong><span>Tracked employers</span></div>
+        <div><strong id="home-pulse-states">40</strong><span>States represented</span></div>
+      </div>
+      <!-- hiring-pulse-home:end -->
+    </div>
+  </div>
+</section>
+
 <section id="biomed-quiz" class="homepage-section quiz-bridge-section">
   <div class="quiz-bridge-copy">
     <p class="section-kicker">Put the Knowledge to Work</p>
@@ -208,9 +230,9 @@
       <div class="hero-buttons"><a href="biomed-education-certifications.html" class="hero-button">Explore Education Paths</a></div>
     </div>
     <div class="resource-card">
-      <p class="section-kicker">Find Opportunities</p><h3>Biomed Job Search Hub</h3>
-      <p>Search BMET, clinical engineering, HTM, imaging service, and medical equipment field service roles more effectively.</p>
-      <div class="hero-buttons"><a href="biomed-jobs.html" class="hero-button">Find Biomed Jobs</a></div>
+      <p class="section-kicker">Find Opportunities</p><h3>HTM Jobs &amp; Hiring Pulse</h3>
+      <p>Search current BMET, clinical engineering, imaging, field service, and dialysis openings, then explore the tracked hiring snapshot.</p>
+      <div class="hero-buttons"><a href="biomed-jobs.html" class="hero-button">Explore HTM Jobs</a></div>
     </div>
     <div class="resource-card">
       <p class="section-kicker">On-the-Job Resource</p><h3>Vendor Contact Rolodex</h3>
@@ -442,6 +464,36 @@ function renderFeaturedBiomedArticles(articles) {
   });
 }
 
+async function refreshHomeHiringPulse() {
+  const status = document.getElementById('home-hiring-pulse-status');
+  const active = document.getElementById('home-pulse-active');
+  const employers = document.getElementById('home-pulse-employers');
+  const states = document.getElementById('home-pulse-states');
+  if (!status || !active || !employers || !states) return;
+
+  try {
+    const response = await fetch('data/htm-hiring-pulse-public.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const snapshot = await response.json();
+    const summary = snapshot?.summary;
+    const values = [summary?.activePostings, summary?.employersRepresented, summary?.statesRepresented];
+    if (snapshot?.availability !== 'available' || values.some(value => !Number.isInteger(value) || value < 0)) {
+      throw new Error('Invalid Hiring Pulse snapshot');
+    }
+
+    active.textContent = summary.activePostings.toLocaleString('en-US');
+    employers.textContent = summary.employersRepresented.toLocaleString('en-US');
+    states.textContent = summary.statesRepresented.toLocaleString('en-US');
+    const updated = snapshot.lastUpdated ? new Date(snapshot.lastUpdated) : null;
+    status.textContent = updated && !Number.isNaN(updated.getTime())
+      ? `Current snapshot · Updated ${updated.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+      : 'Current Hiring Pulse snapshot';
+  } catch (error) {
+    // Keep the generated snapshot visible when the live data request is unavailable.
+    status.textContent = status.textContent.replace('Current snapshot', 'Latest published snapshot');
+  }
+}
+
 // Override renderGuides globally so guide cards can show asset icons
 const originalRenderGuides = window.renderGuides;
 
@@ -485,6 +537,8 @@ window.renderGuides = function(containerId, guides) {
 };
 
 // ── Homepage data + render ────────────────────────────────────────────────────
+refreshHomeHiringPulse();
+
 Promise.all([
   fetchGuides(),
   fetch('data/hub-asset.json').then(r => r.json()),

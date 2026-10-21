@@ -1,15 +1,16 @@
 # HTM jobs: staged static data
 
 The jobs hub stays at `biomed-jobs.html`. It uses the shared theme plus isolated
-`jobs.css` and `jobs.js`. No database, API keys, scheduled collector, account, or
-new production dependency is required.
+`jobs.css` and `jobs.js`. No database, API key, account, or new production
+dependency is required to display the public data.
 
 ## What is live in this stage
 
 The page provides role/location searches, a filterable employer directory,
-career guidance, and an explicitly unmeasured Hiring Pulse. Direct links and
-the Indeed GET form work without JavaScript. JavaScript adds LinkedIn/Google
-query building, employer filtering, and disclosure expansion for old anchors.
+career guidance, and a current Hiring Pulse based on verified collected
+postings. Direct links, the static Pulse summary, and the Indeed GET form work
+without JavaScript. JavaScript adds LinkedIn/Google query building, employer
+filtering, the current-opening explorer, and disclosure expansion for old anchors.
 The existing analytics, advertising, social links, canonical URL, and original
 20 search shortcuts are preserved.
 
@@ -30,12 +31,42 @@ Search-shortcut IDs use `indeed-search-`, `linkedin-search-`, or `google-search-
 prefixes to select the generated group. Extend the generator and page markup
 together before introducing another board. Avoid hand-editing generated HTML.
 
-## Individual postings, when collection begins
+## Public Hiring Pulse snapshot
 
-`data/jobs.json` intentionally starts with `coverage_status: "not_started"`,
-`updated_at: null`, and empty `jobs` and `observations` arrays. It is not loaded
-by the page yet. Empty here means not measured, not zero market vacancies.
-Do not seed it with demonstration jobs or infer records from career links.
+The authoritative operator datasets remain in `data/htm-hiring-pulse/`.
+`tools/build_hiring_pulse_public.py` validates those records and generates
+`data/htm-hiring-pulse-public.json`, which contains only the fields needed for
+the public opening explorer. It excludes observations, collection checks,
+source configuration, and description snippets. The same build updates the
+marked static summary and coverage block in `biomed-jobs.html`.
+
+Run the build after a reviewed collection update:
+
+```sh
+python tools/build_hiring_pulse_public.py
+python tools/build_hiring_pulse_public.py --check
+```
+
+The snapshot publishes active postings only, requires unique IDs and HTTPS
+canonical URLs, and derives all counts from those records. The browser filters
+by employer, employer type, normalized role category, state, title/keyword, and
+remote status.
+Missing salary and employer-posted dates remain absent rather than inferred.
+If the source data is invalid, the build stops. If there are no active records,
+the page receives an unavailable state rather than a row of misleading zeros.
+
+The Hiring Pulse is an observed sample of the employers named on the page. It
+is not a total-market count, and employer/state/role breakdowns are not market
+share. First observed means when this system first recorded a posting, not when
+the employer originally published it. Do not add change or trend claims until
+there is a sufficiently long, comparable history with stable source coverage.
+
+## Legacy staged jobs dataset
+
+`data/jobs.json` is the original staged prototype and is not loaded by the page.
+The live Hiring Pulse uses `data/htm-hiring-pulse/` and its generated public
+snapshot. Do not seed the legacy file with demonstration jobs or infer records
+from career links.
 
 `data/jobs.schema.json` documents the version 1 contract:
 
@@ -96,7 +127,8 @@ Never describe this convenience sample as the entire HTM labor market.
 ```sh
 python tools/build_job_sources.py --check
 python tools/validate_jobs.py
-python -m unittest discover -s tests -p test_jobs_data.py
+python tools/build_hiring_pulse_public.py --check
+python -m unittest discover -s tests
 node --test tests/test_jobs_ui.js
 ```
 

@@ -21,6 +21,14 @@ class HiringPulseTests(unittest.TestCase):
         source = ROOT / MODULE.DATA_DIR
         for filename in MODULE.FILES.values():
             (destination / filename).write_bytes((source / filename).read_bytes())
+        for name in ("employers", "postings", "observations"):
+            path = destination / MODULE.FILES[name]
+            value = json.loads(path.read_text(encoding="utf-8"))
+            value["updatedAt"] = None
+            value["records"] = []
+            if name == "observations":
+                value["checks"] = []
+            path.write_bytes(MODULE.render_json(value))
 
     def tearDown(self):
         self.temporary.cleanup()
@@ -76,6 +84,12 @@ class HiringPulseTests(unittest.TestCase):
         self.assertEqual(2, summary["newlyObservedJobs"])
         self.assertEqual({"count": 1, "states": ["PA"]}, summary["statesRepresented"])
         self.assertEqual("bmet", summary["roleCategories"][0]["id"])
+
+    def test_pilot_titles_use_specific_role_categories(self):
+        taxonomy = MODULE.load_store(self.root)["taxonomy"]
+        self.assertEqual("imaging-service", MODULE.classify_role("Biomedical Imaging Technician", taxonomy))
+        self.assertEqual("leadership", MODULE.classify_role("Technical Service Manager", taxonomy))
+        self.assertEqual("clinical-engineering", MODULE.classify_role("Biomed Program Coordinator", taxonomy))
 
     def test_dry_run_does_not_write(self):
         input_path = self.root / "input.json"
