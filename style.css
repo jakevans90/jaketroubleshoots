@@ -4223,53 +4223,69 @@ html body #pm-grid:has(> .pm-card:only-child) {
   }
 
   header {
+    display: block;
+    height: 158px;
+    padding: 0;
+    gap: 0;
     transition:
-      min-height var(--transition),
-      padding var(--transition),
-      gap var(--transition),
-      box-shadow var(--transition);
+      height .28s cubic-bezier(.22, .61, .36, 1),
+      box-shadow .28s ease;
   }
 
-  header .site-logo,
-  header .site-icon,
-  header .logo-text,
-  header .site-primary-nav {
+  header .site-logo {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    width: calc(100% - 40px);
+    max-width: 280px;
+    height: 60px;
     transition:
-      width var(--transition),
-      max-width var(--transition),
-      max-height var(--transition),
-      gap var(--transition),
-      opacity var(--transition);
+      top .28s cubic-bezier(.22, .61, .36, 1),
+      left .28s cubic-bezier(.22, .61, .36, 1),
+      width .28s cubic-bezier(.22, .61, .36, 1),
+      max-width .28s cubic-bezier(.22, .61, .36, 1),
+      height .28s cubic-bezier(.22, .61, .36, 1),
+      gap .28s ease;
+  }
+
+  header .site-icon {
+    width: 90px;
+    height: 60px;
+    object-fit: contain;
+    transition:
+      width .28s cubic-bezier(.22, .61, .36, 1),
+      height .28s cubic-bezier(.22, .61, .36, 1),
+      max-height .28s cubic-bezier(.22, .61, .36, 1);
   }
 
   header .logo-text {
     max-width: 180px;
     overflow: hidden;
     white-space: nowrap;
+    transition:
+      max-width .2s ease,
+      opacity .16s ease;
   }
 
   header.mobile-header--compact {
-    min-height: 56px;
-    padding: 4px 8px;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
+    height: 56px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
   }
 
   header.mobile-header--compact .site-logo {
-    flex: 0 0 auto;
-    min-width: 42px;
-    min-height: 44px;
+    top: 4px;
+    left: 8px;
+    width: 42px;
+    max-width: 42px;
+    height: 44px;
     gap: 0;
     justify-content: center;
   }
 
   header.mobile-header--compact .site-icon {
     width: 42px;
-    max-width: 42px;
+    height: 28px;
     max-height: 28px;
-    object-fit: contain;
   }
 
   header.mobile-header--compact .logo-text {
@@ -4282,15 +4298,26 @@ html body #pm-grid:has(> .pm-card:only-child) {
   }
 
   .site-primary-nav {
-    width: 100%;
+    position: absolute;
+    top: 95px;
+    right: 20px;
+    left: 20px;
+    width: auto;
     gap: 4px;
     justify-content: space-between;
+    transition:
+      top .28s cubic-bezier(.22, .61, .36, 1),
+      right .28s cubic-bezier(.22, .61, .36, 1),
+      left .28s cubic-bezier(.22, .61, .36, 1),
+      gap .28s ease;
   }
 
   header.mobile-header--compact .site-primary-nav {
+    top: 4px;
+    right: 8px;
+    left: 56px;
     width: auto;
     min-width: 0;
-    flex: 1 1 auto;
     flex-wrap: nowrap;
     gap: 2px;
   }
