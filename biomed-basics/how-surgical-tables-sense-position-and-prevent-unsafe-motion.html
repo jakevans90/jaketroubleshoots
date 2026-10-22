@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Surgical Tables Sense Position and Prevent Unsafe Motion | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how powered surgical tables use actuators, position sensors, brakes, interlocks, and software limits to coordinate motion and prevent unsafe geometry.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-surgical-tables-sense-position-and-prevent-unsafe-motion.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How Surgical Tables Sense Position and Prevent Unsafe Motion</h1>
+  <p>How a powered surgical table uses actuators, position sensors, brakes, interlocks, and software limits to move a patient precisely without allowing one axis to create an unsafe geometry somewhere else</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A powered surgical table can move in ways that look almost effortless.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page covers:</p>
+    <ul>
+      <li>Powered surgical-table motion</li>
+      <li>Electric and electrohydraulic systems</li>
+      <li>Actuators</li>
+      <li>Hydraulic cylinders</li>
+      <li>Motors</li>
+      <li>Pumps</li>
+      <li>Solenoid valves</li>
+      <li>Brakes</li>
+      <li>Position sensors</li>
+      <li>Potentiometers</li>
+      <li>Encoders</li>
+      <li>Limit switches</li>
+      <li>Trendelenburg</li>
+      <li>Lateral tilt</li>
+      <li>Back and leg sections</li>
+      <li>Height</li>
+      <li>Longitudinal slide</li>
+      <li>Zero / level position</li>
+      <li>Auto-level</li>
+      <li>Collision prevention</li>
+      <li>Stability limits</li>
+      <li>Patient-load effects</li>
+      <li>Battery operation</li>
+      <li>Hand controls</li>
+      <li>Common troubleshooting clues</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A powered surgical table moves through a combination of motors, actuators, or hydraulic components controlled by an electronic motion controller. When the user presses a button, the control system first decides whether that motion is permitted. If safety conditions are satisfied, it energizes the appropriate actuator, pump, valve, or brake-release mechanism.</p>
+    <p>The table also needs position feedback. Sensors report the angle or position of the tabletop, column, back section, slide, and other moving components. The controller compares the requested movement with the measured position and stops the axis when the target or travel limit is reached. On more advanced systems, software also watches the relationship between multiple table sections so one motion cannot drive another part into an unsafe or unstable geometry.</p>
+    <p>A table-motion complaint can therefore originate in the hand control, command wiring, brake, motor, hydraulic path, actuator, position sensor, limit switch, power system, or software interlock. Preserve which axis fails, whether the control command is recognized, whether the actuator makes noise, whether position feedback changes, whether the failure occurs only under patient load, and whether manual and automatic functions behave differently before replacing a drive component.</p>
+  </section>
+
+  <section class="content-box" id="a-surgical-table-is-a-load-bearing-motion-system">
+    <h3>A Surgical Table Is a Load-Bearing Motion System</h3>
+    <p>Unlike a simple motorized device, a surgical table moves:</p>
+    <p>A patient.</p>
+  </section>
+
+  <section class="content-box" id="that-changes-everything">
+    <h3>That changes everything.</h3>
+    <p>The table has to move smoothly.</p>
+    <p>It has to hold position.</p>
+    <p>It has to remain mechanically stable.</p>
+    <p>And it has to do those things under significant load.</p>
+  </section>
+
+  <section class="content-box" id="common-movements">
+    <h3>Common Movements</h3>
+    <p>Depending on model, a table may provide:</p>
+    <ul>
+      <li>Height</li>
+      <li>Trendelenburg</li>
+      <li>Reverse Trendelenburg</li>
+      <li>Lateral tilt</li>
+      <li>Back up/down</li>
+      <li>Leg up/down</li>
+      <li>Kidney/elevator motion</li>
+      <li>Longitudinal slide</li>
+      <li>Flex</li>
+      <li>Reflex</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="each-axis-has-its-own-mechanics">
+    <h3>Each Axis Has Its Own Mechanics</h3>
+
+  </section>
+
+  <section class="content-box" id="one-axis-failing-does-not-mean-the-whole-table-is-bad">
+    <h3>One Axis Failing Does Not Mean the Whole Table Is Bad</h3>
+
+  </section>
+
+  <section class="content-box" id="electric-tables">
+    <h3>Electric Tables</h3>
+    <p>Some tables use electric linear actuators.</p>
+  </section>
+
+  <section class="content-box" id="linear-actuator">
+    <h3>Linear Actuator</h3>
+    <p>Motor rotation is converted into:</p>
+    <p>Linear movement.</p>
+  </section>
+
+  <section class="content-box" id="possible-mechanisms">
+    <h3>Possible Mechanisms</h3>
+    <ul>
+      <li>Lead screw</li>
+      <li>Ball screw</li>
+      <li>Gear train</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="actuator-extends-or-retracts">
+    <h3>Actuator Extends or Retracts</h3>
+    <p>That moves a table section.</p>
+  </section>
+
+  <section class="content-box" id="electrohydraulic-tables">
+    <h3>Electrohydraulic Tables</h3>
+    <p>Other tables use:</p>
+    <ul>
+      <li>Electric motor</li>
+      <li>Hydraulic pump</li>
+      <li>Hydraulic valves</li>
+      <li>Cylinders</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="motor-creates-hydraulic-pressure">
+    <h3>Motor Creates Hydraulic Pressure</h3>
+
+  </section>
+
+  <section class="content-box" id="valve-directs-fluid">
+    <h3>Valve Directs Fluid</h3>
+
+  </section>
+
+  <section class="content-box" id="cylinder-moves">
+    <h3>Cylinder Moves</h3>
+
+  </section>
+
+  <section class="content-box" id="different-architecture-same-control-idea">
+    <h3>Different Architecture, Same Control Idea</h3>
+    <p>Command movement.</p>
+    <p>Measure position.</p>
+    <p>Stop at target.</p>
+  </section>
+
+  <section class="content-box" id="hydraulic-pressure-is-not-position">
+    <h3>Hydraulic Pressure Is Not Position</h3>
+    <p>Important distinction.</p>
+    <p>A hydraulic system can produce pressure without actually moving the table if:</p>
+    <ul>
+      <li>Mechanical binding exists</li>
+      <li>Valve is wrong</li>
+      <li>Load exceeds capability</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="electric-current-is-not-position-either">
+    <h3>Electric Current Is Not Position Either</h3>
+    <p>A motor drawing current does not prove:</p>
+    <p>The section moved.</p>
+  </section>
+
+  <section class="content-box" id="this-is-why-position-feedback-matters">
+    <h3>This Is Why Position Feedback Matters</h3>
+
+  </section>
+
+  <section class="content-box" id="hand-control">
+    <h3>Hand Control</h3>
+    <p>The hand pendant is often the most visible control device.</p>
+  </section>
+
+  <section class="content-box" id="user-presses">
+    <h3>User Presses</h3>
+    <p>Trendelenburg.</p>
+  </section>
+
+  <section class="content-box" id="what-happens-electrically">
+    <h3>What Happens Electrically?</h3>
+    <p>The pendant sends a command to:</p>
+    <p>The table controller.</p>
+  </section>
+
+  <section class="content-box" id="it-usually-does-not-directly-power-the-actuator">
+    <h3>It Usually Does Not Directly power the actuator</h3>
+
+  </section>
+
+  <section class="content-box" id="command-signal">
+    <h3>Command Signal</h3>
+    <p>May be:</p>
+    <ul>
+      <li>Discrete switch</li>
+      <li>Encoded serial message</li>
+      <li>Networked control signal</li>
+    </ul>
+    <p>depending on table.</p>
+  </section>
+
+  <section class="content-box" id="pendant-cable">
+    <h3>Pendant Cable</h3>
+    <p>One of the most abused parts of the system.</p>
+  </section>
+
+  <section class="content-box" id="it-gets">
+    <h3>It gets:</h3>
+    <ul>
+      <li>Pulled</li>
+      <li>Wrapped</li>
+      <li>Rolled over</li>
+      <li>Pinched</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="intermittent-conductor">
+    <h3>Intermittent Conductor</h3>
+    <p>Can create:</p>
+    <p>One button works sometimes.</p>
+  </section>
+
+  <section class="content-box" id="before-replacing-a-main-board">
+    <h3>Before Replacing a Main Board</h3>
+    <p>Try a known-good pendant when appropriate.</p>
+  </section>
+
+  <section class="content-box" id="foot-controls">
+    <h3>Foot Controls</h3>
+    <p>Some surgical tables also accept:</p>
+    <p>Footswitches.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>Different control path.</p>
+  </section>
+
+  <section class="content-box" id="pendant-fails-footswitch-works">
+    <h3>Pendant Fails, Footswitch Works</h3>
+    <p>Very useful isolation.</p>
+  </section>
+
+  <section class="content-box" id="pendant-recognized">
+    <h3>Pendant Recognized?</h3>
+    <p>Some systems detect:</p>
+    <p>Control connected.</p>
+  </section>
+
+  <section class="content-box" id="recognition-does-not-prove-every-button-works">
+    <h3>Recognition Does Not Prove every button works.</h3>
+
+  </section>
+
+  <section class="content-box" id="button-matrix">
+    <h3>Button Matrix</h3>
+    <p>One failed switch can affect:</p>
+    <p>One function.</p>
+  </section>
+
+  <section class="content-box" id="multiple-buttons-share-circuit">
+    <h3>Multiple Buttons Share Circuit</h3>
+    <p>A common conductor fault can affect several commands.</p>
+  </section>
+
+  <section class="content-box" id="motion-controller">
+    <h3>Motion Controller</h3>
+    <p>The controller interprets the command.</p>
+  </section>
+
+  <section class="content-box" id="before-moving">
+    <h3>Before Moving</h3>
+    <p>It may check:</p>
+    <ul>
+      <li>Battery condition</li>
+      <li>Brake status</li>
+      <li>Position limits</li>
+      <li>Other section positions</li>
+      <li>Load/stability conditions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="if-any-required-condition-fails">
+    <h3>If Any Required Condition Fails</h3>
+    <p>Motion is blocked.</p>
+  </section>
+
+  <section class="content-box" id="this-is-an-interlock">
+    <h3>This Is an Interlock</h3>
+    <p>Not necessarily a broken actuator.</p>
+  </section>
+
+  <section class="content-box" id="column">
+    <h3>Column</h3>
+    <p>The column supports the tabletop.</p>
+  </section>
+
+  <section class="content-box" id="height-motion">
+    <h3>Height Motion</h3>
+    <p>May use:</p>
+    <ul>
+      <li>Hydraulic cylinder</li>
+      <li>Electric actuator</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="large-loads">
+    <h3>Large Loads</h3>
+    <p>Height motion often works against gravity.</p>
+  </section>
+
+  <section class="content-box" id="up-vs-down-are-different-mechanical-conditions">
+    <h3>Up vs Down Are Different Mechanical Conditions</h3>
+
+  </section>
+
+  <section class="content-box" id="raise-table">
+    <h3>Raise Table</h3>
+    <p>Requires lifting patient weight.</p>
+  </section>
+
+  <section class="content-box" id="lower-table">
+    <h3>Lower Table</h3>
+    <p>May use gravity with controlled resistance.</p>
+  </section>
+
+  <section class="content-box" id="therefore">
+    <h3>Therefore</h3>
+    <p>Table may lower normally but fail to raise under load.</p>
+  </section>
+
+  <section class="content-box" id="that-pattern-suggests">
+    <h3>That pattern suggests:</h3>
+    <p>Insufficient lifting force</p>
+    <p>rather than general position-sensor failure.</p>
+  </section>
+
+  <section class="content-box" id="load-dependent-failure">
+    <h3>Load-Dependent Failure</h3>
+    <p>Extremely valuable.</p>
+  </section>
+
+  <section class="content-box" id="empty-table">
+    <h3>Empty Table</h3>
+    <p>Raises normally.</p>
+  </section>
+
+  <section class="content-box" id="250-lb-load">
+    <h3>250-lb load</h3>
+    <p>Struggles or faults.</p>
+  </section>
+
+  <section class="content-box" id="possible-areas">
+    <h3>Possible areas</h3>
+    <ul>
+      <li>Weak pump</li>
+      <li>Hydraulic leak</li>
+      <li>Worn actuator</li>
+      <li>Low battery</li>
+      <li>Mechanical binding</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="trendelenburg">
+    <h3>Trendelenburg</h3>
+    <p>Trendelenburg tilts the table so the head is lower than the feet.</p>
+  </section>
+
+  <section class="content-box" id="reverse-trendelenburg">
+    <h3>Reverse Trendelenburg</h3>
+    <p>Opposite direction.</p>
+  </section>
+
+  <section class="content-box" id="tilt-mechanism">
+    <h3>Tilt Mechanism</h3>
+    <p>May use:</p>
+    <p>One or more actuators or hydraulic cylinders.</p>
+  </section>
+
+  <section class="content-box" id="angle-sensor">
+    <h3>Angle Sensor</h3>
+    <p>Controller needs to know the actual tilt angle.</p>
+  </section>
+
+  <section class="content-box" id="position-feedback">
+    <h3>Position Feedback</h3>
+    <p>Could come from:</p>
+    <ul>
+      <li>Potentiometer</li>
+      <li>Encoder</li>
+      <li>Inclinometer</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="potentiometer">
+    <h3>Potentiometer</h3>
+    <p>Mechanical movement changes resistance.</p>
+  </section>
+
+  <section class="content-box" id="controller-converts-voltage-into-position">
+    <h3>Controller Converts Voltage Into Position</h3>
+
+  </section>
+
+  <section class="content-box" id="wear">
+    <h3>Wear</h3>
+    <p>Repeated motion can create dead spots.</p>
+  </section>
+
+  <section class="content-box" id="symptom">
+    <h3>Symptom</h3>
+    <p>Angle reading jumps at one position.</p>
+  </section>
+
+  <section class="content-box" id="motion-may-stop-there">
+    <h3>Motion May Stop There</h3>
+    <p>because controller no longer trusts the feedback.</p>
+  </section>
+
+  <section class="content-box" id="encoder">
+    <h3>Encoder</h3>
+    <p>Can measure:</p>
+    <p>Rotation or linear position.</p>
+  </section>
+
+  <section class="content-box" id="incremental-encoder">
+    <h3>Incremental Encoder</h3>
+    <p>Counts movement.</p>
+  </section>
+
+  <section class="content-box" id="absolute-encoder">
+    <h3>Absolute Encoder</h3>
+    <p>Reports a specific position.</p>
+  </section>
+
+  <section class="content-box" id="inclinometer">
+    <h3>Inclinometer</h3>
+    <p>Measures orientation relative to gravity.</p>
+  </section>
+
+  <section class="content-box" id="useful-for-level">
+    <h3>Useful for Level</h3>
+
+  </section>
+
+  <section class="content-box" id="auto-level">
+    <h3>Auto-Level</h3>
+    <p>Many tables offer:</p>
+    <p><strong>Level</strong></p>
+    <p>or:</p>
+    <p><strong>Zero</strong></p>
+    <p>function.</p>
+  </section>
+
+  <section class="content-box" id="user-presses-one-button">
+    <h3>User presses one button.</h3>
+
+  </section>
+
+  <section class="content-box" id="table-automatically-returns-several-axes-to-neutral">
+    <h3>Table automatically returns several axes to neutral.</h3>
+
+  </section>
+
+  <section class="content-box" id="this-requires-more-than-motors">
+    <h3>This Requires More Than Motors</h3>
+    <p>Controller must know:</p>
+    <p>Current position of each axis.</p>
+  </section>
+
+  <section class="content-box" id="if-one-sensor-is-wrong">
+    <h3>If one sensor is wrong</h3>
+    <p>Auto-level may fail even though manual movement still works.</p>
+  </section>
+
+  <section class="content-box" id="this-is-a-great-diagnostic-pattern">
+    <h3>This Is a Great Diagnostic Pattern</h3>
+    <p>Manual axis control:</p>
+    <p>Works.</p>
+    <p>Auto-level:</p>
+    <p>Fails.</p>
+  </section>
+
+  <section class="content-box" id="think">
+    <h3>Think:</h3>
+    <p>Position feedback / calibration / interlock</p>
+    <p>before:</p>
+    <p>Bad motor.</p>
+  </section>
+
+  <section class="content-box" id="neutral-position">
+    <h3>Neutral Position</h3>
+    <p>The displayed:</p>
+    <p>0°</p>
+    <p>is based on sensor calibration.</p>
+  </section>
+
+  <section class="content-box" id="physical-table-could-be-tilted">
+    <h3>Physical Table Could Be Tilted</h3>
+    <p>while display says:</p>
+    <p>0°.</p>
+  </section>
+
+  <section class="content-box" id="then-you-have">
+    <h3>Then you have:</h3>
+    <p>Position measurement problem.</p>
+  </section>
+
+  <section class="content-box" id="not-necessarily-motion-problem">
+    <h3>Not necessarily motion problem.</h3>
+
+  </section>
+
+  <section class="content-box" id="independent-angle-measurement">
+    <h3>Independent Angle Measurement</h3>
+    <p>A calibrated digital level or OEM fixture can verify actual angle.</p>
+  </section>
+
+  <section class="content-box" id="compare">
+    <h3>Compare</h3>
+    <p>Table display:</p>
+    <p>0°.</p>
+    <p>Reference:</p>
+    <p>3.2°.</p>
+  </section>
+
+  <section class="content-box" id="now-there-is-objective-evidence">
+    <h3>Now there is objective evidence.</h3>
+
+  </section>
+
+  <section class="content-box" id="back-section">
+    <h3>Back Section</h3>
+    <p>The back section often pivots independently.</p>
+  </section>
+
+  <section class="content-box" id="actuator">
+    <h3>Actuator</h3>
+    <p>Raises or lowers.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-hinges">
+    <h3>Mechanical Hinges</h3>
+    <p>Carry significant load.</p>
+  </section>
+
+  <section class="content-box" id="back-section-works-unloaded-but-not-with-weight">
+    <h3>Back Section Works Unloaded but Not With Weight</h3>
+    <p>Again:</p>
+    <p>Load issue.</p>
+  </section>
+
+  <section class="content-box" id="gas-springs-counterbalance">
+    <h3>Gas Springs / Counterbalance</h3>
+    <p>Some designs use mechanical assistance.</p>
+  </section>
+
+  <section class="content-box" id="failure-can-increase-actuator-load">
+    <h3>Failure can increase actuator load.</h3>
+
+  </section>
+
+  <section class="content-box" id="leg-sections">
+    <h3>Leg Sections</h3>
+    <p>May be powered or manual.</p>
+  </section>
+
+  <section class="content-box" id="powered-legs">
+    <h3>Powered Legs</h3>
+    <p>Need position sensing just like other axes.</p>
+  </section>
+
+  <section class="content-box" id="split-leg-tables">
+    <h3>Split-leg tables</h3>
+    <p>Can have independent left/right sections.</p>
+  </section>
+
+  <section class="content-box" id="one-side-fails">
+    <h3>One side fails</h3>
+    <p>Now the failure is localized.</p>
+  </section>
+
+  <section class="content-box" id="longitudinal-slide">
+    <h3>Longitudinal Slide</h3>
+    <p>The tabletop may slide toward:</p>
+    <p>Head</p>
+    <p>or:</p>
+    <p>Foot.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Improve imaging access.</p>
+  </section>
+
+  <section class="content-box" id="but-slide-changes-center-of-gravity">
+    <h3>But slide changes center of gravity.</h3>
+
+  </section>
+
+  <section class="content-box" id="stability-becomes-critical">
+    <h3>Stability Becomes Critical</h3>
+
+  </section>
+
+  <section class="content-box" id="extended-slide">
+    <h3>Extended Slide</h3>
+    <p>Moves patient mass away from column center.</p>
+  </section>
+
+  <section class="content-box" id="at-some-point">
+    <h3>At Some Point</h3>
+    <p>Certain tilt or height combinations may become unsafe.</p>
+  </section>
+
+  <section class="content-box" id="software-interlocks">
+    <h3>Software Interlocks</h3>
+    <p>Controller prevents them.</p>
+  </section>
+
+  <section class="content-box" id="user-says">
+    <h3>User Says</h3>
+    <blockquote><p>Trendelenburg won't work.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="table-may-be-functioning-exactly-as-designed">
+    <h3>Table may be functioning exactly as designed</h3>
+    <p>because the top is fully translated.</p>
+  </section>
+
+  <section class="content-box" id="return-slide-toward-center">
+    <h3>Return Slide Toward Center</h3>
+    <p>Motion becomes available.</p>
+  </section>
+
+  <section class="content-box" id="this-is-not-a-fault">
+    <h3>This Is Not a fault.</h3>
+
+  </section>
+
+  <section class="content-box" id="stability-envelope">
+    <h3>Stability Envelope</h3>
+    <p>Advanced tables operate within a permitted combination of:</p>
+    <ul>
+      <li>Patient weight</li>
+      <li>Slide</li>
+      <li>Tilt</li>
+      <li>Height</li>
+      <li>Section positions</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="controller-enforces-that-envelope">
+    <h3>Controller Enforces That envelope.</h3>
+
+  </section>
+
+  <section class="content-box" id="maximum-weight-is-not-one-simple-number">
+    <h3>Maximum Weight Is Not One Simple Number</h3>
+    <p>Some tables have different load ratings for:</p>
+    <ul>
+      <li>Normal orientation</li>
+      <li>Reverse orientation</li>
+      <li>Extreme articulation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="follow-manufacturer-instructions">
+    <h3>Follow manufacturer instructions.</h3>
+
+  </section>
+
+  <section class="content-box" id="collision-prevention">
+    <h3>Collision Prevention</h3>
+    <p>The table can also collide with itself.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Back section lowered.</p>
+    <p>Leg section raised.</p>
+    <p>Base or column nearby.</p>
+  </section>
+
+  <section class="content-box" id="software-knows-approximate-geometry">
+    <h3>Software knows approximate geometry.</h3>
+
+  </section>
+
+  <section class="content-box" id="it-may-stop-motion-before-contact">
+    <h3>It may stop motion before contact.</h3>
+
+  </section>
+
+  <section class="content-box" id="this-is-similar-to-c-arm-collision-logic">
+    <h3>This is similar to C-arm collision logic</h3>
+    <p>but within the table.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-limit-switch">
+    <h3>Mechanical Limit Switch</h3>
+    <p>A physical switch may mark end of travel.</p>
+  </section>
+
+  <section class="content-box" id="software-limit">
+    <h3>Software Limit</h3>
+    <p>Position sensor also defines allowable range.</p>
+  </section>
+
+  <section class="content-box" id="why-both">
+    <h3>Why Both?</h3>
+    <p>Safety redundancy.</p>
+  </section>
+
+  <section class="content-box" id="limit-switch-stuck-active">
+    <h3>Limit Switch Stuck Active</h3>
+    <p>One direction may stop working.</p>
+  </section>
+
+  <section class="content-box" id="opposite-direction-may-still-work">
+    <h3>Opposite direction may still work.</h3>
+
+  </section>
+
+  <section class="content-box" id="this-is-a-useful-pattern">
+    <h3>This is a useful pattern.</h3>
+
+  </section>
+
+  <section class="content-box" id="hard-stop-vs-soft-limit">
+    <h3>Hard Stop vs Soft Limit</h3>
+    <p>Hard stop:</p>
+    <p>Physical end of travel.</p>
+  </section>
+
+  <section class="content-box" id="soft-limit">
+    <h3>Soft limit:</h3>
+    <p>Controller stops before the mechanical end.</p>
+  </section>
+
+  <section class="content-box" id="if-position-calibration-drifts">
+    <h3>If position calibration drifts</h3>
+    <p>The soft limit may occur too early.</p>
+  </section>
+
+  <section class="content-box" id="complaint">
+    <h3>Complaint</h3>
+    <blockquote><p>It doesn't go as far as the other table.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="could-be">
+    <h3>Could be:</h3>
+    <ul>
+      <li>Calibration</li>
+      <li>Encoder offset</li>
+      <li>Mechanical obstruction</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-simply-extend-limits">
+    <h3>Do not simply extend limits.</h3>
+
+  </section>
+
+  <section class="content-box" id="find-why-the-system-thinks-it-reached-the-boundary">
+    <h3>Find why the system thinks it reached the boundary.</h3>
+
+  </section>
+
+  <section class="content-box" id="brakes">
+    <h3>Brakes</h3>
+    <p>Some tables have:</p>
+    <ul>
+      <li>Floor locks</li>
+      <li>Casters</li>
+      <li>Column brakes</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="mobile-base">
+    <h3>Mobile Base</h3>
+    <p>Must be secured before patient positioning.</p>
+  </section>
+
+  <section class="content-box" id="brake-interlock">
+    <h3>Brake Interlock</h3>
+    <p>Table may refuse articulation unless:</p>
+    <p>Base is locked.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>Stability.</p>
+  </section>
+
+  <section class="content-box" id="brake-sensor">
+    <h3>Brake Sensor</h3>
+    <p>Reports:</p>
+    <p>Locked / unlocked.</p>
+  </section>
+
+  <section class="content-box" id="brake-physically-locked">
+    <h3>Brake Physically Locked</h3>
+    <p>but sensor says unlocked.</p>
+  </section>
+
+  <section class="content-box" id="motion-inhibited">
+    <h3>Motion inhibited.</h3>
+
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again:</h3>
+    <p>Reported state vs actual state.</p>
+  </section>
+
+  <section class="content-box" id="floor-locks">
+    <h3>Floor Locks</h3>
+    <p>May be hydraulic or mechanical.</p>
+  </section>
+
+  <section class="content-box" id="power-failure">
+    <h3>Power Failure</h3>
+    <p>Could leave table:</p>
+    <p>Locked</p>
+    <p>or:</p>
+    <p>Require manual release</p>
+    <p>depending on design.</p>
+  </section>
+
+  <section class="content-box" id="emergency-release">
+    <h3>Emergency Release</h3>
+    <p>Some tables have manual functions.</p>
+  </section>
+
+  <section class="content-box" id="these-are-for-specific-conditions">
+    <h3>These are for specific conditions</h3>
+    <p>and should not be used casually during troubleshooting.</p>
+  </section>
+
+  <section class="content-box" id="battery-operation">
+    <h3>Battery Operation</h3>
+    <p>Surgical tables often rely heavily on batteries.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>They may be:</p>
+    <ul>
+      <li>Moved between rooms</li>
+      <li>Used without constant AC connection</li>
+      <li>Expected to function during power interruption</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="battery-powers-motion">
+    <h3>Battery Powers Motion</h3>
+    <p>Motors and hydraulic pumps can draw substantial current.</p>
+  </section>
+
+  <section class="content-box" id="battery-can-pass-idle-voltage-test">
+    <h3>Battery Can Pass Idle Voltage Test</h3>
+    <p>and fail under load.</p>
+  </section>
+
+  <section class="content-box" id="classic-pattern">
+    <h3>Classic Pattern</h3>
+    <p>Table turns on.</p>
+    <p>Display normal.</p>
+    <p>Unloaded motion works.</p>
+    <p>Under patient load:</p>
+    <p>Voltage collapses.</p>
+  </section>
+
+  <section class="content-box" id="load-test-matters">
+    <h3>Load Test Matters</h3>
+
+  </section>
+
+  <section class="content-box" id="battery-state-of-charge">
+    <h3>Battery State of Charge</h3>
+    <p>Different from:</p>
+    <p>Battery state of health.</p>
+  </section>
+
+  <section class="content-box" id="fully-charged-old-battery">
+    <h3>Fully charged old battery</h3>
+    <p>can still have poor capacity or high internal resistance.</p>
+  </section>
+
+  <section class="content-box" id="charger">
+    <h3>Charger</h3>
+    <p>If charger fails:</p>
+    <p>Table may slowly become unreliable.</p>
+  </section>
+
+  <section class="content-box" id="users-may-report">
+    <h3>Users may report:</h3>
+    <p>Works better after being plugged in all night.</p>
+  </section>
+
+  <section class="content-box" id="useful-clue">
+    <h3>Useful clue.</h3>
+
+  </section>
+
+  <section class="content-box" id="ac-operation">
+    <h3>AC Operation</h3>
+    <p>Some tables may allow motion while connected to line power.</p>
+  </section>
+
+  <section class="content-box" id="others-use-line-power-mainly-for-charging">
+    <h3>Others use line power mainly for charging.</h3>
+
+  </section>
+
+  <section class="content-box" id="know-the-architecture">
+    <h3>Know the architecture.</h3>
+
+  </section>
+
+  <section class="content-box" id="hydraulic-pump">
+    <h3>Hydraulic Pump</h3>
+    <p>In electrohydraulic tables:</p>
+    <p>Pump builds pressure.</p>
+  </section>
+
+  <section class="content-box" id="shared-pump">
+    <h3>Shared Pump</h3>
+    <p>May serve multiple axes.</p>
+  </section>
+
+  <section class="content-box" id="one-axis-bad-others-good">
+    <h3>One axis bad, others good</h3>
+    <p>Shared pump probably works at least somewhat.</p>
+  </section>
+
+  <section class="content-box" id="problem-becomes-more-likely">
+    <h3>Problem becomes more likely:</h3>
+    <ul>
+      <li>Axis valve</li>
+      <li>Cylinder</li>
+      <li>Hose</li>
+      <li>Position sensor</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="all-hydraulic-axes-weak">
+    <h3>All hydraulic axes weak</h3>
+    <p>Pump or supply becomes more interesting.</p>
+  </section>
+
+  <section class="content-box" id="solenoid-valve">
+    <h3>Solenoid Valve</h3>
+    <p>Controller energizes a valve to direct hydraulic fluid.</p>
+  </section>
+
+  <section class="content-box" id="valve-stuck-closed">
+    <h3>Valve Stuck Closed</h3>
+    <p>Axis does not move.</p>
+  </section>
+
+  <section class="content-box" id="valve-stuck-open-leaking">
+    <h3>Valve Stuck Open / leaking</h3>
+    <p>Axis may drift.</p>
+  </section>
+
+  <section class="content-box" id="internal-valve-leakage">
+    <h3>Internal Valve Leakage</h3>
+    <p>Can cause:</p>
+    <p>Table slowly loses position.</p>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>Back section gradually falls over 20 minutes.</p>
+  </section>
+
+  <section class="content-box" id="could-be">
+    <h3>Could be:</h3>
+    <p>Hydraulic leakage</p>
+    <p>rather than position-sensor problem.</p>
+  </section>
+
+  <section class="content-box" id="cylinder-seal-leak">
+    <h3>Cylinder Seal Leak</h3>
+    <p>Internal fluid bypass</p>
+    <p>can allow motion under load.</p>
+  </section>
+
+  <section class="content-box" id="external-leak">
+    <h3>External Leak</h3>
+    <p>Visible hydraulic fluid.</p>
+  </section>
+
+  <section class="content-box" id="any-leak-needs-controlled-evaluation">
+    <h3>Any leak needs controlled evaluation.</h3>
+
+  </section>
+
+  <section class="content-box" id="do-not-simply-top-off-fluid">
+    <h3>Do Not Simply Top Off Fluid</h3>
+    <p>Find the leak source.</p>
+  </section>
+
+  <section class="content-box" id="hydraulic-fluid-level">
+    <h3>Hydraulic Fluid Level</h3>
+    <p>Low fluid can produce:</p>
+    <ul>
+      <li>Cavitation</li>
+      <li>Weak movement</li>
+      <li>Noise</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="air-in-hydraulic-system">
+    <h3>Air in Hydraulic System</h3>
+    <p>Can create:</p>
+    <ul>
+      <li>Jerky motion</li>
+      <li>Spongy response</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="bleeding-procedures-are-manufacturer-specific">
+    <h3>Bleeding procedures are manufacturer-specific.</h3>
+
+  </section>
+
+  <section class="content-box" id="electric-linear-actuator">
+    <h3>Electric Linear Actuator</h3>
+    <p>Electrical tables avoid hydraulic fluid.</p>
+  </section>
+
+  <section class="content-box" id="but-actuator-screw-and-gear-systems-can-wear">
+    <h3>But actuator screw and gear systems can wear.</h3>
+
+  </section>
+
+  <section class="content-box" id="increased-mechanical-resistance">
+    <h3>Increased Mechanical Resistance</h3>
+    <p>Raises motor current.</p>
+  </section>
+
+  <section class="content-box" id="controller-may-trip-overcurrent">
+    <h3>Controller May Trip overcurrent.</h3>
+
+  </section>
+
+  <section class="content-box" id="actuator-temperature">
+    <h3>Actuator Temperature</h3>
+    <p>Repeated motion can heat motor.</p>
+  </section>
+
+  <section class="content-box" id="thermal-protection-may-temporarily-disable-an-axis">
+    <h3>Thermal protection may temporarily disable an axis.</h3>
+
+  </section>
+
+  <section class="content-box" id="works-again-after-cooling">
+    <h3>Works Again After Cooling</h3>
+    <p>Important clue.</p>
+  </section>
+
+  <section class="content-box" id="duty-cycle">
+    <h3>Duty Cycle</h3>
+    <p>Some table actuators are not designed for continuous operation.</p>
+  </section>
+
+  <section class="content-box" id="repeated-bench-cycling">
+    <h3>Repeated bench cycling</h3>
+    <p>can create faults that would not occur in normal use.</p>
+  </section>
+
+  <section class="content-box" id="do-not-torture-test-the-table">
+    <h3>Do not torture-test the table.</h3>
+
+  </section>
+
+  <section class="content-box" id="motor-current-monitoring">
+    <h3>Motor Current Monitoring</h3>
+    <p>Controller may monitor actuator current.</p>
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>High current can indicate:</p>
+    <ul>
+      <li>Stall</li>
+      <li>Collision</li>
+      <li>Excess load</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="current-spike">
+    <h3>Current Spike</h3>
+    <p>Motion stops.</p>
+  </section>
+
+  <section class="content-box" id="this-can-serve-as-another-protection-layer">
+    <h3>This can serve as another protection layer.</h3>
+
+  </section>
+
+  <section class="content-box" id="but-mechanical-binding-can-look-like-collision">
+    <h3>But mechanical binding can look like collision</h3>
+    <p>because both create high current.</p>
+  </section>
+
+  <section class="content-box" id="position-sensor-feedback">
+    <h3>Position Sensor Feedback</h3>
+    <p>Suppose motor runs.</p>
+  </section>
+
+  <section class="content-box" id="section-moves">
+    <h3>Section moves.</h3>
+    <p>But sensor value does not change.</p>
+  </section>
+
+  <section class="content-box" id="controller-sees">
+    <h3>Controller sees:</h3>
+    <p>Commanded movement without position response.</p>
+  </section>
+
+  <section class="content-box" id="it-may-stop">
+    <h3>It may stop.</h3>
+
+  </section>
+
+  <section class="content-box" id="complaint">
+    <h3>Complaint</h3>
+    <blockquote><p>Moves an inch and quits.</p></blockquote>
+  </section>
+
+  <section class="content-box" id="very-similar-to-c-arm-feedback-faults">
+    <h3>Very similar to C-arm feedback faults.</h3>
+
+  </section>
+
+  <section class="content-box" id="sensor-connector">
+    <h3>Sensor Connector</h3>
+    <p>Can loosen during motion.</p>
+  </section>
+
+  <section class="content-box" id="harness-flex">
+    <h3>Harness Flex</h3>
+    <p>especially through hinges.</p>
+  </section>
+
+  <section class="content-box" id="position-dependent-intermittent">
+    <h3>Position-Dependent Intermittent</h3>
+    <p>Back section works until:</p>
+    <p>30°.</p>
+    <p>Then faults.</p>
+  </section>
+
+  <section class="content-box" id="suspect-cable-path-sensor-region">
+    <h3>Suspect cable path / sensor region.</h3>
+
+  </section>
+
+  <section class="content-box" id="harness-damage">
+    <h3>Harness Damage</h3>
+    <p>Moving table sections repeatedly bend wires.</p>
+  </section>
+
+  <section class="content-box" id="visual-inspection-can-reveal">
+    <h3>Visual inspection can reveal:</h3>
+    <ul>
+      <li>Pinching</li>
+      <li>Chafing</li>
+      <li>Crushed harness</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="cable-can-test-good-while-stationary">
+    <h3>Cable can test good while stationary</h3>
+    <p>and fail when articulated.</p>
+  </section>
+
+  <section class="content-box" id="reproduce-with-movement-carefully">
+    <h3>Reproduce with movement carefully.</h3>
+
+  </section>
+
+  <section class="content-box" id="tabletop-modules">
+    <h3>Tabletop Modules</h3>
+    <p>Some systems use removable or interchangeable tabletops.</p>
+  </section>
+
+  <section class="content-box" id="table-recognizes-module">
+    <h3>Table Recognizes Module</h3>
+    <p>through electrical or mechanical identification.</p>
+  </section>
+
+  <section class="content-box" id="wrong-module-state">
+    <h3>Wrong Module State</h3>
+    <p>Can restrict movement.</p>
+  </section>
+
+  <section class="content-box" id="accessory-detection">
+    <h3>Accessory Detection</h3>
+    <p>Certain accessories may change permitted motion.</p>
+  </section>
+
+  <section class="content-box" id="for-example">
+    <h3>For example</h3>
+    <p>Imaging extensions or specialty tops.</p>
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again</h3>
+    <p>Software interlock can look like mechanical failure.</p>
+  </section>
+
+  <section class="content-box" id="reverse-orientation">
+    <h3>Reverse Orientation</h3>
+    <p>Some tables allow patient orientation to be reversed.</p>
+  </section>
+
+  <section class="content-box" id="the-controller-may-need-to-know-which-orientation-is-selected">
+    <h3>The controller may need to know which orientation is selected.</h3>
+
+  </section>
+
+  <section class="content-box" id="why">
+    <h3>Why?</h3>
+    <p>The stability calculations change.</p>
+  </section>
+
+  <section class="content-box" id="wrong-orientation-configuration">
+    <h3>Wrong orientation configuration</h3>
+    <p>could cause:</p>
+    <ul>
+      <li>Motion restrictions</li>
+      <li>Incorrect limits</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="do-not-bypass-those-controls">
+    <h3>Do not bypass those controls.</h3>
+
+  </section>
+
+  <section class="content-box" id="remote-ir-control">
+    <h3>Remote / IR Control</h3>
+    <p>Some tables offer wireless controls.</p>
+  </section>
+
+  <section class="content-box" id="wireless-failure">
+    <h3>Wireless Failure</h3>
+    <p>Could come from:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Pairing</li>
+      <li>Receiver</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="wired-pendant-works">
+    <h3>Wired pendant works</h3>
+    <p>Table mechanics are probably fine.</p>
+  </section>
+
+  <section class="content-box" id="useful-split">
+    <h3>Useful split.</h3>
+
+  </section>
+
+  <section class="content-box" id="status-display">
+    <h3>Status Display</h3>
+    <p>May show:</p>
+    <ul>
+      <li>Angles</li>
+      <li>Battery</li>
+      <li>Locks</li>
+      <li>Orientation</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="display-values-are-sensor-derived">
+    <h3>Display Values Are Sensor-Derived</h3>
+    <p>not independent physical measurements.</p>
+  </section>
+
+  <section class="content-box" id="same-rule">
+    <h3>Same rule:</h3>
+    <p>Screen says 20°.</p>
+    <p>That is a report.</p>
+  </section>
+
+  <section class="content-box" id="external-measurement-proves-actual-angle">
+    <h3>External Measurement Proves actual angle.</h3>
+
+  </section>
+
+  <section class="content-box" id="trendelenburg-calibration">
+    <h3>Trendelenburg Calibration</h3>
+    <p>OEM procedure may define:</p>
+    <p>How to verify angle at several points.</p>
+  </section>
+
+  <section class="content-box" id="one-point-zero-check-is-not-enough">
+    <h3>One-Point Zero Check Is Not Enough</h3>
+    <p>Sensor can have:</p>
+    <ul>
+      <li>Offset error</li>
+      <li>Scale error</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="example">
+    <h3>Example</h3>
+    <p>0° accurate.</p>
+    <p>20° command produces 17°.</p>
+  </section>
+
+  <section class="content-box" id="span-issue">
+    <h3>Span issue.</h3>
+
+  </section>
+
+  <section class="content-box" id="longitudinal-slide-measurement">
+    <h3>Longitudinal Slide Measurement</h3>
+    <p>Use specified measurement reference.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-play">
+    <h3>Mechanical play</h3>
+    <p>can affect repeatability.</p>
+  </section>
+
+  <section class="content-box" id="repeated-position">
+    <h3>Repeated Position</h3>
+    <p>Move away.</p>
+    <p>Return.</p>
+    <p>Measure again.</p>
+  </section>
+
+  <section class="content-box" id="poor-repeatability">
+    <h3>Poor Repeatability</h3>
+    <p>Suggests:</p>
+    <ul>
+      <li>Backlash</li>
+      <li>Encoder</li>
+      <li>Brake</li>
+      <li>Mechanical wear</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="weight-capacity-testing">
+    <h3>Weight Capacity Testing</h3>
+    <p>Do not improvise with people.</p>
+  </section>
+
+  <section class="content-box" id="use-manufacturer-approved-load-methods">
+    <h3>Use manufacturer-approved load methods.</h3>
+
+  </section>
+
+  <section class="content-box" id="controlled-test-load">
+    <h3>Controlled Test Load</h3>
+    <p>Safer and repeatable.</p>
+  </section>
+
+  <section class="content-box" id="motion-speed">
+    <h3>Motion Speed</h3>
+    <p>Tables may intentionally move more slowly:</p>
+    <ul>
+      <li>Near limits</li>
+      <li>Under certain loads</li>
+      <li>During precision mode</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="slow-does-not-necessarily-mean-weak">
+    <h3>Slow does not necessarily mean weak.</h3>
+
+  </section>
+
+  <section class="content-box" id="compare-with-specification">
+    <h3>Compare with specification.</h3>
+
+  </section>
+
+  <section class="content-box" id="motion-speed-suddenly-changes">
+    <h3>Motion Speed Suddenly Changes</h3>
+    <p>Then investigate:</p>
+    <ul>
+      <li>Battery</li>
+      <li>Hydraulic pressure</li>
+      <li>Motor</li>
+      <li>control mode</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="floor-level">
+    <h3>Floor Level</h3>
+    <p>Uneven floor can affect perceived table level.</p>
+  </section>
+
+  <section class="content-box" id="inclinometer-sensor">
+    <h3>Inclinometer Sensor</h3>
+    <p>May report true gravitational level.</p>
+  </section>
+
+  <section class="content-box" id="tabletop-physically-appears-different-relative-to-room-structures">
+    <h3>Tabletop physically appears different relative to room structures.</h3>
+
+  </section>
+
+  <section class="content-box" id="use-proper-reference">
+    <h3>Use proper reference.</h3>
+
+  </section>
+
+  <section class="content-box" id="mechanical-deflection">
+    <h3>Mechanical Deflection</h3>
+    <p>Loaded tabletop can flex slightly.</p>
+  </section>
+
+  <section class="content-box" id="sensor-may-measure-actuator-angle">
+    <h3>Sensor may measure actuator angle</h3>
+    <p>while far end deflects under load.</p>
+  </section>
+
+  <section class="content-box" id="manufacturer-tolerances-account-for-load-behavior">
+    <h3>Manufacturer tolerances account for load behavior.</h3>
+
+  </section>
+
+  <section class="content-box" id="calibration-without-load">
+    <h3>Calibration Without Load</h3>
+    <p>does not necessarily describe every loaded condition.</p>
+  </section>
+
+  <section class="content-box" id="emergency-stop">
+    <h3>Emergency Stop</h3>
+    <p>Some tables include E-stop or emergency-stop behavior.</p>
+  </section>
+
+  <section class="content-box" id="active-e-stop">
+    <h3>Active E-stop</h3>
+    <p>May disable powered movement.</p>
+  </section>
+
+  <section class="content-box" id="display-may-remain-on">
+    <h3>Display may remain on.</h3>
+
+  </section>
+
+  <section class="content-box" id="again">
+    <h3>Again:</h3>
+    <p>Power-on does not prove motion enable.</p>
+  </section>
+
+  <section class="content-box" id="release-reset-sequence">
+    <h3>Release / Reset Sequence</h3>
+    <p>may be required.</p>
+  </section>
+
+  <section class="content-box" id="internal-self-test">
+    <h3>Internal Self-Test</h3>
+    <p>At startup, table may check:</p>
+    <ul>
+      <li>Sensors</li>
+      <li>Batteries</li>
+      <li>Control communication</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="passing-self-test">
+    <h3>Passing self-test</h3>
+    <p>does not prove:</p>
+    <ul>
+      <li>Full load movement</li>
+      <li>Hydraulic holding</li>
+      <li>Position accuracy</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="external-functional-testing-still-matters">
+    <h3>External functional testing still matters.</h3>
+
+  </section>
+
+  <section class="content-box" id="network-or-integration">
+    <h3>Network / OR Integration</h3>
+    <p>Some advanced tables may communicate with:</p>
+    <ul>
+      <li>Imaging systems</li>
+      <li>OR integration</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="communication-can-coordinate-position">
+    <h3>Communication can coordinate position.</h3>
+
+  </section>
+
+  <section class="content-box" id="network-failure">
+    <h3>Network failure</h3>
+    <p>may disable synchronized functions</p>
+    <p>without affecting manual table motion.</p>
+  </section>
+
+  <section class="content-box" id="keep-core-table-failure-separate-from-integration-failure">
+    <h3>Keep core table failure separate from integration failure.</h3>
+
+  </section>
+
+  <section class="content-box" id="imaging-tables">
+    <h3>Imaging Tables</h3>
+    <p>Some surgical tables integrate with:</p>
+    <ul>
+      <li>C-arm</li>
+      <li>Navigation</li>
+      <li>Robotics</li>
+    </ul>
+  </section>
+
+  <section class="content-box" id="position-accuracy-becomes-even-more-important">
+    <h3>Position accuracy becomes even more important.</h3>
+
+  </section>
+
+  <section class="content-box" id="the-system-may-share">
+    <h3>The system may share:</h3>
+    <ul>
+      <li>Table coordinates</li>
+      <li>Orientation</li>
+    </ul>
+    <p>with other equipment.</p>
+  </section>
+
+  <section class="content-box" id="wrong-table-position-data">
+    <h3>Wrong table position data</h3>
+    <p>can become:</p>
+    <p>Navigation or imaging error.</p>
+  </section>
+
+  <section class="content-box" id="this-is-no-longer-just-convenience">
+    <h3>This is no longer just convenience.</h3>
+
+  </section>
+
+  <section class="content-box" id="real-world-example-one-function-dead">
+    <h3>Real-World Example: One Function Dead</h3>
+    <p>Height, tilt, and slide all work.</p>
+    <p>Back-up does nothing.</p>
+    <p>Control command is recognized.</p>
+    <p>Back actuator does not energize.</p>
+    <p>Drive output for that channel is absent.</p>
+    <p>Shared power and battery are clearly functional.</p>
+    <p>The fault is axis-specific.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-works-empty-fails-with-patient-load">
+    <h3>Real-World Example: Works Empty, Fails With Patient Load</h3>
+    <p>Table raises normally with no load.</p>
+    <p>Under test load:</p>
+    <p>Pump runs but height rises very slowly and then faults.</p>
+    <p>Hydraulic pressure is below specification.</p>
+    <p>The position sensor is reporting correctly.</p>
+    <p>This is a force-generation problem.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-auto-level-fails">
+    <h3>Real-World Example: Auto-Level Fails</h3>
+    <p>Every axis can be moved manually.</p>
+    <p>Pressing level causes immediate error.</p>
+    <p>Trendelenburg sensor reports 8° while independent level shows 0°.</p>
+    <p>Auto-level logic will not trust the incorrect position feedback.</p>
+    <p>Motor replacement would be pointless.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-trendelenburg-suddenly-unavailable">
+    <h3>Real-World Example: Trendelenburg Suddenly Unavailable</h3>
+    <p>Table is fully longitudinally translated with a heavy load.</p>
+    <p>Controller blocks additional tilt.</p>
+    <p>Returning the tabletop toward center restores the function.</p>
+    <p>The table is protecting its stability envelope.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-back-section-slowly-falls">
+    <h3>Real-World Example: Back Section Slowly Falls</h3>
+    <p>Back section reaches position normally.</p>
+    <p>No alarm.</p>
+    <p>Over several minutes under load:</p>
+    <p>Section gradually drifts downward.</p>
+    <p>Position sensor accurately reports the drift.</p>
+    <p>Hydraulic internal leakage becomes far more likely than sensor failure.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-motion-fails-at-same-angle">
+    <h3>Real-World Example: Motion Fails at Same Angle</h3>
+    <p>Back section moves normally until approximately 35°.</p>
+    <p>Then faults every time.</p>
+    <p>Sensor harness is damaged at hinge and opens only when flexed to that position.</p>
+    <p>The repeatable angle is the clue.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Replacing an actuator because an axis will not move.</strong> The command, brake, interlock, valve, or sensor may be blocking the motion.</p>
+    <p><strong>Assuming a powered table that moves unloaded is fully functional.</strong> Load-dependent failures are common and meaningful.</p>
+    <p><strong>Treating a software motion restriction as a failure.</strong> Some combinations of slide, tilt, and patient load are intentionally prohibited.</p>
+    <p><strong>Trusting displayed angle without independent verification.</strong> The display is only as accurate as the sensor and calibration.</p>
+    <p><strong>Ignoring the hand-control cable.</strong> Pendant and harness faults can mimic controller failures.</p>
+    <p><strong>Calibrating around mechanical or hydraulic drift.</strong> Calibration does not repair a leaking cylinder or worn actuator.</p>
+    <p><strong>Ignoring battery condition because the table powers on.</strong> Motion loads can expose weak batteries immediately.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-surgical-table-framework">
+    <h3>A Useful Surgical-Table Framework</h3>
+    <p>Think:</p>
+    <p><strong>User Command</strong></p>
+    <p>↓</p>
+    <p><strong>Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Safety / Stability / Limit Check</strong></p>
+    <p>↓</p>
+    <p><strong>Brake Release</strong></p>
+    <p>↓</p>
+    <p><strong>Motor / Pump / Valve / Actuator</strong></p>
+    <p>↓</p>
+    <p><strong>Physical Motion</strong></p>
+    <p>↓</p>
+    <p><strong>Position Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Controller Feedback</strong></p>
+    <p>↓</p>
+    <p><strong>Target Position / Stop</strong></p>
+    <p>Around that chain:</p>
+    <p><strong>Battery + Patient Load + Mechanical Stability + Collision Logic</strong></p>
+    <p>determine whether motion is permitted and sustainable.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Was the command recognized?</strong></p>
+    <p>Then:</p>
+    <p><strong>Was motion permitted?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did the actuator receive power or hydraulic pressure?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did the table physically move?</strong></p>
+    <p>Then:</p>
+    <p><strong>Did the position sensor report that movement accurately?</strong></p>
+    <p>That sequence separates control, safety logic, power, mechanics, and feedback.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the table moves:</p>
+    <p>You proved:</p>
+    <p><strong>The control and drive system can create some movement under that condition.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Position accurate</li>
+      <li>Full range available</li>
+      <li>Load capacity normal</li>
+    </ul>
+    <p>If the display says:</p>
+    <p>0°,</p>
+    <p>you proved:</p>
+    <p><strong>The table's position sensor/control system reports zero.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <p>The tabletop is physically level.</p>
+    <p>If the table passes angle, travel, holding, load, brake, battery, and required safety-interlock tests:</p>
+    <p>You have much stronger evidence that the complete motion system is functioning correctly under those conditions.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A surgical table is not just furniture with motors.</p>
+    <p>It is a coordinated motion-control system carrying a patient.</p>
+    <p>The control tells an axis to move.</p>
+    <p>The brake releases.</p>
+    <p>The motor or hydraulic system produces force.</p>
+    <p>The table section moves.</p>
+    <p>The sensor reports its new position.</p>
+    <p>The controller decides when to stop.</p>
+    <p>At the same time, software is asking:</p>
+    <p><strong>Is this movement still safe?</strong></p>
+    <p>Is the table too far translated?</p>
+    <p>Is the load too high?</p>
+    <p>Is another section in the way?</p>
+    <p>Is the base locked?</p>
+    <p>Is the requested angle within the stability envelope?</p>
+    <p>That means:</p>
+    <blockquote><p>It won't move.</p></blockquote>
+    <p>is only the start of the diagnosis.</p>
+    <p>The useful question is:</p>
+    <p><strong>Why did the table decide that movement should not happen?</strong></p>
+    <p>Was there no command?</p>
+    <p>Was there no force?</p>
+    <p>Was there too much load?</p>
+    <p>Did the sensor fail to report movement?</p>
+    <p>Or did the table intentionally protect itself and the patient?</p>
+    <p>Once you separate those possibilities, surgical-table troubleshooting becomes much more logical.</p>
+    <p>And when the display says the table is:</p>
+    <p><strong>Level,</strong></p>
+    <p>remember the rule that applies to every measured system:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Surgical-table actuator designs, hydraulic systems, motor drives, position sensors, brakes, battery architecture, stability limits, collision logic, patient-load ratings, orientation rules, calibration procedures, and acceptable motion tolerances vary significantly by manufacturer and model. Surgical tables contain heavy powered assemblies capable of causing serious injury if movement occurs unexpectedly. Follow current OEM documentation, approved load and motion-testing procedures, lockout requirements, facility policy, and authorized service scope when evaluating surgical-table motion or safety systems.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-device-self-tests-detect-failures.html">How Device Self-Tests Detect Failures</a></li>
+      <li><a href="medical-device-alarm-troubleshooting-fundamentals.html">Medical Device Alarm Troubleshooting Fundamentals</a></li>
+      <li><a href="how-to-troubleshoot-medical-device-accessories.html">How to Troubleshoot Medical Device Accessories</a></li>
+      <li><a href="how-touchscreens-work-in-medical-equipment.html">How Touchscreens Work in Medical Equipment</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>

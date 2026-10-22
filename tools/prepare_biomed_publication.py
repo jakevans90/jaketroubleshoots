@@ -181,6 +181,8 @@ RELATED = {
     "how-bone-densitometry-dexa-works": ["how-an-x-ray-generator-creates-high-voltage-and-controls-an-exposure", "how-flat-panel-x-ray-detectors-turn-x-rays-into-images", "how-x-ray-automatic-exposure-control-works", "how-anti-scatter-grids-work-in-x-ray-imaging", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-electrosurgical-units-generate-and-monitor-energy": ["how-electrosurgical-return-electrode-monitoring-works", "electrical-safety-testing-medical-equipment", "electrical-safety-analyzer-basics", "how-to-choose-the-right-test-equipment", "medical-device-alarm-troubleshooting-fundamentals"],
     "how-pneumatic-tourniquet-systems-regulate-pressure": ["how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-forced-air-patient-warmers-control-temperature": ["how-temperature-probes-and-thermistors-work", "how-medical-device-cooling-systems-work", "fans-filters-and-overheating", "medical-device-alarm-troubleshooting-fundamentals", "sensors-and-transducers-basics"],
+    "how-surgical-tables-sense-position-and-prevent-unsafe-motion": ["sensors-and-transducers-basics", "how-device-self-tests-detect-failures", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-touchscreens-work-in-medical-equipment"],
 }
 
 ARTICLE_CONFIG = {
@@ -1112,6 +1114,20 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Surgical Equipment",
         "cardNote": "Cuff inflation, pressure regulation, valves, leak compensation, monitoring, and safety alarms",
+    },
+    "how-forced-air-patient-warmers-control-temperature": {
+        "description": "A practical explanation of how forced-air patient warmers heat and move air, monitor temperature and airflow, limit overheating, and detect heater, hose, blanket, and sensor problems.",
+        "category": "How Medical Equipment Works",
+        "badge": "Patient Warming",
+        "cardNote": "Heaters, blowers, airflow, temperature sensing, hoses, blankets, and overtemperature protection",
+        "plannedTitles": ["How Patient Warmers Control Temperature"],
+    },
+    "how-surgical-tables-sense-position-and-prevent-unsafe-motion": {
+        "description": "A practical explanation of how powered surgical tables use actuators, position sensors, brakes, interlocks, and software limits to coordinate motion and prevent unsafe geometry.",
+        "category": "How Medical Equipment Works",
+        "badge": "Surgical Tables",
+        "cardNote": "Actuators, position sensors, brakes, interlocks, software limits, and coordinated table motion",
+        "plannedTitles": ["How Surgical Tables Sense Position and Prevent Motion"],
     },
 }
 
