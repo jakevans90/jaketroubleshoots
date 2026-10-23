@@ -183,6 +183,8 @@ RELATED = {
     "how-pneumatic-tourniquet-systems-regulate-pressure": ["how-medical-equipment-measures-pressure", "how-ventilator-pressure-sensors-work", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-forced-air-patient-warmers-control-temperature": ["how-temperature-probes-and-thermistors-work", "how-medical-device-cooling-systems-work", "fans-filters-and-overheating", "medical-device-alarm-troubleshooting-fundamentals", "sensors-and-transducers-basics"],
     "how-surgical-tables-sense-position-and-prevent-unsafe-motion": ["sensors-and-transducers-basics", "how-device-self-tests-detect-failures", "medical-device-alarm-troubleshooting-fundamentals", "how-to-troubleshoot-medical-device-accessories", "how-touchscreens-work-in-medical-equipment"],
+    "how-suction-regulators-control-vacuum": ["how-medical-equipment-measures-pressure", "how-medical-equipment-measures-flow", "how-pneumatic-tourniquet-systems-regulate-pressure", "how-to-troubleshoot-medical-device-accessories", "how-an-anesthesia-machine-performs-a-leak-test"],
+    "how-infant-incubators-control-heat-and-humidity": ["how-forced-air-patient-warmers-control-temperature", "how-temperature-probes-and-thermistors-work", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "environmental-causes-of-medical-equipment-failures"],
 }
 
 ARTICLE_CONFIG = {
@@ -1128,6 +1130,18 @@ ARTICLE_CONFIG = {
         "badge": "Surgical Tables",
         "cardNote": "Actuators, position sensors, brakes, interlocks, software limits, and coordinated table motion",
         "plannedTitles": ["How Surgical Tables Sense Position and Prevent Motion"],
+    },
+    "how-suction-regulators-control-vacuum": {
+        "description": "A practical explanation of how suction regulators reduce facility vacuum to a controlled patient vacuum and why gauge readings, flow, occlusion response, and downstream restrictions all matter.",
+        "category": "How Medical Equipment Works",
+        "badge": "Vacuum Systems",
+        "cardNote": "Wall vacuum, pressure regulation, gauges, flow, occlusion response, and downstream suction circuits",
+    },
+    "how-infant-incubators-control-heat-and-humidity": {
+        "description": "A practical explanation of how infant incubators measure air and skin temperature, circulate heated air, regulate humidity, and protect against sensor, airflow, and thermal-control failures.",
+        "category": "How Medical Equipment Works",
+        "badge": "Neonatal Care",
+        "cardNote": "Air and skin sensing, heaters, airflow, humidity, servo control, and thermal safety limits",
     },
 }
 
