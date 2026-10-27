@@ -31309,5 +31309,289 @@
             "Final successful export result",
             "Final device status"
         ]
+    },
+    {
+        "title": "GE Healthcare MAC 7 Electrocardiograph (EKG) Machine - Device Clock or Time Zone Does Not Synchronize With MUSE",
+        "description": "Troubleshoot incorrect MAC 7 date, time, or time-zone synchronization involving configuration, network access, synchronization sources, and MUSE communication.",
+        "assetType": "Electrocardiograph (EKG) Machine",
+        "manufacturer": "GE Healthcare",
+        "model": "MAC 7",
+        "url": "guides/ge-healthcare-mac-7-device-clock-or-time-zone-does-not-synchronize-with-muse.html",
+        "dateAdded": "2026-10-27",
+        "steps": [
+            {
+                "title": "1. Protect Patient Record Integrity",
+                "instructions": "An incorrect device clock can place inaccurate timestamps on ECG records and complicate patient-record matching. If the displayed time is materially incorrect and accurate timestamps cannot be assured, use another verified ECG device until the issue is resolved or an approved clinical workaround is established. Expected outcome: New ECG records are not knowingly created with unreliable timestamps."
+            },
+            {
+                "title": "2. Confirm the Exact Time Problem",
+                "instructions": "Compare the MAC 7 clock with an approved facility time reference. Determine whether the issue involves: Incorrect date. Incorrect clock time. Correct minutes but wrong hour. Incorrect time zone. Daylight-saving-time behavior. Time that resets after shutdown. Time that differs from MUSE after synchronization. Document both the displayed device time and the reference time. Expected outcome: The discrepancy is clearly defined. If the displayed time is actually correct, no corrective action is required."
+            },
+            {
+                "title": "3. Verify the Configured Time Zone",
+                "instructions": "Using authorized configuration access, verify that the MAC 7 is assigned to the intended facility time zone and related approved time settings. Do not alter time-zone settings solely to compensate for an unrelated synchronization problem. Expected outcome: The configured time zone matches the facility standard. If correcting an authorized configuration error restores the correct displayed time, verify synchronization and stop troubleshooting."
+            },
+            {
+                "title": "4. Verify Network Connectivity",
+                "instructions": "Because synchronization may depend on network services or MUSE communication, check the external network connection. For wired systems: Inspect the Ethernet cable. Reseat the connection. Check for visible connector damage. Test with a known-good approved cable or port when appropriate. For wireless systems, confirm normal connection status without modifying security credentials. Expected outcome: The MAC 7 has stable network connectivity. If restoring connectivity also restores time synchronization, verify the clock and stop troubleshooting."
+            },
+            {
+                "title": "5. Verify MUSE Communication",
+                "instructions": "Confirm whether other MUSE-dependent functions operate normally, such as approved order retrieval or ECG transmission. If all MUSE communication is unavailable, treat the clock issue as potentially part of the larger communication failure rather than as an isolated clock problem. Expected outcome: The scope of the issue is identified as time-only or part of a broader MUSE communication problem."
+            },
+            {
+                "title": "6. Compare With Another Networked Device",
+                "instructions": "Check a known-good MAC 7 or other approved system using the same infrastructure, if available. Determine whether other devices show the same time discrepancy. A shared discrepancy may indicate an infrastructure, synchronization-source, or enterprise configuration problem rather than a MAC 7 hardware problem. Expected outcome: Clinical Engineering determines whether the condition is isolated to one device or shared across the environment."
+            },
+            {
+                "title": "7. Verify Authorized Date/Time Configuration",
+                "instructions": "Review the MAC 7 date/time and synchronization configuration against the approved facility standard or a known-good device. Do not use undocumented service menus or manually override centrally managed settings without authorization. Expected outcome: The device configuration is consistent with the expected synchronization method. If an approved correction restores synchronization, monitor through a normal restart and stop troubleshooting."
+            },
+            {
+                "title": "8. Perform a Restart and Persistence Check",
+                "instructions": "When clinically appropriate, perform a normal shutdown and restart. After startup: 1. Verify the displayed date and time. 2. Confirm the configured time zone. 3. Allow normal network/MUSE communication to establish. 4. Recheck the time against the approved reference. 5. Confirm that the correction persists. Expected outcome: The MAC 7 maintains the correct date, time, and time zone after restart and synchronization. If so, troubleshooting can stop."
+            },
+            {
+                "title": "9. Verify ECG Timestamping",
+                "instructions": "Using an approved test workflow and ECG simulator when appropriate, acquire a test ECG and confirm that the timestamp associated with the record reflects the correct date and time. If MUSE transmission is part of the workflow, verify the receiving system reflects the expected timestamp. Expected outcome: Device and downstream ECG timestamps agree with the approved time reference."
+            },
+            {
+                "title": "10. Escalate Persistent Synchronization Failure",
+                "instructions": "If the MAC 7 repeatedly loses time, will not synchronize despite verified connectivity and configuration, or generates unreliable timestamps, remove it from service when accurate clinical record timing cannot be assured. Expected outcome: Unreliable timestamping is prevented from affecting clinical documentation while the problem is escalated."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Clinical staff reported that ECGs from the MAC 7 displayed timestamps one hour different from the facility and MUSE time.",
+                "Cause": "Clinical Engineering found the MAC 7 configured for the wrong time zone while network and MUSE communication were functioning normally.",
+                "Resolution": "Corrected the time-zone configuration using the approved facility setting, restarted the device, and verified correct device and transmitted ECG timestamps."
+            }
+        },
+        "helpfulDetails": [
+            "Device date and time observed.",
+            "Approved reference date and time.",
+            "Amount and direction of the discrepancy.",
+            "Configured time zone.",
+            "Whether the discrepancy returns after restart.",
+            "Network connection status.",
+            "MUSE communication status.",
+            "Whether other devices are affected.",
+            "Relevant configuration observed.",
+            "Test ECG timestamp.",
+            "Receiving-system timestamp.",
+            "Final device status."
+        ]
+    },
+    {
+        "title": "GE Healthcare MAC 7 Electrocardiograph (EKG) Machine - Downloaded MUSE Order Cannot Be Matched to the Acquired ECG",
+        "description": "Troubleshoot downloaded MUSE orders that cannot be associated with an acquired ECG, including patient-data, order-selection, network, workflow, and configuration causes.",
+        "assetType": "Electrocardiograph (EKG) Machine",
+        "manufacturer": "GE Healthcare",
+        "model": "MAC 7",
+        "url": "guides/ge-healthcare-mac-7-downloaded-muse-order-cannot-be-matched-to-the-acquired-ecg.html",
+        "dateAdded": "2026-10-27",
+        "steps": [
+            {
+                "title": "1. Protect the Patient and Preserve the ECG",
+                "instructions": "Do not delay a clinically necessary ECG while troubleshooting order matching. If the MAC 7 cannot reliably associate the study with the intended patient, use another verified workflow or device according to facility policy. Do not intentionally attach an ECG to an uncertain patient record merely to complete the workflow. Expected outcome: The patient receives required care while the questionable order or record remains isolated from clinical use."
+            },
+            {
+                "title": "2. Confirm the Exact Reported Condition",
+                "instructions": "Determine whether: The MUSE order downloads but cannot be selected for the acquired ECG. The expected order is missing. Multiple similar orders are displayed. The ECG was acquired before the correct order was selected. The problem affects one patient, several patients, or all downloaded orders. The device displays any message associated with order matching or transmission. Record the exact workflow that produced the problem. Expected outcome: The failure is narrowed to order retrieval, order selection, patient matching, ECG association, or transmission. If the correct order can now be selected and associated without ambiguity, troubleshooting can stop after verification."
+            },
+            {
+                "title": "3. Verify the Patient and Order Information",
+                "instructions": "Compare the downloaded order with the intended patient using the identifiers available in the approved clinical workflow. Check for obvious discrepancies such as: Wrong patient selected. Duplicate or similar patient records. Incorrect encounter or order selected. Missing required demographic or order information. Manually entered information that differs from the downloaded order. Do not alter patient identifiers merely to force a match. Expected outcome: The ECG and downloaded order clearly refer to the same intended patient and encounter. If correcting an obvious workflow selection resolves the problem, verify the completed record and stop troubleshooting."
+            },
+            {
+                "title": "4. Refresh the Order List Through the Normal Workflow",
+                "instructions": "Exit the affected order selection screen and perform a normal order refresh or retrieval using the authorized MAC 7 workflow. Confirm whether the intended order appears after the refresh. Avoid unauthorized service menus or configuration changes. Expected outcome: The current MUSE order list is available and the intended order can be selected. If the ECG can then be correctly associated and processed, troubleshooting can stop."
+            },
+            {
+                "title": "5. Verify Network Connectivity",
+                "instructions": "Check the MAC 7 network connection used for MUSE communication. For wired connections: Inspect the Ethernet cable and connectors. Confirm the connector is fully seated. Inspect for damaged cable ends or strain. Test with a known-good approved cable or network connection when appropriate. For wireless configurations, verify the device indicates normal network connectivity without changing security settings. Determine whether other network-dependent functions are also affected. Expected outcome: The MAC 7 has stable network connectivity. If restoring an external network connection restores order matching, verify normal operation and stop troubleshooting."
+            },
+            {
+                "title": "6. Compare With Another Known-Good Workflow",
+                "instructions": "If available, determine whether another MAC 7 or approved ECG workstation on the same clinical system can retrieve and match the same type of MUSE order. This comparison can help distinguish between: A single-device problem. A network-segment problem. A MUSE/interface problem. A patient/order-specific problem. Do not use another patient's information as a test record. Expected outcome: The comparison identifies whether the issue follows the MAC 7, the network location, or the MUSE/order workflow."
+            },
+            {
+                "title": "7. Verify Relevant Device Configuration",
+                "instructions": "Using authorized configuration access, verify the MAC 7 remains configured for the intended facility workflow, including the expected MUSE destination or order-management configuration. Compare relevant settings with a known-good equivalent device if permitted. Do not change configuration values without an approved reference or documented facility standard. Expected outcome: Required communication and workflow configuration matches the approved configuration. If an authorized correction restores matching, verify the complete workflow and stop troubleshooting."
+            },
+            {
+                "title": "8. Test With a Controlled Non-Patient Workflow",
+                "instructions": "When facility procedures and test resources allow, perform a controlled test using an approved test record or training workflow. Verify that the MAC 7 can: 1. Retrieve the intended order. 2. Select the correct record. 3. Acquire an ECG from an appropriate simulator if required. 4. Associate the acquisition with the order. 5. Complete the expected transmission or storage workflow. Do not create fictitious clinical records in a production system unless specifically authorized. Expected outcome: Order retrieval, ECG association, and downstream processing operate normally. If all functions pass, the device may be returned to service according to facility policy."
+            },
+            {
+                "title": "9. Escalate if Matching Remains Unreliable",
+                "instructions": "Remove the MAC 7 from service if patient/order association cannot be performed reliably or if there is a reasonable risk of attaching an ECG to the wrong patient record. Do not attempt internal board-level repair or unsupported changes to MUSE integration settings. Expected outcome: An unresolved patient-identification or order-matching problem is prevented from affecting clinical records and is escalated appropriately."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Clinical staff reported that a downloaded MUSE order was visible on the MAC 7 but could not be matched to the patient's acquired ECG.",
+                "Cause": "Clinical Engineering found that the wrong downloaded encounter had been selected while the correct patient order was available after refreshing the order list.",
+                "Resolution": "Selected the correct order, verified patient information, completed a controlled ECG workflow, and confirmed correct association and transmission to MUSE."
+            }
+        },
+        "helpfulDetails": [
+            "Exact order-matching symptom or displayed message.",
+            "Patient/order workflow being used.",
+            "Whether the intended order downloaded.",
+            "Whether the issue affected one or multiple patients.",
+            "Wired or wireless network status.",
+            "Cable or network connection tested.",
+            "Known-good device or location comparison.",
+            "Configuration observations.",
+            "MUSE communication status.",
+            "Results before and after correction.",
+            "Final device status."
+        ]
+    },
+    {
+        "title": "GE Healthcare MAC 7 Electrocardiograph (EKG) Machine - Local Patient/ECG Storage Is Full or Archived Records Cannot Be Retrieved",
+        "description": "Troubleshoot full local ECG storage or inaccessible archived records, including retained studies, search criteria, workflow, connectivity, configuration, and storage-management causes.",
+        "assetType": "Electrocardiograph (EKG) Machine",
+        "manufacturer": "GE Healthcare",
+        "model": "MAC 7",
+        "url": "guides/ge-healthcare-mac-7-local-patient-ecg-storage-is-full-or-archived-records-cannot-be-retrieved.html",
+        "dateAdded": "2026-10-27",
+        "steps": [
+            {
+                "title": "1. Protect Patient Care and Existing Records",
+                "instructions": "Do not delete patient ECGs solely to clear a storage warning unless retention and transmission status have been verified according to facility policy. If the MAC 7 cannot reliably save a newly acquired ECG, move clinical testing to another verified device or approved workflow. Expected outcome: Patient care continues without risking loss or inappropriate deletion of ECG records."
+            },
+            {
+                "title": "2. Confirm the Exact Storage or Retrieval Problem",
+                "instructions": "Determine whether: The device reports that local storage is full. New ECGs cannot be stored. Previously stored ECGs are missing from the expected list. A specific archived record cannot be found. All archived records are unavailable. Records appear locally but cannot be transmitted or retrieved elsewhere. Record any displayed storage or archive message exactly. Expected outcome: The issue is classified as storage capacity, local retrieval, search/filtering, transmission, or broader data-management failure."
+            },
+            {
+                "title": "3. Verify Search and Record Selection",
+                "instructions": "For an archived-record complaint, confirm the search is being performed using the correct patient and study information. Check for: Incorrect patient identifier. Incorrect date or time range. Wrong patient selected. Active filters that exclude the desired ECG. Confusion between locally stored and remotely archived records. Do not modify patient demographics merely to locate a record. Expected outcome: The correct record-selection criteria are being used. If the ECG becomes available after correcting the search or filter, verify the record and stop troubleshooting."
+            },
+            {
+                "title": "4. Determine Whether Records Are Local or Already Transmitted",
+                "instructions": "Verify whether affected ECGs are expected to reside on the MAC 7, in MUSE, or in another approved archive. Where permitted, confirm successful transmission status before performing any storage-management action. A full local store can be a workflow problem if completed ECGs are not being transferred or cleared through the approved process. Expected outcome: The expected storage location and transmission status of the records are known."
+            },
+            {
+                "title": "5. Verify Network Connectivity",
+                "instructions": "If records should be transmitted to or retrieved through MUSE, verify the external network path. Inspect: Ethernet cable and connectors when wired. Network connection indicators. Approved wireless connectivity when applicable. Whether other MUSE functions work normally. Use a known-good approved cable or connection when practical. Expected outcome: Network connectivity is stable. If restoring connectivity allows queued records to transfer or archived records to become available, verify the workflow and stop troubleshooting."
+            },
+            {
+                "title": "6. Review Local Storage Through the Normal User Workflow",
+                "instructions": "Using normal authorized controls, review the local patient/ECG record list and determine whether a large number of completed studies remain stored. Do not indiscriminately delete clinical records. Follow institutional retention and data-management requirements before removing any ECG from local storage. Expected outcome: Clinical Engineering determines whether legitimate stored data is consuming available local capacity without altering required records."
+            },
+            {
+                "title": "7. Verify Authorized Storage and Archive Configuration",
+                "instructions": "Compare relevant storage, archive, and communication settings with facility standards or a known-good MAC 7. Do not change retention rules, destinations, or record-management configuration without authorization. Expected outcome: The device is configured for the intended storage and archival workflow. If an authorized configuration correction restores normal operation, verify storage and retrieval before stopping."
+            },
+            {
+                "title": "8. Perform a Controlled Storage and Retrieval Test",
+                "instructions": "Using an approved test workflow, verify that the MAC 7 can: 1. Acquire an ECG using an ECG simulator when appropriate. 2. Store the test ECG. 3. Locate the stored ECG. 4. Transmit or archive the test ECG if required. 5. Retrieve or confirm the record through the intended workflow. Avoid creating unnecessary clinical records in production systems. Expected outcome: New records can be stored, located, and processed normally. If successful and storage capacity is no longer impaired, troubleshooting can stop."
+            },
+            {
+                "title": "9. Escalate Persistent Storage or Archive Failures",
+                "instructions": "If available capacity remains abnormal, records cannot be accessed reliably, or the MAC 7 cannot safely store new ECGs, remove the device from clinical service. Do not perform unsupported file-system manipulation, internal storage replacement, or undocumented data deletion. Expected outcome: Potential patient-data loss or inability to save new ECGs is prevented while the problem is escalated."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Clinical staff reported that the MAC 7 displayed a local storage-full condition and would not reliably save additional ECGs.",
+                "Cause": "Clinical Engineering found numerous previously transmitted ECGs remaining in local storage while network communication and MUSE transmission were operating normally.",
+                "Resolution": "Verified transmission status, followed the approved record-management process to clear eligible local records, and confirmed successful storage and retrieval of a test ECG."
+            }
+        },
+        "helpfulDetails": [
+            "Exact storage or archive message.",
+            "Approximate local storage condition shown by the device.",
+            "Whether new ECGs could be saved.",
+            "Whether affected records were local or remotely archived.",
+            "Patient/search criteria used.",
+            "Transmission status.",
+            "MUSE connectivity.",
+            "Network connection tested.",
+            "Configuration observations.",
+            "Records affected before and after correction.",
+            "Controlled test results.",
+            "Final device status."
+        ]
+    },
+    {
+        "title": "GE Healthcare MAC 7 Electrocardiograph (EKG) Machine - Waveforms Are Clipped or Mis-scaled After Gain/Filter Configuration Changes",
+        "description": "Troubleshoot clipped, compressed, enlarged, or otherwise mis-scaled ECG waveforms following gain, filter, display, or acquisition configuration changes.",
+        "assetType": "Electrocardiograph (EKG) Machine",
+        "manufacturer": "GE Healthcare",
+        "model": "MAC 7",
+        "url": "guides/ge-healthcare-mac-7-waveforms-are-clipped-or-mis-scaled-after-gain-filter-configuration-changes.html",
+        "dateAdded": "2026-10-27",
+        "steps": [
+            {
+                "title": "1. Protect the Patient and Diagnostic ECG Quality",
+                "instructions": "Do not rely on an ECG tracing that appears clipped, distorted, or incorrectly scaled for clinical interpretation. If a diagnostic ECG is immediately required, use another verified electrocardiograph or restore an approved known-good configuration before acquiring the clinical tracing. Expected outcome: Clinical decisions are not based on a questionable waveform presentation."
+            },
+            {
+                "title": "2. Confirm the Exact Waveform Problem",
+                "instructions": "Determine whether the abnormal appearance affects: The live waveform display. The printed ECG. The stored ECG. The transmitted ECG. All leads or selected leads. One patient or every acquisition. Confirm that the issue began after a gain, filter, or related configuration change. Expected outcome: The problem is localized to display, acquisition, printing, stored data, or configuration. If the waveform is normal throughout the complete workflow, troubleshooting can stop."
+            },
+            {
+                "title": "3. Inspect the Patient Cable and Lead Connections",
+                "instructions": "Before assuming a configuration problem, inspect the ECG patient cable, lead wires, and external connections. Check for: Loose connectors. Damaged lead wires. Bent or contaminated contacts. Incorrect lead placement during testing. Intermittent connections. For bench testing, use an approved ECG simulator and known-good patient cable when available. Expected outcome: External ECG signal connections are intact and stable. If replacing or reseating an external cable restores normal waveforms, verify all leads and stop troubleshooting."
+            },
+            {
+                "title": "4. Use a Controlled ECG Simulator Signal",
+                "instructions": "Connect an approved ECG simulator and select a stable test waveform appropriate for functional verification. A simulator removes patient movement, skin preparation, electrode condition, and physiologic variation from the troubleshooting process. Expected outcome: The MAC 7 receives a stable, repeatable input signal suitable for evaluating gain and waveform presentation."
+            },
+            {
+                "title": "5. Verify Gain Settings",
+                "instructions": "Review the currently selected gain or amplitude setting through the normal authorized controls. Compare it with: The approved clinical default. A known-good MAC 7. The expected facility ECG configuration. If the setting was recently changed, restore the authorized known-good value rather than guessing at a replacement configuration. Expected outcome: Waveform amplitude appears appropriate and is not artificially enlarged, compressed, or clipped. If restoring the approved gain resolves the problem, complete final verification and stop troubleshooting."
+            },
+            {
+                "title": "6. Verify Filter Configuration",
+                "instructions": "Review the active ECG filter configuration and compare it with the approved clinical configuration. Filters can change waveform appearance, but Clinical Engineering should not select arbitrary settings simply to make a tracing appear better. Restore only documented facility or manufacturer-approved settings. Expected outcome: Active filtering matches the intended diagnostic configuration. If the waveform returns to normal after an authorized correction, verify acquisition, printout, and storage before stopping."
+            },
+            {
+                "title": "7. Check Display and Acquisition Configuration Separately",
+                "instructions": "Determine whether the live display configuration differs from the configuration applied to acquired or printed ECGs. Acquire a simulator ECG and compare: Live waveform appearance. Acquired waveform. Printed report when applicable. Stored record. Transmitted record when part of the workflow. Expected outcome: The waveform is scaled consistently through the intended clinical workflow, or the problem is isolated to a specific stage."
+            },
+            {
+                "title": "8. Compare With a Known-Good Device",
+                "instructions": "Using the same ECG simulator and, when appropriate, the same known-good patient cable, compare the signal on another MAC 7 or equivalent verified electrocardiograph. Do not change multiple settings simultaneously during the comparison. Expected outcome: A known-good comparison confirms whether the abnormal appearance follows the MAC 7 configuration/device or the external signal path."
+            },
+            {
+                "title": "9. Restore the Approved Configuration if Available",
+                "instructions": "If the issue began after configuration changes and the approved previous configuration is documented, restore the relevant authorized settings. Do not perform an undocumented factory reset or alter unrelated clinical configuration. After restoration, restart the unit normally if required by the approved workflow. Expected outcome: The device returns to its established clinical configuration and displays the simulator waveform normally."
+            },
+            {
+                "title": "10. Perform Final Functional Verification",
+                "instructions": "With the approved ECG simulator: 1. Verify stable waveforms on all expected leads. 2. Confirm waveforms are not clipped. 3. Confirm amplitude presentation is appropriate. 4. Verify the intended filter and gain configuration. 5. Acquire an ECG. 6. Review the stored or printed waveform. 7. Verify transmission if networked ECG transfer is part of the clinical workflow. Expected outcome: Waveforms remain correctly presented through display, acquisition, output, and storage. If all checks pass, troubleshooting can stop and the MAC 7 may be returned to service according to facility policy."
+            },
+            {
+                "title": "11. Escalate Persistent Waveform Distortion",
+                "instructions": "If clipping or abnormal scaling remains with an approved simulator, known-good patient cable, and verified configuration, remove the MAC 7 from service. Do not compensate for an unexplained hardware or software problem by creating nonstandard clinical settings. Expected outcome: A potentially unreliable diagnostic ECG device is prevented from returning to patient use until evaluated further."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Clinical staff reported that ECG waveforms appeared enlarged and clipped after configuration changes were made on the MAC 7.",
+                "Cause": "Clinical Engineering found that the ECG gain configuration differed from the facility's approved MAC 7 configuration while the simulator signal and patient cable tested normally.",
+                "Resolution": "Restored the approved gain configuration and verified normal unclipped waveforms on the display, acquired ECG, and printed report using an ECG simulator."
+            }
+        },
+        "helpfulDetails": [
+            "Whether clipping affected all or selected leads.",
+            "Live display versus acquired ECG appearance.",
+            "Print or stored-record appearance.",
+            "Gain setting observed.",
+            "Filter configuration observed.",
+            "Recent configuration changes.",
+            "Patient cable condition.",
+            "Known-good cable substitution.",
+            "ECG simulator used.",
+            "Known-good device comparison.",
+            "Results before and after configuration correction.",
+            "Transmission or stored-record verification.",
+            "Final device status."
+        ]
     }
 ]
