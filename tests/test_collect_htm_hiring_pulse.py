@@ -42,7 +42,7 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(7, len(config["sources"]))
+        self.assertEqual(12, len(config["sources"]))
 
     def test_hospital_title_rules_accept_htm_roles_and_reject_false_positives(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))

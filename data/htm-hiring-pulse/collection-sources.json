@@ -341,6 +341,300 @@
         "pageSize": 20,
         "maxResultsPerQuery": 300
       }
+    },
+    {
+      "id": "philips-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Philips",
+        "employerType": "oem",
+        "careerUrl": "https://www.careers.philips.com/professional/na/en/field-service-engineering",
+        "websiteUrl": "https://www.usa.philips.com/healthcare"
+      },
+      "adapter": "phenom",
+      "queries": [
+        "Field service engineering category"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "field service (?:engineer|technician)",
+        "field biomedical equipment technician",
+        "imaging service",
+        "remote service engineer"
+      ],
+      "excludePatterns": [
+        "sales",
+        "software",
+        "intern"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|ct|mri|x-ray|image guided",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "field service|remote service",
+          "roleCategoryId": "field-service"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-05",
+        "lastSuccessfulCheck": "2026-11-05T15:23:20Z",
+        "lastSuccessfulPostingCount": 19,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official public Phenom U.S. field-service category; HTM-focused title filtering."
+      },
+      "adapterConfig": {
+        "searchUrl": "https://www.careers.philips.com/professional/na/en/field-service-engineering",
+        "queryParameter": null,
+        "publicBaseUrl": "https://www.careers.philips.com",
+        "publicSitePath": "/professional/na/en",
+        "jobIdentifierField": "jobSeqNo",
+        "robotsUrl": "https://www.careers.philips.com/robots.txt",
+        "pageSize": 10,
+        "maxResultsPerQuery": 100
+      }
+    },
+    {
+      "id": "kansas-health-system-careers",
+      "enabled": true,
+      "employer": {
+        "name": "The University of Kansas Health System",
+        "employerType": "health-system",
+        "careerUrl": "https://kansashealthsystem.wd1.myworkdayjobs.com/careers",
+        "websiteUrl": "https://www.kansashealthsystem.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "clinical engineering",
+        "biomed equipment"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing",
+        "surgical technologist"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment (?:technician|repairer)",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-05",
+        "lastSuccessfulCheck": "2026-11-05T15:23:20Z",
+        "lastSuccessfulPostingCount": 2,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://kansashealthsystem.wd1.myworkdayjobs.com/wday/cxs/kansashealthsystem/careers/jobs",
+        "publicBaseUrl": "https://kansashealthsystem.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/careers",
+        "robotsUrl": "https://kansashealthsystem.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "wvu-medicine-careers",
+      "enabled": true,
+      "employer": {
+        "name": "WVU Medicine",
+        "employerType": "health-system",
+        "careerUrl": "https://wvumedicine.wd1.myworkdayjobs.com/WVUH",
+        "websiteUrl": "https://wvumedicine.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "Biomedical Technician I",
+        "Bio Med Technician II"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "\\bbio[ -]?med(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing",
+        "surgical technologist"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|\\bbio[ -]?med(?:ical)?\\b|medical equipment (?:technician|repairer)",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-05",
+        "lastSuccessfulCheck": "2026-11-05T15:23:20Z",
+        "lastSuccessfulPostingCount": 3,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://wvumedicine.wd1.myworkdayjobs.com/wday/cxs/wvumedicine/WVUH/jobs",
+        "publicBaseUrl": "https://wvumedicine.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/WVUH",
+        "robotsUrl": "https://wvumedicine.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 150,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "jefferson-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Jefferson Health",
+        "employerType": "health-system",
+        "careerUrl": "https://jeffersonhealth.wd5.myworkdayjobs.com/ThomasJeffersonExternal",
+        "websiteUrl": "https://www.jeffersonhealth.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical equipment"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing",
+        "surgical technologist"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment (?:technician|repairer)",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-05",
+        "lastSuccessfulCheck": "2026-11-05T15:23:20Z",
+        "lastSuccessfulPostingCount": 24,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://jeffersonhealth.wd5.myworkdayjobs.com/wday/cxs/jeffersonhealth/ThomasJeffersonExternal/jobs",
+        "publicBaseUrl": "https://jeffersonhealth.wd5.myworkdayjobs.com",
+        "publicSitePath": "/en-US/ThomasJeffersonExternal",
+        "robotsUrl": "https://jeffersonhealth.wd5.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 150,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "mercyhealth-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Mercyhealth",
+        "employerType": "health-system",
+        "careerUrl": "https://mercyhealth.wd1.myworkdayjobs.com/mercyhealthcareers",
+        "websiteUrl": "https://www.mercyhealthsystem.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing",
+        "surgical technologist"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment (?:technician|repairer)",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-05",
+        "lastSuccessfulCheck": "2026-11-05T15:23:20Z",
+        "lastSuccessfulPostingCount": 2,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://mercyhealth.wd1.myworkdayjobs.com/wday/cxs/mercyhealth/mercyhealthcareers/jobs",
+        "publicBaseUrl": "https://mercyhealth.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/mercyhealthcareers",
+        "robotsUrl": "https://mercyhealth.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true
+      }
     }
   ]
 }
