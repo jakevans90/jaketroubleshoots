@@ -186,6 +186,7 @@ RELATED = {
     "how-suction-regulators-control-vacuum": ["how-medical-equipment-measures-pressure", "how-medical-equipment-measures-flow", "how-pneumatic-tourniquet-systems-regulate-pressure", "how-to-troubleshoot-medical-device-accessories", "how-an-anesthesia-machine-performs-a-leak-test"],
     "how-infant-incubators-control-heat-and-humidity": ["how-forced-air-patient-warmers-control-temperature", "how-temperature-probes-and-thermistors-work", "sensors-and-transducers-basics", "medical-device-alarm-troubleshooting-fundamentals", "environmental-causes-of-medical-equipment-failures"],
     "how-steam-sterilizers-control-a-cycle": ["how-temperature-probes-and-thermistors-work", "how-medical-equipment-measures-pressure", "how-suction-regulators-control-vacuum", "how-to-read-and-use-medical-device-event-logs", "how-to-compare-your-test-result-to-manufacturer-specification"],
+    "how-oxygen-concentrators-produce-oxygen": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-device-cooling-systems-work", "medical-device-alarm-troubleshooting-fundamentals", "how-to-compare-your-test-result-to-manufacturer-specification"],
 }
 
 ARTICLE_CONFIG = {
@@ -1149,6 +1150,12 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Sterile Processing",
         "cardNote": "Steam quality, vacuum, pressure, temperature, valves, cycle stages, leak tests, drying, and records",
+    },
+    "how-oxygen-concentrators-produce-oxygen": {
+        "description": "A practical explanation of how oxygen concentrators use pressure swing adsorption and molecular sieve beds to remove nitrogen, regulate flow, monitor concentration, and detect unsafe output.",
+        "category": "How Medical Equipment Works",
+        "badge": "Respiratory Equipment",
+        "cardNote": "Pressure swing adsorption, molecular sieve beds, compressors, valves, oxygen concentration, flow, and alarms",
     },
 }
 
