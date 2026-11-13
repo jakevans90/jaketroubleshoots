@@ -1261,6 +1261,196 @@
         "maxResultsPerQuery": 100,
         "allowUnknownUsLocation": true
       }
+    },
+    {
+      "id": "trinity-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Trinity Health",
+        "employerType": "health-system",
+        "careerUrl": "https://jobs.trinity-health.org/",
+        "websiteUrl": "https://www.trinity-health.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "clinical engineering"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director|supervisor)",
+        "imaging equipment specialist"
+      ],
+      "excludePatterns": [
+        "research",
+        "stationary engineer",
+        "software",
+        "process engineer",
+        "adjunct"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://trinityhealth.wd1.myworkdayjobs.com/wday/cxs/trinityhealth/Jobs/jobs",
+        "publicBaseUrl": "https://trinityhealth.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/Jobs",
+        "robotsUrl": "https://trinityhealth.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "guardClosures": true
+      }
+    },
+    {
+      "id": "adventhealth-careers",
+      "enabled": true,
+      "employer": {
+        "name": "AdventHealth",
+        "employerType": "health-system",
+        "careerUrl": "https://jobs.adventhealth.com/",
+        "websiteUrl": "https://www.adventhealth.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "clinical engineering"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineer(?:ing)?(?:\\s+(?:i{1,3}|[1-3]))?\\b",
+        "medical equipment (?:technician|specialist|manager)"
+      ],
+      "excludePatterns": [
+        "adjunct",
+        "faculty",
+        "research",
+        "process engineer",
+        "software",
+        "patient care"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://adventhealth.wd12.myworkdayjobs.com/wday/cxs/adventhealth/AH_External_Career_Site/jobs",
+        "publicBaseUrl": "https://adventhealth.wd12.myworkdayjobs.com",
+        "publicSitePath": "/en-US/AH_External_Career_Site",
+        "robotsUrl": "https://adventhealth.wd12.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "guardClosures": true
+      }
+    },
+    {
+      "id": "commonspirit-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "CommonSpirit Health",
+        "employerType": "health-system",
+        "careerUrl": "https://www.commonspirit.careers/",
+        "websiteUrl": "https://www.commonspirit.org/"
+      },
+      "adapter": "talentbrew",
+      "queries": [
+        "biomedical"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director|supervisor)",
+        "medical equipment (?:technician|specialist|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "scientist",
+        "laboratory",
+        "adjunct",
+        "faculty"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official TalentBrew career search; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "searchUrl": "https://www.commonspirit.careers/search-jobs",
+        "resultsUrl": "https://www.commonspirit.careers/search-jobs/results",
+        "organizationId": "35300",
+        "publicBaseUrl": "https://www.commonspirit.careers",
+        "publicSitePath": "",
+        "robotsUrl": "https://www.commonspirit.careers/robots.txt",
+        "pageSize": 11,
+        "maxResultsPerQuery": 250,
+        "guardClosures": true
+      }
     }
   ]
 }
