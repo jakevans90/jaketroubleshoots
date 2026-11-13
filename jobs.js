@@ -48,14 +48,19 @@
     return Number.isNaN(parsed.valueOf()) ? '' : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(parsed);
   }
 
-  const stateTiles = [
-    ['AK', 'Alaska', 1, 1], ['ME', 'Maine', 1, 12],
-    ['WA', 'Washington', 2, 1], ['ID', 'Idaho', 2, 2], ['MT', 'Montana', 2, 3], ['ND', 'North Dakota', 2, 4], ['MN', 'Minnesota', 2, 5], ['WI', 'Wisconsin', 2, 6], ['MI', 'Michigan', 2, 7], ['NY', 'New York', 2, 9], ['VT', 'Vermont', 2, 10], ['NH', 'New Hampshire', 2, 11],
-    ['OR', 'Oregon', 3, 1], ['NV', 'Nevada', 3, 2], ['WY', 'Wyoming', 3, 3], ['SD', 'South Dakota', 3, 4], ['IA', 'Iowa', 3, 5], ['IL', 'Illinois', 3, 6], ['IN', 'Indiana', 3, 7], ['OH', 'Ohio', 3, 8], ['PA', 'Pennsylvania', 3, 9], ['NJ', 'New Jersey', 3, 10], ['CT', 'Connecticut', 3, 11], ['RI', 'Rhode Island', 3, 12],
-    ['CA', 'California', 4, 1], ['UT', 'Utah', 4, 2], ['CO', 'Colorado', 4, 3], ['NE', 'Nebraska', 4, 4], ['MO', 'Missouri', 4, 5], ['KY', 'Kentucky', 4, 6], ['WV', 'West Virginia', 4, 7], ['VA', 'Virginia', 4, 8], ['MD', 'Maryland', 4, 9], ['DE', 'Delaware', 4, 10], ['DC', 'District of Columbia', 4, 11], ['MA', 'Massachusetts', 4, 12],
-    ['AZ', 'Arizona', 5, 2], ['NM', 'New Mexico', 5, 3], ['KS', 'Kansas', 5, 4], ['AR', 'Arkansas', 5, 5], ['TN', 'Tennessee', 5, 6], ['NC', 'North Carolina', 5, 8], ['SC', 'South Carolina', 5, 9],
-    ['HI', 'Hawaii', 6, 1], ['TX', 'Texas', 6, 4], ['OK', 'Oklahoma', 6, 5], ['LA', 'Louisiana', 6, 6], ['MS', 'Mississippi', 6, 7], ['AL', 'Alabama', 6, 8], ['GA', 'Georgia', 6, 9], ['FL', 'Florida', 6, 10],
-  ];
+  const stateNames = new Map([
+    ['AL', 'Alabama'], ['AK', 'Alaska'], ['AZ', 'Arizona'], ['AR', 'Arkansas'], ['CA', 'California'],
+    ['CO', 'Colorado'], ['CT', 'Connecticut'], ['DE', 'Delaware'], ['DC', 'District of Columbia'],
+    ['FL', 'Florida'], ['GA', 'Georgia'], ['HI', 'Hawaii'], ['ID', 'Idaho'], ['IL', 'Illinois'],
+    ['IN', 'Indiana'], ['IA', 'Iowa'], ['KS', 'Kansas'], ['KY', 'Kentucky'], ['LA', 'Louisiana'],
+    ['ME', 'Maine'], ['MD', 'Maryland'], ['MA', 'Massachusetts'], ['MI', 'Michigan'], ['MN', 'Minnesota'],
+    ['MS', 'Mississippi'], ['MO', 'Missouri'], ['MT', 'Montana'], ['NE', 'Nebraska'], ['NV', 'Nevada'],
+    ['NH', 'New Hampshire'], ['NJ', 'New Jersey'], ['NM', 'New Mexico'], ['NY', 'New York'],
+    ['NC', 'North Carolina'], ['ND', 'North Dakota'], ['OH', 'Ohio'], ['OK', 'Oklahoma'],
+    ['OR', 'Oregon'], ['PA', 'Pennsylvania'], ['RI', 'Rhode Island'], ['SC', 'South Carolina'],
+    ['SD', 'South Dakota'], ['TN', 'Tennessee'], ['TX', 'Texas'], ['UT', 'Utah'], ['VT', 'Vermont'],
+    ['VA', 'Virginia'], ['WA', 'Washington'], ['WV', 'West Virginia'], ['WI', 'Wisconsin'], ['WY', 'Wyoming'],
+  ]);
 
   function stateCountMap(postings) {
     const counts = new Map();
@@ -65,12 +70,14 @@
     return counts;
   }
 
-  function stateIntensity(count, maximum) {
-    if (!count || !maximum) return 0;
-    return Math.min(4, Math.max(1, Math.ceil((count / maximum) * 4)));
+  function topStates(counts, limit = 12) {
+    return [...counts.entries()]
+      .filter(([, count]) => count > 0)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit);
   }
 
-  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, stateIntensity, stateTiles };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, topStates, stateNames };
   if (typeof document === 'undefined') return;
 
   const role = document.getElementById('jobs-role');
@@ -172,7 +179,7 @@
       const stateFilter = document.getElementById('pulse-state');
       const keywordFilter = document.getElementById('pulse-keyword');
       const remoteFilter = document.getElementById('pulse-remote');
-      const stateMap = document.getElementById('pulse-state-map');
+      const stateChart = document.getElementById('pulse-state-chart');
       const mapStatus = document.getElementById('pulse-map-status');
       const mapReset = document.getElementById('pulse-map-reset');
       const employers = new Map(postings.map(posting => [posting.employerId, posting.employer]));
@@ -183,14 +190,14 @@
       [...roles].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(roleFilter, id, name));
       [...new Set(postings.map(posting => posting.state).filter(Boolean))].sort().forEach(state => addOption(stateFilter, state, state));
       const stateCounts = stateCountMap(postings);
-      const maximumStateCount = Math.max(...stateCounts.values(), 0);
-      const stateNames = new Map(stateTiles.map(tile => [tile[0], tile[1]]));
+      const leadingStates = topStates(stateCounts);
+      const maximumStateCount = leadingStates.length ? leadingStates[0][1] : 0;
       let visibleLimit = 24;
 
-      function syncStateMap() {
-        if (!stateMap) return;
+      function syncStateChart() {
+        if (!stateChart) return;
         const selected = stateFilter.value;
-        stateMap.querySelectorAll('button[data-state]').forEach(button => {
+        stateChart.querySelectorAll('button[data-state]').forEach(button => {
           const active = button.dataset.state === selected;
           button.classList.toggle('is-selected', active);
           button.setAttribute('aria-pressed', String(active));
@@ -204,24 +211,32 @@
         }
       }
 
-      function initializeStateMap() {
-        if (!stateMap) return;
-        const buttons = stateTiles.map(([code, name, row, column]) => {
-          const count = stateCounts.get(code) || 0;
+      function initializeStateChart() {
+        if (!stateChart) return;
+        const buttons = leadingStates.map(([code, count]) => {
+          const name = stateNames.get(code) || code;
           const button = document.createElement('button');
           button.type = 'button';
-          button.className = `jobs-state-tile level-${stateIntensity(count, maximumStateCount)}`;
+          button.className = 'jobs-state-bar';
           button.dataset.state = code;
-          button.style.gridRow = String(row);
-          button.style.gridColumn = String(column);
           button.setAttribute('aria-label', `${name}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample`);
           button.setAttribute('aria-pressed', 'false');
-          button.disabled = count === 0;
+          const label = document.createElement('span');
+          label.className = 'jobs-state-bar-label';
           const abbreviation = document.createElement('strong');
           abbreviation.textContent = code;
+          const fullName = document.createElement('span');
+          fullName.textContent = name;
+          label.append(abbreviation, fullName);
+          const track = document.createElement('span');
+          track.className = 'jobs-state-bar-track';
+          const fill = document.createElement('span');
+          fill.style.width = `${Math.max(8, Math.round((count / maximumStateCount) * 100))}%`;
+          track.appendChild(fill);
           const total = document.createElement('span');
+          total.className = 'jobs-state-bar-total';
           total.textContent = String(count);
-          button.append(abbreviation, total);
+          button.append(label, track, total);
           button.addEventListener('click', () => {
             stateFilter.value = code;
             renderOpenings(true);
@@ -229,13 +244,13 @@
           });
           return button;
         });
-        stateMap.replaceChildren(...buttons);
-        stateMap.hidden = false;
+        stateChart.replaceChildren(...buttons);
+        stateChart.hidden = false;
         if (mapReset) mapReset.addEventListener('click', () => {
           stateFilter.value = '';
           renderOpenings(true);
         });
-        syncStateMap();
+        syncStateChart();
       }
 
       function renderOpenings(resetLimit) {
@@ -254,7 +269,7 @@
         pulseStatus.textContent = matches.length ? `Showing ${shown} of ${matches.length} matching openings in the observed sample.` : 'No openings match these filters.';
         pulseLoadMore.hidden = shown >= matches.length;
         pulseFallback.hidden = true;
-        syncStateMap();
+        syncStateChart();
       }
 
       pulseFilters.addEventListener('submit', event => event.preventDefault());
@@ -263,7 +278,7 @@
       pulseFilters.addEventListener('reset', () => setTimeout(() => renderOpenings(true), 0));
       pulseLoadMore.addEventListener('click', () => { visibleLimit += 24; renderOpenings(false); });
       pulseFilters.hidden = false;
-      initializeStateMap();
+      initializeStateChart();
       renderOpenings(true);
     } catch (_) {
       pulseFilters.hidden = true;
