@@ -70,14 +70,7 @@
     return counts;
   }
 
-  function topStates(counts, limit = 12) {
-    return [...counts.entries()]
-      .filter(([, count]) => count > 0)
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-      .slice(0, limit);
-  }
-
-  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, topStates, stateNames };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, stateNames };
   if (typeof document === 'undefined') return;
 
   const role = document.getElementById('jobs-role');
@@ -188,10 +181,8 @@
       [...employerTypes].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(employerTypeFilter, id, name));
       const roles = new Map(postings.map(posting => [posting.roleCategoryId, posting.roleCategory]));
       [...roles].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(roleFilter, id, name));
-      [...new Set(postings.map(posting => posting.state).filter(Boolean))].sort().forEach(state => addOption(stateFilter, state, state));
+      stateNames.forEach((name, code) => addOption(stateFilter, code, `${name} (${code})`));
       const stateCounts = stateCountMap(postings);
-      const leadingStates = topStates(stateCounts);
-      const maximumStateCount = leadingStates.length ? leadingStates[0][1] : 0;
       let visibleLimit = 24;
 
       function syncStateChart() {
@@ -213,30 +204,23 @@
 
       function initializeStateChart() {
         if (!stateChart) return;
-        const buttons = leadingStates.map(([code, count]) => {
-          const name = stateNames.get(code) || code;
+        const buttons = [...stateNames].map(([code, name]) => {
+          const count = stateCounts.get(code) || 0;
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'jobs-state-bar';
           button.dataset.state = code;
           button.setAttribute('aria-label', `${name}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample`);
           button.setAttribute('aria-pressed', 'false');
+          button.disabled = count === 0;
           const label = document.createElement('span');
           label.className = 'jobs-state-bar-label';
-          const abbreviation = document.createElement('strong');
-          abbreviation.textContent = code;
-          const fullName = document.createElement('span');
+          const fullName = document.createElement('strong');
           fullName.textContent = name;
-          label.append(abbreviation, fullName);
-          const track = document.createElement('span');
-          track.className = 'jobs-state-bar-track';
-          const fill = document.createElement('span');
-          fill.style.width = `${Math.max(8, Math.round((count / maximumStateCount) * 100))}%`;
-          track.appendChild(fill);
           const total = document.createElement('span');
-          total.className = 'jobs-state-bar-total';
-          total.textContent = String(count);
-          button.append(label, track, total);
+          total.textContent = `${code} · ${count}`;
+          label.append(fullName, total);
+          button.appendChild(label);
           button.addEventListener('click', () => {
             stateFilter.value = code;
             renderOpenings(true);

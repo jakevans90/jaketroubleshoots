@@ -206,7 +206,6 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
     employers = ", ".join(html.escape(name) for name in snapshot["coverage"]["employers"])
     last_updated = snapshot["lastUpdated"].replace("T", " ").replace("Z", " UTC") if snapshot.get("lastUpdated") else "Not available"
     role_items = _list_items(snapshot["breakdowns"]["roles"], "label")
-    state_items = _list_items(snapshot["breakdowns"]["states"], "state", 10)
     employer_items = _list_items(snapshot["breakdowns"]["employers"], "employer")
     health = snapshot.get("sourceHealth")
     health_markup: list[str] = []
@@ -249,9 +248,6 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
         '    <div class="jobs-breakdown-grid">',
         '      <section aria-labelledby="pulse-role-breakdown"><h3 id="pulse-role-breakdown">Roles in this sample</h3><ul class="jobs-count-list">',
         role_items,
-        "        </ul></section>",
-        '      <section aria-labelledby="pulse-state-breakdown"><h3 id="pulse-state-breakdown">Top states in this sample</h3><ul class="jobs-count-list">',
-        state_items,
         "        </ul></section>",
         '      <section aria-labelledby="pulse-employer-breakdown"><h3 id="pulse-employer-breakdown">Employers in this sample</h3><ul class="jobs-count-list">',
         employer_items,
