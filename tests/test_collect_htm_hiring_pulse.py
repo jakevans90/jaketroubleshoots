@@ -42,7 +42,13 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(7, len(config["sources"]))
+        self.assertEqual(22, len(config["sources"]))
+        expected_expansion = {
+            "bd-careers", "abbott-careers", "danaher-careers", "iqvia-medtech-careers",
+            "allina-health-careers", "houston-methodist-careers", "uams-health-careers",
+            "halifax-health-careers", "brown-health-careers", "cape-fear-valley-careers",
+        }
+        self.assertTrue(expected_expansion.issubset({item["id"] for item in config["sources"]}))
 
     def test_hospital_title_rules_accept_htm_roles_and_reject_false_positives(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
@@ -80,6 +86,22 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual("2026-10-18", result.postings[0]["postedDate"])
         self.assertEqual("PA", result.postings[0]["location"]["state"])
 
+    def test_workday_foreign_remote_is_rejected_without_rejecting_us_place_names(self):
+        configured = source("workday")
+        foreign = MODULE.workday_record(configured, {
+            "title": "Biomedical Field Service Technician",
+            "externalPath": "/job/United-Kingdom---Remote/Technician_R101",
+            "locationsText": "GBR - Remote",
+        }, "2026-10-20T12:00:00Z")
+        maine = MODULE.workday_record(configured, {
+            "title": "Biomedical Field Service Technician",
+            "externalPath": "/job/Norway-Maine-United-States/Technician_R102",
+            "locationsText": "Norway, ME",
+        }, "2026-10-20T12:00:00Z")
+        self.assertIsNone(foreign)
+        self.assertIsNotNone(maine)
+        self.assertEqual("ME", maine["location"]["state"])
+
     def test_phenom_record_uses_exact_posted_date_and_us_location(self):
         configured = source("phenom")
         record = MODULE.phenom_record(configured, {
@@ -105,6 +127,17 @@ class CollectorTests(unittest.TestCase):
 
         with self.assertRaisesRegex(MODULE.CollectionError, "zero relevant US jobs"):
             MODULE.collect_workday(configured, "2026-10-20T12:00:00Z", 10, post=fake_post)
+
+    def test_explicit_empty_snapshot_is_allowed_for_new_narrow_sources(self):
+        configured = source("workday")
+        configured["adapterConfig"]["allowEmptySnapshot"] = True
+
+        def fake_post(url, payload, timeout):
+            return {"total": 0, "jobPostings": []}
+
+        result = MODULE.collect_workday(configured, "2026-10-20T12:00:00Z", 10, post=fake_post)
+        self.assertTrue(result.complete)
+        self.assertEqual([], result.postings)
 
     def test_live_total_change_keeps_partial_results_but_disables_closure(self):
         configured = source("workday")
@@ -184,6 +217,22 @@ class CollectorTests(unittest.TestCase):
         changed = MODULE.reclassify_configured_postings(store, {"sources": [configured]}, "2026-10-21T12:00:00Z")
         self.assertEqual(1, changed)
         self.assertEqual("leadership", store["postings"]["records"][0]["role_category_id"])
+
+    def test_reclassify_closes_existing_non_us_workday_posting(self):
+        configured = source("workday")
+        store = {
+            "taxonomy": {"categories": [{"id": "other-htm", "label": "Other", "description": "", "titlePatterns": []}]},
+            "postings": {"records": [{
+                "source": "example-careers", "title": "Biomedical Field Service Technician",
+                "role_category_id": "other-htm", "status": "active", "closed_at": None,
+                "canonical_url": "https://example.test/en-US/jobs/job/Canada---Remote/Technician_R1",
+                "location": {"text": "Canada - Remote"}, "updated_at": "2026-10-01T00:00:00Z",
+            }]},
+        }
+        changed = MODULE.reclassify_configured_postings(store, {"sources": [configured]}, "2026-10-21T12:00:00Z")
+        self.assertEqual(1, changed)
+        self.assertEqual("closed", store["postings"]["records"][0]["status"])
+        self.assertEqual("2026-10-21T12:00:00Z", store["postings"]["records"][0]["closed_at"])
 
 
 if __name__ == "__main__":

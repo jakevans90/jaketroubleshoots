@@ -137,9 +137,10 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             continue
         common = {"publicBaseUrl", "publicSitePath", "robotsUrl", "pageSize", "maxResultsPerQuery"}
         specific = {"apiUrl"} if source.get("adapter") == "workday" else {"searchUrl", "jobIdentifierField", "queryParameter"}
-        allowed_config = common | specific | ({"allowUnknownUsLocation"} if source.get("adapter") == "workday" else set())
+        optional_config = {"allowUnknownUsLocation", "allowEmptySnapshot"} if source.get("adapter") == "workday" else set()
+        allowed_config = common | specific | optional_config
         config_fields = set(adapter_config)
-        if config_fields != common | specific and config_fields != allowed_config:
+        if not (common | specific) <= config_fields or not config_fields <= allowed_config:
             errors.append(f"{where}.adapterConfig fields do not match the selected adapter")
         for field in (common | specific) - {"jobIdentifierField", "queryParameter", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
             if field in adapter_config and not pulse.is_web_url(adapter_config.get(field)):
@@ -149,6 +150,8 @@ def validate_config(config: dict[str, Any]) -> list[str]:
                 errors.append(f"{where}.adapterConfig.{field} must be a positive integer")
         if "allowUnknownUsLocation" in adapter_config and not isinstance(adapter_config.get("allowUnknownUsLocation"), bool):
             errors.append(f"{where}.adapterConfig.allowUnknownUsLocation must be a boolean")
+        if "allowEmptySnapshot" in adapter_config and not isinstance(adapter_config.get("allowEmptySnapshot"), bool):
+            errors.append(f"{where}.adapterConfig.allowEmptySnapshot must be a boolean")
         if source.get("adapter") == "phenom" and adapter_config.get("queryParameter") is not None:
             if not isinstance(adapter_config.get("queryParameter"), str) or not adapter_config["queryParameter"].strip():
                 errors.append(f"{where}.adapterConfig.queryParameter must be null or non-empty text")
@@ -302,6 +305,27 @@ def location_payload(text: Any, country: Any = "US", fallback: str | None = None
     return {"text": display, "city": city, "state": state, "country": country_code, "remote": remote}
 
 
+WORKDAY_FOREIGN_LOCATION_MARKERS = {
+    "australia": "AU", "belgium": "BE", "brazil": "BR", "canada": "CA",
+    "china": "CN", "denmark": "DK", "france": "FR", "germany": "DE",
+    "gbr": "GB", "india": "IN", "ireland": "IE", "italy": "IT",
+    "japan": "JP", "mexico": "MX", "netherlands": "NL", "norway": "NO",
+    "poland": "PL", "singapore": "SG", "south africa": "ZA", "spain": "ES",
+    "sweden": "SE", "switzerland": "CH", "united kingdom": "GB",
+}
+
+
+def workday_country_code(location_text: str | None, fallback: str | None = None) -> str:
+    combined = " ".join(part for part in (location_text, fallback) if part)
+    if state_from_text(combined) or re.search(r"\b(?:united states|usa)\b", combined, re.IGNORECASE):
+        return "US"
+    normalized = pulse.normalize_text(combined)
+    for marker, code in WORKDAY_FOREIGN_LOCATION_MARKERS.items():
+        if re.search(rf"\b{re.escape(marker)}\b", normalized):
+            return code
+    return "US"
+
+
 def is_us_job(location: dict[str, Any], allow_unknown_location: bool = False) -> bool:
     return location.get("country") == "US" and bool(location.get("state") or location.get("remote") or allow_unknown_location)
 
@@ -350,7 +374,7 @@ def workday_record(source: dict[str, Any], job: dict[str, Any], checked_at: str)
     path_match = re.match(r"/job/([^/]+)/", external_path)
     if path_match:
         fallback = unquote(path_match.group(1)).replace("-", " ")
-    location = location_payload(location_text, "US", fallback)
+    location = location_payload(location_text, workday_country_code(location_text, fallback), fallback)
     if not location.get("state") and fallback:
         fallback_state = state_from_text(fallback)
         if fallback_state:
@@ -451,7 +475,7 @@ def collect_workday(source: dict[str, Any], checked_at: str, timeout: int,
                 break
         if query_stable and retrieved != (total or 0):
             raise CollectionError(f"{source['id']} retrieved {retrieved} of {total} Workday jobs for '{query}'")
-    if not by_id:
+    if not by_id and not adapter.get("allowEmptySnapshot"):
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
 
@@ -530,6 +554,18 @@ def reclassify_configured_postings(store: dict[str, dict[str, Any]], config: dic
         source = sources.get(posting.get("source"))
         if not source:
             continue
+        if source.get("adapter") == "workday":
+            path_location = unquote(posting.get("canonical_url", "")).split("/job/", 1)[-1].split("/", 1)[0].replace("-", " ")
+            country = workday_country_code(posting.get("location", {}).get("text"), path_location)
+            if country != "US":
+                if posting.get("status") == "active":
+                    last_seen = posting.get("last_seen") or timestamp
+                    closure_timestamp = timestamp if pulse.parse_timestamp(timestamp) >= pulse.parse_timestamp(last_seen) else last_seen
+                    posting["status"] = "closed"
+                    posting["closed_at"] = closure_timestamp
+                    posting["updated_at"] = closure_timestamp
+                    changed += 1
+                continue
         role_id = role_override(source, posting["title"]) or pulse.classify_role(posting["title"], store["taxonomy"])
         if posting.get("role_category_id") == role_id:
             continue

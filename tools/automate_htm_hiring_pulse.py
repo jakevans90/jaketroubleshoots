@@ -154,6 +154,12 @@ def run_automation(
             "snapshotComplete": result.complete, "warning": "; ".join(source_warnings) or None,
         })
 
+    active_before_reclassification = sum(active_by_source(store).values())
+    collector.reclassify_configured_postings(store, config, checked_at)
+    pruned_non_us = active_before_reclassification - sum(active_by_source(store).values())
+    if pruned_non_us:
+        warnings.append(f"excluded {pruned_non_us} non-U.S. Workday postings from the U.S. Hiring Pulse sample")
+
     new_active_counts = active_by_source(store)
     active_total = sum(new_active_counts.values())
     global_errors: list[str] = []
@@ -190,7 +196,6 @@ def run_automation(
     if global_errors:
         raise collector.CollectionError("Automated collection failed validation:\n" + "\n".join(global_errors))
 
-    collector.reclassify_configured_postings(store, config, checked_at)
     changed = {"employers", "postings", "observations"}
     pulse.stamp_changed(store, changed, checked_at)
     if apply:

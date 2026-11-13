@@ -15,9 +15,10 @@ class HiringPulsePublicTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.store = MODULE.pulse.load_store(ROOT)
+        cls.source_config = MODULE.pulse.load_json(ROOT / MODULE.SOURCE_CONFIG_PATH)
 
     def test_snapshot_aggregations_match_active_source_records(self):
-        snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store))
+        snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store), copy.deepcopy(self.source_config))
         active = [item for item in self.store["postings"]["records"] if item["status"] == "active"]
         self.assertEqual(len(active), snapshot["summary"]["activePostings"])
         self.assertEqual(len({item["employer_id"] for item in active}), snapshot["summary"]["employersRepresented"])
@@ -27,6 +28,20 @@ class HiringPulsePublicTests(unittest.TestCase):
         self.assertEqual(len(active), sum(item["activePostings"] for item in snapshot["breakdowns"]["employers"]))
         self.assertEqual(len(active), sum(item["activePostings"] for item in snapshot["breakdowns"]["employerTypes"]))
         self.assertTrue(all(item["employerTypeLabel"] for item in snapshot["postings"]))
+        self.assertEqual(len(self.source_config["sources"]), snapshot["sourceHealth"]["trackedSources"])
+        self.assertEqual(snapshot["sourceHealth"]["trackedSources"], len(snapshot["sourceHealth"]["sources"]))
+
+    def test_source_health_exposes_guardrails_without_private_data(self):
+        snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store), copy.deepcopy(self.source_config))
+        health = snapshot["sourceHealth"]
+        self.assertGreater(health["trackedSources"], 0)
+        self.assertEqual(
+            health["trackedSources"],
+            health["activeSources"] + health["guardedSources"] + health["failedSources"] + health["notStartedSources"],
+        )
+        rendered = MODULE.render_static_summary(snapshot)
+        self.assertIn("Source health:", rendered)
+        self.assertIn("cannot close missing jobs", rendered)
 
     def test_public_records_are_unique_canonical_and_omit_descriptions(self):
         postings = MODULE.build_public_snapshot(copy.deepcopy(self.store))["postings"]
