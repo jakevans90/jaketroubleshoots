@@ -119,6 +119,10 @@ class HiringPulseAutomationTests(unittest.TestCase):
         self.assertLess(workflow.index("Run full validation"), workflow.index("Commit validated data update"))
         self.assertIn("--confirm-close-missing", workflow)
         self.assertNotIn("git add .", workflow)
+        self.assertIn("pull-requests: write", workflow)
+        self.assertIn("gh pr create", workflow)
+        self.assertIn("ref: main", workflow)
+        self.assertNotIn("HEAD:codex-edits", workflow)
 
 
 if __name__ == "__main__":
