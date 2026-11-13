@@ -33,8 +33,14 @@ def source(adapter):
     }
     if adapter == "workday":
         base["adapterConfig"]["apiUrl"] = "https://example.test/wday/jobs"
-    else:
+    elif adapter == "phenom":
         base["adapterConfig"].update({"searchUrl": "https://example.test/search", "jobIdentifierField": "jobId", "queryParameter": "keywords"})
+    else:
+        base["adapterConfig"].update({
+            "searchUrl": "https://example.test/search-jobs",
+            "resultsUrl": "https://example.test/search-jobs/results",
+            "organizationId": "12345",
+        })
     return base
 
 
@@ -42,11 +48,12 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(22, len(config["sources"]))
+        self.assertEqual(25, len(config["sources"]))
         expected_expansion = {
             "bd-careers", "abbott-careers", "danaher-careers", "iqvia-medtech-careers",
             "allina-health-careers", "houston-methodist-careers", "uams-health-careers",
             "halifax-health-careers", "brown-health-careers", "cape-fear-valley-careers",
+            "trinity-health-careers", "adventhealth-careers", "commonspirit-health-careers",
         }
         self.assertTrue(expected_expansion.issubset({item["id"] for item in config["sources"]}))
 
@@ -66,6 +73,55 @@ class CollectorTests(unittest.TestCase):
         jobs, hits, total = MODULE.phenom_page_data(html)
         self.assertEqual([{"jobId": "R1"}], jobs)
         self.assertEqual((1, 1), (hits, total))
+
+    def test_talentbrew_parser_reads_cards_and_pagination(self):
+        html = """
+        <section id="search-results" data-total-job-results="1" data-total-pages="1"
+          data-current-page="1" data-records-per-page="11">
+          <a class="search-results-list__job-link" href="/job/austin/bmet/35300/987" data-job-id="987">
+            Biomedical Equipment Technician II
+          </a>
+          <li class="search-results-list__item job-location">Austin, TX</li>
+        </section>
+        """
+        jobs, meta = MODULE.talentbrew_page_data(html)
+        self.assertEqual({"total": 1, "totalPages": 1, "currentPage": 1, "pageSize": 11}, meta)
+        self.assertEqual("Biomedical Equipment Technician II", jobs[0]["title"])
+        self.assertEqual("Austin, TX", jobs[0]["location"])
+
+    def test_talentbrew_collection_paginates_filters_and_deduplicates(self):
+        configured = source("talentbrew")
+        first = """
+        <section id="search-results" data-total-job-results="2" data-total-pages="2"
+          data-current-page="1" data-records-per-page="1">
+          <a class="search-results-list__job-link" href="/job/austin/bmet/35300/1" data-job-id="1">Biomedical Technician I</a>
+          <li class="job-location">Austin, TX</li>
+        </section>
+        """
+        second = """
+        <section id="search-results" data-total-job-results="2" data-total-pages="2"
+          data-current-page="2" data-records-per-page="1">
+          <a class="search-results-list__job-link" href="/job/austin/nurse/35300/2" data-job-id="2">Registered Nurse</a>
+          <li class="job-location">Austin, TX</li>
+        </section>
+        """
+
+        result = MODULE.collect_talentbrew(
+            configured, "2026-11-13T12:00:00Z", 10,
+            get=lambda url, timeout: first,
+            get_object=lambda url, timeout: {"results": second},
+        )
+        self.assertTrue(result.complete)
+        self.assertEqual(2, result.scanned)
+        self.assertEqual(1, len(result.postings))
+        self.assertEqual("https://example.test/job/austin/bmet/35300/1", result.postings[0]["url"])
+
+    def test_new_source_closure_guard_overrides_complete_snapshot_confirmation(self):
+        configured = source("workday")
+        result = MODULE.CollectionResult("example-careers", [], 0, True, {})
+        self.assertTrue(MODULE.missing_jobs_may_close(configured, result, True))
+        configured["adapterConfig"]["guardClosures"] = True
+        self.assertFalse(MODULE.missing_jobs_may_close(configured, result, True))
 
     def test_workday_collection_paginates_filters_and_deduplicates(self):
         configured = source("workday")
