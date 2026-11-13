@@ -50,7 +50,7 @@
 .jobs-callout p { margin: 0; font-size: .94rem; }
 .jobs-empty { padding: 22px; background: var(--surface-soft); border: 1px dashed #999; }
 .jobs-pulse { border-top: 4px solid var(--pink); }
-.jobs-pulse-status { display: inline-block; padding: 7px 12px; border-radius: 5px; background: #f4eaf1; color: #572f4a; font-size: .85rem; font-weight: 700; }
+.jobs-pulse-status { display: inline-block; max-width: 100%; padding: 7px 12px; border-radius: 5px; background: #f4eaf1; color: #572f4a; font-size: .85rem; font-weight: 700; overflow-wrap: anywhere; }
 .jobs-measures { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin: 18px 0; }
 .jobs-measures div { border-top: 2px solid var(--border); padding-top: 12px; }
 .jobs-measures strong, .jobs-measures span { display: block; }
@@ -70,6 +70,25 @@
 .jobs-count-list { list-style: none; padding: 0; margin: 0; }
 .jobs-count-list li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--border-soft); font-size: .86rem; }
 .jobs-count-list li:first-child { border-top: 0; }
+.jobs-map-panel { margin-top: 28px; padding: 22px; border: 1px solid var(--border-soft); border-radius: var(--radius-md); background: var(--surface-soft); }
+.jobs-page .jobs-map-panel h3 { margin: 4px 0 0; font-size: 1.25rem; }
+.jobs-state-chart { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px 18px; margin: 20px 0 12px; }
+.jobs-state-chart[hidden] { display: none; }
+.jobs-state-bar { display: grid; grid-template-columns: minmax(118px,.8fr) minmax(90px,1.2fr) 38px; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: 1px solid var(--border-soft); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition); }
+.jobs-state-bar:hover { border-color: var(--green-deep); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.jobs-state-bar.is-selected { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(255,0,144,.18); }
+.jobs-state-bar-label { display: flex; min-width: 0; flex-direction: column; }
+.jobs-state-bar-label strong { font-size: .9rem; }
+.jobs-state-bar-label span { overflow: hidden; color: var(--text-muted); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+.jobs-state-bar-track { display: block; height: 9px; overflow: hidden; border-radius: 999px; background: #e2e7e2; }
+.jobs-state-bar-track > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--lime), var(--green-deep)); }
+.jobs-state-bar-total { font-size: .86rem; font-weight: 800; text-align: right; }
+.jobs-map-status { min-height: 1.4em; margin: 12px 0 0; font-weight: 700; font-size: .88rem; }
+.jobs-source-health { margin: 18px 0 0; border-top: 1px solid var(--border-soft); padding-top: 14px; }
+.jobs-source-health summary { cursor: pointer; font-weight: 700; }
+.jobs-source-health-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 18px; margin-top: 14px; }
+.jobs-source-health-grid div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-soft); font-size: .83rem; }
+.jobs-source-health-grid span:last-child { color: var(--text-muted); text-align: right; }
 .jobs-openings { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border-soft); }
 .jobs-page .jobs-openings h3 { margin: 4px 0 0; font-size: 1.25rem; }
 .jobs-pulse-filters { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; align-items: end; margin: 20px 0 10px; }
@@ -96,6 +115,7 @@
 @media (max-width: 800px) {
   .jobs-employer-grid, .jobs-measures, .jobs-pulse-summary, .jobs-opening-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .jobs-breakdown-grid { grid-template-columns: 1fr; }
+  .jobs-state-chart { grid-template-columns: 1fr; }
   .jobs-directory-filters { grid-template-columns: 1fr 1fr; }
   .jobs-reset { grid-column: 1 / -1; justify-self: start; }
 }
@@ -106,6 +126,8 @@
   .jobs-page .jobs-hero { padding: 32px 18px; }
   .jobs-search-form, .jobs-directory-filters, .jobs-shortcut-grid, .jobs-employer-grid, .jobs-pulse-summary, .jobs-pulse-filters, .jobs-opening-grid { grid-template-columns: 1fr; }
   .jobs-pulse-filters .jobs-field:nth-child(4) { grid-column: auto; }
+  .jobs-map-panel { padding: 18px 14px; }
+  .jobs-source-health-grid { grid-template-columns: 1fr; }
   .jobs-section-heading { display: block; }
   .jobs-section-heading .jobs-text-link { display: inline-block; max-width: none; margin-bottom: 6px; }
   .jobs-section-nav { gap: 4px 18px; }

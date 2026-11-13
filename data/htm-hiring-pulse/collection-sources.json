@@ -268,7 +268,7 @@
       ],
       "metadata": {
         "firstTracked": "2026-10-21",
-        "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
         "lastSuccessfulPostingCount": 10,
         "collectionStatus": "active",
         "fullyAutomated": true,
@@ -387,7 +387,7 @@
       ],
       "metadata": {
         "firstTracked": "2026-11-05",
-        "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
         "lastSuccessfulPostingCount": 16,
         "collectionStatus": "active",
         "fullyAutomated": true,
@@ -447,7 +447,7 @@
       ],
       "metadata": {
         "firstTracked": "2026-11-05",
-        "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
         "lastSuccessfulPostingCount": 2,
         "collectionStatus": "active",
         "fullyAutomated": true,
@@ -508,7 +508,7 @@
         "firstTracked": "2026-11-05",
         "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
         "lastSuccessfulPostingCount": 3,
-        "collectionStatus": "active",
+        "collectionStatus": "partial",
         "fullyAutomated": true,
         "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
       },
@@ -563,7 +563,7 @@
       ],
       "metadata": {
         "firstTracked": "2026-11-05",
-        "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
         "lastSuccessfulPostingCount": 24,
         "collectionStatus": "active",
         "fullyAutomated": true,
@@ -620,7 +620,7 @@
       ],
       "metadata": {
         "firstTracked": "2026-11-05",
-        "lastSuccessfulCheck": "2026-11-10T15:34:03Z",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
         "lastSuccessfulPostingCount": 2,
         "collectionStatus": "active",
         "fullyAutomated": true,
@@ -634,6 +634,822 @@
         "pageSize": 20,
         "maxResultsPerQuery": 100,
         "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "bd-careers",
+      "enabled": true,
+      "employer": {
+        "name": "BD",
+        "employerType": "oem",
+        "careerUrl": "https://bdx.wd1.myworkdayjobs.com/EXTERNAL_CAREER_SITE_USA",
+        "websiteUrl": "https://www.bd.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "field service engineer",
+        "biomedical",
+        "technical service engineer"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "field service (?:engineer|technician)",
+        "technical service engineer",
+        "customer service engineer"
+      ],
+      "excludePatterns": [
+        "software",
+        "sales",
+        "manufacturing",
+        "quality engineer",
+        "intern"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|x-ray|ct|mri",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "field service|technical service|customer service engineer",
+          "roleCategoryId": "field-service"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official U.S. Workday career endpoint; medical equipment service title filtering."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://bdx.wd1.myworkdayjobs.com/wday/cxs/bdx/EXTERNAL_CAREER_SITE_USA/jobs",
+        "publicBaseUrl": "https://bdx.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/EXTERNAL_CAREER_SITE_USA",
+        "robotsUrl": "https://bdx.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 600
+      }
+    },
+    {
+      "id": "abbott-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Abbott",
+        "employerType": "oem",
+        "careerUrl": "https://abbott.wd5.myworkdayjobs.com/abbottcareers",
+        "websiteUrl": "https://www.abbott.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "field service engineer",
+        "biomedical",
+        "instrument service"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "field service (?:engineer|technician|specialist)",
+        "instrument service (?:engineer|technician|specialist)",
+        "technical service (?:engineer|specialist)"
+      ],
+      "excludePatterns": [
+        "software",
+        "sales",
+        "manufacturing",
+        "quality engineer",
+        "intern"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|x-ray|ct|mri",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "field service|instrument service|technical service",
+          "roleCategoryId": "field-service"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday career endpoint; U.S. medical equipment and diagnostics service title filtering."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://abbott.wd5.myworkdayjobs.com/wday/cxs/abbott/abbottcareers/jobs",
+        "publicBaseUrl": "https://abbott.wd5.myworkdayjobs.com",
+        "publicSitePath": "/en-US/abbottcareers",
+        "robotsUrl": "https://abbott.wd5.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 600
+      }
+    },
+    {
+      "id": "danaher-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Danaher",
+        "employerType": "oem",
+        "careerUrl": "https://danaher.wd1.myworkdayjobs.com/danaherjobs",
+        "websiteUrl": "https://www.danaher.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "field service engineer",
+        "biomedical",
+        "instrument service engineer"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "field service (?:engineer|technician)",
+        "instrument service (?:engineer|technician)",
+        "customer service engineer"
+      ],
+      "excludePatterns": [
+        "software",
+        "sales",
+        "manufacturing",
+        "quality engineer",
+        "intern"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|x-ray|ct|mri",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "field service|instrument service|customer service engineer",
+          "roleCategoryId": "field-service"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday career endpoint; diagnostics and laboratory equipment service title filtering."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://danaher.wd1.myworkdayjobs.com/wday/cxs/danaher/danaherjobs/jobs",
+        "publicBaseUrl": "https://danaher.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/danaherjobs",
+        "robotsUrl": "https://danaher.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 300
+      }
+    },
+    {
+      "id": "iqvia-medtech-careers",
+      "enabled": true,
+      "employer": {
+        "name": "IQVIA MedTech",
+        "employerType": "iso",
+        "careerUrl": "https://iqvia.wd1.myworkdayjobs.com/IQVIA",
+        "websiteUrl": "https://www.iqvia.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "MedTech field service",
+        "biomedical equipment",
+        "medical device field service"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "medtech .*field service",
+        "medical device field service",
+        "field service (?:engineer|technician)"
+      ],
+      "excludePatterns": [
+        "software",
+        "sales",
+        "manufacturing",
+        "quality engineer"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|x-ray|ct|mri",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "field service",
+          "roleCategoryId": "field-service"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday career endpoint; MedTech equipment service project title filtering."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://iqvia.wd1.myworkdayjobs.com/wday/cxs/iqvia/IQVIA/jobs",
+        "publicBaseUrl": "https://iqvia.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/IQVIA",
+        "robotsUrl": "https://iqvia.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 250
+      }
+    },
+    {
+      "id": "allina-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Allina Health",
+        "employerType": "health-system",
+        "careerUrl": "https://allina.wd5.myworkdayjobs.com/External",
+        "websiteUrl": "https://www.allinahealth.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "radiology equipment technician",
+        "imaging equipment technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "radiology equipment technician",
+        "imaging equipment technician",
+        "clinical equipment (?:technician|engineer)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "radiology|imaging",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|clinical equipment",
+          "roleCategoryId": "bmet"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
+        "lastSuccessfulPostingCount": 1,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; hospital biomedical and imaging equipment titles."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://allina.wd5.myworkdayjobs.com/wday/cxs/allina/External/jobs",
+        "publicBaseUrl": "https://allina.wd5.myworkdayjobs.com",
+        "publicSitePath": "/en-US/External",
+        "robotsUrl": "https://allina.wd5.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "houston-methodist-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Houston Methodist",
+        "employerType": "health-system",
+        "careerUrl": "https://houstonmethodist.wd12.myworkdayjobs.com/GTI",
+        "websiteUrl": "https://www.houstonmethodist.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomed equipment",
+        "biomedical equipment",
+        "clinical engineering technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing",
+        "sonographer"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
+        "lastSuccessfulPostingCount": 0,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://houstonmethodist.wd12.myworkdayjobs.com/wday/cxs/houstonmethodist/GTI/jobs",
+        "publicBaseUrl": "https://houstonmethodist.wd12.myworkdayjobs.com",
+        "publicSitePath": "/en-US/GTI",
+        "robotsUrl": "https://houstonmethodist.wd12.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 150,
+        "allowUnknownUsLocation": true,
+        "allowEmptySnapshot": true
+      }
+    },
+    {
+      "id": "uams-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "UAMS Health",
+        "employerType": "health-system",
+        "careerUrl": "https://uasys.wd5.myworkdayjobs.com/UASYS",
+        "websiteUrl": "https://uamshealth.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "clinical engineering technician",
+        "biomedical equipment",
+        "biomed technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
+        "lastSuccessfulPostingCount": 0,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://uasys.wd5.myworkdayjobs.com/wday/cxs/uasys/UASYS/jobs",
+        "publicBaseUrl": "https://uasys.wd5.myworkdayjobs.com",
+        "publicSitePath": "/en-US/UASYS",
+        "robotsUrl": "https://uasys.wd5.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "allowEmptySnapshot": true
+      }
+    },
+    {
+      "id": "halifax-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Halifax Health",
+        "employerType": "health-system",
+        "careerUrl": "https://halifaxhealth.wd12.myworkdayjobs.com/HalifaxHealth",
+        "websiteUrl": "https://halifaxhealth.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomed",
+        "clinical engineering",
+        "medical equipment technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
+        "lastSuccessfulPostingCount": 0,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://halifaxhealth.wd12.myworkdayjobs.com/wday/cxs/halifaxhealth/HalifaxHealth/jobs",
+        "publicBaseUrl": "https://halifaxhealth.wd12.myworkdayjobs.com",
+        "publicSitePath": "/en-US/HalifaxHealth",
+        "robotsUrl": "https://halifaxhealth.wd12.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "allowEmptySnapshot": true
+      }
+    },
+    {
+      "id": "brown-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Brown University Health",
+        "employerType": "health-system",
+        "careerUrl": "https://brownhealth.wd12.myworkdayjobs.com/External_Careers",
+        "websiteUrl": "https://www.brownhealth.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical equipment",
+        "medical engineering",
+        "clinical engineering technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "medical engineering (?:technician|manager|director)",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?|medical engineering",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": "2026-11-13T14:05:27Z",
+        "lastSuccessfulPostingCount": 1,
+        "collectionStatus": "active",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; hospital biomedical and medical engineering titles."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://brownhealth.wd12.myworkdayjobs.com/wday/cxs/brownhealth/External_Careers/jobs",
+        "publicBaseUrl": "https://brownhealth.wd12.myworkdayjobs.com",
+        "publicSitePath": "/en-US/External_Careers",
+        "robotsUrl": "https://brownhealth.wd12.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "cape-fear-valley-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Cape Fear Valley Health",
+        "employerType": "health-system",
+        "careerUrl": "https://capefearvalley.wd1.myworkdayjobs.com/CFV",
+        "websiteUrl": "https://www.capefearvalley.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical equipment",
+        "clinical technology",
+        "biomed technician"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical technology (?:technician|manager|director)",
+        "clinical engineering (?:technician|manager|director)",
+        "medical equipment (?:technician|repairer|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "pharmacy",
+        "patient care",
+        "sterile processing"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment|clinical technology",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint allowed by robots.txt; narrow hospital HTM title rules."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://capefearvalley.wd1.myworkdayjobs.com/wday/cxs/capefearvalley/CFV/jobs",
+        "publicBaseUrl": "https://capefearvalley.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/CFV",
+        "robotsUrl": "https://capefearvalley.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true
+      }
+    },
+    {
+      "id": "trinity-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "Trinity Health",
+        "employerType": "health-system",
+        "careerUrl": "https://jobs.trinity-health.org/",
+        "websiteUrl": "https://www.trinity-health.org/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "clinical engineering"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director|supervisor)",
+        "imaging equipment specialist"
+      ],
+      "excludePatterns": [
+        "research",
+        "stationary engineer",
+        "software",
+        "process engineer",
+        "adjunct"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://trinityhealth.wd1.myworkdayjobs.com/wday/cxs/trinityhealth/Jobs/jobs",
+        "publicBaseUrl": "https://trinityhealth.wd1.myworkdayjobs.com",
+        "publicSitePath": "/en-US/Jobs",
+        "robotsUrl": "https://trinityhealth.wd1.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "guardClosures": true
+      }
+    },
+    {
+      "id": "adventhealth-careers",
+      "enabled": true,
+      "employer": {
+        "name": "AdventHealth",
+        "employerType": "health-system",
+        "careerUrl": "https://jobs.adventhealth.com/",
+        "websiteUrl": "https://www.adventhealth.com/"
+      },
+      "adapter": "workday",
+      "queries": [
+        "biomedical",
+        "clinical engineering"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineer(?:ing)?(?:\\s+(?:i{1,3}|[1-3]))?\\b",
+        "medical equipment (?:technician|specialist|manager)"
+      ],
+      "excludePatterns": [
+        "adjunct",
+        "faculty",
+        "research",
+        "process engineer",
+        "software",
+        "patient care"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official Workday endpoint; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "apiUrl": "https://adventhealth.wd12.myworkdayjobs.com/wday/cxs/adventhealth/AH_External_Career_Site/jobs",
+        "publicBaseUrl": "https://adventhealth.wd12.myworkdayjobs.com",
+        "publicSitePath": "/en-US/AH_External_Career_Site",
+        "robotsUrl": "https://adventhealth.wd12.myworkdayjobs.com/robots.txt",
+        "pageSize": 20,
+        "maxResultsPerQuery": 100,
+        "allowUnknownUsLocation": true,
+        "guardClosures": true
+      }
+    },
+    {
+      "id": "commonspirit-health-careers",
+      "enabled": true,
+      "employer": {
+        "name": "CommonSpirit Health",
+        "employerType": "health-system",
+        "careerUrl": "https://www.commonspirit.careers/",
+        "websiteUrl": "https://www.commonspirit.org/"
+      },
+      "adapter": "talentbrew",
+      "queries": [
+        "biomedical"
+      ],
+      "relevancePatterns": [
+        "\\bbiomed(?:ical)?\\b",
+        "clinical engineering (?:technician|manager|director|supervisor)",
+        "medical equipment (?:technician|specialist|manager)"
+      ],
+      "excludePatterns": [
+        "research",
+        "scientist",
+        "laboratory",
+        "adjunct",
+        "faculty"
+      ],
+      "roleOverrides": [
+        {
+          "pattern": "manager|director|supervisor|lead",
+          "roleCategoryId": "leadership"
+        },
+        {
+          "pattern": "imaging|radiology",
+          "roleCategoryId": "imaging-service"
+        },
+        {
+          "pattern": "\\bbiomed(?:ical)?\\b|medical equipment",
+          "roleCategoryId": "bmet"
+        },
+        {
+          "pattern": "clinical engineer(?:ing)?",
+          "roleCategoryId": "clinical-engineering"
+        }
+      ],
+      "metadata": {
+        "firstTracked": "2026-11-13",
+        "lastSuccessfulCheck": null,
+        "lastSuccessfulPostingCount": null,
+        "collectionStatus": "partial",
+        "fullyAutomated": true,
+        "notes": "Official TalentBrew career search; closure protection remains enabled during initial monitored runs."
+      },
+      "adapterConfig": {
+        "searchUrl": "https://www.commonspirit.careers/search-jobs",
+        "resultsUrl": "https://www.commonspirit.careers/search-jobs/results",
+        "organizationId": "35300",
+        "publicBaseUrl": "https://www.commonspirit.careers",
+        "publicSitePath": "",
+        "robotsUrl": "https://www.commonspirit.careers/robots.txt",
+        "pageSize": 11,
+        "maxResultsPerQuery": 250,
+        "guardClosures": true
       }
     }
   ]

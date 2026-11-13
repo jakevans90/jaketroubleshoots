@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate } = require('../jobs.js');
+const { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, topStates, stateNames } = require('../jobs.js');
 
 test('searches encode user text as query parameters, not URL structure', () => {
   const links = searchLinks('imaging service engineer', 'A&B #1 / PA');
@@ -57,4 +57,14 @@ test('optional dates render only when valid and missing values stay blank', () =
   assert.equal(displayDate(null), '');
   assert.equal(displayDate('not-a-date'), '');
   assert.equal(displayDate('2026-10-21'), 'Oct 21, 2026');
+});
+
+test('state explorer counts postings and ranks the leading states deterministically', () => {
+  const counts = stateCountMap([posting, { ...posting, id: 'job_2' }, { ...posting, id: 'job_3', state: 'OH' }]);
+  assert.equal(counts.get('PA'), 2);
+  assert.equal(counts.get('OH'), 1);
+  assert.deepEqual(topStates(counts), [['PA', 2], ['OH', 1]]);
+  assert.equal(topStates(new Map([['TX', 3], ['CA', 3], ['PA', 2]]), 2)[0][0], 'CA');
+  assert.equal(stateNames.size, 51);
+  assert.equal(stateNames.get('PA'), 'Pennsylvania');
 });

@@ -19,9 +19,10 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
-  group: htm-hiring-pulse-codex-edits
+  group: htm-hiring-pulse-publication
   cancel-in-progress: false
 
 jobs:
@@ -32,10 +33,10 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
       HEALTH_REPORT: reports/htm-hiring-pulse-automation.json
     steps:
-      - name: Check out the site update branch
+      - name: Check out the deployment branch
         uses: actions/checkout@v4
         with:
-          ref: codex-edits
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -48,14 +49,6 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Initialize run health artifact
-        run: |
-          mkdir -p reports
-          python -c "import datetime,json; print(json.dumps({'schemaVersion':1,'timestamp':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'status':'preflight','summary':{},'sources':[],'warnings':[],'errors':[]}))" > "$HEALTH_REPORT"
-
-      - name: Fast-forward before collection
-        run: git pull --ff-only origin codex-edits
-
       - name: Preflight collector and public snapshot tests
         run: |
           python -m unittest \
@@ -65,6 +58,35 @@ jobs:
             tests.test_hiring_pulse_public
           node --test tests/test_jobs_ui.js
           python tools/build_hiring_pulse_public.py --check
+
+      - name: Prepare an isolated publication branch
+        id: publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          existing_branch="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --base main \
+            --state open \
+            --search 'in:title "Automated HTM Hiring Pulse update"' \
+            --json headRefName \
+            --jq '.[0].headRefName // empty')"
+          if [ -n "$existing_branch" ]; then
+            git fetch origin "$existing_branch"
+            git switch --track -c "$existing_branch" "origin/$existing_branch"
+            git merge --no-edit origin/main
+            publication_branch="$existing_branch"
+          else
+            publication_branch="htm-hiring-pulse-auto-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git switch -c "$publication_branch"
+          fi
+          echo "branch=$publication_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Initialize run health artifact
+        run: |
+          mkdir -p reports
+          python -c "import datetime,json; print(json.dumps({'schemaVersion':1,'timestamp':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'status':'preflight','summary':{},'sources':[],'warnings':[],'errors':[]}))" > "$HEALTH_REPORT"
 
       - name: Collect enabled employer sources
         env:
@@ -109,6 +131,9 @@ jobs:
           retention-days: 30
 
       - name: Commit validated data update
+        id: commit
+        env:
+          PUBLICATION_BRANCH: ${{ steps.publication.outputs.branch }}
         run: |
           git config user.name "JakeTroubleshoots Hiring Pulse Bot"
           git config user.email "actions@users.noreply.github.com"
@@ -122,7 +147,35 @@ jobs:
             data/htm-hiring-pulse/postings.json
           if git diff --cached --quiet; then
             echo "No validated Hiring Pulse changes to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "Update HTM Hiring Pulse data"
-          git push origin HEAD:codex-edits
+          git push -u origin "$PUBLICATION_BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or refresh the publication pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUBLICATION_BRANCH: ${{ steps.publication.outputs.branch }}
+        shell: bash
+        run: |
+          existing_pr="$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$PUBLICATION_BRANCH" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')"
+          body='Automated, validated Hiring Pulse refresh from official employer career sources. Review the source-health artifact on the associated workflow run before merging.'
+          if [ -n "$existing_pr" ]; then
+            gh pr edit "$existing_pr" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head "$PUBLICATION_BRANCH" \
+              --title "Automated HTM Hiring Pulse update" \
+              --body "$body"
+          fi

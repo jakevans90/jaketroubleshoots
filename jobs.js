@@ -48,7 +48,36 @@
     return Number.isNaN(parsed.valueOf()) ? '' : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(parsed);
   }
 
-  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate };
+  const stateNames = new Map([
+    ['AL', 'Alabama'], ['AK', 'Alaska'], ['AZ', 'Arizona'], ['AR', 'Arkansas'], ['CA', 'California'],
+    ['CO', 'Colorado'], ['CT', 'Connecticut'], ['DE', 'Delaware'], ['DC', 'District of Columbia'],
+    ['FL', 'Florida'], ['GA', 'Georgia'], ['HI', 'Hawaii'], ['ID', 'Idaho'], ['IL', 'Illinois'],
+    ['IN', 'Indiana'], ['IA', 'Iowa'], ['KS', 'Kansas'], ['KY', 'Kentucky'], ['LA', 'Louisiana'],
+    ['ME', 'Maine'], ['MD', 'Maryland'], ['MA', 'Massachusetts'], ['MI', 'Michigan'], ['MN', 'Minnesota'],
+    ['MS', 'Mississippi'], ['MO', 'Missouri'], ['MT', 'Montana'], ['NE', 'Nebraska'], ['NV', 'Nevada'],
+    ['NH', 'New Hampshire'], ['NJ', 'New Jersey'], ['NM', 'New Mexico'], ['NY', 'New York'],
+    ['NC', 'North Carolina'], ['ND', 'North Dakota'], ['OH', 'Ohio'], ['OK', 'Oklahoma'],
+    ['OR', 'Oregon'], ['PA', 'Pennsylvania'], ['RI', 'Rhode Island'], ['SC', 'South Carolina'],
+    ['SD', 'South Dakota'], ['TN', 'Tennessee'], ['TX', 'Texas'], ['UT', 'Utah'], ['VT', 'Vermont'],
+    ['VA', 'Virginia'], ['WA', 'Washington'], ['WV', 'West Virginia'], ['WI', 'Wisconsin'], ['WY', 'Wyoming'],
+  ]);
+
+  function stateCountMap(postings) {
+    const counts = new Map();
+    postings.forEach(posting => {
+      if (posting.state) counts.set(posting.state, (counts.get(posting.state) || 0) + 1);
+    });
+    return counts;
+  }
+
+  function topStates(counts, limit = 12) {
+    return [...counts.entries()]
+      .filter(([, count]) => count > 0)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit);
+  }
+
+  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, topStates, stateNames };
   if (typeof document === 'undefined') return;
 
   const role = document.getElementById('jobs-role');
@@ -150,6 +179,9 @@
       const stateFilter = document.getElementById('pulse-state');
       const keywordFilter = document.getElementById('pulse-keyword');
       const remoteFilter = document.getElementById('pulse-remote');
+      const stateChart = document.getElementById('pulse-state-chart');
+      const mapStatus = document.getElementById('pulse-map-status');
+      const mapReset = document.getElementById('pulse-map-reset');
       const employers = new Map(postings.map(posting => [posting.employerId, posting.employer]));
       [...employers].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(employerFilter, id, name));
       const employerTypes = new Map(postings.map(posting => [posting.employerType, posting.employerTypeLabel]));
@@ -157,7 +189,69 @@
       const roles = new Map(postings.map(posting => [posting.roleCategoryId, posting.roleCategory]));
       [...roles].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(roleFilter, id, name));
       [...new Set(postings.map(posting => posting.state).filter(Boolean))].sort().forEach(state => addOption(stateFilter, state, state));
+      const stateCounts = stateCountMap(postings);
+      const leadingStates = topStates(stateCounts);
+      const maximumStateCount = leadingStates.length ? leadingStates[0][1] : 0;
       let visibleLimit = 24;
+
+      function syncStateChart() {
+        if (!stateChart) return;
+        const selected = stateFilter.value;
+        stateChart.querySelectorAll('button[data-state]').forEach(button => {
+          const active = button.dataset.state === selected;
+          button.classList.toggle('is-selected', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+        if (mapReset) mapReset.hidden = !selected;
+        if (mapStatus) {
+          const count = stateCounts.get(selected) || 0;
+          mapStatus.textContent = selected
+            ? `${stateNames.get(selected) || selected}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample.`
+            : `${stateCounts.size} states and districts currently have observed openings. Choose a state to narrow the list.`;
+        }
+      }
+
+      function initializeStateChart() {
+        if (!stateChart) return;
+        const buttons = leadingStates.map(([code, count]) => {
+          const name = stateNames.get(code) || code;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'jobs-state-bar';
+          button.dataset.state = code;
+          button.setAttribute('aria-label', `${name}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample`);
+          button.setAttribute('aria-pressed', 'false');
+          const label = document.createElement('span');
+          label.className = 'jobs-state-bar-label';
+          const abbreviation = document.createElement('strong');
+          abbreviation.textContent = code;
+          const fullName = document.createElement('span');
+          fullName.textContent = name;
+          label.append(abbreviation, fullName);
+          const track = document.createElement('span');
+          track.className = 'jobs-state-bar-track';
+          const fill = document.createElement('span');
+          fill.style.width = `${Math.max(8, Math.round((count / maximumStateCount) * 100))}%`;
+          track.appendChild(fill);
+          const total = document.createElement('span');
+          total.className = 'jobs-state-bar-total';
+          total.textContent = String(count);
+          button.append(label, track, total);
+          button.addEventListener('click', () => {
+            stateFilter.value = code;
+            renderOpenings(true);
+            document.getElementById('pulse-openings-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          return button;
+        });
+        stateChart.replaceChildren(...buttons);
+        stateChart.hidden = false;
+        if (mapReset) mapReset.addEventListener('click', () => {
+          stateFilter.value = '';
+          renderOpenings(true);
+        });
+        syncStateChart();
+      }
 
       function renderOpenings(resetLimit) {
         if (resetLimit) visibleLimit = 24;
@@ -175,6 +269,7 @@
         pulseStatus.textContent = matches.length ? `Showing ${shown} of ${matches.length} matching openings in the observed sample.` : 'No openings match these filters.';
         pulseLoadMore.hidden = shown >= matches.length;
         pulseFallback.hidden = true;
+        syncStateChart();
       }
 
       pulseFilters.addEventListener('submit', event => event.preventDefault());
@@ -183,6 +278,7 @@
       pulseFilters.addEventListener('reset', () => setTimeout(() => renderOpenings(true), 0));
       pulseLoadMore.addEventListener('click', () => { visibleLimit += 24; renderOpenings(false); });
       pulseFilters.hidden = false;
+      initializeStateChart();
       renderOpenings(true);
     } catch (_) {
       pulseFilters.hidden = true;

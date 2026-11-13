@@ -25,6 +25,7 @@ import htm_hiring_pulse as pulse  # noqa: E402
 PUBLIC_PATH = Path("data/htm-hiring-pulse-public.json")
 PAGE_PATH = Path("biomed-jobs.html")
 HOME_PAGE_PATH = Path("index.html")
+SOURCE_CONFIG_PATH = Path("data/htm-hiring-pulse/collection-sources.json")
 START_MARKER = "    <!-- hiring-pulse-static:start -->"
 END_MARKER = "    <!-- hiring-pulse-static:end -->"
 HOME_START_MARKER = "      <!-- hiring-pulse-home:start -->"
@@ -58,7 +59,40 @@ def _last_updated(store: dict[str, dict[str, Any]]) -> str | None:
     return max(values) if values else None
 
 
-def build_public_snapshot(store: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def build_source_health(config: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not config:
+        return None
+    sources = config.get("sources")
+    if not isinstance(sources, list):
+        raise ValueError("Hiring Pulse source configuration is missing sources")
+    status_counts: Counter[str] = Counter()
+    records: list[dict[str, Any]] = []
+    for source in sources:
+        if not source.get("enabled"):
+            continue
+        metadata = source.get("metadata") or {}
+        employer = source.get("employer") or {}
+        status = metadata.get("collectionStatus") or "not-started"
+        status_counts[status] += 1
+        records.append({
+            "id": source.get("id"),
+            "employer": employer.get("name") or source.get("id"),
+            "status": status,
+            "lastSuccessfulCheck": metadata.get("lastSuccessfulCheck"),
+            "lastSuccessfulPostingCount": metadata.get("lastSuccessfulPostingCount"),
+        })
+    records.sort(key=lambda item: item["employer"].casefold())
+    return {
+        "trackedSources": len(records),
+        "activeSources": status_counts["active"],
+        "guardedSources": status_counts["partial"],
+        "failedSources": status_counts["failed"],
+        "notStartedSources": status_counts["not-started"],
+        "sources": records,
+    }
+
+
+def build_public_snapshot(store: dict[str, dict[str, Any]], source_config: dict[str, Any] | None = None) -> dict[str, Any]:
     errors = pulse.validate_store(store)
     if errors:
         raise ValueError("Cannot build a public snapshot from invalid data:\n" + "\n".join(errors))
@@ -126,6 +160,7 @@ def build_public_snapshot(store: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "coverage": {
             "employers": sorted(employer_counts, key=str.casefold),
         },
+        "sourceHealth": build_source_health(source_config),
         "breakdowns": {
             "roles": [
                 {"id": key[0], "label": key[1], "activePostings": count}
@@ -173,6 +208,28 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
     role_items = _list_items(snapshot["breakdowns"]["roles"], "label")
     state_items = _list_items(snapshot["breakdowns"]["states"], "state", 10)
     employer_items = _list_items(snapshot["breakdowns"]["employers"], "employer")
+    health = snapshot.get("sourceHealth")
+    health_markup: list[str] = []
+    if health:
+        source_rows = []
+        status_labels = {"active": "Complete", "partial": "Guarded", "failed": "Failed", "not-started": "Pending", "disabled": "Disabled"}
+        for source in health["sources"]:
+            checked = source.get("lastSuccessfulCheck")
+            checked_text = checked.split("T", 1)[0] if checked else "Not yet completed"
+            status_text = status_labels.get(source["status"], source["status"].replace("-", " ").title())
+            source_rows.append(
+                '        <div><span>' + html.escape(source["employer"]) + '</span><span>'
+                + html.escape(status_text + " · " + checked_text) + '</span></div>'
+            )
+        health_markup = [
+            '      <details class="jobs-source-health">',
+            f'        <summary>Source health: {health["trackedSources"]} monitored · {health["activeSources"]} complete · {health["guardedSources"]} guarded · {health["failedSources"]} failed</summary>',
+            '        <div class="jobs-source-health-grid">',
+            *source_rows,
+            '        </div>',
+            '        <p class="jobs-help">Guarded sources can add or refresh postings, but cannot close missing jobs until a stable complete snapshot is verified.</p>',
+            '      </details>',
+        ]
     return "\n".join([
         START_MARKER,
         '    <p class="jobs-pulse-status">Live observed sample · Updated ' + html.escape(last_updated) + "</p>",
@@ -187,6 +244,7 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
         "      <h3>Current coverage</h3>",
         f"      <p><strong>Tracked employers:</strong> {employers}.</p>",
         "      <p>Openings are collected from these employer career sources, normalized, and deduplicated. Coverage is expanding across employer types and regions. A posting remains active until a complete check of its source confirms it is absent. First-observed dates are not employer-posted dates.</p>",
+        *health_markup,
         "    </div>",
         '    <div class="jobs-breakdown-grid">',
         '      <section aria-labelledby="pulse-role-breakdown"><h3 id="pulse-role-breakdown">Roles in this sample</h3><ul class="jobs-count-list">',
@@ -249,7 +307,8 @@ def render_json(value: dict[str, Any]) -> bytes:
 
 def build(root: Path, check: bool = False) -> bool:
     store = pulse.load_store(root)
-    snapshot = build_public_snapshot(store)
+    source_config = pulse.load_json(root / SOURCE_CONFIG_PATH)
+    snapshot = build_public_snapshot(store, source_config)
     public_path = root / PUBLIC_PATH
     page_path = root / PAGE_PATH
     home_page_path = root / HOME_PAGE_PATH

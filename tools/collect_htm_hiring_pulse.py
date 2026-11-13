@@ -16,6 +16,7 @@ import sys
 import time
 from dataclasses import dataclass
 from datetime import timedelta
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
@@ -29,7 +30,7 @@ import htm_hiring_pulse as pulse
 
 CONFIG_PATH = Path("data/htm-hiring-pulse/collection-sources.json")
 USER_AGENT = "JakeTroubleshoots-HTM-Hiring-Pulse/1.0"
-ADAPTERS = {"workday", "phenom"}
+ADAPTERS = {"workday", "phenom", "talentbrew"}
 US_STATES = {
     "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR", "california": "CA",
     "colorado": "CO", "connecticut": "CT", "delaware": "DE", "district of columbia": "DC",
@@ -101,7 +102,7 @@ def validate_config(config: dict[str, Any]) -> list[str]:
         elif employer.get("employerType") not in pulse.EMPLOYER_TYPES:
             errors.append(f"{where}.employer.employerType is invalid")
         if source.get("adapter") not in ADAPTERS:
-            errors.append(f"{where}.adapter must be workday or phenom")
+            errors.append(f"{where}.adapter must be one of {', '.join(sorted(ADAPTERS))}")
         for field in ("queries", "relevancePatterns"):
             values = source.get(field)
             if not isinstance(values, list) or not values or not all(isinstance(value, str) and value.strip() for value in values):
@@ -136,12 +137,21 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             errors.append(f"{where}.adapterConfig must be an object")
             continue
         common = {"publicBaseUrl", "publicSitePath", "robotsUrl", "pageSize", "maxResultsPerQuery"}
-        specific = {"apiUrl"} if source.get("adapter") == "workday" else {"searchUrl", "jobIdentifierField", "queryParameter"}
-        allowed_config = common | specific | ({"allowUnknownUsLocation"} if source.get("adapter") == "workday" else set())
+        adapter_name = source.get("adapter")
+        if adapter_name == "workday":
+            specific = {"apiUrl"}
+            optional_config = {"allowUnknownUsLocation", "allowEmptySnapshot", "guardClosures"}
+        elif adapter_name == "phenom":
+            specific = {"searchUrl", "jobIdentifierField", "queryParameter"}
+            optional_config = {"guardClosures"}
+        else:
+            specific = {"searchUrl", "resultsUrl", "organizationId"}
+            optional_config = {"guardClosures"}
+        allowed_config = common | specific | optional_config
         config_fields = set(adapter_config)
-        if config_fields != common | specific and config_fields != allowed_config:
+        if not (common | specific) <= config_fields or not config_fields <= allowed_config:
             errors.append(f"{where}.adapterConfig fields do not match the selected adapter")
-        for field in (common | specific) - {"jobIdentifierField", "queryParameter", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
+        for field in (common | specific) - {"jobIdentifierField", "queryParameter", "organizationId", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
             if field in adapter_config and not pulse.is_web_url(adapter_config.get(field)):
                 errors.append(f"{where}.adapterConfig.{field} must be an HTTP(S) URL")
         for field in ("pageSize", "maxResultsPerQuery"):
@@ -149,9 +159,16 @@ def validate_config(config: dict[str, Any]) -> list[str]:
                 errors.append(f"{where}.adapterConfig.{field} must be a positive integer")
         if "allowUnknownUsLocation" in adapter_config and not isinstance(adapter_config.get("allowUnknownUsLocation"), bool):
             errors.append(f"{where}.adapterConfig.allowUnknownUsLocation must be a boolean")
+        if "allowEmptySnapshot" in adapter_config and not isinstance(adapter_config.get("allowEmptySnapshot"), bool):
+            errors.append(f"{where}.adapterConfig.allowEmptySnapshot must be a boolean")
+        if "guardClosures" in adapter_config and not isinstance(adapter_config.get("guardClosures"), bool):
+            errors.append(f"{where}.adapterConfig.guardClosures must be a boolean")
         if source.get("adapter") == "phenom" and adapter_config.get("queryParameter") is not None:
             if not isinstance(adapter_config.get("queryParameter"), str) or not adapter_config["queryParameter"].strip():
                 errors.append(f"{where}.adapterConfig.queryParameter must be null or non-empty text")
+        if source.get("adapter") == "talentbrew":
+            if not isinstance(adapter_config.get("organizationId"), str) or not adapter_config["organizationId"].strip():
+                errors.append(f"{where}.adapterConfig.organizationId must be non-empty text")
         metadata = source.get("metadata")
         metadata_fields = {"firstTracked", "lastSuccessfulCheck", "lastSuccessfulPostingCount", "collectionStatus", "fullyAutomated", "notes"}
         if not isinstance(metadata, dict) or set(metadata) != metadata_fields:
@@ -212,6 +229,16 @@ def post_json(url: str, payload: dict[str, Any], timeout: int) -> dict[str, Any]
     return value
 
 
+def get_json(url: str, timeout: int) -> dict[str, Any]:
+    try:
+        value = json.loads(request_bytes(url, timeout).decode("utf-8"))
+    except json.JSONDecodeError as exc:
+        raise CollectionError(f"Invalid JSON returned by {url}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise CollectionError(f"Expected a JSON object from {url}")
+    return value
+
+
 def ensure_robots_allowed(source: dict[str, Any], timeout: int) -> None:
     adapter = source["adapterConfig"]
     robots_text = get_text(adapter["robotsUrl"], timeout)
@@ -250,6 +277,79 @@ def phenom_page_data(html: str) -> tuple[list[dict[str, Any]], int, int]:
     if hits != len(jobs):
         raise CollectionError(f"Phenom hit count mismatch: declared {hits}, received {len(jobs)}")
     return jobs, hits, total
+
+
+class TalentBrewSearchParser(HTMLParser):
+    """Extract the public search-result cards rendered by TalentBrew sites."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.jobs: list[dict[str, str]] = []
+        self.meta: dict[str, int] = {}
+        self.current: dict[str, str] | None = None
+        self.capture_title = False
+        self.capture_location = False
+        self.title_parts: list[str] = []
+        self.location_parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        classes = set((attributes.get("class") or "").split())
+        if attributes.get("id") == "search-results":
+            for source_name, target_name in (
+                ("data-total-job-results", "total"),
+                ("data-total-pages", "totalPages"),
+                ("data-current-page", "currentPage"),
+                ("data-records-per-page", "pageSize"),
+            ):
+                raw = attributes.get(source_name)
+                if raw and raw.isdigit():
+                    self.meta[target_name] = int(raw)
+        if tag == "a" and "search-results-list__job-link" in classes:
+            self._flush_current()
+            href = attributes.get("href") or ""
+            job_id = attributes.get("data-job-id") or ""
+            self.current = {"href": href, "jobId": job_id, "title": "", "location": ""}
+            self.title_parts = []
+            self.capture_title = True
+        elif tag == "li" and "job-location" in classes and self.current:
+            self.location_parts = []
+            self.capture_location = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a" and self.capture_title and self.current:
+            self.current["title"] = " ".join(" ".join(self.title_parts).split())
+            self.capture_title = False
+        elif tag == "li" and self.capture_location and self.current:
+            self.current["location"] = " ".join(" ".join(self.location_parts).split())
+            self.capture_location = False
+
+    def handle_data(self, data: str) -> None:
+        if self.capture_title:
+            self.title_parts.append(data)
+        if self.capture_location:
+            self.location_parts.append(data)
+
+    def close(self) -> None:
+        super().close()
+        self._flush_current()
+
+    def _flush_current(self) -> None:
+        if not self.current:
+            return
+        if self.current.get("href") and self.current.get("jobId") and self.current.get("title"):
+            self.jobs.append(self.current)
+        self.current = None
+
+
+def talentbrew_page_data(html: str) -> tuple[list[dict[str, str]], dict[str, int]]:
+    parser = TalentBrewSearchParser()
+    parser.feed(html)
+    parser.close()
+    required = {"total", "totalPages", "currentPage", "pageSize"}
+    if not required <= set(parser.meta):
+        raise CollectionError("TalentBrew search results lacked pagination metadata")
+    return parser.jobs, parser.meta
 
 
 def slugify(value: str) -> str:
@@ -302,6 +402,27 @@ def location_payload(text: Any, country: Any = "US", fallback: str | None = None
     return {"text": display, "city": city, "state": state, "country": country_code, "remote": remote}
 
 
+WORKDAY_FOREIGN_LOCATION_MARKERS = {
+    "australia": "AU", "belgium": "BE", "brazil": "BR", "canada": "CA",
+    "china": "CN", "denmark": "DK", "france": "FR", "germany": "DE",
+    "gbr": "GB", "india": "IN", "ireland": "IE", "italy": "IT",
+    "japan": "JP", "mexico": "MX", "netherlands": "NL", "norway": "NO",
+    "poland": "PL", "singapore": "SG", "south africa": "ZA", "spain": "ES",
+    "sweden": "SE", "switzerland": "CH", "united kingdom": "GB",
+}
+
+
+def workday_country_code(location_text: str | None, fallback: str | None = None) -> str:
+    combined = " ".join(part for part in (location_text, fallback) if part)
+    if state_from_text(combined) or re.search(r"\b(?:united states|usa)\b", combined, re.IGNORECASE):
+        return "US"
+    normalized = pulse.normalize_text(combined)
+    for marker, code in WORKDAY_FOREIGN_LOCATION_MARKERS.items():
+        if re.search(rf"\b{re.escape(marker)}\b", normalized):
+            return code
+    return "US"
+
+
 def is_us_job(location: dict[str, Any], allow_unknown_location: bool = False) -> bool:
     return location.get("country") == "US" and bool(location.get("state") or location.get("remote") or allow_unknown_location)
 
@@ -350,7 +471,7 @@ def workday_record(source: dict[str, Any], job: dict[str, Any], checked_at: str)
     path_match = re.match(r"/job/([^/]+)/", external_path)
     if path_match:
         fallback = unquote(path_match.group(1)).replace("-", " ")
-    location = location_payload(location_text, "US", fallback)
+    location = location_payload(location_text, workday_country_code(location_text, fallback), fallback)
     if not location.get("state") and fallback:
         fallback_state = state_from_text(fallback)
         if fallback_state:
@@ -451,7 +572,7 @@ def collect_workday(source: dict[str, Any], checked_at: str, timeout: int,
                 break
         if query_stable and retrieved != (total or 0):
             raise CollectionError(f"{source['id']} retrieved {retrieved} of {total} Workday jobs for '{query}'")
-    if not by_id:
+    if not by_id and not adapter.get("allowEmptySnapshot"):
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
 
@@ -513,6 +634,83 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
 
 
+def talentbrew_record(source: dict[str, Any], job: dict[str, str], checked_at: str) -> dict[str, Any] | None:
+    title = pulse.clean_optional(job.get("title"))
+    job_id = pulse.clean_optional(job.get("jobId"))
+    href = pulse.clean_optional(job.get("href"))
+    if not title or not job_id or not href or not relevant_title(source, title):
+        return None
+    location = location_payload(job.get("location"), "US")
+    if not is_us_job(location):
+        return None
+    adapter = source["adapterConfig"]
+    url = href if pulse.is_web_url(href) else adapter["publicBaseUrl"].rstrip("/") + "/" + href.lstrip("/")
+    return make_common_record(source, title, location, url, job_id)
+
+
+def collect_talentbrew(source: dict[str, Any], checked_at: str, timeout: int,
+                       get: Callable[[str, int], str] = get_text,
+                       get_object: Callable[[str, int], dict[str, Any]] = get_json) -> CollectionResult:
+    adapter = source["adapterConfig"]
+    scanned = 0
+    totals: dict[str, int] = {}
+    by_id: dict[str, dict[str, Any]] = {}
+    complete = True
+    for query in source["queries"]:
+        initial_url = adapter["searchUrl"] + "?" + urlencode({"k": query, "orgIds": adapter["organizationId"]})
+        jobs, meta = talentbrew_page_data(get(initial_url, timeout))
+        declared_total = meta["total"]
+        if declared_total > adapter["maxResultsPerQuery"]:
+            raise CollectionError(f"{source['id']} query '{query}' unexpectedly returned {declared_total} jobs")
+        totals[query] = declared_total
+        all_jobs = list(jobs)
+        page_fingerprints: set[tuple[str, ...]] = {
+            tuple(job.get("jobId", "") for job in jobs)
+        }
+        for page in range(2, meta["totalPages"] + 1):
+            parameters = {
+                "ActiveFacetID": 0,
+                "CurrentPage": page,
+                "RecordsPerPage": meta["pageSize"],
+                "TotalPages": meta["totalPages"],
+                "TotalResults": declared_total,
+                "Distance": 50,
+                "RadiusUnitType": 2,
+                "Keywords": query,
+                "Location": "",
+                "ShowRadius": "False",
+                "IsPagination": "True",
+                "SearchResultsModuleName": "Section 6 - Search Results List",
+                "SortCriteria": 0,
+                "SortDirection": 0,
+                "SearchType": 1,
+                "OrganizationIds": adapter["organizationId"],
+                "ResultsType": 0,
+            }
+            payload = get_object(adapter["resultsUrl"] + "?" + urlencode(parameters), timeout)
+            html = payload.get("results")
+            if not isinstance(html, str):
+                raise CollectionError(f"{source['id']} TalentBrew pagination response lacked result HTML")
+            page_jobs, page_meta = talentbrew_page_data(html)
+            if page_meta["currentPage"] != page or page_meta["total"] != declared_total or page_meta["totalPages"] != meta["totalPages"]:
+                complete = False
+            fingerprint = tuple(job.get("jobId", "") for job in page_jobs)
+            if fingerprint and fingerprint in page_fingerprints:
+                complete = False
+            page_fingerprints.add(fingerprint)
+            all_jobs.extend(page_jobs)
+        scanned += len(all_jobs)
+        if len(all_jobs) != declared_total:
+            raise CollectionError(f"{source['id']} retrieved {len(all_jobs)} of {declared_total} TalentBrew jobs for '{query}'")
+        for job in all_jobs:
+            record = talentbrew_record(source, job, checked_at)
+            if record:
+                by_id[record["sourcePostingId"]] = record
+    if not by_id:
+        raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
+    return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
+
+
 def selected_sources(config: dict[str, Any], requested: list[str] | None) -> list[dict[str, Any]]:
     available = {source["id"]: source for source in config["sources"] if source["enabled"]}
     if not requested:
@@ -523,6 +721,10 @@ def selected_sources(config: dict[str, Any], requested: list[str] | None) -> lis
     return [available[source_id] for source_id in requested]
 
 
+def missing_jobs_may_close(source: dict[str, Any], result: CollectionResult, confirmation: bool) -> bool:
+    return bool(confirmation and result.complete and not source["adapterConfig"].get("guardClosures"))
+
+
 def reclassify_configured_postings(store: dict[str, dict[str, Any]], config: dict[str, Any], timestamp: str) -> int:
     sources = {source["id"]: source for source in config["sources"]}
     changed = 0
@@ -530,6 +732,18 @@ def reclassify_configured_postings(store: dict[str, dict[str, Any]], config: dic
         source = sources.get(posting.get("source"))
         if not source:
             continue
+        if source.get("adapter") == "workday":
+            path_location = unquote(posting.get("canonical_url", "")).split("/job/", 1)[-1].split("/", 1)[0].replace("-", " ")
+            country = workday_country_code(posting.get("location", {}).get("text"), path_location)
+            if country != "US":
+                if posting.get("status") == "active":
+                    last_seen = posting.get("last_seen") or timestamp
+                    closure_timestamp = timestamp if pulse.parse_timestamp(timestamp) >= pulse.parse_timestamp(last_seen) else last_seen
+                    posting["status"] = "closed"
+                    posting["closed_at"] = closure_timestamp
+                    posting["updated_at"] = closure_timestamp
+                    changed += 1
+                continue
         role_id = role_override(source, posting["title"]) or pulse.classify_role(posting["title"], store["taxonomy"])
         if posting.get("role_category_id") == role_id:
             continue
@@ -554,7 +768,11 @@ def command_collect(args: argparse.Namespace) -> int:
     results: list[CollectionResult] = []
     for source in sources:
         ensure_robots_allowed(source, args.timeout)
-        collector = collect_workday if source["adapter"] == "workday" else collect_phenom
+        collector = {
+            "workday": collect_workday,
+            "phenom": collect_phenom,
+            "talentbrew": collect_talentbrew,
+        }[source["adapter"]]
         results.append(collector(source, checked_at, args.timeout))
     if args.confirm_close_missing and not all(result.complete for result in results):
         raise CollectionError("Closure requested, but at least one selected source was not a complete snapshot")
@@ -562,8 +780,10 @@ def command_collect(args: argparse.Namespace) -> int:
     store = copy.deepcopy(pulse.load_store(args.root))
     checks = []
     reports = []
+    sources_by_id = {source["id"]: source for source in sources}
     for result in results:
-        complete = bool(args.confirm_close_missing and result.complete)
+        closure_guarded = bool(sources_by_id[result.source_id]["adapterConfig"].get("guardClosures"))
+        complete = missing_jobs_may_close(sources_by_id[result.source_id], result, args.confirm_close_missing)
         check = pulse.upsert_records(store, result.postings, result.source_id, checked_at, complete)
         checks.append(check)
         reports.append({
@@ -572,6 +792,7 @@ def command_collect(args: argparse.Namespace) -> int:
             "recordsScanned": result.scanned,
             "relevantUniquePostings": len(result.postings),
             "snapshotVerifiedComplete": result.complete,
+            "closureGuarded": closure_guarded,
             "missingJobsMayClose": complete,
             "check": check,
         })
