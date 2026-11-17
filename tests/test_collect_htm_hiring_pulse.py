@@ -35,6 +35,8 @@ def source(adapter):
         base["adapterConfig"]["apiUrl"] = "https://example.test/wday/jobs"
     elif adapter == "phenom":
         base["adapterConfig"].update({"searchUrl": "https://example.test/search", "jobIdentifierField": "jobId", "queryParameter": "keywords"})
+    elif adapter == "icims":
+        base["adapterConfig"].update({"apiUrl": "https://example.test/api/jobs", "queryParameter": "keywords", "pageParameter": "page"})
     else:
         base["adapterConfig"].update({
             "searchUrl": "https://example.test/search-jobs",
@@ -89,6 +91,46 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual({"total": 1, "totalPages": 1, "currentPage": 1, "pageSize": 11}, meta)
         self.assertEqual("Biomedical Equipment Technician II", jobs[0]["title"])
         self.assertEqual("Austin, TX", jobs[0]["location"])
+
+    def test_talentbrew_parser_reads_modern_radancy_cards(self):
+        html = """
+        <section id="search-results" data-total-job-results="1" data-total-pages="1"
+          data-current-page="1" data-records-per-page="15">
+          <li class="search-results-list-item">
+            <a href="/job/rochester/htm-tech/33647/123" data-job-id="123">
+              <span class="job-title">HTM Tech Specialist I</span>
+              <span class="job-location">Rochester, Minnesota</span>
+            </a>
+          </li>
+        </section>
+        """
+        jobs, meta = MODULE.talentbrew_page_data(html)
+        self.assertEqual(1, meta["total"])
+        self.assertEqual("HTM Tech Specialist I", jobs[0]["title"])
+        self.assertEqual("Rochester, Minnesota", jobs[0]["location"])
+
+        fragment_jobs, fragment_meta = MODULE.talentbrew_fragment_data(
+            '<li class="search-results-list-item"><a href="/job/x" data-job-id="456">'
+            '<span class="job-title">Biomedical Equipment Technician</span>'
+            '<span class="job-location">Phoenix, Arizona</span></a></li>'
+        )
+        self.assertEqual({}, fragment_meta)
+        self.assertEqual("456", fragment_jobs[0]["jobId"])
+
+    def test_hopkins_parser_reads_static_result_cards(self):
+        html = """
+        <h2>Found <strong>1</strong> job at Johns Hopkins Medicine</h2>
+        <div class="results-content" id="job-list-section">
+          <div><a href="/job/104467/biomedical-equipment-technician-ii/"><h3>Biomedical Equipment Technician II</h3></a>
+          <dl><span class="job-ref"><dt>Requisition #:</dt><dd>682424</dd></span>
+          <span class="location"><dt>Location:</dt><dd>Johns Hopkins Health System, Baltimore, MD 21201</dd></span>
+          <span class="employment_type"><dt>Employment Type:</dt><dd>Full Time</dd></span></dl></div>
+        </div>
+        """
+        jobs, total = MODULE.hopkins_page_data(html)
+        self.assertEqual(1, total)
+        self.assertEqual("682424", jobs[0]["jobId"])
+        self.assertEqual("Biomedical Equipment Technician II", jobs[0]["title"])
 
     def test_talentbrew_collection_paginates_filters_and_deduplicates(self):
         configured = source("talentbrew")
@@ -195,6 +237,44 @@ class CollectorTests(unittest.TestCase):
         result = MODULE.collect_workday(configured, "2026-10-20T12:00:00Z", 10, post=fake_post)
         self.assertTrue(result.complete)
         self.assertEqual([], result.postings)
+
+    def test_icims_collection_normalizes_and_filters_postings(self):
+        configured = source("icims")
+        configured["queries"] = ["biomed tech"]
+
+        def fake_get(url, timeout):
+            self.assertIn("keywords=biomed+tech", url)
+            self.assertIn("page=1", url)
+            return {
+                "totalCount": 2,
+                "jobs": [
+                    {"data": {
+                        "req_id": "R700",
+                        "title": "Biomedical Equipment Technician II",
+                        "city": "New Haven",
+                        "state": "Connecticut",
+                        "country_code": "US",
+                        "posted_date": "2026-11-16T00:00:00Z",
+                        "tags4": ["Full time"],
+                        "meta_data": {"canonical_url": "https://example.test/jobs/R700"},
+                    }},
+                    {"data": {
+                        "req_id": "R701",
+                        "title": "Research Scientist",
+                        "city": "New Haven",
+                        "state": "Connecticut",
+                        "country_code": "US",
+                    }},
+                ],
+            }
+
+        result = MODULE.collect_icims(configured, "2026-11-17T19:00:00Z", 10, get_object=fake_get)
+        self.assertTrue(result.complete)
+        self.assertEqual(2, result.scanned)
+        self.assertEqual(1, len(result.postings))
+        self.assertEqual("CT", result.postings[0]["location"]["state"])
+        self.assertEqual("2026-11-16", result.postings[0]["postedDate"])
+        self.assertEqual("https://example.test/jobs/R700", result.postings[0]["url"])
 
     def test_live_total_change_keeps_partial_results_but_disables_closure(self):
         configured = source("workday")
