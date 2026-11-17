@@ -46,7 +46,14 @@ def active_by_source(store: dict[str, dict[str, Any]]) -> Counter[str]:
 
 def collect_source(source: dict[str, Any], checked_at: str, timeout: int) -> collector.CollectionResult:
     collector.ensure_robots_allowed(source, timeout)
-    adapter = collector.collect_workday if source["adapter"] == "workday" else collector.collect_phenom
+    adapters = {
+        "workday": collector.collect_workday,
+        "phenom": collector.collect_phenom,
+        "talentbrew": collector.collect_talentbrew,
+        "hopkins": collector.collect_hopkins,
+        "icims": collector.collect_icims,
+    }
+    adapter = adapters[source["adapter"]]
     return adapter(source, checked_at, timeout)
 
 

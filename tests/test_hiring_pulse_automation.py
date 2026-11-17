@@ -49,6 +49,29 @@ class HiringPulseAutomationTests(unittest.TestCase):
             "roleCategoryId": posting["role_category_id"],
         }
 
+    def test_collect_source_routes_every_supported_adapter(self):
+        originals = {}
+        calls = []
+        original_robots = MODULE.collector.ensure_robots_allowed
+        try:
+            for adapter_name in ("workday", "phenom", "talentbrew", "hopkins", "icims"):
+                attribute = f"collect_{adapter_name}"
+                originals[attribute] = getattr(MODULE.collector, attribute)
+
+                def fake_collect(source, checked_at, timeout, name=adapter_name):
+                    calls.append(name)
+                    return MODULE.collector.CollectionResult(source["id"], [], 0, True, {})
+
+                setattr(MODULE.collector, attribute, fake_collect)
+            MODULE.collector.ensure_robots_allowed = lambda source, timeout: None
+            for adapter_name in ("workday", "phenom", "talentbrew", "hopkins", "icims"):
+                MODULE.collect_source({"id": adapter_name, "adapter": adapter_name}, "2026-11-17T15:00:00Z", 10)
+        finally:
+            for attribute, function in originals.items():
+                setattr(MODULE.collector, attribute, function)
+            MODULE.collector.ensure_robots_allowed = original_robots
+        self.assertEqual(["workday", "phenom", "talentbrew", "hopkins", "icims"], calls)
+
     def test_partial_source_collapse_refreshes_seen_job_without_closing_missing_jobs(self):
         record = self.external_record()
         baseline_active = sum(MODULE.active_by_source(MODULE.pulse.load_store(self.root)).values())
