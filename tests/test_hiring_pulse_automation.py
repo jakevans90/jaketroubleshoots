@@ -124,6 +124,8 @@ class HiringPulseAutomationTests(unittest.TestCase):
         self.assertIn("ref: main", workflow)
         self.assertIn("${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}", workflow)
         self.assertNotIn("HEAD:codex-edits", workflow)
+        self.assertLess(workflow.index("Configure publication identity"), workflow.index("git merge --no-edit origin/main"))
+        self.assertLess(workflow.index('git config user.name "JakeTroubleshoots Hiring Pulse Bot"'), workflow.index("git merge --no-edit origin/main"))
 
 
 if __name__ == "__main__":

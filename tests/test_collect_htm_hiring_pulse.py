@@ -48,12 +48,13 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(25, len(config["sources"]))
+        self.assertEqual(27, len(config["sources"]))
         expected_expansion = {
             "bd-careers", "abbott-careers", "danaher-careers", "iqvia-medtech-careers",
             "allina-health-careers", "houston-methodist-careers", "uams-health-careers",
             "halifax-health-careers", "brown-health-careers", "cape-fear-valley-careers",
             "trinity-health-careers", "adventhealth-careers", "commonspirit-health-careers",
+            "intermountain-health-careers", "advocate-health-careers",
         }
         self.assertTrue(expected_expansion.issubset({item["id"] for item in config["sources"]}))
 
