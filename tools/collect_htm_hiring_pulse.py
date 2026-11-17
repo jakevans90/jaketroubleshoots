@@ -30,7 +30,7 @@ import htm_hiring_pulse as pulse
 
 CONFIG_PATH = Path("data/htm-hiring-pulse/collection-sources.json")
 USER_AGENT = "JakeTroubleshoots-HTM-Hiring-Pulse/1.0"
-ADAPTERS = {"workday", "phenom", "talentbrew"}
+ADAPTERS = {"workday", "phenom", "talentbrew", "hopkins", "icims"}
 US_STATES = {
     "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR", "california": "CA",
     "colorado": "CO", "connecticut": "CT", "delaware": "DE", "district of columbia": "DC",
@@ -143,15 +143,21 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             optional_config = {"allowUnknownUsLocation", "allowEmptySnapshot", "guardClosures"}
         elif adapter_name == "phenom":
             specific = {"searchUrl", "jobIdentifierField", "queryParameter"}
-            optional_config = {"guardClosures"}
-        else:
+            optional_config = {"allowEmptySnapshot", "guardClosures"}
+        elif adapter_name == "talentbrew":
             specific = {"searchUrl", "resultsUrl", "organizationId"}
-            optional_config = {"guardClosures"}
+            optional_config = {"allowEmptySnapshot", "guardClosures"}
+        elif adapter_name == "hopkins":
+            specific = {"searchUrl", "queryParameter", "pageParameter"}
+            optional_config = {"allowEmptySnapshot", "guardClosures"}
+        else:
+            specific = {"apiUrl", "queryParameter", "pageParameter"}
+            optional_config = {"allowEmptySnapshot", "guardClosures"}
         allowed_config = common | specific | optional_config
         config_fields = set(adapter_config)
         if not (common | specific) <= config_fields or not config_fields <= allowed_config:
             errors.append(f"{where}.adapterConfig fields do not match the selected adapter")
-        for field in (common | specific) - {"jobIdentifierField", "queryParameter", "organizationId", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
+        for field in (common | specific) - {"jobIdentifierField", "queryParameter", "pageParameter", "organizationId", "pageSize", "maxResultsPerQuery", "publicSitePath"}:
             if field in adapter_config and not pulse.is_web_url(adapter_config.get(field)):
                 errors.append(f"{where}.adapterConfig.{field} must be an HTTP(S) URL")
         for field in ("pageSize", "maxResultsPerQuery"):
@@ -169,6 +175,14 @@ def validate_config(config: dict[str, Any]) -> list[str]:
         if source.get("adapter") == "talentbrew":
             if not isinstance(adapter_config.get("organizationId"), str) or not adapter_config["organizationId"].strip():
                 errors.append(f"{where}.adapterConfig.organizationId must be non-empty text")
+        if source.get("adapter") == "hopkins":
+            for field in ("queryParameter", "pageParameter"):
+                if not isinstance(adapter_config.get(field), str) or not adapter_config[field].strip():
+                    errors.append(f"{where}.adapterConfig.{field} must be non-empty text")
+        if source.get("adapter") == "icims":
+            for field in ("queryParameter", "pageParameter"):
+                if not isinstance(adapter_config.get(field), str) or not adapter_config[field].strip():
+                    errors.append(f"{where}.adapterConfig.{field} must be non-empty text")
         metadata = source.get("metadata")
         metadata_fields = {"firstTracked", "lastSuccessfulCheck", "lastSuccessfulPostingCount", "collectionStatus", "fullyAutomated", "notes"}
         if not isinstance(metadata, dict) or set(metadata) != metadata_fields:
@@ -285,16 +299,22 @@ class TalentBrewSearchParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.jobs: list[dict[str, str]] = []
-        self.meta: dict[str, int] = {}
+        self.meta: dict[str, Any] = {}
         self.current: dict[str, str] | None = None
         self.capture_title = False
         self.capture_location = False
+        self.modern_item = False
+        self.search_depth = 0
         self.title_parts: list[str] = []
         self.location_parts: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         classes = set((attributes.get("class") or "").split())
+        if tag == "section" and self.search_depth:
+            self.search_depth += 1
+        elif tag == "section" and attributes.get("id") == "search-results":
+            self.search_depth = 1
         if attributes.get("id") == "search-results":
             for source_name, target_name in (
                 ("data-total-job-results", "total"),
@@ -305,24 +325,50 @@ class TalentBrewSearchParser(HTMLParser):
                 raw = attributes.get(source_name)
                 if raw and raw.isdigit():
                     self.meta[target_name] = int(raw)
-        if tag == "a" and "search-results-list__job-link" in classes:
+            module_name = attributes.get("data-search-results-module-name")
+            if module_name:
+                self.meta["moduleName"] = module_name
+            for source_name, target_name in (
+                ("data-sort-criteria", "sortCriteria"),
+                ("data-sort-direction", "sortDirection"),
+                ("data-search-type", "searchType"),
+            ):
+                raw = attributes.get(source_name)
+                if raw and raw.isdigit():
+                    self.meta[target_name] = int(raw)
+        if tag == "li" and "search-results-list-item" in classes:
+            self.modern_item = True
+        if tag == "a" and ("search-results-list__job-link" in classes or ((self.modern_item or self.search_depth) and attributes.get("data-job-id"))):
             self._flush_current()
             href = attributes.get("href") or ""
             job_id = attributes.get("data-job-id") or ""
             self.current = {"href": href, "jobId": job_id, "title": "", "location": ""}
             self.title_parts = []
+            self.capture_title = "search-results-list__job-link" in classes
+        elif tag == "span" and "job-title" in classes and self.current:
+            self.title_parts = []
             self.capture_title = True
+        elif tag == "h2" and self.current:
+            self.title_parts = []
+            self.capture_title = True
+        elif tag == "span" and "job-location" in classes and self.current:
+            self.location_parts = []
+            self.capture_location = True
         elif tag == "li" and "job-location" in classes and self.current:
             self.location_parts = []
             self.capture_location = True
 
     def handle_endtag(self, tag: str) -> None:
-        if tag == "a" and self.capture_title and self.current:
+        if tag in {"a", "span", "h2"} and self.capture_title and self.current:
             self.current["title"] = " ".join(" ".join(self.title_parts).split())
             self.capture_title = False
-        elif tag == "li" and self.capture_location and self.current:
+        elif tag in {"li", "span"} and self.capture_location and self.current:
             self.current["location"] = " ".join(" ".join(self.location_parts).split())
             self.capture_location = False
+        if tag == "li" and self.modern_item:
+            self.modern_item = False
+        if tag == "section" and self.search_depth:
+            self.search_depth -= 1
 
     def handle_data(self, data: str) -> None:
         if self.capture_title:
@@ -350,6 +396,85 @@ def talentbrew_page_data(html: str) -> tuple[list[dict[str, str]], dict[str, int
     if not required <= set(parser.meta):
         raise CollectionError("TalentBrew search results lacked pagination metadata")
     return parser.jobs, parser.meta
+
+
+def talentbrew_fragment_data(html: str) -> tuple[list[dict[str, str]], dict[str, int]]:
+    parser = TalentBrewSearchParser()
+    parser.feed(html)
+    parser.close()
+    return parser.jobs, parser.meta
+
+
+class HopkinsSearchParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.total: int | None = None
+        self.jobs: list[dict[str, str]] = []
+        self.current: dict[str, str] | None = None
+        self.capture: str | None = None
+        self.parts: list[str] = []
+        self.in_result_list = False
+        self.expect_total = False
+        self.result_class: str | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        classes = set((attributes.get("class") or "").split())
+        if tag == "div" and attributes.get("id") == "job-list-section":
+            self.in_result_list = True
+        if tag == "strong" and self.total is None:
+            self.expect_total = True
+            self.parts = []
+        if self.in_result_list and tag == "a" and (attributes.get("href") or "").startswith("/job/"):
+            self._flush_current()
+            self.current = {"href": attributes.get("href") or "", "title": "", "jobId": "", "location": "", "employmentType": ""}
+        elif self.current and tag == "h3":
+            self.capture = "title"
+            self.parts = []
+        elif self.current and tag == "span":
+            for name in ("job-ref", "location", "employment_type"):
+                if name in classes:
+                    self.result_class = name
+                    break
+        elif self.current and tag == "dd" and self.result_class:
+            self.capture = {"job-ref": "jobId", "location": "location", "employment_type": "employmentType"}[self.result_class]
+            self.parts = []
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "strong" and self.expect_total:
+            value = "".join(self.parts).strip()
+            if value.isdigit():
+                self.total = int(value)
+            self.expect_total = False
+            self.parts = []
+        elif tag in {"h3", "dd"} and self.capture and self.current:
+            self.current[self.capture] = " ".join(" ".join(self.parts).split())
+            self.capture = None
+            self.parts = []
+        elif tag == "span":
+            self.result_class = None
+
+    def handle_data(self, data: str) -> None:
+        if self.expect_total or self.capture:
+            self.parts.append(data)
+
+    def close(self) -> None:
+        super().close()
+        self._flush_current()
+
+    def _flush_current(self) -> None:
+        if self.current and all(self.current.get(field) for field in ("href", "title", "jobId", "location")):
+            self.jobs.append(self.current)
+        self.current = None
+
+
+def hopkins_page_data(html: str) -> tuple[list[dict[str, str]], int]:
+    parser = HopkinsSearchParser()
+    parser.feed(html)
+    parser.close()
+    if parser.total is None:
+        raise CollectionError("Johns Hopkins search results lacked a result total")
+    return parser.jobs, parser.total
 
 
 def slugify(value: str) -> str:
@@ -629,7 +754,7 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
                 break
         if query_stable and retrieved != (total or 0):
             raise CollectionError(f"{source['id']} retrieved {retrieved} of {total} Phenom jobs for '{query}'")
-    if not by_id:
+    if not by_id and not adapter.get("allowEmptySnapshot"):
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
 
@@ -680,10 +805,10 @@ def collect_talentbrew(source: dict[str, Any], checked_at: str, timeout: int,
                 "Location": "",
                 "ShowRadius": "False",
                 "IsPagination": "True",
-                "SearchResultsModuleName": "Section 6 - Search Results List",
-                "SortCriteria": 0,
-                "SortDirection": 0,
-                "SearchType": 1,
+                "SearchResultsModuleName": meta.get("moduleName", "Section 6 - Search Results List"),
+                "SortCriteria": meta.get("sortCriteria", 0),
+                "SortDirection": meta.get("sortDirection", 0),
+                "SearchType": meta.get("searchType", 1),
                 "OrganizationIds": adapter["organizationId"],
                 "ResultsType": 0,
             }
@@ -691,8 +816,8 @@ def collect_talentbrew(source: dict[str, Any], checked_at: str, timeout: int,
             html = payload.get("results")
             if not isinstance(html, str):
                 raise CollectionError(f"{source['id']} TalentBrew pagination response lacked result HTML")
-            page_jobs, page_meta = talentbrew_page_data(html)
-            if page_meta["currentPage"] != page or page_meta["total"] != declared_total or page_meta["totalPages"] != meta["totalPages"]:
+            page_jobs, page_meta = talentbrew_fragment_data(html)
+            if page_meta and (page_meta.get("currentPage") != page or page_meta.get("total") != declared_total or page_meta.get("totalPages") != meta["totalPages"]):
                 complete = False
             fingerprint = tuple(job.get("jobId", "") for job in page_jobs)
             if fingerprint and fingerprint in page_fingerprints:
@@ -707,6 +832,123 @@ def collect_talentbrew(source: dict[str, Any], checked_at: str, timeout: int,
             if record:
                 by_id[record["sourcePostingId"]] = record
     if not by_id:
+        raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
+    return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
+
+
+def hopkins_record(source: dict[str, Any], job: dict[str, str]) -> dict[str, Any] | None:
+    title = pulse.clean_optional(job.get("title"))
+    job_id = pulse.clean_optional(job.get("jobId"))
+    href = pulse.clean_optional(job.get("href"))
+    if not title or not job_id or not href or not relevant_title(source, title):
+        return None
+    location = location_payload(job.get("location"), "US")
+    if not is_us_job(location):
+        return None
+    adapter = source["adapterConfig"]
+    url = adapter["publicBaseUrl"].rstrip("/") + "/" + href.lstrip("/")
+    return make_common_record(source, title, location, url, job_id, employment_type=job.get("employmentType"))
+
+
+def collect_hopkins(source: dict[str, Any], checked_at: str, timeout: int,
+                     get: Callable[[str, int], str] = get_text) -> CollectionResult:
+    adapter = source["adapterConfig"]
+    totals: dict[str, int] = {}
+    by_id: dict[str, dict[str, Any]] = {}
+    scanned = 0
+    for query in source["queries"]:
+        parameters = {adapter["queryParameter"]: query}
+        first_jobs, total = hopkins_page_data(get(adapter["searchUrl"] + "?" + urlencode(parameters), timeout))
+        if total > adapter["maxResultsPerQuery"]:
+            raise CollectionError(f"{source['id']} query '{query}' unexpectedly returned {total} jobs")
+        totals[query] = total
+        all_jobs = list(first_jobs)
+        pages = max(1, (total + adapter["pageSize"] - 1) // adapter["pageSize"])
+        for page in range(2, pages + 1):
+            parameters[adapter["pageParameter"]] = page
+            page_jobs, page_total = hopkins_page_data(get(adapter["searchUrl"] + "?" + urlencode(parameters), timeout))
+            if page_total != total:
+                raise CollectionError(f"{source['id']} result total changed during pagination")
+            all_jobs.extend(page_jobs)
+        scanned += len(all_jobs)
+        if len(all_jobs) != total:
+            raise CollectionError(f"{source['id']} retrieved {len(all_jobs)} of {total} jobs for '{query}'")
+        for job in all_jobs:
+            record = hopkins_record(source, job)
+            if record:
+                by_id[record["sourcePostingId"]] = record
+    if not by_id:
+        raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
+    return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, True, totals)
+
+
+def icims_record(source: dict[str, Any], item: dict[str, Any], checked_at: str) -> dict[str, Any] | None:
+    job = item.get("data") if isinstance(item.get("data"), dict) else item
+    title = pulse.clean_optional(job.get("title"))
+    job_id = pulse.clean_optional(job.get("req_id") or job.get("slug"))
+    if not title or not job_id or not relevant_title(source, title):
+        return None
+    state = pulse.clean_optional(job.get("state"))
+    city = pulse.clean_optional(job.get("city"))
+    location_text = ", ".join(part for part in (city, state) if part) or pulse.clean_optional(job.get("full_location")) or "Location not listed"
+    location = location_payload(location_text, job.get("country_code") or job.get("country") or "US")
+    if not is_us_job(location, bool(source["adapterConfig"].get("allowUnknownUsLocation"))):
+        return None
+    meta = job.get("meta_data") if isinstance(job.get("meta_data"), dict) else {}
+    url = pulse.clean_optional(meta.get("canonical_url"))
+    if not url:
+        adapter = source["adapterConfig"]
+        url = adapter["publicBaseUrl"].rstrip("/") + adapter["publicSitePath"] + "/" + quote(job_id, safe="")
+    employment = job.get("tags4")
+    salary = job.get("tags9")
+    return make_common_record(
+        source, title, location, url, job_id,
+        parse_posted_date(job.get("posted_date"), checked_at),
+        employment[0] if isinstance(employment, list) and employment else employment,
+        salary[0] if isinstance(salary, list) and salary else salary,
+        job.get("description"),
+    )
+
+
+def collect_icims(source: dict[str, Any], checked_at: str, timeout: int,
+                  get_object: Callable[[str, int], dict[str, Any]] = get_json) -> CollectionResult:
+    adapter = source["adapterConfig"]
+    totals: dict[str, int] = {}
+    by_id: dict[str, dict[str, Any]] = {}
+    scanned = 0
+    complete = True
+    for query in source["queries"]:
+        page = 1
+        retrieved = 0
+        declared_total: int | None = None
+        while declared_total is None or retrieved < declared_total:
+            url = adapter["apiUrl"] + "?" + urlencode({adapter["queryParameter"]: query, adapter["pageParameter"]: page})
+            payload = get_object(url, timeout)
+            jobs = payload.get("jobs")
+            total = payload.get("totalCount")
+            if not isinstance(jobs, list) or not isinstance(total, int):
+                raise CollectionError(f"{source['id']} iCIMS response lacked jobs or totalCount")
+            if total > adapter["maxResultsPerQuery"]:
+                raise CollectionError(f"{source['id']} query '{query}' unexpectedly returned {total} jobs")
+            if declared_total is None:
+                declared_total = total
+            elif declared_total != total:
+                complete = False
+                declared_total = max(declared_total, total)
+            scanned += len(jobs)
+            retrieved += len(jobs)
+            for item in jobs:
+                if isinstance(item, dict):
+                    record = icims_record(source, item, checked_at)
+                    if record:
+                        by_id[record["sourcePostingId"]] = record
+            if not jobs:
+                break
+            page += 1
+        totals[query] = declared_total or 0
+        if retrieved != (declared_total or 0):
+            raise CollectionError(f"{source['id']} retrieved {retrieved} of {declared_total or 0} iCIMS jobs for '{query}'")
+    if not by_id and not adapter.get("allowEmptySnapshot"):
         raise CollectionError(f"{source['id']} returned zero relevant US jobs; refusing to create a snapshot")
     return CollectionResult(source["id"], sorted(by_id.values(), key=lambda item: (item["title"].casefold(), item["sourcePostingId"])), scanned, complete, totals)
 
@@ -772,6 +1014,8 @@ def command_collect(args: argparse.Namespace) -> int:
             "workday": collect_workday,
             "phenom": collect_phenom,
             "talentbrew": collect_talentbrew,
+            "hopkins": collect_hopkins,
+            "icims": collect_icims,
         }[source["adapter"]]
         results.append(collector(source, checked_at, args.timeout))
     if args.confirm_close_missing and not all(result.complete for result in results):
