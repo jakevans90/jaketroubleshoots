@@ -3849,7 +3849,7 @@ footer p:nth-last-child(2) {
 
 .biomed-article main .content-box {
   margin: 0;
-  padding: 30px 4px 34px;
+  padding: 22px 4px 26px;
   background: transparent;
   border: 0;
   border-bottom: 1px solid #d9d9d9;
@@ -3864,17 +3864,38 @@ footer p:nth-last-child(2) {
 }
 
 .biomed-article main .content-box h3 {
-  margin: 0 0 16px;
-  padding-left: 15px;
+  margin: 0 0 12px;
+  padding-left: 12px;
   border-left: 4px solid #72d600;
-  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  font-size: clamp(1.18rem, 1.65vw, 1.42rem);
   line-height: 1.25;
 }
 
 .biomed-article main .content-box p,
 .biomed-article main .content-box li {
-  font-size: 1.04rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Many source articles use short headings as bridges between closely related
+   ideas. Keep those transitions readable without turning each one into a
+   full-height visual panel. */
+.biomed-article main .content-box:not(:first-child):not(:last-child):has(> h3:only-child) {
+  padding-top: 14px;
+  padding-bottom: 2px;
+  border-bottom: 0;
+}
+
+.biomed-article main .content-box:not(:first-child):not(:last-child):has(> h3:only-child) h3 {
+  margin-bottom: 0;
+  font-size: clamp(1.08rem, 1.4vw, 1.25rem);
+}
+
+.biomed-article main .content-box:not(:first-child):not(:last-child):has(> h3 + p:last-child),
+.biomed-article main .content-box:not(:first-child):not(:last-child):has(> h3 + ul:last-child),
+.biomed-article main .content-box:not(:first-child):not(:last-child):has(> h3 + ol:last-child) {
+  padding-top: 16px;
+  padding-bottom: 18px;
 }
 
 .biomed-article main .content-box:first-child {
@@ -3904,7 +3925,7 @@ footer p:nth-last-child(2) {
   }
 
   .biomed-article main .content-box {
-    padding: 25px 0 29px;
+    padding: 19px 0 22px;
   }
 
   .biomed-article main .content-box:first-child,
