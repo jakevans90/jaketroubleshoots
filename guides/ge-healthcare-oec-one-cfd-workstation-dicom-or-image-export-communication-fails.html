@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GE Healthcare OEC One CFD C-Arm - Workstation, DICOM, or Image Export Communication Fails</title>
+<meta name="description" content="Use this guide when worklist, PACS transfer, DICOM communication, workstation communication, or image export does not complete normally.">
+<link rel="stylesheet" href="../style.css?v=20260920-2">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1L34E3TJL6');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://jaketroubleshoots.com/guides/ge-healthcare-oec-one-cfd-workstation-dicom-or-image-export-communication-fails.html" />
+</head>
+<body>
+<a class="skip-link" href="#page-heading">Skip to content</a>
+
+<header>
+  <a href="../index.html" class="site-logo">
+    <img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon">
+    <span class="logo-text">Jake Troubleshoots</span>
+  </a>
+  <nav class="site-primary-nav" aria-label="Primary navigation">
+    <a href="../guides.html">Guides</a>
+    <a href="../preventive-maintenance.html">PMs</a>
+    <a href="../biomed-basics.html">Basics</a>
+    <a href="../search.html">Search</a>
+    <details class="site-nav-more">
+      <summary>More</summary>
+      <div class="site-nav-menu">
+        <a href="../biomed-education-certifications.html">Education &amp; Certifications</a>
+        <a href="../biomed-jobs.html">Biomed Jobs</a>
+        <a href="../vendors.html">Vendors</a>
+        <a href="../index.html#biomed-quiz">Biomed Quiz</a>
+        <a href="../contact.html">About &amp; Contact</a>
+      </div>
+    </details>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">GE Healthcare OEC One CFD</h1>
+  <p>Workstation, DICOM, or Image Export Communication Fails</p>
+</section>
+
+<main style="max-width:900px; margin:40px auto; padding:0 20px;">
+<!-- page-navigation:start -->
+<details class="page-toc">
+  <summary>On this page</summary>
+  <nav aria-label="On this page">
+    <ul>
+      <li><a href="#section-what-this-guide-helps-with">What This Guide Helps With</a></li>
+      <li><a href="#section-step-by-step-troubleshooting">Step-by-Step Troubleshooting</a></li>
+      <li><a href="#section-if-the-problem-persists">If the Problem Persists</a></li>
+      <li><a href="#section-clinical-use-tip">Clinical Use Tip</a></li>
+      <li><a href="#section-work-order-documentation-ccr-method">Work Order Documentation (CCR Method)</a></li>
+      <li><a href="#section-helpful-details-to-include-if-known">Helpful Details to Include (If Known)</a></li>
+      <li><a href="#section-final-thought">Final Thought</a></li>
+    </ul>
+  </nav>
+</details>
+<!-- page-navigation:end -->
+<h3>Asset Type</h3>
+
+<p><a href="/hub-asset.html?slug=c-arm">C-Arm</a></p>
+
+<h3>Manufacturer</h3>
+
+<p><a href="/hub-manufacturer.html?slug=ge-healthcare">GE Healthcare</a></p>
+
+<h3>Model</h3>
+
+<p><a href="/hub-model.html?slug=oec-one-cfd">OEC One CFD</a></p>
+
+<h2 id="section-what-this-guide-helps-with" tabindex="-1">What This Guide Helps With</h2>
+
+<p>Use this guide when worklist, PACS transfer, DICOM communication, workstation communication, or image export does not complete normally.</p>
+
+<h2 id="section-step-by-step-troubleshooting" tabindex="-1">Step-by-Step Troubleshooting</h2>
+
+<h4>1. Protect Clinical Workflow and Preserve Images</h4>
+
+<p>Do not delete studies, repeatedly resend large queues, or change network configuration during an active case without understanding the impact. Ensure required images remain stored locally and communicate any delay in image availability.</p>
+
+<p>Expected outcome: Clinical images are preserved and an alternate workflow is established if immediate image access is required.</p>
+
+<h4>2. Identify Which Communication Function Failed</h4>
+
+<p>Determine whether the problem affects modality worklist, PACS send, image export, workstation communication, removable media, or all network functions. Record any displayed message and whether the failure affects one destination or multiple destinations.</p>
+
+<p>Expected outcome: The communication failure is isolated to a specific function or path.</p>
+
+<h4>3. Verify Basic System Operation</h4>
+
+<p>Confirm that the imaging workstation is otherwise operating normally and that studies can be acquired, reviewed, and stored locally.</p>
+
+<p>Expected outcome: Local imaging functions operate normally. If the entire workstation is unstable, troubleshoot the workstation problem before focusing on DICOM.</p>
+
+<h4>4. Inspect External Network Connections</h4>
+
+<p>Check the Ethernet cable, network jack, docking or interface connection if applicable, and visible connector indicators. Reseat accessible connections and inspect for damaged locking tabs, bent contacts, or crushed cables.</p>
+
+<p>Expected outcome: The physical network connection is secure. If communication resumes after correcting the external connection, verify successful transfer and stop troubleshooting.</p>
+
+<h4>5. Test the Facility Network Path</h4>
+
+<p>Use approved hospital network troubleshooting methods to determine whether the associated wall port, switch path, or network segment is available. Compare with a known-good device or approved test connection when practical.</p>
+
+<p>Expected outcome: The facility network path is available. If the port or infrastructure is unavailable, escalate to the appropriate IT or network team rather than altering the C-arm.</p>
+
+<h4>6. Verify Normal Network Configuration Without Changing It</h4>
+
+<p>Review user-accessible network status and confirm the system is using the expected connection. Record relevant configuration information if available, but do not change IP, routing, DICOM, wireless, or security settings without authorization.</p>
+
+<p>Expected outcome: No obvious configuration mismatch is identified. If the configuration is incorrect, coordinate correction through the approved service or IT process.</p>
+
+<h4>7. Determine Whether One Destination or All Destinations Fail</h4>
+
+<p>Test an approved worklist server, PACS destination, or export path as appropriate. A failure limited to one destination often points away from the C-arm's general network interface.</p>
+
+<p>Expected outcome: The problem is narrowed to a specific destination or to all communications.</p>
+
+<h4>8. Check Queue and Study Status</h4>
+
+<p>Review the normal user-accessible send queue or study status for pending, failed, or held images. Do not delete unsent clinical data merely to clear the queue.</p>
+
+<p>Expected outcome: The status of affected studies is known. If retrying after restoration of network connectivity successfully transmits the study, troubleshooting can stop.</p>
+
+<h4>9. Perform an End-to-End Verification</h4>
+
+<p>After correcting any external network or workflow issue, acquire or select an approved test study and verify the complete path from the OEC One CFD through the expected destination.</p>
+
+<p>Expected outcome: Worklist retrieval, image transfer, or export completes successfully and the destination confirms receipt.</p>
+
+<h4>10. Escalate Persistent Communication Failure</h4>
+
+<p>If external cabling, network availability, destination status, and normal workflow settings appear correct but communication still fails, avoid unauthorized network or protected DICOM configuration changes.</p>
+
+<p>Expected outcome: The problem is escalated with sufficient information for Clinical Engineering, IT, PACS, or vendor service to continue efficiently.</p>
+
+<h2 id="section-if-the-problem-persists" tabindex="-1">If the Problem Persists</h2>
+
+<p>External network connections, local workstation operation, destination availability, and basic communication workflow have been checked. The remaining issue may involve DICOM configuration, network security, application services, software, routing, workstation communication components, or hospital infrastructure.</p>
+
+<p>Remove the device from service only if the communication failure prevents safe or required clinical use; otherwise follow facility policy for restricted operation. Label it appropriately when unavailable for intended use and send it for repair or bench evaluation when equipment-side failure is suspected.</p>
+
+<p>Use appropriate GE Healthcare documentation and approved network test methods. Protected network or DICOM configuration should be changed only by qualified and authorized personnel.</p>
+
+<p>Before full return to service, verify the complete communication path and confirm required images are received at the intended destination.</p>
+
+<p>Knowing when to stop external troubleshooting is proper troubleshooting.</p>
+
+<h2 id="section-clinical-use-tip" tabindex="-1">Clinical Use Tip</h2>
+
+<p>A successful image acquisition does not prove PACS communication is working; verify receipt at the destination before closing the work order.</p>
+
+<h2 id="section-work-order-documentation-ccr-method" tabindex="-1">Work Order Documentation (CCR Method)</h2>
+
+
+
+<p><strong>CCR = Complaint, Cause, Resolution</strong></p>
+
+<h4>Complaint</h4>
+
+<p>What was reported by the clinical staff.</p>
+
+<p><em>Example:</em><br>"Clinical staff reported that images from the OEC One CFD remained in the send queue and were not reaching PACS."</p>
+
+<h4>Cause</h4>
+
+<p>What was observed during troubleshooting.</p>
+
+<p><em>Example:</em><br>"Clinical Engineering found the external Ethernet cable disconnected from the workstation network connection."</p>
+
+<h4>Resolution</h4>
+
+<p>What action was taken.</p>
+
+<p><em>Example:</em><br>"Clinical Engineering reconnected the cable and verified the queued study transferred successfully and was received in PACS."</p>
+
+<h2 id="section-helpful-details-to-include-if-known" tabindex="-1">Helpful Details to Include (If Known)</h2>
+
+
+
+<ul>
+  <li>Communication function affected</li>
+  <li>Exact message displayed</li>
+  <li>Local image storage status</li>
+  <li>Wired or wireless connection status</li>
+  <li>Cable and network-jack condition</li>
+  <li>Network indicator status</li>
+  <li>Destination affected</li>
+  <li>Queue status</li>
+  <li>Whether other devices on the same network path work</li>
+  <li>Transfer result after correction</li>
+  <li>Final device status</li>
+</ul>
+
+<h2 id="section-final-thought" tabindex="-1">Final Thought</h2>
+
+<p>Preserve clinical images, isolate the communication path logically, check physical and infrastructure causes before configuration, verify the destination received the data, and document escalation clearly.</p>
+
+<p>That is successful troubleshooting.</p>
+
+</main>
+<section style="padding:40px; text-align:center;">
+  <h3>Related Guides</h3>
+  <div id="related-guides-grid" class="guides-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; justify-items:center;"></div>
+</section>
+<script src="/related-guides.js?v=20260919"></script>
+
+<section class="content-box guide-feedback">
+  <h3>Was this guide helpful?</h3>
+  <div class="thumb-buttons">
+    <button class="thumb-btn yes" aria-label="This guide was helpful">👍</button>
+    <button class="thumb-btn no" aria-label="This guide was not helpful">👎</button>
+  </div>
+  <div class="suggest-cta">
+    <p>Don't see a guide you need?</p>
+    <a href="../suggest.html" class="suggest-btn hero-button">Suggest a Guide</a>
+  </div>
+</section>
+
+<script src="../hub-links.js?v=20260919"></script>
+<script src="../feedback.js?v=20260919"></script>
+<script src="../guide-icons.js?v=20260919"></script>
+
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p>
+  <p>© 2026 Jake Troubleshoots</p>
+</footer>
+
+</body>
+</html>
