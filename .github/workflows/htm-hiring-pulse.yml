@@ -157,7 +157,7 @@ jobs:
           git push -u origin "$PUBLICATION_BRANCH"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Open or refresh the publication pull request
+      - name: Publish the validated update
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -171,7 +171,7 @@ jobs:
             --state open \
             --json number \
             --jq '.[0].number // empty')"
-          body='Automated, validated Hiring Pulse refresh from official employer career sources. Review the source-health artifact on the associated workflow run before merging.'
+          body='Automated, validated Hiring Pulse refresh from official employer career sources. Source-health details are available in the associated workflow run.'
           if [ -n "$existing_pr" ]; then
             gh pr edit "$existing_pr" --repo "$GITHUB_REPOSITORY" --body "$body"
           else
@@ -181,4 +181,19 @@ jobs:
               --head "$PUBLICATION_BRANCH" \
               --title "Automated HTM Hiring Pulse update" \
               --body "$body"
+            existing_pr="$(gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --head "$PUBLICATION_BRANCH" \
+              --base main \
+              --state open \
+              --json number \
+              --jq '.[0].number // empty')"
           fi
+          if [ -z "$existing_pr" ]; then
+            echo "Unable to locate the validated publication pull request."
+            exit 1
+          fi
+          gh pr merge "$existing_pr" \
+            --repo "$GITHUB_REPOSITORY" \
+            --merge \
+            --delete-branch

@@ -144,6 +144,8 @@ class HiringPulseAutomationTests(unittest.TestCase):
         self.assertNotIn("git add .", workflow)
         self.assertIn("pull-requests: write", workflow)
         self.assertIn("gh pr create", workflow)
+        self.assertIn("gh pr merge", workflow)
+        self.assertLess(workflow.index("Run full validation"), workflow.index("gh pr merge"))
         self.assertIn("ref: main", workflow)
         self.assertIn("${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}", workflow)
         self.assertNotIn("HEAD:codex-edits", workflow)

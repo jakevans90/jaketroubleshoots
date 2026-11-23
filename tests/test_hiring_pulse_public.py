@@ -42,6 +42,12 @@ class HiringPulsePublicTests(unittest.TestCase):
         rendered = MODULE.render_static_summary(snapshot)
         self.assertIn("Source health:", rendered)
         self.assertIn("cannot close missing jobs", rendered)
+        self.assertIn('<details class="jobs-pulse-methodology">', rendered)
+        self.assertIn("About this data and source coverage", rendered)
+
+    def test_current_openings_appear_before_state_browser(self):
+        page = (ROOT / MODULE.PAGE_PATH).read_text(encoding="utf-8")
+        self.assertLess(page.index('class="jobs-openings"'), page.index('class="jobs-map-panel"'))
 
     def test_public_records_are_unique_canonical_and_omit_descriptions(self):
         postings = MODULE.build_public_snapshot(copy.deepcopy(self.store))["postings"]
