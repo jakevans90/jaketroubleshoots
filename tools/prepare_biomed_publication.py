@@ -188,6 +188,7 @@ RELATED = {
     "how-steam-sterilizers-control-a-cycle": ["how-temperature-probes-and-thermistors-work", "how-medical-equipment-measures-pressure", "how-suction-regulators-control-vacuum", "how-to-read-and-use-medical-device-event-logs", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-oxygen-concentrators-produce-oxygen": ["how-oxygen-sensors-work-in-ventilators-and-anesthesia-machines", "how-medical-equipment-measures-flow", "how-medical-device-cooling-systems-work", "medical-device-alarm-troubleshooting-fundamentals", "how-to-compare-your-test-result-to-manufacturer-specification"],
     "how-fetal-monitors-acquire-fhr-and-toco": ["how-doppler-ultrasound-measures-blood-flow", "how-medical-equipment-measures-pressure", "sensors-and-transducers-basics", "patient-simulators-what-they-actually-simulate", "medical-equipment-cables-and-connectors-inspection-and-isolation"],
+    "how-centrifuges-control-speed-and-detect-imbalance": ["sensors-and-transducers-basics", "how-medical-scales-and-load-cells-work", "how-to-compare-your-test-result-to-manufacturer-specification", "how-to-read-and-use-medical-device-event-logs", "the-troubleshooting-process-observe-isolate-test-verify"],
 }
 
 ARTICLE_CONFIG = {
@@ -1163,6 +1164,12 @@ ARTICLE_CONFIG = {
         "category": "How Medical Equipment Works",
         "badge": "Fetal Monitoring",
         "cardNote": "Doppler FHR, external TOCO, transducer placement, signal processing, artifacts, simulators, and central monitoring",
+    },
+    "how-centrifuges-control-speed-and-detect-imbalance": {
+        "description": "A practical explanation of how centrifuges control rotor speed, verify RPM, detect imbalance and vibration, manage braking, and keep the lid locked until the rotor is safe.",
+        "category": "How Medical Equipment Works",
+        "badge": "Laboratory Equipment",
+        "cardNote": "Rotor speed feedback, RPM and RCF, imbalance detection, braking, bearings, lid interlocks, and independent verification",
     },
 }
 
