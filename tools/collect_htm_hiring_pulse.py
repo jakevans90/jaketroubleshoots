@@ -14,6 +14,7 @@ import json
 import re
 import sys
 import time
+from email.utils import parsedate_to_datetime
 from dataclasses import dataclass
 from datetime import timedelta
 from html.parser import HTMLParser
@@ -185,8 +186,12 @@ def validate_config(config: dict[str, Any]) -> list[str]:
                     errors.append(f"{where}.adapterConfig.{field} must be non-empty text")
         metadata = source.get("metadata")
         metadata_fields = {"firstTracked", "lastSuccessfulCheck", "lastSuccessfulPostingCount", "collectionStatus", "fullyAutomated", "notes"}
-        if not isinstance(metadata, dict) or set(metadata) != metadata_fields:
-            errors.append(f"{where}.metadata must contain exactly {', '.join(sorted(metadata_fields))}")
+        snapshot_fields = {"lastCompleteSnapshotCheck", "lastCompleteSnapshotPostingCount"}
+        if not isinstance(metadata, dict) or not metadata_fields <= set(metadata) or not set(metadata) <= metadata_fields | snapshot_fields:
+            errors.append(
+                f"{where}.metadata must contain {', '.join(sorted(metadata_fields))} and may include "
+                f"{', '.join(sorted(snapshot_fields))}"
+            )
         else:
             try:
                 if not isinstance(metadata.get("firstTracked"), str) or pulse.normalize_date(metadata["firstTracked"]) != metadata["firstTracked"]:
@@ -200,6 +205,16 @@ def validate_config(config: dict[str, Any]) -> list[str]:
                     errors.append(f"{where}.metadata.lastSuccessfulCheck must be null or a timestamp")
             if metadata.get("lastSuccessfulPostingCount") is not None and (not isinstance(metadata.get("lastSuccessfulPostingCount"), int) or metadata["lastSuccessfulPostingCount"] < 0):
                 errors.append(f"{where}.metadata.lastSuccessfulPostingCount must be null or a non-negative integer")
+            if metadata.get("lastCompleteSnapshotCheck") is not None:
+                try:
+                    pulse.parse_timestamp(metadata["lastCompleteSnapshotCheck"])
+                except (TypeError, ValueError):
+                    errors.append(f"{where}.metadata.lastCompleteSnapshotCheck must be null or a timestamp")
+            if metadata.get("lastCompleteSnapshotPostingCount") is not None and (
+                not isinstance(metadata.get("lastCompleteSnapshotPostingCount"), int)
+                or metadata["lastCompleteSnapshotPostingCount"] < 0
+            ):
+                errors.append(f"{where}.metadata.lastCompleteSnapshotPostingCount must be null or a non-negative integer")
             if metadata.get("collectionStatus") not in {"active", "partial", "failed", "not-started", "disabled"}:
                 errors.append(f"{where}.metadata.collectionStatus is invalid")
             if not isinstance(metadata.get("fullyAutomated"), bool):
@@ -207,6 +222,22 @@ def validate_config(config: dict[str, Any]) -> list[str]:
             if not isinstance(metadata.get("notes"), str):
                 errors.append(f"{where}.metadata.notes must be text")
     return errors
+
+
+def retry_delay(exc: Exception, attempt: int) -> float:
+    """Return a bounded delay, honoring Retry-After when a server supplies it."""
+    if isinstance(exc, HTTPError) and exc.code == 429:
+        retry_after = exc.headers.get("Retry-After") if exc.headers else None
+        if retry_after:
+            try:
+                return min(30.0, max(0.0, float(retry_after)))
+            except ValueError:
+                try:
+                    seconds = (parsedate_to_datetime(retry_after) - parsedate_to_datetime(exc.headers.get("Date"))).total_seconds()
+                    return min(30.0, max(0.0, seconds))
+                except (TypeError, ValueError, OverflowError):
+                    pass
+    return min(8.0, float(2 ** attempt))
 
 
 def request_bytes(url: str, timeout: int, body: dict[str, Any] | None = None, attempts: int = 3) -> bytes:
@@ -225,7 +256,7 @@ def request_bytes(url: str, timeout: int, body: dict[str, Any] | None = None, at
         except (HTTPError, URLError, TimeoutError, OSError) as exc:
             last_error = exc
             if attempt + 1 < attempts:
-                time.sleep(attempt + 1)
+                time.sleep(retry_delay(exc, attempt))
     raise CollectionError(f"Request failed after {attempts} attempts: {url}: {last_error}")
 
 

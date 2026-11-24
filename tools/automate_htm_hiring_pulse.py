@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import math
 import sys
 from collections import Counter
 from pathlib import Path
@@ -24,11 +25,16 @@ def load_thresholds(root: Path) -> dict[str, Any]:
     expected = {
         "schemaVersion", "minimumBaselinePostings", "minimumSourceRetentionRatio",
         "maximumSourceGrowthMultiplier", "maximumTotalDropRatio",
-        "maximumTotalGrowthMultiplier", "maximumSourceClosureRatio", "minimumSuccessfulSources",
+        "maximumTotalGrowthMultiplier", "maximumSourceClosureRatio",
+        "confirmedSnapshotCountToleranceRatio", "confirmedSnapshotMinimumOverlapRatio",
+        "minimumSuccessfulSources",
     }
     if set(value) != expected or value.get("schemaVersion") != 1:
         raise collector.CollectionError("Invalid automation threshold configuration")
-    for key in ("minimumSourceRetentionRatio", "maximumTotalDropRatio", "maximumSourceClosureRatio"):
+    for key in (
+        "minimumSourceRetentionRatio", "maximumTotalDropRatio", "maximumSourceClosureRatio",
+        "confirmedSnapshotCountToleranceRatio", "confirmedSnapshotMinimumOverlapRatio",
+    ):
         if not isinstance(value[key], (int, float)) or not 0 <= value[key] <= 1:
             raise collector.CollectionError(f"{key} must be between 0 and 1")
     for key in ("maximumSourceGrowthMultiplier", "maximumTotalGrowthMultiplier"):
@@ -42,6 +48,35 @@ def load_thresholds(root: Path) -> dict[str, Any]:
 
 def active_by_source(store: dict[str, dict[str, Any]]) -> Counter[str]:
     return Counter(item["source"] for item in store["postings"]["records"] if item["status"] == "active")
+
+
+def stable_complete_snapshot(
+    original: dict[str, dict[str, Any]],
+    source_id: str,
+    result: collector.CollectionResult,
+    metadata: dict[str, Any],
+    thresholds: dict[str, Any],
+) -> bool:
+    """Confirm a large closure only after two similar, complete source snapshots."""
+    previous_check = metadata.get("lastCompleteSnapshotCheck")
+    previous_count = metadata.get("lastCompleteSnapshotPostingCount")
+    if not result.complete or previous_check is None or previous_count is None:
+        return False
+    current_ids = {posting["sourcePostingId"] for posting in result.postings}
+    previous_ids = {
+        posting["source_posting_id"]
+        for posting in original["postings"]["records"]
+        if posting["source"] == source_id
+        and posting["status"] == "active"
+        and posting["last_seen"] == previous_check
+    }
+    if len(previous_ids) != previous_count or not previous_ids or not current_ids:
+        return False
+    count_tolerance = max(2, math.ceil(previous_count * thresholds["confirmedSnapshotCountToleranceRatio"]))
+    if abs(len(current_ids) - previous_count) > count_tolerance:
+        return False
+    overlap = len(previous_ids & current_ids) / min(len(previous_ids), len(current_ids))
+    return overlap >= thresholds["confirmedSnapshotMinimumOverlapRatio"]
 
 
 def collect_source(source: dict[str, Any], checked_at: str, timeout: int) -> collector.CollectionResult:
@@ -117,11 +152,20 @@ def run_automation(
         preview_check = pulse.upsert_records(preview, result.postings, source_id, checked_at, True)
         potentially_missing = preview_check["closed_count"]
         closure_ratio = potentially_missing / before_count if before_count else 0
+        confirmed_large_closure = False
         if potentially_missing and closure_ratio > thresholds["maximumSourceClosureRatio"]:
-            source_status = "partial"
-            source_warnings.append(
-                f"{potentially_missing} potential closures exceed the configured {thresholds['maximumSourceClosureRatio']:.0%} source limit"
+            confirmed_large_closure = stable_complete_snapshot(
+                original, source_id, result, metadata_by_id[source_id], thresholds
             )
+            if confirmed_large_closure:
+                source_status = "complete"
+                source_warnings = [message for message in source_warnings if not message.startswith("count collapsed")]
+                source_warnings.append("large closure confirmed by two stable complete snapshots")
+            else:
+                source_status = "partial"
+                source_warnings.append(
+                    f"{potentially_missing} potential closures exceed the configured {thresholds['maximumSourceClosureRatio']:.0%} source limit; awaiting a second stable complete snapshot"
+                )
 
         if source_status == "failed":
             failed += 1
@@ -135,11 +179,17 @@ def run_automation(
             })
             continue
 
-        may_close = bool(confirm_close_missing and result.complete and source_status == "complete")
+        closure_guarded = bool(source["adapterConfig"].get("guardClosures"))
+        may_close = bool(confirm_close_missing and result.complete and source_status == "complete" and not closure_guarded)
         check = pulse.upsert_records(store, result.postings, source_id, checked_at, may_close)
         new_total += check["new_count"]
         closed_total += check["closed_count"]
         existing_refreshed = check["observed_count"] - check["new_count"] - check["reopened_count"]
+        if result.complete:
+            metadata_by_id[source_id].update({
+                "lastCompleteSnapshotCheck": checked_at,
+                "lastCompleteSnapshotPostingCount": relevant_count,
+            })
         if source_status == "complete":
             successful += 1
             metadata_by_id[source_id].update({
@@ -158,7 +208,8 @@ def run_automation(
             "relevantHtmCount": relevant_count, "existingJobsRefreshed": existing_refreshed,
             "newJobsAdded": check["new_count"], "jobsPotentiallyMissing": potentially_missing,
             "jobsClosed": check["closed_count"], "sourceStatus": source_status,
-            "snapshotComplete": result.complete, "warning": "; ".join(source_warnings) or None,
+            "snapshotComplete": result.complete, "largeClosureConfirmed": confirmed_large_closure,
+            "warning": "; ".join(source_warnings) or None,
         })
 
     active_before_reclassification = sum(active_by_source(store).values())
