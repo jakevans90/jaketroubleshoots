@@ -8,7 +8,7 @@ import html
 import json
 import sys
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -41,6 +41,8 @@ EMPLOYER_TYPE_LABELS = {
     "education": "Education",
     "other": "Other",
 }
+RECENT_OBSERVATION_DAYS = 7
+AGING_OBSERVATION_DAYS = 30
 
 
 def _valid_public_url(value: Any) -> bool:
@@ -57,6 +59,30 @@ def _last_updated(store: dict[str, dict[str, Any]]) -> str | None:
         if store[name].get("updatedAt")
     ]
     return max(values) if values else None
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _freshness_status(last_seen: Any, reference: datetime | None) -> str:
+    observed = _parse_timestamp(last_seen)
+    if observed is None or reference is None:
+        return "unknown"
+    age_days = max(0.0, (reference - observed).total_seconds() / 86400)
+    if age_days <= RECENT_OBSERVATION_DAYS:
+        return "recent"
+    if age_days > AGING_OBSERVATION_DAYS:
+        return "aging"
+    return "retained"
 
 
 def build_source_health(config: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -100,6 +126,8 @@ def build_public_snapshot(store: dict[str, dict[str, Any]], source_config: dict[
     employers = {item["id"]: item for item in store["employers"]["records"]}
     roles = {item["id"]: item for item in store["taxonomy"]["categories"]}
     active = [item for item in store["postings"]["records"] if item["status"] == "active"]
+    last_updated = _last_updated(store)
+    reference_time = _parse_timestamp(last_updated)
     public_postings: list[dict[str, Any]] = []
     ids: set[str] = set()
     urls: set[str] = set()
@@ -132,6 +160,8 @@ def build_public_snapshot(store: dict[str, dict[str, Any]], source_config: dict[
             "salary": item.get("salary_text"),
             "postedDate": item.get("posted_date"),
             "firstObserved": item.get("first_seen"),
+            "lastObserved": item.get("last_seen"),
+            "freshness": _freshness_status(item.get("last_seen"), reference_time),
             "url": url,
         })
 
@@ -142,17 +172,23 @@ def build_public_snapshot(store: dict[str, dict[str, Any]], source_config: dict[
     employer_type_counts = Counter((item["employerType"], item["employerTypeLabel"]) for item in public_postings)
     role_counts = Counter((item["roleCategoryId"], item["roleCategory"]) for item in public_postings)
     state_counts = Counter(item["state"] for item in public_postings if item["state"])
+    freshness_counts = Counter(item["freshness"] for item in public_postings)
 
     return {
         "schemaVersion": 1,
-        "lastUpdated": _last_updated(store),
+        "lastUpdated": last_updated,
         "availability": "available" if public_postings else "unavailable",
         "methodology": {
             "label": "Observed sample",
-            "description": "Current openings observed on the tracked employer career sources; not the entire HTM job market.",
+            "description": "Openings observed on tracked employer career sources; not the entire HTM job market. Recently observed means seen within seven days of this snapshot. Aging records are retained until a complete source check can safely confirm closure.",
+            "recentObservationDays": RECENT_OBSERVATION_DAYS,
+            "agingObservationDays": AGING_OBSERVATION_DAYS,
         },
         "summary": {
             "activePostings": len(public_postings),
+            "trackedPostings": len(public_postings),
+            "recentlyObservedPostings": freshness_counts["recent"],
+            "agingPostings": freshness_counts["aging"],
             "employersRepresented": len(employer_counts),
             "statesRepresented": len(state_counts),
             "roleCategoriesRepresented": len(role_counts),
@@ -234,11 +270,12 @@ def render_static_summary(snapshot: dict[str, Any]) -> str:
         '    <p class="jobs-pulse-status">Observed employer sample · Refreshed ' + html.escape(last_updated) + "</p>",
         "    <p>Explore current HTM-related openings collected from a defined set of employer career sites. Counts describe only this observed sample, not the entire HTM labor market.</p>",
         '    <div class="jobs-pulse-summary" aria-label="Hiring Pulse summary">',
-        f'      <div><strong>{summary["activePostings"]}</strong><span>Active postings</span></div>',
+        f'      <div><strong>{summary["recentlyObservedPostings"]}</strong><span>Observed within 7 days</span></div>',
+        f'      <div><strong>{summary["trackedPostings"]}</strong><span>Total tracked postings</span></div>',
         f'      <div><strong>{summary["employersRepresented"]}</strong><span>Employers represented</span></div>',
         f'      <div><strong>{summary["statesRepresented"]}</strong><span>States represented</span></div>',
-        f'      <div><strong>{summary["roleCategoriesRepresented"]}</strong><span>Role categories</span></div>',
         "    </div>",
+        f'    <p class="jobs-freshness-note">{summary["agingPostings"]} tracked postings have not been observed for more than 30 days and are hidden from the default results.</p>',
         '    <details class="jobs-pulse-methodology">',
         "      <summary>About this data and source coverage</summary>",
         '      <div class="jobs-pulse-methodology-body">',
@@ -269,20 +306,20 @@ def render_homepage_summary(snapshot: dict[str, Any]) -> str:
         active = employers = states = "—"
         status = "Hiring Pulse snapshot temporarily unavailable"
     else:
-        active = f'{summary["activePostings"]:,}'
+        active = f'{summary["recentlyObservedPostings"]:,}'
         employers = f'{summary["employersRepresented"]:,}'
         states = f'{summary["statesRepresented"]:,}'
         if snapshot.get("lastUpdated"):
             updated = datetime.strptime(snapshot["lastUpdated"].split("T", 1)[0], "%Y-%m-%d")
-            status = f"Latest published snapshot · Updated {updated.strftime('%B')} {updated.day}, {updated.year}"
+            status = f"Observed employer sample · Refreshed {updated.strftime('%B')} {updated.day}, {updated.year}"
         else:
             status = "Latest published Hiring Pulse snapshot"
     return "\n".join([
         HOME_START_MARKER,
         f'      <p class="home-hiring-pulse-status" id="home-hiring-pulse-status">{html.escape(status)}</p>',
         '      <div class="home-hiring-pulse-metrics" aria-label="HTM Hiring Pulse summary" aria-live="polite">',
-        f'        <div><strong id="home-pulse-active">{active}</strong><span>Active postings</span></div>',
-        f'        <div><strong id="home-pulse-employers">{employers}</strong><span>Tracked employers</span></div>',
+        f'        <div><strong id="home-pulse-active">{active}</strong><span>Observed within 7 days</span></div>',
+        f'        <div><strong id="home-pulse-employers">{employers}</strong><span>Employers represented</span></div>',
         f'        <div><strong id="home-pulse-states">{states}</strong><span>States represented</span></div>',
         "      </div>",
         HOME_END_MARKER,

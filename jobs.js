@@ -25,6 +25,7 @@
       (!filters.role || posting.roleCategoryId === filters.role) &&
       (!filters.state || posting.state === filters.state) &&
       (!filters.remote || posting.remote === true) &&
+      (filters.includeAging || posting.freshness !== 'aging') &&
       words.every(word => haystack.includes(word));
   }
 
@@ -35,7 +36,8 @@
     return snapshot.postings.every(posting => {
       let url;
       try { url = new URL(posting.url); } catch (_) { return false; }
-      if (url.protocol !== 'https:' || !posting.id || !posting.title || !posting.employer || ids.has(posting.id) || urls.has(url.href)) return false;
+      if (url.protocol !== 'https:' || !posting.id || !posting.title || !posting.employer || !displayDate(posting.lastObserved) ||
+          !['recent', 'retained', 'aging'].includes(posting.freshness) || ids.has(posting.id) || urls.has(url.href)) return false;
       ids.add(posting.id);
       urls.add(url.href);
       return true;
@@ -46,6 +48,22 @@
     if (!value) return '';
     const parsed = new Date(value.length === 10 ? `${value}T00:00:00Z` : value);
     return Number.isNaN(parsed.valueOf()) ? '' : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(parsed);
+  }
+
+  function freshnessText(posting) {
+    const observed = displayDate(posting.lastObserved);
+    if (!observed) return '';
+    if (posting.freshness === 'recent') return `Recently observed · ${observed}`;
+    if (posting.freshness === 'aging') return `Aging posting · Last observed ${observed}`;
+    return `Last observed ${observed}`;
+  }
+
+  function sortPostingsByObservation(postings) {
+    return [...postings].sort((left, right) => {
+      const dateDifference = new Date(right.lastObserved).valueOf() - new Date(left.lastObserved).valueOf();
+      if (dateDifference) return dateDifference;
+      return left.employer.localeCompare(right.employer) || left.title.localeCompare(right.title) || left.url.localeCompare(right.url);
+    });
   }
 
   const stateNames = new Map([
@@ -70,7 +88,7 @@
     return counts;
   }
 
-  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, stateNames };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, freshnessText, sortPostingsByObservation, stateCountMap, stateNames };
   if (typeof document === 'undefined') return;
 
   const role = document.getElementById('jobs-role');
@@ -145,6 +163,10 @@
     const location = document.createElement('p');
     location.textContent = `${posting.location}${posting.remote ? ' · Remote' : ''}`;
     card.append(category, heading, employer, location);
+    const freshness = document.createElement('p');
+    freshness.className = `jobs-opening-freshness jobs-opening-freshness-${posting.freshness}`;
+    freshness.textContent = freshnessText(posting);
+    card.appendChild(freshness);
     const details = [];
     if (posting.salary) details.push(posting.salary);
     if (displayDate(posting.postedDate)) details.push(`Posted ${displayDate(posting.postedDate)}`);
@@ -165,13 +187,14 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const snapshot = await response.json();
       if (!validatePulseSnapshot(snapshot)) throw new Error('Invalid Hiring Pulse snapshot');
-      const postings = snapshot.postings;
+      const postings = sortPostingsByObservation(snapshot.postings);
       const employerFilter = document.getElementById('pulse-employer');
       const employerTypeFilter = document.getElementById('pulse-employer-type');
       const roleFilter = document.getElementById('pulse-role');
       const stateFilter = document.getElementById('pulse-state');
       const keywordFilter = document.getElementById('pulse-keyword');
       const remoteFilter = document.getElementById('pulse-remote');
+      const agingFilter = document.getElementById('pulse-aging');
       const stateChart = document.getElementById('pulse-state-chart');
       const mapStatus = document.getElementById('pulse-map-status');
       const mapReset = document.getElementById('pulse-map-reset');
@@ -182,43 +205,50 @@
       const roles = new Map(postings.map(posting => [posting.roleCategoryId, posting.roleCategory]));
       [...roles].sort((a, b) => a[1].localeCompare(b[1])).forEach(([id, name]) => addOption(roleFilter, id, name));
       stateNames.forEach((name, code) => addOption(stateFilter, code, `${name} (${code})`));
-      const stateCounts = stateCountMap(postings);
       let visibleLimit = 24;
+
+      function currentStateCounts() {
+        return stateCountMap(postings.filter(posting => agingFilter.checked || posting.freshness !== 'aging'));
+      }
 
       function syncStateChart() {
         if (!stateChart) return;
         const selected = stateFilter.value;
+        const stateCounts = currentStateCounts();
         stateChart.querySelectorAll('button[data-state]').forEach(button => {
+          const code = button.dataset.state;
+          const count = stateCounts.get(code) || 0;
           const active = button.dataset.state === selected;
           button.classList.toggle('is-selected', active);
           button.setAttribute('aria-pressed', String(active));
+          button.disabled = count === 0;
+          button.setAttribute('aria-label', `${stateNames.get(code) || code}: ${count} ${count === 1 ? 'posting' : 'postings'} in the current view`);
+          const total = button.querySelector('.jobs-state-count');
+          if (total) total.textContent = `${code} · ${count}`;
         });
         if (mapReset) mapReset.hidden = !selected;
         if (mapStatus) {
           const count = stateCounts.get(selected) || 0;
           mapStatus.textContent = selected
-            ? `${stateNames.get(selected) || selected}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample.`
-            : `${stateCounts.size} states and districts currently have observed openings. Choose a state to narrow the list.`;
+            ? `${stateNames.get(selected) || selected}: ${count} ${count === 1 ? 'posting' : 'postings'} in the current view.`
+            : `${stateCounts.size} states and districts have postings in the current view. Choose a state to narrow the list.`;
         }
       }
 
       function initializeStateChart() {
         if (!stateChart) return;
         const buttons = [...stateNames].map(([code, name]) => {
-          const count = stateCounts.get(code) || 0;
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'jobs-state-bar';
           button.dataset.state = code;
-          button.setAttribute('aria-label', `${name}: ${count} active ${count === 1 ? 'posting' : 'postings'} in the observed sample`);
           button.setAttribute('aria-pressed', 'false');
-          button.disabled = count === 0;
           const label = document.createElement('span');
           label.className = 'jobs-state-bar-label';
           const fullName = document.createElement('strong');
           fullName.textContent = name;
           const total = document.createElement('span');
-          total.textContent = `${code} · ${count}`;
+          total.className = 'jobs-state-count';
           label.append(fullName, total);
           button.appendChild(label);
           button.addEventListener('click', () => {
@@ -246,18 +276,23 @@
           state: stateFilter.value,
           keyword: keywordFilter.value,
           remote: remoteFilter.checked,
+          includeAging: agingFilter.checked,
         };
+        const allMatching = postings.filter(posting => postingMatches(posting, { ...currentFilters, includeAging: true }));
         const matches = postings.filter(posting => postingMatches(posting, currentFilters));
         pulseList.replaceChildren(...matches.slice(0, visibleLimit).map(openingCard));
         const shown = Math.min(matches.length, visibleLimit);
-        pulseStatus.textContent = matches.length ? `Showing ${shown} of ${matches.length} matching openings in the observed sample.` : 'No openings match these filters.';
+        const agingHidden = allMatching.length - matches.length;
+        pulseStatus.textContent = matches.length
+          ? `Showing ${shown} of ${matches.length} matching openings.${agingHidden ? ` ${agingHidden} aging ${agingHidden === 1 ? 'posting is' : 'postings are'} hidden.` : ''}`
+          : agingHidden ? `No current-view openings match. ${agingHidden} aging ${agingHidden === 1 ? 'posting is' : 'postings are'} hidden.` : 'No openings match these filters.';
         pulseLoadMore.hidden = shown >= matches.length;
         pulseFallback.hidden = true;
         syncStateChart();
       }
 
       pulseFilters.addEventListener('submit', event => event.preventDefault());
-      [employerFilter, employerTypeFilter, roleFilter, stateFilter, remoteFilter].forEach(control => control.addEventListener('change', () => renderOpenings(true)));
+      [employerFilter, employerTypeFilter, roleFilter, stateFilter, remoteFilter, agingFilter].forEach(control => control.addEventListener('change', () => renderOpenings(true)));
       keywordFilter.addEventListener('input', () => renderOpenings(true));
       pulseFilters.addEventListener('reset', () => setTimeout(() => renderOpenings(true), 0));
       pulseLoadMore.addEventListener('click', () => { visibleLimit += 24; renderOpenings(false); });

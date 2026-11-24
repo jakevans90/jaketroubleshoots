@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, stateCountMap, stateNames } = require('../jobs.js');
+const { searchLinks, sourceMatches, postingMatches, validatePulseSnapshot, displayDate, freshnessText, sortPostingsByObservation, stateCountMap, stateNames } = require('../jobs.js');
 
 test('searches encode user text as query parameters, not URL structure', () => {
   const links = searchLinks('imaging service engineer', 'A&B #1 / PA');
@@ -35,6 +35,8 @@ const posting = {
   salary: null,
   postedDate: null,
   firstObserved: '2026-10-21T12:00:00Z',
+  lastObserved: '2026-11-22T12:00:00Z',
+  freshness: 'recent',
   url: 'https://example.com/jobs/1',
 };
 
@@ -45,11 +47,29 @@ test('Hiring Pulse filters combine employer, role, state, keyword, and remote', 
   assert.equal(postingMatches(posting, { employer: '', role: '', state: '', keyword: '', remote: false }), true);
 });
 
+test('aging postings stay hidden unless explicitly included', () => {
+  const aging = { ...posting, freshness: 'aging', lastObserved: '2026-10-01T12:00:00Z' };
+  assert.equal(postingMatches(aging, { employer: '', role: '', state: '', keyword: '', remote: false, includeAging: false }), false);
+  assert.equal(postingMatches(aging, { employer: '', role: '', state: '', keyword: '', remote: false, includeAging: true }), true);
+  assert.equal(freshnessText(aging), 'Aging posting · Last observed Oct 1, 2026');
+});
+
+test('postings sort by most recent observation without mutating the catalog', () => {
+  const older = { ...posting, id: 'job_older', lastObserved: '2026-11-20T12:00:00Z' };
+  const original = [older, posting];
+  const sorted = sortPostingsByObservation(original);
+  assert.deepEqual(sorted.map(item => item.id), ['job_1', 'job_older']);
+  assert.deepEqual(original.map(item => item.id), ['job_older', 'job_1']);
+});
+
 test('Hiring Pulse snapshot validation rejects duplicate and unsafe canonical URLs', () => {
   const snapshot = { schemaVersion: 1, availability: 'available', postings: [posting] };
   assert.ok(validatePulseSnapshot(snapshot));
   assert.equal(validatePulseSnapshot({ ...snapshot, postings: [posting, { ...posting }] }), false);
   assert.equal(validatePulseSnapshot({ ...snapshot, postings: [{ ...posting, url: 'http://example.com/jobs/1' }] }), false);
+  assert.equal(validatePulseSnapshot({ ...snapshot, postings: [{ ...posting, lastObserved: null }] }), false);
+  assert.equal(validatePulseSnapshot({ ...snapshot, postings: [{ ...posting, lastObserved: 'not-a-date' }] }), false);
+  assert.equal(validatePulseSnapshot({ ...snapshot, postings: [{ ...posting, freshness: 'unknown' }] }), false);
   assert.equal(validatePulseSnapshot({ schemaVersion: 1, availability: 'unavailable', postings: [] }), false);
 });
 
