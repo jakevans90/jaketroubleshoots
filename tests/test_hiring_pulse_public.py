@@ -21,6 +21,15 @@ class HiringPulsePublicTests(unittest.TestCase):
         snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store), copy.deepcopy(self.source_config))
         active = [item for item in self.store["postings"]["records"] if item["status"] == "active"]
         self.assertEqual(len(active), snapshot["summary"]["activePostings"])
+        self.assertEqual(len(active), snapshot["summary"]["trackedPostings"])
+        self.assertEqual(
+            snapshot["summary"]["recentlyObservedPostings"],
+            sum(item["freshness"] == "recent" for item in snapshot["postings"]),
+        )
+        self.assertEqual(
+            snapshot["summary"]["agingPostings"],
+            sum(item["freshness"] == "aging" for item in snapshot["postings"]),
+        )
         self.assertEqual(len({item["employer_id"] for item in active}), snapshot["summary"]["employersRepresented"])
         self.assertEqual(len({item["location"]["state"] for item in active if item["location"].get("state")}), snapshot["summary"]["statesRepresented"])
         self.assertEqual(len({item["role_category_id"] for item in active}), snapshot["summary"]["roleCategoriesRepresented"])
@@ -48,6 +57,7 @@ class HiringPulsePublicTests(unittest.TestCase):
     def test_current_openings_appear_before_state_browser(self):
         page = (ROOT / MODULE.PAGE_PATH).read_text(encoding="utf-8")
         self.assertLess(page.index('class="jobs-openings"'), page.index('class="jobs-map-panel"'))
+        self.assertIn('id="pulse-aging"', page)
 
     def test_public_records_are_unique_canonical_and_omit_descriptions(self):
         postings = MODULE.build_public_snapshot(copy.deepcopy(self.store))["postings"]
@@ -55,6 +65,8 @@ class HiringPulsePublicTests(unittest.TestCase):
         self.assertEqual(len(postings), len({item["url"] for item in postings}))
         self.assertTrue(all(item["url"].startswith("https://") for item in postings))
         self.assertTrue(all("description" not in item and "description_snippet" not in item for item in postings))
+        self.assertTrue(all(item["lastObserved"] for item in postings))
+        self.assertTrue(all(item["freshness"] in {"recent", "retained", "aging"} for item in postings))
 
     def test_optional_salary_and_dates_may_be_missing(self):
         snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store))
@@ -62,7 +74,14 @@ class HiringPulsePublicTests(unittest.TestCase):
         self.assertIn("salary", sample)
         self.assertIn("postedDate", sample)
         self.assertIn("firstObserved", sample)
+        self.assertIn("lastObserved", sample)
         self.assertIsNotNone(sample["firstObserved"])
+
+    def test_freshness_thresholds_are_deterministic(self):
+        reference = MODULE._parse_timestamp("2026-11-24T12:00:00Z")
+        self.assertEqual("recent", MODULE._freshness_status("2026-11-17T12:00:00Z", reference))
+        self.assertEqual("retained", MODULE._freshness_status("2026-11-10T12:00:00Z", reference))
+        self.assertEqual("aging", MODULE._freshness_status("2026-10-24T11:59:59Z", reference))
 
     def test_empty_active_data_uses_unavailable_fallback_without_zero_cards(self):
         store = copy.deepcopy(self.store)
@@ -83,7 +102,7 @@ class HiringPulsePublicTests(unittest.TestCase):
         snapshot = MODULE.build_public_snapshot(copy.deepcopy(self.store))
         rendered = MODULE.render_homepage_summary(snapshot)
         summary = snapshot["summary"]
-        self.assertIn(f'>{summary["activePostings"]:,}<', rendered)
+        self.assertIn(f'>{summary["recentlyObservedPostings"]:,}<', rendered)
         self.assertIn(f'>{summary["employersRepresented"]:,}<', rendered)
         self.assertIn(f'>{summary["statesRepresented"]:,}<', rendered)
         self.assertIn('id="home-hiring-pulse-status"', rendered)

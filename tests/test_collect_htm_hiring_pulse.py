@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.error import HTTPError
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,6 +48,16 @@ def source(adapter):
 
 
 class CollectorTests(unittest.TestCase):
+    def test_rate_limit_retry_honors_bounded_retry_after(self):
+        error = HTTPError("https://example.test/jobs", 429, "Too Many Requests", {"Retry-After": "7"}, None)
+        long_error = HTTPError("https://example.test/jobs", 429, "Too Many Requests", {"Retry-After": "120"}, None)
+        try:
+            self.assertEqual(7.0, MODULE.retry_delay(error, 0))
+            self.assertEqual(30.0, MODULE.retry_delay(long_error, 0))
+        finally:
+            error.close()
+            long_error.close()
+
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))

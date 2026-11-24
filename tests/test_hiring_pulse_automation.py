@@ -49,6 +49,29 @@ class HiringPulseAutomationTests(unittest.TestCase):
             "roleCategoryId": posting["role_category_id"],
         }
 
+    def external_records(self, source_id="trimedx-careers"):
+        store = MODULE.pulse.load_store(self.root)
+        config = MODULE.collector.load_config(self.root)
+        source = next(item for item in config["sources"] if item["id"] == source_id)
+        records = []
+        for posting in store["postings"]["records"]:
+            if posting["source"] != source_id or posting["status"] != "active":
+                continue
+            records.append({
+                "employer": source["employer"],
+                "title": posting["title"],
+                "location": copy.deepcopy(posting["location"]),
+                "url": posting["canonical_url"],
+                "sourcePostingId": posting["source_posting_id"],
+                "employmentType": posting["employment_type"],
+                "experienceLevel": posting["experience_level"],
+                "salaryText": posting["salary_text"],
+                "postedDate": posting["posted_date"],
+                "descriptionSnippet": posting["description_snippet"],
+                "roleCategoryId": posting["role_category_id"],
+            })
+        return records
+
     def test_collect_source_routes_every_supported_adapter(self):
         originals = {}
         calls = []
@@ -120,6 +143,52 @@ class HiringPulseAutomationTests(unittest.TestCase):
         self.assertEqual(0, report["summary"]["postingsClosed"])
         self.assertFalse(report["sources"][0]["snapshotComplete"])
         self.assertEqual("partial", report["sources"][0]["sourceStatus"])
+
+    def test_large_closure_requires_two_stable_complete_snapshots(self):
+        all_records = self.external_records()
+        retained = all_records[: max(1, int(len(all_records) * 0.7))]
+
+        def stable_collect(source, checked_at, timeout):
+            return MODULE.collector.CollectionResult(source["id"], retained, len(retained), True, {"test": len(retained)})
+
+        first = MODULE.run_automation(
+            self.root, ["trimedx-careers"], "2026-12-01T12:00:00Z", 10,
+            True, True, None, stable_collect,
+        )
+        self.assertEqual(0, first["summary"]["postingsClosed"])
+        self.assertEqual("partial", first["sources"][0]["sourceStatus"])
+        self.assertIn("awaiting a second stable complete snapshot", first["sources"][0]["warning"])
+
+        second = MODULE.run_automation(
+            self.root, ["trimedx-careers"], "2026-12-04T12:00:00Z", 10,
+            True, True, None, stable_collect,
+        )
+        self.assertEqual(len(all_records) - len(retained), second["summary"]["postingsClosed"])
+        self.assertEqual("complete", second["sources"][0]["sourceStatus"])
+        self.assertTrue(second["sources"][0]["largeClosureConfirmed"])
+
+    def test_incomplete_second_snapshot_cannot_confirm_large_closure(self):
+        all_records = self.external_records()
+        retained = all_records[: max(1, int(len(all_records) * 0.7))]
+
+        def complete_collect(source, checked_at, timeout):
+            return MODULE.collector.CollectionResult(source["id"], retained, len(retained), True, {"test": len(retained)})
+
+        MODULE.run_automation(
+            self.root, ["trimedx-careers"], "2026-12-01T12:00:00Z", 10,
+            True, True, None, complete_collect,
+        )
+
+        def incomplete_collect(source, checked_at, timeout):
+            return MODULE.collector.CollectionResult(source["id"], retained, len(retained), False, {"test": len(retained)})
+
+        second = MODULE.run_automation(
+            self.root, ["trimedx-careers"], "2026-12-04T12:00:00Z", 10,
+            True, True, None, incomplete_collect,
+        )
+        self.assertEqual(0, second["summary"]["postingsClosed"])
+        self.assertEqual("partial", second["sources"][0]["sourceStatus"])
+        self.assertFalse(second["sources"][0]["largeClosureConfirmed"])
 
     def test_health_report_contains_operational_totals(self):
         record = self.external_record()
