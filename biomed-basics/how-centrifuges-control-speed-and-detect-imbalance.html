@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Centrifuges Control Speed and Detect Imbalance | Jake Troubleshoots</title>
+  <meta name="description" content="A practical explanation of how centrifuges control rotor speed, verify RPM, detect imbalance and vibration, manage braking, and keep the lid locked until the rotor is safe.">
+  <link rel="stylesheet" href="../style.css?v=20260920-2">
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1L34E3TJL6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1L34E3TJL6');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-8569368568902704" crossorigin="anonymous"></script>
+  <link rel="canonical" href="https://jaketroubleshoots.com/biomed-basics/how-centrifuges-control-speed-and-detect-imbalance.html" />
+  <script src="../social-links.js" defer></script>
+</head>
+<body class="biomed-article">
+<a class="skip-link" href="#page-heading">Skip to content</a>
+<header>
+  <a href="../index.html" class="site-logo"><img src="../images/logo.png" alt="Jake Troubleshoots Logo" class="site-icon"><span class="logo-text">Jake Troubleshoots</span></a>
+  <nav class="site-primary-nav" aria-label="Primary navigation"><a href="../guides.html">Guides</a><a href="../preventive-maintenance.html">PMs</a><a href="../biomed-basics.html">Basics</a><a href="../search.html">Search</a><details class="site-nav-more"><summary>More</summary><div class="site-nav-menu"><a href="../biomed-education-certifications.html">Education &amp; Certifications</a><a href="../biomed-jobs.html">Biomed Jobs</a><a href="../vendors.html">Vendors</a><a href="../index.html#biomed-quiz">Biomed Quiz</a><a href="../contact.html">About &amp; Contact</a></div></details></nav>
+</header>
+<section class="hero">
+  <h1 id="page-heading" tabindex="-1">How Centrifuges Control Speed and Detect Imbalance</h1>
+  <p>How a centrifuge accelerates a rotor to a controlled speed, verifies that speed, detects unsafe vibration or imbalance, and stops a high-energy rotating assembly before a small mechanical problem becomes a major failure</p>
+  <p style="max-width:760px; margin:10px auto 0; font-size:0.95em;">A centrifuge can look like one of the simplest pieces of laboratory equipment in the hospital.</p>
+  <div class="hero-buttons" style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;"><a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a></div>
+</section>
+<main>
+  <section class="content-box" id="what-this-page-explains">
+    <h3>What This Page Explains</h3>
+    <p>This page explains how a medical or laboratory centrifuge turns a selected RPM into controlled rotor motion, how speed feedback works, why rotor radius matters, how imbalance creates vibration, how the machine can detect that vibration, how braking and lid interlocks protect the operator, and why a centrifuge can sound normal while still failing a speed or safety test.</p>
+    <p>It also covers the troubleshooting distinction between a problem caused by the sample load, a removable rotor, the drive system, the speed-measurement system, the bearings, and the control electronics.</p>
+  </section>
+
+  <section class="content-box" id="the-simple-version">
+    <h3>The Simple Version</h3>
+    <p>A centrifuge uses an electric motor to spin a rotor containing sample tubes. The operator selects a target speed, usually in revolutions per minute, and the controller drives the motor until a speed sensor reports that the rotor has reached the requested value. The controller then continuously adjusts motor drive so the actual speed remains close to the target despite changes in load, friction, or line conditions.</p>
+    <p>The spinning rotor creates centrifugal acceleration. Samples farther from the axis of rotation experience a greater acceleration for the same RPM, which is why rotor radius matters. Laboratory protocols often care about relative centrifugal force, or RCF, rather than RPM alone. Two different rotors running at the same RPM can expose samples to different forces because their effective radii are different.</p>
+    <p>At the same time, the machine has to manage the mechanical energy stored in the rotor. If sample mass is unevenly distributed, the center of mass shifts away from the shaft and creates vibration. The centrifuge may detect that vibration through an imbalance sensor, motor-current behavior, motion sensor, or other method depending on the design. If the vibration exceeds the allowed limit, the controller stops the run. The lid remains locked until the rotor slows to a safe speed.</p>
+    <p>A centrifuge problem can therefore come from the load, rotor, motor, bearings, belt, drive electronics, speed sensor, imbalance sensor, lid interlock, braking system, or control board. Preserve the selected rotor, target RPM or RCF, actual measured speed, load arrangement, vibration behavior, error code, lid-lock state, and whether the problem follows a known-good rotor before replacing major parts.</p>
+  </section>
+
+  <section class="content-box" id="rpm-is-only-half-of-the-story">
+    <h3>RPM Is Only Half of the Story</h3>
+    <p>The front panel usually gives the user a speed in:</p>
+    <p><strong>RPM — revolutions per minute.</strong></p>
+    <p>That tells you how many complete rotations the rotor makes in one minute.</p>
+    <p>If the rotor is turning at 3,000 RPM, every point on that rotor completes 3,000 revolutions each minute.</p>
+    <p>But sample separation does not depend on RPM alone.</p>
+    <p>It depends on the acceleration experienced by the sample.</p>
+    <p>That acceleration depends on both:</p>
+    <ul>
+      <li>Rotational speed</li>
+      <li>Distance from the axis of rotation</li>
+    </ul>
+    <p>This is why centrifuge protocols often use:</p>
+    <p><strong>RCF — relative centrifugal force.</strong></p>
+    <p>RCF is commonly expressed as a multiple of Earth's gravitational acceleration:</p>
+    <p><strong>× g</strong></p>
+    <p>A sample may therefore be spun at:</p>
+    <p>2,000 × g</p>
+    <p>rather than simply:</p>
+    <p>A certain RPM.</p>
+    <p>The relationship is roughly:</p>
+    <p><strong>RCF = 1.118 × 10⁻⁵ × r × RPM²</strong></p>
+    <p>where:</p>
+    <ul>
+      <li>`r` is the rotational radius in centimeters</li>
+      <li>RPM is rotor speed</li>
+    </ul>
+    <p>The exact clinical procedure may simply instruct the user to select an RCF value and let the centrifuge calculate the corresponding RPM for the installed rotor.</p>
+    <p>The important engineering point is that the radius matters.</p>
+    <p>If the wrong rotor is selected in software, the centrifuge can calculate the wrong RPM for a requested RCF even while speed control itself is perfectly accurate.</p>
+    <p>That is a configuration problem, not a motor problem.</p>
+  </section>
+
+  <section class="content-box" id="why-speed-is-squared">
+    <h3>Why Speed Is Squared</h3>
+    <p>The RPM term in the force equation is squared.</p>
+    <p>That means a relatively modest increase in speed can create a much larger increase in centrifugal force.</p>
+    <p>For example, doubling RPM does not merely double centrifugal force.</p>
+    <p>It increases it by roughly a factor of four, assuming the same radius.</p>
+    <p>This is one reason overspeed protection matters.</p>
+    <p>A centrifuge rotor contains considerable stored energy at operating speed, and both the forces on the samples and the mechanical stress on the rotor rise rapidly as speed increases.</p>
+    <p>The machine therefore needs more than:</p>
+    <blockquote><p>Turn the motor on.</p></blockquote>
+    <p>It needs controlled acceleration, speed verification, and defined maximum limits.</p>
+  </section>
+
+  <section class="content-box" id="the-motor-and-drive-system">
+    <h3>The Motor and Drive System</h3>
+    <p>The centrifuge motor converts electrical energy into rotational motion.</p>
+    <p>Depending on the design, the machine may use:</p>
+    <ul>
+      <li>Brushless DC motor</li>
+      <li>AC induction motor</li>
+      <li>Other electronically controlled motor system</li>
+    </ul>
+    <p>Many modern centrifuges use electronically commutated motors because they provide good speed control, long life, and predictable braking.</p>
+    <p>The motor may drive the rotor directly through the motor shaft, or the machine may use:</p>
+    <ul>
+      <li>Belt</li>
+      <li>Pulley</li>
+      <li>Coupling</li>
+    </ul>
+    <p>between the motor and rotor.</p>
+    <p>That mechanical distinction matters during troubleshooting.</p>
+    <p>If the motor itself is spinning but a belt is slipping, the motor-speed sensor may not always tell you what the rotor is actually doing unless the feedback is taken from the rotor side.</p>
+    <p>This is another version of the same rule that appears throughout medical equipment:</p>
+    <p><strong>Where is the measurement actually taken?</strong></p>
+  </section>
+
+  <section class="content-box" id="commanded-speed-versus-actual-speed">
+    <h3>Commanded Speed Versus Actual Speed</h3>
+    <p>Suppose the user selects:</p>
+    <p>4,000 RPM.</p>
+    <p>That number becomes a command.</p>
+    <p>The control system then tries to make the actual rotor speed equal that command.</p>
+    <p>A simple control loop looks like:</p>
+    <p><strong>Selected Speed</strong></p>
+    <p>↓</p>
+    <p><strong>Motor Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Motor / Rotor</strong></p>
+    <p>↓</p>
+    <p><strong>Speed Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Measured Speed</strong></p>
+    <p>↓</p>
+    <p><strong>Controller Correction</strong></p>
+    <p>If measured speed is below target, the controller increases motor drive.</p>
+    <p>If measured speed rises above target, it reduces drive or applies braking depending on the design.</p>
+    <p>This loop runs continuously.</p>
+    <p>The machine does not normally apply one fixed motor voltage and hope the rotor lands at the correct speed.</p>
+    <p>It actively regulates.</p>
+  </section>
+
+  <section class="content-box" id="how-the-centrifuge-knows-rotor-speed">
+    <h3>How the Centrifuge Knows Rotor Speed</h3>
+    <p>Different machines use different speed-sensing methods.</p>
+    <p>Common approaches include:</p>
+    <ul>
+      <li>Optical sensor</li>
+      <li>Hall-effect sensor</li>
+      <li>Magnetic pickup</li>
+      <li>Motor commutation feedback</li>
+      <li>Encoder</li>
+    </ul>
+    <p>An optical system may detect a reflective mark or interrupted light path once per revolution.</p>
+    <p>A Hall sensor may detect a magnet passing a fixed location.</p>
+    <p>An encoder can provide many pulses per revolution.</p>
+    <p>The controller counts those pulses over time and calculates RPM.</p>
+    <p>If the pulse frequency is wrong, the calculated speed changes.</p>
+    <p>If the pulses disappear:</p>
+    <p>The machine may believe the rotor has stopped even while it is moving.</p>
+    <p>That is why speed feedback is safety-critical.</p>
+  </section>
+
+  <section class="content-box" id="a-speed-sensor-can-fail-without-stopping-the-motor">
+    <h3>A Speed Sensor Can Fail Without Stopping the Motor</h3>
+    <p>This is an important failure pattern.</p>
+    <p>The motor can receive power.</p>
+    <p>The rotor can physically accelerate.</p>
+    <p>But if the speed sensor does not report that movement correctly, the controller may detect:</p>
+    <p><strong>No speed feedback</strong></p>
+    <p>or:</p>
+    <p><strong>Speed error.</strong></p>
+    <p>A properly designed system should then limit or terminate the run rather than continue blindly.</p>
+    <p>From the outside, the complaint may sound like:</p>
+    <blockquote><p>It spins for two seconds and shuts down.</p></blockquote>
+    <p>That does not automatically mean the motor is weak.</p>
+    <p>The controller may be intentionally stopping because the measured feedback does not match the commanded motion.</p>
+  </section>
+
+  <section class="content-box" id="independent-speed-verification">
+    <h3>Independent Speed Verification</h3>
+    <p>When speed accuracy matters, use an appropriate independent reference.</p>
+    <p>Depending on the centrifuge and OEM procedure, that may be:</p>
+    <ul>
+      <li>Optical tachometer</li>
+      <li>Photo tach</li>
+      <li>Stroboscopic method</li>
+      <li>Manufacturer test fixture</li>
+    </ul>
+    <p>A front-panel display is not an independent speed measurement.</p>
+    <p>If the machine displays:</p>
+    <p>4,000 RPM</p>
+    <p>and an external tachometer measures:</p>
+    <p>4,000 RPM,</p>
+    <p>you now have much stronger evidence.</p>
+    <p>If the display says:</p>
+    <p>4,000</p>
+    <p>while the tachometer reads:</p>
+    <p>3,650,</p>
+    <p>the issue may involve:</p>
+    <ul>
+      <li>Speed sensing</li>
+      <li>Calibration</li>
+      <li>Control loop</li>
+      <li>Drive capacity</li>
+    </ul>
+    <p>The mismatch matters more than the displayed number alone.</p>
+  </section>
+
+  <section class="content-box" id="acceleration-is-controlled-too">
+    <h3>Acceleration Is Controlled Too</h3>
+    <p>Centrifuges do not always accelerate as fast as physically possible.</p>
+    <p>The user may be able to choose:</p>
+    <ul>
+      <li>Fast acceleration</li>
+      <li>Gentle acceleration</li>
+      <li>Specific acceleration profile</li>
+    </ul>
+    <p>depending on the instrument.</p>
+    <p>Why?</p>
+    <p>Some samples can be disturbed by aggressive acceleration.</p>
+    <p>More importantly from a hardware perspective, a controlled acceleration ramp reduces:</p>
+    <ul>
+      <li>Mechanical shock</li>
+      <li>Belt stress</li>
+      <li>Motor-current spikes</li>
+    </ul>
+    <p>The controller gradually increases speed while monitoring the response.</p>
+    <p>If the rotor accelerates much more slowly than expected, that can indicate:</p>
+    <ul>
+      <li>Weak motor</li>
+      <li>Excess friction</li>
+      <li>Dragging brake</li>
+      <li>Belt slip</li>
+      <li>Excessive load</li>
+      <li>Low supply voltage</li>
+    </ul>
+    <p>The pattern during acceleration can reveal a lot.</p>
+  </section>
+
+  <section class="content-box" id="rotor-mass-changes-the-demand">
+    <h3>Rotor Mass Changes the Demand</h3>
+    <p>An empty rotor and a fully loaded rotor do not behave exactly the same way.</p>
+    <p>The loaded rotor has greater rotational inertia.</p>
+    <p>It takes more torque and more time to accelerate.</p>
+    <p>A healthy centrifuge is designed for that.</p>
+    <p>But a marginal motor or drive may pass an unloaded test and fail under a realistic balanced load.</p>
+    <p>That is why:</p>
+    <blockquote><p>It spins fine empty.</p></blockquote>
+    <p>does not prove full-load performance.</p>
+    <p>The load test must follow the manufacturer's safe procedure.</p>
+  </section>
+
+  <section class="content-box" id="the-rotor-is-a-safety-critical-component">
+    <h3>The Rotor Is a Safety-Critical Component</h3>
+    <p>The removable rotor is not just an accessory.</p>
+    <p>It is a high-speed structural component.</p>
+    <p>During operation, the rotor experiences substantial mechanical stress.</p>
+    <p>Damage can include:</p>
+    <ul>
+      <li>Cracks</li>
+      <li>Corrosion</li>
+      <li>Deformation</li>
+      <li>Worn attachment surfaces</li>
+      <li>Damaged buckets</li>
+      <li>Loose hardware</li>
+    </ul>
+    <p>Some rotor defects are serious enough that the rotor must be removed from service even if the centrifuge itself is operating normally.</p>
+    <p>Rotor inspection and service-life requirements vary by manufacturer and material.</p>
+    <p>Never assume a rotor is acceptable simply because:</p>
+    <p>It still fits on the shaft.</p>
+  </section>
+
+  <section class="content-box" id="fixed-angle-and-swinging-bucket-rotors">
+    <h3>Fixed-Angle and Swinging-Bucket Rotors</h3>
+    <p>Different rotor designs behave differently.</p>
+    <p>A fixed-angle rotor holds tubes at a defined angle.</p>
+    <p>A swinging-bucket rotor allows buckets to pivot outward as speed increases.</p>
+    <p>The buckets may hang vertically when stopped and move toward horizontal during the run.</p>
+    <p>Swinging-bucket systems introduce additional mechanical components:</p>
+    <ul>
+      <li>Pivot pins</li>
+      <li>Bucket hangers</li>
+      <li>Lubricated contact points</li>
+    </ul>
+    <p>If one bucket does not swing freely:</p>
+    <p>The rotor can become dynamically unbalanced.</p>
+    <p>That is a mechanical problem even when sample masses are perfectly matched.</p>
+  </section>
+
+  <section class="content-box" id="balanced-tubes-do-not-guarantee-a-balanced-rotor">
+    <h3>Balanced Tubes Do Not Guarantee a Balanced Rotor</h3>
+    <p>Users are often told:</p>
+    <blockquote><p>Balance the tubes.</p></blockquote>
+    <p>That is correct, but the real requirement is:</p>
+    <p><strong>Balance the rotating mass around the rotor.</strong></p>
+    <p>Two tubes may contain equal liquid volumes but still have different total mass because the tube materials, caps, adapters, or sample densities differ.</p>
+    <p>Likewise, a rotor can be unbalanced because of:</p>
+    <ul>
+      <li>Missing adapter</li>
+      <li>Damaged bucket</li>
+      <li>Fluid trapped in one carrier</li>
+      <li>Asymmetric loading</li>
+    </ul>
+    <p>The machine responds to mass distribution.</p>
+    <p>Not visual symmetry.</p>
+  </section>
+
+  <section class="content-box" id="what-imbalance-actually-does">
+    <h3>What Imbalance Actually Does</h3>
+    <p>In a perfectly balanced rotor, the combined center of mass lies essentially on the rotational axis.</p>
+    <p>As the rotor spins:</p>
+    <p>The forces remain symmetric.</p>
+    <p>If one side is heavier, the center of mass moves away from the axis.</p>
+    <p>The rotating system now produces a periodic force on the shaft and chassis.</p>
+    <p>The faster the rotor turns:</p>
+    <p>The stronger that effect becomes.</p>
+    <p>That is why an imbalance that feels mild at low speed can become violent at high RPM.</p>
+    <p>The centrifuge must detect dangerous vibration early enough to stop safely.</p>
+  </section>
+
+  <section class="content-box" id="how-imbalance-can-be-detected">
+    <h3>How Imbalance Can Be Detected</h3>
+    <p>Different manufacturers use different approaches.</p>
+    <p>Possible methods include:</p>
+    <ul>
+      <li>Vibration switch</li>
+      <li>Accelerometer</li>
+      <li>Displacement sensor</li>
+      <li>Motor-current analysis</li>
+      <li>Bearing-motion detection</li>
+    </ul>
+    <p>A simple vibration sensor may detect excessive movement of the motor or chassis.</p>
+    <p>An accelerometer can measure vibration more directly.</p>
+    <p>Some control systems can infer abnormal mechanical load from changes in motor current or speed behavior.</p>
+    <p>The implementation varies.</p>
+    <p>The purpose is the same:</p>
+    <p><strong>Detect a rotating condition that is outside the safe mechanical envelope.</strong></p>
+  </section>
+
+  <section class="content-box" id="the-imbalance-sensor-does-not-know-why-the-rotor-is-vibrating">
+    <h3>The Imbalance Sensor Does Not Know Why the Rotor Is Vibrating</h3>
+    <p>This is important.</p>
+    <p>It may detect:</p>
+    <p>Excessive vibration.</p>
+    <p>It does not necessarily know whether the cause is:</p>
+    <ul>
+      <li>Uneven sample loading</li>
+      <li>Bent rotor</li>
+      <li>Worn bearing</li>
+      <li>Damaged bucket</li>
+      <li>Loose motor mount</li>
+      <li>Misinstalled rotor</li>
+    </ul>
+    <p>The alarm describes a condition.</p>
+    <p>It does not identify the root cause.</p>
+  </section>
+
+  <section class="content-box" id="a-good-imbalance-alarm-is-not-a-nuisance-fault">
+    <h3>A Good Imbalance Alarm Is Not a Nuisance Fault</h3>
+    <p>If a centrifuge repeatedly stops for imbalance, bypassing or defeating that protection to “see whether it will finish” is unsafe.</p>
+    <p>The stored energy in a high-speed rotor is substantial.</p>
+    <p>The correct response is to find out why the system detects abnormal motion.</p>
+    <p>The protection exists because a rotor failure can be catastrophic.</p>
+  </section>
+
+  <section class="content-box" id="imbalance-at-low-speed-versus-high-speed">
+    <h3>Imbalance at Low Speed Versus High Speed</h3>
+    <p>The speed where vibration appears can help isolate the problem.</p>
+    <p>If vibration begins immediately at very low RPM:</p>
+    <p>Think about:</p>
+    <ul>
+      <li>Major loading asymmetry</li>
+      <li>Misinstalled rotor</li>
+      <li>Severe mechanical damage</li>
+    </ul>
+    <p>If the machine is smooth at low speed but becomes unstable near a certain higher RPM:</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Dynamic imbalance</li>
+      <li>Bearing resonance</li>
+      <li>Rotor damage</li>
+      <li>Mechanical looseness</li>
+    </ul>
+    <p>The pattern is useful.</p>
+  </section>
+
+  <section class="content-box" id="mechanical-resonance">
+    <h3>Mechanical Resonance</h3>
+    <p>Every mechanical structure has natural frequencies.</p>
+    <p>At certain speeds, normal vibration can excite one of those resonances.</p>
+    <p>A healthy centrifuge is designed so normal operating speeds remain safe.</p>
+    <p>But changes in:</p>
+    <ul>
+      <li>Motor mounts</li>
+      <li>Bearings</li>
+      <li>Chassis fasteners</li>
+    </ul>
+    <p>can alter vibration behavior.</p>
+    <p>A machine that suddenly shakes only near one particular RPM may have a resonance-related mechanical issue.</p>
+    <p>That is different from a simple sample imbalance that follows the load.</p>
+  </section>
+
+  <section class="content-box" id="does-the-problem-follow-the-rotor">
+    <h3>Does the Problem Follow the Rotor?</h3>
+    <p>This is one of the strongest centrifuge troubleshooting questions.</p>
+    <p>If the machine accepts interchangeable rotors:</p>
+    <p>Install a known-good approved rotor according to the OEM procedure.</p>
+    <p>If the vibration disappears:</p>
+    <p>The original rotor or its accessories become much more suspicious.</p>
+    <p>If every approved rotor behaves the same way:</p>
+    <p>The base centrifuge becomes more interesting.</p>
+    <p>This is classic known-good substitution.</p>
+  </section>
+
+  <section class="content-box" id="rotor-recognition">
+    <h3>Rotor Recognition</h3>
+    <p>Some advanced centrifuges automatically identify the installed rotor.</p>
+    <p>The machine may use that identity to determine:</p>
+    <ul>
+      <li>Maximum RPM</li>
+      <li>Maximum RCF</li>
+      <li>Acceleration profile</li>
+      <li>Brake profile</li>
+    </ul>
+    <p>If the wrong rotor is selected manually or the rotor-recognition system fails, the machine may restrict operation.</p>
+    <p>That is intentional.</p>
+    <p>A rotor rated for 5,000 RPM should not be allowed to run at a speed intended for a different rotor rated for 15,000 RPM.</p>
+    <p>Rotor identification is therefore part of overspeed protection.</p>
+  </section>
+
+  <section class="content-box" id="maximum-rotor-speed-is-not-optional">
+    <h3>Maximum Rotor Speed Is Not Optional</h3>
+    <p>Every rotor has a maximum safe speed.</p>
+    <p>That limit depends on:</p>
+    <ul>
+      <li>Material</li>
+      <li>Geometry</li>
+      <li>Age</li>
+      <li>Manufacturer rating</li>
+    </ul>
+    <p>The centrifuge should never exceed that approved limit.</p>
+    <p>Repeated high-speed operation can contribute to fatigue over time.</p>
+    <p>Some manufacturers specify:</p>
+    <ul>
+      <li>Rotor life</li>
+      <li>Inspection interval</li>
+      <li>Replacement interval</li>
+    </ul>
+    <p>especially for high-speed or ultracentrifuge rotors.</p>
+  </section>
+
+  <section class="content-box" id="overspeed-protection">
+    <h3>Overspeed Protection</h3>
+    <p>The primary speed-control loop tries to hold the selected RPM.</p>
+    <p>Safety-critical designs may include additional overspeed detection.</p>
+    <p>If actual speed exceeds an allowed threshold:</p>
+    <p>The controller can remove drive and initiate a safe stop.</p>
+    <p>Again:</p>
+    <p>The speed display is not the safety function by itself.</p>
+    <p>The system needs reliable actual-speed information.</p>
+  </section>
+
+  <section class="content-box" id="braking-the-rotor">
+    <h3>Braking the Rotor</h3>
+    <p>At the end of the run, the rotor contains stored kinetic energy.</p>
+    <p>The machine has to remove that energy.</p>
+    <p>One option is:</p>
+    <p>Let friction slow it naturally.</p>
+    <p>That can take a long time.</p>
+    <p>Many centrifuges use controlled braking.</p>
+    <p>Depending on the motor system, this can involve:</p>
+    <ul>
+      <li>Dynamic braking</li>
+      <li>Regenerative braking</li>
+      <li>Controlled reverse torque</li>
+    </ul>
+    <p>The exact implementation varies.</p>
+    <p>The goal is to slow the rotor predictably without destabilizing the samples or mechanical system.</p>
+  </section>
+
+  <section class="content-box" id="braking-can-be-programmable">
+    <h3>Braking Can Be Programmable</h3>
+    <p>Some laboratory protocols require gentle deceleration.</p>
+    <p>A sharp stop can disturb:</p>
+    <ul>
+      <li>Separated layers</li>
+      <li>Pellets</li>
+      <li>Gradients</li>
+    </ul>
+    <p>So the machine may offer:</p>
+    <ul>
+      <li>Brake</li>
+      <li>No brake</li>
+      <li>Several deceleration levels</li>
+    </ul>
+    <p>From a service perspective, it is important to know which profile was selected before deciding that:</p>
+    <blockquote><p>It takes too long to stop.</p></blockquote>
+    <p>The machine may be intentionally coasting.</p>
+  </section>
+
+  <section class="content-box" id="a-dragging-brake-can-look-like-a-weak-motor">
+    <h3>A Dragging Brake Can Look Like a Weak Motor</h3>
+    <p>If a mechanical or electromagnetic brake does not release fully:</p>
+    <p>The motor has to fight that resistance during acceleration.</p>
+    <p>Symptoms may include:</p>
+    <ul>
+      <li>Slow acceleration</li>
+      <li>High motor current</li>
+      <li>Excess heat</li>
+      <li>Failure to reach speed</li>
+    </ul>
+    <p>The motor itself can be perfectly healthy.</p>
+    <p>This is why separating:</p>
+    <p>Drive force</p>
+    <p>from:</p>
+    <p>Mechanical drag</p>
+    <p>matters.</p>
+  </section>
+
+  <section class="content-box" id="bearings-carry-the-rotor-load">
+    <h3>Bearings Carry the Rotor Load</h3>
+    <p>The motor shaft and rotor rely on bearings.</p>
+    <p>At high speed, bearing condition matters enormously.</p>
+    <p>Worn bearings can create:</p>
+    <ul>
+      <li>Noise</li>
+      <li>Vibration</li>
+      <li>Heat</li>
+      <li>Increased drag</li>
+      <li>Speed instability</li>
+    </ul>
+    <p>A bearing can degrade gradually.</p>
+    <p>The centrifuge may still complete runs for weeks while vibration slowly increases.</p>
+    <p>Historical sound and vibration can be useful, but objective testing is stronger.</p>
+  </section>
+
+  <section class="content-box" id="bearing-noise-is-useful-but-not-a-diagnosis">
+    <h3>Bearing Noise Is Useful but Not a Diagnosis</h3>
+    <p>A new whine or rumble deserves investigation.</p>
+    <p>But sound alone does not prove:</p>
+    <p>Bearing failure.</p>
+    <p>Other possible causes include:</p>
+    <ul>
+      <li>Fan</li>
+      <li>Belt</li>
+      <li>Rotor</li>
+      <li>Loose cover</li>
+    </ul>
+    <p>Use sound as evidence.</p>
+    <p>Not the entire conclusion.</p>
+  </section>
+
+  <section class="content-box" id="belt-driven-systems">
+    <h3>Belt-Driven Systems</h3>
+    <p>If the centrifuge uses a belt:</p>
+    <p>The belt can introduce several failure modes.</p>
+    <p>A loose or glazed belt can slip.</p>
+    <p>During light operation, it may appear fine.</p>
+    <p>Under acceleration:</p>
+    <p>It slips.</p>
+    <p>The motor turns faster than the rotor.</p>
+    <p>Speed may rise slowly or fluctuate.</p>
+    <p>A worn belt can also produce:</p>
+    <ul>
+      <li>Dust</li>
+      <li>Noise</li>
+      <li>Vibration</li>
+    </ul>
+    <p>If the speed sensor monitors the motor side rather than the rotor side, belt slip becomes especially important.</p>
+  </section>
+
+  <section class="content-box" id="direct-drive-systems">
+    <h3>Direct-Drive Systems</h3>
+    <p>In a direct-drive centrifuge, the rotor attaches directly to the motor shaft.</p>
+    <p>That removes the belt as a failure point.</p>
+    <p>But now:</p>
+    <ul>
+      <li>Motor bearings</li>
+      <li>Shaft alignment</li>
+      <li>Rotor mounting</li>
+    </ul>
+    <p>become even more central.</p>
+    <p>Every architecture moves the likely failure points.</p>
+  </section>
+
+  <section class="content-box" id="rotor-attachment-matters">
+    <h3>Rotor Attachment Matters</h3>
+    <p>The rotor must be installed correctly.</p>
+    <p>Depending on the machine, that can involve:</p>
+    <ul>
+      <li>Retaining nut</li>
+      <li>Locking mechanism</li>
+      <li>Tapered shaft</li>
+      <li>Tool-specified torque</li>
+    </ul>
+    <p>A rotor that is not properly seated can produce:</p>
+    <ul>
+      <li>Vibration</li>
+      <li>Wobble</li>
+      <li>Damage</li>
+    </ul>
+    <p>Never improvise rotor attachment.</p>
+    <p>Follow the OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="the-lid-is-part-of-the-safety-system">
+    <h3>The Lid Is Part of the Safety System</h3>
+    <p>The rotor may be spinning at thousands of RPM only a few inches below the operator.</p>
+    <p>The lid is not just a dust cover.</p>
+    <p>It is part of the containment and access-control system.</p>
+    <p>The centrifuge should not allow a normal run to begin unless the lid is:</p>
+    <ul>
+      <li>Closed</li>
+      <li>Properly latched</li>
+      <li>Recognized as locked</li>
+    </ul>
+    <p>And it should not allow the lid to open while the rotor remains unsafe.</p>
+  </section>
+
+  <section class="content-box" id="lid-closed-and-lid-locked-are-different-states">
+    <h3>Lid-Closed and Lid-Locked Are Different States</h3>
+    <p>A lid can physically be resting closed while the lock has not engaged.</p>
+    <p>The system may use:</p>
+    <ul>
+      <li>Microswitch</li>
+      <li>Hall sensor</li>
+      <li>Optical sensor</li>
+    </ul>
+    <p>to determine lid position.</p>
+    <p>Another mechanism may confirm:</p>
+    <p>Lock engagement.</p>
+    <p>A complaint like:</p>
+    <blockquote><p>Lid is closed but centrifuge says open.</p></blockquote>
+    <p>can therefore come from:</p>
+    <ul>
+      <li>Sensor</li>
+      <li>Misalignment</li>
+      <li>Lock actuator</li>
+      <li>Latch</li>
+    </ul>
+    <p>rather than the main controller.</p>
+  </section>
+
+  <section class="content-box" id="lid-lock">
+    <h3>Lid Lock</h3>
+    <p>The lock may use:</p>
+    <ul>
+      <li>Solenoid</li>
+      <li>Motorized latch</li>
+      <li>Electromechanical mechanism</li>
+    </ul>
+    <p>During a run:</p>
+    <p>The controller keeps it engaged.</p>
+    <p>After the rotor stops:</p>
+    <p>The system releases it.</p>
+    <p>If the lock fails to engage:</p>
+    <p>The centrifuge may refuse to start.</p>
+    <p>That is intentional safety behavior.</p>
+  </section>
+
+  <section class="content-box" id="lid-will-not-open-after-the-run">
+    <h3>Lid Will Not Open After the Run</h3>
+    <p>This complaint deserves careful handling.</p>
+    <p>Possibilities include:</p>
+    <ul>
+      <li>Rotor still moving</li>
+      <li>Speed sensor falsely reports motion</li>
+      <li>Lock actuator failed</li>
+      <li>Controller fault</li>
+      <li>Power failure</li>
+    </ul>
+    <p>Do not immediately force the lid.</p>
+    <p>The machine may still contain rotating energy.</p>
+    <p>Many centrifuges provide an emergency release procedure, but that procedure should be followed exactly and only when safe.</p>
+  </section>
+
+  <section class="content-box" id="zero-speed-detection">
+    <h3>Zero-Speed Detection</h3>
+    <p>The machine needs evidence that the rotor has stopped.</p>
+    <p>That may come from the same speed sensor used during operation.</p>
+    <p>If the sensor continues generating false pulses:</p>
+    <p>The controller may think the rotor is still moving.</p>
+    <p>The lid stays locked.</p>
+    <p>That can actually be a safer failure mode than unlocking prematurely.</p>
+  </section>
+
+  <section class="content-box" id="the-opposite-failure-is-more-concerning">
+    <h3>The Opposite Failure Is More Concerning</h3>
+    <p>If the machine believes the rotor is stopped while it is still moving:</p>
+    <p>The lid interlock could release too early unless redundant protections exist.</p>
+    <p>That is why speed-sensing integrity matters beyond RPM accuracy.</p>
+    <p>It is part of operator safety.</p>
+  </section>
+
+  <section class="content-box" id="emergency-lid-release-is-not-a-normal-service-shortcut">
+    <h3>Emergency Lid Release Is Not a Normal Service Shortcut</h3>
+    <p>Many centrifuges have a manual release.</p>
+    <p>Its purpose is typically to allow access under defined conditions such as:</p>
+    <ul>
+      <li>Power failure</li>
+      <li>Service</li>
+    </ul>
+    <p>It should not be used casually to bypass a lid-lock fault.</p>
+    <p>Before release, the rotor must be confirmed stopped according to the OEM procedure.</p>
+  </section>
+
+  <section class="content-box" id="run-timer">
+    <h3>Run Timer</h3>
+    <p>The centrifuge timer usually begins according to the machine's control design.</p>
+    <p>Some systems start timing:</p>
+    <p>Immediately after Start.</p>
+    <p>Others begin once the rotor reaches target speed.</p>
+    <p>That distinction matters in laboratory workflows.</p>
+    <p>If a five-minute run starts timing before acceleration is complete, the sample may receive less time at full centrifugal force.</p>
+    <p>Manufacturers design and document this behavior.</p>
+    <p>During service, verify the intended timing logic rather than assuming every centrifuge behaves the same way.</p>
+  </section>
+
+  <section class="content-box" id="speed-stability-during-the-run">
+    <h3>Speed Stability During the Run</h3>
+    <p>Once target RPM is reached, the controller should maintain it within the specified tolerance.</p>
+    <p>If RPM oscillates:</p>
+    <p>3,950</p>
+    <p>4,050</p>
+    <p>3,940</p>
+    <p>4,060</p>
+    <p>the control loop may be hunting.</p>
+    <p>Possible causes include:</p>
+    <ul>
+      <li>Speed-feedback instability</li>
+      <li>Drive-control issue</li>
+      <li>Mechanical load variation</li>
+    </ul>
+    <p>Some small variation may be normal.</p>
+    <p>Compare with specification.</p>
+  </section>
+
+  <section class="content-box" id="power-supply-problems-can-look-mechanical">
+    <h3>Power Supply Problems Can Look Mechanical</h3>
+    <p>The motor drive may require a substantial DC bus or power supply.</p>
+    <p>The display and processor can run normally from low-voltage rails while the motor-power section is weak.</p>
+    <p>So:</p>
+    <blockquote><p>It powers on.</p></blockquote>
+    <p>does not prove:</p>
+    <p>The motor drive has full power.</p>
+    <p>A failing power capacitor or drive supply can show up only during acceleration.</p>
+  </section>
+
+  <section class="content-box" id="works-cold-fails-hot">
+    <h3>Works Cold, Fails Hot</h3>
+    <p>This pattern is worth preserving.</p>
+    <p>A centrifuge may:</p>
+    <p>Start normally.</p>
+    <p>Reach speed.</p>
+    <p>Run once.</p>
+    <p>Then after several cycles:</p>
+    <p>Fail to reach speed.</p>
+    <p>Possible thermal causes include:</p>
+    <ul>
+      <li>Motor winding</li>
+      <li>Drive electronics</li>
+      <li>Bearing heating</li>
+      <li>Brake heating</li>
+    </ul>
+    <p>If the problem disappears after cooling:</p>
+    <p>That is useful evidence.</p>
+  </section>
+
+  <section class="content-box" id="repeated-high-speed-runs-generate-heat">
+    <h3>Repeated High-Speed Runs Generate Heat</h3>
+    <p>The motor, bearings, and electronics all dissipate energy.</p>
+    <p>Some centrifuges also have:</p>
+    <ul>
+      <li>Cooling fans</li>
+      <li>Ventilation paths</li>
+    </ul>
+    <p>A blocked vent can raise internal temperature and shorten component life.</p>
+    <p>Temperature problems can therefore become speed-control problems.</p>
+  </section>
+
+  <section class="content-box" id="refrigerated-centrifuges-add-another-system">
+    <h3>Refrigerated Centrifuges Add Another System</h3>
+    <p>A refrigerated centrifuge has all the normal rotating components plus:</p>
+    <p>A refrigeration system.</p>
+    <p>The machine may need to maintain a chamber temperature such as:</p>
+    <p>4°C</p>
+    <p>while spinning.</p>
+    <p>That introduces:</p>
+    <ul>
+      <li>Compressor</li>
+      <li>Evaporator</li>
+      <li>Condenser</li>
+      <li>Temperature sensor</li>
+      <li>Fans</li>
+    </ul>
+    <p>A temperature problem should not automatically be confused with a rotor-speed problem.</p>
+    <p>But the two systems can interact.</p>
+  </section>
+
+  <section class="content-box" id="refrigeration-adds-heat-elsewhere">
+    <h3>Refrigeration Adds Heat Elsewhere</h3>
+    <p>The refrigeration system removes heat from the rotor chamber and rejects it into the room through the condenser.</p>
+    <p>If the condenser is clogged:</p>
+    <p>Temperature control worsens.</p>
+    <p>Internal cabinet temperature may rise.</p>
+    <p>That can eventually affect drive electronics too.</p>
+    <p>One maintenance issue can cross subsystem boundaries.</p>
+  </section>
+
+  <section class="content-box" id="pre-cooling">
+    <h3>Pre-Cooling</h3>
+    <p>Some centrifuges allow pre-cooling before a run.</p>
+    <p>The rotor chamber can be brought toward target temperature while the rotor is stopped or slowly rotating depending on design.</p>
+    <p>A user saying:</p>
+    <blockquote><p>It never gets to 4°C.</p></blockquote>
+    <p>should be evaluated under the specified setup and stabilization time.</p>
+    <p>A warm rotor loaded with room-temperature samples has significant thermal mass.</p>
+  </section>
+
+  <section class="content-box" id="rotor-temperature-is-not-always-chamber-temperature">
+    <h3>Rotor Temperature Is Not Always Chamber Temperature</h3>
+    <p>The air sensor may report:</p>
+    <p>4°C.</p>
+    <p>The rotor itself may still be warmer.</p>
+    <p>This matters in applications where sample temperature is important.</p>
+    <p>Again:</p>
+    <p>Sensor location matters.</p>
+  </section>
+
+  <section class="content-box" id="condensation">
+    <h3>Condensation</h3>
+    <p>Cold centrifuge chambers can collect condensation.</p>
+    <p>Moisture can contribute to:</p>
+    <ul>
+      <li>Corrosion</li>
+      <li>Rotor damage</li>
+      <li>Sensor problems</li>
+    </ul>
+    <p>Rotor cavities and buckets should be maintained according to the manufacturer's cleaning and drying procedures.</p>
+    <p>Corrosion on a high-speed rotor should never be dismissed as cosmetic.</p>
+  </section>
+
+  <section class="content-box" id="corrosion-can-weaken-a-rotor">
+    <h3>Corrosion Can Weaken a Rotor</h3>
+    <p>High-speed rotors experience cyclic mechanical stress.</p>
+    <p>Corrosion can create localized weakening or stress concentration.</p>
+    <p>The rotor may still look functional.</p>
+    <p>That does not mean it is structurally safe.</p>
+    <p>Follow rotor inspection and retirement criteria.</p>
+  </section>
+
+  <section class="content-box" id="sample-leakage">
+    <h3>Sample Leakage</h3>
+    <p>A broken or leaking sample tube can contaminate:</p>
+    <ul>
+      <li>Rotor</li>
+      <li>Chamber</li>
+      <li>Buckets</li>
+    </ul>
+    <p>That creates:</p>
+    <ul>
+      <li>Imbalance</li>
+      <li>Corrosion</li>
+      <li>Biohazard</li>
+    </ul>
+    <p>The machine should be handled according to infection-control and decontamination procedures before service.</p>
+    <p>Do not disassemble a contaminated centrifuge casually.</p>
+  </section>
+
+  <section class="content-box" id="a-leak-can-create-a-new-imbalance-during-the-run">
+    <h3>A Leak Can Create a New Imbalance During the Run</h3>
+    <p>Imagine initially balanced tubes.</p>
+    <p>One tube leaks fluid while spinning.</p>
+    <p>Now mass distribution changes.</p>
+    <p>The machine may suddenly begin vibrating midway through the run.</p>
+    <p>That does not mean the imbalance sensor is intermittent.</p>
+    <p>It may be responding to a real condition that developed after startup.</p>
+  </section>
+
+  <section class="content-box" id="run-history-can-help">
+    <h3>Run History Can Help</h3>
+    <p>Some centrifuges log:</p>
+    <ul>
+      <li>Overspeed</li>
+      <li>Imbalance</li>
+      <li>Lid fault</li>
+      <li>Motor fault</li>
+      <li>Drive error</li>
+    </ul>
+    <p>A user may report:</p>
+    <blockquote><p>It just stopped.</p></blockquote>
+    <p>The log may show:</p>
+    <p><strong>Imbalance at 3,820 RPM during acceleration.</strong></p>
+    <p>That is much stronger starting information.</p>
+    <p>Preserve the code before cycling power if practical.</p>
+  </section>
+
+  <section class="content-box" id="error-codes-describe-conditions">
+    <h3>Error Codes Describe Conditions</h3>
+    <p>An imbalance code does not prove:</p>
+    <p>The imbalance sensor is defective.</p>
+    <p>A motor error does not automatically prove:</p>
+    <p>The motor is defective.</p>
+    <p>A speed error means:</p>
+    <p>The relationship between commanded and measured speed left the allowed range.</p>
+    <p>You still have to determine why.</p>
+  </section>
+
+  <section class="content-box" id="a-controlled-troubleshooting-sequence">
+    <h3>A Controlled Troubleshooting Sequence</h3>
+    <p>If a centrifuge will not complete a run, start with the external and mechanical conditions.</p>
+    <p>Verify:</p>
+    <ul>
+      <li>Correct rotor</li>
+      <li>Rotor seated correctly</li>
+      <li>Load balanced</li>
+      <li>Buckets/adapters matched</li>
+      <li>Lid closed</li>
+      <li>No obvious contamination or damage</li>
+    </ul>
+    <p>Then identify the exact phase of failure.</p>
+    <p>Does it fail:</p>
+    <p>Before motor start?</p>
+    <p>During acceleration?</p>
+    <p>At one specific RPM?</p>
+    <p>After reaching speed?</p>
+    <p>During braking?</p>
+    <p>During lid unlock?</p>
+    <p>Each phase points toward different parts of the system.</p>
+  </section>
+
+  <section class="content-box" id="failure-before-motor-start">
+    <h3>Failure Before Motor Start</h3>
+    <p>If the motor never attempts to turn:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Lid interlock</li>
+      <li>Rotor recognition</li>
+      <li>User settings</li>
+      <li>Safety lockout</li>
+      <li>Drive enable</li>
+    </ul>
+    <p>before condemning the motor.</p>
+    <p>The controller may never have authorized motion.</p>
+  </section>
+
+  <section class="content-box" id="failure-during-acceleration">
+    <h3>Failure During Acceleration</h3>
+    <p>If the rotor begins moving but cannot reach speed:</p>
+    <p>Consider:</p>
+    <ul>
+      <li>Mechanical drag</li>
+      <li>Weak motor/drive</li>
+      <li>Belt slip</li>
+      <li>Excess load</li>
+      <li>Speed feedback</li>
+    </ul>
+    <p>Observe whether actual RPM rises smoothly.</p>
+  </section>
+
+  <section class="content-box" id="failure-only-at-one-speed">
+    <h3>Failure Only at One Speed</h3>
+    <p>If the machine repeatedly becomes unstable around the same RPM:</p>
+    <p>Mechanical resonance, bearing condition, rotor damage, or vibration sensing becomes more interesting.</p>
+    <p>That is different from a failure occurring randomly at any speed.</p>
+  </section>
+
+  <section class="content-box" id="failure-after-reaching-speed">
+    <h3>Failure After Reaching Speed</h3>
+    <p>If the centrifuge reaches target and then trips:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Speed regulation</li>
+      <li>Thermal behavior</li>
+      <li>Vibration</li>
+      <li>Power stability</li>
+    </ul>
+    <p>The acceleration system clearly had enough capacity to reach the target.</p>
+    <p>The problem appears during sustained operation.</p>
+  </section>
+
+  <section class="content-box" id="failure-during-braking">
+    <h3>Failure During Braking</h3>
+    <p>If the run is normal but stopping is rough:</p>
+    <p>Look at:</p>
+    <ul>
+      <li>Brake profile</li>
+      <li>Drive</li>
+      <li>Rotor/bucket motion</li>
+      <li>Mechanical looseness</li>
+    </ul>
+    <p>A swinging-bucket rotor can behave differently during deceleration than during steady high-speed operation.</p>
+  </section>
+
+  <section class="content-box" id="failure-at-lid-unlock">
+    <h3>Failure at Lid Unlock</h3>
+    <p>If the run and braking are normal but lid will not release:</p>
+    <p>Now the rotor-motion system may be healthy.</p>
+    <p>Focus on:</p>
+    <ul>
+      <li>Zero-speed indication</li>
+      <li>Lid lock</li>
+      <li>Lock actuator</li>
+      <li>Door sensor</li>
+    </ul>
+    <p>Phase-based troubleshooting prevents unnecessary part replacement.</p>
+  </section>
+
+  <section class="content-box" id="test-with-the-correct-rotor">
+    <h3>Test With the Correct Rotor</h3>
+    <p>Speed calibration and vibration behavior can depend on rotor type.</p>
+    <p>Do not perform a high-speed verification with an unapproved rotor or improvised load.</p>
+    <p>Use the manufacturer's specified configuration.</p>
+    <p>The centrifuge's energy increases rapidly with speed.</p>
+    <p>Safety boundaries matter.</p>
+  </section>
+
+  <section class="content-box" id="do-not-deliberately-create-severe-imbalance">
+    <h3>Do Not Deliberately Create Severe Imbalance</h3>
+    <p>An imbalance-protection test should follow the OEM's prescribed method.</p>
+    <p>Do not arbitrarily load one side heavily and “see if it shuts off.”</p>
+    <p>That can stress:</p>
+    <ul>
+      <li>Rotor</li>
+      <li>Shaft</li>
+      <li>Bearings</li>
+      <li>Mounts</li>
+    </ul>
+    <p>Use only approved test conditions.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-spins-empty-fails-loaded">
+    <h3>Real-World Example: Spins Empty, Fails Loaded</h3>
+    <p>The centrifuge reaches 5,000 RPM with an empty rotor.</p>
+    <p>With a properly balanced full test load, it stalls near 4,200 RPM.</p>
+    <p>Motor current is high.</p>
+    <p>Inspection finds a dragging brake mechanism.</p>
+    <p>The motor was strong enough.</p>
+    <p>It was fighting unnecessary mechanical resistance.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-display-says-4-000-tach-says-3-700">
+    <h3>Real-World Example: Display Says 4,000, Tach Says 3,700</h3>
+    <p>The centrifuge completes the run without alarm.</p>
+    <p>Front panel displays:</p>
+    <p>4,000 RPM.</p>
+    <p>Independent optical tachometer measures:</p>
+    <p>3,700 RPM.</p>
+    <p>The machine's internal speed measurement or calibration is wrong.</p>
+    <p>The fact that the run completed does not prove speed accuracy.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-imbalance-alarm-with-a-perfectly-balanced-load">
+    <h3>Real-World Example: Imbalance Alarm With a Perfectly Balanced Load</h3>
+    <p>Tubes are matched by mass.</p>
+    <p>Rotor is seated correctly.</p>
+    <p>Alarm occurs around 2,500 RPM.</p>
+    <p>Known-good rotor behaves normally.</p>
+    <p>Original rotor has one swinging bucket that does not pivot freely.</p>
+    <p>The samples were balanced.</p>
+    <p>The rotor mechanics were not.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-every-rotor-vibrates">
+    <h3>Real-World Example: Every Rotor Vibrates</h3>
+    <p>Several approved known-good rotors produce the same vibration pattern.</p>
+    <p>The vibration remains even with controlled balanced loads.</p>
+    <p>Motor bearing has excessive play.</p>
+    <p>The problem follows the centrifuge base rather than the removable rotor.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-lid-will-not-unlock">
+    <h3>Real-World Example: Lid Will Not Unlock</h3>
+    <p>Run completes.</p>
+    <p>Rotor audibly stops.</p>
+    <p>Display remains on:</p>
+    <p>Spinning.</p>
+    <p>Service data shows the speed sensor continues producing intermittent false pulses while the rotor is stationary.</p>
+    <p>The controller is intentionally holding the lid lock because it does not trust that the rotor has stopped.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-one-run-good-second-run-fails">
+    <h3>Real-World Example: One Run Good, Second Run Fails</h3>
+    <p>Cold centrifuge reaches speed normally.</p>
+    <p>After the first high-speed run, the second run repeatedly faults during acceleration.</p>
+    <p>Motor drive heat sink temperature is unusually high.</p>
+    <p>Cooling fan has failed.</p>
+    <p>The rotor is not the root cause.</p>
+  </section>
+
+  <section class="content-box" id="real-world-example-speed-error-after-rotor-replacement">
+    <h3>Real-World Example: Speed Error After Rotor Replacement</h3>
+    <p>Original rotor works.</p>
+    <p>Replacement approved rotor physically fits but is not correctly identified in the rotor-selection configuration.</p>
+    <p>The system restricts RPM because it cannot confirm the correct rotor limit.</p>
+    <p>That is a configuration/safety problem, not a weak motor.</p>
+  </section>
+
+  <section class="content-box" id="common-mistakes">
+    <h3>Common Mistakes</h3>
+    <p><strong>Assuming RPM and RCF are interchangeable.</strong> RCF depends on rotor radius as well as RPM.</p>
+    <p><strong>Balancing by liquid volume only.</strong> The system responds to total rotating mass, not visual fill level.</p>
+    <p><strong>Replacing the motor because the rotor will not reach speed.</strong> Brake drag, belt slip, bearings, load, or speed feedback can create the same symptom.</p>
+    <p><strong>Calling every vibration an imbalance-sensor fault.</strong> The sensor may be accurately detecting a real mechanical problem.</p>
+    <p><strong>Trusting the front-panel RPM without independent verification.</strong> The display is only as accurate as the speed-feedback system.</p>
+    <p><strong>Assuming an empty-spin test proves loaded performance.</strong> A marginal drive can fail only under real inertia.</p>
+    <p><strong>Using a rotor with visible corrosion because it still spins.</strong> Rotor integrity is a structural safety issue.</p>
+    <p><strong>Forcing the lid open because the rotor sounds stopped.</strong> Confirm safe zero speed according to the OEM procedure.</p>
+    <p><strong>Deliberately creating a severe imbalance to test the alarm.</strong> Use the manufacturer's approved test method.</p>
+  </section>
+
+  <section class="content-box" id="a-useful-centrifuge-framework">
+    <h3>A Useful Centrifuge Framework</h3>
+    <p>Think of speed control as:</p>
+    <p><strong>Selected RPM / RCF</strong></p>
+    <p>↓</p>
+    <p><strong>Rotor Selection</strong></p>
+    <p>↓</p>
+    <p><strong>Motor Controller</strong></p>
+    <p>↓</p>
+    <p><strong>Motor / Belt / Shaft</strong></p>
+    <p>↓</p>
+    <p><strong>Rotor</strong></p>
+    <p>↓</p>
+    <p><strong>Speed Sensor</strong></p>
+    <p>↓</p>
+    <p><strong>Measured RPM</strong></p>
+    <p>↓</p>
+    <p><strong>Controller Correction</strong></p>
+    <p>At the same time, the safety system watches:</p>
+    <p><strong>Lid Locked</strong></p>
+    <p><strong>Rotor Recognized</strong></p>
+    <p><strong>Imbalance / Vibration</strong></p>
+    <p><strong>Overspeed</strong></p>
+    <p><strong>Motor / Drive Condition</strong></p>
+    <p>Then, at the end of the run:</p>
+    <p><strong>Controlled Braking</strong></p>
+    <p>↓</p>
+    <p><strong>Zero-Speed Confirmation</strong></p>
+    <p>↓</p>
+    <p><strong>Lid Unlock</strong></p>
+    <p>That is the complete motion chain.</p>
+  </section>
+
+  <section class="content-box" id="another-useful-troubleshooting-split">
+    <h3>Another Useful Troubleshooting Split</h3>
+    <p>Ask:</p>
+    <p><strong>Did the controller allow the rotor to start?</strong></p>
+    <p>If no:</p>
+    <p>Think interlock, lid, rotor recognition, or drive enable.</p>
+    <p>If yes, ask:</p>
+    <p><strong>Did the rotor physically accelerate normally?</strong></p>
+    <p>If no:</p>
+    <p>Think motor, brake, belt, bearing, or load.</p>
+    <p>Then ask:</p>
+    <p><strong>Does independent speed agree with displayed speed?</strong></p>
+    <p>If no:</p>
+    <p>Think speed sensing or calibration.</p>
+    <p>Then ask:</p>
+    <p><strong>Does vibration follow the load, rotor, or centrifuge base?</strong></p>
+    <p>That isolates:</p>
+    <ul>
+      <li>User/load issue</li>
+      <li>Rotor issue</li>
+      <li>Drive issue</li>
+      <li>Measurement issue</li>
+    </ul>
+    <p>far more efficiently than treating the centrifuge as one mechanical unit.</p>
+  </section>
+
+  <section class="content-box" id="what-did-you-actually-prove">
+    <h3>What Did You Actually Prove?</h3>
+    <p>If the rotor spins:</p>
+    <p>You proved:</p>
+    <p><strong>The motor and mechanical system can create some rotational motion.</strong></p>
+    <p>You did not prove:</p>
+    <ul>
+      <li>Speed accurate</li>
+      <li>Rotor balanced</li>
+      <li>Full-load performance normal</li>
+      <li>Overspeed protection functional</li>
+    </ul>
+    <p>If the display shows:</p>
+    <p>5,000 RPM,</p>
+    <p>you proved:</p>
+    <p><strong>The centrifuge's control system reports 5,000 RPM.</strong></p>
+    <p>You did not necessarily prove:</p>
+    <p>The rotor is physically turning at 5,000 RPM.</p>
+    <p>If an independent tachometer confirms:</p>
+    <p>5,000 RPM,</p>
+    <p>you have much stronger evidence that speed is accurate under that condition.</p>
+    <p>If the machine stops on an imbalance alarm:</p>
+    <p>You proved:</p>
+    <p><strong>The control system detected a condition that exceeded its imbalance criteria.</strong></p>
+    <p>You did not prove:</p>
+    <p>The imbalance sensor itself is defective.</p>
+    <p>If speed accuracy, full-range acceleration, controlled braking, rotor recognition, imbalance protection, lid interlock, timer, and any required temperature-control tests all meet manufacturer specification:</p>
+    <p>You have much stronger evidence that the complete centrifuge system is functioning correctly.</p>
+  </section>
+
+  <section class="content-box" id="final-thoughts-for-biomeds">
+    <h3>Final Thoughts for Biomeds</h3>
+    <p>A centrifuge looks simple because the visible result is simple:</p>
+    <p>The rotor spins.</p>
+    <p>But the useful engineering question is not:</p>
+    <p><strong>Does it spin?</strong></p>
+    <p>It is:</p>
+    <p><strong>Does it spin at the correct speed, with the correct rotor, under the correct load, while staying mechanically stable and preventing access to stored rotational energy?</strong></p>
+    <p>The controller asks for a speed.</p>
+    <p>The motor produces torque.</p>
+    <p>The rotor accelerates.</p>
+    <p>The speed sensor reports what happened.</p>
+    <p>The controller corrects the motor drive.</p>
+    <p>The imbalance system watches vibration.</p>
+    <p>The lid lock keeps the operator away from the rotor.</p>
+    <p>The brake removes energy at the end of the run.</p>
+    <p>And the machine does all of that every time the Start button is pressed.</p>
+    <p>That is why a centrifuge can fail in very different ways while producing the same user complaint.</p>
+    <blockquote><p>It won't spin right.</p></blockquote>
+    <p>might mean:</p>
+    <p>The lid never authorized motion.</p>
+    <p>The brake is dragging.</p>
+    <p>The motor is weak.</p>
+    <p>The belt is slipping.</p>
+    <p>The speed sensor is lying.</p>
+    <p>The rotor is damaged.</p>
+    <p>The samples are unbalanced.</p>
+    <p>Or the safety system is correctly stopping a dangerous condition.</p>
+    <p>The best troubleshooting starts by separating:</p>
+    <p><strong>Commanded motion</strong></p>
+    <p>from:</p>
+    <p><strong>Actual motion</strong></p>
+    <p>from:</p>
+    <p><strong>Measured motion.</strong></p>
+    <p>Then determine whether the vibration follows:</p>
+    <p>The load,</p>
+    <p>the rotor,</p>
+    <p>or:</p>
+    <p>The centrifuge itself.</p>
+    <p>And when the display confidently says:</p>
+    <p><strong>5,000 RPM,</strong></p>
+    <p>keep asking the question that belongs at the center of good clinical engineering:</p>
+    <p><strong>What did you actually prove?</strong></p>
+    <p>— Jake</p>
+  </section>
+
+  <section class="content-box" id="important-note">
+    <h3>Important Note</h3>
+    <p>Centrifuge motor designs, speed sensors, rotor-recognition methods, RCF calculations, acceleration and braking profiles, imbalance-detection systems, lid interlocks, rotor speed limits, refrigerated systems, calibration procedures, rotor inspection requirements, and acceptable performance tolerances vary significantly by manufacturer, model, and rotor type. High-speed rotors store substantial mechanical energy and damaged or incorrectly installed rotors can fail violently. Follow current OEM service documentation, approved rotor and load configurations, manufacturer imbalance-test procedures, laboratory safety requirements, decontamination procedures, and authorized service scope when evaluating centrifuge performance.</p>
+  </section>
+
+  <section class="content-box">
+    <h3>Related Biomed Basics</h3>
+    <ul>
+      <li><a href="sensors-and-transducers-basics.html">Sensors and Transducers Basics</a></li>
+      <li><a href="how-medical-scales-and-load-cells-work.html">How Medical Scales and Load Cells Work</a></li>
+      <li><a href="how-to-compare-your-test-result-to-manufacturer-specification.html">How to Compare Your Test Result to Manufacturer Specification</a></li>
+      <li><a href="how-to-read-and-use-medical-device-event-logs.html">How to Read and Use Medical Device Event Logs</a></li>
+      <li><a href="the-troubleshooting-process-observe-isolate-test-verify.html">The Troubleshooting Process: Observe, Isolate, Test, Verify</a></li>
+    </ul>
+    <div class="hero-buttons" style="margin-top:20px; margin-bottom:0;">
+      <a href="../biomed-basics.html" class="hero-button">Back to Biomed Basics</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p>Contact: <a href="mailto:contact@jaketroubleshoots.com" style="color:#8fff00;">contact@jaketroubleshoots.com</a></p>
+  <p><a href="../privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="../terms-of-use.html">Terms of Use</a></p>
+  <p>Guides intended for trained personnel only.</p><p>© 2026 Jake Troubleshoots</p>
+</footer>
+</body>
+</html>
