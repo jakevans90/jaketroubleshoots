@@ -8,11 +8,12 @@ from xml.sax.saxutils import escape
 
 BASE_URL = "https://jaketroubleshoots.com"
 ROOT = Path(__file__).resolve().parent
-CONTENT_DIRECTORIES = ("guides", "preventive-maintenance", "biomed-basics", "directory")
+CONTENT_DIRECTORIES = ("guides", "preventive-maintenance", "biomed-basics", "directory", "htm-jobs")
 CANONICAL_OVERRIDES = {
     "ge-mac-vu360-leads-noisy-ecg.html": f"{BASE_URL}/guides/ge-mac-vu360-leads-noisy.html",
+    "htm-jobs/index.html": f"{BASE_URL}/htm-jobs/",
 }
-SITEMAP_EXCLUDED_PATHS = frozenset(CANONICAL_OVERRIDES)
+SITEMAP_EXCLUDED_PATHS = frozenset({"ge-mac-vu360-leads-noisy-ecg.html"})
 
 
 def _filesystem_path(path: Path) -> Path:
@@ -58,7 +59,9 @@ def sitemap_urls(root: Path = ROOT) -> list[str]:
         relative = path.relative_to(root).as_posix()
         if relative in SITEMAP_EXCLUDED_PATHS:
             continue
-        urls.append(f"{BASE_URL}/" if relative == "index.html" else f"{BASE_URL}/{relative}")
+        if relative.startswith("htm-jobs/") and 'name="robots" content="noindex' in path.read_text(encoding="utf-8"):
+            continue
+        urls.append(CANONICAL_OVERRIDES.get(relative, f"{BASE_URL}/" if relative == "index.html" else f"{BASE_URL}/{relative}"))
     return sorted(urls, key=lambda url: (url != f"{BASE_URL}/", url))
 
 

@@ -61,7 +61,7 @@ class CollectorTests(unittest.TestCase):
     def test_live_source_configuration_is_valid(self):
         config = json.loads((ROOT / MODULE.CONFIG_PATH).read_text(encoding="utf-8"))
         self.assertEqual([], MODULE.validate_config(config))
-        self.assertEqual(37, len(config["sources"]))
+        self.assertEqual(40, len(config["sources"]))
         expected_expansion = {
             "bd-careers", "abbott-careers", "danaher-careers", "iqvia-medtech-careers",
             "allina-health-careers", "houston-methodist-careers", "uams-health-careers",
@@ -73,6 +73,8 @@ class CollectorTests(unittest.TestCase):
             "united-health-services-careers", "memorial-healthcare-system-careers",
             "st-lukes-university-health-network-careers", "newyork-presbyterian-careers",
             "yale-new-haven-health-careers", "mount-sinai-health-system-careers",
+            "university-of-maryland-medical-system-careers", "baylor-scott-white-health-careers",
+            "duke-health-careers",
         }
         self.assertTrue(expected_expansion.issubset({item["id"] for item in config["sources"]}))
 
@@ -92,6 +94,24 @@ class CollectorTests(unittest.TestCase):
         jobs, hits, total = MODULE.phenom_page_data(html)
         self.assertEqual([{"jobId": "R1"}], jobs)
         self.assertEqual((1, 1), (hits, total))
+
+    def test_phenom_keyword_search_omits_sort_parameter(self):
+        configured = source("phenom")
+        configured["adapterConfig"]["queryParameter"] = "keywords"
+        urls = []
+        payload = {"eagerLoadRefineSearch": {"status": 200, "hits": 1, "totalHits": 1, "data": {"jobs": [{
+            "jobId": "R1", "title": "Biomedical Equipment Technician", "cityState": "Dallas, Texas", "country": "United States"
+        }]}}}
+
+        def fake_get(url, timeout):
+            urls.append(url)
+            return "<script>phApp.ddo = " + json.dumps(payload) + ";</script>"
+
+        result = MODULE.collect_phenom(configured, "2026-11-25T12:00:00Z", 10, get=fake_get)
+        self.assertTrue(result.complete)
+        self.assertEqual(1, len(result.postings))
+        self.assertIn("keywords=biomedical", urls[0])
+        self.assertNotIn("s=1", urls[0])
 
     def test_talentbrew_parser_reads_cards_and_pagination(self):
         html = """

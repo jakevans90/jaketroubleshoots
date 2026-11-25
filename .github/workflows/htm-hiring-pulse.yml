@@ -107,19 +107,24 @@ jobs:
             --report "$HEALTH_REPORT"
 
       - name: Regenerate the public Hiring Pulse snapshot
-        run: python tools/build_hiring_pulse_public.py
+        run: |
+          python tools/build_hiring_pulse_public.py
+          python tools/build_hiring_pulse_history.py
+          python tools/build_hiring_pulse_pages.py
 
       - name: Run full validation
         run: |
           python -m unittest discover -s tests -p 'test_*.py'
           node --test tests/test_guide_loader.js tests/test_site_search.js tests/test_jobs_ui.js
           python tools/build_hiring_pulse_public.py --check
+          python tools/build_hiring_pulse_history.py --check
+          python tools/build_hiring_pulse_pages.py --check
           git diff --check
 
       - name: Reject unexpected production changes
         shell: bash
         run: |
-          unexpected="$(git diff --name-only | grep -Ev '^(index\.html|biomed-jobs\.html|data/htm-hiring-pulse-public\.json|data/htm-hiring-pulse/(collection-sources|employers|observations|postings)\.json)$' || true)"
+          unexpected="$(git diff --name-only | grep -Ev '^(index\.html|biomed-jobs\.html|sitemap\.xml|htm-jobs/[a-z-]+\.html|data/htm-hiring-pulse-public\.json|data/htm-hiring-pulse/(collection-sources|employers|observations|postings|weekly-history)\.json)$' || true)"
           if [ -n "$unexpected" ]; then
             echo "Unexpected files changed during collection:"
             echo "$unexpected"
@@ -147,7 +152,9 @@ jobs:
             data/htm-hiring-pulse/collection-sources.json \
             data/htm-hiring-pulse/employers.json \
             data/htm-hiring-pulse/observations.json \
-            data/htm-hiring-pulse/postings.json
+            data/htm-hiring-pulse/postings.json \
+            data/htm-hiring-pulse/weekly-history.json
+          git add -- sitemap.xml htm-jobs/*.html
           if git diff --cached --quiet; then
             echo "No validated Hiring Pulse changes to commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
