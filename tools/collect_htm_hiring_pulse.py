@@ -748,9 +748,13 @@ def collect_phenom(source: dict[str, Any], checked_at: str, timeout: int,
         query_stable = True
         page_fingerprints: set[tuple[str, ...]] = set()
         while total is None or offset < maximum_total:
-            parameters: dict[str, Any] = {"from": offset, "s": 1}
+            # Phenom keyword searches ignore the filter when s=1 is present.
+            # Category pages still use the existing sorted URL.
+            parameters: dict[str, Any] = {"from": offset}
             if adapter.get("queryParameter"):
                 parameters[adapter["queryParameter"]] = query
+            else:
+                parameters["s"] = 1
             params = urlencode(parameters)
             jobs, hits, declared_total = phenom_page_data(get(adapter["searchUrl"] + "?" + params, timeout))
             if declared_total > adapter["maxResultsPerQuery"]:
