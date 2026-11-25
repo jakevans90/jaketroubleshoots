@@ -1921,5 +1921,712 @@
             "Whether the problem followed a reagent change or maintenance",
             "Final analyzer status"
         ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Analyzer Result Is Complete but Does Not Reach the LIS",
+        "description": "The analyzer completes testing and displays a result locally, but the result does not transmit to the laboratory information system.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-analyzer-result-is-complete-but-does-not-reach-the-lis.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Result Reporting and Establish a Backup Workflow",
+                "instructions": "Do not assume a completed analyzer result has reached the patient chart or LIS. Notify laboratory staff of the interface interruption and use the approved downtime or manual-result workflow when necessary. Expected outcome: Completed results remain available to clinicians through an approved alternate process while troubleshooting occurs."
+            },
+            {
+                "title": "2. Confirm the Result Exists on the Analyzer",
+                "instructions": "Verify the result is complete and stored on the XN-2000. Confirm the correct patient or sample ID is associated with it. Expected outcome: The analyzer has a complete result ready for transmission. If the result itself is incomplete, troubleshoot the analytical issue rather than the interface."
+            },
+            {
+                "title": "3. Determine the Scope of the Failure",
+                "instructions": "Check whether one result, one analyzer module, all results, or only certain message types are failing to reach the LIS. Compare recent successful and unsuccessful transmissions if visible. Expected outcome: The communication failure is clearly scoped."
+            },
+            {
+                "title": "4. Check Visible Communication Status",
+                "instructions": "Review the analyzer or interface display for connection status, queued messages, transmission failures, or other visible communication indications. Record messages exactly as displayed rather than interpreting them as a specific hardware failure. Expected outcome: The current interface state and any pending queue are identified."
+            },
+            {
+                "title": "5. Inspect External Network Connections",
+                "instructions": "Verify external Ethernet or communication cables are securely connected and undamaged. Check switch-port link indicators where accessible. Do not move the analyzer to a different network port without authorization. Expected outcome: The analyzer has a secure physical network connection. If reconnecting a loose cable restores transmission, verify the queued and new results reach the LIS and stop."
+            },
+            {
+                "title": "6. Check Other Network Functions",
+                "instructions": "Determine whether worklist download, time synchronization, remote connectivity, or other network-dependent functions are also affected. This can help distinguish an LIS-specific issue from a broader network outage. Expected outcome: The failure is categorized as analyzer-to-LIS specific or network-wide."
+            },
+            {
+                "title": "7. Confirm the LIS or Middleware Is Available",
+                "instructions": "Coordinate with laboratory IT, LIS, or middleware support to determine whether the receiving system is online and accepting analyzer messages. Expected outcome: The receiving system is confirmed available, or an external outage is identified. If the LIS or middleware was unavailable and transmission resumes after it is restored, verify results and stop troubleshooting."
+            },
+            {
+                "title": "8. Review the Pending Transmission Queue",
+                "instructions": "Where available through normal operation, determine whether completed results remain queued or failed. Do not delete or manually alter patient-result messages unless the validated workflow specifically requires it. Expected outcome: Pending results remain traceable and can be reconciled after communication is restored."
+            },
+            {
+                "title": "9. Perform End-to-End Verification",
+                "instructions": "After correcting the connection or external system issue, send or process an approved test result and confirm it appears at the intended LIS destination with the correct sample identity. Expected outcome: Analyzer-to-LIS transmission is restored end to end. If successful, reconcile any previously queued results according to laboratory policy and return the interface to service."
+            },
+            {
+                "title": "10. Escalate Persistent Communication Failure",
+                "instructions": "If the analyzer has stable network connectivity and the LIS is available but results still do not transmit, stop external troubleshooting. Expected outcome: The unresolved interface problem is transferred to the appropriate Sysmex, LIS, middleware, or network support group."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that completed Sysmex XN-2000 results were visible on the analyzer but were not reaching the LIS.",
+                "Cause": "Clinical Engineering found the analyzer's external network cable was loose and the network link was intermittent.",
+                "Resolution": "The cable was secured, and a test result was successfully transmitted and verified at the LIS destination."
+            }
+        },
+        "helpfulDetails": [
+            "Sample ID tested",
+            "Result completion status",
+            "Number of affected results",
+            "Analyzer module affected",
+            "Communication status shown",
+            "Queue status",
+            "Network link indicators",
+            "Cable condition",
+            "LIS or middleware availability",
+            "Worklist functionality",
+            "End-to-end test result",
+            "Final interface status"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Background Count, Scattergram, or Differential Channel Is Abnormal",
+        "description": "Unexpected background results, abnormal scattergrams, or differential-channel behavior associated with reagents, contamination, sample quality, or analyzer-level faults.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-background-count-scattergram-or-differential-channel-is-abnormal.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Results",
+                "instructions": "Do not release questionable patient results from a channel showing persistent abnormal background, scattergram, or differential behavior. Follow laboratory policy for holding, repeating, or redirecting affected specimens to a verified analyzer. Expected outcome: Potentially unreliable results are prevented from entering clinical use."
+            },
+            {
+                "title": "2. Confirm Whether the Problem Is Patient-Specific or System-Wide",
+                "instructions": "Review whether the abnormality occurs with one specimen, multiple specimens, controls, background checks, or all testing on one analyzer module. Compare the affected module with the second XN-2000 module if available. Expected outcome: The issue is categorized as sample-specific, channel-specific, module-specific, or system-wide. If only one specimen is affected and controls and other specimens are normal, follow laboratory specimen-review procedures rather than instrument repair."
+            },
+            {
+                "title": "3. Inspect Reagent Status",
+                "instructions": "Verify required reagents are present, correctly installed, in date according to the displayed system information, and not showing obvious external leakage, empty containers, disconnected tubing, or improper placement. Do not manually alter lot or expiration data without authorization. Expected outcome: Required reagents are present and the analyzer recognizes them normally. If correcting an improperly installed reagent restores normal background and channel behavior, verify controls and stop."
+            },
+            {
+                "title": "4. Check for Recent Reagent or Consumable Changes",
+                "instructions": "Determine whether the problem began after a reagent replacement, lot change, container change, cleaning activity, or other routine service event. Confirm all changed items were installed according to the approved workflow. Expected outcome: No recent external change remains incorrectly completed. If correcting a recent installation issue resolves the abnormal results, complete QC before returning the affected channel to use."
+            },
+            {
+                "title": "5. Inspect Accessible Tubing and Connections",
+                "instructions": "Check visible reagent and waste tubing for kinks, pinching, loose external connections, obvious air gaps, leaks, or incorrect routing. Do not open internal fluidic assemblies. Expected outcome: Accessible fluid paths are secure and unobstructed. If an external tubing problem is corrected and the analyzer subsequently produces normal background and QC, troubleshooting can stop."
+            },
+            {
+                "title": "6. Perform Approved Background or Cleaning Procedures",
+                "instructions": "Use only routine cleaning, rinse, or background procedures available to trained laboratory or service personnel and permitted by the approved documentation. Do not introduce unapproved cleaning agents. Expected outcome: Background testing returns to the analyzer's accepted condition and abnormal contamination-related patterns clear. If the issue clears and QC passes, stop troubleshooting."
+            },
+            {
+                "title": "7. Compare the Two Analyzer Modules",
+                "instructions": "If the XN-2000 has one module producing abnormal scattergrams or background while the other performs normally using the same approved reagents and control material, document that distinction. Expected outcome: The fault is isolated to a specific module or measurement channel rather than the shared specimen or laboratory environment. If both modules perform normally after external corrections, return to service."
+            },
+            {
+                "title": "8. Run Appropriate QC",
+                "instructions": "Use laboratory-approved control material and review the affected measurement channel. Clinical Engineering should not redefine QC acceptance criteria. Expected outcome: QC performs within the laboratory's established acceptance criteria and scattergram presentation returns to expected behavior. If QC passes following the corrective action, proceed to final verification."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Verify background, control results, analyzer readiness, and representative channel operation before releasing the analyzer back to routine testing. Expected outcome: The affected measurement channel demonstrates stable, acceptable performance. If all verification passes, document and return to service."
+            },
+            {
+                "title": "10. Escalate Persistent Channel Abnormalities",
+                "instructions": "If abnormal background, scattergrams, or differential behavior persists after external reagent, tubing, contamination, and routine cleaning causes are ruled out, remove the affected analyzer module or channel from clinical use. Expected outcome: Questionable analytical performance is not used for patient reporting."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported abnormal background results and distorted differential scattergrams on one Sysmex XN-2000 analyzer module.",
+                "Cause": "Clinical Engineering found a visible kink in an external reagent line supplying the affected module.",
+                "Resolution": "The tubing was restored to its normal routing, and subsequent background checks and laboratory QC were acceptable."
+            }
+        },
+        "helpfulDetails": [
+            "Affected analyzer module",
+            "Measurement channel involved",
+            "Background behavior",
+            "Scattergram appearance",
+            "Reagent status",
+            "Recent reagent or lot change",
+            "Visible tubing condition",
+            "Cleaning performed",
+            "QC result",
+            "Comparison with second module",
+            "Final analytical status"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Calibration or QC Fails on Only One Measurement Channel",
+        "description": "Calibration or quality control fails on one measurement channel while other channels remain acceptable, suggesting a localized analytical problem.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-calibration-or-qc-fails-on-only-one-measurement-channel.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Results",
+                "instructions": "Do not release patient results from a measurement channel that has failed required QC or calibration verification. Follow laboratory policy for holding results, rerouting specimens, or using another verified analyzer. Expected outcome: Patient results from the affected channel are withheld until acceptable performance is demonstrated."
+            },
+            {
+                "title": "2. Confirm the Failure Is Limited to One Channel",
+                "instructions": "Review the QC or calibration data and determine which measurement channel is affected. Confirm whether the second analyzer module or other measurement channels are performing normally. Expected outcome: The failure is isolated to a specific channel rather than a system-wide problem."
+            },
+            {
+                "title": "3. Verify Control or Calibrator Material",
+                "instructions": "Check that the correct material was used, it is within the laboratory's approved use period, was handled according to laboratory procedure, and has not been visibly compromised. Clinical Engineering should not redefine acceptable control ranges. Expected outcome: Appropriate control or calibration material was used correctly. If repeating with properly prepared material produces acceptable results, stop after documenting the finding."
+            },
+            {
+                "title": "4. Confirm Reagent Status for the Affected Channel",
+                "instructions": "Verify that reagents associated with the failing channel are present, properly installed, correctly recognized, and have no obvious external tubing or connection problem. Expected outcome: Required reagents are available and externally connected correctly. If correcting an external reagent issue restores QC, verify stability and stop."
+            },
+            {
+                "title": "5. Inspect for Recent Changes",
+                "instructions": "Determine whether the failure began after reagent replacement, lot change, cleaning, service, relocation, or another recent event. Verify the recent activity was completed correctly. Expected outcome: No incomplete or incorrect external change remains. If correcting a recent installation or workflow issue resolves the failure, complete required QC and stop."
+            },
+            {
+                "title": "6. Check Accessible Fluid Paths",
+                "instructions": "Inspect visible tubing associated with the affected analyzer module for kinks, air gaps, leaks, or loose external connections. Do not open internal fluidic assemblies. Expected outcome: Accessible fluid paths are secure and unobstructed. If correcting a visible external fluid-path issue restores QC, verify and stop."
+            },
+            {
+                "title": "7. Perform Approved Routine Cleaning",
+                "instructions": "If contamination is a reasonable possibility, perform only approved routine cleaning procedures accessible to trained personnel. Expected outcome: The affected channel returns to stable operation without contamination-related abnormality. If QC becomes acceptable after approved cleaning, complete repeated verification as required and stop."
+            },
+            {
+                "title": "8. Compare With the Other Analyzer Module",
+                "instructions": "If the same control material and appropriate reagents produce acceptable results on the other XN-2000 module but not the affected module, document the comparison. Expected outcome: The problem is confirmed as localized to the affected analyzer module or channel."
+            },
+            {
+                "title": "9. Perform Final QC Verification",
+                "instructions": "Run the laboratory-required QC after any corrective action. Expected outcome: The affected channel meets the laboratory's established acceptance criteria. If QC passes and remains stable, return the channel to service according to laboratory policy."
+            },
+            {
+                "title": "10. Escalate Persistent Channel Failure",
+                "instructions": "If the same channel continues to fail QC or calibration despite verified controls, reagents, external fluid paths, and routine cleaning, remove the affected channel or module from clinical use. Expected outcome: A channel with unverified analytical performance is not used for patient reporting."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that QC repeatedly failed on one Sysmex XN-2000 measurement channel while the remaining channels were acceptable.",
+                "Cause": "Clinical Engineering found an external reagent line to the affected analyzer module was partially kinked.",
+                "Resolution": "The reagent tubing was restored to normal routing, and repeat laboratory QC for the affected channel was acceptable."
+            }
+        },
+        "helpfulDetails": [
+            "Analyzer module",
+            "Measurement channel",
+            "QC or calibration failure observed",
+            "Control or calibrator used",
+            "Reagent status",
+            "Recent reagent or lot changes",
+            "External tubing condition",
+            "Cleaning performed",
+            "Comparison with other module",
+            "Final QC result"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - One Analyzer Module Is Offline or Load Balancing Does Not Occur",
+        "description": "One analyzer module is unavailable, samples remain on one side, or expected workload distribution does not occur despite both modules appearing installed.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-one-analyzer-module-is-offline-or-load-balancing-does-not-occur.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Testing and Confirm Continuity of Service",
+                "instructions": "Do not continue relying on an analyzer module that repeatedly disconnects, stops processing, or produces uncertain status. Confirm that specimens requiring timely results are redirected to a verified analyzer or approved backup workflow. Identify which XN-2000 module is affected and whether the problem involves complete loss of the module, intermittent availability, or only failure of automatic sample distribution. Expected outcome: Patient testing continues through a verified alternate pathway, and the exact affected module and symptom are identified. If testing is safely continuing and the issue can be evaluated without affecting active specimens, proceed."
+            },
+            {
+                "title": "2. Confirm the Reported Condition at the System",
+                "instructions": "Review the operator interface and determine whether both analyzer modules are shown as available, ready, standby, offline, or otherwise unavailable. Check whether the condition occurs continuously or only when racks reach a particular point in the sampler path. Do not assume a communication failure solely because load balancing is not occurring. Expected outcome: The current state of each module and the exact point where routing stops are confirmed. If both modules return to normal availability and racks distribute normally, troubleshooting can stop after functional verification."
+            },
+            {
+                "title": "3. Check External Power and Module Status",
+                "instructions": "Verify that the affected analyzer module and associated sampler components are powered, their external power connections are secure, and no power strip, UPS, outlet, or external disconnect has been disturbed. Compare visible status indicators between the working and affected modules. Expected outcome: Both modules have stable power and normal external status indications. If restoring an external power connection returns the module to service and repeated sample routing is normal, troubleshooting can stop."
+            },
+            {
+                "title": "4. Inspect External Communication Connections",
+                "instructions": "Inspect accessible communication cables between analyzer modules, sampler components, control computer, and any associated network interface. Look for loose connectors, damaged cables, strain, or connections disturbed during cleaning or service. Reseat only user-accessible or service-approved external connections. Expected outcome: External communication connections are secure and undamaged. If reseating a clearly loose external connection restores the module and load distribution, verify repeated operation and stop troubleshooting."
+            },
+            {
+                "title": "5. Verify Both Modules Are Operationally Available",
+                "instructions": "Confirm neither module is intentionally placed in standby, maintenance, shutdown, or another non-processing condition. Verify that no unresolved reagent, waste, pneumatic, temperature, or other visible system condition is preventing one module from becoming ready. Do not change protected configuration settings merely to force a module online. Expected outcome: Both analyzer modules are in a condition that permits routine analysis. If clearing a legitimate external readiness condition restores module availability, verify sample distribution and stop."
+            },
+            {
+                "title": "6. Check the Sampler and Rack Path",
+                "instructions": "Inspect the accessible rack transport path for a rack obstruction, mispositioned rack, debris, or other condition that could prevent the sampler from directing specimens toward one analyzer module. Remove only safely accessible obstructions according to approved procedures. Expected outcome: The rack path is clear and racks travel normally through the sampler. If correcting a rack-path obstruction restores proper distribution, verify multiple rack movements and stop."
+            },
+            {
+                "title": "7. Compare Behavior With a Known-Good Rack",
+                "instructions": "Use an appropriate known-good rack and properly prepared nonpatient test material when permitted. Observe whether the same module remains unavailable and whether the rack follows the expected transport path. Expected outcome: A known-good rack is accepted and routed normally when both modules are available. If the problem occurs only with one damaged or abnormal rack, remove that rack from use and stop after verifying normal operation with another rack."
+            },
+            {
+                "title": "8. Perform a Controlled Restart if Appropriate",
+                "instructions": "When patient testing has been redirected and no specimen is actively being processed, perform a normal system shutdown and restart using approved procedures. Avoid repeated power cycling if the module repeatedly drops offline after restart. Expected outcome: Both analyzer modules initialize normally and remain available. If both modules remain online and load distribution functions normally during verification, troubleshooting can stop."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Using approved controls or nonpatient test material as appropriate, verify that both analyzer modules remain ready, racks transport correctly, and samples can be directed through the expected workflow. Confirm there are no new alarms or unresolved status conditions. Expected outcome: Both modules remain available and the XN-2000 distributes and processes samples normally. If verification passes, document the corrective action and return the system to service."
+            },
+            {
+                "title": "10. Escalate if the Module Remains Offline",
+                "instructions": "If one module repeatedly drops offline, cannot initialize, or remains unavailable after external power, communication, rack-path, and readiness checks, stop external troubleshooting. Expected outcome: The system is either restored to reliable dual-module operation or appropriately removed from service for further evaluation."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that one Sysmex XN-2000 analyzer module remained offline and racks were processing only through the other module.",
+                "Cause": "Clinical Engineering found a loose external communication connection associated with the affected analyzer module.",
+                "Resolution": "Clinical Engineering secured the connection, restarted the system normally, and verified both modules remained online with normal rack distribution."
+            }
+        },
+        "helpfulDetails": [
+            "Which analyzer module was affected",
+            "Module status displayed",
+            "Whether the fault was constant or intermittent",
+            "Power status",
+            "External cable condition",
+            "Rack path condition",
+            "Known-good rack test result",
+            "Restart result",
+            "Load-balancing behavior before and after correction",
+            "Final module status"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Rack Transport, Tube Mixing, or Piercing Error Repeats",
+        "description": "Repeated rack movement, tube handling, mixing, or aspiration-position errors caused by racks, tubes, obstructions, alignment, or service-level mechanisms.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-rack-transport-tube-mixing-or-piercing-error-repeats.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Testing and Stop Repeated Failed Handling",
+                "instructions": "Do not repeatedly cycle patient specimens through a mechanism that is jamming, mispositioning tubes, or failing to pierce correctly. Redirect urgent specimens to a verified alternate analyzer or approved manual workflow. Remove any affected rack from active processing until its condition is confirmed. Expected outcome: Patient testing continues safely, and the repeated mechanical fault is no longer being imposed on patient samples."
+            },
+            {
+                "title": "2. Confirm Exactly Where the Failure Occurs",
+                "instructions": "Determine whether the fault occurs during rack entry, transport, tube identification, mixing, positioning, cap piercing, aspiration, or rack exit. Observe whether the same tube, rack position, or transport location is involved each time. Expected outcome: The specific stage of the handling sequence associated with the failure is identified. If the issue is traced to one abnormal tube or rack and normal operation resumes after it is removed, proceed to verification and stop."
+            },
+            {
+                "title": "3. Inspect the Rack",
+                "instructions": "Check the affected rack for cracks, warping, contamination, bent features, foreign material, or anything preventing tubes from seating correctly. Compare it with a known-good rack. Expected outcome: The rack is clean, intact, and dimensionally normal by comparison. If replacing a damaged rack resolves the problem, verify transport with additional racks and stop troubleshooting."
+            },
+            {
+                "title": "4. Inspect Sample Tubes",
+                "instructions": "Verify that tubes are fully seated, compatible with the laboratory's approved workflow, properly capped where required, and not visibly cracked, deformed, overfilled, underfilled, or contaminated externally. Check whether labels interfere with tube seating or movement. Expected outcome: Tubes are seated correctly and have no obvious external condition affecting handling. If correcting tube placement or replacing a problematic tube resolves the fault, verify normal transport and stop."
+            },
+            {
+                "title": "5. Inspect Accessible Transport Areas",
+                "instructions": "With the system in a safe condition, inspect accessible rack and tube transport areas for caps, labels, broken plastic, dried material, or other debris. Do not reach into moving mechanisms or defeat interlocks. Expected outcome: Accessible transport areas are clear of obstructions. If removal of an accessible obstruction restores normal operation, verify repeated rack movement before returning the system to service."
+            },
+            {
+                "title": "6. Check for Label Interference",
+                "instructions": "Inspect tube labels for peeling edges, excessive overlap, multiple stacked labels, or placement that causes binding in the rack or handling mechanism. Confirm barcode labels do not physically obstruct tube movement. Expected outcome: Labels remain secure and do not interfere with transport, mixing, or positioning. If label correction resolves the problem, verify with another properly labeled tube and stop."
+            },
+            {
+                "title": "7. Compare Multiple Racks and Tube Positions",
+                "instructions": "Use approved nonpatient material to determine whether the problem follows one rack, one tube position, or one physical location in the analyzer. This helps distinguish an accessory problem from a recurring instrument problem. Expected outcome: Normal racks and tubes move consistently through all expected positions. If the problem follows one rack or tube, remove that item from use. If it remains tied to the analyzer location, continue."
+            },
+            {
+                "title": "8. Perform an Approved Cleaning Check",
+                "instructions": "Inspect and clean only user-accessible areas identified for routine cleaning. Do not disassemble the mixing, piercing, aspiration, or transport mechanism. Expected outcome: Accessible surfaces are clean and free of material that could interfere with movement. If approved cleaning restores consistent handling, verify repeated operation and stop."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Run an appropriate test sequence using approved controls or nonpatient material. Observe rack entry, tube movement, mixing, positioning, aspiration sequence, and rack exit as applicable. Expected outcome: Multiple samples complete the handling sequence without repeat transport, mixing, or piercing faults. If verification passes, return the analyzer to service and document the result."
+            },
+            {
+                "title": "10. Escalate Repeated Mechanical Errors",
+                "instructions": "If the same transport, mixing, positioning, or piercing failure continues with known-good racks and tubes after accessible areas are cleared, remove the affected module from service. Expected outcome: An unreliable specimen-handling mechanism is not returned to clinical use."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported repeated rack transport errors when samples entered the Sysmex XN-2000 sampler.",
+                "Cause": "Clinical Engineering found one rack was visibly warped and binding during transport.",
+                "Resolution": "The damaged rack was removed from use, and multiple known-good racks were processed successfully without further transport errors."
+            }
+        },
+        "helpfulDetails": [
+            "Stage where the failure occurred",
+            "Rack identification",
+            "Tube position involved",
+            "Tube and cap condition",
+            "Label condition",
+            "Visible obstruction",
+            "Known-good rack comparison",
+            "Whether fault followed rack, tube, or analyzer location",
+            "Cleaning performed",
+            "Final transport verification"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Reagent Is Installed but Level, Lot, or Expiration Is Incorrect",
+        "description": "An installed reagent is not recognized correctly, or displayed level, lot information, or expiration status does not match the physical reagent.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-reagent-is-installed-but-level-lot-or-expiration-is-incorrect.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Testing",
+                "instructions": "If the analyzer cannot reliably identify an active reagent, do not continue patient testing that depends on that reagent until the discrepancy is resolved. Redirect testing according to laboratory policy. Expected outcome: Patient results are not generated using a reagent with uncertain identification or status."
+            },
+            {
+                "title": "2. Compare the Physical Reagent With the Display",
+                "instructions": "Confirm the reagent name, container, lot information, and expiration information physically present match what the analyzer is displaying. Do not assume the display is wrong until the physical container is verified. Expected outcome: The exact discrepancy is clearly identified."
+            },
+            {
+                "title": "3. Confirm Correct Reagent Position",
+                "instructions": "Verify the reagent is installed in the correct location and is fully seated according to the normal operating workflow. Check that containers or associated connections have not been inadvertently exchanged. Expected outcome: The reagent is installed in its intended position and connected normally. If correcting placement resolves the displayed information, verify normal status and stop."
+            },
+            {
+                "title": "4. Inspect Identification Features",
+                "instructions": "Inspect any accessible reagent label, barcode, RFID-associated area, or other identification feature used by the normal workflow for damage, contamination, obstruction, or poor positioning. Do not alter or duplicate reagent identification data. Expected outcome: The reagent identification feature is intact and readable. If cleaning or repositioning an externally accessible identification area restores correct recognition, verify and stop."
+            },
+            {
+                "title": "5. Verify External Tubing and Connections",
+                "instructions": "Check visible reagent pickup tubing, caps, fittings, or external connections for loose attachment, incorrect placement, kinks, or obvious leakage. Expected outcome: The installed reagent is physically connected to the intended fluid path. If correcting a connection resolves the reagent-level or recognition issue, verify stable operation and stop."
+            },
+            {
+                "title": "6. Check for a Recently Changed Container",
+                "instructions": "Determine whether the discrepancy began immediately after a reagent replacement. Confirm the previous container was fully removed from the workflow and the replacement process was completed correctly. Expected outcome: No incomplete reagent-change step remains. If completing the proper reagent replacement workflow corrects the displayed information, stop after verification."
+            },
+            {
+                "title": "7. Compare With Another Valid Reagent Container",
+                "instructions": "When permitted and available, use another properly stored, in-date reagent container to determine whether the problem follows the container or remains with the analyzer position. Expected outcome: The analyzer correctly identifies a known-good reagent. If the problem follows one container, remove that container from use according to laboratory policy. If it remains with the same analyzer location, continue."
+            },
+            {
+                "title": "8. Do Not Manually Override Incorrect Data",
+                "instructions": "Avoid manually changing lot or expiration information solely to clear the discrepancy unless the action is specifically authorized under the laboratory's validated workflow. Expected outcome: Reagent traceability remains intact and no unsupported data are entered."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Confirm the analyzer displays the correct reagent identity, lot information, expiration status, and level or availability as applicable. Complete any required priming, background, or QC procedure under the laboratory's approved process. Expected outcome: Reagent status is correct and analytical verification is acceptable. If verification passes, return the analyzer to service."
+            },
+            {
+                "title": "10. Escalate Persistent Recognition Errors",
+                "instructions": "If the same reagent position repeatedly reports incorrect level, lot, or expiration information with known-good supplies, stop external troubleshooting. Expected outcome: Patient testing does not continue with unreliable reagent tracking."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that a newly installed reagent on the Sysmex XN-2000 was present but displayed incorrect status information.",
+                "Cause": "Clinical Engineering found the reagent container was not fully seated in its intended position.",
+                "Resolution": "The reagent was correctly reseated, the analyzer displayed the expected reagent information, and laboratory QC was completed successfully."
+            }
+        },
+        "helpfulDetails": [
+            "Reagent name",
+            "Physical lot information",
+            "Displayed lot information",
+            "Expiration status",
+            "Displayed level",
+            "Reagent position",
+            "Identification label condition",
+            "External tubing condition",
+            "Known-good container comparison",
+            "QC result",
+            "Final reagent status"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Rerun/Reflex Rule Executes but the Sample Does Not Route Correctly",
+        "description": "A rerun or reflex condition is generated, but the rack or sample does not follow the expected automated routing workflow.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-rerun-reflex-rule-executes-but-the-sample-does-not-route-correctly.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Sample Identity and Result Integrity",
+                "instructions": "Do not manually move or reassign patient specimens in a way that could separate the tube from its correct sample identification or requested test pathway. Use the laboratory's approved backup workflow for any specimen requiring immediate rerun or reflex testing. Expected outcome: Patient specimens remain correctly identified and required testing continues safely."
+            },
+            {
+                "title": "2. Confirm the Rule Actually Triggered",
+                "instructions": "Review the analyzer or middleware display and confirm that the rerun or reflex condition was generated for the expected specimen. Distinguish between a rule that failed to trigger and a rule that triggered but did not result in physical routing. Expected outcome: The problem is confirmed as a routing issue rather than a rule-execution issue."
+            },
+            {
+                "title": "3. Verify Sample and Rack Identification",
+                "instructions": "Confirm the barcode was read correctly and that the displayed sample ID matches the physical tube and rack position. An identification mismatch can make a routing problem appear to be a rule problem. Expected outcome: The sample identity, rack position, and displayed record match. If correcting a barcode or rack identification issue restores proper routing, verify another sample and stop."
+            },
+            {
+                "title": "4. Inspect the Rack Transport Path",
+                "instructions": "Check accessible transport areas for obstructions, mispositioned racks, damaged racks, or debris that could prevent the sample from being redirected. Expected outcome: The rack path is clear and transport hardware can move the rack normally. If clearing an accessible obstruction restores rerun routing, verify operation and stop."
+            },
+            {
+                "title": "5. Confirm Destination Availability",
+                "instructions": "Verify the analyzer module or measurement pathway required by the rerun or reflex action is online, ready, and not blocked by another visible fault. Do not alter protected routing configuration to bypass an unresolved module condition. Expected outcome: The intended destination is available to receive the sample. If restoring the destination to normal readiness resolves routing, verify and stop."
+            },
+            {
+                "title": "6. Check for Queue or Workflow Holds",
+                "instructions": "Review the system for visible rack holds, pending operator actions, unresolved sample exceptions, or other conditions preventing automatic continuation. Expected outcome: No unresolved workflow condition is holding the sample. If resolving an appropriate operator-level hold allows the sample to route normally, verify the complete rerun path and stop."
+            },
+            {
+                "title": "7. Compare With a Known-Good Test Scenario",
+                "instructions": "Using approved nonpatient material and an established workflow where permitted, determine whether rerun routing works for another sample or rack. Do not intentionally create unsupported patient-testing conditions. Expected outcome: The system successfully routes a known-good rerun scenario. If only one rack or barcode is affected, address that external cause and stop after verification."
+            },
+            {
+                "title": "8. Verify External Communication Dependencies",
+                "instructions": "If routing depends on middleware or another external system, verify external communication status, network connections, and whether the instruction is reaching the XN-2000. Avoid unauthorized changes to rules or middleware configuration. Expected outcome: Required routing instructions are communicated successfully. If restoring an external communication connection restores routing, verify the full path and stop."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Confirm a test sample can trigger the appropriate approved rerun/reflex workflow and physically reach the intended destination without manual intervention beyond the normal workflow. Expected outcome: Rule execution and physical sample routing agree. If successful, return the system to routine use."
+            },
+            {
+                "title": "10. Escalate Persistent Routing Mismatch",
+                "instructions": "If rules execute correctly but samples repeatedly route incorrectly after identification, transport, destination readiness, and communication causes are ruled out, stop external troubleshooting. Expected outcome: A persistent automation or configuration fault is prevented from affecting patient workflow."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that rerun rules were being generated on the Sysmex XN-2000, but affected samples were not routing to the expected analyzer module.",
+                "Cause": "Clinical Engineering found the intended analyzer module was not in a ready state and could not accept rerouted samples.",
+                "Resolution": "The external readiness condition was corrected, and a test sample successfully completed the expected rerun routing sequence."
+            }
+        },
+        "helpfulDetails": [
+            "Sample ID",
+            "Rack position",
+            "Rule or reflex condition observed",
+            "Intended destination",
+            "Actual destination",
+            "Analyzer module readiness",
+            "Rack transport condition",
+            "Middleware or communication status",
+            "Known-good test result",
+            "Final routing verification"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Sampler or Analyzer Module Will Not Boot or Repeatedly Goes Offline",
+        "description": "A sampler or analyzer module fails to start, shuts down unexpectedly, or repeatedly disconnects because of power, connections, environment, or service-level faults.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-sampler-or-analyzer-module-will-not-boot-or-repeatedly-goes-offline.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Testing",
+                "instructions": "Do not continue loading specimens onto a sampler or analyzer module that repeatedly shuts down, restarts, or goes offline. Redirect urgent testing to a verified analyzer or approved backup workflow. Expected outcome: Patient testing continues without depending on unstable equipment."
+            },
+            {
+                "title": "2. Confirm Which Component Is Failing",
+                "instructions": "Determine whether the issue affects the sampler, one analyzer module, both analyzer modules, the control computer, or the entire XN-2000 system. Note whether the component never boots, begins booting and stops, or reaches ready status and later goes offline. Expected outcome: The affected component and failure pattern are clearly identified."
+            },
+            {
+                "title": "3. Check External AC Power",
+                "instructions": "Verify the affected component is connected to its intended AC source and that plugs, power cords, external power strips, UPS equipment, or other approved power-distribution components are secure. Inspect for damaged cords, overheating, discoloration, or loose receptacles. Expected outcome: Stable external AC power is present with no visible power damage. If restoring a loose external power connection resolves the issue and the module remains stable, proceed to verification and stop."
+            },
+            {
+                "title": "4. Compare Power With the Working Module",
+                "instructions": "If only one analyzer module is affected, compare its external power arrangement and visible indicators with the working module without changing validated electrical connections unnecessarily. Expected outcome: Any obvious difference in external power or status is identified."
+            },
+            {
+                "title": "5. Inspect External Communication Connections",
+                "instructions": "Check accessible communication cables between the sampler, analyzer modules, control computer, and network interfaces. Look for loose connectors, cable damage, strain, or connections disturbed during cleaning or recent service. Expected outcome: External communication connections are secure and undamaged. If reseating a loose approved external connection restores stable operation, verify and stop."
+            },
+            {
+                "title": "6. Check the Environment",
+                "instructions": "Verify ventilation openings are unobstructed and the analyzer is not exposed to unusual heat, moisture, direct airflow extremes, or obvious contamination. Do not operate equipment that has evidence of liquid intrusion, burning odor, smoke, or overheating. Expected outcome: The analyzer environment supports normal operation and no immediate hazard is present. If an environmental obstruction is corrected and the module remains stable, verify operation before returning it to service."
+            },
+            {
+                "title": "7. Review the Shutdown Pattern",
+                "instructions": "Determine whether the module fails immediately, after a consistent period, during rack movement, during analysis, or only when another subsystem becomes active. Record any displayed message exactly. Expected outcome: The recurrence pattern is documented without assuming a specific internal component failure."
+            },
+            {
+                "title": "8. Perform One Controlled Restart",
+                "instructions": "After patient testing is redirected and external conditions are verified, perform a normal shutdown and restart using approved procedures. Avoid repeated restart attempts if the same component continues to fail. Expected outcome: The sampler and analyzer modules initialize normally and remain online. If the system becomes stable and remains online through testing, continue to functional verification."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Verify all required modules remain online, racks transport normally, communication is stable, and approved control or nonpatient testing completes successfully. Observe the system long enough to reproduce the condition that previously caused the dropout when practical. Expected outcome: The sampler and analyzer modules remain stable throughout normal operation. If verification passes, return the system to service and document the result."
+            },
+            {
+                "title": "10. Escalate Repeated Boot or Offline Failures",
+                "instructions": "If the sampler or module fails to boot, repeatedly restarts, loses power, or goes offline again after external power, connection, and environmental causes are ruled out, stop troubleshooting. Expected outcome: Unstable equipment is removed from clinical use rather than repeatedly restarted."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that one Sysmex XN-2000 analyzer module repeatedly went offline during routine operation.",
+                "Cause": "Clinical Engineering found the module's external power connection was not fully seated.",
+                "Resolution": "The power connection was secured, and the module completed a controlled restart and remained online during rack and control verification."
+            }
+        },
+        "helpfulDetails": [
+            "Component affected",
+            "Boot behavior",
+            "Frequency of offline events",
+            "External power status",
+            "Power cord and outlet condition",
+            "Communication cable condition",
+            "Visible status indicators",
+            "Environmental conditions",
+            "Exact displayed message",
+            "Controlled restart result",
+            "Control or test result",
+            "Final module status"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Tube Barcode Reads Incorrectly or Sample ID Does Not Follow the Rack",
+        "description": "Tube barcodes are misread, not read, or associated with the wrong rack position, creating a risk to specimen identification and result traceability.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-tube-barcode-reads-incorrectly-or-sample-id-does-not-follow-the-rack.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Specimen Identity Immediately",
+                "instructions": "Stop automated processing if there is any possibility that a patient tube is being associated with the wrong sample ID. Do not release results from samples with uncertain identification. Follow the laboratory's specimen-identification and downtime procedures. Expected outcome: No result is released without verified tube-to-result identity."
+            },
+            {
+                "title": "2. Confirm the Exact Identification Problem",
+                "instructions": "Determine whether the barcode is not read, reads the wrong characters, is assigned to the wrong rack position, or is correct initially but becomes mismatched later in transport. Expected outcome: The failure mode and point of identity loss are identified."
+            },
+            {
+                "title": "3. Inspect the Barcode Label",
+                "instructions": "Check the tube label for wrinkles, tears, poor print quality, contamination, excessive gloss, overlapping labels, peeling edges, or placement that may prevent normal scanning. Expected outcome: The barcode is clean, intact, and positioned according to the laboratory's normal validated workflow. If relabeling an affected specimen under laboratory policy resolves the problem, verify with another properly labeled tube and stop."
+            },
+            {
+                "title": "4. Verify Tube Position in the Rack",
+                "instructions": "Confirm the tube is fully seated and remains in the expected rack position. Check the rack for damage or looseness that could allow tubes to tilt or shift. Expected outcome: Tubes remain stable and correctly positioned throughout rack movement. If replacing a damaged rack resolves the mismatch, verify additional rack positions and stop."
+            },
+            {
+                "title": "5. Inspect the Accessible Barcode Reader Area",
+                "instructions": "With the system in a safe state, inspect the accessible barcode reader window or scanning area for dust, dried material, labels, or obstruction. Clean only according to approved routine procedures. Expected outcome: The scanning area is clean and unobstructed. If cleaning restores reliable reads, verify multiple barcodes and stop."
+            },
+            {
+                "title": "6. Compare With Known-Good Labels",
+                "instructions": "Use approved nonpatient tubes with known-good barcode labels to determine whether the problem follows a specific label or occurs consistently at the same scanner or rack position. Expected outcome: Known-good labels are read accurately and remain associated with the correct positions. If the problem is limited to one label style or specimen, address that labeling issue. If it persists with known-good labels, continue."
+            },
+            {
+                "title": "7. Observe Rack Tracking",
+                "instructions": "Confirm the rack identity and individual tube positions remain consistent as the rack progresses through the sampler. Do not manually reorder tubes after the analyzer has established rack identity unless the workflow specifically permits it. Expected outcome: Sample IDs remain associated with their correct physical tube positions."
+            },
+            {
+                "title": "8. Verify External Interface Information",
+                "instructions": "If the analyzer receives sample information from middleware or the LIS, compare the displayed order information with the tube barcode. Do not modify patient identifiers to force a match. Expected outcome: The barcode, analyzer record, and external order information agree. If an external order-entry or interface issue is identified, escalate to the laboratory or LIS support group."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Process multiple approved test barcodes across several rack positions and confirm each ID is read correctly and remains associated with the correct tube throughout the workflow. Expected outcome: Barcode reading and rack tracking are consistently accurate. If verification passes, return the sampler to service."
+            },
+            {
+                "title": "10. Escalate Any Persistent Identity Mismatch",
+                "instructions": "If known-good labels and racks still produce incorrect identification or rack-position association, immediately remove automated sample identification from service. Expected outcome: An unresolved specimen-identification risk is not allowed to continue in clinical operation."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported intermittent barcode read failures on the Sysmex XN-2000 sampler.",
+                "Cause": "Clinical Engineering found residue on the accessible barcode reader window interfering with reliable scanning.",
+                "Resolution": "The reader window was cleaned using the approved procedure, and multiple test barcodes were read correctly and remained matched to the correct rack positions."
+            }
+        },
+        "helpfulDetails": [
+            "Barcode failure type",
+            "Sample ID involved",
+            "Rack and tube position",
+            "Label condition",
+            "Rack condition",
+            "Scanner window condition",
+            "Known-good barcode test",
+            "Middleware or LIS comparison",
+            "Whether identity stayed with the tube",
+            "Final multi-position verification"
+        ]
+    },
+    {
+        "title": "Sysmex XN-2000 Hematology Analyzer - Waste Container, Drain, or Pneumatic Supply Fault Stops Analysis",
+        "description": "Analysis stops because of waste handling, drainage, external tubing, or pneumatic supply conditions affecting normal analyzer operation.",
+        "assetType": "Hematology Analyzer",
+        "manufacturer": "Sysmex",
+        "model": "XN-2000",
+        "url": "guides/sysmex-xn-2000-waste-container-drain-or-pneumatic-supply-fault-stops-analysis.html",
+        "dateAdded": "2026-11-25",
+        "steps": [
+            {
+                "title": "1. Protect Patient Testing and the Work Area",
+                "instructions": "Stop patient testing if the analyzer reports a waste, drain, or pneumatic fault that prevents reliable operation. If there is leakage, overflow, unusual odor, or visible fluid outside the intended containment system, keep staff away from the affected area and follow facility exposure procedures. Expected outcome: Patient testing is redirected and any immediate spill or exposure hazard is controlled."
+            },
+            {
+                "title": "2. Confirm the Exact Fault Category",
+                "instructions": "Determine whether the problem involves a full waste container, blocked drain, leaking waste connection, external air supply, or another visible pneumatic condition. Expected outcome: The fault is narrowed to waste, drainage, or pneumatic supply rather than treated as a generic analyzer failure."
+            },
+            {
+                "title": "3. Inspect the Waste Container",
+                "instructions": "If the system uses an external waste container in the installed configuration, verify it is not full, improperly positioned, disconnected, collapsed, damaged, or otherwise unable to receive waste. Handle biological waste according to facility policy. Expected outcome: The waste container is correctly installed and has adequate capacity. If correcting a full or improperly installed waste container clears the fault, verify operation and stop."
+            },
+            {
+                "title": "4. Inspect Drain Tubing",
+                "instructions": "Check accessible drain and waste tubing for kinks, compression, improper routing, loose fittings, or visible blockage. Do not disconnect contaminated tubing unless permitted by approved procedures and appropriate precautions are in place. Expected outcome: Drain tubing is secure, unobstructed, and routed normally. If correcting external tubing routing restores normal drainage, verify for leaks and stop."
+            },
+            {
+                "title": "5. Check the Facility Drain Connection",
+                "instructions": "Where the analyzer connects to a facility drain, inspect the accessible connection for backup, dislodgement, or obvious restriction. Do not perform plumbing repair unless within Clinical Engineering scope. Expected outcome: The external drain interface is open and functioning without backup. If a facility drain issue is identified, keep the analyzer out of service until Facilities or the appropriate support group corrects it."
+            },
+            {
+                "title": "6. Verify External Pneumatic Supply if Applicable",
+                "instructions": "If the installed configuration depends on an external pneumatic or air source, confirm the source is available, connected, and not intentionally shut off. Inspect accessible tubing for kinks, loose connections, or damage. Expected outcome: Required external pneumatic supply is present and connected normally. If restoring an external supply resolves the analyzer condition, verify stable operation and stop."
+            },
+            {
+                "title": "7. Inspect for Visible Leaks",
+                "instructions": "Look around accessible waste, drain, and pneumatic connections for fluid, moisture, damaged tubing, loose fittings, or signs of repeated leakage. Expected outcome: No external leakage is present. If a replaceable external tube or connection within approved scope is corrected, verify the system remains dry and stable before proceeding."
+            },
+            {
+                "title": "8. Perform an Approved Restart or Recovery",
+                "instructions": "After an external waste, drain, or pneumatic condition has been corrected, follow the approved recovery or restart procedure. Do not repeatedly clear the fault without correcting the underlying cause. Expected outcome: The analyzer returns to a ready state without the fault recurring."
+            },
+            {
+                "title": "9. Perform Final Functional Verification",
+                "instructions": "Use approved control or nonpatient testing as appropriate. Confirm analysis completes normally, waste drains correctly, no leakage occurs, and the fault does not return. Expected outcome: Analysis completes with stable waste, drain, and pneumatic operation. If verification passes, return the analyzer to service."
+            },
+            {
+                "title": "10. Escalate Persistent Supply or Drainage Faults",
+                "instructions": "If the analyzer continues to report the condition despite verified external waste capacity, clear external tubing, functioning drain, and available pneumatic supply, stop external troubleshooting. Expected outcome: An analyzer with an unresolved fluid or pneumatic fault is not used for patient testing."
+            }
+        ],
+        "documentation": {
+            "CCR": {
+                "Complaint": "Laboratory staff reported that the Sysmex XN-2000 stopped analysis with a waste-related fault.",
+                "Cause": "Clinical Engineering found the external waste tubing kinked behind the analyzer, restricting drainage.",
+                "Resolution": "The tubing was rerouted without restriction, and the analyzer completed control testing with normal drainage and no recurrence of the fault."
+            }
+        },
+        "helpfulDetails": [
+            "Fault category displayed",
+            "Waste container status",
+            "Drain tubing condition",
+            "Facility drain status",
+            "Pneumatic supply status",
+            "Visible leaks",
+            "Spill or exposure concern",
+            "Corrective action",
+            "Recovery or restart result",
+            "Final control result",
+            "Final leak check"
+        ]
     }
 ]
